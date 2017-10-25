@@ -1,37 +1,25 @@
 <template>
   <div id="app">
-        <div id="boxCanvas">
-            <canvas id="canvas"></canvas>
-        </div>
+      <div>{{c_updated}}</div>
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    import * as vx from 'vuex'
+    import index from './page/index.vue'
+    import './static/sy.scss'
+    export default {
+      name: 'app',
+      data () {
+         return {
+            name:1
+         }
+      },
+      computed:{
+        ...vx.mapGetters([
+          'c_updated'
+        ])
+      }
     }
-  },
-    mounted:function () {
-        let can = document.getElementById('canvas').getContext('2d');
-        console.log(can)
-    }
-}
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-    #boxCanvas{
-        width: 600px;
-        height: 600px;
-        background-color: green;
-    }
-</style>
