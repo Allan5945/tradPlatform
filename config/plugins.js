@@ -14,7 +14,12 @@ module.exports = [
     new webpack.LoaderOptionsPlugin({
         minimize: true
     }),
-    new ExtractTextPlugin('[name]-[hash].css'),
+    new ExtractTextPlugin({
+        filename:  (getPath) => {
+            return getPath('css/[name]-[hash].css');
+        },
+        allChunks: true
+    }),
     new htmlWebpackPlugin(
         {
             template:"index.html",  // 指定的文件
