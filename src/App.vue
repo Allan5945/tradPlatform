@@ -8,7 +8,6 @@
 <script>
     import * as vx from 'vuex'
     import index from './page/index.vue'
-    import './static/sy.scss'
     export default {
       name: 'app',
       data () {
