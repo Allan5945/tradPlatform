@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <div>{{c_updated}}</div>
-      <img src="./static/145.jpg"/>
+      <img src="./static/img/145.jpg"/>
       <router-view></router-view>
   </div>
 </template>
