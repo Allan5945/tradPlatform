@@ -28,7 +28,7 @@ module.exports = [
             dats:process.env.NODE_ENV == 'production' ? "<%@ page language='java' contentType='text/html; charset=UTF-8'%>" : '',
             minify:{
                 removeComments:true,    //移除HTML中的注释
-                collapseWhitespace:false    //删除空白符与换行符
+                collapseWhitespace:false    //删除空白符与换行符.
             }
         }
     )
