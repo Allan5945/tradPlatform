@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-      <div>{{c_updated}}</div>
-      <img src="./static/img/145.jpg"/>
+      <bmap></bmap>
       <router-view></router-view>
   </div>
 </template>
@@ -9,7 +8,7 @@
 <script>
     import * as vx from 'vuex'
     import index from './page/index.vue'
-    import './static/css/all.scss'
+    import bmap from './page/components/bmap.vue'
     export default {
       name: 'app',
       data () {
@@ -21,6 +20,9 @@
         ...vx.mapGetters([
           'c_updated'
         ])
-      }
+      },
+        components:{
+            bmap:bmap
+        }
     }
 </script>

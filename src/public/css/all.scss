@@ -6,6 +6,14 @@
   url('//at.alicdn.com/t/font_129360_21woseflipl7syvi.ttf') format('truetype'),
   url('//at.alicdn.com/t/font_129360_21woseflipl7syvi.svg#iconfont') format('svg');
 }
+html{
+  font-size: 10px;   // 设置全局参考字体大小
+}
 body{
-  font-size: 10px;
+  padding: 0;
+  margin: 0;
+}
+html,body,#app{
+  width: 100%;
+  height: 100%;
 }
