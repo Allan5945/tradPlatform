@@ -1,20 +1,19 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports =  {
+module.exports = {
     rules: [
         {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
-                loaders: {
-                }
+                loaders: {}
             }
         },
         {
             test: /(\.css|\.scss|\.less)$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: ['css-loader', 'sass-loader','less-loader']
+                use: ['css-loader', 'sass-loader', 'less-loader']
             }),
         },
         {
@@ -24,7 +23,11 @@ module.exports =  {
         },
         {
             test: /\.(png|jpg|gif|svg)$/,
-            loader:"url-loader?limit=1000&name=img/[name][hash:8].[ext]"
+            loader: "url-loader?limit=1000&name=img/[name][hash:8].[ext]"
+        },
+        {
+            test: /\.(eot|svg|ttf|woff|woff2|png|otf)\w*/,
+            loader: "file-loader"
         }
     ]
 }

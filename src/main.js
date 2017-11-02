@@ -4,14 +4,15 @@ import VueRouter from 'vue-router'
 import routerConfig from './router/routerConfig.js'
 import store from './store/'
 import './public/css/all.scss'
+
 Vue.use(VueRouter);
-const router=new VueRouter({
-  routes:routerConfig.routes,
-  // mode: 'history'
+const router = new VueRouter({
+    routes: routerConfig.routes,
+    // mode: 'history'
 });
 new Vue({
-  router,
-  store,
-  el: '#app',
-  render: h => h(App)
+    router,
+    store,
+    el: '#app',
+    render: h => h(App)
 })

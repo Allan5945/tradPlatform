@@ -2,7 +2,8 @@
 
 module.exports = {
     historyApiFallback: true,
-    noInfo: true,
+    noInfo: false,
+    overlay:true,
     port:8080,
     openPage:"index.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
     proxy:{   // 代理请求
