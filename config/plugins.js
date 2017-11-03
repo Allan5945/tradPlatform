@@ -22,7 +22,7 @@ module.exports = [
     }),
     new htmlWebpackPlugin(
         {
-            template:"index.html",  // 指定的文件
+            template:"build.html",  // 指定的文件
             filename:process.env.NODE_ENV == 'production' ? 'index.jsp' : 'index.html', // 生成 html 文件的文件名
             inject:true,
             dats:process.env.NODE_ENV == 'production' ? "<%@ page language='java' contentType='text/html; charset=UTF-8'%>" : '',

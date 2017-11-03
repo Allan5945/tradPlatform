@@ -2,8 +2,8 @@
     <div id="app">
         <bmap></bmap>
         <navigation></navigation>
+        <tagIcon></tagIcon>
         <router-view></router-view>
-
     </div>
 </template>
 
@@ -12,6 +12,7 @@
     import index from './page/index.vue'
     import bmap from './bmap/bmap.vue'
     import navigation from './page/components/navigation.vue'
+    import tagIcon from './page/components/tagIcon.vue'
 
     export default {
         name: 'app',
@@ -27,7 +28,8 @@
         },
         components: {
             bmap,
-            navigation
+            navigation,
+            tagIcon
         }
     }
 </script>

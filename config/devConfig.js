@@ -34,7 +34,7 @@ module.exports = {
               loader: "url-loader?limit=1000&name=img/[name][hash:8].[ext]"
           },
           {
-              test: /\.(eot|svg|ttf|woff|woff2|png|otf)\w*/,
+              test: /\.(eot|ttf|woff|woff2|otf)\w*/,
               loader: "file-loader"
           }
       ]
@@ -50,7 +50,8 @@ module.exports = {
       noInfo: true,
       overlay: true,
       port:8080,
-      openPage:"dev.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
+      open:true,
+      // openPage:"index.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
       proxy:{   // 代理请求
           // '**': {  // 本地请求的地址   localhost:8088/engineer/*
           //     target: 'www.baidu.com',  // 转发请求的地址  http://dws.XXXXX.com
