@@ -11,6 +11,7 @@ module.exports = [
             warnings: false
         }
     }),
+    new webpack.BannerPlugin('禁止其它组织，公司，个人盗用该项目！'),
     new webpack.LoaderOptionsPlugin({
         minimize: true
     }),
