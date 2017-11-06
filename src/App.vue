@@ -3,6 +3,7 @@
         <bmap></bmap>
         <navigation></navigation>
         <tagIcon></tagIcon>
+        <messageBox></messageBox>
         <router-view></router-view>
     </div>
 </template>
@@ -13,6 +14,7 @@
     import bmap from './bmap/bmap.vue'
     import navigation from './page/components/navigation.vue'
     import tagIcon from './page/components/tagIcon.vue'
+    import messageBox from './page/components/mesBox.vue'
 
     export default {
         name: 'app',
@@ -29,7 +31,8 @@
         components: {
             bmap,
             navigation,
-            tagIcon
+            tagIcon,
+            messageBox
         }
     }
 </script>

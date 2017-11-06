@@ -1,15 +1,15 @@
 <template>
-    <div class="nav-box">
+    <div class="nav-box popup">
         <div>新闻资讯</div>
-        <div class="user-center">
+        <div @click="userShow = !userShow;toolShow = false" class="user-center">
             <div>
                 <span class="icon-item">&#xe60f;</span>
                 个人中心
                 <span class="icon-item icon-item1">&#xe605;</span>
             </div>
-            <div></div>
+            <userCenter v-if="userShow"></userCenter>
         </div>
-        <div @click="toolShow = !toolShow">
+        <div @click="toolShow = !toolShow;userShow=false">
             <div>
                 <span class="icon-item">&#xe601;</span>
                 &nbsp;工具 &nbsp;
@@ -18,7 +18,7 @@
             <tool v-if="toolShow"></tool>
         </div>
         <div>
-            <div id="posted-btn">
+            <div id="posted-btn" class="btn btn-b">
                 <span class="icon-item icon-cl">&#xe606;</span>
                 发布
             </div>
@@ -27,16 +27,18 @@
     </div>
 </template>
 <script>
-    import tool from './navList.vue'
-
+    import tool from './tools.vue'
+    import userCenter from './userCenter.vue'
     export default {
         data() {
             return {
                 toolShow:false,
+                userShow:false,
             }
         },
         components: {
-            tool
+            tool,
+            userCenter,
         }
     }
 </script>
@@ -55,9 +57,7 @@
         display: flex;
         color: #605E7C;
         width: 335px;
-        font-size: 1.3em;
-        background-color: rgba(251, 251, 251, 0.8);
-        border-radius: 3px;
+        font-size: 1.4rem;
         @include user-select;
         > div {
             height: 30px;
@@ -70,7 +70,7 @@
             cursor: pointer;
             width: 105px;
             color: #605E7C;
-            font-size:1em;
+            font-size:1.4rem;
         }
         >div:last-of-type{
             position: absolute;
@@ -88,7 +88,7 @@
 
     }
     .icon-item {
-        font-size: 1.2em;
+        font-size: 1.6rem;
         font-family: iconfont;
     }
     .icon-item1{
@@ -97,12 +97,8 @@
     #posted-btn {
         width: 100px;
         border-radius: 15px;
-        background-color: #446cea;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
         height: 26px;
+        color: white;
     }
 
     .icon-cl {

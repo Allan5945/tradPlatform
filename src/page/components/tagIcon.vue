@@ -43,6 +43,8 @@
         flex-flow:row nowrap;
         align-items: center;
         padding: 0 13px;
+        font-family: DemiLight;
+        font-size: 1.2rem;
         >img{
             margin-right: 6px;
         }
