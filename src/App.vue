@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" @click="close">
         <bmap></bmap>
         <navigation></navigation>
         <tagIcon></tagIcon>
@@ -22,6 +22,11 @@
             return {
                 name: 1
             }
+        },
+        methods:{
+            ...vx.mapActions([
+                'close'
+            ]),
         },
         computed: {
             ...vx.mapGetters([

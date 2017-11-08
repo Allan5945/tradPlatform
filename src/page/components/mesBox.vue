@@ -4,10 +4,13 @@
             <div class="mes-tip">
                 <span class="number-mes">1000</span>条需求对象
             </div>
-            <div class="mes-cont" :class="{mesContSet:search}" @blur="closeSearch">
-                <input :placeholder="holder" type="text" :disabled="!search" v-model="searchText">
-                <span title="搜索" @mouseover.stop="openSearch">&#xe63a;</span>
-                <airportS class="ais" :searchText.sync="searchText"></airportS>
+            <div class="mes-cont-box" @mouseout="closeSearch" @click.stop>
+                <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
+                    <input :placeholder="holder" type="text" @focus="isSearch = true" :disabled="!search" v-model="searchText">
+                    <span title="搜索" @mouseover.stop="openSearch" @click="query" v-if="!bgqy">&#xe63a;</span>
+                    <span class="search-ing" title="搜索中..." v-if="bgqy">&#xe620;</span>
+                </div>
+                <airportS class="ais" v-on:resData="resData" :searchText="searchText" v-if="isSearch"></airportS>
             </div>
             <div class="screen">
                 <span>&#xe6a7;</span>
@@ -27,11 +30,13 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import airportS from './airportSearch.vue'
     export default {
         data() {
             return {
                 search: false,
+                isSearch:false,
                 holder: '',
                 searchText: '',
                 navLists: [
@@ -43,17 +48,43 @@
                     }
                 ],
                 changeRed: 0,
+                qyCode:"",
+                bgqy:false
+            }
+        },
+        computed:{
+            ...vx.mapGetters([
+                'close'
+            ])
+        },
+        watch:{
+            close:function () {
+                this.isSearch = false;
+                this.closeSearch();
             }
         },
         methods: {
+            query:function () {
+                if(this.qyCode != ''){
+                    this.bgqy = true;
+                }else{
+                    alert('空-错误');
+                }
+            },
+            resData:function (data) {
+                this.isSearch = false;
+                this.searchText = data.airName;
+                this.qyCode = data.code;
+            },
             openSearch: function () {
                 this.holder = '搜索关键词';
                 this.search = true;
             },
             closeSearch: function () {
-                alert(5)
-                this.holder = '';
-                this.search = false;
+                if(!this.isSearch){
+                    this.holder = '';
+//                    this.search = false;
+                };
             },
             setd: function (key, index) {
                 this.changeRed = index;
@@ -65,6 +96,12 @@
     }
 </script>
 <style scoped lang="scss">
+    @keyframes myfirst
+    {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(360deg);}
+    }
+
     .screen, .amplification {
         height: 25px;
         display: flex;
@@ -90,10 +127,14 @@
         position: absolute;
         top: 25px;
         left: 0px;
-        padding: 0 14px;
         width: 260px;
         max-height: 210px;
         overflow-y: scroll;
+    }
+    .search-ing{
+        color: #3c78ff !important;
+        display: inline-block;
+        animation: myfirst 1s linear infinite;
     }
     .message-box {
         position: absolute;
@@ -112,8 +153,10 @@
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
+        /*justify-content: space-between;*/
         margin: 0 0 2px 0;
         padding: 0 20px;
+
     }
 
     .mes-tip {
@@ -123,19 +166,26 @@
     .number-mes {
         color: #3c78ff;
     }
-
-    .mes-cont {
-        position: relative;
+    .mes-cont-box{
         width: 153px;
         margin-left: 10px;
         display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        position: relative;
+    }
+    .mes-cont {
+        position: relative;
+        width: 30px;
+        display: flex;
         border-radius: 10px;
         height: 25px;
+        transition: width .2s linear;
         > input {
             padding-left: 10px;
             border: none;
             outline: none;
-            width: 115px;
+            width: 100%;
             color: #605E7C;
             font-family: DemiLight;
             font-size: 1rem;
@@ -150,9 +200,12 @@
             padding: 0;
             cursor: pointer;
             display: inline-block;
-            width: 25px;
+            width:25px;
             text-align: center;
             line-height: 25px;
+            &:hover{
+                color: #3c78ff;
+            }
         }
     }
 
@@ -162,6 +215,7 @@
 
     .mesContSet {
         background-color: #f4f4f4;
+        width: 153px;
     }
 
     .tabulation-head {

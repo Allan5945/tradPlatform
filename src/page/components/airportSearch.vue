@@ -1,6 +1,6 @@
 <template>
     <div class="popup scroll">
-        <div v-for="(key,index) in list" class="item">
+        <div v-for="(key,index) in list" class="item" @click="reqD(key,index)">
             <div class="item-imm" v-html="key.airName"></div>
             <div class="item-dynamics" v-html="key.cd"></div>
         </div>
@@ -42,35 +42,41 @@
                         let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
                         ar.push({
                             airName:aName,
-                            cd:val.code
+                            cd:val.code,
+                            code:val.code,
+                            name:val.airportName
                         });
                     }else if(code.search(regx) != -1){
                         let reg = new RegExp(st,"gmi");
                         let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
                         ar.push({
                             airName:val.airportName,
-                            cd:aName
+                            cd:aName,
+                            code:val.code
                         });
                     }else if(py.search(regx) != -1){
                         let reg = new RegExp(st,"gmi");
                         let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                         ar.push({
                             airName:val.airportName,
-                            cd:aName
+                            cd:aName,
+                            code:val.code
                         });
                     }else if(pinyin.search(regx) != -1){
                         let reg = new RegExp(st,"gmi");
                         let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                         ar.push({
                             airName:val.airportName,
-                            cd:aName
+                            cd:aName,
+                            code:val.code
                         });
                     };
                 });
                 this.list = ar;
             },
-            updt:function () {
-                this.$emit('update:searchText', 66666);
+
+            reqD:function (key,index) {
+                this.$emit('resData', key);
             }
         },
         filters:{
@@ -127,6 +133,7 @@
         cursor: pointer;
         height: 35px;
         align-items: center;
+        padding: 0 14px;
         >div{
             overflow: hidden;
             padding-right: 5px;
@@ -135,6 +142,9 @@
             >span{
                 color: #3c78ff;
             }
+        }
+        &:hover{
+            background-color: #f5f5f5;
         }
     }
     .item-imm{
