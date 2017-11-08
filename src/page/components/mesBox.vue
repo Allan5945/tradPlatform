@@ -4,9 +4,9 @@
             <div class="mes-tip">
                 <span class="number-mes">1000</span>条需求对象
             </div>
-            <div class="mes-cont" :class="{mesContSet:search}" @blur.stop="closeSearch" @mouseover.stop="openSearch">
+            <div class="mes-cont" :class="{mesContSet:search}" @blur="closeSearch">
                 <input :placeholder="holder" type="text" :disabled="!search" v-model="searchText">
-                <span title="搜索">&#xe63a;</span>
+                <span title="搜索" @mouseover.stop="openSearch">&#xe63a;</span>
                 <airportS class="ais" :searchText.sync="searchText"></airportS>
             </div>
             <div class="screen">
@@ -51,6 +51,7 @@
                 this.search = true;
             },
             closeSearch: function () {
+                alert(5)
                 this.holder = '';
                 this.search = false;
             },
