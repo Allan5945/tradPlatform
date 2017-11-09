@@ -6,11 +6,12 @@
             </div>
             <div class="mes-cont-box" @mouseout="closeSearch" @click.stop>
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
-                    <input :placeholder="holder" type="text" @focus="isSearch = true" :disabled="!search" v-model="searchText">
+                    <input :placeholder="holder" @input="openList('a')" type="text" @focus="history" :disabled="!search" v-model="searchText">
                     <span title="搜索" @mouseover.stop="openSearch" @click="query" v-if="!bgqy">&#xe63a;</span>
                     <span class="search-ing" title="搜索中..." v-if="bgqy">&#xe620;</span>
                 </div>
-                <airportS class="ais" v-on:resData="resData" :searchText="searchText" v-if="isSearch"></airportS>
+                <hisy class="ais" v-on:reshsy="reshsy"  v-on:clear="clear" v-if="openHisy"></hisy>
+                <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
             <div class="screen">
                 <span>&#xe6a7;</span>
@@ -26,12 +27,16 @@
                 </div>
                 <div class="match"><span></span>只看与我匹配的</div>
             </div>
+            <tabulationBox></tabulationBox>
         </div>
+        <div></div>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import airportS from './airportSearch.vue'
+    import hisy from './hisy.vue'
+    import tabulationBox from './tabulationBox.vue'
     export default {
         data() {
             return {
@@ -49,7 +54,8 @@
                 ],
                 changeRed: 0,
                 qyCode:"",
-                bgqy:false
+                bgqy:false,
+                openHisy:false
             }
         },
         computed:{
@@ -60,10 +66,42 @@
         watch:{
             close:function () {
                 this.isSearch = false;
+                this.openHisy = false;
                 this.closeSearch();
             }
         },
         methods: {
+            openList:function (type) {
+                if(type == 'a'){
+                    if(this.searchText != ''){
+                        this.openHisy = false;
+                        this.isSearch = true;
+                    }else{
+                        this.isSearch = false;
+                    }
+                }else{
+                    this.isSearch = false;
+                    this.openHisy = false;
+                }
+            },
+            reshsy:function (vl) {
+                this.openList('m');
+                this.searchText = vl;
+            },
+            clear:function () {
+                this.openHisy = false;
+            },
+            history:function () {
+                let hisyData = localStorage.getItem('hisyData');
+                if(hisyData != null){
+                    hisyData = hisyData.split(',');
+                }
+                if(this.searchText == '' && hisyData != null){
+                    this.openHisy = true;
+                }else{
+                    this.isSearch = true;
+                }
+            },
             query:function () {
                 if(this.qyCode != ''){
                     this.bgqy = true;
@@ -83,7 +121,6 @@
             closeSearch: function () {
                 if(!this.isSearch){
                     this.holder = '';
-//                    this.search = false;
                 };
             },
             setd: function (key, index) {
@@ -91,7 +128,9 @@
             }
         },
         components:{
-            airportS
+            airportS,
+            hisy,
+            tabulationBox
         }
     }
 </script>
@@ -111,7 +150,7 @@
         > span {
             font-family: iconfont;
             color: #605E7C;
-            font-size: 1.7rem;
+            font-size: 2rem;
             flex-flow: row nowrap;
             justify-content: center;
             align-items: center;
@@ -124,6 +163,13 @@
         justify-content: flex-end;
     }
     .ais{
+        position: absolute;
+        top: 25px;
+        left: 0px;
+        width: 260px;
+        max-height: 210px;
+    }
+    .aisx{
         position: absolute;
         top: 25px;
         left: 0px;
@@ -142,6 +188,8 @@
         left: 40px;
         width: 340px;
         height: 80%;
+        display: flex;
+        flex-flow: column nowrap;
     }
 
     .tabulation {
@@ -178,8 +226,8 @@
         position: relative;
         width: 30px;
         display: flex;
-        border-radius: 10px;
-        height: 25px;
+        border-radius: 18px;
+        height: 28px;
         transition: width .2s linear;
         > input {
             padding-left: 10px;
@@ -193,16 +241,16 @@
         }
         > span {
             font-family: iconfont;
-            font-size: 2rem;
+            font-size: 2.3rem;
             color: #605E7C;
             border: none;
             background-color: transparent;
             padding: 0;
             cursor: pointer;
             display: inline-block;
-            width:25px;
-            text-align: center;
-            line-height: 25px;
+            width: 33px;
+            text-align: left;
+            line-height: 30px;
             &:hover{
                 color: #3c78ff;
             }
