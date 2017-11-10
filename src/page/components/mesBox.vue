@@ -1,13 +1,13 @@
 <template>
-    <div class="message-box">
-        <div class="message-head popup">
+    <div class="message-box" id="message-box">
+        <div class="message-head popup" >
             <div class="mes-tip">
                 <span class="number-mes">1000</span>条需求对象
             </div>
             <div class="mes-cont-box" @mouseout="closeSearch" @click.stop>
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
                     <input :placeholder="holder" @input="openList('a')" type="text" @focus="history" :disabled="!search" v-model="searchText">
-                    <span title="搜索" @mouseover.stop="openSearch" @click="query" v-if="!bgqy">&#xe63a;</span>
+                    <span title="搜索" @mouseover.stop="openSearch" @click="query" v-if="!bgqy">&#xe6c3;</span>
                     <span class="search-ing" title="搜索中..." v-if="bgqy">&#xe620;</span>
                 </div>
                 <hisy class="ais" v-on:reshsy="reshsy"  v-on:clear="clear" v-if="openHisy"></hisy>
@@ -17,10 +17,10 @@
                 <span>&#xe6a7;</span>
             </div>
             <div class="amplification">
-                <span>&#xe607;</span>
+                <span>&#xe618;</span>
             </div>
         </div>
-        <div class="popup tabulation">
+        <div class="popup tabulation" id="tabulation">
             <div class="tabulation-head">
                 <div class="navSet">
                     <div class="navList" @click="setd(key,index)" :class="{setd:changeRed == index}" v-for="(key,index) in navLists">{{key.text}}</div>
@@ -188,12 +188,10 @@
         left: 40px;
         width: 340px;
         height: 80%;
-        display: flex;
-        flex-flow: column nowrap;
     }
 
     .tabulation {
-        padding: 0 20px;
+        /*padding: 0 20px;*/
     }
 
     .message-head {
@@ -272,6 +270,7 @@
         height: 58px;
         align-items: center;
         justify-content:space-between ;
+        padding: 0 20px;
     }
 
     .navList{
