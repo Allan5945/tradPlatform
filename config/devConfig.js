@@ -49,11 +49,11 @@ module.exports = {
       historyApiFallback: true,
       noInfo: true,
       overlay: true,
-      port:8080,
+      port:8088,
       open:true,
       // openPage:"index.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
       proxy:{   // 代理请求
-          // '**': {  // 本地请求的地址   localhost:8088/engineer/*
+          // '**': {  // 本地请求的地址   localhost:8088/*
           //     target: 'www.baidu.com',  // 转发请求的地址  http://dws.XXXXX.com
           //     pathRewrite: {"^/api" : ""}  //如果你不想始终传递 /api ，则需要重写路径：
           // },

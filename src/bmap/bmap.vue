@@ -13,7 +13,6 @@
         },
         mounted:function () {
             this.myChart = echarts.init(document.getElementById('map-warp'));
-            console.log(this.myChart)
             var option={
                 "bmap":{
                     "center":["110.47","32.40"],

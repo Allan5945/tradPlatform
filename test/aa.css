@@ -1,7 +1,10 @@
 @font-face {
     font-family: 'HaTian-SuiXing70b405590a';
     src: url('//cdn.webfont.youziku.com/webfonts/nomal/10/46887/582a84e0f629da1ba4554788.gif');
-    src: url('//cdn.webfont.youziku.com/webfonts/nomal/10/46887/582a84e0f629da1ba4554788.gif?#iefix') format('embedded-opentype'), url('//cdn.webfont.youziku.com/webfonts/nomal/10/46887/582a84e0f629da1ba4554788.bmp') format('woff'), url('') format('truetype'), url('#HaTian-SuiXing') format('svg');
+    src: url('//cdn.webfont.youziku.com/webfonts/nomal/10/46887/582a84e0f629da1ba4554788.gif?#iefix') format('embedded-opentype'),
+    url('//cdn.webfont.youziku.com/webfonts/nomal/10/46887/582a84e0f629da1ba4554788.bmp') format('woff'),
+    url('') format('truetype'),
+    url('#HaTian-SuiXing') format('svg');
 }
 
 .css70b405590a {

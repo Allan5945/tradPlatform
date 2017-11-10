@@ -1,16 +1,17 @@
 <template>
     <div class="message-box" id="message-box">
-        <div class="message-head popup" >
+        <div class="message-head popup">
             <div class="mes-tip">
                 <span class="number-mes">1000</span>条需求对象
             </div>
             <div class="mes-cont-box" @mouseout="closeSearch" @click.stop>
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
-                    <input :placeholder="holder" @input="openList('a')" type="text" @focus="history" :disabled="!search" v-model="searchText">
+                    <input :placeholder="holder" @input="openList('a')" type="text" @focus="history" :disabled="!search"
+                           v-model="searchText">
                     <span title="搜索" @mouseover.stop="openSearch" @click="query" v-if="!bgqy">&#xe6c3;</span>
                     <span class="search-ing" title="搜索中..." v-if="bgqy">&#xe620;</span>
                 </div>
-                <hisy class="ais" v-on:reshsy="reshsy"  v-on:clear="clear" v-if="openHisy"></hisy>
+                <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
                 <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
             <div class="screen">
@@ -22,10 +23,17 @@
         </div>
         <div class="popup tabulation" id="tabulation">
             <div class="tabulation-head">
-                <div class="navSet">
-                    <div class="navList" @click="setd(key,index)" :class="{setd:changeRed == index}" v-for="(key,index) in navLists">{{key.text}}</div>
-                </div>
-                <div class="match"><span></span>只看与我匹配的</div>
+               <div>
+                   <div class="navSet">
+                       <div class="navList" @click="setd(key,index)" :class="{setd:changeRed == index}"
+                            v-for="(key,index) in navLists">{{key.text}}
+                       </div>
+                   </div>
+                   <div class="match">
+                       <span @click="matching" :class="{'elect':elect,'initialization':!elect}"></span>
+                       只看与我匹配的
+                   </div>
+               </div>
             </div>
             <tabulationBox></tabulationBox>
         </div>
@@ -37,11 +45,12 @@
     import airportS from './airportSearch.vue'
     import hisy from './hisy.vue'
     import tabulationBox from './tabulationBox.vue'
+
     export default {
         data() {
             return {
                 search: false,
-                isSearch:false,
+                isSearch: false,
                 holder: '',
                 searchText: '',
                 navLists: [
@@ -53,63 +62,70 @@
                     }
                 ],
                 changeRed: 0,
-                qyCode:"",
-                bgqy:false,
-                openHisy:false
+                qyCode: "",
+                bgqy: false,
+                openHisy: false,
+                elect: false
             }
         },
-        computed:{
+        computed: {
             ...vx.mapGetters([
                 'close'
             ])
         },
-        watch:{
-            close:function () {
+        watch: {
+            close: function () {
                 this.isSearch = false;
                 this.openHisy = false;
                 this.closeSearch();
             }
         },
         methods: {
-            openList:function (type) {
-                if(type == 'a'){
-                    if(this.searchText != ''){
+            matching: function () {
+                this.elect = !this.elect;
+                if(this.elect){
+
+                }
+            },
+            openList: function (type) {
+                if (type == 'a') {
+                    if (this.searchText != '') {
                         this.openHisy = false;
                         this.isSearch = true;
-                    }else{
+                    } else {
                         this.isSearch = false;
                     }
-                }else{
+                } else {
                     this.isSearch = false;
                     this.openHisy = false;
                 }
             },
-            reshsy:function (vl) {
+            reshsy: function (vl) {
                 this.openList('m');
                 this.searchText = vl;
             },
-            clear:function () {
+            clear: function () {
                 this.openHisy = false;
             },
-            history:function () {
+            history: function () {
                 let hisyData = localStorage.getItem('hisyData');
-                if(hisyData != null){
+                if (hisyData != null) {
                     hisyData = hisyData.split(',');
                 }
-                if(this.searchText == '' && hisyData != null){
+                if (this.searchText == '' && hisyData != null) {
                     this.openHisy = true;
-                }else{
+                } else {
                     this.isSearch = true;
                 }
             },
-            query:function () {
-                if(this.qyCode != ''){
+            query: function () {
+                if (this.qyCode != '') {
                     this.bgqy = true;
-                }else{
+                } else {
                     alert('空-错误');
                 }
             },
-            resData:function (data) {
+            resData: function (data) {
                 this.isSearch = false;
                 this.searchText = data.airName;
                 this.qyCode = data.code;
@@ -119,15 +135,16 @@
                 this.search = true;
             },
             closeSearch: function () {
-                if(!this.isSearch){
+                if (!this.isSearch) {
                     this.holder = '';
-                };
+                }
+                ;
             },
             setd: function (key, index) {
                 this.changeRed = index;
             }
         },
-        components:{
+        components: {
             airportS,
             hisy,
             tabulationBox
@@ -135,10 +152,20 @@
     }
 </script>
 <style scoped lang="scss">
-    @keyframes myfirst
-    {
-        from {transform:rotate(0deg);}
-        to {transform:rotate(360deg);}
+    @keyframes myfirst {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .elect:before {
+        content: '\e724';
+    }
+    .initialization:before {
+        content: '\e723';
     }
 
     .screen, .amplification {
@@ -162,14 +189,16 @@
     .amplification {
         justify-content: flex-end;
     }
-    .ais{
+
+    .ais {
         position: absolute;
         top: 25px;
         left: 0px;
         width: 260px;
         max-height: 210px;
     }
-    .aisx{
+
+    .aisx {
         position: absolute;
         top: 25px;
         left: 0px;
@@ -177,11 +206,13 @@
         max-height: 210px;
         overflow-y: scroll;
     }
-    .search-ing{
+
+    .search-ing {
         color: #3c78ff !important;
         display: inline-block;
         animation: myfirst 1s linear infinite;
     }
+
     .message-box {
         position: absolute;
         top: 100px;
@@ -212,7 +243,8 @@
     .number-mes {
         color: #3c78ff;
     }
-    .mes-cont-box{
+
+    .mes-cont-box {
         width: 153px;
         margin-left: 10px;
         display: flex;
@@ -220,6 +252,7 @@
         justify-content: flex-end;
         position: relative;
     }
+
     .mes-cont {
         position: relative;
         width: 30px;
@@ -249,7 +282,7 @@
             width: 33px;
             text-align: left;
             line-height: 30px;
-            &:hover{
+            &:hover {
                 color: #3c78ff;
             }
         }
@@ -265,21 +298,25 @@
     }
 
     .tabulation-head {
-        border-bottom: 2px solid #b4dbff;
-        display: flex;
-        height: 58px;
-        align-items: center;
-        justify-content:space-between ;
         padding: 0 20px;
+       >div{
+           border-bottom: 2px solid #b4dbff;
+           display: flex;
+           height: 58px;
+           align-items: center;
+           justify-content: space-between;
+       }
     }
 
-    .navList{
+    .navList {
         padding: 0 15px 0 0;
         font-size: 1.2rem;
         height: 100%;
         line-height: 58px;
         cursor: pointer;
+        color: #605E7C;
     }
+
     .navList:hover {
         border-bottom: 2px solid #3774ff;
         color: #605E7C;
@@ -289,10 +326,28 @@
         color: #3c78ff;
         border-bottom: 2px solid #3c78ff;
     }
-    .navSet{
+
+    .navSet {
         display: flex;
     }
-    .match{
-        align-self:center ;
+
+    .match {
+        align-self: center;
+        color: #605E7C;
+        display: flex;
+        flex-flow: row nowrap;
+        > span {
+            font-family: iconfont;
+            font-size: 1.7rem;
+            cursor: pointer;
+            width: 17px;
+            height: 19px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    }
+
+    .matching {
+
     }
 </style>
