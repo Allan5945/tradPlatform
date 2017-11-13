@@ -1,8 +1,8 @@
 <template>
     <div class="popup scroll">
         <div v-for="(key,index) in list" class="item" @click="reqD(key,index)">
-            <div class="item-imm" v-html="key.airName"></div>
-            <div class="item-dynamics" v-html="key.cd"></div>
+            <div class="item-imm" v-html="key.testName"></div>
+            <div class="item-dynamics" v-html="key.testCode"></div>
         </div>
     </div>
 </template>
@@ -44,8 +44,8 @@
                             aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
                         }
                         ar.push({
-                            airName:aName,
-                            cd:val.code,
+                            testName:aName,
+                            testCode:val.code,
                             code:val.code,
                             name:val.airportName
                         });
@@ -53,25 +53,28 @@
                         let reg = new RegExp(st,"gmi");
                         let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
                         ar.push({
-                            airName:val.airportName,
-                            cd:aName,
-                            code:val.code
+                            testName:val.airportName,
+                            testCode:aName,
+                            code:val.code,
+                            name:val.airportName
                         });
                     }else if(py.search(regx) != -1){
                         let reg = new RegExp(st,"gmi");
                         let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                         ar.push({
-                            airName:val.airportName,
-                            cd:aName,
-                            code:val.code
+                            testName:val.airportName,
+                            testCode:aName,
+                            code:val.code,
+                            name:val.airportName
                         });
                     }else if(pinyin.search(regx) != -1){
                         let reg = new RegExp(st,"gmi");
                         let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                         ar.push({
-                            airName:val.airportName,
-                            cd:aName,
-                            code:val.code
+                            testName:val.airportName,
+                            testCode:aName,
+                            code:val.code,
+                            name:val.airportName
                         });
                     };
                 });
@@ -83,11 +86,11 @@
                 let tag = '';
                 if(hisyData != null){
                     let hisyArr = hisyData.split(',');
-                    if(hisyArr.indexOf(key.airName) == -1){
-                        tag = hisyData + ',' + key.airName;
+                    if(hisyArr.indexOf(key.name) == -1){
+                        tag = hisyData + ',' + key.name;
                     };
                 }else{
-                    tag = key.airName;
+                    tag = key.name;
                 };
                 localStorage.setItem('hisyData',tag);
                 this.$emit('resData', key);
