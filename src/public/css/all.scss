@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 413196 */
-  src: url('//at.alicdn.com/t/font_413196_pk75kuhhemf5hfr.eot');
-  src: url('//at.alicdn.com/t/font_413196_pk75kuhhemf5hfr.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_413196_pk75kuhhemf5hfr.woff') format('woff'),
-  url('//at.alicdn.com/t/font_413196_pk75kuhhemf5hfr.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_413196_pk75kuhhemf5hfr.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.eot');
+  src: url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.woff') format('woff'),
+  url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.svg#iconfont') format('svg');
 }
 
 @font-face {
@@ -20,6 +20,8 @@
 html {
   font-size: 10px; // 设置全局参考字体大小
   font-family: DemiLight;
+  min-width: 1200px;
+  min-height: 600px;
 }
 
 body {
@@ -50,6 +52,13 @@ html, body, #app {
   opacity: 1;
   background-color: white;
   box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+}
+.popup-x1{
+  border-radius: 4px;
+  opacity: 1;
+  background-color: white;
+  box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 // 按钮标准
@@ -88,7 +97,7 @@ html, body, #app {
 //- 蓝底按钮
 .btn-b {
   background-color: #3c78ff;
-  box-shadow: 1px 2px 6px rgba(60, 120, 255, .6);
+  box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
 }
 // 点击效果
 .btn-a{

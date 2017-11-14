@@ -33,7 +33,7 @@
                        </div>
                    </div>
                    <div class="match">
-                       <span @click="matching" :class="{'elect':elect,'initialization':!elect}"></span>
+                       <singleElection :single.sync="elect" class="mes-body-ix"></singleElection>
                        只看与我匹配的
                    </div>
                </div>
@@ -49,11 +49,11 @@
     import hisy from './hisy.vue'
     import tabulationBox from './tabulationBox.vue'
     import screen from './screen-hs.vue'
-
+    import singleElection from './singleElection.vue'
     export default {
         data() {
             return {
-                screenHsShow:true,
+                screenHsShow:false,
                 search: false,
                 isSearch: false,
                 holder: '',
@@ -70,7 +70,7 @@
                 qyCode: "",
                 bgqy: false,
                 openHisy: false,
-                elect: false
+                elect:  {set: false}
             }
         },
         computed: {
@@ -94,12 +94,6 @@
             },
             openScreen:function () {
                 this.screenHsShow = !this.screenHsShow;
-            },
-            matching: function () {
-                this.elect = !this.elect;
-                if(this.elect){
-
-                }
             },
             openList: function (type) {
                 if (type == 'a') {
@@ -151,8 +145,7 @@
             closeSearch: function () {
                 if (!this.isSearch) {
                     this.holder = '';
-                }
-                ;
+                };
             },
             setd: function (key, index) {
                 this.changeRed = index;
@@ -162,7 +155,8 @@
             airportS,
             hisy,
             tabulationBox,
-            screen
+            screen,
+            singleElection
         }
     }
 </script>

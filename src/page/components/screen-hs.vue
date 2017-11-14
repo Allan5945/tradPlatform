@@ -1,5 +1,5 @@
 <template>
-    <div class="sc-box popup">
+    <div class="sc-box popup-x1">
         <div class="sc-t">
             <span>筛选</span>
             <span class="btn-w" @click="screenHs">&#xe62c;</span>
@@ -90,6 +90,8 @@
         >div:nth-of-type(1){
             color: #605E7C;
             margin-right: 7px;
+            box-shadow: none;
+            border: 1px solid #d8d8d8;
         }
         >div:nth-of-type(2){
             color: white;
@@ -97,7 +99,6 @@
         >div{
             height: 30px;
             width: 70px;
-            border: 1px solid #d8d8d8;
             border-radius: 20px;
             text-align: center;
             line-height: 30px;
