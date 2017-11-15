@@ -4,6 +4,10 @@
     </div>
 </template>
 <script>
+    import hxxq from './../../static/img/hxxq.png'
+    import ylxq from './../../static/img/ylxq.png'
+    import fcqq from './../../static/img/fcqq.png'
+    import hd from './../../static/img/hd.png'
     export default {
         data() {
             return {
@@ -11,19 +15,19 @@
                 iconList: [
                     {
                         name:"航线需求",
-                        iconUrl:"/src/static/img/hxxq.png"
+                        iconUrl:hxxq
                     },
                     {
                         name:"运力需求",
-                        iconUrl:"/src/static/img/ylxq.png"
+                        iconUrl:ylxq
                     },
                     {
                         name:"我发出的需求",
-                        iconUrl:"/src/static/img/fcqq.png"
+                        iconUrl:fcqq
                     },
                     {
                         name:"航点",
-                        iconUrl:"/src/static/img/hd.png"
+                        iconUrl:hd
                     }
                 ]
             }
@@ -43,7 +47,6 @@
         flex-flow:row nowrap;
         align-items: center;
         padding: 0 13px;
-        font-family: DemiLight;
         font-size: 1.2rem;
         >img{
             margin-right: 6px;

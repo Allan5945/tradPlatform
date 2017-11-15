@@ -1,10 +1,10 @@
 <template>
     <div class="nav-box popup">
-        <div>新闻资讯</div>
+        <div class="font-bold-x">新闻资讯</div>
         <div @click="userShow = !userShow;toolShow = false" class="user-center">
             <div>
                 <span class="icon-item">&#xe60f;</span>
-                个人中心
+                <span class="font-bold-x">个人中心</span>
                 <span class="icon-item icon-item1">&#xe605;</span>
             </div>
             <userCenter v-if="userShow"></userCenter>
@@ -12,7 +12,7 @@
         <div @click="toolShow = !toolShow;userShow=false">
             <div>
                 <span class="icon-item">&#xe601;</span>
-                &nbsp;工具 &nbsp;
+                <span class="font-bold-x">工具 &nbsp;</span>
                 <span class="icon-item icon-item1">&#xe605;</span>
             </div>
             <tool v-if="toolShow"></tool>
@@ -48,7 +48,9 @@
         -khtml-user-select: none;
         user-select: none;
     }
-
+    .font-bold-x:hover{
+        font-weight: bold;
+    }
     .nav-box {
         position: absolute;
         right: 100px;
@@ -62,7 +64,6 @@
         > div {
             height: 30px;
             line-height: 30px;
-            font-family: DemiLight;
             display: flex;
             align-items: center;
             justify-content: center;

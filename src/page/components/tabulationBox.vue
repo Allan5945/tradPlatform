@@ -3,25 +3,25 @@
         <div>
             <div class="tabulation-item">
                 <img src="./../../static/img/hx.png" alt="">
-                <div><p>成都双流-北京首都-北京首都</p></div>
+                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
                 <div>----</div>
             </div>
             <div class="tabulation-mes">
                 <div>
                     <span>时刻</span>
-                    <div>08:00</div>
+                    <div class="font-bold">08:00</div>
                 </div>
                 <div>
                     <span>时刻</span>
-                    <div>08:00</div>
+                    <div class="font-bold">08:00</div>
                 </div>
                 <div>
                     <span>时刻</span>
-                    <div>08:00</div>
+                    <div class="font-bold">08:00</div>
                 </div>
                 <div>
                     <span>时刻</span>
-                    <div>08:00</div>
+                    <div class="font-bold">08:00</div>
                 </div>
             </div>
         </div>

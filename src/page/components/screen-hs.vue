@@ -97,6 +97,7 @@
             color: white;
         }
         >div{
+            letter-spacing:.2px;
             height: 30px;
             width: 70px;
             border-radius: 20px;
@@ -138,7 +139,7 @@
             color: #605E7C;
             font-size: 1.2rem;
             font-weight: 600;
-            font-family: '微软雅黑';
+            letter-spacing: 0.2px;
         }
     }
 
