@@ -6,7 +6,19 @@
     </div>
 </template>
 <script>
-    export default {}
+    import * as vx from 'vuex'
+    export default {
+        watch:{
+//            close:function () {
+//
+//            }
+        },
+        computed:{
+            ...vx.mapActions([
+                'close'
+            ]),
+        }
+    }
 </script>
 <style scoped lang="scss">
     @import "./../../public/css/dropDowBbox";

@@ -8,25 +8,27 @@
 <div id="sasaaaa">5555555555</div>
 <body>
 <script>
-//    var ddd = document.getElementById('sasa');
-//    var bbb = document.getElementById('sasaaaa');
-//    var d = function (asas) {
-//        console.log(this)
-//    };
-//    var fn = d.bind(bbb);
-//    ddd.addEventListener('click',fn);
-//    ddd.removeEventListener('click',fn);
-var colors = ['red', 'green', 'blue'];
-colors.length = 5;
-colors.push('yellow');
+    var s = {
+        "backgroundColor":"#404a59",
+        "title":{"text":"全国主要城市空气质量","subtext":"data from PM25.in","sublink":"http://www.pm25.in","x":"center","textStyle":{"color":"#fff"}},
+        "tooltip":{"trigger":"item"},
+        "legend":{
+            "orient":"vertical","y":"bottom","x":"right","data":["pm2.5"],"textStyle":{"color":"#fff"}
+            },
+        "visualMap":{"min":0,"max":200,"calculable":true,"inRange":{"color":["#50a3ba","#eac736","#d94e5d"]},"textStyle":{"color":"#fff"}},"geo":{"map":"china","label":{"emphasis":{"show":false}},"itemStyle":{"normal":{"areaColor":"#323c48","borderColor":"#111"},"emphasis":{"areaColor":"#2a333d"}}},
 
-for (var i in colors) {
-    console.log(colors[i]); // red green blue yellow
-}
-
-for (var j of colors) {
-    console.log(j); // red green blue undefined undefined yellow
-}
+        "series":[
+            {
+                "name":"pm2.5",
+                "type":"scatter",
+                "coordinateSystem":"geo",
+                "data":[
+                    {"name":"海门","value":[121.15,31.89,9]}
+                    ],
+                "symbolSize":12,"label":{"normal":{"show":false},"emphasis":{"show":false}},"itemStyle":{"emphasis":{"borderColor":"#fff","borderWidth":1}}
+            }
+            ]
+    }
 </script>
 </body>
 </html>

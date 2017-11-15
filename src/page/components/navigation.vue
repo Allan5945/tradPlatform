@@ -1,5 +1,5 @@
 <template>
-    <div class="nav-box popup">
+    <div class="nav-box popup" @click.stop>
         <div class="font-bold-x">新闻资讯</div>
         <div @click="userShow = !userShow;toolShow = false" class="user-center">
             <div>
@@ -27,6 +27,7 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import tool from './tools.vue'
     import userCenter from './userCenter.vue'
     export default {
@@ -44,7 +45,18 @@
             toPublish:function() {
                 this.$emit("toShow");
             }
-        }
+        },
+        watch:{
+            close:function () {
+                this.toolShow = false;
+                this.userShow = false;
+            }
+        },
+        computed:{
+            ...vx.mapActions([
+                'close'
+            ]),
+        },
     }
 </script>
 <style scoped lang="scss">

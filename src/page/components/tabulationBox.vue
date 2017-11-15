@@ -9,26 +9,26 @@
             <div class="tabulation-mes">
                 <div>
                     <span>时刻</span>
-                    <div class="font-bold">08:00</div>
+                    <div>08:00</div>
                 </div>
                 <div>
                     <span>时刻</span>
-                    <div class="font-bold">08:00</div>
+                    <div>08:00</div>
                 </div>
                 <div>
                     <span>时刻</span>
-                    <div class="font-bold">08:00</div>
+                    <div>08:00</div>
                 </div>
                 <div>
                     <span>时刻</span>
-                    <div class="font-bold">08:00</div>
+                    <div>08:00</div>
                 </div>
             </div>
         </div>
         <div>
             <div class="tabulation-item">
-                <img src="./../../static/img/haveline.png" alt="">
-                <div><p>成都双流-北京首都-北京首都</p></div>
+                <img src="./../../static/img/hx.png" alt="">
+                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
                 <div>----</div>
             </div>
             <div class="tabulation-mes">
@@ -52,8 +52,8 @@
         </div>
         <div>
             <div class="tabulation-item">
-                <img src="./../../static/img/haveyun.png" alt="">
-                <div><p>成都双流-北京首都-北京首都</p></div>
+                <img src="./../../static/img/hx.png" alt="">
+                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
                 <div>----</div>
             </div>
             <div class="tabulation-mes">
@@ -77,8 +77,8 @@
         </div>
         <div>
             <div class="tabulation-item">
-                <img src="./../../static/img/yun.png" alt="">
-                <div><p>成都双流-北京首都-北京首都</p></div>
+                <img src="./../../static/img/hx.png" alt="">
+                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
                 <div>----</div>
             </div>
             <div class="tabulation-mes">
@@ -103,7 +103,10 @@
     </div>
 </template>
 <script>
-
+    import hx from './../../static/img/hx.png'
+    import haveline from './../../static/img/haveline.png'
+    import haveyun from './../../static/img/haveyun.png'
+    import yun from './../../static/img/yun.png'
     export default {
         data(){
             return{
@@ -183,13 +186,13 @@
             width: 18px;
             height: 23px;
             left: -38px;
-            top: 3px;
+            top: -2px;
         }
         >div:first-of-type{
             cursor: pointer;
             overflow: hidden;
             >p{
-                font-size: 1.7rem !important;
+                font-size: 1.3rem !important;
                 width: 170px;
                 display: inline-block;
                 /*overflow: hidden;*/

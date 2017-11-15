@@ -48,6 +48,7 @@
         align-items: center;
         padding: 0 13px;
         font-size: 1.2rem;
+        color: #605E7C;
         >img{
             margin-right: 6px;
         }
