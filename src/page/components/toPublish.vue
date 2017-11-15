@@ -18,7 +18,7 @@
               </div>
               <div class="p-input">
                   <ul class="p-select">
-                      <li><span>机型1</span><input type="text"></li>
+                      <li><span>机型</span><input type="text"></li>
                       <li><span>座位布局</span><input type="text"></li>
                       <li><span>运力归属航司</span><input type="text"></li>
                       <li><span>运力所在基地</span><input type="text"></li>
