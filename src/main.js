@@ -6,9 +6,8 @@ import store from './store/'
 import './public/css/all.scss'
 import './static/css/animate.min.css'
 // import './public/js/console'
-import { radioGroup,radio } from 'element-ui'
-Vue.use(radioGroup)
-Vue.use(radio)
+import {Radio } from 'element-ui'
+Vue.use(Radio)
 
 Vue.use(VueRouter);
 const router = new VueRouter({

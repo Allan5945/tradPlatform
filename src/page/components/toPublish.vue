@@ -10,24 +10,27 @@
                   </div>
                   <div>
                       <span>需求类型</span>
-                      <div class="need-btn">
-                      运力投放<span class="icon-item icon-item1">&#xe605;</span>
-
+                      <div class="need-btn" @click="showBox=!showBox">
+                         <div v-text="msg"></div>
+                         <span class="icon-item icon-item1">&#xe605;</span>
+                         <div class="selc-list tool popup" v-show="showBox">
+                             <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
+                         </div>
                       </div>
                   </div>
               </div>
               <div class="p-input">
                   <ul class="p-select">
-                      <li><span>机型123</span><input type="text"></li>
+                      <li><span>机型</span><input type="text"></li>
                       <li><span>座位布局</span><input type="text"></li>
                       <li><span>运力归属航司</span><input type="text"></li>
                       <li><span>运力所在基地</span><input type="text"></li>
-                      <li class="point" ><div @click="check = !check" :class="{'checked':check}"></div><span @click="check = !check">接受调度</span></li>
+                      <li class="point" ><i class="inner-point" @click="check = !check" :class="{'checked':check}"></i><span @click="check = !check">接受调度</span></li>
                       <li><span>小时成本</span><input type="text"></li>
                       <li><span>意向航线</span><input type="text"></li>
                       <li class="notes"><span>其他说明</span><input type="text"></li>
                   </ul>
-                  <div class="checkbox">
+                  <div class="p-checkbox">
                       <!-- <input name="check" type="radio" checked>
                       <span>对所有人公开</span>
                       <input name="check" type="radio">
@@ -38,11 +41,10 @@
                       <el-radio v-model="radio" label="2">对认证用户公开</el-radio>
                       <el-radio v-model="radio" label="3">定向发布</el-radio>
                   </div>
-                  <div class="may-wanted">
-                      <div v-show="isShow">东方航空<span>x</span></div>
-                      <div v-show="isShow">东方航空<span>x</span></div>
-                      <div v-show="isShow">东方航空<span>x</span></div>
-                      <div v-show="isShow">东方航空<span>x</span></div>
+                  <div class="may-wanted" >
+                      <ul class="want-list"  v-show="isShow"> 
+                         <li v-for="(value ,index) in wantedData"><div>{{value.name}}</div><span @click="clearItem(index)">x</span></li>                          
+                      </ul>
                       <span class="clear" @click="isShow = false">清空</span>
                   </div>
               </div>
@@ -62,23 +64,37 @@
         return{
             check :false,
             isShow: true,
-            radio:'1'
+            showBox:false,
+            radio:'1',
+            msg:'运力投放',
+            needType: ['航线需求','航线委托'],
+            wantedData:[{name:'四川航空'},{name:'东方航空'},{name:'海南航空'},{name:'春秋航空'}]
         }
       },
       methods:{
         cancel: function(){
            this.$emit("toShow");
+        },
+        clearItem: function(i){
+           this.wantedData.splice(i, 1);
+        },
+        getNeed: function(i){
+            this.msg = this.needType[i];
         }
       }
     }
 </script>
 <style scoped lang="scss">
+@import "./../../public/css/dropDowBbox";
     @mixin input-style{
         height:30px;
         line-height:30px;
         border:0;
         outline: none;
         border-bottom:1px solid #ccc;
+    }
+    ul{
+        list-style:none;
     }
     .publish {
         position: fixed;
@@ -132,12 +148,19 @@
             }
             >.need-btn{
                 display:inline-block;
+                position:relative;
                 height:30px;
                 width:58%;
                 line-height:30px;
                 text-align:center;
                 border:1px solid #ccc;
                 border-radius:4px;
+                cursor: pointer;
+            }
+            .selc-list{
+                position:absolute;
+                top:31px;
+                left:-3px;
             }
         }
     }
@@ -194,13 +217,15 @@
 
     }
     .point{
-        >div{
-            display:inline-block;
+        overflow:hidden;
+        >.inner-point{
+            display:block;
+            float:left;
             width:10px;
             height:10px;
             border:1px solid #ccc;
             border-radius:100%;
-            margin-right:5px;
+            margin: 24px 5px 0 0;
             cursor:pointer;
         }
         .checked{
@@ -210,12 +235,9 @@
             cursor:pointer;
         }
     }
-    .checkbox{
+    .p-checkbox{
         margin-left: 30px;
     }
-    /*  .is-checked .el-radio__label{
-         color:#ccc!important;
-     } */
 
     .may-wanted{
       position:relative;
@@ -225,7 +247,7 @@
       color:#4079fc;
       background-color:#ededed;
       overflow:hidden;
-      div{
+      li{
         float:left;
         width:100px;
         height:30px;
@@ -235,7 +257,12 @@
         padding-left:15px;
         border-radius:100px;
         background-color:#f3f3f7;
-        span{
+        overflow:hidden;
+        >div{
+            float:left;
+            cursor:pointer;
+        }
+        >span{
           display:block;
           width:16px;
           height:16px;
@@ -245,6 +272,7 @@
           margin: 7px;
           background-color:#fff;
           border-radius:100%;
+          cursor:pointer;
         }
       }
       .clear{
@@ -282,5 +310,10 @@
           border: 1px solid #8f8ea2;
         }
     }
+</style>
+<style lang="scss">
+     .is-checked>.el-radio__label{
+         color:#5a5e66 !important;
+     } 
 </style>
 
