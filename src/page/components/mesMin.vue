@@ -28,7 +28,7 @@
             <div class="tabulation-head">
                <div>
                    <div class="navSet">
-                       <div class="navList" @click="setd(key,index)" :class="{setd:changeRed == index}"
+                       <div class="navList font-bold" @click="setd(key,index)" :class="{setd:changeRed == index}"
                             v-for="(key,index) in navLists">{{key.text}}
                        </div>
                    </div>
@@ -280,7 +280,6 @@
         justify-content: flex-end;
         position: relative;
     }
-
     .mes-cont {
         position: relative;
         width: 30px;
@@ -294,9 +293,9 @@
             outline: none;
             width: 100%;
             color: #605E7C;
-            font-family: DemiLight;
             font-size: 1rem;
             background-color: transparent;
+            padding-right: 26px;
         }
         > span {
             font-family: iconfont;
@@ -307,9 +306,10 @@
             padding: 0;
             cursor: pointer;
             display: inline-block;
-            width: 33px;
             text-align: left;
             line-height: 30px;
+            position: absolute;
+            right: 5px;
             &:hover {
                 color: #3c78ff;
             }
@@ -343,6 +343,7 @@
         line-height: 58px;
         cursor: pointer;
         color: #605E7C;
+
     }
 
     .navList:hover {

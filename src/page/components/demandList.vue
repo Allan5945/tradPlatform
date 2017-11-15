@@ -5,7 +5,7 @@
                 <singleElection :single.sync="key.set" class="mes-body-ix"></singleElection>
                 <img src="" alt="">
             </div>
-            <div class="mes-body-i1">{{key.lines}}</div>
+            <div class="mes-body-i1 font-bold">{{key.lines}}</div>
             <div class="mes-body-i2">{{key.time}}</div>
             <div class="mes-body-i3">{{key.stage}}</div>
             <div class="mes-body-i3">{{key.timeKd}}</div>
@@ -88,21 +88,27 @@
 
     .mes-body-i1 {
         width: 120px;
+        letter-spacing: 0.2px;
+        font-weight: bold;
     }
 
     .mes-body-i2 {
         width: 80px;
+         letter-spacing: 0.2px;
     }
 
     .mes-body-i3 {
         width: 60px;
+         letter-spacing: 0.2px;
     }
 
     .mes-body-i4 {
         width: 161px;
+         letter-spacing: 0.2px;
     }
     .mes-body-ix {
         margin: 0 6px 0 9px;
+         letter-spacing: 0.2px;
     }
 
 </style>

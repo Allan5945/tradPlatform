@@ -6,23 +6,16 @@
   url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.ttf') format('truetype'),
   url('//at.alicdn.com/t/font_413196_1tbi93e626dbcsor.svg#iconfont') format('svg');
 }
-
-@font-face {
-  font-family: 'DemiLight';
-  src: url("/src/static/fonts/SourceHanSansCN-Light.otf");
-}
-
-@font-face {
-  font-family: 'Bold';
-  src: url("/src/static/fonts/SourceHanSansCN-Medium.otf");
-}
-
 html {
   font-size: 10px; // 设置全局参考字体大小
-  font-family: DemiLight;
+  font-family: "Microsoft YaHei UI";
+  //font-family: "Microsoft YaHei UI Light";
+  //font-family: "Microsoft Yi Baiti";
+  font-family: Microsoft ;
   min-width: 1200px;
   min-height: 600px;
 }
+
 
 body {
   padding: 0;
@@ -45,6 +38,11 @@ html, body, #app {
 //}
 
 /** CSS标准 **/
+// 加粗字体
+.font-bold{
+  font-weight: bold;
+}
+
 
 // 浮沉/弹出框样式
 .popup {
@@ -82,11 +80,13 @@ html, body, #app {
   background-color: white;
   color: #A5a5a5;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, .2);
+  cursor: pointer;
 }
 
 .btn-w:hover,.btn-b:hover {
   background-color: rgba(60, 120, 255, .7);
   color: white !important;
+  cursor: pointer;
 }
 
 .btn-w:active, .btn-b:active {

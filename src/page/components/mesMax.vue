@@ -272,6 +272,9 @@
     }
 
     .number-mes {
+        display:flex;
+        flex-flow:row nowrap;
+        align-items:center;
         color: rgba(96, 94, 124, 0.65);
         > span {
             color: #3c78ff;
@@ -303,6 +306,7 @@
         display: flex;
         flex-flow: row nowrap;
         margin-left: 20px;
+        align-items:center;
         > span {
             font-family: iconfont;
             font-size: 1.7rem;
@@ -324,6 +328,7 @@
     .mes-head-t {
         color: #605E7C;
         font-size: 2rem;
+        font-weight: bold;
     }
 
     .mes-head-c {
@@ -371,7 +376,6 @@
             outline: none;
             width: 100%;
             color: #605E7C;
-            font-family: DemiLight;
             font-size: 1rem;
             background-color: transparent;
         }
@@ -396,11 +400,14 @@
     .number-tag {
         display: flex;
         margin-left: 40px;
+        align-items: center;
         > div {
             border-radius: 15px;
             margin-right: 13px;
             padding: 0 10px;
             color: rgba(96, 94, 124, 0.65);
+            height: 20px;
+            line-height: 20px;
         }
     }
 

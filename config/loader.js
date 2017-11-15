@@ -26,8 +26,9 @@ module.exports = {
             loader: "url-loader?limit=1000&name=img/[name][hash:8].[ext]"
         },
         {
-            test: /\.(eot|ttf|woff|woff2|otf)\w*/,
+            test: /\.(eot|ttf|woff|woff2|otf)$/,
             loader: "file-loader"
+            // loader: "url-loader?limit=1000000&name=fonts/[name][hash:8].[ext]"
         }
     ]
 }
