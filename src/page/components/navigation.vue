@@ -18,7 +18,7 @@
             <tool v-if="toolShow"></tool>
         </div>
         <div>
-            <div id="posted-btn" class="btn btn-b">
+            <div id="posted-btn" class="btn btn-b" @click="toPublish">
                 <span class="icon-item icon-cl">&#xe606;</span>
                 发布
             </div>
@@ -39,6 +39,11 @@
         components: {
             tool,
             userCenter,
+        },
+        methods:{
+            toPublish:function() {
+                this.$emit("toShow");
+            }
         }
     }
 </script>
