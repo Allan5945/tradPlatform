@@ -1,5 +1,5 @@
 <template>
-    <div class="history-list popup">
+    <div class="history-list popup-x1">
         <div @click="res(key)" v-for="(key,i) in list"><span class="icon">&#xe646;</span>{{key.replace(/"/g,'')}}</div>
         <div class="clear-history">
             <div class="btn btn-w" @click="clear">清空历史</div>

@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import routerConfig from './router/routerConfig.js'
 import store from './store/'
 import './public/css/all.scss'
+import './static/css/animate.min.css'
 // import './public/js/console'
 import { radioGroup,radio } from 'element-ui'
 Vue.use(radioGroup)
