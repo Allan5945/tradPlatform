@@ -109,6 +109,7 @@
 </script>
 <style scoped  lang="scss">
     .item{
+        color: #605E7C;
         white-space:nowrap;
         font-size: 1rem;
         display: flex;

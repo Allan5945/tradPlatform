@@ -53,7 +53,7 @@
             }
         },
         computed:{
-            ...vx.mapActions([
+            ...vx.mapGetters([
                 'close'
             ]),
         },

@@ -35,8 +35,6 @@
         user-select: none;
     }
     .history-list{
-        /*position: absolute;*/
-        /*left: 0px;*/
         >div{
             padding: 0 14px;
             height: 35px;
@@ -44,7 +42,7 @@
             flex-flow: row nowrap;
             align-items: center;
             color: #605E7C;
-
+            letter-spacing: 0.2px;
         }
     }
     .icon{

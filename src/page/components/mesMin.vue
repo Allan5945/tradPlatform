@@ -4,7 +4,7 @@
             <div class="mes-tip">
                 <span class="number-mes">1000</span>条需求对象
             </div>
-            <div class="mes-cont-box" @mouseout="closeSearch" @click.stop>
+            <div class="mes-cont-box" @mouseout="closeSearch" @click.stop="screenHsShow = false">
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
                     <input :placeholder="holder" @input="openList('a')" type="text" @focus="history" :disabled="!search"
                            v-model="searchText">
@@ -14,7 +14,7 @@
                 <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
                 <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
-            <div class="screen">
+            <div class="screen" @click.stop>
                 <span @click="openScreen">&#xe6a7;</span>
                 <transition   name="bounce">
                     <screen class="screen-hs" v-if="screenHsShow" v-on:screenHs="screenHs"></screen>
@@ -71,18 +71,6 @@
                 bgqy: false,
                 openHisy: false,
                 elect:  {set: false}
-            }
-        },
-        computed: {
-            ...vx.mapGetters([
-                'close'
-            ])
-        },
-        watch: {
-            close: function () {
-                this.isSearch = false;
-                this.openHisy = false;
-                this.closeSearch();
             }
         },
         methods: {
@@ -143,6 +131,7 @@
                 this.search = true;
             },
             closeSearch: function () {
+                this.screenHsShow = false;
                 if (!this.isSearch) {
                     this.holder = '';
                 };
@@ -157,6 +146,22 @@
             tabulationBox,
             screen,
             singleElection
+        },
+        computed:{
+            ...vx.mapGetters([
+                'close'
+            ]),
+        },
+        watch:{
+            close:function () {
+                this.isSearch = false;
+                this.openHisy = false;
+                this.screenHsShow = false;
+                this.closeSearch();
+            }
+        },
+        mounted:function () {
+
         }
     }
 </script>
@@ -225,6 +230,7 @@
         left: 0px;
         width: 260px;
         max-height: 210px;
+        z-index: 1;
     }
 
     .aisx {
@@ -365,6 +371,7 @@
         color: #605E7C;
         display: flex;
         flex-flow: row nowrap;
+        align-items: center;
         > span {
             font-family: iconfont;
             font-size: 1.7rem;
