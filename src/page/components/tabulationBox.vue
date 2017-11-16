@@ -183,8 +183,8 @@
         position: relative;
         >img{
             position: absolute;
-            width: 18px;
-            height: 23px;
+            width: 15px;
+            /*height: 23px;*/
             left: -38px;
             top: -2px;
         }
@@ -213,7 +213,7 @@
         padding: 0 20px;
         position: relative;
         >div{
-            height: 120px;
+            height: 105px;
             padding: 20px 0 0 40px;
             border-bottom: 1px solid #f3f3f3;
         }

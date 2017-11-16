@@ -63,8 +63,6 @@
             border-radius: 10px;
             font-size: 1.2rem;
             padding: 2px 7px;
-            box-shadow: 1px 2px 6px #bebebe;
-            color: #605E7C;
             cursor: pointer;
             @include user-select;
         }

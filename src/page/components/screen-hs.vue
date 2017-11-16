@@ -88,10 +88,11 @@
         justify-content:flex-end;
         padding:35px 20px 0 20px;
         >div:nth-of-type(1){
-            color: #605E7C;
+            color: rgba(96,94,124,.6);
             margin-right: 7px;
             box-shadow: none;
             border: 1px solid #d8d8d8;
+            background-color: white;
         }
         >div:nth-of-type(2){
             color: white;
@@ -153,7 +154,6 @@
             outline: none;
         }
     }
-
     .sc-t {
         display: flex;
         flex-flow: row nowrap;

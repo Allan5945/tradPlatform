@@ -20,14 +20,15 @@
         padding-left: 20px;
         color: #605E7C;
         >div{
-            width:40px ;
+            width: 40px;
             height: 20px;
             text-align: center;
             line-height: 20px;
             border-radius: 15px;
-            border:1px solid #979797;
+            border: 1px solid rgba(96,94,124,.4);
             margin: 10px 12px 0 0;
             letter-spacing:.2px;
+            color: rgba(96,94,124,.5);
         }
     }
 </style>

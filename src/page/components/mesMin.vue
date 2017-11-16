@@ -181,7 +181,7 @@
             transform: rotate(0deg);
         }
         to {
-            transform: rotate(360deg);
+            transform: rotate(-360deg);
         }
     }
     .bounce-enter-active {
@@ -334,7 +334,7 @@
     .tabulation-head {
         padding: 0 20px;
        >div{
-           border-bottom: 2px solid #b4dbff;
+           border-bottom: 1px solid #c1d3e461;
            display: flex;
            height: 58px;
            align-items: center;

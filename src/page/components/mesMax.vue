@@ -361,6 +361,7 @@
         flex-flow: row nowrap;
         justify-content: flex-end;
         position: relative;
+        margin-right: 6px;
     }
 
     .mes-cont {
@@ -418,7 +419,7 @@
     }
 
     .screen, .amplification {
-        height: 25px;
+        height: 28px;
         display: flex;
         width: 35px;
         justify-content: center;
