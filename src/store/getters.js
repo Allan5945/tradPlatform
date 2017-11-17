@@ -5,4 +5,7 @@ export default {
     ,close:(state)=>{
         return state.close;
     }
+    ,airList:(state)=>{
+        return state.airList;
+    }
 }

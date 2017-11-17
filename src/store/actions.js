@@ -6,6 +6,8 @@ export default {
     },
     close:({commit})=>{
         commit(types.CLOSE)
+    },
+    initialize:({commit},vl)=>{
+        commit(types.INITIALIZE,vl)
     }
-
 }
