@@ -1,8 +1,8 @@
 <template>
-    <div id="app" @click="close">
+    <div id="app" @click="close;" v-if="renderComponent">
         <bmap></bmap>
         <navigation @toShow="toShow"></navigation>
-        <toPublish  v-show="show" @toShow="toShow"></toPublish>
+        <toPublish v-show="show" @toShow="toShow"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
         <router-view></router-view>
@@ -23,21 +23,50 @@
         data() {
             return {
                 name: 1,
-                show:false
+                show: false,
+                loadingData:{
+                    airList:false,
+                    demands:false
+                }
             }
         },
-        methods:{
+        methods: {
             ...vx.mapActions([
                 'close'
             ]),
-             toShow(){
+            toShow() {
                 this.show = !this.show;
             }
+        },
+        mounted: function () {
+            this.$ajax.post('/airList')
+                .then((response) => {
+                console.log(response);
+                    this.loadingData.airList = true;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            this.$ajax.post('/getAllDemands')
+                .then((response) => {
+//                    console.log(response);
+                    this.loadingData.demands = true;
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         },
         computed: {
             ...vx.mapGetters([
                 'c_updated'
-            ])
+            ]),
+            renderComponent:function () {
+                if(this.loadingData.airList && this.loadingData.demands){
+                    return true;
+                }else{
+                    return false;
+                };
+            }
         },
         components: {
             bmap,
