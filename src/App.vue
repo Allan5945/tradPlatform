@@ -1,5 +1,5 @@
 <template>
-    <div id="app" @click="close;" v-if="renderComponent">
+    <div id="app" @click="initialize(test);close();" v-if="renderComponent">
         <bmap></bmap>
         <navigation @toShow="toShow"></navigation>
         <toPublish v-show="show" @toShow="toShow"></toPublish>
@@ -27,21 +27,26 @@
                 loadingData:{
                     airList:false,
                     demands:false
-                }
+                },
+                allAirList:'',
+                test:555
             }
         },
         methods: {
             ...vx.mapActions([
-                'close'
+                'close',
+                'initialize'
             ]),
             toShow() {
                 this.show = !this.show;
             }
         },
         mounted: function () {
+//            this.$store.dispatch('initialize').then(() => {
+//            });
             this.$ajax.post('/airList')
                 .then((response) => {
-                console.log(response);
+                    this.allAirList = response.data.mes;
                     this.loadingData.airList = true;
                 })
                 .catch((error) => {
@@ -58,7 +63,8 @@
         },
         computed: {
             ...vx.mapGetters([
-                'c_updated'
+                'c_updated',
+                'airList'
             ]),
             renderComponent:function () {
                 if(this.loadingData.airList && this.loadingData.demands){

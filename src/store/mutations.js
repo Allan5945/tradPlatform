@@ -1,6 +1,7 @@
 import {
     TEST,
-    CLOSE
+    CLOSE,
+    INITIALIZE
 } from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -10,6 +11,10 @@ const mutations = {
     },
     [CLOSE](state) {
         state.close = !state.close;
+    },
+    [INITIALIZE](state,m) {
+        // console.log(m)
+        // state.airList = 888;
     }
 };
 export default {
