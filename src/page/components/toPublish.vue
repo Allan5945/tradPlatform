@@ -1,319 +1,126 @@
 <template>
-  <div class="publish">
-      <div class="publish-wrapper">
-          <div class="p-table">
-              <header class="tip">发布需求</header>
-              <div class="p-title">
-                  <div>
-                      <span>发布标题</span>
-                      <input type="text" >
-                  </div>
-                  <div>
-                      <span>需求类型</span>
-                      <div class="need-btn" @click="showBox=!showBox">
-                         <div v-text="msg"></div>
-                         <span class="icon-item icon-item1">&#xe605;</span>
-                         <div class="selc-list tool popup" v-show="showBox">
-                             <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
-                         </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="p-input">
-                  <ul class="p-select">
-                      <li><span>机型</span><input type="text"></li>
-                      <li><span>座位布局</span><input type="text"></li>
-                      <li><span>运力归属航司</span><input type="text"></li>
-                      <li><span>运力所在基地</span><input type="text"></li>
-                      <li class="point" ><i class="inner-point" @click="check = !check" :class="{'checked':check}"></i><span @click="check = !check">接受调度</span></li>
-                      <li><span>小时成本</span><input type="text"></li>
-                      <li><span>意向航线</span><input type="text"></li>
-                      <li class="notes"><span>其他说明</span><input type="text"></li>
-                  </ul>
-                  <div class="p-checkbox">
-                      <!-- <input name="check" type="radio" checked>
-                      <span>对所有人公开</span>
-                      <input name="check" type="radio">
-                      <span>对认证用户公开</span>
-                      <input name="check" type="radio">
-                      <span>定向发布</span> -->
-                      <el-radio v-model="radio" label="1">对所有人公开</el-radio>
-                      <el-radio v-model="radio" label="2">对认证用户公开</el-radio>
-                      <el-radio v-model="radio" label="3">定向发布</el-radio>
-                  </div>
-                  <div class="may-wanted" >
-                      <ul class="want-list"  v-show="isShow"> 
-                         <li v-for="(value ,index) in wantedData"><div>{{value.name}}</div><span @click="clearItem(index)">x</span></li>                          
-                      </ul>
-                      <span class="clear" @click="isShow = false">清空</span>
-                  </div>
-              </div>
-              <div class="p-btn">
-                  <div class="confirm-btn">确认发布</div>
-                  <div class="agent-btn">委托代理</div>
-                  <div class="cancel-btn" @click="cancel">取消</div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="publish">
+        <span class= "triangle"></span>
+        <div class="p-til">发布需求</div>
+        <div class="need-btn"  @click="showBox=!showBox">
+           <div class="title" v-text="msg" :class="{selected:isSel}"></div>
+           <span class="icon-item icon-item1">&#xe605;</span>
+           <div class="selc-list dropDown" v-show="showBox">
+               <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
+           </div>
+        </div>
+        <transportForm></transportForm>
+    </div>
 </template>
-
 <script>
-    export default{
-      data(){
-        return{
-            check :false,
-            isShow: true,
-            showBox:false,
-            radio:'1',
-            msg:'运力投放',
-            needType: ['航线需求','航线委托'],
-            wantedData:[{name:'四川航空'},{name:'东方航空'},{name:'海南航空'},{name:'春秋航空'}]
-        }
-      },
-      methods:{
-        cancel: function(){
-           this.$emit("toShow");
+    import transportForm from './transportForm.vue'
+    export default {
+        data () {
+            return{
+                showBox: false,
+                isSel: false,
+                msg:'选择需求类型',
+                needType:['运力投放','航线需求','运营委托']
+            }
         },
-        clearItem: function(i){
-           this.wantedData.splice(i, 1);
+        components:{
+            transportForm,
+
         },
-        getNeed: function(i){
-            this.msg = this.needType[i];
+        methods:{
+             getNeed: function(i){
+                this.msg = this.needType[i];
+                this.isSel = true;
+            }
         }
-      }
     }
 </script>
-<style scoped lang="scss">
-@import "./../../public/css/dropDowBbox";
-    @mixin input-style{
-        height:30px;
-        line-height:30px;
-        border:0;
-        outline: none;
-        border-bottom:1px solid #ccc;
-    }
-    ul{
-        list-style:none;
-    }
-    .publish {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background-color:#ffffff;
-        z-index:999;
-        overflow-x: scroll;
-        >.publish-wrapper{
-            box-sizing:border-box;
-            margin:0 auto;
-            width:60%;
-            height:100%;
-            min-width:1300px;
-            overflow:auto;
-            background-color:#f8f8f8;
-            padding: 0 80px;
-            >.p-table{
-                background-color:#ffffff;
-            }
-            .tip{
-              height:100px;
-              width:100%;
-              line-height:100px;
-              background-color:#f8f8f8;
-            }
-        }
 
-    }
-    .p-title{
-        display:flex;
-        height:100px;
-        width:100%;
-        color:#666;
-        box-sizing:content-box;
-        border-bottom:20px solid #f8f8f8;
-        >div{
-            flex:1;
-            padding-left:30px;          
-            >span{
-                width:30%;
-                height:30px;
-                padding-right:10px;
-                line-height:100px;
+<style scoped lang="scss">
+    .publish{
+        position:absolute;
+        right: 21px;
+        top: 70px;
+        width:540px;
+        height:60px;
+        background-color:#fff;
+        border-radius:4px;
+        padding: 0 40px;
+        .need-btn,.p-til{
+            float:left;
+            width:240px;
+            line-height:60px;
+        }
+        &:after{
+            content:'.';
+            visibility:hidden;
+            clear:both;
+            display: block;
+            width:0;
+            height:0;
+        }
+        .need-btn{
+            position: relative;
+            box-sizing:border-box;
+            margin:12px 0 12px 60px;
+            height:36px;
+            border: 1px solid #979797;
+            border-radius: 4px;
+            text-align:left;
+            padding:0 14px;
+            cursor:pointer;
+            .title{
+                color: #979797;
+                float:left;
+                height:36px;
+                line-height:36px;
             }
-            >input{
-                width:60%;
-                @include input-style;
+            .selected{
+                color:#605E7C;
             }
-            >.need-btn{
-                display:inline-block;
-                position:relative;
-                height:30px;
-                width:58%;
-                line-height:30px;
-                text-align:center;
-                border:1px solid #ccc;
-                border-radius:4px;
-                cursor: pointer;
+            .icon-item {
+                font-size: 1.6rem;
+                font-family: iconfont;
+            }
+            .icon-item1{
+                float:right;
+                color: #446cea;
+                line-height: 36px;
             }
             .selc-list{
                 position:absolute;
-                top:31px;
-                left:-3px;
+                top:35px;
+                left:0;
             }
-        }
+       }
     }
-    .need-btn{
-        position:relative;
-        >span{
-            position:absolute;
-            top:0;
-            right:10px;
-            height:30px;
-        }
-        .icon-item {
-          font-size: 1.6rem;
-          font-family: iconfont;
-        }
-        .icon-item1{
-            color: #446cea;
-        }
-    }
-    .p-select{
-      display:block;
-      padding-left: 30px;
-      overflow:auto;
-      color:#666;
-      >li{
-          display:block;
-          float:left;
-          width:33.333%;
-          height:60px;
-          line-height:60px;
-          >input{
-              width:40%;
-              @include input-style;
-          }
-          >span{
-              display:inline-block;
-              box-sizing:border-box;
-              text-align:left;
-              width:20%;
-              min-width:40px;
-              line-height:60px;
-          }
-      }
-      >.notes{
-          width:100%;
-          >input{
-            width:80%;
-          }
-          >span{
-            width:20%;
-            max-width:73.9px;
-          }
-      }
-
-    }
-    .point{
-        overflow:hidden;
-        >.inner-point{
-            display:block;
-            float:left;
-            width:10px;
-            height:10px;
-            border:1px solid #ccc;
-            border-radius:100%;
-            margin: 24px 5px 0 0;
-            cursor:pointer;
-        }
-        .checked{
-            background-color:#4079fc;
-        }
-        >span{
-            cursor:pointer;
-        }
-    }
-    .p-checkbox{
-        margin-left: 30px;
+    .triangle{
+        position: absolute;
+        top:-23px;
+        right:40px;
+        width:0;
+        height:0;
+        border:10px solid transparent;
+        border-bottom: 13px solid #fff;
     }
 
-    .may-wanted{
-      position:relative;
-      margin-top:30px;
-      width:100%;
-      height:150px;
-      color:#4079fc;
-      background-color:#ededed;
-      overflow:hidden;
-      li{
-        float:left;
-        width:100px;
-        height:30px;
-        margin:15px;
-        line-height:30px;
-        text-align:left;
-        padding-left:15px;
-        border-radius:100px;
-        background-color:#f3f3f7;
-        overflow:hidden;
-        >div{
-            float:left;
-            cursor:pointer;
-        }
-        >span{
-          display:block;
-          width:16px;
-          height:16px;
-          text-align:center;
-          line-height:16px;
-          float:right;
-          margin: 7px;
-          background-color:#fff;
-          border-radius:100%;
-          cursor:pointer;
-        }
-      }
-      .clear{
-        position:absolute;
-        top:30px;
-        right:20px;
+    .dropDown {
+      width:240px;
+      background-color: #fff;
+      border-radius: 4px;
+      z-index:99;
+       >div {
+        width: 100%;
+        height:35px;
+        box-sizing: border-box;
+        line-height:35px;
+        padding-left: 14px;
+        color: #605E7C;
+        font-size: 1rem;
         cursor:pointer;
+        &:hover{
+            background-color:#f5f5f5;
+        }
       }
     }
-    .p-btn{
-        font-size: 1.5rem;
-        background-color:#fff;
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: center;
-        align-items: center;
-        padding:80px 0;
-        >div{
-          width:90px;
-          height:40px;
-          line-height:40px;
-          border-radius:100px;
-          margin:0 10px;
-          text-align:center;
-          color:#ffffff;
-          background-color:#4079fc;
-          cursor:pointer;
-        }
-        .confirm-btn{
-          padding:0 20px;
-        }
-        .cancel-btn{
-          color:#8f8ea2;
-          background-color:#fff;
-          border: 1px solid #8f8ea2;
-        }
-    }
 </style>
-<style lang="scss">
-     .is-checked>.el-radio__label{
-         color:#5a5e66 !important;
-     } 
-</style>
-
