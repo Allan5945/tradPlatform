@@ -4,13 +4,18 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import {Radio } from 'element-ui'
 
+import airMes from './static/js/airMes'
+import jsonp from './static/js/extension'
+
 
 import routerConfig from './router/routerConfig.js'
 import store from './store/'
 import './public/css/all.scss'
 import './static/css/animate.min.css'
 // import './public/js/console'
-Vue.prototype.$ajax = axios
+Vue.prototype.$ajax = axios;
+Vue.prototype.$airMes = airMes;
+Vue.prototype.$jsonp = jsonp;
 
 Vue.use(Radio);
 Vue.use(VueRouter);

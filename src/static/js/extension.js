@@ -1,7 +1,7 @@
 /**
  * jsonp 方法
  * @param url{string} callback {function} 传递回调函数
- * @author  2015/07/21
+ * @author  2017/11
  * @version  1.0.1
  * */
 

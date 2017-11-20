@@ -12,9 +12,8 @@ const mutations = {
     [CLOSE](state) {
         state.close = !state.close;
     },
-    [INITIALIZE](state,m) {
-        // console.log(m)
-        // state.airList = 888;
+    [INITIALIZE](state,vl) {
+        state.airList = vl;
     }
 };
 export default {

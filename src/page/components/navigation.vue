@@ -1,7 +1,7 @@
 <template>
     <div class="nav-box popup" @click.stop>
-        <div class="font-bold-x">新闻资讯</div>
-        <div @click="userShow = !userShow;toolShow = false" class="user-center">
+        <div class="font-bold-x nav1">新闻资讯</div>
+        <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
             <div>
                 <span class="icon-item">&#xe60f;</span>
                 <span class="font-bold-x">个人中心</span>
@@ -9,7 +9,7 @@
             </div>
             <userCenter v-if="userShow"></userCenter>
         </div>
-        <div @click="toolShow = !toolShow;userShow=false">
+        <div @click="toolShow = !toolShow;userShow=false" class="nav3">
             <div>
                 <span class="icon-item">&#xe601;</span>
                 <span class="font-bold-x">工具 &nbsp;</span>
@@ -68,32 +68,38 @@
     .font-bold-x:hover{
         font-weight: bold;
     }
+    .nav1{
+        width: 126px;
+    }
+    .nav2,.nav3{
+        width: 126px;
+    }
     .nav-box {
         position: absolute;
-        right: 100px;
-        top: 20px;
+        right: 60px;
+        top:40px;
         z-index: 10;
         display: flex;
         color: #605E7C;
-        width: 335px;
+        width: 480px;
         font-size: 1.4rem;
         @include user-select;
         > div {
-            height: 30px;
-            line-height: 30px;
+            height: 40px;
+            line-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-flow: row wrap;
             cursor: pointer;
-            width: 105px;
+            /*width: 120px;*/
             color: #605E7C;
             font-size:1.4rem;
         }
         >div:last-of-type{
+            left: 380px;
+            width: 120px;
             position: absolute;
-            left: 315px;
-            width: 100px;
         }
         > div:hover {
             color: #446cea;
@@ -113,9 +119,9 @@
         color: #446cea;
     }
     #posted-btn {
-        width: 100px;
+        width: 120px;
         border-radius: 15px;
-        height: 26px;
+        height: 30px;
         color: white;
     }
 

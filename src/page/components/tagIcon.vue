@@ -37,8 +37,8 @@
 <style scoped lang="scss">
     .iconList{
         position: absolute;
-        right:20px;
-        bottom: 30px;
+        right:40px;
+        bottom: 40px;
         display: flex;
         flex-flow: row nowrap;
     }
