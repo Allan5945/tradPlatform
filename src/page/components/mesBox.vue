@@ -36,7 +36,7 @@
         height: 80%;
     }
     .demandMin{
-        top: 100px;
+        top: 40px;
         left: 40px;
     }
     .demandMax{
