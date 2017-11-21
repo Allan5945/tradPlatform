@@ -10,10 +10,13 @@
            </div>
         </div>
         <transportForm></transportForm>
+        <!-- <agentTransForm></agentTransForm> -->
     </div>
 </template>
 <script>
     import transportForm from './transportForm.vue'
+    import agentTransForm from './agentTransForm.vue'
+
     export default {
         data () {
             return{
@@ -25,7 +28,7 @@
         },
         components:{
             transportForm,
-
+            agentTransForm
         },
         methods:{
              getNeed: function(i){
@@ -39,8 +42,8 @@
 <style scoped lang="scss">
     .publish{
         position:absolute;
-        right: 21px;
-        top: 70px;
+        right: 40px;
+        top: 95px;
         width:540px;
         height:60px;
         color:#605E7C;
@@ -127,3 +130,5 @@
       }
     }
 </style>
+
+

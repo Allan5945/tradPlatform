@@ -75,7 +75,23 @@
             </div>
             <div class="form-box get-time">
                 <div class="t-title">发布有效期</div>
-                <div class="time-btn"><span class="icon-item ">&#xe607;</span>选择起止时间</div>
+                <div class="calendar time-btn" >
+                  <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
+                  <div v-show="calendarShow" class="calendar-box popup">
+                    <div class="selec-data">
+                      <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
+                      <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                      <div class="confirm-btn btn" @click="getMyDate">确定</div>
+                      <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                    </div>
+                    <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
+                      <!-- 可传入初始值 -->
+                    </calendar>
+                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
+                      <!-- 可传入初始值 -->
+                    </calendar>
+                  </div>
+                </div>
             </div>
         </div>
         <div class="post-type">
@@ -97,10 +113,7 @@
     </div>
 </template>
 <script>
-/*import '../../static/js/jquery-1.8.3.min.js'*/
-/*import '../../../static/js/moment.min.js'*/
-/*import '../../static/js/daterangepicker.js'*/
-
+ import calendar from './calendar'
     export default {
         data () {
             return{
@@ -111,16 +124,34 @@
                 getTime: '',
                 tip: '',
                 msg:'选择班机类型',
-                stateType:['待定','满排','半排']
+                stateType:['待定','满排','半排'],
+                myDate:'选择起始时间',
+                calendarInitDay1: '',
+                calendarInitDay2: '',
+                calendarShow: true
             }
         },
         components:{
-
+            calendar
         },
         methods:{
              getNeed: function(i) {
                 this.msg = this.stateType[i];
                 this.isSel = true;
+            },
+             getDate1: function(d){//获取组件返回的日期
+            this.calendarInitDay1 = d;
+            },
+             getDate2: function(d){//获取组件返回的日期
+                this.calendarInitDay2 = d;
+            },
+            getMyDate: function(){//获取起始的日期
+                if(this.calendarInitDay1&& this.calendarInitDay2){
+                    this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                    this.calendarShow = false;
+                }else{
+
+                }
             }
         },
         computed:{
@@ -141,12 +172,6 @@
 </script>
 
 <style scoped lang="scss">
-
-/* import '../../static/css/animate.min.css'
-import '../../static/css/bootstrap.min.css'
-import '../../static/css/daterangepicker-bs3.css'
-import '../../static/css/font-awesome.min.css' */
-
     input {
         outline:none;
         border: 0;
@@ -240,17 +265,17 @@ import '../../static/css/font-awesome.min.css' */
         margin-left:14px;
         border:1px solid rgba(151,151,151,.3);
         border-radius:5px;
-        text-align:center;
-        padding-left:20px;
-        span{
-            position:absolute;
-            left:0;
-            top:0;
-            width:20px;
-            border-right:1px solid rgba(151,151,151,.3);
-        }
+        padding-left:44px;
+        cursor:pointer;
     }
-
+    .myslec span{
+        position:absolute;
+        left:0;
+        top:0;
+        width:20px;
+        text-align:center;
+        border-right:1px solid rgba(151,151,151,.3);
+    }
     .post-type{
         display: flex;
         margin: 40px 0 70px 0;
@@ -284,10 +309,11 @@ import '../../static/css/font-awesome.min.css' */
         }
         .cancel-btn{
           width:80px;
-          color:#605e7c;
+          color:rgba(96,94,124,.6);
           box-sizing:border-box;
+          opacity:40%;
           background-color:#fff;
-          border: 1px solid #605e7c;
+          border: 1px solid rgba(96,94,124,.6);
         }
     }
     .pad1{
@@ -366,4 +392,58 @@ import '../../static/css/font-awesome.min.css' */
             top:24px;
         }
     }
+
+</style>
+
+<style scoped>
+  .calendar-box{
+    width: 540px;
+    height:270px;
+    position: relative;
+    top: 0px;
+    left:-134px;
+    padding:20px 10px 10px 10px;
+  }
+  .calendar-box .selec-data{
+    height:30px;
+    font-size: 12px;
+    margin-bottom:20px;
+    position: relative;
+  }
+  .calendar-box .selec-data input{
+    height: 100%;
+    width: 75px;
+    font-size: 12px;
+    padding-left:15px;
+    border:0;
+    outline: none;
+    border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+  }
+  .calendar-box .selec-data span{
+    display: inline-block;
+    width:30px;
+    text-align: center;
+  }
+  .selec-data .btn{
+    position:absolute;
+    top:0;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 100px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .selec-data .confirm-btn{
+    right:0;
+    width:60px;
+    color:#ffffff;
+    background-color:#3c78ff;
+  }
+  .selec-data .cancel-btn{
+    width:50px;
+    color:rgba(96,94,124,.6);
+    box-sizing: border-box;
+    border:1px solid rgba(96,94,124,.6);
+    right:64px;
+  }
 </style>
