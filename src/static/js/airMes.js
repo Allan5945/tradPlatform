@@ -7,9 +7,9 @@
 
 let airMes = function (data,field = '$%') {
     for(let i = 0;i < data.length;i ++){
-        if(data[i].airlnCd != null && data[i].airlnCd == field){
+        if(data[i].airportName != null && data[i].airportName == field){
             return data[i];
-        }else if(data[i].iata != null && data[i].iata == field){
+        }else if(data[i].code != null && data[i].code == field){
             return data[i];
         }else if(data[i].icao != null && data[i].icao == field){
             return data[i];

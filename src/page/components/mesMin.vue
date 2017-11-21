@@ -70,7 +70,7 @@
                 qyCode: "",
                 bgqy: false,
                 openHisy: false,
-                elect:  {set: false}
+                elect:  {set: false},
             }
         },
         methods: {
@@ -161,7 +161,6 @@
             }
         },
         mounted:function () {
-
         }
     }
 </script>
