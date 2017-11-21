@@ -8,4 +8,10 @@ export default {
     ,airList:(state)=>{
         return state.airList;
     }
+    ,monoData:(state)=>{
+        return state.demandList.monoData;
+    }
+    ,demandList:(state)=>{
+        return state.demandList;
+    }
 }

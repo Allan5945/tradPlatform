@@ -8,7 +8,7 @@
 </template>
 <script>
     import airData from './../../public/js/airport-controls'
-
+    import * as vx from 'vuex'
     export default {
         data(){
             return{
@@ -26,7 +26,8 @@
         methods:{
             build:function () {
                 let ar = [];
-                airData.forEach((val)=>{
+                console.log(this.airList)
+                this.airList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
                     let airportName = val.airportName;  // 机场名字
                     let code = val.code;  // 三字码
@@ -34,7 +35,6 @@
                     let py = val.py; // 拼音首字母
                     let regx = new RegExp(st,"gmi");
                     let style = "style='color: #3c78ff'";
-
                     if(airportName.search(regx) != -1){
                         let reg = new RegExp(st,"gmi");
                         let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
@@ -80,7 +80,6 @@
                 });
                 this.list = ar;
             },
-
             reqD:function (key,index) {
                 let hisyData = localStorage.getItem('hisyData');
                 let tag = '';
@@ -101,6 +100,11 @@
                 return vl;
 //                return vl.replace(":","")
             }
+        },
+        computed:{
+            ...vx.mapGetters([
+                'airList'
+            ]),
         },
         mounted:function () {
 

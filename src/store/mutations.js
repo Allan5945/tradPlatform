@@ -1,7 +1,9 @@
 import {
     TEST,
     CLOSE,
-    INITIALIZE
+    INITIALIZE,
+    HYBRIDDATA,
+    MONODATA
 } from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -14,6 +16,12 @@ const mutations = {
     },
     [INITIALIZE](state,vl) {
         state.airList = vl;
+    },
+    [MONODATA](state,vl) {
+        state.demandList.monoData = vl;
+    },
+    [HYBRIDDATA](state,vl) {
+        state.demandList.hybridData = vl;
     }
 };
 export default {

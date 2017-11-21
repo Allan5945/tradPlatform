@@ -130,18 +130,15 @@
         },
         mounted: function () {
             let a = [],d = [],b = [];
-            console.log(this.allDot.data)
             this.allDot.data.forEach((v)=>{
                 let mes = this.$airMes(this.airList,v.dpt);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType.split(',');
-
                 let quantity = '';
                 let demand = {
                     tag:'',
                     dbSize:16
                 };
-
                 if(obj.indexOf('0') != -1){
                     demand.tag = i6;
                     demand.dbSize = 16;
@@ -149,7 +146,6 @@
                     demand.tag = i7;
                     demand.dbSize = 6;
                 }
-
                 if(demandType.indexOf('0') != -1 && demandType.indexOf('1') != -1){
                     quantity = i1;
                 }else if(demandType.indexOf('0') != -1){
@@ -165,7 +161,6 @@
                         quantity = i5;
                     }
                 }
-
                 if(
                     v.cityCoordinateJ != null &&
                     v.cityCoordinateW != null &&
@@ -176,10 +171,9 @@
                 ){
                     let _d, // 无数据
                         _b; // 有新数据，自己发出
-
                     if(v.newInfo == 0){
                         _b = {
-                            name: mes.airlnCd,
+                            name: mes.airportName,
                             value: [mes.cityCoordinateW, mes.cityCoordinateJ],
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
@@ -234,6 +228,8 @@
                                 "formatter":function (v) {
                                     if(v.data.quantity > 9){
                                         return 'N';
+                                    }else if(v.data.quantity == 0){
+                                        return '';
                                     }else{
                                         return v.data.quantity;
                                     }
@@ -299,8 +295,10 @@
                 ]
             };
             this.myChart.setOption(option);
+
             this.myChart.on('click', function (a) {
                 console.log(a.data);
+
             })
         }
     }

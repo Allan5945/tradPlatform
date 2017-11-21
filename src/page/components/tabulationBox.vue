@@ -1,84 +1,21 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div>
+        <div v-for="(key,index) in renderData">
             <div class="tabulation-item">
-                <img src="./../../static/img/hx.png" alt="">
-                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
-                <div>----</div>
-            </div>
-            <div class="tabulation-mes">
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
+                <img :src='key.img' alt="">
+                <div class="font-bold">
+                    <div>
+                        <div class="rolling">成都双流</div>
+                    </div>
+                    <span>-</span>
+                    <div>
+                       <div class="rolling">成都双流</div>
+                    </div>
+                    <span>-</span>
+                    <div>
+                        <div class="rolling">成都双流</div>
+                    </div>
                 </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="tabulation-item">
-                <img src="./../../static/img/hx.png" alt="">
-                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
-                <div>----</div>
-            </div>
-            <div class="tabulation-mes">
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="tabulation-item">
-                <img src="./../../static/img/hx.png" alt="">
-                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
-                <div>----</div>
-            </div>
-            <div class="tabulation-mes">
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="tabulation-item">
-                <img src="./../../static/img/hx.png" alt="">
-                <div><p class="font-bold">成都双流-北京首都-北京首都</p></div>
                 <div>----</div>
             </div>
             <div class="tabulation-mes">
@@ -103,10 +40,18 @@
     </div>
 </template>
 <script>
-    import hx from './../../static/img/hx.png'
-    import haveline from './../../static/img/haveline.png'
-    import haveyun from './../../static/img/haveyun.png'
-    import yun from './../../static/img/yun.png'
+    import * as vx from 'vuex'
+
+    import ig0 from './../../static/img/haveline.png'; // 航线需求图片
+    import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
+    import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
+
+    import tag0 from './../../static/img/jd/1.png'; // 航线托管需求图片
+    import tag1 from './../../static/img/jd/2.png'; // 航线托管需求图片
+    import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
+    import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
+
+
     export default {
         data(){
             return{
@@ -114,6 +59,10 @@
             }
         },
         mounted:function () {
+            // 更改提示框高度
+            setTimeout(()=>{
+                console.log(this.demandList.hybridData);
+            },500)
             let set = '';
             window.onresize = ()=>{
                 if(set != ''){clearTimeout(set)}
@@ -136,6 +85,53 @@
                    this.hidden = false;
                }
            }
+        },
+        computed:{
+            ...vx.mapGetters([
+                'demandList'
+            ]),
+            renderData:function () {
+                let a = [];
+                this.demandList.hybridData.forEach((val)=>{
+                    let img ,name,tag;
+                    name = [val.dpt,val.arrv];
+                    if(val.pst != null){
+                        name.splice(1,0,val.pst)
+                    };
+                    switch (val.demandtype){
+                        case "0":
+                            img = ig0;
+                            break;
+                        case "1":
+                            img = ig1;
+                            break;
+                        case "2":
+                            img = ig2;
+                            break;
+                    };
+                    switch (val.demandprogress){
+                        case "0":
+                            tag = tag0;
+                            break;
+                        case "1":
+                            tag = tag1;
+                            break;
+                        case "2":
+                            tag = tag2;
+                            break;
+                        case "3":
+                            tag = tag3;
+                            break;
+                    }
+                    a.push({
+                        img,
+                        name,
+                        tag
+                    })
+                });
+                console.log(a)
+                return a;
+            }
         }
     }
 </script>
@@ -156,6 +152,9 @@
     }
     .tabulationBoxH{
         overflow-y: scroll;
+    }
+    .rolling:hover{
+        animation: mytext 1s linear infinite;
     }
     .tabulation-mes{
         >div{
@@ -190,18 +189,19 @@
         }
         >div:first-of-type{
             cursor: pointer;
-            overflow: hidden;
-            >p{
+            display: flex;
+            >div{
+                overflow: hidden;
                 font-size: 1.3rem !important;
-                width: 170px;
-                display: inline-block;
-                /*overflow: hidden;*/
-                /*text-overflow:ellipsis;*/
                 white-space: nowrap;
                 margin: 0;
                 color: #605E7C;
-                &:hover{
-                    animation: mytext 1s linear infinite;
+                width: 54px;
+                display: flex;
+                flex-flow: row nowrap;
+                >div{
+                    letter-spacing: .5px;
+                    height: 50px;
                 }
             }
         }
