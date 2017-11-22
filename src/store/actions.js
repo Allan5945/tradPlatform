@@ -15,5 +15,9 @@ export default {
     },
     hybridData:({commit},vl)=>{
         commit(types.HYBRIDDATA,vl)
-    }
+    },
+    role:({commit},vl)=>{
+        commit(types.ROLE,vl)
+    },
+
 }

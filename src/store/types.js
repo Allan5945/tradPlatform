@@ -3,3 +3,4 @@ export const CLOSE = 'CLOSE';
 export const INITIALIZE  = 'INITIALIZE';
 export const HYBRIDDATA  = 'HYBRIDDATA';
 export const MONODATA  = 'MONODATA';
+export const ROLE  = 'ROLE';

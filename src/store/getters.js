@@ -13,5 +13,8 @@ export default {
     }
     ,demandList:(state)=>{
         return state.demandList;
-    }
+    },
+    role:(state)=>{
+        return state.role;
+    },
 }

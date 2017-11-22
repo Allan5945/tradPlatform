@@ -8,5 +8,6 @@ export const state={
         monoData:[], // 需求列表-通过点击图标数据,
         page:2,     // 需求列表-通过点击图标数据,加载的页码
         conditions:'', // 需求列表-全部筛选条件
-    }
+    },
+    role:null
 };

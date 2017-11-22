@@ -3,7 +3,8 @@ import {
     CLOSE,
     INITIALIZE,
     HYBRIDDATA,
-    MONODATA
+    MONODATA,
+    ROLE,
 } from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -22,6 +23,9 @@ const mutations = {
     },
     [HYBRIDDATA](state,vl) {
         state.demandList.hybridData = vl;
+    },
+    [ROLE](state,vl) {
+        state.role = vl;
     }
 };
 export default {
