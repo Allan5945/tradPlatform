@@ -14,21 +14,9 @@
                 <div><img :src='key.tag' alt=""></div>
             </div>
             <div class="tabulation-mes">
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
-                </div>
-                <div>
-                    <span>时刻</span>
-                    <div>08:00</div>
+                <div v-for="ite in key.simpleDemand">
+                    <span>{{ite.key}}</span>
+                    <div>{{ite.val}}</div>
                 </div>
             </div>
         </div>
@@ -126,7 +114,8 @@
                     a.push({
                         img,
                         name,
-                        tag
+                        tag,
+                        simpleDemand:val.simpleDemand,
                     })
                 });
                 return a;
