@@ -68,20 +68,21 @@
                 }
             })
                 .then((response) => {
-                    //                    let a = {
-//                        "data":
-//                            [
-//                                {"dpt":"CTU","cityCoordinateJ":"30.48","cityCoordinateW":"103.96","num":3,"demandType":"0","obj":"0,1","newInfo":"0"},
-//                                {"dpt":"LZO","cityCoordinateJ":"28.84","cityCoordinateW":"105.38","num":0,"demandType":"0","obj":"0","newInfo":'0'},
-//                                {"dpt":"NKG","cityCoordinateJ":"31.738884","cityCoordinateW":"118.877696","num":4,"demandType":"1","obj":"0,1","newInfo":"0"},
-//                                {"dpt":"PEK","cityCoordinateJ":"40.06","cityCoordinateW":"116.62","num":2,"demandType":"0","obj":"1","newInfo":null},
-//                                {"dpt":"SJW","cityCoordinateJ":"38.287809","cityCoordinateW":"114.704385","num":2,"demandType":"0","obj":"1","newInfo":null},
-//                                {"dpt":"TNA","cityCoordinateJ":"36.858313","cityCoordinateW":"117.220309","num":3,"demandType":"0","obj":"0","newInfo":null},
-//                                {"dpt":"XIY","cityCoordinateJ":"34.2778","cityCoordinateW":"108.953098","num":2,"demandType":"0","obj":"1","newInfo":null}
-//                                ],"msg":"查询成功"};
-//
-//                    this.allDot = a;
-                    this.allDot = response.data;
+                    let arr = [];
+                    response.data.data.forEach((val)=>{
+                        if(
+                            val.cityCoordinateJ != null &&
+                            val.cityCoordinateW != null &&
+                            val.demandType != null &&
+                            val.dpt != null &&
+                            val.newInfo != null &&
+                            val.num != null &&
+                            val.obj != null
+                        ){
+                            arr.push(val)
+                        }
+                    });
+                    this.allDot = arr;
                     this.loadingData.demands = true;
                 })
                 .catch((error) => {
@@ -108,7 +109,7 @@
             navigation,
             tagIcon,
             messageBox,
-//            toPublish
+            toPublish
         }
     }
 </script>

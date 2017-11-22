@@ -13,9 +13,6 @@
         data(){
             return{
                 min:true,
-                hybridData:{}, // 混合数据
-                page:1,     // 页码
-                monoData:{} // 图标筛选数据
             }
         },
         methods:{
@@ -39,7 +36,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                 params: {
-                    page:this.page
+                    page:this.demandList.hybridPage
                 }
             }) .then((response) => {
                 this.$store.dispatch('hybridData', response.data.list.list).then(() => {});

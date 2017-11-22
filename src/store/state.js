@@ -4,9 +4,9 @@ export const state={
     airList :'',
     demandList:{
         hybridData:[], // 需求列表-全部列表数据
-        hybridPage:1, // 需求列表-全部列表数据,加载的页码
+        hybridPage:2, // 需求列表-全部列表数据,加载的页码
         monoData:[], // 需求列表-通过点击图标数据,
-        page:1,     // 需求列表-通过点击图标数据,加载的页码
+        page:2,     // 需求列表-通过点击图标数据,加载的页码
         conditions:'', // 需求列表-全部筛选条件
     }
 };

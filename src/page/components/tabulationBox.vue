@@ -4,19 +4,14 @@
             <div class="tabulation-item">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
-                    <div>
-                        <div class="rolling">成都双流</div>
-                    </div>
-                    <span>-</span>
-                    <div>
-                       <div class="rolling">成都双流</div>
-                    </div>
-                    <span>-</span>
-                    <div>
-                        <div class="rolling">成都双流</div>
+                    <div v-for="(item,d) in key.name">
+                        <div>
+                            <div :class="{rolling:(item.length > 4)}">{{item}}</div>
+                        </div>
+                        <span v-if="d != key.name.length - 1">-</span>
                     </div>
                 </div>
-                <div>----</div>
+                <div><img :src='key.tag' alt=""></div>
             </div>
             <div class="tabulation-mes">
                 <div>
@@ -55,20 +50,16 @@
     export default {
         data(){
             return{
-                hidden:false
+                hidden:false,
+                set:''
             }
         },
         mounted:function () {
             // 更改提示框高度
-            setTimeout(()=>{
-                console.log(this.demandList.hybridData);
-            },500)
-            let set = '';
             window.onresize = ()=>{
-                if(set != ''){clearTimeout(set)}
-                set = setTimeout(()=>{this.resetWindow()},200);
+                if(this.set != ''){clearTimeout(set)};
+                this.set = setTimeout(()=>{this.resetWindow()},200);
             };
-            this.resetWindow();
         },
         methods:{
            resetWindow:function () {
@@ -86,6 +77,9 @@
                }
            }
         },
+        updated:function () {
+            this.resetWindow();
+        },
         computed:{
             ...vx.mapGetters([
                 'demandList'
@@ -93,11 +87,17 @@
             renderData:function () {
                 let a = [];
                 this.demandList.hybridData.forEach((val)=>{
-                    let img ,name,tag;
-                    name = [val.dpt,val.arrv];
-                    if(val.pst != null){
-                        name.splice(1,0,val.pst)
+                    let img ,name = [],tag;
+                    if(val.dpt != null){
+                        name.push(val.dpt)
                     };
+                    if(val.arrv != null){
+                        name.push(val.arrv)
+                    };
+                    if(val.pst != null){
+                        name.push(val.pst)
+                    };
+
                     switch (val.demandtype){
                         case "0":
                             img = ig0;
@@ -129,7 +129,6 @@
                         tag
                     })
                 });
-                console.log(a)
                 return a;
             }
         }
@@ -141,7 +140,7 @@
             margin-left:0%;
         }
         100%{
-            margin-left:-100%;
+            margin-left:-110%;
         }
     }
     .class-item0:after{
@@ -154,7 +153,7 @@
         overflow-y: scroll;
     }
     .rolling:hover{
-        animation: mytext 1s linear infinite;
+        animation: mytext 1.5s linear infinite;
     }
     .tabulation-mes{
         >div{
@@ -191,15 +190,16 @@
             cursor: pointer;
             display: flex;
             >div{
-                overflow: hidden;
                 font-size: 1.3rem !important;
                 white-space: nowrap;
                 margin: 0;
+                width: 60px;
                 color: #605E7C;
-                width: 54px;
                 display: flex;
                 flex-flow: row nowrap;
                 >div{
+                    width: 54px;
+                    overflow: hidden;
                     letter-spacing: .5px;
                     height: 50px;
                 }

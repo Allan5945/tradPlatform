@@ -130,7 +130,7 @@
         },
         mounted: function () {
             let a = [],d = [],b = [];
-            this.allDot.data.forEach((v)=>{
+            this.allDot.forEach((v)=>{
                 let mes = this.$airMes(this.airList,v.dpt);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType.split(',');
