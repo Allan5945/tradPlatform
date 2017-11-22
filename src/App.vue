@@ -1,6 +1,6 @@
 <template>
-    <div id="app" @click="initialize(test);close();" v-if="renderComponent">
-        <bmap></bmap>
+    <div id="app" @click="close();" v-if="renderComponent">
+        <bmap :allDot="allDot"></bmap>
         <navigation @toShow="toShow"></navigation>
         <toPublish v-show="show" @toShow="toShow"></toPublish>
         <tagIcon></tagIcon>
@@ -108,7 +108,7 @@
             navigation,
             tagIcon,
             messageBox,
-            toPublish
+//            toPublish
         }
     }
 </script>
