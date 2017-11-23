@@ -339,7 +339,6 @@
                 <button class="btn-a btn-blue">委托代理</button>
                 <button class="btn-b btn-blue" @click="submitData">确认发布</button>
                 <button class="btn-c btn-cancel">取消</button>
-                <button>上传测试</button>
             </div>
         </div>
     </div>
