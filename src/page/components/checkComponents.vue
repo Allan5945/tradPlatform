@@ -19,6 +19,7 @@
         flex-flow: row nowrap;
         padding-left: 20px;
         color: #605E7C;
+        padding-bottom: 8px;
         > div {
             display: flex;
             flex-flow: column nowrap;

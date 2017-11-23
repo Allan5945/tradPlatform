@@ -19,10 +19,30 @@ const mutations = {
         state.airList = vl;
     },
     [MONODATA](state,vl) {
-        state.demandList.monoData = vl;
+        switch (vl.t){
+            case 0:
+                state.demandList.monoData = vl.v;
+                break;
+            case 1:
+                state.demandList.monoData = vl.v;
+                break;
+            case 2:
+                state.demandList.monoData.list = state.demandList.monoData.list.concat(vl.v);
+                break;
+        }
     },
     [HYBRIDDATA](state,vl) {
-        state.demandList.hybridData = vl;
+        switch (vl.t){
+            case 0:
+                state.demandList.hybridData = vl.v;
+                break;
+            case 1:
+                state.demandList.hybridPage = vl.v;
+                break;
+            case 2:
+                state.demandList.hybridData.list = state.demandList.hybridData.list.concat(vl.v);
+                break;
+        }
     },
     [ROLE](state,vl) {
         state.role = vl;

@@ -42,6 +42,9 @@
                 this.show = !this.show;
             }
         },
+        beforeMount:function () {
+            if(this.role == null)window.location.href = '#/login'
+        },
         mounted: function () {
             this.$ajax({
                 method: 'post',
@@ -93,7 +96,8 @@
         computed: {
             ...vx.mapGetters([
                 'c_updated',
-                'airList'
+                'airList',
+                'role'
             ]),
             renderComponent: function () {
                 if (this.loadingData.airList && this.loadingData.demands) {
