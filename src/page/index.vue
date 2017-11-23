@@ -5,6 +5,7 @@
         <!--<toPublish v-show="show" @toShow="toShow"></toPublish>-->
         <tagIcon></tagIcon>
         <messageBox></messageBox>
+        <airlineReq></airlineReq>
     </div>
 </template>
 
@@ -17,6 +18,7 @@
     import messageBox from './../page/components/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import conversions from './../public/js/conversions'
+    import airlineReq from './components/airlineReq.vue'
 
     export default {
         data() {
@@ -106,6 +108,7 @@
             navigation,
             tagIcon,
             messageBox,
+            airlineReq
 //            toPublish
         }
     }

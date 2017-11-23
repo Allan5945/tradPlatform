@@ -94,7 +94,10 @@
         ]
         }
     ];
-    import Vue from 'vue'
+    let provinceData = ['河南省','河北省','福建省'];
+    let bigAreaData = ['华东地区','华中地区','华北地区','华南地区','东北地区','西北地区','西南地区'];
+    let controllAreaData = ['华北','西北','中南','西南','华东','东北','新疆'];
+    let internationalAreaData = ['吉隆坡','雅加达','名古屋','莫斯科'];
     export default {
         data() {
             return {
@@ -114,28 +117,29 @@
                 this.areaTab = item
                 if(item === '省份') {
                     this.areaDetail = [];
-                    areaData.forEach((item)=>{
-                        this.areaDetail.push(item.name)
+                    provinceData.forEach((item)=>{
+                        this.areaDetail.push(item)
                     });
                 }if(item === '大区') {
                     this.areaDetail = [];
-                    areaData[0].city.forEach((item)=>{
-                        this.areaDetail.push(item.name)
-                    });
-                }if(item === '国际热门') {
-                    this.areaDetail = [];
-                    areaData[0].city[0].district.forEach((item)=>{
-                        this.areaDetail.push(item.name)
+                    bigAreaData.forEach((item)=>{
+                        this.areaDetail.push(item)
                     });
                 }if(item === '管辖区域') {
                     this.areaDetail = [];
-                    areaData[0].city[0].district.forEach((item)=>{
-                        this.areaDetail.push(item.name)
+                    controllAreaData.forEach((item)=>{
+                        this.areaDetail.push(item);
+                    });
+                }if(item === '国际热门') {
+                    this.areaDetail = [];
+                    internationalAreaData.forEach((item)=>{
+                        this.areaDetail.push(item)
                     });
                 }
             },
             selectStyle: function (item) {
-                this.areaList = item
+                this.areaList = item;
+                this.$emit('li-click', this.areaList);
             }
         }
     }
