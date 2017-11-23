@@ -2,7 +2,7 @@
     <div class="message-box" id="message-box">
         <div class="message-head popup">
             <div class="mes-tip">
-                <span class="number-mes">1000</span>条需求对象
+                <span class="number-mes">{{renderData}}</span>条需求对象
             </div>
             <div class="mes-cont-box" @mouseout="closeSearch" @click.stop="screenHsShow = false">
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
@@ -149,8 +149,13 @@
         },
         computed:{
             ...vx.mapGetters([
-                'close'
+                'close',
+                'demandList'
             ]),
+            renderData:function () {
+
+                return this.demandList.hybridData.length;
+            }
         },
         watch:{
             close:function () {

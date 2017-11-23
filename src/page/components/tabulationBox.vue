@@ -24,11 +24,9 @@
 </template>
 <script>
     import * as vx from 'vuex'
-
     import ig0 from './../../static/img/haveline.png'; // 航线需求图片
     import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
     import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
-
     import tag0 from './../../static/img/jd/1.png'; // 航线托管需求图片
     import tag1 from './../../static/img/jd/2.png'; // 航线托管需求图片
     import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
@@ -45,9 +43,10 @@
         mounted:function () {
             // 更改提示框高度
             window.onresize = ()=>{
-                if(this.set != ''){clearTimeout(set)};
-                this.set = setTimeout(()=>{this.resetWindow()},200);
+                if(this.set != ''){clearTimeout(this.set)};
+                this.set = setTimeout(()=>{this.resetWindow()},100);
             };
+            this.resetWindow();
         },
         methods:{
            resetWindow:function () {
