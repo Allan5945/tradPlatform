@@ -70,7 +70,10 @@
             <div class="form-box reset">
                 <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
                 <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
-                    <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">{{item}}</div>
+                    <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
+                    <span>{{item[0]}}</span>
+                    <span>{{item[1]}}</span>
+                    </div>
                 </div>
             </div>
             <div class="form-box reset">
@@ -182,7 +185,7 @@
                 qyCode: '',
                 qyCode1:'',
                 airTypData: [],
-                airCompanyData:["成都航空",'东方航空',"成都航空",'东方航空',"成都航空",'东方航空',"成都航空",'东方航空']
+                airCompanyData:[]
             }
         },
         components:{
@@ -202,9 +205,10 @@
             },
             getMyDate: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
-                    //this.$refs.timeDate
-                    //this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                    this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
+                }else{
+
                 }
             },
             openSearch: function(){
@@ -222,12 +226,19 @@
              openSearch2: function(){
                 this.directSearch =true;
             },
-            verifyPhon:function(){
+          /*  verifyPhon:function(){
                 let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
-                /*if((!pattern.test(this.phoneNum)){
+                if((!pattern.test(this.phoneNum)){
                     this.isError = true;
-                }*/
+                }
                 this.isError = true;
+            },*/
+            verifyPhon: function () {
+                if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
+                    this.isError = true;
+                }else{
+                    this.isError = false;
+                }
             },
             pickTime1: function(i) {
                 this.timeStart = this.timeData[i];
@@ -268,7 +279,7 @@
                 this.airplTypShow = false;
             },
             getCompanyList: function(i){
-                this.airCompany = this.airCompanyData[i];
+                this.airCompany = this.airCompanyData[i][0];
                 this.airCompanyShow = false;
             },
             getAirplaneTyp:function(){
@@ -304,15 +315,15 @@
             }) .then((response) => {
               /*  console.log(response.data.list.list[8].capacityCompany.airlnCd);*/
                 response.data.list.list.forEach(item =>{
-                    let myCompany = {};
-                    myCompany.name = item.capacityCompany.airlnCd;
-                    myCompany.code = item.capacityCompany.icao;
-                    this.airCompanyData.push(item.capacityCompany.icao);
+                    let myCompany = [];
+                    myCompany.push(item.capacityCompany.airlnCd);
+                    myCompany.push(item.capacityCompany.icao);
+                    this.airCompanyData.push(myCompany);
                 })
             }).catch((error) => {
                     console.log(error);
                 });
-                console.log(this.airCompanyData)
+                //console.log(this.airCompanyData)
                 this.airCompanyShow = true;
             },
             confirm:function(){
@@ -357,7 +368,7 @@
                     /*page:this.demandList.hybridPage*/
                 }
             }) .then((response) => {
-                this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                /*this.$store.dispatch('hybridData', response.data.list.list).then(() => {});*/
             }).catch((error) => {
                     console.log(error);
                 });
@@ -733,11 +744,14 @@
         top:58px;
         width:180px;
         max-height:210px;
+        cursor:pointer;
         z-index:10;
         overflow:hidden;
         overflow-y:scroll;
         div{
-            padding-left:14px;
+            justify-content: space-between;
+            display: flex;
+            padding: 0 14px;
             height:35px;
             line-height:35px;
             text-align:left;

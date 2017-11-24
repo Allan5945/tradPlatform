@@ -1,5 +1,5 @@
 <template>
-    <div class="publish">
+    <div class="publish popup">
         <span class= "triangle"></span>
         <div class="p-til">发布需求</div>
         <div class="need-btn"  @click="showBox=!showBox">
@@ -10,13 +10,16 @@
            </div>
         </div>
         <transportForm v-if='this.showType== 1 '></transportForm>
-        <agentTransForm v-else-if='this.showType== 2'></agentTransForm>
+        <operationForm v-if='this.showType== 2 '></operationForm>
         <airlineReq v-else-if='this.showType== 3'></airlineReq>
+        <agentTransForm v-else-if='this.showType== 4'></agentTransForm>
+
     </div>
 </template>
 <script>
     import transportForm from './transportForm.vue'
     import agentTransForm from './agentTransForm.vue'
+    import operationForm from './operationForm.vue'
     import airlineReq from './airlineReq.vue'
 
     export default {
@@ -25,13 +28,14 @@
                 showBox: false,
                 isSel: false,
                 showType:'',
-                myShow:[1,2,3],
+                myShow:[1,2,3,4],
                 msg:'选择需求类型',
-                needType:['运力投放','委托运力投放','航线需求','委托航线需求','运营委托']
+                needType:['运力投放','运营委托','航线需求','委托运力投放','委托航线需求']
             }
         },
         components:{
             transportForm,
+            operationForm,
             agentTransForm,
             airlineReq
         },
