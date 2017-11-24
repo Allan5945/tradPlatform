@@ -326,13 +326,16 @@
             </div>
             <div class="fifth">
                 <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="openAll" checked @change="publicwayStrCode = 0"/><label for="openAll" class="input-label">对所有人公开</label>
+                    <input type="radio" class="magic-radio" name="open-type" id="openAll" checked @change="publicwayStrCode = 0;directionPublicShow = false;"/><label for="openAll" class="input-label">对所有人公开</label>
                 </div>
                 <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="openUser" @change="publicwayStrCode = 1"/><label for="openUser" class="input-label">对认证用户公开</label>
+                    <input type="radio" class="magic-radio" name="open-type" id="openUser" @change="publicwayStrCode = 1;directionPublicShow = false;"/><label for="openUser" class="input-label">对认证用户公开</label>
                 </div>
-                <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="openOnly" @change="publicwayStrCode = 2"/><label for="openOnly" class="input-label">定向发布</label>
+                <div class="vertical-center" style="margin-right: 0;">
+                    <input type="radio" class="magic-radio" name="open-type" id="openOnly" @change="directionPublic"/><label for="openOnly" class="input-label">定向发布</label>
+                </div>
+                <div class="choose-input" v-show="directionPublicShow">
+                    <span class="little-label" v-for="item in directionPublicCity">{{item}}</span>
                 </div>
             </div>
             <div class="sixth">
@@ -387,6 +390,8 @@
                 pstAcceptnearairport: 1,//经停地是否接受临近机场（0：接受，1：不接受）
                 arrvAcceptnearairport: 1,//到达地是否接受临近机场（0：接受，1：不接受）
                 airTypeShow: false,
+                directionPublicShow: false,//点击定向发布显示
+                directionPublicCity: ['北京','上海','杭州'],
                 /*机场查询*/
                 qyCode: "",
                 searchText: '',
@@ -692,6 +697,11 @@
             subsidyClick2: function () {
                 this.subsidyCode = 3;
             },
+            //点击定向发布
+            directionPublic: function () {
+                this.directionPublicShow = true;
+                this.publicwayStrCode = 2;
+            },
             // 起止时间显示到上方的框内
             startTime1Fn: function (item) {
                 this.startTime1Show = item;
@@ -802,9 +812,6 @@
         flex-grow: 1;
         color: $font-color;
         border-bottom: 1px solid $border-color;
-        > span {
-            color: black;
-        }
     }
 
     .choose-type {
@@ -880,6 +887,27 @@
         color: $font-color;
         border-bottom: 1px solid $border-color;
     }
+    /*横线上的小标签*/
+    .little-label{
+        padding: 0 10px;
+        line-height: 23px;
+        border-radius: 20px;
+        color: $icon-color;
+        background: #F5F5F5;
+        cursor: pointer;
+    }
+    .little-label::after {
+        position: relative;
+        margin-left: 10px;
+        width: 20px;
+        height: 20px;
+        font-family: iconfont;
+        font-size: 10px;
+        border-radius: 100%;
+        background: white;
+        content: '\e62c';
+    }
+    /***********/
 
     /****************radio样式更改******************/
     .magic-radio {
@@ -975,8 +1003,8 @@
     /*********/
     .container {
         position: absolute;
-        top: 100px;
-        right: 100px;
+        top:65px;
+        left:0;
         padding: 20px 20px 44px 20px;
         width: 580px;
         max-height: 630px;
