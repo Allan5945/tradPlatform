@@ -9,8 +9,8 @@ var plugins = require('./plugins.js')
 module.exports = {
   entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    // publicPath: '/dist/',
+    path: path.resolve(__dirname, '../dist'), // Y:\test
+    publicPath: process.env.NODE_ENV == 'production' ? './../../../dist/' : '',
     filename: '[name]-[hash].js'
   },
   module: loader,
