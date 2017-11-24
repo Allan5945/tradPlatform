@@ -5,7 +5,7 @@
                 <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人">
             </div>
             <div class="form-box">
-                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" v-on:keyup="verifyPhon" v-model="phoneNum">
                 <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
             </div>
             <div style="height:20px;width:100%;" v-if="isError"></div>
@@ -58,17 +58,17 @@
                 <input type="text" placeholder="目标机场（可选填）">
             </div>
             <div class="form-box">
-                <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @blur="getAirplaneTyp">
+                <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
                 <div class="airpl-typ popup scroll" v-show="airplTypShow">
                     <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                 </div>
             </div>
             <div class="form-box se-place" >
-                <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @blur="openSearch">
+                <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" v-on:keyup="openSearch">
               <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
             <div class="form-box reset">
-                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @blur="getAirCompany">
+                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
                 <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
                     <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">{{item}}</div>
                 </div>
@@ -84,8 +84,8 @@
                 <div class="t-checkbox">
                     <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
                 </div>
-                <input type="text" v-show="dispatch" v-model="dispatchText" @blur="openSearch1" placeholder=" ">
-                <airportS class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch"></airportS>
+                <input type="text" v-show="dispatch" v-model="dispatchText" v-on:keyup="openSearch1" placeholder=" ">
+                <airportS class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS>
                 <div class="history" v-show="dispatch">
                     <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
                 </div>
@@ -122,11 +122,11 @@
                 <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="type3"><label for="type3">定向发布</label>
             </div>
             <div class="direction t-radio" style="position:relative;">
-                <input type="text" v-show="this.post == 'type3' " style="width:200px;" v-model="directText" @blur="openSearch2">
+                <input type="text" v-show="this.post == 'type3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
                 <div class="history" v-show="this.post == 'type3'" style="top:-6px;left:2px;line-height:26px;">
                     <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
                 </div>
-                <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch"></airportS>
+                <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
             </div>
         </div>
         <div class="t-btn">
@@ -344,23 +344,7 @@
             }
         },
         watch:{
-            searchText: function(val){
-                if(!val){
-                    this.isSearch = false;
-                }
-            },
-            airplaneTyp: function(val){
-                if(!val){
-                    this.airplTypShow = false;
-                }
 
-            },
-            airCompany: function(val){
-                if(!val){
-                    this.airCompanyShow = false;
-                }
-
-            }
 
         },
          beforeMount:function () {
