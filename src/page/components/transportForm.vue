@@ -97,7 +97,7 @@
             <div class="form-box get-time">
                 <div class="t-title">发布有效期</div>
                <div class="calendar time-btn" >
-                 <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
+                 <div class="myslec"  @click="calendarShow=!calendarShow" ref="timeDate"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                  <div v-show="calendarShow" class="calendar-box popup">
                    <div class="selec-data">
                      <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
@@ -202,10 +202,9 @@
             },
             getMyDate: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
-                    this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                    //this.$refs.timeDate
+                    //this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
-                }else{
-
                 }
             },
             openSearch: function(){
