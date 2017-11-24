@@ -5,7 +5,7 @@
         <!--<toPublish v-show="show" @toShow="toShow"></toPublish>-->
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-        <airlineReq></airlineReq>
+        <!--<airlineReq></airlineReq>-->
     </div>
 </template>
 
