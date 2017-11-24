@@ -19,6 +19,9 @@ const mutations = {
         state.airList = vl;
     },
     [MONODATA](state,vl) {
+        if(state.demandList.type){
+            state.demandList.type = false;
+        }
         switch (vl.t){
             case 0:
                 state.demandList.monoData = vl.v;
@@ -32,6 +35,9 @@ const mutations = {
         }
     },
     [HYBRIDDATA](state,vl) {
+        if(!state.demandList.type){
+            state.demandList.type = true;
+        }
         switch (vl.t){
             case 0:
                 state.demandList.hybridData = vl.v;

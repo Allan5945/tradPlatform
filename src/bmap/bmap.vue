@@ -129,12 +129,17 @@
             ]),
         },
         mounted: function () {
-            let a = [],d = [],b = [],code;
+            let a = [], // 航线需求列表
+                d = [], // 我发出的需求 -无
+                b = [], // 我的需求 -有
+                code, // 三字码
+                type; // 需求类型 0 = 航线需求，1 = 运力需求，2 = 航线需求和运力需求，3 = 我的需求
             this.allDot.forEach((v)=>{
                 let mes = this.$airMes(this.airList,v.dpt);
                 let obj = v.obj.split(',');
-                let demandType = v.demandType.split(',');
+                let demandType = v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
+                code = v.dpt;
                 let demand = {
                     tag:'',
                     dbSize:16
@@ -145,16 +150,20 @@
                 }else if(obj.indexOf('1') != -1){
                     demand.tag = i7;
                     demand.dbSize = 6;
+                    type = 1;
                 }
                 if(demandType.indexOf('0') != -1 && demandType.indexOf('1') != -1){
                     quantity = i1;
+                    type = 2;
                 }else if(demandType.indexOf('0') != -1){
+                    type = 0;
                     if(v.num == 0){
                         quantity = i2;
                     }else{
                         quantity = i3;
                     }
                 }else if(demandType.indexOf('1') != -1){
+                    type = 1;
                     if(v.num == 0){
                         quantity = i4;
                     }else{
@@ -169,6 +178,7 @@
                     v.num != null &&
                     v.obj != null
                 ){
+                    // 需求列表数据
                     let _d, // 无数据
                         _b; // 有新数据，自己发出
                     if(v.newInfo == 0){
@@ -178,31 +188,34 @@
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
                             symbolOffset:[0,0],
-                            code:code,
-                            quantity:v.num
+                            code,
+                            type:3,
+                            num:v.num
                         };
                         b.push(_b);
                     }else{
                         _d = {
-                            name: mes.airlnCd,
+                            name: mes.airportName,
                             value: [mes.cityCoordinateW, mes.cityCoordinateJ],
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
                             symbolOffset:[0,0],
-                            code:code,
-                            quantity:v.num
+                            code,
+                            type:3,
+                            num:v.num
                         };
                         d.push(_d);
                     }
                     // 航线需求列表
                     let _a = {
-                        name: mes.airlnCd,
+                        name: mes.airportName,
                         value: [mes.cityCoordinateW, mes.cityCoordinateJ],
                         symbol:quantity,
                         symbolSize:40,
-                        code:code,
+                        code,
+                        type,
                         symbolOffset:[0,-25],
-                        quantity:v.num
+                        num:v.num
                     };
                     a.push(_a);
                 }
@@ -220,6 +233,7 @@
                 "tooltip": {trigger: 'item'},
                 "series": [
                     {
+                        'name':'a',
                         "type": "scatter",
                         "coordinateSystem": "bmap",
                         "data":a,
@@ -229,12 +243,12 @@
                                 "show": true,
                                 color:'white',
                                 "formatter":function (v) {
-                                    if(v.data.quantity > 9){
+                                    if(v.data.num > 9){
                                         return 'N';
-                                    }else if(v.data.quantity == 0){
+                                    }else if(v.data.num == 0){
                                         return '';
                                     }else{
-                                        return v.data.quantity;
+                                        return v.data.num;
                                     }
                                 },
                                 offset:[0,-2]
@@ -249,6 +263,7 @@
                         }
                     },
                     {
+                        'name':'d',
                         "type": "scatter",
                         "coordinateSystem": "bmap",
                         "data":d,
@@ -273,6 +288,7 @@
                         }
                     },
                     {
+                        'name':'b',
                         "type": "effectScatter",
                         "coordinateSystem": "bmap",
                         "data":b,
@@ -298,9 +314,27 @@
                 ]
             };
             this.myChart.setOption(option);
-            this.myChart.on('click', function (a) {
-                console.log(a.data);
 
+            this.myChart.on('click', (a)=> {
+                this.$ajax({
+                    url:"/getDemandsForCurrentCheckedAirport",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        itia:a.data.code,
+                        page:1,
+                        type:(a.data.type == 3 ? 1 : 0)
+                    }
+                }) .then((response) => {
+                        if(response.data){
+                            this.$store.dispatch('monoData',{v:response.data.list.list,t:2}).then(() => {});
+                        }
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             })
         }
     }
