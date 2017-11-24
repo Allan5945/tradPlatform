@@ -2,11 +2,11 @@
   <div id="calendar" onselectstart="return false;">
     <div class="chead">
     <div class="pre-mbtn mbtn">
-        <span @click="preMonth()"><i>&#xe892;</i></span>
+        <span @click="preMonth()"><i class="icon-item">&#xe60a;</i></span>
       </div>
-      <span class="tle">{{ curY +"/"+ curM }}</span>
+      <span class="tle">{{ curY +"."+ curM }}</span>
       <div class="next-mbtn mbtn">
-        <span @click="nextMonth()"><i>&#xe891;</i></span>
+        <span @click="nextMonth()"><i class="icon-item">&#xe686;</i></span>
       </div>
     </div>
     <div class="cweek">
@@ -16,7 +16,7 @@
     </div>
     <div class="cbody">
       <ul>
-        <li v-for="day in days" :key="day">
+        <li v-for="day in days" >
           <span v-text="day.num" :title="day.date"
           :class="{otherMonth: day.otherMonth, today:day.date===today,checkday: day.date===checkDay}"
           @click="pick(day.date)">
@@ -164,6 +164,7 @@ export default {
   border:1px solid rgba(151,151,151,.3);
   border-radius: 5px;
   padding: 0 20px;
+  margin:0 1px;
   /* box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.1),
     0 1px 5px 0 rgba(0, 0, 0, 0.12); */
 }
@@ -194,19 +195,31 @@ ul li {
   font-size: 14px;
   text-align: center;
 }
+.icon-item{
+      font-size: 1.6rem;
+      font-family: iconfont;
+    }
 .chead .mbtn {
   /* display: flex;
   justify-content: space-between; */
   position:absolute;
   font-size: 18px;
   color: #888;
+  height:20px;
+  width:20px;
+  text-align: center;
+}
+.chead .mbtn span{
+  display: block;
+  height:20px;
+  width:20px;
 }
 .chead .pre-mbtn{
-  top:10px;
+  top:6px;
   left:30px;
 }
 .chead .next-mbtn{
-  top:10px;
+  top:6px;
   right:30px;
 }
 .chead .mbtn span:hover {
