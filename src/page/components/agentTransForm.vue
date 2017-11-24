@@ -31,13 +31,13 @@
                 <span>元</span>
             </div>
             <div class="form-box tips">
-                <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip">
+                <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
                 <span class="num"><span >{{num}}</span>/35</span>
             </div>
         </div>
         <div class="t-btn">
-            <div class="confirm-btn">提交</div>
-            <div class="cancel-btn">取消</div>
+            <div class="confirm-btn btn-b">提交</div>
+            <div class="cancel-btn ">取消</div>
         </div>
     </div>
 </template>
@@ -66,12 +66,7 @@
             }
         },
         watch:{
-            /*tip: function(val,oldVal){
-                let len = oldVal.length;
-                if(len>35){
-                    val = oldVal.slice(1,3);
-                }
-            }*/
+
         }
 
     }
@@ -224,6 +219,12 @@
           background-color:#fff;
           border: 1px solid rgba(96,94,124,.6);
         }
+        .cancel-btn:hover {
+          background-color: rgba(256, 256, 256, .7);
+          cursor: pointer;
+          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+        }
+
     }
     .agent-form .pad{
       height:26px;
