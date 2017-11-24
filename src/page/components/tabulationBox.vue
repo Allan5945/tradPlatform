@@ -47,6 +47,51 @@
                 this.set = setTimeout(()=>{this.resetWindow()},100);
             };
             this.resetWindow();
+            let tabulationBox =  document.getElementById('tabulationBox');
+            tabulationBox.addEventListener('scroll',(e)=> {
+                let z = 126 * this.renderData.length;
+                let b = Number(tabulationBox.style.height.split('px')[0]);
+                let x = (z-b)/1.2;
+                if(tabulationBox.scrollTop >= x){
+                    if(this.demandList.type && this.demandList.hybridPage < this.demandList.hybridData.pageCount){  // 混合数据
+                        this.$store.dispatch('hybridData', {v:(this.demandList.hybridPage + 1),t:1}).then(() => {
+                            this.$ajax({
+                                url:"/getDemandsForCurrentEmployee",
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/x-www-form-urlencoded'
+                                },
+                                params: {
+                                    page:this.demandList.hybridPage
+                                }
+                            }) .then((response) => {
+                                this.$store.dispatch('hybridData',{v:response.data.list.list,t:2}).then(() => {});
+                            })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    }else if(!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount){ // 非混合数据
+                        this.$store.dispatch('monoData', {v:(this.demandList.hybridPage + 1),t:1}).then(() => {
+                            this.$ajax({
+                                url:"/getDemandsForCurrentEmployee",
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/x-www-form-urlencoded'
+                                },
+                                params: {
+                                    page:this.demandList.monoPage
+                                }
+                            }) .then((response) => {
+                                this.$store.dispatch('monoData',{v:response.data.list.list,t:2}).then(() => {});
+                            })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    }
+                }
+            });
         },
         methods:{
            resetWindow:function () {
@@ -69,11 +114,12 @@
         },
         computed:{
             ...vx.mapGetters([
-                'demandList'
+                'demandList',
+                'role'
             ]),
             renderData:function () {
                 let a = [];
-                this.demandList.hybridData.forEach((val)=>{
+                this.demandList.hybridData.list.forEach((val)=>{
                     let img ,name = [],tag;
                     if(val.dpt != null){
                         name.push(val.dpt)
@@ -147,7 +193,7 @@
         >div{
             >span{
                 display: inline-block;
-                padding-bottom: 5px;
+                padding-bottom: 8px;
                 color: rgba(96,94,124,.7);
                 font-size: 1.2rem;
             }
