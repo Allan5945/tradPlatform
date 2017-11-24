@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'), // Y:\test
     publicPath: process.env.NODE_ENV == 'production' ? './../../../dist/' : '',
-    filename: '[name]-[hash].js'
+    filename: '[name].build.js' // '[name]-[hash].js'
   },
   module: loader,
   resolve: {

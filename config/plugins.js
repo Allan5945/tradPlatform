@@ -17,8 +17,7 @@ module.exports = [
     }),
     new ExtractTextPlugin({
         filename:  (getPath) => {
-            console.log(getPath)
-            return getPath('css/[name]-[hash].css');
+            return getPath('[name].css'); //[name]-[hash].css
         },
         allChunks: true
     }),

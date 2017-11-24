@@ -23,7 +23,7 @@ module.exports = {
         },
         {
             test: /\.(png|jpg|gif|svg)$/,
-            loader: "url-loader?limit=1000&name=img/[name][hash:8].[ext]"
+            loader: "url-loader?limit=1000&name=/[name].[ext]"
         },
         {
             test: /\.(eot|ttf|woff|woff2|otf)$/,

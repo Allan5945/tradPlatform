@@ -129,7 +129,7 @@
             ]),
         },
         mounted: function () {
-            let a = [],d = [],b = [];
+            let a = [],d = [],b = [],code;
             this.allDot.forEach((v)=>{
                 let mes = this.$airMes(this.airList,v.dpt);
                 let obj = v.obj.split(',');
@@ -178,6 +178,7 @@
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
                             symbolOffset:[0,0],
+                            code:code,
                             quantity:v.num
                         };
                         b.push(_b);
@@ -188,6 +189,7 @@
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
                             symbolOffset:[0,0],
+                            code:code,
                             quantity:v.num
                         };
                         d.push(_d);
@@ -198,6 +200,7 @@
                         value: [mes.cityCoordinateW, mes.cityCoordinateJ],
                         symbol:quantity,
                         symbolSize:40,
+                        code:code,
                         symbolOffset:[0,-25],
                         quantity:v.num
                     };
@@ -295,7 +298,6 @@
                 ]
             };
             this.myChart.setOption(option);
-
             this.myChart.on('click', function (a) {
                 console.log(a.data);
 
