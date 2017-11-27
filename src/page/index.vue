@@ -1,12 +1,14 @@
 <template>
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
-        <navigation @toShow="toShow"></navigation>
+       <!-- <navigation @toShow="toShow"></navigation>
         <toPublish v-show="show" @toShow="toShow"></toPublish>
         <tagIcon></tagIcon>
-        <messageBox></messageBox>
+        <messageBox></messageBox>-->
         <!--<airlineReq></airlineReq>-->
-        <airlineDetail></airlineDetail>
+        <!--<airlineDetail></airlineDetail>-->
+        <!--<airlineWrite></airlineWrite>-->
+        <airlineDetailMine></airlineDetailMine>
     </div>
 </template>
 
@@ -20,8 +22,10 @@
     import toPublish from './../page/components/toPublish.vue'
     import conversions from './../public/js/conversions'
     import airlineReq from './components/airlineReq.vue'
+    import airlineWrite from './components/airlineWrite.vue'
 
     import airlineDetail from './../page/components/airlineDetail.vue'
+    import airlineDetailMine from './../page/components/airlineDetailMine.vue'
 
     export default {
         data() {
@@ -113,7 +117,9 @@
             messageBox,
             airlineReq,
             airlineDetail,
-            toPublish
+            toPublish,
+            airlineWrite,
+            airlineDetailMine
         }
     }
 </script>
