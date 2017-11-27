@@ -32,7 +32,6 @@
     import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
     import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
 
-
     export default {
         data(){
             return{
@@ -72,9 +71,9 @@
                                 });
                         });
                     }else if(!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount){ // 非混合数据
-                        this.$store.dispatch('monoData', {v:(this.demandList.hybridPage + 1),t:1}).then(() => {
+                        this.$store.dispatch('monoData', {v:(this.demandList.monoPage + 1),t:1}).then(() => {
                             this.$ajax({
-                                url:"/getDemandsForCurrentEmployee",
+                                url:"/getDemandsForCurrentCheckedAirport",
                                 method: 'post',
                                 headers: {
                                     'Content-type': 'application/x-www-form-urlencoded'
@@ -118,8 +117,14 @@
                 'role'
             ]),
             renderData:function () {
-                let a = [];
-                this.demandList.hybridData.list.forEach((val)=>{
+                let d,a = [];
+                if(this.demandList.type){
+                    d = this.demandList.hybridData.list;
+
+                }else{
+                    d = this.demandList.monoData.list;
+                }
+                d.forEach((val)=>{
                     let img ,name = [],tag;
                     if(val.dpt != null){
                         name.push(val.dpt)
@@ -130,7 +135,6 @@
                     if(val.pst != null){
                         name.push(val.pst)
                     };
-
                     switch (val.demandtype){
                         case "0":
                             img = ig0;
@@ -161,6 +165,7 @@
                         name,
                         tag,
                         simpleDemand:val.simpleDemand,
+                        data:val
                     })
                 });
                 return a;
