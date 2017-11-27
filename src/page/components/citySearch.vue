@@ -23,7 +23,7 @@
         methods:{
             build:function () {
                 let ar = [];
-                this.airList.forEach((val)=>{
+                this.cityList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
                     if(st != ''){
                         let airportName = val.airportName;  // 机场名字
@@ -111,7 +111,7 @@
         },
         computed:{
             ...vx.mapGetters([
-                'airList'
+                'cityList'
             ]),
         }
     }

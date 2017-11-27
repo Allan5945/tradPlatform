@@ -2,6 +2,7 @@ export const state={
     c_updated:0,
     close:true,
     airList :'',
+    cityList:'',
     demandList:{
         type:true,      // 当前操作数据类型
         hybridData:{    // 混合全部数据（例如：航线需求&&运力需求&&我发出的需求）

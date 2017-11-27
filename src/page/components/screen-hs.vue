@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="btn-box">
-            <div class="btn-w">取消</div>
+            <div class="btn-w" @click="screenHs">取消</div>
             <div class="btn-b">查询</div>
         </div>
     </div>
@@ -96,7 +96,6 @@
             }
         },
         mounted:function () {
-            console.log(this.role);
         },
         components: {
             check,

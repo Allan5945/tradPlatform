@@ -21,21 +21,23 @@ body {
   margin: 0;
 }
 
-html, body, #app,#case {
+html, body, #app, #case {
   width: 100%;
   height: 100%;
 }
+
 //  输入框laceholder 颜色
 ::-webkit-input-placeholder {
-  color: rgba(96,94,124,.4);
-}
-::-moz-placeholder {
-  color: rgba(96,94,124,.4);
-}
-:-ms-input-placeholder {
-  color: rgba(96,94,124,.4);
+  color: rgba(96, 94, 124, .4);
 }
 
+::-moz-placeholder {
+  color: rgba(96, 94, 124, .4);
+}
+
+:-ms-input-placeholder {
+  color: rgba(96, 94, 124, .4);
+}
 
 .anchorBL {
   display: none;
@@ -89,26 +91,28 @@ html, body, #app,#case {
 //- 白底按钮
 .btn-w {
   background-color: white;
-  color: rgba(96,94,124,.6);
+  color: rgba(96, 94, 124, .6);
   box-shadow: 1px 1px 18px rgba(0, 0, 0, .13);
   border: 1px solid rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
 
 .btn-w:hover {
-  background-color: rgba(60, 120, 255, .7);
+  background-color: rgba(60, 120, 255, .7) !important;
   color: white !important;
   cursor: pointer;
-  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+  box-shadow: 1px 2px 18px rgba(60, 120, 255, 0.5);
 }
+
 .btn-b:hover {
-  background-color: rgba(80, 139, 255,1);
+  background-color: rgba(80, 139, 255, 1);
   color: white !important;
   cursor: pointer;
-  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+  box-shadow: 1px 2px 18px rgba(60, 120, 255, 0.5);
 }
+
 .btn-w:active, .btn-b:active {
-  background-color: #336BEA;
+  background-color: #336BEA !important;
   color: white !important;
 }
 
@@ -125,9 +129,9 @@ html, body, #app,#case {
 }
 
 // 不可点击
-.btn-c{
+.btn-c {
   background-color: #ccc;
-  color:rgba(96, 94, 124, .7);
+  color: rgba(96, 94, 124, .7);
   box-shadow: 1px 1px 18px rgba(0, 0, 0, .13);
 }
 

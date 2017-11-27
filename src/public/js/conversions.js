@@ -11,7 +11,7 @@ function conversions(data) {
             code:val.iata,  // 三字码
             initial:letter.fllLetter.substring(0,1), // 第一个字母
             airLvl:val.airLvl,  // 机场等级
-            iaco:val.iaco,
+            iaco:val.icao,
             cityCoordinateJ:val.cityCoordinateJ,
             cityCoordinateW:val.cityCoordinateW,
         })

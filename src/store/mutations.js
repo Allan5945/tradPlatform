@@ -16,7 +16,8 @@ const mutations = {
         state.close = !state.close;
     },
     [INITIALIZE](state,vl) {
-        state.airList = vl;
+        state.airList = vl.airListData;
+        state.cityList = vl.cityListData;
     },
     [MONODATA](state,vl) {
         if(state.demandList.type){
@@ -38,16 +39,18 @@ const mutations = {
         if(!state.demandList.type){
             state.demandList.type = true;
         }
-        switch (vl.t){
-            case 0:
-                state.demandList.hybridData = vl.v;
-                break;
-            case 1:
-                state.demandList.hybridPage = vl.v;
-                break;
-            case 2:
-                state.demandList.hybridData.list = state.demandList.hybridData.list.concat(vl.v);
-                break;
+        if(vl != ''){
+            switch (vl.t){
+                case 0:
+                    state.demandList.hybridData = vl.v;
+                    break;
+                case 1:
+                    state.demandList.hybridPage = vl.v;
+                    break;
+                case 2:
+                    state.demandList.hybridData.list = state.demandList.hybridData.list.concat(vl.v);
+                    break;
+            }
         }
     },
     [ROLE](state,vl) {

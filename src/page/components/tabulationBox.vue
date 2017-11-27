@@ -20,6 +20,7 @@
                 </div>
             </div>
         </div>
+        <div v-if="(renderData.length == 0)" class="no-data">无数据!</div>
     </div>
 </template>
 <script>
@@ -33,56 +34,63 @@
     import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
 
     export default {
-        data(){
-            return{
-                hidden:false,
-                set:''
+        data() {
+            return {
+                hidden: false,
+                set: ''
             }
         },
-        mounted:function () {
+        mounted: function () {
             // 更改提示框高度
-            window.onresize = ()=>{
-                if(this.set != ''){clearTimeout(this.set)};
-                this.set = setTimeout(()=>{this.resetWindow()},100);
+            window.onresize = () => {
+                if (this.set != '') {
+                    clearTimeout(this.set)
+                }
+                ;
+                this.set = setTimeout(() => {
+                    this.resetWindow()
+                }, 100);
             };
             this.resetWindow();
-            let tabulationBox =  document.getElementById('tabulationBox');
-            tabulationBox.addEventListener('scroll',(e)=> {
+            let tabulationBox = document.getElementById('tabulationBox');
+            tabulationBox.addEventListener('scroll', (e) => {
                 let z = 126 * this.renderData.length;
                 let b = Number(tabulationBox.style.height.split('px')[0]);
-                let x = (z-b)/1.2;
-                if(tabulationBox.scrollTop >= x){
-                    if(this.demandList.type && this.demandList.hybridPage < this.demandList.hybridData.pageCount){  // 混合数据
-                        this.$store.dispatch('hybridData', {v:(this.demandList.hybridPage + 1),t:1}).then(() => {
+                let x = (z - b) / 1.2;
+                if (tabulationBox.scrollTop >= x) {
+                    if (this.demandList.type && this.demandList.hybridPage < this.demandList.hybridData.pageCount) {  // 混合数据
+                        this.$store.dispatch('hybridData', {v: (this.demandList.hybridPage + 1), t: 1}).then(() => {
                             this.$ajax({
-                                url:"/getDemandsForCurrentEmployee",
+                                url: "/getDemandsForCurrentEmployee",
                                 method: 'post',
                                 headers: {
                                     'Content-type': 'application/x-www-form-urlencoded'
                                 },
                                 params: {
-                                    page:this.demandList.hybridPage
+                                    page: this.demandList.hybridPage
                                 }
-                            }) .then((response) => {
-                                this.$store.dispatch('hybridData',{v:response.data.list.list,t:2}).then(() => {});
+                            }).then((response) => {
+                                this.$store.dispatch('hybridData', {v: response.data.list.list, t: 2}).then(() => {
+                                });
                             })
                                 .catch((error) => {
                                     console.log(error);
                                 });
                         });
-                    }else if(!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount){ // 非混合数据
-                        this.$store.dispatch('monoData', {v:(this.demandList.monoPage + 1),t:1}).then(() => {
+                    } else if (!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount) { // 非混合数据
+                        this.$store.dispatch('monoData', {v: (this.demandList.monoPage + 1), t: 1}).then(() => {
                             this.$ajax({
-                                url:"/getDemandsForCurrentCheckedAirport",
+                                url: "/getDemandsForCurrentCheckedAirport",
                                 method: 'post',
                                 headers: {
                                     'Content-type': 'application/x-www-form-urlencoded'
                                 },
                                 params: {
-                                    page:this.demandList.monoPage
+                                    page: this.demandList.monoPage
                                 }
-                            }) .then((response) => {
-                                this.$store.dispatch('monoData',{v:response.data.list.list,t:2}).then(() => {});
+                            }).then((response) => {
+                                this.$store.dispatch('monoData', {v: response.data.list.list, t: 2}).then(() => {
+                                });
                             })
                                 .catch((error) => {
                                     console.log(error);
@@ -92,50 +100,52 @@
                 }
             });
         },
-        methods:{
-           resetWindow:function () {
-               let messageHead = 42;
-               let tabulationHead = 62;
-               let messageBox =  document.getElementById('message-box').offsetHeight;
-               let tabulation = document.getElementById('tabulation').offsetHeight;
-               if((messageBox - messageHead) < tabulation +10 ){
-                   let zh =messageBox - messageHead - tabulationHead;
-                   document.getElementById('tabulationBox').style.height = zh +'px';
-                   this.hidden = true;
-               }else{
-                   document.getElementById('tabulationBox').style.height = '';
-                   this.hidden = false;
-               }
-           }
+        methods: {
+            resetWindow: function () {
+                let messageHead = 42;
+                let tabulationHead = 62;
+                let messageBox = document.getElementById('message-box').offsetHeight;
+                let tabulation = document.getElementById('tabulation').offsetHeight;
+                if ((messageBox - messageHead) < tabulation + 10) {
+                    let zh = messageBox - messageHead - tabulationHead;
+                    document.getElementById('tabulationBox').style.height = zh + 'px';
+                    this.hidden = true;
+                } else {
+                    document.getElementById('tabulationBox').style.height = 'auto';
+                    this.hidden = false;
+                }
+            }
         },
-        updated:function () {
+        updated: function () {
             this.resetWindow();
         },
-        computed:{
+        computed: {
             ...vx.mapGetters([
                 'demandList',
                 'role'
             ]),
-            renderData:function () {
-                let d,a = [];
-                if(this.demandList.type){
+            renderData: function () {
+                let d, a = [];
+                if (this.demandList.type) {
                     d = this.demandList.hybridData.list;
-
-                }else{
+                } else {
                     d = this.demandList.monoData.list;
                 }
-                d.forEach((val)=>{
-                    let img ,name = [],tag;
-                    if(val.dpt != null){
+                d.forEach((val) => {
+                    let img, name = [], tag;
+                    if (val.dpt != null) {
                         name.push(val.dpt)
-                    };
-                    if(val.arrv != null){
+                    }
+                    ;
+                    if (val.arrv != null) {
                         name.push(val.arrv)
-                    };
-                    if(val.pst != null){
+                    }
+                    ;
+                    if (val.pst != null) {
                         name.push(val.pst)
-                    };
-                    switch (val.demandtype){
+                    }
+                    ;
+                    switch (val.demandtype) {
                         case "0":
                             img = ig0;
                             break;
@@ -145,8 +155,9 @@
                         case "2":
                             img = ig2;
                             break;
-                    };
-                    switch (val.demandprogress){
+                    }
+                    ;
+                    switch (val.demandprogress) {
                         case "0":
                             tag = tag0;
                             break;
@@ -164,8 +175,8 @@
                         img,
                         name,
                         tag,
-                        simpleDemand:val.simpleDemand,
-                        data:val
+                        simpleDemand: val.simpleDemand,
+                        data: val
                     })
                 });
                 return a;
@@ -174,35 +185,41 @@
     }
 </script>
 <style scoped lang="scss">
-    @keyframes mytext{
-        0%{
-            margin-left:0%;
+    @keyframes mytext {
+        0% {
+            margin-left: 0%;
         }
-        100%{
-            margin-left:-110%;
+        100% {
+            margin-left: -110%;
         }
     }
-    .class-item0:after{
+    .no-data{
+        color: #ff3c28;
+    }
+    .class-item0:after {
         position: absolute;
         /*background: url('./../../static/img/hx.png') no-repeat;*/
         left: 0px;
         top: 0px;
     }
-    .tabulationBoxH{
+
+    .tabulationBoxH {
         overflow-y: scroll;
     }
-    .rolling:hover{
+
+    .rolling:hover {
         animation: mytext 1.5s linear infinite;
     }
-    .tabulation-mes{
-        >div{
-            >span{
+
+    .tabulation-mes {
+        > div {
+            > span {
                 display: inline-block;
                 padding-bottom: 8px;
-                color: rgba(96,94,124,.7);
+                color: rgba(96, 94, 124, .7);
                 font-size: 1.2rem;
             }
-            >div{
+            > div {
                 font-size: 1.3em;
                 color: #605E7C;
             }
@@ -211,24 +228,25 @@
         flex-flow: row nowrap;
         justify-content: space-between;
     }
-    .tabulation-item{
+
+    .tabulation-item {
         height: 40px;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
         width: 100%;
         position: relative;
-        >img{
+        > img {
             position: absolute;
             width: 15px;
             /*height: 23px;*/
             left: -38px;
             top: -2px;
         }
-        >div:first-of-type{
+        > div:first-of-type {
             cursor: pointer;
             display: flex;
-            >div{
+            > div {
                 font-size: 1.3rem !important;
                 white-space: nowrap;
                 margin: 0;
@@ -236,7 +254,7 @@
                 color: #605E7C;
                 display: flex;
                 flex-flow: row nowrap;
-                >div{
+                > div {
                     width: 54px;
                     overflow: hidden;
                     letter-spacing: .5px;
@@ -244,14 +262,15 @@
                 }
             }
         }
-        >div:last-of-type{
+        > div:last-of-type {
 
         }
     }
-    .tabulation-box{
+
+    .tabulation-box {
         padding: 0 20px;
         position: relative;
-        >div{
+        > div {
             height: 105px;
             padding: 20px 0 0 40px;
             border-bottom: 1px solid #f3f3f3;

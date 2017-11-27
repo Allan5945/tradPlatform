@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import {Radio } from 'element-ui'
 
-import airMes from './static/js/airMes'
+import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
 
 
@@ -13,9 +13,10 @@ import store from './store/'
 import './public/css/all.scss'
 import './static/css/animate.min.css'
 // import './public/js/console'
-Vue.prototype.$ajax = axios;
-Vue.prototype.$airMes = airMes;
-Vue.prototype.$jsonp = jsonp;
+Vue.prototype.$ajax = axios;        // 扩展axios 请求数据
+Vue.prototype.$airMes = airMes;   // 扩展机场转换方法
+Vue.prototype.$cityMes = cityMes;  // 扩展城市转换方法
+Vue.prototype.$jsonp = jsonp;    // 扩展jsonp请求方法
 
 Vue.use(Radio);
 Vue.use(VueRouter);

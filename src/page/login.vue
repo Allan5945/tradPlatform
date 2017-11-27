@@ -17,7 +17,7 @@
                 method: 'post',
                 url: '/login',
                 params:{
-                    username:'TGOadmin',
+                    username:'TGOadmin',//BKadmin*权限0 //KYadmin*权限1 //TGOadmin*权限2
                     password:"admin"
                 },
                 headers: {
@@ -31,7 +31,6 @@
                     }else{
                         alert('错了')
                     }
-
                 })
                 .catch((error) => {
                         console.log(error);
