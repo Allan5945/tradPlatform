@@ -9,7 +9,7 @@
                 成都-北京-上海航线需求
             </div>
             <div class="bottom">
-                <span>创建于2017.12.12</span><span>已有两位用户发起意向</span>
+                <span>创建于2017.12.12</span><span>已有2位用户发起意向</span>
             </div>
         </div>
         <div class="third item-container">
@@ -26,7 +26,7 @@
             <div class="pass item">
                 <div class="item-a">经停机场</div>
                 <div class="item-b">北京南苑</div>
-                <div class="item-c">&nbsp;</div>
+                <div class="item-c">&nbsp;<!--此处有空格--></div>
                 <div class="item-d">出港资源</div>
                 <div class="item-e">带协调</div>
             </div>
@@ -105,6 +105,7 @@
         position: absolute;
         top: 10px;
         right: 10px;
+        padding-bottom: 100px;
         width: 600px;
         min-height: 700px;
         background: white;
@@ -193,11 +194,12 @@
         }
     }
     .fifth {
-        position: fixed;
+        position: absolute;
         left: 20px;
         bottom: 0;
         display: flex;
         justify-content: center;
+        margin: 0 auto;
         width: 560px;
         height: 100px;
         border-top: 2px solid;

@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="container-top">
-                <span class="title">请填写完整方案</span>
+                <span class="title">请确认以下方案</span>
                 <span class="close-icon">&times;</span>
             </div>
             <div class="bg-color must">
@@ -332,7 +332,7 @@
                     </div>
                 </div>
                 <div class="sixth">
-                    <button class="btn-b btn-blue" @click="submitData">提交意向</button>
+                    <button class="btn-b btn-blue" @click="submitData">确认选定该意向</button>
                     <button class="btn-c btn-cancel">取消</button>
                 </div>
             </div>
