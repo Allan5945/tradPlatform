@@ -3,7 +3,7 @@
         <div class="container">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
-                <span class="close-icon">&times;</span>
+                <span class="close-icon" @click="closeAlWrite">&times;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -332,8 +332,8 @@
                     </div>
                 </div>
                 <div class="sixth">
-                    <button class="btn-b btn-blue" @click="submitData">提交意向</button>
-                    <button class="btn-c btn-cancel">取消</button>
+                    <button class="btn-b btn-blue" @click="submitData(),closeAlWrite()">提交意向</button>
+                    <button class="btn-c btn-cancel" @click="closeAlWrite">取消</button>
                 </div>
             </div>
         </div>
@@ -446,7 +446,7 @@
         methods: {
             //发送数据
             submitData: function () {
-                let sendData = {};
+                /*let sendData = {};
                 sendData.contact = this.user;
                 sendData.iHome = this.phoneNum;
                 sendData.dpt = this.firArea;
@@ -466,8 +466,9 @@
                 sendData.dptAcceptnearairport = this.dptAcceptnearairport;
                 sendData.pstAcceptnearairport = this.pstAcceptnearairport;
                 sendData.arrvAcceptnearairport = this.arrvAcceptnearairport;
-                console.info(sendData);
-                this.$ajax({
+                console.info(sendData);*/
+
+                /*this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
                     headers: {
@@ -482,13 +483,17 @@
                     }
                 }) .then((response) => {
                     console.info(response.data)
-                    /*response.data.list.list.forEach((item)=>{
+                    response.data.list.list.forEach((item)=>{
                         this.airType.push(item.aircrfttyp);
-                    })*/
+                    })
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
-                });
+                });*/
+                alert(1)
+            },
+            closeAlWrite: function () {
+                this.$emit('close-alWrite',false);
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -995,7 +1000,7 @@
     }
     /*********/
     .wrapper {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         display: flex;
@@ -1051,6 +1056,7 @@
             height: 22px;
             border: 1px solid gray;
             border-radius: 100%;
+            cursor: pointer;
         }
     }
 

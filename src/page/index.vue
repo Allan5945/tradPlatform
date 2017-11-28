@@ -6,11 +6,11 @@
         <tagIcon></tagIcon>
         <messageBox></messageBox>-->
         <!--<airlineReq></airlineReq>-->
-        <airlineDetail></airlineDetail>
+        <!--<airlineDetail></airlineDetail>-->
         <!--<airlineWrite></airlineWrite>-->
         <!--<airlineDetailMine></airlineDetailMine>-->
         <!--<airlinePay></airlinePay>-->
-        <!--<airlineDetailPayAfter></airlineDetailPayAfter>-->
+        <airlineDetailPayAfter></airlineDetailPayAfter>
         <!--<airlineAffirm></airlineAffirm>-->
         <!--<airlineDelegation></airlineDelegation>-->
     </div>
