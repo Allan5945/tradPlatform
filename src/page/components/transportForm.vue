@@ -126,7 +126,7 @@
             </div>
             <div class="direction t-radio" style="position:relative;">
                 <input type="text" v-show="this.post == 'type3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
-                <div class="history" v-show="this.post == 'type3'" style="top:-6px;left:2px;line-height:26px;">
+                <div class="history" v-show="this.post == 'type3'" style="top:-5px;left:2px;line-height:26px;">
                     <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
                 </div>
                 <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
@@ -384,6 +384,9 @@
         outline:none;
         border: 0;
         color: #605E7C;
+        font-size:1.2rem;
+        box-sizing:border-box;
+        padding-left:5px;
         border-bottom:1px solid rgba(151,151,151,.3);
     }
     .t-form{
@@ -465,8 +468,8 @@
         }
         .num{
             position:absolute;
-            right:-1px;
-            top:24px;
+            right:2px;
+            top:20px;
         }
     }
     .get-time .time-btn{
@@ -623,7 +626,7 @@
         >span{
             position:absolute;
             right:0;
-            top:24px;
+            top:20px;
         }
     }
 
@@ -670,7 +673,8 @@
     .radio-box .selected .time-table{
         position: absolute;
         height:210px;
-        width: 45px;
+        width: 53px;
+        border:0;
         overflow: hidden;
         overflow-y: scroll;
         z-index: 1;
@@ -689,7 +693,7 @@
     }
     .time-start{
         top:26px;
-        left:-1px;
+        left:-5px;
     }
     .time-end{
         top:26px;
@@ -712,7 +716,7 @@
     }
     .history{
         position:absolute;
-        top:20px;
+        top:18px;
         right:-15px;
         width:180px;
         display:flex;

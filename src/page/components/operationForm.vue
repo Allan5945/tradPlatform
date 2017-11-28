@@ -31,12 +31,16 @@
                 </div>
             </div>
             <div class="form-box pad">
-                <div class="t-title">小时成本</div><input type="text" placeholder="填写举例：3.5">
-                <span>元</span>
+                    <div class="t-title">小时成本</div>
+                    <div class="t-input">
+                        <input type="text" placeholder="填写举例：3.5">
+                        <span>元</span>
+                </div>
             </div>
             <div class="form-box tips">
-                <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
-                <span class="num"><span >{{num}}</span>/35</span>
+                <div class="t-title">其他说明</div>
+                <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
+                <div class="count"><span >{{countNum}}</span>/35</div>
             </div>
         </div>
         <div class="t-btn">
@@ -99,7 +103,7 @@
             },
         },
         computed:{
-            num: function(){
+            countNum: function(){
                 return this.tip.length <= 35? this.tip.length: 35;
             }
         },
@@ -118,7 +122,10 @@
     input {
         outline:none;
         border: 0;
+        font-size:1.2rem;
         color: #605E7C;
+        box-sizing:border-box;
+        padding-left:5px;
         border-bottom:1px solid rgba(151,151,151,.3);
     }
     .agent-form{
@@ -164,6 +171,15 @@
             width:180px;
             height:26px;
             background-color: #FBFBFB;
+        }
+        .t-input{
+            width:180px;
+            border-bottom:1px solid rgba(151,151,151,.3);
+            >input{
+                width:164px;
+                background-color: #FBFBFB;
+                border:0;
+            }
         }
     }
     .post-til{
@@ -285,9 +301,9 @@
       height:26px;
       padding:17px 0;
     }
-    .num {
+    .count {
         position:absolute;
-        top:20px;
+        top:18px;
         right:0;
     }
     .num-list{

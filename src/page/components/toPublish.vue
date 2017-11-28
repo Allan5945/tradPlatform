@@ -9,10 +9,10 @@
                <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
            </div>
         </div>
-        <transportForm v-if='this.showType== 1 '></transportForm>
-        <operationForm v-if='this.showType== 2 '></operationForm>
-        <airlineReq v-else-if='this.showType== 3'></airlineReq>
-        <agentTransForm v-else-if='this.showType== 4'></agentTransForm>
+        <transportForm v-if="this.showType== 1" ></transportForm>
+        <operationForm v-else-if="this.showType== 2" ></operationForm>
+        <airlineReq v-else-if="this.showType== 3"></airlineReq>
+        <agentTransForm v-else-if="this.showType== 4"></agentTransForm>
 
     </div>
 </template>

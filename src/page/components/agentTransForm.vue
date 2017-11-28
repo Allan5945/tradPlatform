@@ -343,7 +343,10 @@
     input {
         outline:none;
         border: 0;
+        font-size:1.2rem;
         color: #605E7C;
+        box-sizing:border-box;
+        padding-left:5px;
         border-bottom:1px solid rgba(151,151,151,.3);
     }
     .t-form{
@@ -405,7 +408,6 @@
         padding:20px 0 34px 0;
         >input{
             width:138px;
-            height:26px;
         }
         >span{
             dispaly:inline-block;
@@ -425,8 +427,8 @@
         }
         .num{
             position:absolute;
-            right:-1px;
-            top:24px;
+            right:2px;
+            top:21px;
         }
     }
     .get-time .time-btn{
@@ -563,7 +565,7 @@
         >span{
             position:absolute;
             right:0;
-            top:24px;
+            top:21px;
         }
     }
 
@@ -610,7 +612,8 @@
     .radio-box .selected .time-table{
         position: absolute;
         height:210px;
-        width: 45px;
+        width: 53px;
+        border:0;
         overflow: hidden;
         overflow-y: scroll;
         z-index: 1;
@@ -629,7 +632,7 @@
     }
     .time-start{
         top:26px;
-        left:-1px;
+        left:-5px;
     }
     .time-end{
         top:26px;
@@ -652,7 +655,7 @@
     }
     .history{
         position:absolute;
-        top:20px;
+        top:18px;
         right:-15px;
         width:180px;
         display:flex;

@@ -5,6 +5,7 @@ import {
     HYBRIDDATA,
     MONODATA,
     ROLE,
+    TRANSDETAIL
 } from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -52,6 +53,10 @@ const mutations = {
     },
     [ROLE](state,vl) {
         state.role = vl;
+    },
+    [TRANSDETAIL](state,vl){
+        state.transDetail.transShow = true;
+        state.transDetail.id = vl;
     }
 };
 export default {

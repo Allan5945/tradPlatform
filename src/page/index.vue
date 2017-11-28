@@ -2,9 +2,17 @@
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
         <navigation @toShow="toShow"></navigation>
-        <toPublish v-show="show" @toShow="toShow"></toPublish>
+        <toPublish v-if="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
+
+        <transition name="dialog">
+            <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
+        </transition>
+        <needDetail></needDetail>
+        <!-- <myPlan></myplan> -->
+        <!-- <intentForm></intentForm> -->
+        <myIntention></myintention>
     </div>
 </template>
 
@@ -17,18 +25,28 @@
     import messageBox from './../page/components/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import conversions from './../public/js/conversions'
+    import needDetail from './../page/components/trans_detail/needDetail.vue'
+    import intentForm from './../page/components/trans_detail/intentForm.vue'
+    import myPlan from './../page/components/trans_detail/myPlan.vue'
+    import transDialog from './../page/components/trans_detail/dialog.vue'
+    import myIntention from './../page/components/trans_detail/myIntention.vue'
+    
+
 
     export default {
         data() {
             return {
                 name: 1,
                 show: false,
+                dialog:true,
+                transShow:false,
                 loadingData: {
                     airList: false,
                     demands: false
                 },
                 allDot: '',
-                test: 555
+                test: 555,
+                demandId :''
             }
         },
         methods: {
@@ -38,7 +56,19 @@
             ]),
             toShow() {
                 this.show = !this.show;
-            }
+            },
+            sureDialog(){
+               /* const self = this;
+                switch (self.dialog_type){
+                    case 'clear':
+                        self.$store.dispatch('clearevent');
+                        break;
+                    case 'del':
+                        self.$store.dispatch('delevent',self.del_info);
+                        break;
+                }
+                this.dialog = false;*/
+            },
         },
         beforeMount:function () {
             if(this.role == null)window.location.href = '#/login'
@@ -110,7 +140,21 @@
             navigation,
             tagIcon,
             messageBox,
-            toPublish
+            toPublish,
+            needDetail,
+            intentForm,
+            myPlan,
+            transDialog,
+            myIntention
         }
     }
 </script>
+
+<style lang="scss">
+    .dialog-enter-active, .dialog-leave-active {
+     transition: opacity .3s;
+}
+.dialog-enter, .dialog-leave-to{
+    opacity: 0;
+}
+</style>
