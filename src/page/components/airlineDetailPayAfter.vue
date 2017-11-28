@@ -306,6 +306,8 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
+
     import airlineWrite from './airlineWrite.vue'
     export default {
         data() {
@@ -315,9 +317,10 @@
                 thirdShow: false,
                 fourthShow: false,
                 airlineWriteShow: false, //组件“请填写完整方案”显示
+                showCode: '', //0,1,2,3对应firstShow，secondShow，thirdShow，fourthShow
 
                 /**************参数对应的模板***********/
-                user: '', //联系人
+                /*user: '', //联系人
                 phoneNum: '', //电话号码
                 firArea: '', //始发地 1的意向区域
                 secArea: '', //经停地 2的意向区域
@@ -338,7 +341,6 @@
                 airTypeShow: false,
                 directionPublicShow: false,//点击定向发布显示
                 directionPublicCity: ['北京','上海','杭州'],
-
                 inputRadio: '&#xe622;',
                 startTime1Show: '00:00',
                 endTime1Show: '00:00',
@@ -350,33 +352,30 @@
                 space2Show: '请先选择经停点类型（选填）',
                 space3Show: '请先选择到达点类型',
                 publicwayStrCode: 0,//公开方式
-
                 calendarInitDay1: '', //日历
                 calendarInitDay2: '',
                 calendarInitDay3: '',
                 calendarInitDay4: '',
                 calendarShow1: false,
                 calendarShow2: false,
-
                 space1ShowTitle: '始发点类型',
                 space2ShowTitle: '经停点类型',
                 space3ShowTitle: '到达点类型',
-
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
-
                 scheduleShow: '选择班期类型',
                 subsidyShow: '选择补贴类型',
                 timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','按人头']
+                subsidyList: ['保底','定补','按人头']*/
             }
         },
         mounted(){
             this.initData();
             this.show();
         },
+        computed: {},
         methods: {
             initData: function () {
                 this.$ajax({
@@ -389,14 +388,23 @@
                         demandId: 60
                     }
                 }) .then((response) => {
-                    console.info(response.data);
-
-                }) .catch((error) => {
-                    console.log(error);
-                });
+                    console.info(response.data.data)
+//                    this.$store.dispatch('airlineData', response.data.data).then(() => {});
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             },
             show: function () {
-                this.firstShow = true;
+                if(this.showCode == 0) {
+                    this.firstShow = true;
+                }if(this.showCode == 1) {
+//                    this.firstShow = true;
+                }if(this.showCode == 2) {
+//                    this.firstShow = true;
+                }if(this.showCode == 3) {
+//                    this.firstShow = true;
+                }
             },
             //点击“我有意向”，组件“请填写完整方案”显示
             airlineWriteFn: function () {
@@ -405,9 +413,10 @@
             closeAlWriteFn: function (index) {
                 this.airlineWriteShow = index;
             },
+
             //此方法只是参考参数的名字，无其他用处
             submitData: function () {
-                let sendData = {};
+                /*let sendData = {};
                 sendData.contact = this.user;
                 sendData.iHome = this.phoneNum;
                 sendData.dpt = this.firArea;
@@ -426,8 +435,8 @@
                 sendData.publicwayStr = this.publicwayStrCode;//公开方式
                 sendData.dptAcceptnearairport = this.dptAcceptnearairport;
                 sendData.pstAcceptnearairport = this.pstAcceptnearairport;
-                sendData.arrvAcceptnearairport = this.arrvAcceptnearairport;
-            }
+                sendData.arrvAcceptnearairport = this.arrvAcceptnearairport;*/
+            },
         },
         components: {
             airlineWrite
