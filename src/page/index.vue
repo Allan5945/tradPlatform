@@ -2,7 +2,7 @@
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
         <navigation @toShow="toShow"></navigation>
-        <toPublish v-show="show" @toShow="toShow"></toPublish>
+        <toPublish v-show="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
     </div>
