@@ -6,12 +6,13 @@
         <tagIcon></tagIcon>
         <messageBox></messageBox>-->
         <!--<airlineReq></airlineReq>-->
-        <!--<airlineDetail></airlineDetail>-->
+        <airlineDetail></airlineDetail>
         <!--<airlineWrite></airlineWrite>-->
         <!--<airlineDetailMine></airlineDetailMine>-->
         <!--<airlinePay></airlinePay>-->
         <!--<airlineDetailPayAfter></airlineDetailPayAfter>-->
-        <airlineAffirm></airlineAffirm>
+        <!--<airlineAffirm></airlineAffirm>-->
+        <!--<airlineDelegation></airlineDelegation>-->
     </div>
 </template>
 
@@ -32,6 +33,7 @@
     import airlinePay from './../page/components/airlinePay.vue'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import airlineAffirm from './../page/components/airlineAffirm.vue'
+    import airlineDelegation from './../page/components/airlineDelegation.vue'
 
     export default {
         data() {
@@ -128,7 +130,8 @@
             airlineDetailMine,
             airlinePay,
             airlineDetailPayAfter,
-            airlineAffirm
+            airlineAffirm,
+            airlineDelegation
         }
     }
 </script>

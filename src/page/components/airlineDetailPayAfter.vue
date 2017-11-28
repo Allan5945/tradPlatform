@@ -183,6 +183,10 @@
                 <div class="item-fifth">
                     <button class="btn btn-b">选定</button>
                 </div>
+                <div class="item-sixth">
+                    <button class="btn btn-w btn-change">已选定（点击此次可再次编译）</button>
+                    <button class="btn btn-w btn-revocation">撤销选定</button>
+                </div>
             </div>
             <div class="eight-item">
                 <div class="item-first">
@@ -592,13 +596,19 @@
             }
             .item-sixth {
                 position: absolute;
-                left: 150px;
+                left: 100px;
                 bottom: 30px;
                 display: flex;
                 height: 28px;
                 >.btn-w {
-                    width: 250px;
                     border-radius: 20px;
+                }
+                .btn-change {
+                    margin-right: 10px;
+                    width: 250px;
+                }
+                .btn-revocation {
+                    width: 100px;
                 }
             }
         }

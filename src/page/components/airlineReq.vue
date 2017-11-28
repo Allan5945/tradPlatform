@@ -573,9 +573,7 @@
                     this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = false;
                 }
-                else{
-
-                }
+                else{}
             },
             // 意向机场/意向区域，input失去焦点
             airportBlurFn1: function () {
@@ -1005,7 +1003,7 @@
         position: absolute;
         top: 100px;
         right: 100px;
-        padding: 20px 20px 44px 20px;
+        padding: 20px 20px 0 20px;
         width: 580px;
         max-height: 630px;
         overflow-y: scroll;
@@ -1021,7 +1019,7 @@
         width: 7px;
     }
     .container::-webkit-scrollbar-thumb {
-        height: 56px;
+        /*height: 56px;*/
         background: #D8D8D8;
         border-radius: 4px;
     }
@@ -1299,6 +1297,7 @@
     .sixth {
         display: flex;
         justify-content: flex-end;
+        margin-bottom: 44px;
         button {
             padding: 9px 20px;
             outline: none;

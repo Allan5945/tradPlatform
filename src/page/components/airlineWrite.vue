@@ -1010,7 +1010,7 @@
         /*position: absolute;
         top: 100px;
         right: 100px;*/
-        padding: 20px 20px 44px 20px;
+        padding: 20px 20px 0 20px;
         width: 580px;
         max-height: 556px;
         overflow-y: scroll;
@@ -1331,6 +1331,7 @@
 
     .sixth {
         display: flex;
+        margin-bottom: 44px;
         /*justify-content: center;*/
         button {
             padding: 9px 0;
