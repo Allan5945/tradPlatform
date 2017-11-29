@@ -188,21 +188,38 @@
 
                 a.forEach((v)=>{
                     let sr = {
-                        city:true,
-                        flyGrade:true,
+                        city:false,
+                        flyGrade:false,
                         airType:true,
                         subsidyPolicy:true,
                     };
                     let cy = this.demandList.conditions.city.s;
                     if(cy.length > 0){
-                        if(v.data.dptCt != null && v.data.dptCt != '' && cy.indexOf(v.data.dptCt) == -1){
-                            sr.city = false;
-                        }else if(v.data.arrvCt != null && v.data.arrvCt != '' && cy.indexOf(v.data.arrvCt) == -1){
-                            sr.city = false;
-                        }else if(v.data.pst != null && v.data.pst != '' && cy.indexOf(v.data.pst) == -1){
-                            sr.city = false;
-                        };
+                        if(
+                            (v.data.dptCt != null && v.data.dptCt != '' && cy.indexOf(v.data.dptCt) != -1) ||
+                            (v.data.arrvCt != null && v.data.arrvCt != '' && cy.indexOf(v.data.arrvCt) != -1)||
+                            (v.data.pst != null && v.data.pst != '' && cy.indexOf(v.data.pst) != -1)
+                        ){
+                            sr.city = true;
+                        }
+                    }else{
+                        sr.city = true;
                     }
+
+                    let flyGrade = this.demandList.conditions.flyGrade.s;
+
+                    if(flyGrade.length > 0){
+                        if(
+                            (v.data.dptFltLvl != null && v.data.dptFltLvl != '' && flyGrade.indexOf(v.data.dptFltLvl) != -1) ||
+                            (v.data.arrvFltLvl != null && v.data.arrvFltLvl != '' && flyGrade.indexOf(v.data.arrvFltLvl) != -1)||
+                            (v.data.pstFltLvl != null && v.data.pstFltLvl != '' && flyGrade.indexOf(v.data.pstFltLvl) != -1)
+                        ){
+                            sr.city = true;
+                        }
+                    }else{
+                        sr.flyGrade = true;
+                    }
+
                     let airType = v.data.aircrfttyp;
                     if(airType != null && this.demandList.conditions.airType != '' && airType != this.demandList.conditions.airType){
                         sr.airType = false;
@@ -290,12 +307,12 @@
                 font-size: 1.3rem !important;
                 white-space: nowrap;
                 margin: 0;
-                width: 60px;
+                max-width: 60px;
                 color: #605E7C;
                 display: flex;
                 flex-flow: row nowrap;
                 > div {
-                    width: 54px;
+                    max-width: 54px;
                     overflow: hidden;
                     letter-spacing: .5px;
                     height: 50px;

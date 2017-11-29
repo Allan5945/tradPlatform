@@ -1,6 +1,6 @@
 <template>
     <div class="history-list popup-x1">
-        <div @click="res(key)" v-for="(key,i) in list"><span class="icon">&#xe646;</span>{{key.airportName.replace(/"/g,'')}}</div>
+        <div @click="res(key)" v-for="(key,i) in list"><span class="icon">&#xe646;</span>{{key.name}}</div>
         <div class="clear-history">
             <div class="btn btn-w" @click="clear">清空历史</div>
         </div>
@@ -15,10 +15,7 @@
             }
         },
         mounted:function () {
-            let list = localStorage.getItem('hisyData').split(',');
-            list.forEach((v)=>{
-                this.list.push(this.$airMes(this.airList,v))
-            })
+            this.list = JSON.parse(localStorage.getItem('hisyData'));
         },
         methods:{
             res:function (vl) {

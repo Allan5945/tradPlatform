@@ -94,7 +94,7 @@
             },
             lose: function () {
                 setTimeout(() => {
-                    if (this.$airMes(this.airList, this.searchText) == '') {
+                    if (this.$airMes(this.airList,this.searchText) == '' && this.$cityMes(this.cityList,this.searchText) == '') {
                         this.searchText = '';
                     }
                 }, 200);
@@ -126,8 +126,8 @@
             },
             reshsy: function (vl) {
                 this.openList('m');
-                this.searchText = vl.airportName;
-                this.qyCode = vl.code;
+                this.searchText = vl.name;
+                this.qyCode = vl;
             },
             clear: function () {
                 this.openHisy = false;
@@ -153,15 +153,16 @@
 
                     this.searchSet = true;
                     this.$ajax({
-                        url: "/getDemandsForCurrentCheckedAirport",
+                        url: "/getDemandsForCurrentCheckedCity",
                         method: 'post',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         params: {
-                            itia: this.qyCode,
+                            itia: this.qyCode.code,
                             page: 1,
-                            type: 0
+                            type: 0,
+                            itiaType:this.qyCode.type
                         }
                     }).then((response) => {
                         if (response.data) {
@@ -189,7 +190,7 @@
             resData: function (data) {
                 this.isSearch = false;
                 this.searchText = data.name;
-                this.qyCode = data.code;
+                this.qyCode = data;
             },
             openSearch: function () {
                 this.search = true;
@@ -215,7 +216,8 @@
             ...vx.mapGetters([
                 'close',
                 'demandList',
-                'airList'
+                'airList',
+                'cityList'
             ]),
             renderData: function () {
                 return this.demandList.hybridData.list.length;
@@ -293,8 +295,8 @@
 
     .screen-hs {
         position: absolute;
-        top: 25px;
-        right: -50px;
+        top:33px;
+        left: 5px;
         z-index: 11;
     }
 

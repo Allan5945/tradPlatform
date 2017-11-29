@@ -61,80 +61,81 @@
     export default {
         data() {
             return {
-                select:{
+                select: {
                     options: [
-                        { text: 'A320', value: 'A320' },
-                        { text: 'A330', value: 'A330' },
-                        { text: 'B737NG', value: 'B737NG' },
-                        { text: 'E190/195', value: 'E190/195' },
-                        { text: 'CRJ900', value: 'CRJ900' },
-                        { text: 'MA60', value: 'MA60' },
-                        { text: 'B787', value: 'B787' },
-                        { text: 'B777', value: 'B777' },
-                        { text: 'B767', value: 'B767' },
-                        { text: 'E145', value: 'E145' },
-                        { text: 'B757', value: 'B757' },
-                        { text: 'B747', value: 'B747' },
-                        { text: 'ARJ21', value: 'ARJ21' },
-                        { text: '', value: '' }
+                        {text: 'A320', value: 'A320'},
+                        {text: 'A330', value: 'A330'},
+                        {text: 'B737NG', value: 'B737NG'},
+                        {text: 'E190/195', value: 'E190/195'},
+                        {text: 'CRJ900', value: 'CRJ900'},
+                        {text: 'MA60', value: 'MA60'},
+                        {text: 'B787', value: 'B787'},
+                        {text: 'B777', value: 'B777'},
+                        {text: 'B767', value: 'B767'},
+                        {text: 'E145', value: 'E145'},
+                        {text: 'B757', value: 'B757'},
+                        {text: 'B747', value: 'B747'},
+                        {text: 'ARJ21', value: 'ARJ21'},
+                        {text: '', value: ''}
                     ]
                 },
-                searchText:'',
-                isSearch:false,
+                searchText: '',
+                isSearch: false,
             }
         },
-        watch:{
-            selected:function () {
-                this.$store.dispatch('setAirType',this.selected).then(() => {
+        watch: {
+            selected: function () {
+                this.$store.dispatch('setAirType', this.selected).then(() => {
                 });
             }
         },
-        methods:{
+        methods: {
             ...vx.mapActions([
                 'openScreen'
             ]),
-            removeCity:function (key) {
-                this.$store.dispatch('setCity',{v:key.cityIcao,t:false}).then(() => {
+            removeCity: function (key) {
+                this.$store.dispatch('setCity', {v: key.cityIcao, t: false}).then(() => {
                 });
             },
-            clearSet:function () {
-                this.$store.dispatch('setCity',{v:'$&',t:false}).then(() => {
+            clearSet: function () {
+                this.$store.dispatch('setCity', {v: '$&', t: false}).then(() => {
                 });
             },
-            screenHs:function (t) {
-                this.$emit('screenHs',t);
+            screenHs: function (t) {
+                this.$emit('screenHs', t);
             },
-            reqFocus:function(){
+            reqFocus: function () {
                 this.isSearch = true;
             },
-            resData:function (data) {
+            resData: function (data) {
                 this.searchText = data.name;
                 this.isSearch = false;
             }
         },
-        mounted:function () {
+        mounted: function () {
         },
         components: {
             check,
             cityS,
             check1,
         },
-        computed:{
+        computed: {
             ...vx.mapGetters([
                 'role',
                 'demandList',
                 'cityList'
             ]),
-            roles:function () {
+            roles: function () {
                 let r = {};
-                if(this.role != null){
-                };
+                if (this.role != null) {
+                }
+                ;
                 return r;
             },
-            cityCuped:function () {
+            cityCuped: function () {
                 let a = [];
-                this.demandList.conditions.city.s.forEach((v)=>{
-                    a.push(this.$cityMes(this.cityList,v));
+                this.demandList.conditions.city.s.forEach((v) => {
+                    a.push(this.$cityMes(this.cityList, v));
                 });
                 return a;
             }
@@ -142,7 +143,7 @@
     }
 </script>
 <style lang="scss" scoped>
-    .city-item{
+    .city-item {
         position: relative;
         background-color: #ededed;
         color: #3c78ff !important;
@@ -152,7 +153,7 @@
         text-align: center;
         line-height: 20px;
         border-radius: 15px;
-        margin: 0 5px 8px 0 ;
+        margin: 0 5px 8px 0;
         letter-spacing: .2px;
         color: rgba(96, 94, 124, 0.5);
         cursor: pointer;
@@ -164,7 +165,8 @@
         justify-content: space-between;
         align-items: center;
     }
-    .search-ed{
+
+    .search-ed {
         font-family: iconfont;
         font-size: 1.2rem;
         color: #3c78ff;
@@ -180,31 +182,36 @@
         border-radius: 50%;
         margin-left: 8px;
     }
-    .sc-grade-s{
-        appearance:none;
-        -moz-appearance:none;
-        -webkit-appearance:none;
+
+    .sc-grade-s {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
         border-radius: 4px;
         opacity: 1;
         border: 1px solid rgba(0, 0, 0, 0.05);
-        padding:0 11px;
+        padding: 0 11px;
         height: 25px;
-        color:#605E7C ;
+        color: #605E7C;
         font-size: 1.2rem;
-        width: 100px;
+        width: 164px;
         background-image: url("./../../static/img/sbottom.png");
         background-repeat: no-repeat;
         background-size: 22px;
-        background-position: 72px 0;
-        >option{
+        background-position: 135px 0;
+        > option {
             background-color: white;
-            color:#605E7C ;
+            color: #605E7C;
             height: 25px;
             padding: 50px 0;
         }
     }
+
     /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
-    select::-ms-expand { display: none; }
+    select::-ms-expand {
+        display: none;
+    }
+
     .aisx {
         position: absolute;
         top: 25px;
@@ -214,23 +221,24 @@
         overflow-y: scroll;
         z-index: 10;
     }
-    .btn-box{
+
+    .btn-box {
         display: flex;
-        flex-flow:row nowrap;
-        justify-content:flex-end;
-        padding:35px 20px 20px 20px;
-        >div:nth-of-type(1){
-            color: rgba(96,94,124,.6);
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        padding: 35px 20px 20px 20px;
+        > div:nth-of-type(1) {
+            color: rgba(96, 94, 124, .6);
             margin-right: 7px;
             box-shadow: none;
             border: 1px solid #d8d8d8;
             background-color: white;
         }
-        >div:nth-of-type(2){
+        > div:nth-of-type(2) {
             color: white;
         }
-        >div{
-            letter-spacing:.2px;
+        > div {
+            letter-spacing: .2px;
             height: 30px;
             width: 70px;
             border-radius: 20px;
@@ -249,24 +257,27 @@
         justify-content: space-between;
         padding: 0 20px;
     }
-    .sc-grade-x{
+
+    .sc-grade-x {
         display: flex;
         flex-flow: row wrap;
         align-items: center;
         padding: 10px 10px 10px 43px;
     }
+
     .sc-grade-d {
         flex-flow: column nowrap;
         display: flex;
         align-items: left;
         justify-content: center;
-        padding: 8px 20px 0 20px ;
+        padding: 12px 20px 10px 20px;
     }
 
     .sc-grade-t {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
+        white-space: nowrap;
         > span:first-of-type {
             font-family: iconfont;
             font-size: 2rem;
@@ -285,13 +296,14 @@
         position: relative;
         > input {
             border: none;
-            border-bottom: 2px solid #ececec;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             font-size: 1.2rem;
             width: 160px;
             outline: none;
             padding-left: 5px;
         }
     }
+
     .sc-t {
         display: flex;
         flex-flow: row nowrap;
@@ -312,7 +324,7 @@
             text-align: center;
             line-height: 19px;
             border-radius: 100%;
-            color: rgba(96,94,124,.6);
+            color: rgba(96, 94, 124, .6);
             font-size: 17px;
             cursor: pointer;
             box-shadow: none;
@@ -321,7 +333,7 @@
 
     .sc-box {
         width: 284px;
-        max-height: 430px;
+        max-height: 470px;
         overflow-x: hidden;
         overflow-y: scroll;
     }

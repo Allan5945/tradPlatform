@@ -44,7 +44,8 @@
                                 testName:aName,
                                 testCode:val.code,
                                 code:val.code,
-                                name:val.airportName
+                                name:val.airportName,
+                                type:0
                             });
                         }else if(code.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
@@ -53,7 +54,8 @@
                                 testName:val.airportName,
                                 testCode:aName,
                                 code:val.code,
-                                name:val.airportName
+                                name:val.airportName,
+                                type:0
                             });
                         }else if(py.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
@@ -62,7 +64,8 @@
                                 testName:val.airportName,
                                 testCode:aName,
                                 code:val.code,
-                                name:val.airportName
+                                name:val.airportName,
+                                type:0
                             });
                         }else if(pinyin.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
@@ -71,7 +74,8 @@
                                 testName:val.airportName,
                                 testCode:aName,
                                 code:val.code,
-                                name:val.airportName
+                                name:val.airportName,
+                                type:0
                             });
                         };
                     }else{
@@ -79,24 +83,91 @@
                             testName:val.airportName,
                             testCode:val.code,
                             code:val.code,
-                            name:val.airportName
+                            name:val.airportName,
+                            type:0
+                        });
+                    }
+                });
+                this.cityList.forEach((val)=>{
+                    let st = this.searchText;   // 输入名字
+                    if(st != ''){
+                        let airportName = val.cityName;  // 机场名字
+                        let code = val.cityIcao;  // 三字码
+                        let pinyin = val.pinyin; // 拼音
+                        let py = val.py; // 拼音首字母
+
+                        let regx = new RegExp(st,"gmi");
+                        let style = "style='color: #3c78ff'";
+                        if(airportName.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
+                            if(st == airportName){
+                                aName = airportName;
+                            }else{
+                                aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
+                            }
+                            ar.push({
+                                testName:aName,
+                                testCode:val.cityIcao,
+                                code:val.cityIcao,
+                                name:val.cityName,
+                                type:1
+                            });
+                        }else if(code.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
+                            ar.push({
+                                testName:val.cityName,
+                                testCode:aName,
+                                code:val.cityIcao,
+                                name:val.cityName,
+                                type:1
+                            });
+                        }else if(py.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
+                            ar.push({
+                                testName:val.cityName,
+                                testCode:aName,
+                                code:val.cityIcao,
+                                name:val.cityName,
+                                type:1
+                            });
+                        }else if(pinyin.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
+                            ar.push({
+                                testName:val.cityName,
+                                testCode:aName,
+                                code:val.cityIcao,
+                                name:val.cityName,
+                                type:1
+                            });
+                        };
+                    }else{
+                        ar.push({
+                            testName:val.cityName,
+                            testCode:val.cityIcao,
+                            code:val.cityIcao,
+                            name:val.cityName,
+                            type:1
                         });
                     }
                 });
                 this.list = ar;
             },
             reqD:function (key,index) {
-                let hisyData = localStorage.getItem('hisyData');
-                let tag = '';
-                if(hisyData != null && hisyData != ''){
-                    let hisyArr = hisyData.split(',');
-                    if(hisyArr.indexOf(key.code) == -1){
-                        tag = hisyData + ',' + key.code;
-                    };
-                }else{
-                    tag = key.code;
-                };
-                localStorage.setItem('hisyData',tag);
+                let le = localStorage.getItem('hisyData');
+                let hisyData = (le == null ? '[]' : le);
+                hisyData = JSON.parse(hisyData);
+                let tx = true;
+                hisyData.forEach((v)=>{
+                    if(v.name == key.name){
+                        tx = false;
+                    }
+                });
+                if(tx)hisyData.push(key);
+                localStorage.setItem('hisyData',JSON.stringify(hisyData));
                 this.$emit('resData', key);
             }
         },
@@ -111,7 +182,8 @@
         },
         computed:{
             ...vx.mapGetters([
-                'airList'
+                'airList',
+                'cityList'
             ]),
         }
     }
