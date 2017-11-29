@@ -98,9 +98,14 @@
                         this.searchText = '';
                     }
                 }, 200);
-
             },
-            screenHs: function () {
+            screenHs: function (t) {
+                if(!t){
+                    this.$store.dispatch('setCity',{v:'$&',t:false}).then(() => {
+                    });
+                    this.$store.dispatch('openScreen',false).then(() => {
+                    });
+                };
                 this.screenHsShow = false;
             },
             openScreen: function () {
@@ -206,7 +211,6 @@
             screen,
             singleElection
         },
-
         computed: {
             ...vx.mapGetters([
                 'close',
@@ -223,7 +227,6 @@
                 this.openHisy = false;
                 this.screenHsShow = false;
                 this.closeSearch();
-
             }
         },
         mounted: function () {
@@ -291,7 +294,7 @@
     .screen-hs {
         position: absolute;
         top: 25px;
-        right: -46px;
+        right: -50px;
         z-index: 11;
     }
 

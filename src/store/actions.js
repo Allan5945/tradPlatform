@@ -19,5 +19,19 @@ export default {
     role:({commit},vl)=>{
         commit(types.ROLE,vl)
     },
-
+    setFlyGrade:({commit},vl)=>{
+        commit(types.FLYGRADE,vl)
+    },
+    setSubsidyPolicy:({commit},vl)=>{
+        commit(types.SUBSIDYPOLICY,vl)
+    },
+    setCity:({commit},vl)=>{
+        commit(types.SETCITY,vl)
+    },
+    setAirType:({commit},vl)=>{
+        commit(types.SETAIRTYPE,vl)
+    },
+    openScreen:({commit},vl)=>{
+        commit(types.OPENSCREEN,vl)
+    },
 }

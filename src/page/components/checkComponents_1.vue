@@ -1,16 +1,26 @@
 <template>
     <div class="fly-list">
-        <div v-for="key in flyGrade">{{key}}</div>
+        <div @click="setSubsidyPolicy(i)" v-for="(vl,i) in demandList.conditions.subsidyPolicy.va" :class="{'setBth':vl.s}">{{vl.v}}</div>
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     export default {
         data(){
             return{
 
             }
         },
-        props:['flyGrade']
+        methods:{
+            ...vx.mapActions([
+                'setSubsidyPolicy'
+            ])
+        },
+        computed:{
+            ...vx.mapGetters([
+                'demandList'
+            ])
+        }
     }
 </script>
 <style scoped lang="scss">
@@ -29,6 +39,15 @@
             margin: 10px 12px 0 0;
             letter-spacing:.2px;
             color: rgba(96,94,124,.5);
+            cursor: pointer;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
         }
+    }
+    .setBth{
+        background-color: #ededed;
+        color: #3c78ff !important;
+        border: 1px solid transparent !important;
     }
 </style>

@@ -18,4 +18,20 @@ function conversions(data) {
     });
     return mes;
 }
-export default conversions;
+function conversionsCity(data) {
+    let mes = [];
+    data.forEach((val)=>{
+        let letter = letterConversions(val.cityName);
+        mes.push({
+            cityName:val.cityName,  // 机场名字
+            pinyin:letter.allLetter,    // 机场全拼音
+            py:letter.fllLetter,    // 机场首字母拼音
+            cityIcao:val.cityIcao,  // 三字码
+            initial:letter.fllLetter.substring(0,1), // 第一个字母
+            id:val.id,          // 城市id
+            cityCoordinate:val.cityCoordinate // 城市经纬度
+        })
+    });
+    return mes;
+}
+export {conversions,conversionsCity};

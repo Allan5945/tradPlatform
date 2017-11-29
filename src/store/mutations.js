@@ -1,25 +1,21 @@
-import {
-    TEST,
-    CLOSE,
-    INITIALIZE,
-    HYBRIDDATA,
-    MONODATA,
-    ROLE,
-} from './types'
+import Vue from 'vue'
+import * as types from './types'
 import getters from './getters'
 import {state} from './state.js'
+
+
 const mutations = {
-    [TEST](state) {
+    [types.TEST](state) {
         state.c_updated = state.c_updated ++;
     },
-    [CLOSE](state) {
+    [types.CLOSE](state) {
         state.close = !state.close;
     },
-    [INITIALIZE](state,vl) {
+    [types.INITIALIZE](state,vl) {
         state.airList = vl.airListData;
         state.cityList = vl.cityListData;
     },
-    [MONODATA](state,vl) {
+    [types.MONODATA](state,vl) {
         if(state.demandList.type){
             state.demandList.type = false;
         }
@@ -35,7 +31,7 @@ const mutations = {
                 break;
         }
     },
-    [HYBRIDDATA](state,vl) {
+    [types.HYBRIDDATA](state,vl) {
         if(!state.demandList.type){
             state.demandList.type = true;
         }
@@ -53,9 +49,105 @@ const mutations = {
             }
         }
     },
-    [ROLE](state,vl) {
+    [types.ROLE](state,vl) {
         state.role = vl;
-    }
+    },
+    [types.SUBSIDYPOLICY](state,vl) {
+        if(state.demandList.conditions.subsidyPolicy.va[vl].s){
+            let l = state.demandList.conditions.subsidyPolicy.s.indexOf(state.demandList.conditions.subsidyPolicy.va[vl].v);
+            state.demandList.conditions.subsidyPolicy.va[vl].s = false;
+            state.demandList.conditions.subsidyPolicy.s.splice(l,1);
+        }else{
+            state.demandList.conditions.subsidyPolicy.va[vl].s = true;
+            state.demandList.conditions.subsidyPolicy.s.push(state.demandList.conditions.subsidyPolicy.va[vl].v);
+        }
+    },
+    [types.FLYGRADE](state,vl) {
+        if(state.demandList.conditions.flyGrade.va[vl[0]][vl[1]].s){
+            let l = state.demandList.conditions.flyGrade.s.indexOf(state.demandList.conditions.flyGrade.va[vl[0]][vl[1]].v);
+            state.demandList.conditions.flyGrade.va[vl[0]][vl[1]].s = false;
+            state.demandList.conditions.flyGrade.s.splice(l,1);
+        }else{
+            state.demandList.conditions.flyGrade.va[vl[0]][vl[1]].s = true;
+            state.demandList.conditions.flyGrade.s.push(state.demandList.conditions.flyGrade.va[vl[0]][vl[1]].v);
+        }
+    },
+    [types.SETCITY](state,vl) {
+        if(vl.t){
+            if(state.demandList.conditions.city.s.indexOf(vl.v) == -1){
+                state.demandList.conditions.city.s.push(vl.v);
+            }
+        }else{
+            if(vl.v == '$&'){  // 清空筛选条件
+                state.demandList.conditions = {
+                    flyGrade: {
+                        va: [
+                            [
+                                {v: '1A', s: false},
+                                {v: '2A', s: false},
+                                {v: '3A', s: false},
+                                {v: '4A', s: false},
+                            ],
+                            [
+                                {v: '1B', s: false},
+                                {v: '2B', s: false},
+                                {v: '3B', s: false},
+                                {v: '4B', s: false},
+                            ],
+                            [
+                                {v: '1C', s: false},
+                                {v: '2C', s: false},
+                                {v: '3C', s: false},
+                                {v: '4C', s: false}
+                            ],
+                            [
+                                {v: '3D', s: false},
+                                {v: '4D', s: false}
+                            ]
+                        ],
+                        s: []
+                    },
+                    city: {
+                        s:[]
+                    },
+                    airType: '',
+                    subsidyPolicy: {
+                        va: [
+                            {v: '定补', s: false},
+                            {v: '保底', s: false},
+                            {v: '人头', s: false},
+                            {v: '其他', s: false},
+                            {v: '无', s: false},
+                            {v: '不限', s: false},
+                        ],
+                        s: []
+                    },
+                }
+            }else{
+                let l = state.demandList.conditions.city.s.indexOf(vl.v);
+                state.demandList.conditions.city.s.splice(l,1);
+            }
+        }
+    },
+    [types.SETAIRTYPE](state,vl) {
+        if(vl != ''){
+            // Vue.$set(state.demandList.conditions,'airType',vl);
+            state.demandList.conditions.airType = vl;
+        }else{
+            // Vue.$set(state.demandList.conditions,'airType','');
+            state.demandList.conditions.airType = '';
+        }
+    },
+    [types.OPENSCREEN](state,vl) {
+        if(vl){
+            state.demandList.conditions.open = true;
+            state.conditionsOpen = true;
+        }else{
+            state.demandList.conditions.open = false;
+            state.conditionsOpen = false;
+        }
+
+    },
 };
 export default {
 	state,

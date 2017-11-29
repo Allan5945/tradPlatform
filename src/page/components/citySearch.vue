@@ -26,12 +26,13 @@
                 this.cityList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
                     if(st != ''){
-                        let airportName = val.airportName;  // 机场名字
-                        let code = val.code;  // 三字码
+                        let airportName = val.cityName;  // 城市名字
+                        let code = val.cityIcao;  // 三字码
                         let pinyin = val.pinyin; // 拼音
                         let py = val.py; // 拼音首字母
                         let regx = new RegExp(st,"gmi");
                         let style = "style='color: #3c78ff'";
+
                         if(airportName.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
@@ -42,62 +43,53 @@
                             }
                             ar.push({
                                 testName:aName,
-                                testCode:val.code,
-                                code:val.code,
-                                name:val.airportName
+                                testCode:val.cityIcao,
+                                code:val.cityIcao,
+                                name:val.cityName
                             });
                         }else if(code.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
                             ar.push({
-                                testName:val.airportName,
+                                testName:val.cityName,
                                 testCode:aName,
-                                code:val.code,
-                                name:val.airportName
+                                code:val.cityIcao,
+                                name:val.cityName
                             });
                         }else if(py.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                             ar.push({
-                                testName:val.airportName,
+                                testName:val.cityName,
                                 testCode:aName,
-                                code:val.code,
-                                name:val.airportName
+                                code:val.cityIcao,
+                                name:val.cityName
                             });
                         }else if(pinyin.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                             ar.push({
-                                testName:val.airportName,
+                                testName:val.cityName,
                                 testCode:aName,
-                                code:val.code,
-                                name:val.airportName
+                                code:val.cityIcao,
+                                name:val.cityName
                             });
                         };
                     }else{
                         ar.push({
-                            testName:val.airportName,
-                            testCode:val.code,
-                            code:val.code,
-                            name:val.airportName
+                            testName:val.cityName,
+                            testCode:val.cityIcao,
+                            code:val.cityIcao,
+                            name:val.cityName
                         });
                     }
                 });
                 this.list = ar;
             },
             reqD:function (key,index) {
-                let hisyData = localStorage.getItem('hisyData');
-                let tag = '';
-                if(hisyData != null && hisyData != ''){
-                    let hisyArr = hisyData.split(',');
-                    if(hisyArr.indexOf(key.code) == -1){
-                        tag = hisyData + ',' + key.code;
-                    };
-                }else{
-                    tag = key.code;
-                };
-                localStorage.setItem('hisyData',tag);
                 this.$emit('resData', key);
+                this.$store.dispatch('setCity',{v:key.code,t:true}).then(() => {
+                });
             }
         },
         mounted:function () {
@@ -111,7 +103,8 @@
         },
         computed:{
             ...vx.mapGetters([
-                'cityList'
+                'cityList',
+                'demandList',
             ]),
         }
     }

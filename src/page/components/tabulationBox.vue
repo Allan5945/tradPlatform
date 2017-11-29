@@ -119,13 +119,19 @@
         updated: function () {
             this.resetWindow();
         },
+        watch: {
+            demandList:function () {
+            }
+        },
         computed: {
             ...vx.mapGetters([
                 'demandList',
-                'role'
+                'role',
+                'close',
+                'conditionsOpen'
             ]),
             renderData: function () {
-                let d, a = [];
+                let d, a = [],c = [];
                 if (this.demandList.type) {
                     d = this.demandList.hybridData.list;
                 } else {
@@ -137,12 +143,12 @@
                         name.push(val.dpt)
                     }
                     ;
-                    if (val.arrv != null) {
-                        name.push(val.arrv)
-                    }
-                    ;
                     if (val.pst != null) {
                         name.push(val.pst)
+                    }
+                    ;
+                    if (val.arrv != null) {
+                        name.push(val.arrv)
                     }
                     ;
                     switch (val.demandtype) {
@@ -179,7 +185,41 @@
                         data: val
                     })
                 });
-                return a;
+
+                a.forEach((v)=>{
+                    let sr = {
+                        city:true,
+                        flyGrade:true,
+                        airType:true,
+                        subsidyPolicy:true,
+                    };
+                    let cy = this.demandList.conditions.city.s;
+                    if(cy.length > 0){
+                        if(v.data.dptCt != null && v.data.dptCt != '' && cy.indexOf(v.data.dptCt) == -1){
+                            sr.city = false;
+                        }else if(v.data.arrvCt != null && v.data.arrvCt != '' && cy.indexOf(v.data.arrvCt) == -1){
+                            sr.city = false;
+                        }else if(v.data.pst != null && v.data.pst != '' && cy.indexOf(v.data.pst) == -1){
+                            sr.city = false;
+                        };
+                    }
+                    let airType = v.data.aircrfttyp;
+                    if(airType != null && this.demandList.conditions.airType != '' && airType != this.demandList.conditions.airType){
+                        sr.airType = false;
+                    }
+                    let subsidyPolicy = this.demandList.conditions.subsidyPolicy.s;
+                    if(subsidyPolicy.length > 0 && subsidyPolicy.indexOf(v.data.subsidypolicyStr) == -1){
+                        sr.subsidyPolicy = false;
+                    };
+                    if(sr.flyGrade && sr.airType && sr.city && sr.subsidyPolicy){
+                        c.push(v);
+                    }
+                });
+                if(this.conditionsOpen){
+                    return c;
+                }else{
+                    return a;
+                }
             }
         }
     }

@@ -16,7 +16,7 @@
     import tagIcon from './../page/components/tagIcon.vue'
     import messageBox from './../page/components/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
-    import conversions from './../public/js/conversions'
+    import {conversionsCity,conversions} from './../public/js/conversions'
 
     export default {
         data() {
@@ -88,7 +88,7 @@
                 }
             })
                 .then((response) => {
-                    this.loadingData.data.cityListData = response.data.list;
+                    this.loadingData.data.cityListData = conversionsCity(response.data.list);
                     this.loadingData.cityList = true;
                     this.init();
                 })

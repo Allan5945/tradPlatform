@@ -20,4 +20,7 @@ export default {
     role:(state)=>{
         return state.role;
     },
+    conditionsOpen:(state)=>{
+        return state.conditionsOpen;
+    },
 }
