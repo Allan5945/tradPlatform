@@ -1,12 +1,13 @@
 <template>
     <div class="history-list popup-x1">
-        <div @click="res(key)" v-for="(key,i) in list"><span class="icon">&#xe646;</span>{{key.replace(/"/g,'')}}</div>
+        <div @click="res(key)" v-for="(key,i) in list"><span class="icon">&#xe646;</span>{{key.name}}</div>
         <div class="clear-history">
             <div class="btn btn-w" @click="clear">清空历史</div>
         </div>
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     export default {
         data(){
             return{
@@ -14,7 +15,7 @@
             }
         },
         mounted:function () {
-            this.list = localStorage.getItem('hisyData').split(',');
+            this.list = JSON.parse(localStorage.getItem('hisyData'));
         },
         methods:{
             res:function (vl) {
@@ -25,7 +26,12 @@
                 localStorage.removeItem('hisyData');
                 this.$emit('clear');
             }
-        }
+        },
+        computed: {
+            ...vx.mapGetters([
+                'airList'
+            ])
+        },
     }
 </script>
 <style scoped lang="scss">

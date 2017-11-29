@@ -4,19 +4,21 @@
             <div class="mes-tip">
                 <span class="number-mes">{{renderData}}</span>条需求对象
             </div>
-            <div class="mes-cont-box" @mouseout="closeSearch" @click.stop="screenHsShow = false">
+            <div class="mes-cont-box" @click.stop="screenHsShow = false">
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
-                    <input :placeholder="holder" @input="openList('a')" type="text" @focus="history" :disabled="!search"
+                    <input id="close-input" :class="{'search-set':searchSet}"  placeholder="搜索关键词" @blur="lose()" @input="openList('a')" type="text"
+                           @focus="history" :disabled="searchSet"
                            v-model="searchText">
-                    <span title="搜索" @mouseover.stop="openSearch" @click="query" v-if="!bgqy">&#xe6c3;</span>
-                    <span class="search-ing" title="搜索中..." v-if="bgqy">&#xe620;</span>
+                    <span class="search" title="搜索" @mouseover.stop="openSearch" @click="query" v-if="bgqy">&#xe6c3;</span>
+                    <loading class="search-ing" title="搜索中..." v-if="bgqying"></loading>
+                    <span v-if="bgqyed" class="search-ed btn-w" @click="removeSearchSet">&#xe62c;</span>
                 </div>
                 <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
                 <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
             <div class="screen" @click.stop>
                 <span @click="openScreen">&#xe6a7;</span>
-                <transition   name="bounce">
+                <transition name="bounce">
                     <screen class="screen-hs" v-if="screenHsShow" v-on:screenHs="screenHs"></screen>
                 </transition>
             </div>
@@ -26,17 +28,17 @@
         </div>
         <div class="popup tabulation" id="tabulation">
             <div class="tabulation-head">
-               <div>
-                   <div class="navSet">
-                       <div class="navList font-bold" @click="setd(key,index)" :class="{setd:changeRed == index}"
-                            v-for="(key,index) in navLists">{{key.text}}
-                       </div>
-                   </div>
-                   <div class="match">
-                       <singleElection :single.sync="elect" class="mes-body-ix"></singleElection>
-                       只看与我匹配的
-                   </div>
-               </div>
+                <div>
+                    <div class="navSet">
+                        <div class="navList font-bold" @click="setd(key,index)" :class="{setd:changeRed == index}"
+                             v-for="(key,index) in navLists">{{key.text}}
+                        </div>
+                    </div>
+                    <div class="match">
+                        <singleElection :single.sync="elect" class="mes-body-ix"></singleElection>
+                        只看与我匹配的
+                    </div>
+                </div>
             </div>
             <tabulationBox></tabulationBox>
         </div>
@@ -50,13 +52,16 @@
     import tabulationBox from './tabulationBox.vue'
     import screen from './screen-hs.vue'
     import singleElection from './singleElection.vue'
+    import loading from '$src/page/state/locading.vue'
+
     export default {
         data() {
             return {
-                screenHsShow:false,
+                screenHsShow: false,
                 search: false,
+                searchSet:false,
                 isSearch: false,
-                holder: '',
+//                holder: '',
                 searchText: '',
                 navLists: [
                     {
@@ -68,19 +73,42 @@
                 ],
                 changeRed: 0,
                 qyCode: "",
-                bgqy: false,
+                bgqy: true,
+                bgqying: false,
+                bgqyed: false,
                 openHisy: false,
-                elect:  {set: false},
+                elect: {set: false},
             }
         },
         methods: {
-            openMax:function () {
-                this.$emit('openMax','max');
+            removeSearchSet:function () {
+                this.searchSet = false;
+                this.bgqy = true;
+                this.bgqying = false;
+                this.bgqyed = false;
+                this.searchText = '';
+                this.$store.dispatch('hybridData',{v:'',t:1}).then(() => {});
             },
-            screenHs:function () {
+            openMax: function () {
+                this.$emit('openMax', 'max');
+            },
+            lose: function () {
+                setTimeout(() => {
+                    if (this.$airMes(this.airList,this.searchText) == '' && this.$cityMes(this.cityList,this.searchText) == '') {
+                        this.searchText = '';
+                    }
+                }, 200);
+            },
+            screenHs: function (t) {
+                if(!t){
+                    this.$store.dispatch('setCity',{v:'$&',t:false}).then(() => {
+                    });
+                    this.$store.dispatch('openScreen',false).then(() => {
+                    });
+                };
                 this.screenHsShow = false;
             },
-            openScreen:function () {
+            openScreen: function () {
                 this.screenHsShow = !this.screenHsShow;
             },
             openList: function (type) {
@@ -98,15 +126,18 @@
             },
             reshsy: function (vl) {
                 this.openList('m');
-                this.searchText = vl;
+                this.searchText = vl.name;
+                this.qyCode = vl;
             },
             clear: function () {
                 this.openHisy = false;
             },
             history: function () {
                 let hisyData = localStorage.getItem('hisyData');
-                if (hisyData != null) {
+                if (hisyData != null && hisyData != '') {
                     hisyData = hisyData.split(',');
+                } else {
+                    hisyData = null;
                 }
                 if (this.searchText == '' && hisyData != null) {
                     this.openHisy = true;
@@ -116,7 +147,42 @@
             },
             query: function () {
                 if (this.qyCode != '') {
-                    this.bgqy = true;
+                    this.bgqy = false;
+                    this.bgqying = true;
+                    this.bgqyed = false;
+
+                    this.searchSet = true;
+                    this.$ajax({
+                        url: "/getDemandsForCurrentCheckedCity",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: {
+                            itia: this.qyCode.code,
+                            page: 1,
+                            type: 0,
+                            itiaType:this.qyCode.type
+                        }
+                    }).then((response) => {
+                        if (response.data) {
+                            let ar = response.data.list;
+
+                            this.bgqy = false;
+                            this.bgqying = false;
+                            this.bgqyed = true;
+
+                            if (ar.list == null) {
+                                ar.list = [];
+                            }
+                            ;
+                            this.$store.dispatch('monoData', {v: ar, t: 1}).then(() => {
+                            });
+                        }
+                    })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 } else {
                     alert('空-错误');
                 }
@@ -124,47 +190,48 @@
             resData: function (data) {
                 this.isSearch = false;
                 this.searchText = data.name;
-                this.qyCode = data.code;
+                this.qyCode = data;
             },
             openSearch: function () {
-                this.holder = '搜索关键词';
                 this.search = true;
             },
             closeSearch: function () {
+                var input = document.getElementById("close-input");
+                input.blur();
                 this.screenHsShow = false;
-                if (!this.isSearch) {
-                    this.holder = '';
-                };
             },
             setd: function (key, index) {
                 this.changeRed = index;
             }
         },
         components: {
+            loading,
             airportS,
             hisy,
             tabulationBox,
             screen,
             singleElection
         },
-        computed:{
+        computed: {
             ...vx.mapGetters([
                 'close',
-                'demandList'
+                'demandList',
+                'airList',
+                'cityList'
             ]),
-            renderData:function () {
+            renderData: function () {
                 return this.demandList.hybridData.list.length;
             }
         },
-        watch:{
-            close:function () {
+        watch: {
+            close: function () {
                 this.isSearch = false;
                 this.openHisy = false;
                 this.screenHsShow = false;
                 this.closeSearch();
             }
         },
-        mounted:function () {
+        mounted: function () {
         }
     }
 </script>
@@ -179,6 +246,7 @@
             height: 420px;
         }
     }
+
     @keyframes myfirst {
         from {
             transform: rotate(0deg);
@@ -187,15 +255,21 @@
             transform: rotate(-360deg);
         }
     }
+
     .bounce-enter-active {
         animation: bounce-in .5s;
+    }
+    .search-set{
+        color: #3c78ff !important;
     }
     .bounce-leave-active {
         animation: bounce-in .5s reverse;
     }
+
     .elect:before {
         content: '\e724';
     }
+
     .initialization:before {
         content: '\e723';
     }
@@ -218,15 +292,18 @@
             cursor: pointer;
         }
     }
-    .screen-hs{
+
+    .screen-hs {
         position: absolute;
-        top: 25px;
-        right: -46px;
+        top:33px;
+        left: 5px;
         z-index: 11;
     }
+
     .amplification {
         justify-content: flex-end;
     }
+
     .ais {
         position: absolute;
         top: 25px;
@@ -245,13 +322,49 @@
         overflow-y: scroll;
         z-index: 10;
     }
-
+    .search{
+        font-family: iconfont;
+        font-size: 2.3rem;
+        color: #605E7C;
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        cursor: pointer;
+        display: inline-block;
+        text-align: left;
+        line-height: 30px;
+        position: absolute;
+        right: 5px;
+        width: 23px;
+        &:hover {
+            color: #3c78ff;
+        }
+    }
     .search-ing {
+        width: 23px;
+        height: 30px;
         color: #3c78ff !important;
         display: inline-block;
-        animation: myfirst 1s linear infinite;
+        transform: scale(.25);
     }
-
+    .search-ed{
+        font-family: iconfont;
+        font-size: 1.2rem;
+        color: #3c78ff;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        line-height: 15px;
+        position: absolute;
+        right: 10px;
+        width: 15px;
+        top: 6px;
+        height: 15px;
+        background-color: white;
+        border-radius: 50%;
+    }
     .message-box {
         width: 340px;
         height: 100%;
@@ -289,6 +402,7 @@
         justify-content: flex-end;
         position: relative;
     }
+
     .mes-cont {
         position: relative;
         width: 30px;
@@ -296,6 +410,8 @@
         border-radius: 18px;
         height: 28px;
         transition: width .2s linear;
+        flex-flow: row nowrap;
+        align-items: center;
         > input {
             padding-left: 10px;
             border: none;
@@ -305,23 +421,6 @@
             font-size: 1rem;
             background-color: transparent;
             padding-right: 26px;
-        }
-        > span {
-            font-family: iconfont;
-            font-size: 2.3rem;
-            color: #605E7C;
-            border: none;
-            background-color: transparent;
-            padding: 0;
-            cursor: pointer;
-            display: inline-block;
-            text-align: left;
-            line-height: 30px;
-            position: absolute;
-            right: 5px;
-            &:hover {
-                color: #3c78ff;
-            }
         }
     }
 
@@ -336,13 +435,13 @@
 
     .tabulation-head {
         padding: 0 20px;
-       >div{
-           border-bottom: 1px solid #c1d3e461;
-           display: flex;
-           height: 58px;
-           align-items: center;
-           justify-content: space-between;
-       }
+        > div {
+            border-bottom: 1px solid #c1d3e461;
+            display: flex;
+            height: 58px;
+            align-items: center;
+            justify-content: space-between;
+        }
     }
 
     .navList {
@@ -385,6 +484,7 @@
             margin-right: 5px;
         }
     }
+
     .matching {
 
     }

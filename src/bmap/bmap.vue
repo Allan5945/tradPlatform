@@ -125,7 +125,8 @@
         computed:{
             ...vx.mapGetters([
                 'c_updated',
-                'airList'
+                'airList',
+                'cityList'
             ]),
         },
         mounted: function () {
@@ -135,10 +136,12 @@
                 code, // 三字码
                 type; // 需求类型 0 = 航线需求，1 = 运力需求，2 = 航线需求和运力需求，3 = 我的需求
             this.allDot.forEach((v)=>{
-                let mes = this.$airMes(this.airList,v.dpt);
+                let mes = this.$cityMes(this.cityList,v.dpt);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
+                let cityIcao = mes.cityIcao;
+                let coor = mes.cityCoordinate.split(',');
                 code = v.dpt;
                 let demand = {
                     tag:'',
@@ -183,11 +186,12 @@
                         _b; // 有新数据，自己发出
                     if(v.newInfo == 0){
                         _b = {
-                            name: mes.airportName,
-                            value: [mes.cityCoordinateW, mes.cityCoordinateJ],
+                            name: mes.cityName,
+                            value: [coor[0],coor[1]],
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
                             symbolOffset:[0,0],
+                            cityIcao,
                             code,
                             type:3,
                             num:v.num
@@ -195,12 +199,13 @@
                         b.push(_b);
                     }else{
                         _d = {
-                            name: mes.airportName,
-                            value: [mes.cityCoordinateW, mes.cityCoordinateJ],
+                            name: mes.cityName,
+                            value: [coor[0],coor[1]],
                             symbol:demand.tag,
                             symbolSize:demand.dbSize,
                             symbolOffset:[0,0],
                             code,
+                            cityIcao,
                             type:3,
                             num:v.num
                         };
@@ -208,11 +213,12 @@
                     }
                     // 航线需求列表
                     let _a = {
-                        name: mes.airportName,
-                        value: [mes.cityCoordinateW, mes.cityCoordinateJ],
+                        name: mes.cityName,
+                        value: [coor[0],coor[1]],
                         symbol:quantity,
                         symbolSize:40,
                         code,
+                        cityIcao,
                         type,
                         symbolOffset:[0,-25],
                         num:v.num
@@ -329,7 +335,7 @@
                     }
                 }) .then((response) => {
                         if(response.data){
-                            this.$store.dispatch('monoData',{v:response.data.list.list,t:2}).then(() => {});
+                            this.$store.dispatch('monoData',{v:response.data.list,t:1}).then(() => {});
                         }
                 })
                     .catch((error) => {

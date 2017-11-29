@@ -8,6 +8,9 @@ export default {
     ,airList:(state)=>{
         return state.airList;
     }
+    ,cityList:(state)=>{
+        return state.cityList;
+    }
     ,monoData:(state)=>{
         return state.demandList.monoData;
     }
@@ -16,5 +19,8 @@ export default {
     },
     role:(state)=>{
         return state.role;
+    },
+    conditionsOpen:(state)=>{
+        return state.conditionsOpen;
     },
 }
