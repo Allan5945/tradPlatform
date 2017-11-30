@@ -34,4 +34,7 @@ export default {
     openScreen:({commit},vl)=>{
         commit(types.OPENSCREEN,vl)
     },
+    setelect:({commit},vl)=>{
+        commit(types.SETELECT,vl)
+    }
 }

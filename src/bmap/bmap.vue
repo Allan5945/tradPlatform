@@ -320,10 +320,18 @@
                 ]
             };
             this.myChart.setOption(option);
-
+            setTimeout(()=>{
+                let optioned = this.myChart.getOption();
+                optioned.series.splice(0,3);
+                this.myChart.setOption(optioned,false);
+            },2000);
+            setTimeout(()=>{
+                let optioned = this.myChart.getOption();
+                this.myChart.setOption(optioned,false);
+            },4000);
             this.myChart.on('click', (a)=> {
                 this.$ajax({
-                    url:"/getDemandsForCurrentCheckedAirport",
+                    url:"/getDemandsForCurrentCheckedCity",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -331,7 +339,8 @@
                     params: {
                         itia:a.data.code,
                         page:1,
-                        type:(a.data.type == 3 ? 1 : 0)
+                        type:(a.data.type == 3 ? 1 : 0),
+                        itiaType:2
                     }
                 }) .then((response) => {
                         if(response.data){

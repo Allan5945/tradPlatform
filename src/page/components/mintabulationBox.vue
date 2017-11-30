@@ -139,16 +139,16 @@
                 }
                 d.forEach((val) => {
                     let img, name = [], tag;
-                    if (val.dpt != null) {
-                        name.push(val.dpt)
+                    if (val.dptNm != null) {
+                        name.push(val.dptNm)
                     }
                     ;
-                    if (val.pst != null) {
-                        name.push(val.pst)
+                    if (val.pstNm != null) {
+                        name.push(val.pstNm)
                     }
                     ;
-                    if (val.arrv != null) {
-                        name.push(val.arrv)
+                    if (val.arrvNm != null) {
+                        name.push(val.arrvNm)
                     }
                     ;
                     switch (val.demandtype) {
@@ -233,8 +233,10 @@
                     }
                 });
                 if(this.conditionsOpen){
+                    this.$emit('renderDataLength',c.length);
                     return c;
                 }else{
+                    this.$emit('renderDataLength',a.length);
                     return a;
                 }
             }

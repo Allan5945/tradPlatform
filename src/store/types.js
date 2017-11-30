@@ -9,6 +9,7 @@ const SUBSIDYPOLICY  = 'SUBSIDYPOLICY';
 const SETCITY  = 'SETCITY';
 const SETAIRTYPE  = 'SETAIRTYPE';
 const OPENSCREEN  = 'OPENSCREEN';
+const SETELECT  = 'SETELECT';
 
 export {
     TEST,
@@ -21,5 +22,6 @@ export {
     SUBSIDYPOLICY,
     SETCITY,
     SETAIRTYPE,
-    OPENSCREEN
+    OPENSCREEN,
+    SETELECT
 }

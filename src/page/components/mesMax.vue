@@ -5,15 +5,16 @@
                 <div class="mes-head-t">需求列表</div>
                 <div class="mes-head-c" @click.stop>
                     <div class="mes-cont-box" @mouseout="closeSearch" @click="screenHsShow = false">
-                        <div class="mes-cont mesContSet" @mouseout.stop>
-                            <input :placeholder="holder" placeholder="搜索关键词" @input="openList('a')" type="text"
-                                   @focus="history" :disabled="!search" v-model="searchText">
-                            <span title="搜索" @click="query" v-if="!bgqy">&#xe6c3;</span>
-                            <span class="search-ing" title="搜索中..." v-if="bgqy">&#xe620;</span>
+                        <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
+                            <input id="close-input" :class="{'search-set':searchSet}"  placeholder="搜索关键词" @blur="lose()" @input="openList('a')" type="text"
+                                   @focus="history" :disabled="searchSet"
+                                   v-model="searchText">
+                            <span class="search" title="搜索" @mouseover.stop="openSearch" @click="query" v-if="bgqy">&#xe6c3;</span>
+                            <loading class="search-ing" title="搜索中..." v-if="bgqying"></loading>
+                            <span v-if="bgqyed" class="search-ed btn-w" @click="removeSearchSet">&#xe62c;</span>
                         </div>
                         <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
-                        <airportS class="aisx" v-on:resData="resData" :searchText="searchText"
-                                  v-show="isSearch"></airportS>
+                        <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
                     </div>
                     <div class="screen">
                         <span @click="openScreen">&#xe6a7;</span>
@@ -27,7 +28,7 @@
                 </div>
             </div>
             <div class="mes-head-list">
-                <div class="number-mes"><span>1000</span>条需求对象</div>
+                <div class="number-mes"><span>{{dataL}}</span>条需求对象</div>
                 <div class="match">
                     <singleElection :single.sync="match"></singleElection>
                     <!--<span @click="matching" :class="{'elect':elect,'initialization':!elect}"></span>-->
@@ -42,7 +43,7 @@
         <div class="mes-body">
             <div class="mes-body-h">
                 <div class="mes-body-i0">
-                    <singleElection :single.sync="single" class="mes-body-ix"></singleElection>
+                    <span @click="seted()" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':single.set}">&#xe723;</span>
                     类型
                 </div>
                 <div class="mes-body-i1">航点/匹配度<order :order.sync="order" class="order-x"></order></div>
@@ -54,7 +55,7 @@
                 <div class="mes-body-i4">补助</div>
                 <div class="mes-body-i4">其他说明</div>
             </div>
-            <demandList class="mes-body-b scroll"></demandList>
+            <tabulationBox class="mes-body-b scroll" v-on:renderDataLength="renderDataLength" v-on:resetSingleSet="resetSingleSet" :singled="single"></tabulationBox>
         </div>
     </div>
 </template>
@@ -65,33 +66,72 @@
     import screen from './screen-hs.vue'
     import singleElection from './singleElection.vue'
     import order from './order.vue'
-    import demandList from './demandList.vue'
+    import loading from '$src/page/state/locading.vue'
+    import tabulationBox from './maxtabulationBox.vue'
 
     export default {
         data() {
             return {
+                dataL:0,
                 order:{
                     set: true
                 },
-                match: {  // 只看与我匹配的
-                    set: false
-                },
-                screenHsShow: false,
-                search: true,
-                isSearch: false,
+                match: {set:false},  // 只看与我匹配的
                 holder: '',
+                single: {set:false},  // 类型选择
+                screenHsShow: false,
+                search: false,
+                searchSet:false,
+                isSearch: false,
+//                holder: '',
                 searchText: '',
+                navLists: [
+                    {
+                        "text": "发布时间"
+                    },
+                    {
+                        "text": "匹配度"
+                    }
+                ],
                 changeRed: 0,
                 qyCode: "",
-                bgqy: false,
+                bgqy: true,
+                bgqying: false,
+                bgqyed: false,
                 openHisy: false,
-                elect: false,
-                single: {
-                    set: false
-                }
+                elect: {set: false},
             }
         },
         methods: {
+            renderDataLength: function (v) {
+                this.dataL = v;
+            },
+            resetSingleSet:function () {
+                this.single.set = false;
+            },
+            lose: function () {
+                setTimeout(() => {
+                    if (this.$airMes(this.airList,this.searchText) == '' && this.$cityMes(this.cityList,this.searchText) == '') {
+                        this.searchText = '';
+                    }
+                }, 200);
+            },
+            seted:function () {
+                this.single.set = !this.single.set;
+                this.$store.dispatch('setelect',{t:this.single.set,a:true}).then(() => {
+                });
+            },
+            removeSearchSet:function () {
+                this.searchSet = false;
+                this.bgqy = true;
+                this.bgqying = false;
+                this.bgqyed = false;
+                this.searchText = '';
+                this.$store.dispatch('hybridData',{v:'',t:1}).then(() => {});
+            },
+            openSearch: function () {
+                this.search = true;
+            },
             clear: function () {
                 this.openHisy = false;
             },
@@ -100,10 +140,21 @@
                 this.openHisy = false;
                 this.isSearch = false;
             },
+            reshsy: function (vl) {
+                this.openList('m');
+                this.searchText = vl.name;
+                this.qyCode = vl;
+            },
             openMin: function () {
                 this.$emit('openMin', 'min')
             },
-            screenHs: function () {
+            screenHs: function (t) {
+                if(!t){
+                    this.$store.dispatch('setCity',{v:'$&',t:false}).then(() => {
+                    });
+                    this.$store.dispatch('openScreen',false).then(() => {
+                    });
+                };
                 this.screenHsShow = false;
             },
             closeSearch: function () {
@@ -143,14 +194,44 @@
             },
             query: function () {
                 if (this.qyCode != '') {
-                    this.bgqy = true;
+                    this.bgqy = false;
+                    this.bgqying = true;
+                    this.bgqyed = false;
+                    this.searchSet = true;
+                    this.$ajax({
+                        url: "/getDemandsForCurrentCheckedCity",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: {
+                            itia: this.qyCode.code,
+                            page: 1,
+                            type: 0,
+                            itiaType:this.qyCode.type
+                        }
+                    }).then((response) => {
+                        if (response.data) {
+                            let ar = response.data.list;
+
+                            this.bgqy = false;
+                            this.bgqying = false;
+                            this.bgqyed = true;
+
+                            if (ar.list == null) {
+                                ar.list = [];
+                            }
+                            ;
+                            this.$store.dispatch('monoData', {v: ar, t: 1}).then(() => {
+                            });
+                        }
+                    })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 } else {
                     alert('空-错误');
                 }
-            },
-            reshsy: function (vl) {
-                this.openList('m');
-                this.searchText = vl;
             },
             matching: function () {
                 this.elect = !this.elect;
@@ -161,10 +242,19 @@
         },
         computed: {
             ...vx.mapGetters([
-                'close'
-            ])
+                'close',
+                'demandList',
+                'airList',
+                'cityList'
+            ]),
+            renderData: function () {
+                return this.demandList.hybridData.list.length;
+            }
         },
         watch: {
+            single:function () {
+
+            },
             close: function () {
                 this.isSearch = false;
                 this.openHisy = false;
@@ -177,8 +267,10 @@
             screen,
             singleElection,
             order,
-            demandList
+            tabulationBox,
+            loading
         }
+
     }
 </script>
 <style scoped lang="scss">
@@ -204,11 +296,44 @@
     }
 
     .bounce-enter-active {
-        animation: bounce-in .5s;
+        animation: bounce-in .3s;
     }
 
     .bounce-leave-active {
-        animation: bounce-in .5s reverse;
+        animation: bounce-in .3s reverse;
+    }
+    @mixin user-select {
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
+    }
+    .acquiescence{
+        @include user-select;
+        font-family: iconfont;
+        font-size: 1.7rem;
+        cursor: pointer;
+        width: 17px;
+        height: 19px;
+        display: inline-block;
+        position: relative;
+    }
+    .acquiescenceSet:before{
+        width: 17px;
+        height: 19px;
+        content: '\e6cc';
+        font-size: 1.4rem;
+        position: absolute;
+        display: inline-block;
+        top: 3px;
+        left: 0;
+        color: #3c78ff;
+    }
+    .search-ing {
+        width: 23px;
+        height: 30px;
+        color: #3c78ff !important;
+        display: inline-block;
+        transform: scale(.25);
     }
     .mes-body{
         padding-top: 15px;
@@ -228,6 +353,7 @@
             display: flex;
             flex-flow: row nowrap;
             justify-content: flex-start;
+            align-items: center;
             margin-right: 20px;
             color: rgba( 96,94,124,.65);
         }
@@ -238,7 +364,7 @@
     }
 
     .mes-body-i1 {
-        width: 120px;
+        width: 174px;
     }
 
     .mes-body-i2 {
@@ -250,7 +376,7 @@
     }
 
     .mes-body-i4 {
-        width: 161px;
+        width: 125px;
     }
 
     .mes-body-ix {
@@ -261,6 +387,7 @@
         padding: 0 20px;
         display: flex;
         flex-flow: row nowrap;
+        align-items: center;
     }
 
     .elect:before {
@@ -269,17 +396,6 @@
 
     .initialization:before {
         content: '\e723';
-    }
-
-    .number-mes {
-        display:flex;
-        flex-flow:row nowrap;
-        align-items:center;
-        color: rgba(96, 94, 124, 0.65);
-        > span {
-            color: #3c78ff;
-            font-size: 1.3rem;
-        }
     }
 
     .mes-max {
@@ -293,29 +409,6 @@
 
     .mes-head {
         height: 80px;
-    }
-
-    .mesContSet {
-        background-color: white;
-        width: 153px;
-    }
-
-    .match {
-        align-self: center;
-        color:rgba(96, 94, 124, 0.65);
-        display: flex;
-        flex-flow: row nowrap;
-        margin-left: 20px;
-        align-items:center;
-        > span {
-            font-family: iconfont;
-            font-size: 1.7rem;
-            cursor: pointer;
-            width: 17px;
-            height: 19px;
-            display: inline-block;
-            margin-right: 5px;
-        }
     }
 
     .mes-head-s {
@@ -336,68 +429,6 @@
         flex-flow: row nowrap;
     }
 
-    .ais {
-        position: absolute;
-        top: 25px;
-        left: 0px;
-        width: 260px;
-        max-height: 210px;
-    }
-
-    .aisx {
-        position: absolute;
-        top: 25px;
-        left: 0px;
-        width: 260px;
-        max-height: 210px;
-        overflow-y: scroll;
-        z-index: 10;
-    }
-
-    .mes-cont-box {
-        width: 153px;
-        margin-left: 10px;
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: flex-end;
-        position: relative;
-        margin-right: 6px;
-    }
-
-    .mes-cont {
-        position: relative;
-        /*width: 30px;*/
-        display: flex;
-        border-radius: 18px;
-        height: 28px;
-        transition: width .2s linear;
-        > input {
-            padding-left: 10px;
-            border: none;
-            outline: none;
-            width: 100%;
-            color: #605E7C;
-            font-size: 1rem;
-            background-color: transparent;
-        }
-        > span {
-            font-family: iconfont;
-            font-size: 2.3rem;
-            color: #605E7C;
-            border: none;
-            background-color: transparent;
-            padding: 0;
-            cursor: pointer;
-            display: inline-block;
-            width: 33px;
-            text-align: left;
-            line-height: 30px;
-            &:hover {
-                color: #3c78ff;
-            }
-        }
-    }
-
     .number-tag {
         display: flex;
         margin-left: 40px;
@@ -412,16 +443,25 @@
         }
     }
 
-    .search-ing {
-        color: #3c78ff !important;
-        display: inline-block;
-        animation: myfirst 1s linear infinite;
+    .mes-body-b{
+        flex: 1;
+        overflow-y: scroll;
     }
 
+    /*-------------------*/
+
+    .bounce-enter-active {
+        animation: bounce-in .3s;
+    }
+    .search-set{
+        color: #3c78ff !important;
+    }
+
+
     .screen, .amplification {
-        height: 28px;
+        height: 25px;
         display: flex;
-        width: 35px;
+        width: 25px;
         justify-content: center;
         align-items: center;
         position: relative;
@@ -436,14 +476,201 @@
             cursor: pointer;
         }
     }
+
     .screen-hs {
         position: absolute;
-        top: 25px;
-        right: -55px;
+        top:33px;
+        left: 5px;
         z-index: 11;
     }
-    .mes-body-b{
-        flex: 1;
+
+    .amplification {
+        justify-content: flex-end;
+    }
+
+    .ais {
+        position: absolute;
+        top: 25px;
+        left: 0px;
+        width: 260px;
+        max-height: 210px;
+        z-index: 1;
+    }
+
+    .aisx {
+        position: absolute;
+        top: 25px;
+        left: 0px;
+        width: 260px;
+        max-height: 210px;
         overflow-y: scroll;
+        z-index: 10;
+    }
+    .search{
+        font-family: iconfont;
+        font-size: 2.3rem;
+        color: #605E7C;
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        cursor: pointer;
+        display: inline-block;
+        text-align: left;
+        line-height: 30px;
+        position: absolute;
+        right: 5px;
+        width: 23px;
+        &:hover {
+            color: #3c78ff;
+        }
+    }
+    .search-ing {
+        width: 23px;
+        height: 30px;
+        color: #3c78ff !important;
+        display: inline-block;
+        transform: scale(.25);
+    }
+    .search-ed{
+        font-family: iconfont;
+        font-size: 1.2rem;
+        color: #3c78ff;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        line-height: 15px;
+        position: absolute;
+        right: 10px;
+        width: 15px;
+        top: 6px;
+        height: 15px;
+        background-color: white;
+        border-radius: 50%;
+    }
+    .message-box {
+        width: 340px;
+        height: 100%;
+    }
+
+    .tabulation {
+        /*padding: 0 20px;*/
+    }
+
+    .message-head {
+        height: 40px;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 2px 0;
+        padding: 0 20px;
+
+    }
+
+    .mes-tip {
+        color: #959595;
+        white-space: nowrap;
+    }
+
+    .number-mes {
+        color: #3c78ff;
+    }
+
+    .mes-cont-box {
+        width: 153px;
+        margin-left: 10px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        position: relative;
+    }
+
+    .mes-cont {
+        position: relative;
+        width: 30px;
+        display: flex;
+        border-radius: 18px;
+        height: 28px;
+        transition: width .2s linear;
+        flex-flow: row nowrap;
+        align-items: center;
+        > input {
+            padding-left: 10px;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: #605E7C;
+            font-size: 1rem;
+            background-color: transparent;
+            padding-right: 26px;
+        }
+    }
+
+    .mes-cont-set {
+        background-color: #f4f4f4;
+    }
+
+    .mesContSet {
+        background-color: #f4f4f4;
+        width: 153px;
+    }
+
+    .tabulation-head {
+        padding: 0 20px;
+        > div {
+            border-bottom: 1px solid #c1d3e461;
+            display: flex;
+            height: 58px;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .navList {
+        padding: 0 15px 0 0;
+        font-size: 1.2rem;
+        height: 100%;
+        line-height: 58px;
+        cursor: pointer;
+        color: #605E7C;
+
+    }
+
+    .navList:hover {
+        border-bottom: 2px solid #3774ff;
+        color: #605E7C;
+    }
+
+    .setd {
+        color: #3c78ff;
+        border-bottom: 2px solid #3c78ff;
+    }
+
+    .navSet {
+        display: flex;
+    }
+
+    .match {
+        align-self: center;
+        color: #605E7C;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        > span {
+            margin-left: 20px;
+            font-family: iconfont;
+            font-size: 1.7rem;
+            cursor: pointer;
+            width: 17px;
+            height: 19px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    }
+
+    .matching {
+
     }
 </style>

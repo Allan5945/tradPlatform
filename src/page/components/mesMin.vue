@@ -2,7 +2,7 @@
     <div class="message-box" id="message-box">
         <div class="message-head popup">
             <div class="mes-tip">
-                <span class="number-mes">{{renderData}}</span>条需求对象
+                <span class="number-mes">{{dataL}}</span>条需求对象
             </div>
             <div class="mes-cont-box" @click.stop="screenHsShow = false">
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <tabulationBox></tabulationBox>
+            <tabulationBox v-on:renderDataLength="renderDataLength"></tabulationBox>
         </div>
         <div></div>
     </div>
@@ -49,7 +49,7 @@
     import * as vx from 'vuex'
     import airportS from './airportSearch.vue'
     import hisy from './hisy.vue'
-    import tabulationBox from './tabulationBox.vue'
+    import tabulationBox from './mintabulationBox.vue'
     import screen from './screen-hs.vue'
     import singleElection from './singleElection.vue'
     import loading from '$src/page/state/locading.vue'
@@ -57,6 +57,7 @@
     export default {
         data() {
             return {
+                dataL:0,
                 screenHsShow: false,
                 search: false,
                 searchSet:false,
@@ -81,6 +82,9 @@
             }
         },
         methods: {
+            renderDataLength: function (v) {
+                this.dataL = v;
+            },
             removeSearchSet:function () {
                 this.searchSet = false;
                 this.bgqy = true;
@@ -188,6 +192,7 @@
                 }
             },
             resData: function (data) {
+                console.log(data)
                 this.isSearch = false;
                 this.searchText = data.name;
                 this.qyCode = data;
@@ -218,10 +223,7 @@
                 'demandList',
                 'airList',
                 'cityList'
-            ]),
-            renderData: function () {
-                return this.demandList.hybridData.list.length;
-            }
+            ])
         },
         watch: {
             close: function () {
@@ -257,13 +259,13 @@
     }
 
     .bounce-enter-active {
-        animation: bounce-in .5s;
+        animation: bounce-in .3s;
     }
     .search-set{
         color: #3c78ff !important;
     }
     .bounce-leave-active {
-        animation: bounce-in .5s reverse;
+        animation: bounce-in .3s reverse;
     }
 
     .elect:before {
