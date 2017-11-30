@@ -1,16 +1,18 @@
 <template>
     <div class="dialog">
         <div class="dialog-wrapper">
-            <div class="cancel"><span>X</span></div>
+            <div class="cancel"><span class="iconfont" @click="cancelEvent">&#xe62c;</span></div>
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
             <div class="dialog-content">是否确认缴纳意向金***元</div>
             <div class="dialog-btns">
-                <button type="button" class="sure-btn" @click="sureEvent">确认缴纳</button>
-                <button type="button" class="cancel-btn" @click="cancelEvent">取消</button>
+                <div class=" btn sure-btn" @click="sureEvent" v-text="Btext">确认缴纳</div>
+                <div class="btn cancel-btn" @click="cancelEvent">取消</div>
+                <span class="iconfont" v-show="iconShow">&#xe620;</span>
             </div>
             <div class="note">
                 <div class="note1">*若交易失败，意向金将退回到您的账号</div>
                 <div class="note2"><a>申请代付意向金></a></div>
+
             </div>
         </div>
     </div>
@@ -18,18 +20,31 @@
 
 <script>
     export default {
+        data(){
+            return{
+                Btext: '确认缴纳',
+                iconShow:false
+            }
+        },
         methods: {
             cancelEvent(){
                 this.$emit('cancel');
             },
             sureEvent(){
-                this.$emit('sure');
-            } 
+                this.iconShow = true;
+                this.Btext = '';
+                let that = this;
+               setTimeout(function(){
+                    that.$emit('cancel');
+                    that.$emit('sure');
+                },1000)
+
+            }
         }
     }
 </script>
 
-<style lang="scss" rel="stylesheet/scss">
+<style lang="scss" scoped>
     .dialog {
         position: fixed;
         top: 0;
@@ -72,11 +87,14 @@
             }
         }
         .dialog-btns {
+            position:relative;
             text-align: center;
-            button {
-                height:35px; 
+            display:flex;
+            justify-content: center;
+           .btn {
+                height:35px;
                 line-height:35px;
-                text-align:center;               
+                text-align:center;
                 font-size: 14px;
                 outline:0;
                 border-radius:100px;
@@ -94,6 +112,15 @@
                 border:0;
                 background-color: #3c78ff;
                 color: #fff;
+                margin-right:8px;
+            }
+            span{
+                 position:absolute;
+                 top:10px;
+                 left:194px;
+                 color:#ffffff;
+                 font-size:16px;
+                 cursor:pointer;
             }
         }
     }

@@ -5,7 +5,7 @@
                 <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人">
             </div>
             <div class="form-box">
-                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" v-on:keyup="verifyPhon" v-model="phoneNum">
+                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
                 <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
             </div>
             <div style="height:20px;width:100%;" v-if="isError"></div>

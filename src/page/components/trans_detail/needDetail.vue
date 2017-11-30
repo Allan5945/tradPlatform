@@ -1,55 +1,55 @@
 <template>
-    <div class="detail-wrapper" v-show="getDetail.transShow">
+    <div class="detail-wrapper" v-show="transDetail.transShow">
         <header>
-            <div class="top-til">需求详情<span @click="closeDetail">X</span></div>
-            <div class="head-til">成都新开找运力</div>
+            <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
+            <div class="head-til">{{detailData.title}}</div>
             <div class="tips">
-                <span>创建于2017.12.12</span>
-                <span>已有2位用户发起意向</span>
+                <span>创建于{{detailData.releasetime}}</span>
+                <span>已有{{intentionCount}}位用户发起意向</span>
             </div>
         </header>
         <div class="content">
             <div >
                 <div>出港时刻</div>
-                <div>08:00 - 12:00</div>
+                <div>{{detailData.dptTime}}</div>
             </div>
             <div>
                 <div>班期</div>
-                <div>待定</div>
+                <div>{{detailData.days}}</div>
             </div>
             <div>
                 <div>机型</div>
-                <div>AA2222</div>
+                <div>{{detailData.aircrfttyp}}</div>
             </div>
              <div>
                 <div>运力基地</div>
-                <div>双流机场</div>
+                <div>{{detailData.dptNm}}</div>
             </div>
             <div>
                 <div>运力归属</div>
-                <div>东方航空</div>
+                <div>***</div>
             </div>
             <div>
                 <div>座位布局</div>
-                <div>F8Y160</div>
+                <div>{{detailData.seating}}</div>
             </div>
             <div>
                 <div>小时成本</div>
-                <div>1万元/小时</div>
+                <div>{{detailData.hourscost}}万/小时</div>
             </div>
             <div>
                 <div>接受调度</div>
-                <div>武汉</div>
+                <div>{{detailData.schedulingStr}}</div>
             </div>
             <div>
                 <div>有效期</div>
-                <div>2017.12.1 - 2018.12.1</div>
+                <div>{{detailData.periodValidity}}</div>
             </div>
         </div>
         <footer>
             <div>*隐藏信息在提交意向后可查看</div>
             <div class="btn">
-                <div class="intent-btn" @click="haveInvent"><span></span>我有意向</div>
+                <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
                 <div class="col-btn">收藏</div>
             </div>
         </footer>
@@ -57,42 +57,59 @@
 </template>
 
 <script>
+ import * as vx from 'vuex'
  export default {
      data(){
          return{
              getDetail:[],
-             detailData:[]
+             detailData:[],
+             intentionCount:0,
+             isIntentionMoney:false
          }
      },
      methods:{
          closeDetail:function(){
-             
+
          },
          haveInvent:function(){
-             console.log(this.getDetail.id)
-             console.log( this.detailData)
+            /* if(!this.isIntentionMoney){
+                this.$emit("formShow");
+             }*/
+             this.$emit("formShow");
          }
      },
-    
-      mounted:function(){
-          this.getDetail = this.$store.getters.transDetail;
-          this.$ajax({
+      computed:{
+            ...vx.mapGetters([
+                'transDetail'
+            ]),
+
+
+      },
+      watch:{
+       "transDetail.userData.demandId" : function(){
+                //this.$emit('detail');
+
+                this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: this.getDetail.id
+                    demandId: this.transDetail.userData.demandId
                 }
             })
                 .then((response) => {
+                    this.isIntentionMoney = response.data.isIntentionMoney;
+                    this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                 })
+                .then()
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+            }
       }
 
 }
@@ -107,6 +124,7 @@
         width:600px;
         height:100%;
         min-height:600px;
+        color:#605E7C;
         background-color:#fff;
         header{
             width:100%;
@@ -127,6 +145,7 @@
           display: flex;
           height:41px;
           line-height:41px;
+          color:rgba(96, 94, 124, 0.7);
           font-size:1.2rem;
           background-color:#fff;
           padding:0 15px 0 40px;
@@ -145,7 +164,8 @@
           }
         }
         .head-til{
-          font-size:20px;
+          font-size:2rem;
+          font-weight:bold;
           margin-top:30px;
           padding-left:40px;
           height:20px;
@@ -154,6 +174,7 @@
         .tips{
           height:12px;
           line-height:12px;
+          color:rgba(96, 94, 124, 0.7);
           padding:20px 0 18px 40px;
           span{
             margin-right:30px;
@@ -176,6 +197,7 @@
           }
           >div:nth-of-type(1){
               width:80px;
+              color:rgba(96, 94, 124, 0.7);
           }
           >div:nth-of-type(2){
               width:160px;
@@ -190,6 +212,7 @@
               margin: 0 20px;
               padding-left:20px;
               height:40px;
+              color:rgba(96, 94, 124, 0.7);
               box-sizing:border-box;
               border-bottom:1px solid #ccc;
           }
@@ -208,6 +231,10 @@
                   margin-right:10px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  span{
+                    font-size:1.8rem;
+                    margin-right:15px;
+                  }
               }
                >.col-btn{
                   width:80px;

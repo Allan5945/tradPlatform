@@ -2,10 +2,10 @@
     <div class="t-form scroll popup" v-show="showForm">
         <div class="t-must">
             <div class="form-box">
-                <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人">
+                <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact">
             </div>
             <div class="form-box">
-                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" v-on:keyup="verifyPhon" v-model="phoneNum">
+                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
                 <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
             </div>
             <div style="height:20px;width:100%;" v-if="isError"></div>
@@ -18,14 +18,14 @@
                         <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
                     </div>
                     <div class="selected" v-if="this.getTime == 'true'">
-                        <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}:00</div>
+                        <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
                         <span>-</span>
-                        <div @click="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}:00</div>
+                        <div @click="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
                       <div class="time-table popup time-start" v-show="boxShow1">
-                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}:00</div>
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
                       </div>
                       <div class="time-table popup time-end" v-show="boxShow2">
-                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}:00</div>
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}</div>
                       </div>
                     </div>
                     <div class="t-radio">
@@ -53,9 +53,9 @@
             </div>
             <div class="form-box air-route">
                 <div class="t-title">意向航线</div>
-                <input type="text" placeholder="起飞机场"><span class="icon-item ">&#xe672;</span>
-                <input type="text" placeholder="经停机场（可选填）"><span class="icon-item ">&#xe672;</span>
-                <input type="text" placeholder="目标机场（可选填）">
+                <input type="text" placeholder="起飞机场" v-model="intendedDpt"><span class="icon-item ">&#xe672;</span>
+                <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst"><span class="icon-item ">&#xe672;</span>
+                <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv">
             </div>
             <div class="form-box">
                 <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
@@ -77,10 +77,10 @@
                 </div>
             </div>
             <div class="form-box reset">
-                <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160">
+                <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
             </div>
             <div class="form-box pad1 taken">
-                <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本">
+                <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost">
                 <span>w/h</span>
             </div>
             <div class="form-box  pad1 dispatch">
@@ -116,13 +116,13 @@
         </div>
         <div class="post-type">
             <div class="t-radio">
-                <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="type1"><label for="type1">对所有人公开</label>
+                <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
             </div>
             <div class="t-radio">
-                <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="type2"><label for="type2">对认证用户公开</label>
+                <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
             </div>
             <div class="t-radio">
-                <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="type3"><label for="type3">定向发布</label>
+                <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
             </div>
             <div class="direction t-radio" style="position:relative;">
                 <input type="text" v-show="this.post == 'type3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
@@ -159,11 +159,19 @@
                 pickEnd:false,
                 airplTypShow:false,
                 airCompanyShow:false,
+                contact: '',
+                intendedDpt:'',
+                intendedPst:'',
+                intendedArrv:'',
                 airplaneTyp:'',
                 airCompany:'',
-                post:'type1',
-                timeStart:'00',
-                timeEnd:'00',
+                airCompanyId: 0,
+                dptState:[0,1],//运力基地：机场为0，地区为1
+                seat:'',
+                hourcost:'',
+                post:'0',
+                timeStart:'00:00',
+                timeEnd:'00:00',
                 tip: '',
                 searchData:["双流机场","武当山机场"],
                 searchData1:["双流机场","武当山机场"],
@@ -173,8 +181,8 @@
                 calendarInitDay1: '',
                 calendarInitDay2: '',
                 calendarShow: false,
-                timeData:['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18',
-                '19','20','21','22','23','00'],
+                timeData:['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00',
+                '19:00','20:00','21:00','22:00','23:00','00:00'],
                 timeShow: true,
                 isSearch: false,
                 searchText: '',
@@ -281,6 +289,7 @@
             getCompanyList: function(i){
                 this.airCompany = this.airCompanyData[i][0];
                 this.airCompanyShow = false;
+                this.airCompanyId = this.airCompanyData[i][2];
             },
             getAirplaneTyp:function(){
                 this.$ajax({
@@ -318,6 +327,7 @@
                     let myCompany = [];
                     myCompany.push(item.capacityCompany.airlnCd);
                     myCompany.push(item.capacityCompany.icao);
+                    myCompany.push(item.capacitycompany);
                     this.airCompanyData.push(myCompany);
                 })
             }).catch((error) => {
@@ -327,25 +337,41 @@
                 this.airCompanyShow = true;
             },
             confirm:function(){
-                let demand = {
-
-
-                };
-
+                let demandData = { };
+                    demandData.demandtype = "1";
+                    demandData.contact = this.contact;
+                    demandData.iHome = this.phoneNum;
+                    demandData.dptTime = this.timeStart + ' - '+ this.timeEnd;
+                    demandData.days   = this.getFlight =='true'? this.msg: '无';
+                    demandData.intendedDpt = this.intendedDpt;
+                    demandData.intendedPst = this.intendedPst;
+                    demandData.intendedArrv = this.intendedArrv;
+                    demandData.aircrfttyp = this.airplaneTyp;
+                    demandData.dpt = this.qyCode;
+                    demandData.dptState = this.dptState[0];
+                    demandData.capacitycompany = this.airCompanyId;
+                    demandData.seating = this.seat;
+                    demandData.hourcost = this.hourcost;
+                    demandData.schedulingStr = this.dispatch == false? '无':'有';
+                    demandData.remark = this.tip;
+                    demandData.periodValidity = this.myDate;
+                    demandData.publicway = this.post;
+                    //demandData.directionalgoal = this.directText;
+                    //demandData.demandprogress = '0';
                  this.$ajax({
                 url:"/demandAdd",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
-                params: {
-                    page:2
-                }
+                params: demandData
             }) .then((response) => {
-
+                    //console.log(response.opResult);
             }) .catch((error) => {
                     console.log(error);
                 });
+
+                this.showForm = false;
             }
         },
         computed:{
@@ -358,20 +384,7 @@
 
         },
          beforeMount:function () {
-            this.$ajax({
-                url:"/getDemandsForCurrentEmployee?page=2",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    /*page:this.demandList.hybridPage*/
-                }
-            }) .then((response) => {
-                /*this.$store.dispatch('hybridData', response.data.list.list).then(() => {});*/
-            }).catch((error) => {
-                    console.log(error);
-                });
+
 
 
         }
@@ -790,7 +803,6 @@
     height: 100%;
     width: 75px;
     font-size: 12px;
-    padding-left:15px;
     border:0;
     outline: none;
     border-bottom: 1px solid rgba(151, 151, 151, 0.3);

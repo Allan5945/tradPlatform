@@ -1,7 +1,7 @@
 <template>
-    <div class="plan-wrapper scroll" v-show="planShow" >
+    <div class="plan-wrapper scroll" >
         <header>
-            <div class="top-til">需求详情<span @click="closeDetail">X</span></div>
+            <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
             <div class="head-til">成都新开找运力</div>
             <div class="tips">
                 <span>创建于2017.12.12</span>
@@ -50,7 +50,7 @@
             <div class="myplan">
                 <div class="plan-til">
                     <div>我发出的方案</div>
-                    <div><span>--</span>编辑</div>
+                    <div><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                 </div>
                 <div class="airline">
                     <div class="airplace">
@@ -62,18 +62,18 @@
                          <div class="resouse">
                             <div>出港资源</div>
                             <div>08:00 - 12:00</div>
-                        </div> 
+                        </div>
                     </div>
-                    <div><span>--</span></div>
+                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                     <div class="airplace">
                         <div>经停机场</div>
                         <div>北京西苑</div>
                         <div class="resouse">
                             <div>出港资源</div>
                             <div>带协调</div>
-                        </div>                       
+                        </div>
                     </div>
-                    <div><span>--</span></div>
+                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                     <div class="airplace">
                         <div>到达区域</div>
                         <div>华北地区</div>
@@ -105,7 +105,7 @@
                         <div>80人/班</div>
                     </div>
                     <div>
-                        <div>补贴</div>
+                        <div>补贴政策</div>
                         <div>80人/班</div>
                     </div>
                     <div>
@@ -126,13 +126,12 @@
                     </div>
                     <div class="tips">
                         <div>其他说明</div>
-                        <div>说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容
-                        说明内容说明内容说明内容说明内容说明内容说明内容</div>
+                        <div>说明内容说明内容说明内容说明内容说明内容说明内容</div>
                     </div>
                 </div>
-            
+
             </div>
-           
+
         </div>
         <footer>
             <div class="btn">
@@ -144,29 +143,44 @@
 </template>
 
 <script>
+   import * as vx from 'vuex'
  export default {
      data(){
          return{
-             planShow:true
+             planShow:true,
+             planData:[]
          }
      },
      methods:{
          closeDetail:function(){
-             this.planShow = false;
+             this.$emit('showPlan');
          },
 
      },
+      computed:{
+            ...vx.mapGetters([
+                'transDetail'
+            ]),
+
+
+      },
       mounted:function(){
-          this.$ajax({
+           this.$ajax({
                 method: 'post',
-                url: '/capacitydemand/capacityDemandFindById',
+                url: '/changeIntentionMoneyStatusForResponse',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.transDetail.userData.responseId,
+                    intentionStatu:'0'
+
                 }
             })
                 .then((response) => {
-                    
+                   this.planData = response.data;
                 })
+                .then()
                 .catch((error) => {
                         console.log(error);
                     }
@@ -185,6 +199,7 @@
         width:600px;
         box-sizing:border-box;
         height:100%;
+        color:#605E7C;
         overflow: hidden;
         overflow-y:scroll;
         background-color:#fff;
@@ -197,7 +212,7 @@
           position:fixed;
           bottom:0;
           right:0;
-          width:600px;          
+          width:600px;
           background-color:#fff;
           height:100px;
         }
@@ -210,6 +225,7 @@
           line-height:41px;
           font-size:1.2rem;
           background-color:#fff;
+          color:rgba(96, 94, 124, 0.7);
           padding:0 15px 0 40px;
           span{
             display:block;
@@ -219,7 +235,6 @@
             height:22px;
             line-height:22px;
             text-align:center;
-            color:#3C78FF;
             border:1px solid #ededed;
             border-radius:100%;
             cursor:pointer;
@@ -227,6 +242,7 @@
         }
         .head-til{
           font-size:20px;
+          font-weight:bold;
           margin-top:30px;
           padding-left:40px;
           height:20px;
@@ -235,6 +251,7 @@
         .tips{
           height:12px;
           line-height:12px;
+          color:rgba(96, 94, 124, 0.7);
           padding:20px 0 18px 40px;
           span{
             margin-right:30px;
@@ -258,6 +275,7 @@
           }
           >div:nth-of-type(1){
               width:80px;
+              color:rgba(96, 94, 124, 0.7);
           }
           >div:nth-of-type(2){
               width:160px;
@@ -277,6 +295,8 @@
             background-color:rgba(216,216,216,.2);
             >div:nth-of-type(1){
              font-size:2rem;
+             color:#605E7C;
+             font-weight:bold;
              height:80px;
              line-height:80px;
              padding-left:40px;
@@ -355,7 +375,7 @@
                   margin-right:10px;
               }
                .col-btn{
-                  width:80px;   
+                  width:80px;
               }
           }
     }

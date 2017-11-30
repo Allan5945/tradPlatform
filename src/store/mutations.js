@@ -56,7 +56,7 @@ const mutations = {
     },
     [TRANSDETAIL](state,vl){
         state.transDetail.transShow = true;
-        state.transDetail.id = vl;
+        state.transDetail.userData = vl;
     }
 };
 export default {

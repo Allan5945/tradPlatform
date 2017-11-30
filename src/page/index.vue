@@ -9,10 +9,11 @@
         <transition name="dialog">
             <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
-        <needDetail></needDetail>
-        <!-- <myPlan></myplan> -->
-        <!-- <intentForm></intentForm> -->
-        <myIntention></myintention>
+      <needDetail @formShow="formShow" v-if="detailShow" @detail="detail"></needDetail>
+       <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
+      <!-- <myIntention></myintention> -->
+      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
     </div>
 </template>
 
@@ -30,7 +31,8 @@
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
-    
+    import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
+
 
 
     export default {
@@ -38,8 +40,11 @@
             return {
                 name: 1,
                 show: false,
-                dialog:true,
-                transShow:false,
+                dialog:false,
+                payDialog:false,
+                intentFormShow:false,
+                planShow:false,
+                detailShow:true,
                 loadingData: {
                     airList: false,
                     demands: false
@@ -57,7 +62,17 @@
             toShow() {
                 this.show = !this.show;
             },
+            formShow(){
+                this.intentFormShow = !this.intentFormShow;
+            },
+            closeForm(){
+                this.intentFormShow = !this.intentFormShow;
+            },
             sureDialog(){
+                this.intentFormShow = false;
+                this.planShow = true;
+                this.payDialog = true;
+                this.detailShow = false;
                /* const self = this;
                 switch (self.dialog_type){
                     case 'clear':
@@ -69,6 +84,12 @@
                 }
                 this.dialog = false;*/
             },
+            showPlan:function(){
+                this.planShow = false;
+            },
+            detail:function(){
+                this.detailShow = true;
+            }
         },
         beforeMount:function () {
             if(this.role == null)window.location.href = '#/login'
@@ -145,7 +166,8 @@
             intentForm,
             myPlan,
             transDialog,
-            myIntention
+            myIntention,
+            paySuccess
         }
     }
 </script>

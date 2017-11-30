@@ -108,14 +108,18 @@
                }
            },
            getDetail: function (val) {
-               let demandId = val.data.employeeId;
+                let userData ={ };
+                userData.demandId = val.data.id;
+                userData.employeeId = val.data.employeeId;
+               console.log( userData.demandId)
                console.log(val.data.demandtype)
+               console.log(val.data.employeeId)
                 switch (val.data.demandtype){
                        // case "0":
                           //  this.$emit("ShowLineDetail",demandId);
                            // break;
                         case "1":
-                            this.$store.dispatch('transDetail',demandId);
+                            this.$store.dispatch('transDetail',userData);
                             break;
                         //case "2":
                           //  this.$emit("ShowAgentDetail",demandId);
