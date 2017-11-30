@@ -14,8 +14,8 @@
         <!--<intentForm v-if="intentFormShow" @cancel="dialog = true"></intentForm>-->
         <!-- <myIntention></myintention> -->
         <!--<paySuccess></paySuccess>-->
-        <airlineDetailPayAfter></airlineDetailPayAfter>
-        <!--<airlineReq></airlineReq>-->
+        <!--<airlineDetailPayAfter></airlineDetailPayAfter>-->
+        <airlineReq></airlineReq>
         <!--<airlineWrite></airlineWrite>-->
         <!--<transportForm></transportForm>-->
         <!--<airlineDelegation></airlineDelegation>-->

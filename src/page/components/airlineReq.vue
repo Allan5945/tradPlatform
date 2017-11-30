@@ -490,7 +490,7 @@
             },
             //发送数据
             submitData: function () {
-                //表单验证（部分）
+                /*//表单验证（部分）
                 if(this.user == '') {
                     this.warn1Show = true;
                     return
@@ -503,7 +503,7 @@
                 }if(this.typeChoose == '') {
                     this.warn4Show = true;
                     return
-                }
+                }*/
 
                 let sendData = {};
                 sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
