@@ -9,7 +9,6 @@ import {
 } from './types'
 import Vue from 'vue'
 import * as types from './types'
->>>>>>> ea0bc90899482aad7fef4aeeb427eecb616603bf
 import getters from './getters'
 import {state} from './state.js'
 
@@ -65,7 +64,7 @@ const mutations = {
     [TRANSDETAIL](state,vl){
         state.transDetail.transShow = true;
         state.transDetail.userData = vl;
-    }
+    },
     [types.SUBSIDYPOLICY](state,vl) {
         if(state.demandList.conditions.subsidyPolicy.va[vl].s){
             let l = state.demandList.conditions.subsidyPolicy.s.indexOf(state.demandList.conditions.subsidyPolicy.va[vl].v);

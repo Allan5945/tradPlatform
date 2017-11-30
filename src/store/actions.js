@@ -21,7 +21,7 @@ export default {
     },
     transDetail:({commit},vl)=>{
         commit(types.TRANSDETAIL,vl)
-    }
+    },
 
     setFlyGrade:({commit},vl)=>{
         commit(types.FLYGRADE,vl)

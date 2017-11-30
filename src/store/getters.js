@@ -22,6 +22,7 @@ export default {
     },
     transDetail:(state)=>{
         return state.transDetail;
+    },
     conditionsOpen:(state)=>{
         return state.conditionsOpen;
     },

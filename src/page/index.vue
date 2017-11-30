@@ -32,7 +32,7 @@
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
-    import {conversionsCity,conversions} from './../public/js/conversions'
+    //import {conversionsCity,conversions} from './../public/js/conversions'
 
     export default {
         data() {
@@ -94,6 +94,7 @@
             },
             detail:function(){
                 this.detailShow = true;
+            },
             init:function () {
                 if(
                     this.loadingData.airList &&
