@@ -1,6 +1,6 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div v-for="(key,index) in renderData">
+        <div v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
             <div class="tabulation-item">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
@@ -114,6 +114,24 @@
                     document.getElementById('tabulationBox').style.height = 'auto';
                     this.hidden = false;
                 }
+            },
+            drawLine:function (key,t){
+                let pots = [];
+                if(t){
+                    if(key.data.arrvCt != null && key.data.arrvCt != ''){
+                        let jw = this.$cityMes(this.cityList,key.data.arrvCt).cityCoordinate.split(',');
+                        pots.push(new BMap.Point(jw[0],jw[1]))
+                    }
+                    if(key.data.dptCt != null && key.data.dptCt != ''){
+                        let jw = this.$cityMes(this.cityList,key.data.dptCt).cityCoordinate.split(',');
+                        pots.push(new BMap.Point(jw[0],jw[1]))
+                    }
+                    if(key.data.pstCt != null && key.data.pstCt != ''){
+                        let jw = this.$cityMes(this.cityList,key.data.pstCt).cityCoordinate.split(',');
+                        pots.push(new BMap.Point(jw[0],jw[1]))
+                    }
+                }
+                this.$bExample.setLinesList(pots,t);
             }
         },
         updated: function () {
@@ -121,6 +139,7 @@
         },
         watch: {
             demandList:function () {
+
             }
         },
         computed: {
@@ -128,7 +147,8 @@
                 'demandList',
                 'role',
                 'close',
-                'conditionsOpen'
+                'conditionsOpen',
+                'cityList'
             ]),
             renderData: function () {
                 let d, a = [],c = [];
@@ -333,6 +353,11 @@
             height: 105px;
             padding: 20px 0 0 40px;
             border-bottom: 1px solid #f3f3f3;
+            &:hover{
+                cursor: pointer;
+                background-color: rgba(229,229,229,.2);
+                border-radius: 7px;
+            }
         }
     }
 </style>

@@ -4,9 +4,10 @@
 
 <script>
     import echarts from 'echarts';
+//    import '../static/js/CurveLine.min.js';
     import '../static/js/bmap.js';
     import * as vx from 'vuex';
-    import bmap from './bmap.js'
+    import bmapExamples from './bmapExamples.js'
     const sy =  {
         "styleJson": [
             {
@@ -250,13 +251,14 @@
                                 "show": true,
                                 color:'white',
                                 "formatter":function (v) {
-                                    if(v.data.num > 9){
-                                        return 'N';
-                                    }else if(v.data.num == 0){
-                                        return '';
-                                    }else{
-                                        return v.data.num;
-                                    }
+                                    return '';
+//                                    if(v.data.num > 9){
+//                                        return 'N';
+//                                    }else if(v.data.num == 0){
+//                                        return '';
+//                                    }else{
+//                                        return v.data.num;
+//                                    }
                                 },
                                 offset:[0,-2]
 
@@ -321,8 +323,10 @@
                 ]
             };
             this.myChart.setOption(option);
-//            let nu = new bmap(option);
-//            nu.getMap();
+            ;
+            this.$bExample.setmap(this.myChart.getModel().getComponent('bmap').getBMap());
+            this.$bExample.setallNum(a);
+            this.$bExample.init();
             this.myChart.on('click', (a)=> {
                 this.$ajax({
                     url:"/getDemandsForCurrentCheckedCity",

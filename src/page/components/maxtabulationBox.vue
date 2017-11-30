@@ -226,6 +226,10 @@
         align-items: center;
         margin-bottom: 10px;
         box-shadow: 0 2px 11px rgba(85, 85, 85, .1);
+        &:hover{
+            background-color: rgba(229,229,229,.2);
+            cursor: pointer;
+        }
         > div {
             display: flex;
             flex-flow: row nowrap;
