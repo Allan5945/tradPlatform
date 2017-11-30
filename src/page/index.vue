@@ -2,7 +2,7 @@
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
         <navigation @toShow="toShow"></navigation>
-        <toPublish v-if="show"></toPublish>
+        <toPublish v-show="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
 
@@ -32,12 +32,12 @@
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
-
-
+    import {conversionsCity,conversions} from './../public/js/conversions'
 
     export default {
         data() {
             return {
+                renderComponent:false,
                 name: 1,
                 show: false,
                 dialog:false,
@@ -47,7 +47,12 @@
                 detailShow:true,
                 loadingData: {
                     airList: false,
-                    demands: false
+                    demands: false,
+                    cityList: false,
+                    data:{
+                        airListData:null,
+                        cityListData:null
+                    }
                 },
                 allDot: '',
                 test: 555,
@@ -89,10 +94,23 @@
             },
             detail:function(){
                 this.detailShow = true;
+            init:function () {
+                if(
+                    this.loadingData.airList &&
+                    this.loadingData.cityList &&
+                    this.loadingData.demands &&
+                    this.loadingData.data.airListData != null &&
+                    this.loadingData.data.cityListData != null
+                ){
+                    this.$store.dispatch('initialize',this.loadingData.data).then(() => {
+                        this.renderComponent = true;
+                    });
+
+                };
             }
         },
-        beforeMount:function () {
-            if(this.role == null)window.location.href = '#/login'
+        beforeMount: function () {
+            if (this.role == null) window.location.href = '#/login'
         },
         mounted: function () {
             this.$ajax({
@@ -103,9 +121,25 @@
                 }
             })
                 .then((response) => {
-                    this.$store.dispatch('initialize', conversions(response.data.mes)).then(() => {
-                    });
+                    this.loadingData.data.airListData = conversions(response.data.mes);
                     this.loadingData.airList = true;
+                    this.init();
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            this.$ajax({
+                method: 'post',
+                url: '/getCityAllList',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then((response) => {
+                    this.loadingData.data.cityListData = conversionsCity(response.data.list);
+                    this.loadingData.cityList = true;
+                    this.init();
                 })
                 .catch((error) => {
                         console.log(error);
@@ -121,21 +155,22 @@
             })
                 .then((response) => {
                     let arr = [];
-                    response.data.data.forEach((val)=>{
-                        if(
+                    response.data.data.forEach((val) => {
+                        if (
                             val.cityCoordinateJ != null &&
                             val.cityCoordinateW != null &&
                             val.demandType != null &&
                             val.dpt != null &&
-                            val.newInfo != null &&
+//                            val.newInfo != null &&
                             val.num != null &&
                             val.obj != null
-                        ){
+                        ) {
                             arr.push(val)
                         }
                     });
                     this.allDot = arr;
                     this.loadingData.demands = true;
+                    this.init();
                 })
                 .catch((error) => {
                         console.log(error);
@@ -147,14 +182,7 @@
                 'c_updated',
                 'airList',
                 'role'
-            ]),
-            renderComponent: function () {
-                if (this.loadingData.airList && this.loadingData.demands) {
-                    return true;
-                } else {
-                    return false;
-                };
-            }
+            ])
         },
         components: {
             bmap,

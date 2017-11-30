@@ -5,7 +5,7 @@
  * @version  1.0.1
  * */
 
-let airMes = function (data,field = '$%') {
+const airMes = function (data,field = '$%') {
     for(let i = 0;i < data.length;i ++){
         if(data[i].airportName != null && data[i].airportName == field){
             return data[i];
@@ -17,4 +17,24 @@ let airMes = function (data,field = '$%') {
     };
     return '';
 };
-export default airMes;
+
+/**
+ * 城市转换信息 方法
+ * @param data{list}城市信息列表 field{string}传入信息
+ * @author  2017/11
+ * @version  1.0.1
+ * */
+
+const cityMes = function (data,field = '$%') {
+    for(let i = 0;i < data.length;i ++){
+        if(data[i].cityCoordinate != null && data[i].cityCoordinate == field){
+            return data[i];
+        }else if(data[i].cityIcao != null && data[i].cityIcao == field){
+            return data[i];
+        }else if(data[i].cityName != null && data[i].cityName == field){
+            return data[i];
+        };
+    };
+    return '';
+};
+export {cityMes,airMes};

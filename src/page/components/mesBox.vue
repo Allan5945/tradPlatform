@@ -39,7 +39,9 @@
                     page:this.demandList.hybridPage
                 }
             }) .then((response) => {
-                this.$store.dispatch('hybridData',{v:response.data.list,t:0}).then(() => {});
+                if(response.data.opResult != '1'){
+                    this.$store.dispatch('hybridData',{v:response.data.list,t:0}).then(() => {});
+                }
             })
                 .catch((error) => {
                     console.log(error);
