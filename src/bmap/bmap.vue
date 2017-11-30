@@ -6,6 +6,7 @@
     import echarts from 'echarts';
     import '../static/js/bmap.js';
     import * as vx from 'vuex';
+    import bmap from './bmap.js'
     const sy =  {
         "styleJson": [
             {
@@ -320,10 +321,11 @@
                 ]
             };
             this.myChart.setOption(option);
-
+//            let nu = new bmap(option);
+//            nu.getMap();
             this.myChart.on('click', (a)=> {
                 this.$ajax({
-                    url:"/getDemandsForCurrentCheckedAirport",
+                    url:"/getDemandsForCurrentCheckedCity",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -331,7 +333,8 @@
                     params: {
                         itia:a.data.code,
                         page:1,
-                        type:(a.data.type == 3 ? 1 : 0)
+                        type:(a.data.type == 3 ? 1 : 0),
+                        itiaType:2
                     }
                 }) .then((response) => {
                         if(response.data){

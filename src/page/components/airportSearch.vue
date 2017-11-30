@@ -111,7 +111,7 @@
                                 testCode:val.cityIcao,
                                 code:val.cityIcao,
                                 name:val.cityName,
-                                type:1
+                                type:2
                             });
                         }else if(code.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
@@ -121,7 +121,7 @@
                                 testCode:aName,
                                 code:val.cityIcao,
                                 name:val.cityName,
-                                type:1
+                                type:2
                             });
                         }else if(py.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
@@ -131,7 +131,7 @@
                                 testCode:aName,
                                 code:val.cityIcao,
                                 name:val.cityName,
-                                type:1
+                                type:2
                             });
                         }else if(pinyin.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
@@ -141,7 +141,7 @@
                                 testCode:aName,
                                 code:val.cityIcao,
                                 name:val.cityName,
-                                type:1
+                                type:2
                             });
                         };
                     }else{
@@ -150,7 +150,7 @@
                             testCode:val.cityIcao,
                             code:val.cityIcao,
                             name:val.cityName,
-                            type:1
+                            type:2
                         });
                     }
                 });

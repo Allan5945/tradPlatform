@@ -6,8 +6,8 @@
         props:['single'],
         methods:{
             seted:function () {
-                this.single.set = !this.single.set;
-                this.$emit('update:single', this.single);
+                this.$set(this.single,'set',!this.single.set);
+                this.$emit('update:single.set',this.single.set);
             }
         }
     }

@@ -146,7 +146,27 @@ const mutations = {
             state.demandList.conditions.open = false;
             state.conditionsOpen = false;
         }
-
+    },
+    [types.SETELECT](state,vl) {  // vl['a']  全部数据 || 单条数据
+        if(vl.a){
+            state.demandList.monoData.list.forEach((v)=>{
+                v.set = vl.t;
+            });
+            state.demandList.hybridData.list.forEach((v)=>{
+                v.set = vl.t;
+            })
+        }else{
+            state.demandList.monoData.list.forEach((v)=>{
+                if(v.id == vl.t.data.id){
+                    v.set = !v.set;
+                }
+            });
+            state.demandList.hybridData.list.forEach((v)=>{
+                if(v.id == vl.t.data.id){
+                    v.set = !v.set;
+                }
+            })
+        }
     },
 };
 export default {
