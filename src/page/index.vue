@@ -14,6 +14,8 @@
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
       <!-- <myIntention></myintention> -->
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <toPublish v-show="show" @toShow="toShow"></toPublish>
+        <airlineDetailPayAfter @click="test1 = !test1" v-if="test1"></airlineDetailPayAfter>
     </div>
 </template>
 
@@ -32,10 +34,14 @@
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
+    import airlineReq from './components/airlineReq.vue'
+    import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
+    import airlineDelegation from './../page/components/airlineDelegation.vue'
 
     export default {
         data() {
             return {
+                test1:false,
                 renderComponent:false,
                 name: 1,
                 show: false,
@@ -195,7 +201,10 @@
             myPlan,
             transDialog,
             myIntention,
-            paySuccess
+            paySuccess,
+            airlineReq,
+            airlineDetailPayAfter,
+            airlineDelegation
         }
     }
 </script>

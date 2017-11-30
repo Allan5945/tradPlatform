@@ -326,22 +326,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fifth">
-                <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="openAll" checked @change="publicwayStrCode = 0;directionPublicShow = false;"/><label for="openAll" class="input-label">对所有人公开</label>
-                </div>
-                <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="openUser" @change="publicwayStrCode = 1;directionPublicShow = false;"/><label for="openUser" class="input-label">对认证用户公开</label>
-                </div>
-                <div class="vertical-center" style="margin-right: 0;">
-                    <input type="radio" class="magic-radio" name="open-type" id="openOnly" @change="directionPublic"/><label for="openOnly" class="input-label">定向发布</label>
-                </div>
-                <div class="choose-input" v-show="directionPublicShow" style="justify-content: flex-start;">
-                    <span class="little-label" v-for="(item,index) in directionPublicCity">{{item}} <span class="little-label-close" @click="littleLabelClose(index)">&#xe62c;</span></span>
-                </div>
-            </div>
             <div class="sixth">
-                <button class="btn-a btn-blue">委托代理</button>
                 <button class="btn-b btn-blue" @click="submitData">确认发布</button>
                 <button class="btn-c btn-cancel">取消</button>
             </div>
@@ -490,7 +475,7 @@
             },
             //发送数据
             submitData: function () {
-                /*//表单验证（部分）
+                //表单验证（部分）
                 if(this.user == '') {
                     this.warn1Show = true;
                     return
@@ -503,7 +488,7 @@
                 }if(this.typeChoose == '') {
                     this.warn4Show = true;
                     return
-                }*/
+                }
 
                 let sendData = {};
                 sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
@@ -1460,7 +1445,7 @@
 
     .sixth {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         margin-bottom: 44px;
         button {
             padding: 9px 20px;
@@ -1468,9 +1453,6 @@
             font-size: 1.5rem;
             line-height: 20px;
             cursor: pointer;
-        }
-        .btn-a {
-            margin-right: 30px;
         }
         .btn-b {
             margin-right: 10px;

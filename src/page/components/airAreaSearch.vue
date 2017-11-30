@@ -61,7 +61,7 @@
         components: {},
         mounted() {
 //            this.initData();
-         this.showData();
+            this.showData();
         },
         methods: {
             /*initData: function () {
@@ -85,7 +85,7 @@
                         console.log(error);
                     });
             },*/
-            showData: function (item = '城市') {
+            showData: function (item = '省份') {
                 this.areaTab = item
                 if(item === '省份') {
                     this.areaDetail = [];
@@ -120,10 +120,10 @@
                         })
                     });
                 }
-                console.info(this.areaDetail);
+//                console.info(this.areaDetail);
             },
             selectStyle: function (item) {
-                console.info(item)
+//                console.info(item)
                 this.areaList = item;
                 this.$emit('li-click', this.areaList);
             }
