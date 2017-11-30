@@ -1,314 +1,346 @@
 <template>
-    <div class="wrapper">
-        <div class="ald-container">
-            <div class="first-show" v-show="firstShow">
-                <div class="first item-container">
-                    <span>需求详情</span>
-                    <span class="close-icon">&times;</span>
+    <div class="ald-container">
+        <div class="first-show" v-show="firstShow">
+            <div class="first item-container">
+                <span class="font-gray">需求详情</span>
+                <span class="close-icon">&times;</span>
+            </div>
+            <div class="second item-container">
+                <div class="sec-top">
+                    {{myData.title}}航线需求
                 </div>
-                <div class="second item-container">
-                    <div class="sec-top">
-                        成都-北京-上海航线需求
-                    </div>
-                    <div class="sec-bottom">
-                        <span style="margin-right: 40px;">创建于2017.12.12</span><span>已有2位用户发起意向</span>
-                    </div>
+                <div class="sec-bottom font-gray">
+                    <span style="margin-right: 40px;">创建于{{releaseTime}}</span><span>已有{{userNum}}位用户发起意向</span>
                 </div>
-                <div class="third item-container">
-                    <div class="start item">
-                        <div class="item-a">始发机场</div>
-                        <div class="item-b"><h2>成都双流</h2></div>
-                        <div class="item-c">接受临近机场</div>
-                        <div class="item-d">出港资源</div>
-                        <div class="item-e">08:00-12:00</div>
-                    </div>
-                    <div class="item-icon">
-                        <span class="icon-item">&#xe672;</span>
-                    </div>
-                    <div class="pass item">
-                        <div class="item-a">经停机场</div>
-                        <div class="item-b"><h2>北京南苑</h2></div>
-                        <div class="item-c">&nbsp;<!--此处有空格--></div>
-                        <div class="item-d">出港资源</div>
-                        <div class="item-e">带协调</div>
-                    </div>
-                    <div class="item-icon">
-                        <span class="icon-item">&#xe672;</span>
-                    </div>
-                    <div class="arrive item">
-                        <div class="item-a">到达区域</div>
-                        <div class="item-b"><h2>华北地区</h2></div>
-
-                        <!--下方有空格-->
-                        <div class="item-c">&nbsp;<!--此处有空格--></div>
-                        <div class="item-d">&nbsp;<!--此处有空格--></div>
-                        <div class="item-e">&nbsp;<!--此处有空格--></div>
+            </div>
+            <div class="third item-container">
+                <div class="start item">
+                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
+                    <div class="item-b"><h2>{{myData.dpt}}</h2></div>
+                    <div class="item-c font-gray">{{myData.dptAcceptnearairportStr}}临近机场</div>
+                    <div class="item-d font-gray">出港资源</div>
+                    <div class="item-e">
+                        <span v-show="myData.dptTimeresources == 0">{{dptTime0}}-{{dptTime1}}</span>
+                        <span v-show="myData.dptTimeresources == 1">待协调</span>
+                        <span v-show="myData.dptTimeresources == 2">时刻充足</span>
                     </div>
                 </div>
-                <div class="fourth item-container">
-                    <div class="items">
-                        <div class="left item">
-                            <div>拟开时间</div>
-                            <div>拟飞机型</div>
-                            <div>客量期望</div>
-                            <div>补贴政策</div>
-                        </div>
-                        <div class="right item">
-                            <div>2017.11.11-2018.11.11</div>
-                            <div>AA2222</div>
-                            <div>80人/均班</div>
-                            <div>按人头</div>
-                        </div>
-                    </div>
-                    <div class="items">
-                        <div class="left item">
-                            <div>拟开班期</div>
-                            <div>座位数</div>
-                            <div>客座率期望</div>
-                            <div>有效期</div>
-                        </div>
-                        <div class="right item">
-                            <div>待定</div>
-                            <div>180</div>
-                            <div>80%</div>
-                            <div style="display: flex;">2017.11.11-2018.11.11 <span class="icon-item" v-show="secondShow">&#xe653;</span></div>
-                        </div>
+                <div class="item-icon">
+                    <span class="icon-item">&#xe672;</span>
+                </div>
+                <div class="pass item">
+                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
+                    <div class="item-b"><h2>北京南苑</h2></div>
+                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                    <div class="item-d font-gray">出港资源</div>
+                    <div class="item-e">
+                        <span v-show="myData.pstTimeresources == 0">{{pstTime0}}-{{pstTime1}}</span>
+                        <span v-show="myData.pstTimeresources == 1">待协调</span>
+                        <span v-show="myData.pstTimeresources == 2">时刻充足</span>
                     </div>
                 </div>
-
+                <div class="item-icon">
+                    <span class="icon-item">&#xe672;</span>
+                </div>
+                <div class="arrive item">
+                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
+                    <div class="item-b"><h2>华北地区</h2></div>
+                    <!--下方有空格-->
+                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                    <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
+                    <div class="item-e">&nbsp;<!--此处有空格--></div>
+                </div>
+            </div>
+            <div class="fourth item-container">
+                <div class="items">
+                    <div class="left item font-gray">
+                        <div>拟开时间</div>
+                        <div>拟飞机型</div>
+                        <div>客量期望</div>
+                        <div>补贴政策</div>
+                    </div>
+                    <div class="right item">
+                        <div>{{sailingtime0}}-{{sailingtime1}}</div>
+                        <div>{{myData.aircrfttyp}}</div>
+                        <div>{{myData.loadfactorsexpect}}人/均班</div>
+                        <div>{{myData.subsidypolicyStr}}</div>
+                    </div>
+                </div>
+                <div class="items">
+                    <div class="left item font-gray">
+                        <div>拟开班期</div>
+                        <div>座位数</div>
+                        <div>客座率期望</div>
+                        <div>有效期</div>
+                    </div>
+                    <div class="right item">
+                        <div>{{myData.days}}</div>
+                        <div>{{myData.seating}}</div>
+                        <div>{{myData.loadfactorsexpect}}%</div>
+                        <div style="display: flex;">{{periodValidity0}}-{{periodValidity1}} <span class="icon-item" v-show="secondShow">&#xe653;</span></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="secondShow" v-show="secondShow">
-                <div class="fifth item-container">
-                    <div class="left">其他说明</div>
-                    <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                        其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                        其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                    </div>
-                </div>
-                <div class="sixth item-container">
-                    <h2>收到的意向</h2>
-                    <span>已有2位用户发起意向</span>
-                </div>
-                <div class="seventh item-container">
-                    <div class="left">
-                        收到时间
-                    </div>
-                    <div class="up-down">
-                        <span class="icon-item icon-up active">&#xe605;</span>
-                        <span class="icon-item icon-down">&#xe605;</span>
-                    </div>
-                    <div class="right">
-                        意向方
-                    </div>
-                </div>
-                <div class="eighth">
-                    <div class="eight-item">
-                        <div class="item-first">
-                            <div class="left">11.04.2017</div>
-                            <div class="center-left">南方航空</div>
-                            <div class="center-right">
-                                <span class="icon-item">&#xe602; <span class="reminder"></span></span>
-                            </div>
-                            <div class="right">查看详情</div>
-                        </div>
-                        <div class="item-second">
-                            <div class="start item">
-                                <div class="item-a">始发机场</div>
-                                <div class="item-b">成都双流</div>
-                                <div class="item-c">接受临近机场</div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">08:00-12:00</div>
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="pass item">
-                                <div class="item-a">经停机场</div>
-                                <div class="item-b">北京南苑</div>
-                                <div class="item-c">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">带协调</div>
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="arrive item">
-                                <div class="item-a">到达区域</div>
-                                <div class="item-b">华北地区</div>
+        </div>
 
-                                <!--下方有空格-->
-                                <div class="item-c">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d">&nbsp;<!--此处有空格--></div>
-                                <div class="item-e">&nbsp;<!--此处有空格--></div>
-                            </div>
-                        </div>
-                        <div class="item-third">
-                            <div class="items">
-                                <div class="left item">
-                                    <div>拟开时间</div>
-                                    <div>拟飞机型</div>
-                                    <div>客量期望</div>
-                                    <div>补贴政策</div>
-                                    <div>运力归属</div>
-                                    <div>是否调度</div>
-                                </div>
-                                <div class="right item">
-                                    <div>2017.11.11-2018.11.11</div>
-                                    <div>AA2222</div>
-                                    <div>80人/均班</div>
-                                    <div>按人头</div>
-                                    <div>东方航空</div>
-                                    <div>华北地区</div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="left item">
-                                    <div>拟开班期</div>
-                                    <div>座位数</div>
-                                    <div>客座率期望</div>
-                                    <div>小时成本</div>
-                                    <div>运力基地</div>
-                                </div>
-                                <div class="right item">
-                                    <div>待定</div>
-                                    <div>180</div>
-                                    <div>80%</div>
-                                    <div>8万元/小时</div>
-                                    <div>成都双流</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-fourth">
-                            <div class="left">其他说明</div>
-                            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                            </div>
-                        </div>
-                        <div class="item-fifth">
-                            <button class="btn btn-b">选定</button>
-                        </div>
-                        <div class="item-sixth">
-                            <button class="btn btn-w btn-change">已选定（点击此次可再次编译）</button>
-                            <button class="btn btn-w btn-revocation">撤销选定</button>
-                        </div>
-                    </div>
-                    <div class="eight-item">
-                        <div class="item-first">
-                            <div class="left">11.04.2017</div>
-                            <div class="center-left">南方航空</div>
-                            <div class="center-right">
-                                <span class="icon-item">&#xe602; <span class="reminder"></span></span>
-                            </div>
-                            <div class="right">查看详情</div>
-                        </div>
-                        <div class="item-second">
-                            <div class="start item">
-                                <div class="item-a">始发机场</div>
-                                <div class="item-b">成都双流</div>
-                                <div class="item-c">接受临近机场</div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">08:00-12:00</div>
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="pass item">
-                                <div class="item-a">经停机场</div>
-                                <div class="item-b">北京南苑</div>
-                                <div class="item-c">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">带协调</div>
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="arrive item">
-                                <div class="item-a">到达区域</div>
-                                <div class="item-b">华北地区</div>
-
-                                <!--下方有空格-->
-                                <div class="item-c">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d">&nbsp;<!--此处有空格--></div>
-                                <div class="item-e">&nbsp;<!--此处有空格--></div>
-                            </div>
-                        </div>
-                        <div class="item-third">
-                            <div class="items">
-                                <div class="left item">
-                                    <div>拟开时间</div>
-                                    <div>拟飞机型</div>
-                                    <div>客量期望</div>
-                                    <div>补贴政策</div>
-                                    <div>运力归属</div>
-                                    <div>是否调度</div>
-                                </div>
-                                <div class="right item">
-                                    <div>2017.11.11-2018.11.11</div>
-                                    <div>AA2222</div>
-                                    <div>80人/均班</div>
-                                    <div>按人头</div>
-                                    <div>东方航空</div>
-                                    <div>华北地区</div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="left item">
-                                    <div>拟开班期</div>
-                                    <div>座位数</div>
-                                    <div>客座率期望</div>
-                                    <div>小时成本</div>
-                                    <div>运力基地</div>
-                                </div>
-                                <div class="right item">
-                                    <div>待定</div>
-                                    <div>180</div>
-                                    <div>80%</div>
-                                    <div>8万元/小时</div>
-                                    <div>成都双流</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-fourth">
-                            <div class="left">其他说明</div>
-                            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                            </div>
-                        </div>
-                        <div class="item-fifth">
-                            <button class="btn btn-b">选定</button>
-                        </div>
-                        <div class="item-sixth">
-                            <button class="btn btn-w btn-change">已选定（点击此次可再次编译）</button>
-                            <button class="btn btn-w btn-revocation">撤销选定</button>
-                        </div>
-                    </div>
+        <div class="second-show" v-show="secondShow">
+            <div class="fifth item-container">
+                <div class="left font-gray">其他说明</div>
+                <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                    其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                    其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
                 </div>
-
+            </div>
+            <div class="sixth item-container">
+                <h2>收到的意向</h2>
+                <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">2</span>位用户发起意向</span>
+            </div>
+            <div class="seventh item-container" v-show="secondButtonShow">
+                <span class="danger">*您还未缴纳意向金，缴纳后可查看详细列表</span>
             </div>
         </div>
-        <div class="first-button" v-show="firstShow">
+
+        <div class="third-show" v-show="thirdShow">
+
+            <div class="eighth item-container">
+                <div class="left font-gray">
+                    收到时间
+                </div>
+                <div class="up-down">
+                    <span class="icon-item icon-up active">&#xe605;</span>
+                    <span class="icon-item icon-down">&#xe605;</span>
+                </div>
+                <div class="right font-gray">
+                    意向方
+                </div>
+            </div>
+            <div class="ninth">
+                <div class="nine-item">
+                    <div class="item-first">
+                        <div class="left">11.04.2017</div>
+                        <div class="center-left">南方航空</div>
+                        <div class="center-right">
+                            <span class="icon-item">&#xe602; <span class="reminder"></span></span>
+                        </div>
+                        <div class="right" @click="purposeDetailShow = !purposeDetailShow" style="color: #3c78ff; cursor: pointer;">查看详情</div>
+                    </div>
+                    <div v-show="purposeDetailShow">
+                        <div class="item-second">
+                            <div class="start item">
+                                <div class="item-a">始发机场</div>
+                                <div class="item-b"><h2>成都双流</h2></div>
+                                <div class="item-c">接受临近机场</div>
+                                <div class="item-d">出港资源</div>
+                                <div class="item-e">08:00-12:00</div>
+                            </div>
+                            <div class="item-icon">
+                                <span class="icon-item">&#xe672;</span>
+                            </div>
+                            <div class="pass item">
+                                <div class="item-a">经停机场</div>
+                                <div class="item-b"><h2>北京南苑</h2></div>
+                                <div class="item-c">&nbsp;<!--此处有空格--></div>
+                                <div class="item-d">出港资源</div>
+                                <div class="item-e">带协调</div>
+                            </div>
+                            <div class="item-icon">
+                                <span class="icon-item">&#xe672;</span>
+                            </div>
+                            <div class="arrive item">
+                                <div class="item-a">到达区域</div>
+                                <div class="item-b"><h2>华北地区</h2></div>
+
+                                <!--下方有空格-->
+                                <div class="item-c">&nbsp;<!--此处有空格--></div>
+                                <div class="item-d">&nbsp;<!--此处有空格--></div>
+                                <div class="item-e">&nbsp;<!--此处有空格--></div>
+                            </div>
+                        </div>
+                        <div class="item-third">
+                            <div class="items">
+                                <div class="left item font-gray">
+                                    <div>拟开时间</div>
+                                    <div>拟飞机型</div>
+                                    <div>客量期望</div>
+                                    <div>补贴政策</div>
+                                    <div>运力归属</div>
+                                    <div>是否调度</div>
+                                </div>
+                                <div class="right item">
+                                    <div>2017.11.11-2018.11.11</div>
+                                    <div>AA2222</div>
+                                    <div>80人/均班</div>
+                                    <div>按人头</div>
+                                    <div>东方航空</div>
+                                    <div>华北地区</div>
+                                </div>
+                            </div>
+                            <div class="items">
+                                <div class="left item font-gray">
+                                    <div>拟开班期</div>
+                                    <div>座位数</div>
+                                    <div>客座率期望</div>
+                                    <div>小时成本</div>
+                                    <div>运力基地</div>
+                                </div>
+                                <div class="right item">
+                                    <div>待定</div>
+                                    <div>180</div>
+                                    <div>80%</div>
+                                    <div>8万元/小时</div>
+                                    <div>成都双流</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-fourth">
+                            <div class="left font-gray">其他说明</div>
+                            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                            </div>
+                        </div>
+                        <div class="item-fifth">
+                            <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn">选定</button>
+                        </div>
+                        <div class="item-sixth" v-show="fourthButtonShow">
+                            <button class="btn btn-w btn-change" @click="airlineAffirmFn">已选定（点击此次可再次编译）</button>
+                            <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
+                        </div>
+                    </div>
+                </div>
+               <!-- <div class="nine-item">
+                    <div class="item-first">
+                        <div class="left">11.04.2017</div>
+                        <div class="center-left">南方航空</div>
+                        <div class="center-right">
+                            <span class="icon-item">&#xe602; <span class="reminder"></span></span>
+                        </div>
+                        <div class="right" style="color: #3c78ff; cursor:pointer;">查看详情</div>
+                    </div>
+
+                    <div>
+                        <div class="item-second">
+                            <div class="start item">
+                                <div class="item-a">始发机场</div>
+                                <div class="item-b"><h2>成都双流</h2></div>
+                                <div class="item-c">接受临近机场</div>
+                                <div class="item-d">出港资源</div>
+                                <div class="item-e">08:00-12:00</div>
+                            </div>
+                            <div class="item-icon">
+                                <span class="icon-item">&#xe672;</span>
+                            </div>
+                            <div class="pass item">
+                                <div class="item-a">经停机场</div>
+                                <div class="item-b"><h2>北京南苑</h2></div>
+                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                <div class="item-d">出港资源</div>
+                                <div class="item-e">带协调</div>
+                            </div>
+                            <div class="item-icon">
+                                <span class="icon-item">&#xe672;</span>
+                            </div>
+                            <div class="arrive item">
+                                <div class="item-a">到达区域</div>
+                                <div class="item-b"><h2>华北地区</h2></div>
+
+                                &lt;!&ndash;下方有空格&ndash;&gt;
+                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                            </div>
+                        </div>
+                        <div class="item-third">
+                            <div class="items">
+                                <div class="left item font-gray">
+                                    <div>拟开时间</div>
+                                    <div>拟飞机型</div>
+                                    <div>客量期望</div>
+                                    <div>补贴政策</div>
+                                    <div>运力归属</div>
+                                    <div>是否调度</div>
+                                </div>
+                                <div class="right item">
+                                    <div>2017.11.11-2018.11.11</div>
+                                    <div>AA2222</div>
+                                    <div>80人/均班</div>
+                                    <div>按人头</div>
+                                    <div>东方航空</div>
+                                    <div>华北地区</div>
+                                </div>
+                            </div>
+                            <div class="items">
+                                <div class="left item font-gray">
+                                    <div>拟开班期</div>
+                                    <div>座位数</div>
+                                    <div>客座率期望</div>
+                                    <div>小时成本</div>
+                                    <div>运力基地</div>
+                                </div>
+                                <div class="right item">
+                                    <div>待定</div>
+                                    <div>180</div>
+                                    <div>80%</div>
+                                    <div>8万元/小时</div>
+                                    <div>成都双流</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-fourth">
+                            <div class="left font-gray">其他说明</div>
+                            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                            </div>
+                        </div>
+                        <div class="item-fifth">
+                            <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn">选定</button>
+                        </div>
+                        <div class="item-sixth" v-show="fourthButtonShow">
+                            <button class="btn btn-w btn-change" @click="airlineAffirmFn">已选定（点击此次可再次编译）</button>
+                            <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
+                        </div>
+                    </div>
+                </div>
+           -->
+            </div>
+        </div>
+        <div class="first-button" v-show="firstButtonShow">
             <span style="width: 560px;height: 2px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
                 <button class="btn btn-w">收藏</button>
             </div>
         </div>
-        <div class="bottom" v-show="secondShow">
+        <div class="second-button" v-show="secondButtonShow">
+            <div class="buttons">
+                <button class="btn btn-b" @click="airlinePayFn">点击此处缴纳意向金</button>
+                <button class="btn btn-w">结束需求</button>
+            </div>
+        </div>
+
+        <div class="bottom" v-show="fifthButtonShow">
             <div class="buttons">
                 <button class="btn btn-b">委托代理</button>
                 <button class="btn btn-w">结束需求</button>
             </div>
         </div>
-        <airlineWrite v-show="airlineWriteShow" @close-alWrite="closeAlWriteFn"></airlineWrite>
+        <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW" :acceptData="myData"></airlineWrite>
+        <!--<airlinePay v-show="airlinePayShow" @close-this="closeAlPayFn" @change-showCode="changeShowCodeP"></airlinePay>-->
+        <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
+        <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
+        <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
 
     import airlineWrite from './airlineWrite.vue'
+//    import airlinePay from './airlinePay.vue'
+    import airlineAffirm from './airlineAffirm.vue'
+    import paySuccess from './trans_detail/paySuccess.vue'
+    import airlinePay from './trans_detail/dialog.vue'
     export default {
         data() {
             return {
@@ -316,9 +348,30 @@
                 secondShow: false,
                 thirdShow: false,
                 fourthShow: false,
+                purposeDetailShow: false, //意向列表，点击展开意向详情
+                firstButtonShow: false, //code为0时的按钮显示
+                secondButtonShow: false,//code为1时的按钮显示
+                thirdButtonShow: false,
+                fourthButtonShow: false,//code为1时的按钮显示
+                fifthButtonShow: false, //委托代理
                 airlineWriteShow: false, //组件“请填写完整方案”显示
+                airlinePayShow: false,   //组件“缴纳意向金”显示
+                airlineAffirmShow: false, //组件“请确认以下方案”显示
+                paySuccessShow: false,    //组件“缴纳完成”显示
+                dialogShow: false,        //组件“缴纳意向金”显示
                 showCode: '', //0,1,2,3对应firstShow，secondShow，thirdShow，fourthShow
 
+                userNum: '',  //发起意向的用户数量
+                myData: {},  //获取的数据
+                releaseTime: '',  //发布时间
+                dptTime0: '',     //时刻资源
+                dptTime1: '',
+                pstTime0: '',
+                pstTime1: '',
+                sailingtime0: '',
+                sailingtime1: '',
+                periodValidity0: '',
+                periodValidity1: ''
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -373,22 +426,35 @@
         },
         mounted(){
             this.initData();
+            //模拟状态码0
+            this.showCode = 0;
             this.show();
         },
         computed: {},
         methods: {
             initData: function () {
                 this.$ajax({
-                    url:"/capacityroutesdemand/capacityRoutesDemandFindById",
+                    url:"/capacityRoutesDemandDetailFindById",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        demandId: 60
+                        demandId: 78
                     }
                 }) .then((response) => {
-                    console.info(response.data.data)
+//                    console.info(response.data)
+                    this.userNum = response.data.intentionCount
+                    this.myData = response.data.data;
+                    this.releaseTime = this.myData.releasetime.split(" ")[0];
+                    this.dptTime0 = this.myData.dptTime.split(',')[0];
+                    this.dptTime1 = this.myData.dptTime.split(',')[1];
+                    this.pstTime0 = this.myData.dptTime.split(',')[0];
+                    this.pstTime1 = this.myData.dptTime.split(',')[1];
+                    this.sailingtime0 = this.myData.dptTime.split(',')[0];
+                    this.sailingtime1 = this.myData.dptTime.split(',')[1];
+                    this.periodValidity0 = this.myData.dptTime.split(',')[0];
+                    this.periodValidity1 = this.myData.dptTime.split(',')[1];
 //                    this.$store.dispatch('airlineData', response.data.data).then(() => {});
                 })
                     .catch((error) => {
@@ -396,24 +462,87 @@
                     });
             },
             show: function () {
-                if(this.showCode == 0) {
+                if(this.showCode === 0) {
                     this.firstShow = true;
-                }if(this.showCode == 1) {
-//                    this.firstShow = true;
-                }if(this.showCode == 2) {
-//                    this.firstShow = true;
-                }if(this.showCode == 3) {
-//                    this.firstShow = true;
+                    this.firstButtonShow = true;
+                    this.secondButtonShow = false;
+                    this.thirdButtonShow = false;
+                    this.fourthButtonShow = false;
+                    this.fifthButtonShow = false;
+                }if(this.showCode === 1) {
+                    this.firstShow = true;
+                    this.secondShow = true;
+                    this.firstButtonShow = false;
+                    this.secondButtonShow = true;
+                    this.thirdButtonShow = false;
+                    this.fourthButtonShow = false;
+                    this.fifthButtonShow = false;
+                }if(this.showCode === 2) {
+                    this.firstShow = true;
+                    this.secondShow = true;
+                    this.thirdShow = true;
+                    this.firstButtonShow = false;
+                    this.secondButtonShow = false;
+                    this.thirdButtonShow = true;
+                    this.fourthButtonShow = false;
+                    this.fifthButtonShow = true;
+                }if(this.showCode === 3) {
+                    this.firstShow = true;
+                    this.secondShow = true;
+                    this.thirdShow = true;
+                    this.firstButtonShow = false;
+                    this.secondButtonShow = false;
+                    this.thirdButtonShow = false;
+                    this.fourthButtonShow = true;
+                    this.fifthButtonShow = true;
                 }
             },
             //点击“我有意向”，组件“请填写完整方案”显示
             airlineWriteFn: function () {
                 this.airlineWriteShow = true;
             },
-            closeAlWriteFn: function (index) {
-                this.airlineWriteShow = index;
+            //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
+            changeShowCodeW: function () {
+                this.showCode = 1;
+                this.show();
             },
-
+            //点击“缴纳意向金”，组件“缴纳意向金”显示
+            airlinePayFn: function () {
+                this.airlinePayShow = true;
+            },
+            //点击“确认缴纳”，this.showCode变成2
+            changeShowCodeP: function () {
+                this.paySuccessShow = true; //“缴纳完成”组件显示
+                this.showCode = 2;
+                this.show();
+            },
+            //点击“选定”，组件“请确认以下方案”显示
+            airlineAffirmFn: function () {
+                this.airlineAffirmShow = true;
+            },
+            //点击“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
+            changeShowCodeA: function () {
+                this.showCode = 3;
+                this.show();
+            },
+            //点击“撤销选定”，showCode变成2状态
+            airlineAffirmUnchooseFn: function () {
+                this.showCode = 2;
+                this.show();
+            },
+            //父子组件间信息的传递，点击x号关闭组件
+            closeAlWriteFn: function () {
+                this.airlineWriteShow = false;
+            },
+            closeAlPayFn: function () {
+                this.airlinePayShow = false;
+            },
+            closeAlAffirmFn: function () {
+                this.airlineAffirmShow = false;
+            },
+            closePaySucssFn: function () {
+                this.paySuccessShow = false;
+            },
             //此方法只是参考参数的名字，无其他用处
             submitData: function () {
                 /*let sendData = {};
@@ -439,7 +568,11 @@
             },
         },
         components: {
-            airlineWrite
+            airlineWrite,
+//            airlinePay,
+            airlineAffirm,
+            paySuccess,
+            airlinePay
         }
     }
 </script>
@@ -459,11 +592,17 @@
     /**************************/
     h2 {
         margin: 0;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 20px;
     }
+    .font-gray {
+        color: rgba(96, 94, 124, 0.7);
+    }
+    .font-bold {
+        font-weight: bold;
+    }
     .danger {
-        color: red;
+        color: #FF9393;
     }
     .icon-item {
         position: relative;
@@ -489,22 +628,21 @@
 
 
     .wrapper {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding-bottom: 100px;
-        width: 600px;
-        /*height: 100%;*/
-        min-height: 600px;
-        max-height: 900px;
+
+        /*min-height: 600px;*/
+        /*max-height: 700px;*/
     }
     .ald-container{
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding-bottom: 100px;
+        box-sizing: border-box;
         width: 600px;
-        /*height: 100%;*/
-        min-height: 600px;
-        max-height: 900px;
+        height: 100%;
         overflow-y: scroll;
         background: white;
+        color: $font-color;
         /*transform:translate(0,0);*/
         z-index: 1;
     }
@@ -545,6 +683,7 @@
         .sec-top {
             margin: 30px 0 15px 0;
             font-size: 20px;
+            font-weight: bold;
         }
         .sec-bottom {
             margin-left: 3px;
@@ -625,6 +764,9 @@
         }
     }
     .seventh {
+        margin-bottom: 40px;
+    }
+    .eighth {
         margin: 30px 0 25px 0;
         line-height: 20px;
         .left{
@@ -652,12 +794,12 @@
             width: 60px;
         }
     }
-    .eighth {
+    .ninth {
         padding: 0 20px;
-        .eight-item {
+        .nine-item {
             position: relative;
             margin-bottom: 6px;
-            padding-bottom: 95px;
+            /*padding-bottom: 95px;*/
             background: rgba(216,216,216, .17);
             .item-first {
                 display: flex;
@@ -738,7 +880,8 @@
             }
             .item-fourth {
                 display: flex;
-                padding: 20px 20px 0 20px;
+                /*margin-bottom: 95px;*/
+                padding: 20px 20px 95px 20px;
                 height: 80px;
                 .left {
                     flex-shrink: 0;
@@ -758,6 +901,14 @@
                 >.btn-b {
                     width: 250px;
                     border-radius: 20px;
+                    color: white;
+                    background: #3c78ff;
+                    &:hover {
+                        background: rgba(60,120,255,0.7);
+                    }
+                    &:active {
+                        background: #336bea;
+                    }
                 }
             }
             .item-sixth {
@@ -780,8 +931,8 @@
         }
     }
     .first-button {
-        position: absolute;
-        left: 0;
+        position: fixed;
+        right: 0;
         bottom: 0;
         display: flex;
         align-items: center;
@@ -789,6 +940,7 @@
         width: 600px;
         height: 100px;
         background: white;
+        z-index: 2;
         .buttons {
             display: flex;
             margin-top: 18px;
@@ -796,7 +948,15 @@
             >.btn-b {
                 margin-right: 10px;
                 width: 230px;
+                color: white;
                 border-radius: 20px;
+                background: #3c78ff;
+                &:hover {
+                    background: rgba(60,120,255,0.7);
+                }
+                &:active {
+                    background: #336bea;
+                }
             }
             >.btn-w {
                 width: 80px;
@@ -804,14 +964,50 @@
             }
         }
     }
-    .bottom {
-        position: absolute;
+    .second-button {
+        position: fixed;
+        right: 0;
         bottom: 0;
         display: flex;
         /*justify-content: center;*/
         width: 600px;
         height: 100px;
         background: white;
+        z-index: 2;
+        .buttons {
+            display: flex;
+            margin-top: 18px;
+            margin-left: 90px;
+            height: 40px;
+            >.btn-b {
+                margin-right: 14px;
+                width: 300px;
+                color: white;
+                border-radius: 20px;
+                background: #3c78ff;
+                &:hover {
+                    background: rgba(60,120,255,0.7);
+                }
+                &:active {
+                    background: #336bea;
+                }
+            }
+            >.btn-w {
+                width: 100px;
+                border-radius: 20px;
+            }
+        }
+    }
+    .bottom {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        /*justify-content: center;*/
+        width: 600px;
+        height: 100px;
+        background: white;
+        z-index: 2;
         .buttons {
             display: flex;
             margin-top: 18px;
@@ -820,7 +1016,15 @@
             >.btn-b {
                 margin-right: 14px;
                 width: 200px;
+                color: white;
                 border-radius: 20px;
+                background: #3c78ff;
+                &:hover {
+                    background: rgba(60,120,255,0.7);
+                }
+                &:active {
+                    background: #336bea;
+                }
             }
             >.btn-w {
                 width: 100px;

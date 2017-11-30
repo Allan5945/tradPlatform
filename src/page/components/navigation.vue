@@ -22,7 +22,6 @@
                 <span class="icon-item icon-cl">&#xe606;</span>
                 发布
             </div>
-            <div></div>
         </div>
     </div>
 </template>

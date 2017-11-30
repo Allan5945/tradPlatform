@@ -1,143 +1,129 @@
 <template>
     <div class="area-container">
         <ul class="area-classify">
-            <li v-for="(item,index) in areaClassify" :class="{'tab-active': areaTab == item}" @click="showData(item)">{{item}}</li>
+            <li v-for="(item,index) in areaClassify" :class="{'tab-active':areaTab == item}" @click="showData(item)">{{item}}</li>
         </ul>
         <ul class="area-detail">
-            <li v-for="(item,index) in areaDetail" :class="{'li-active':item == areaList}" @click="selectStyle(item)">{{item}}</li>
+            <li v-for="(item,index) in areaDetail" :class="{'li-active':item.name == areaList.name}" @click="selectStyle(item)">{{item.name}}</li>
         </ul>
     </div>
 </template>
 <script>
-    let areaData = [
-        {
-            id: 1, name: '北京', city: [
-            {
-                id: 1, name: '北京市', district: [
-                    {id: 1, name: '东城区'},
-                    {id: 2, name: '西城区'},
-                    {id: 3, name: '崇文区'},
-                    {id: 4, name: '宣武区'},
-                    {id: 5, name: '朝阳区'},
-                    {id: 6, name: '丰台区'},
-                    {id: 7, name: '石景山区'},
-                    {id: 8, name: '海淀区'},
-                    {id: 9, name: '门头沟区'},
-                    {id: 10, name: '房山区'},
-                    {id: 11, name: '通州区'},
-                    {id: 12, name: '顺义区'},
-                    {id: 13, name: '昌平区'},
-                    {id: 14, name: '大兴区'},
-                    {id: 15, name: '怀柔区'},
-                    {id: 16, name: '平谷区'},
-                    {id: 17, name: '密云县'},
-                    {id: 18, name: '延庆县'}
-                ]
-            }
-        ]
-        },
-        {
-            id: 2, name: '天津', city: [
-            {
-                id: 2, name: '天津市', district: [
-                {id: 19, name: '和平区'},
-                {id: 20, name: '河东区'},
-                {id: 21, name: '河西区'},
-                {id: 22, name: '南开区'},
-                {id: 23, name: '河北区'},
-                {id: 24, name: '红桥区'},
-                {id: 25, name: '塘沽区'},
-                {id: 26, name: '汉沽区'},
-                {id: 27, name: '大港区'},
-                {id: 28, name: '东丽区'},
-                {id: 29, name: '西青区'},
-                {id: 30, name: '津南区'},
-                {id: 31, name: '北辰区'},
-                {id: 32, name: '武清区'},
-                {id: 33, name: '宝坻区'},
-                {id: 34, name: '宁河县'},
-                {id: 35, name: '静海县'},
-                {id: 36, name: '蓟县'}
-            ]
-            }
-        ]
-        },
-        {
-            id: 3, name: '河北', city: [
-            {
-                id: 3, name: '石家庄市', district: [
-                {id: 37, name: '长安区'},
-                {id: 38, name: '桥东区'},
-                {id: 39, name: '桥西区'},
-                {id: 40, name: '新华区'},
-                {id: 41, name: '井陉矿区'},
-                {id: 42, name: '裕华区'},
-                {id: 43, name: '井陉县'},
-                {id: 44, name: '正定县'},
-                {id: 45, name: '栾城县'},
-                {id: 46, name: '行唐县'},
-                {id: 47, name: '灵寿县'},
-                {id: 48, name: '高邑县'},
-                {id: 49, name: '深泽县'},
-                {id: 50, name: '赞皇县'},
-                {id: 51, name: '无极县'},
-                {id: 52, name: '平山县'},
-                {id: 53, name: '元氏县'},
-                {id: 54, name: '赵县'},
-                {id: 55, name: '辛集市'},
-                {id: 56, name: '藁城市'},
-                {id: 57, name: '晋州市'},
-                {id: 58, name: '新乐市'},
-                {id: 59, name: '鹿泉市'}
-            ]
-            }
-        ]
-        }
-    ];
-    let provinceData = ['河南省','河北省','福建省'];
-    let bigAreaData = ['华东地区','华中地区','华北地区','华南地区','东北地区','西北地区','西南地区'];
-    let controllAreaData = ['华北','西北','中南','西南','华东','东北','新疆'];
-    let internationalAreaData = ['吉隆坡','雅加达','名古屋','莫斯科'];
     export default {
         data() {
             return {
                 active: false,
                 areaClassify: ['省份', '大区', '管辖区域', '国际热门'],
                 areaTab: '',
-                areaList: '',
-                areaDetail: []
+                areaList: {},
+                areaDetail: [],
+                areaData : [],
+                cityData : ['北京市',
+                    '天津市',
+                    '河北省',
+                    '山西省',
+                    '内蒙古',
+                    '辽宁省',
+                    '吉林省',
+                    '黑龙江省',
+                    '上海市',
+                    '江苏省',
+                    '浙江省',
+                    '安徽省',
+                    '福建省',
+                    '江西省',
+                    '山东省',
+                    '河南省',
+                    '湖北省',
+                    '湖南省',
+                    '广东省',
+                    '广西',
+                    '海南省',
+                    '重庆市',
+                    '四川省',
+                    '贵州省',
+                    '云南省',
+                    '西藏',
+                    '陕西省',
+                    '甘肃省',
+                    '青海省',
+                    '宁夏',
+                    '新疆',
+                    '香港',
+                    '澳门',
+                    '台湾省'],  //城市数据改成省份数据
+//                provinceData : ['河南省','河北省','福建省'],
+                bigAreaData : ['华东地区','华中地区','华北地区','华南地区','东北地区','西北地区','西南地区'],
+                controllAreaData : ['华北','西北','中南','西南','华东','东北','新疆'],
+                internationalAreaData : ['吉隆坡','雅加达','名古屋','莫斯科'],
             }
         },
         components: {},
         mounted() {
+//            this.initData();
             this.showData();
         },
         methods: {
+            /*initData: function () {
+                this.$ajax({
+                    url:"/getCityAllList",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                }) .then((response) => {
+//                    console.info(response.data.list)
+                    response.data.list.forEach((vl)=>{
+                        this.cityData.push({
+                            cityName: vl.cityName,
+                            cityIcao: vl.cityIcao,
+                        })
+                    })
+//                    console.info(this.cityData)
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },*/
             showData: function (item = '省份') {
                 this.areaTab = item
                 if(item === '省份') {
                     this.areaDetail = [];
-                    provinceData.forEach((item)=>{
-                        this.areaDetail.push(item)
+                    this.cityData.forEach((item)=>{
+                        this.areaDetail.push({
+                            name: item,
+                            code: '',
+                        })
                     });
                 }if(item === '大区') {
                     this.areaDetail = [];
-                    bigAreaData.forEach((item)=>{
-                        this.areaDetail.push(item)
+                    this.bigAreaData.forEach((item)=>{
+                        this.areaDetail.push({
+                                name: item,
+                                code: ''
+                            })
                     });
                 }if(item === '管辖区域') {
                     this.areaDetail = [];
-                    controllAreaData.forEach((item)=>{
-                        this.areaDetail.push(item);
+                    this.controllAreaData.forEach((item)=>{
+                        this.areaDetail.push({
+                            name: item,
+                            code: ''
+                        });
                     });
                 }if(item === '国际热门') {
                     this.areaDetail = [];
-                    internationalAreaData.forEach((item)=>{
-                        this.areaDetail.push(item)
+                    this.internationalAreaData.forEach((item)=>{
+                        this.areaDetail.push({
+                            name: item,
+                            code: ''
+                        })
                     });
                 }
+//                console.info(this.areaDetail);
             },
             selectStyle: function (item) {
+//                console.info(item)
                 this.areaList = item;
                 this.$emit('li-click', this.areaList);
             }
@@ -192,6 +178,8 @@
     .area-detail {
         display: flex;
         flex-wrap: wrap;
+        max-height: 100px;
+        overflow-y: scroll;
         > li {
             width: 86px;
             height: 30px;
@@ -202,5 +190,12 @@
                 cursor: pointer;
             }
         }
+    }
+    .area-detail::-webkit-scrollbar {
+        width: 7px;
+    }
+    .area-detail::-webkit-scrollbar-thumb {
+        background: #D8D8D8;
+        border-radius: 4px;
     }
 </style>

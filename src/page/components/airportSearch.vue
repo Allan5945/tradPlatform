@@ -18,65 +18,71 @@
         props:['searchText'],
         watch:{
             searchText:function () {
-                if(this.searchText != ''){
-                    this.build();
-                };
+                this.build();
             }
         },
         methods:{
             build:function () {
                 let ar = [];
-                console.log(this.airList)
                 this.airList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
-                    let airportName = val.airportName;  // 机场名字
-                    let code = val.code;  // 三字码
-                    let pinyin = val.pinyin; // 拼音
-                    let py = val.py; // 拼音首字母
-                    let regx = new RegExp(st,"gmi");
-                    let style = "style='color: #3c78ff'";
-                    if(airportName.search(regx) != -1){
-                        let reg = new RegExp(st,"gmi");
-                        let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
-                        if(st == airportName){
-                            aName = airportName;
-                        }else{
-                            aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
-                        }
+                    if(st != ''){
+                        let airportName = val.airportName;  // 机场名字
+                        let code = val.code;  // 三字码
+                        let pinyin = val.pinyin; // 拼音
+                        let py = val.py; // 拼音首字母
+                        let regx = new RegExp(st,"gmi");
+                        let style = "style='color: #3c78ff'";
+                        if(airportName.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
+                            if(st == airportName){
+                                aName = airportName;
+                            }else{
+                                aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
+                            }
+                            ar.push({
+                                testName:aName,
+                                testCode:val.code,
+                                code:val.code,
+                                name:val.airportName
+                            });
+                        }else if(code.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
+                            ar.push({
+                                testName:val.airportName,
+                                testCode:aName,
+                                code:val.code,
+                                name:val.airportName
+                            });
+                        }else if(py.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
+                            ar.push({
+                                testName:val.airportName,
+                                testCode:aName,
+                                code:val.code,
+                                name:val.airportName
+                            });
+                        }else if(pinyin.search(regx) != -1){
+                            let reg = new RegExp(st,"gmi");
+                            let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
+                            ar.push({
+                                testName:val.airportName,
+                                testCode:aName,
+                                code:val.code,
+                                name:val.airportName
+                            });
+                        };
+                    }else{
                         ar.push({
-                            testName:aName,
+                            testName:val.airportName,
                             testCode:val.code,
                             code:val.code,
                             name:val.airportName
                         });
-                    }else if(code.search(regx) != -1){
-                        let reg = new RegExp(st,"gmi");
-                        let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
-                        ar.push({
-                            testName:val.airportName,
-                            testCode:aName,
-                            code:val.code,
-                            name:val.airportName
-                        });
-                    }else if(py.search(regx) != -1){
-                        let reg = new RegExp(st,"gmi");
-                        let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
-                        ar.push({
-                            testName:val.airportName,
-                            testCode:aName,
-                            code:val.code,
-                            name:val.airportName
-                        });
-                    }else if(pinyin.search(regx) != -1){
-                        let reg = new RegExp(st,"gmi");
-                        let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
-                        ar.push({
-                            testName:val.airportName,
-                            testCode:aName,
-                            code:val.code,
-                            name:val.airportName
-                        });
-                    };
+                    }
                 });
                 this.list = ar;
             },
@@ -95,6 +101,9 @@
                 this.$emit('resData', key);
             }
         },
+        mounted:function () {
+            this.build();
+        },
         filters:{
             fl:function (vl) {
                 return vl;
@@ -105,9 +114,6 @@
             ...vx.mapGetters([
                 'airList'
             ]),
-        },
-        mounted:function () {
-
         }
     }
 </script>

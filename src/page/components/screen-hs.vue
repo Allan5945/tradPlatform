@@ -11,7 +11,7 @@
             </div>
             <div class="sc-grade-i">
                 <input type="text" placeholder="输入城市名进行搜索" v-model="searchText" @focus="reqFocus">
-                <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
+                <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-if="isSearch"></airportS>
             </div>
         </div>
         <div class="sc-grade-d">
@@ -21,12 +21,23 @@
             </div>
             <check :flyGrade="flyGrade"></check>
         </div>
-        <div class="sc-grade-d">
+        <div class="sc-grade-d" v-if="role.role == '0'">
             <div class="sc-grade-t">
                 <span>&#xe648;</span>
                 <span>补贴</span>
             </div>
             <check1 :flyGrade="subsidization"></check1>
+        </div>
+        <div class="sc-grade" v-if="role.role != '0'">
+            <div class="sc-grade-t">
+                <span>&#xe604;</span>
+                <span>机型</span>
+            </div>
+            <div class="sc-grade-i">
+                <select class="sc-grade-s props" v-model="select.selected">
+                    <option value ="A320" v-for="(key,i) in select.options">{{key.value}}</option>
+                </select>
+            </div>
         </div>
         <div class="btn-box">
             <div class="btn-w">取消</div>
@@ -35,6 +46,7 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import check from './checkComponents.vue'
     import check1 from './checkComponents_1.vue'
     import airportS from './airportSearch.vue'
@@ -42,6 +54,24 @@
     export default {
         data() {
             return {
+                select:{
+                    selected: 'A320',
+                    options: [
+                        { text: 'A320', value: 'A320' },
+                        { text: 'A330', value: 'A330' },
+                        { text: 'B737NG', value: 'B737NG' },
+                        { text: 'E190/195', value: 'E190/195' },
+                        { text: 'CRJ900', value: 'CRJ900' },
+                        { text: 'MA60', value: 'MA60' },
+                        { text: 'B787', value: 'B787' },
+                        { text: 'B777', value: 'B777' },
+                        { text: 'B767', value: 'B767' },
+                        { text: 'E145', value: 'E145' },
+                        { text: 'B757', value: 'B757' },
+                        { text: 'B747', value: 'B747' },
+                        { text: 'ARJ21', value: 'ARJ21' }
+                    ]
+                },
                 flyGrade: [
                     ['1A', '2A', '3A', '4A'],
                     ['1B', '2B', '3B', '4B'],
@@ -50,7 +80,7 @@
                 ],
                 subsidization:['定补','保底','人头','其他','无','不限'],
                 searchText:'',
-                isSearch:false
+                isSearch:false,
             }
         },
         methods:{
@@ -65,14 +95,55 @@
                 this.isSearch = false;
             }
         },
+        mounted:function () {
+            console.log(this.role);
+        },
         components: {
             check,
             airportS,
             check1
+        },
+        computed:{
+            ...vx.mapGetters([
+                'role'
+            ]),
+            roles:function () {
+                let r = {};
+                if(this.role != null){
+//                    r.
+                };
+
+
+                return r;
+
+            }
         }
     }
 </script>
 <style lang="scss" scoped>
+    .sc-grade-s{
+        appearance:none;
+        -moz-appearance:none;
+        -webkit-appearance:none;
+        border-radius: 4px;
+        opacity: 1;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding:0 11px;
+        height: 25px;
+        color:#605E7C ;
+        font-size: 1.2rem;
+        width: 100px;
+        background-image: url("./../../static/img/sbottom.png");
+        background-repeat: no-repeat;
+        background-size: 22px;
+        background-position: 72px 0;
+        >option{
+            background-color: white;
+            color:#605E7C ;
+        }
+    }
+    /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+    select::-ms-expand { display: none; }
     .aisx {
         position: absolute;
         top: 25px;
@@ -123,7 +194,7 @@
         display: flex;
         align-items: left;
         justify-content: center;
-        padding: 5px 20px 0 20px ;
+        padding: 8px 20px 0 20px ;
     }
 
     .sc-grade-t {

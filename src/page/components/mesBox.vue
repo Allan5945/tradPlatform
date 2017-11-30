@@ -39,7 +39,7 @@
                     page:this.demandList.hybridPage
                 }
             }) .then((response) => {
-                this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                this.$store.dispatch('hybridData',{v:response.data.list,t:0}).then(() => {});
             })
                 .catch((error) => {
                     console.log(error);

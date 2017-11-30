@@ -6,7 +6,7 @@
                 是否确认缴纳意向金****元
             </div>
             <div class="second">
-                <button class="btn btn-b" @click="submitData(),closeThis()">确认缴纳</button>
+                <button class="btn btn-b" @click="submitData(),closeThis()"><span class="icon-item">&#xe620;</span></button>
                 <button class="btn btn-w" @click="closeThis">取消</button>
             </div>
             <div class="third">
@@ -24,7 +24,14 @@
         },
         methods: {
             submitData: function () {
+                this.feign();
                 this.$emit('change-showCode')
+            },
+            // 点击“确认缴纳”后,通过一个定时器，模拟交互时间
+            feign: function () {
+                setTimeout(()=>{
+
+                },1000)
             },
             closeThis: function () {
                 this.$emit('close-this');
@@ -34,6 +41,16 @@
     }
 </script>
 <style lang="scss" scoped>
+    @keyframes myfirst
+    {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(360deg);}
+    }
+    .icon-item {
+        font-size: 1.6rem;
+        font-family: iconfont;
+        animation:myfirst 1s infinite linear;
+    }
     .btn-b {
         border: 0;
         border-radius: 20px;
@@ -114,7 +131,7 @@
         padding: 0 20px;
         font-size: 12px;
         .left {
-            color: rgba(96, 94, 124, 0.7);;
+            color: #605e7c;
         }
         .right {
             color: #3c78ff;

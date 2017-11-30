@@ -17,7 +17,7 @@
                 method: 'post',
                 url: '/login',
                 params:{
-                    username:'SYXadmin',
+                    username:'TGOadmin',
                     password:"admin"
                 },
                 headers: {

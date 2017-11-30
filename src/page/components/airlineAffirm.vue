@@ -1,9 +1,9 @@
 <template>
-    <div class="wrapper">
+    <div class="alaffirm-wrapper">
         <div class="container">
             <div class="container-top">
                 <span class="title">请确认以下方案</span>
-                <span class="close-icon">&times;</span>
+                <span class="close-icon" @click="closeThis" style="cursor:pointer;">&times;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -332,8 +332,8 @@
                     </div>
                 </div>
                 <div class="sixth">
-                    <button class="btn-b btn-blue" @click="submitData">确认选定该意向</button>
-                    <button class="btn-c btn-cancel">取消</button>
+                    <button class="btn-b" @click="submitData(),closeThis()">确认选定该意向</button>
+                    <button class="btn-w" @click="closeThis">取消</button>
                 </div>
             </div>
         </div>
@@ -446,7 +446,7 @@
         methods: {
             //发送数据
             submitData: function () {
-                let sendData = {};
+                /*let sendData = {};
                 sendData.contact = this.user;
                 sendData.iHome = this.phoneNum;
                 sendData.dpt = this.firArea;
@@ -482,13 +482,14 @@
                     }
                 }) .then((response) => {
                     console.info(response.data)
-                    /*response.data.list.list.forEach((item)=>{
-                        this.airType.push(item.aircrfttyp);
-                    })*/
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
-                });
+                });*/
+                this.$emit('change-showCode');
+            },
+            closeThis: function () {
+                this.$emit('close-this');
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -830,7 +831,7 @@
         }
     }
 
-    .btn-blue {
+    /*.btn-blue {
         border: 0;
         border-radius: 20px;
         background: $icon-color;
@@ -840,7 +841,7 @@
         &:hover {
             opacity: 0.7;
         }
-    }
+    }*/
 
     .btn-cancel {
         font-size: 1.5rem;
@@ -994,8 +995,8 @@
         box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
     }
     /*********/
-    .wrapper {
-        position: absolute;
+    .alaffirm-wrapper {
+        position: fixed;
         top: 0;
         left: 0;
         display: flex;
@@ -1344,9 +1345,22 @@
             margin-left: 120px;
             margin-right: 20px;
             width: 200px;
+            color: white;
+            border-radius: 20px;
+            border: 0;
+            outline: none;
+            &:hover {
+                background: rgba(60,120,255,0.7);
+            }
+            &:active {
+                background: #336bea;
+            }
         }
-        .btn-c {
+        .btn-w {
             width: 100px;
+            border-radius: 20px;
+            border: 0;
+            outline: none;
         }
     }
 </style>

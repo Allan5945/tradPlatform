@@ -153,8 +153,7 @@
                 'demandList'
             ]),
             renderData:function () {
-
-                return this.demandList.hybridData.length;
+                return this.demandList.hybridData.list.length;
             }
         },
         watch:{
@@ -267,7 +266,7 @@
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        /*justify-content: space-between;*/
+        justify-content: space-between;
         margin: 0 0 2px 0;
         padding: 0 20px;
 
@@ -386,7 +385,6 @@
             margin-right: 5px;
         }
     }
-
     .matching {
 
     }

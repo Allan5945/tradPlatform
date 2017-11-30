@@ -5,6 +5,7 @@ import {
     HYBRIDDATA,
     MONODATA,
     ROLE,
+    TRANSDETAIL
 } from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -19,13 +20,43 @@ const mutations = {
         state.airList = vl;
     },
     [MONODATA](state,vl) {
-        state.demandList.monoData = vl;
+        if(state.demandList.type){
+            state.demandList.type = false;
+        }
+        switch (vl.t){
+            case 0:
+                state.demandList.monoData = vl.v;
+                break;
+            case 1:
+                state.demandList.monoData = vl.v;
+                break;
+            case 2:
+                state.demandList.monoData.list = state.demandList.monoData.list.concat(vl.v);
+                break;
+        }
     },
     [HYBRIDDATA](state,vl) {
-        state.demandList.hybridData = vl;
+        if(!state.demandList.type){
+            state.demandList.type = true;
+        }
+        switch (vl.t){
+            case 0:
+                state.demandList.hybridData = vl.v;
+                break;
+            case 1:
+                state.demandList.hybridPage = vl.v;
+                break;
+            case 2:
+                state.demandList.hybridData.list = state.demandList.hybridData.list.concat(vl.v);
+                break;
+        }
     },
     [ROLE](state,vl) {
         state.role = vl;
+    },
+    [TRANSDETAIL](state,vl){
+        state.transDetail.transShow = true;
+        state.transDetail.id = vl;
     }
 };
 export default {

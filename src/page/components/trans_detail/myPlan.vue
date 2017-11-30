@@ -1,0 +1,368 @@
+<template>
+    <div class="plan-wrapper scroll" v-show="planShow" >
+        <header>
+            <div class="top-til">需求详情<span @click="closeDetail">X</span></div>
+            <div class="head-til">成都新开找运力</div>
+            <div class="tips">
+                <span>创建于2017.12.12</span>
+                <span>已有2位用户发起意向</span>
+            </div>
+        </header>
+        <div class="content">
+            <div class="table-form">
+                <div >
+                    <div>出港时刻</div>
+                    <div>08:00 - 12:00</div>
+                </div>
+                <div>
+                    <div>班期</div>
+                    <div>待定</div>
+                </div>
+                <div>
+                    <div>机型</div>
+                    <div>AA2222</div>
+                </div>
+                <div>
+                    <div>运力基地</div>
+                    <div>双流机场</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>东方航空</div>
+                </div>
+                <div>
+                    <div>座位布局</div>
+                    <div>F8Y160</div>
+                </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>1万元/小时</div>
+                </div>
+                <div>
+                    <div>接受调度</div>
+                    <div>武汉</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div>2017.12.1 - 2018.12.1</div>
+                </div>
+            </div>
+            <div class="myplan">
+                <div class="plan-til">
+                    <div>我发出的方案</div>
+                    <div><span>--</span>编辑</div>
+                </div>
+                <div class="airline">
+                    <div class="airplace">
+                        <div>始发机场</div>
+                        <div>
+                            <div>成都双流</div>
+                            <div>接受临近机场</div>
+                        </div>
+                         <div class="resouse">
+                            <div>出港资源</div>
+                            <div>08:00 - 12:00</div>
+                        </div>
+                    </div>
+                    <div><span>--</span></div>
+                    <div class="airplace">
+                        <div>经停机场</div>
+                        <div>北京西苑</div>
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>带协调</div>
+                        </div>
+                    </div>
+                    <div><span>--</span></div>
+                    <div class="airplace">
+                        <div>到达区域</div>
+                        <div>华北地区</div>
+                    </div>
+                </div>
+                <div class="table-form">
+                    <div>
+                        <div>拟开时间</div>
+                        <div>2017.11.11 - 2018.11.11</div>
+                    </div>
+                    <div>
+                        <div>拟开班期</div>
+                        <div>待定</div>
+                    </div>
+                    <div>
+                        <div>拟开机型</div>
+                        <div>AA2222</div>
+                    </div>
+                    <div>
+                        <div>座位数</div>
+                        <div>180</div>
+                    </div>
+                    <div>
+                        <div>客量预期</div>
+                        <div>80人/班</div>
+                    </div>
+                    <div>
+                        <div>客座率预期</div>
+                        <div>80人/班</div>
+                    </div>
+                    <div>
+                        <div>补贴政策</div>
+                        <div>80人/班</div>
+                    </div>
+                    <div>
+                        <div>小时成本</div>
+                        <div>80人/班</div>
+                    </div>
+                     <div>
+                        <div>运力归属</div>
+                        <div>80人/班</div>
+                    </div>
+                     <div>
+                        <div>运力基地</div>
+                        <div>80人/班</div>
+                    </div>
+                     <div>
+                        <div>是否调度</div>
+                        <div>华北地区</div>
+                    </div>
+                    <div class="tips">
+                        <div>其他说明</div>
+                        <div>说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容
+                        说明内容说明内容说明内容说明内容说明内容说明内容</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <footer>
+            <div class="btn">
+                <div class="cancel-btn" >取消意向</div>
+                <div class="col-btn">收藏</div>
+            </div>
+        </footer>
+    </div>
+</template>
+
+<script>
+ export default {
+     data(){
+         return{
+             planShow:true
+         }
+     },
+     methods:{
+         closeDetail:function(){
+             this.planShow = false;
+         },
+
+     },
+      mounted:function(){
+          this.$ajax({
+                method: 'post',
+                url: '/capacitydemand/capacityDemandFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then((response) => {
+
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+      }
+
+}
+</script>
+
+<style lang="scss" scoped>
+    .plan-wrapper{
+        position:absolute;
+        top:0;
+        right:0;
+        z-index: 12;
+        width:600px;
+        box-sizing:border-box;
+        height:100%;
+        color:#605E7C;
+        overflow: hidden;
+        overflow-y:scroll;
+        background-color:#fff;
+        header{
+            width:100%;
+            height:141px;
+            background-color:rgba(216,216,216,.2);
+        }
+        footer{
+          position:fixed;
+          bottom:0;
+          right:0;
+          width:600px;
+          background-color:#fff;
+          height:100px;
+        }
+    }
+    header{
+        .top-til{
+          justify-content: space-between;
+          display: flex;
+          height:41px;
+          line-height:41px;
+          font-size:1.2rem;
+          background-color:#fff;
+          color:rgba(96, 94, 124, 0.7);
+          padding:0 15px 0 40px;
+          span{
+            display:block;
+            box-sizing:border-box;
+            margin-top:9px;
+            width:22px;
+            height:22px;
+            line-height:22px;
+            text-align:center;
+            border:1px solid #ededed;
+            border-radius:100%;
+            cursor:pointer;
+          }
+        }
+        .head-til{
+          font-size:20px;
+          font-weight:bold;
+          margin-top:30px;
+          padding-left:40px;
+          height:20px;
+          line-height:20px;
+        }
+        .tips{
+          height:12px;
+          line-height:12px;
+          color:rgba(96, 94, 124, 0.7);
+          padding:20px 0 18px 40px;
+          span{
+            margin-right:30px;
+          }
+        }
+    }
+    .table-form{
+      width:100%;
+      box-sizing:border-box;
+      padding:60px 0 40px 40px;
+      flex-wrap: wrap;
+      display: flex;
+      >div{
+          width:240px;
+          height:40px;
+          display: flex;
+          >div{
+              margin-bottom:20px;
+              height:20px;
+              line-height:20px;
+          }
+          >div:nth-of-type(1){
+              width:80px;
+              color:rgba(96, 94, 124, 0.7);
+          }
+          >div:nth-of-type(2){
+              width:160px;
+          }
+      }
+      >div:nth-of-type(odd){
+          margin-right:40px;
+      }
+    }
+    .myplan{
+        margin-bottom:140px;
+        .plan-til{
+            height:80px;
+            width:100%;
+            display:flex;
+            justify-content: space-between;
+            background-color:rgba(216,216,216,.2);
+            >div:nth-of-type(1){
+             font-size:2rem;
+             color:#605E7C;
+             font-weight:bold;
+             height:80px;
+             line-height:80px;
+             padding-left:40px;
+          }
+          >div:nth-of-type(2){
+              width:70px;
+              height:26px;
+              line-height:26px;
+              margin: 25px 30px 29px 0;
+              color:#605E7C;
+              text-align: center;
+              border-radius:100px;
+              background-color:#fff;
+          }
+        }
+        .airline{
+            display:flex;
+            padding:20px 0 0 40px;
+            margin: 0 40px;
+            box-sizing:border-box;
+            border-bottom:1px solid #ccc;
+            >div:nth-of-type(odd){
+                height:160px;
+                width:140px;
+            }
+            >div:nth-of-type(even){
+                height:160px;
+                width:50px;
+            }
+
+        }
+        .table-form{
+            padding:40px 0 0 40px;
+            .tips{
+                width:100%;
+                >div:nth-of-type(2){
+                    width:440px;
+                }
+            }
+        }
+    }
+      .airplace{
+            margin-top:20px;
+             >div:nth-of-type(2){
+               height:45px;
+               font-size:2rem;
+               font-weight:bold;
+               padding-top:15px;
+               >div:nth-of-type(2){
+                   font-size:1rem;
+                   font-weight:normal;
+               }
+            }
+              .resouse{
+              margin:20px 0;
+            }
+        }
+    footer{
+        border-top: 1px solid #ccc;
+          .btn{
+              height:40px;
+              margin:20px 0 40px 0;
+              >div{
+                  height:40px;
+                  line-height:40px;
+                  font-size:1.5rem;
+                  color:#605E7C;
+                  background-color:#fff;
+                  text-align:center;
+                  border-radius:100px;
+                  cursor:pointer;
+                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+              }
+              .cancel-btn{
+                  width:100px;
+                  margin-right:10px;
+              }
+               .col-btn{
+                  width:80px;
+              }
+          }
+    }
+</style>

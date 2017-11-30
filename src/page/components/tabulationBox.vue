@@ -3,7 +3,7 @@
         <div v-for="(key,index) in renderData">
             <div class="tabulation-item">
                 <img :src='key.img' alt="">
-                <div class="font-bold">
+                <div class="font-bold" @click="getDetail(key)">
                     <div v-for="(item,d) in key.name">
                         <div>
                             <div :class="{rolling:(item.length > 4)}">{{item}}</div>
@@ -32,7 +32,6 @@
     import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
     import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
 
-
     export default {
         data(){
             return{
@@ -47,6 +46,51 @@
                 this.set = setTimeout(()=>{this.resetWindow()},100);
             };
             this.resetWindow();
+            let tabulationBox =  document.getElementById('tabulationBox');
+            tabulationBox.addEventListener('scroll',(e)=> {
+                let z = 126 * this.renderData.length;
+                let b = Number(tabulationBox.style.height.split('px')[0]);
+                let x = (z-b)/1.2;
+                if(tabulationBox.scrollTop >= x){
+                    if(this.demandList.type && this.demandList.hybridPage < this.demandList.hybridData.pageCount){  // 混合数据
+                        this.$store.dispatch('hybridData', {v:(this.demandList.hybridPage + 1),t:1}).then(() => {
+                            this.$ajax({
+                                url:"/getDemandsForCurrentEmployee",
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/x-www-form-urlencoded'
+                                },
+                                params: {
+                                    page:this.demandList.hybridPage
+                                }
+                            }) .then((response) => {
+                                this.$store.dispatch('hybridData',{v:response.data.list.list,t:2}).then(() => {});
+                            })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    }else if(!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount){ // 非混合数据
+                        this.$store.dispatch('monoData', {v:(this.demandList.monoPage + 1),t:1}).then(() => {
+                            this.$ajax({
+                                url:"/getDemandsForCurrentCheckedAirport",
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/x-www-form-urlencoded'
+                                },
+                                params: {
+                                    page:this.demandList.monoPage
+                                }
+                            }) .then((response) => {
+                                this.$store.dispatch('monoData',{v:response.data.list.list,t:2}).then(() => {});
+                            })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    }
+                }
+            });
         },
         methods:{
            resetWindow:function () {
@@ -62,6 +106,21 @@
                    document.getElementById('tabulationBox').style.height = '';
                    this.hidden = false;
                }
+           },
+           getDetail: function (val) {
+               let demandId = val.data.id;
+               console.log(demandId)
+                switch (val.data.demandtype){
+                       // case "0":
+                          //  this.$emit("ShowLineDetail",demandId);
+                           // break;
+                        case "1":
+                            this.$store.dispatch('transDetail',demandId);
+                            break;
+                        //case "2":
+                          //  this.$emit("ShowAgentDetail",demandId);
+                           // break;
+                    }
            }
         },
         updated:function () {
@@ -69,11 +128,18 @@
         },
         computed:{
             ...vx.mapGetters([
-                'demandList'
+                'demandList',
+                'role'
             ]),
             renderData:function () {
-                let a = [];
-                this.demandList.hybridData.forEach((val)=>{
+                let d,a = [];
+                if(this.demandList.type){
+                    d = this.demandList.hybridData.list;
+
+                }else{
+                    d = this.demandList.monoData.list;
+                }
+                d.forEach((val)=>{
                     let img ,name = [],tag;
                     if(val.dpt != null){
                         name.push(val.dpt)
@@ -84,7 +150,6 @@
                     if(val.pst != null){
                         name.push(val.pst)
                     };
-
                     switch (val.demandtype){
                         case "0":
                             img = ig0;
@@ -115,6 +180,7 @@
                         name,
                         tag,
                         simpleDemand:val.simpleDemand,
+                        data:val
                     })
                 });
                 return a;
@@ -147,7 +213,7 @@
         >div{
             >span{
                 display: inline-block;
-                padding-bottom: 5px;
+                padding-bottom: 8px;
                 color: rgba(96,94,124,.7);
                 font-size: 1.2rem;
             }
