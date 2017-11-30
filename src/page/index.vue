@@ -25,14 +25,13 @@
     import tagIcon from './../page/components/tagIcon.vue'
     import messageBox from './../page/components/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
-    import conversions from './../public/js/conversions'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
     import intentForm from './../page/components/trans_detail/intentForm.vue'
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
-    //import {conversionsCity,conversions} from './../public/js/conversions'
+    import {conversionsCity,conversions} from './../public/js/conversions'
 
     export default {
         data() {
