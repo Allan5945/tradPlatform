@@ -60,11 +60,11 @@
                         <div>补贴政策</div>
                     </div>
                     <div class="right item">
-                        <div>{{sailingtime0}}-{{sailingtime1}}</div>
-                        <div>{{myData.aircrfttyp}}</div>
-                        <div>{{myData.loadfactorsexpect}}人/均班</div>
-                        <!--<div>{{myData.subsidypolicyStr}}</div>-->
-                        <div>有补贴</div>
+                        <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
+                        <div class="item-b">{{myData.aircrfttyp}}</div>
+                        <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
+                        <div class="item-d">{{myData.subsidypolicyStr}}</div>
+                        <!--<div>有补贴</div>-->
                     </div>
                 </div>
                 <div class="items">
@@ -75,10 +75,10 @@
                         <div>有效期</div>
                     </div>
                     <div class="right item">
-                        <div>{{myData.days}}</div>
-                        <div>{{myData.seating}}</div>
-                        <div>{{myData.loadfactorsexpect}}%</div>
-                        <div style="display: flex;">{{periodValidity0}}-{{periodValidity1}} <span class="icon-item" v-show="secondShow">&#xe653;</span></div>
+                        <div class="item-a">{{myData.days}}</div>
+                        <div class="item-b">{{myData.seating}}</div>
+                        <div class="item-c">{{myData.loadfactorsexpect}}%</div>
+                        <div class="item-d" style="display: flex;">{{periodValidity0}}-{{periodValidity1}} <span class="icon-item" v-show="secondShow">&#xe653;</span></div>
                     </div>
                 </div>
             </div>
@@ -169,12 +169,12 @@
                                     <div>是否调度</div>
                                 </div>
                                 <div class="right item">
-                                    <div>2017.11.11-2018.11.11</div>
-                                    <div>AA2222</div>
-                                    <div>80人/均班</div>
-                                    <div>按人头</div>
-                                    <div>东方航空</div>
-                                    <div>华北地区</div>
+                                    <div class="item-height">2017.11.11-2018.11.11</div>
+                                    <div class="item-height">AA2222</div>
+                                    <div class="item-height">80人/均班</div>
+                                    <div class="item-height">按人头</div>
+                                    <div class="item-height">东方航空</div>
+                                    <div class="item-height">华北地区</div>
                                 </div>
                             </div>
                             <div class="items">
@@ -186,11 +186,11 @@
                                     <div>运力基地</div>
                                 </div>
                                 <div class="right item">
-                                    <div>待定</div>
-                                    <div>180</div>
-                                    <div>80%</div>
-                                    <div>8万元/小时</div>
-                                    <div>成都双流</div>
+                                    <div class="item-height">待定</div>
+                                    <div class="item-height">180</div>
+                                    <div class="item-height">80%</div>
+                                    <div class="item-height">8万元/小时</div>
+                                    <div class="item-height">成都双流</div>
                                 </div>
                             </div>
                         </div>
@@ -683,6 +683,7 @@
         background: rgba(216,216,216, .17);
         .sec-top {
             margin: 30px 0 15px 0;
+            height: 25px;
             font-size: 20px;
             font-weight: bold;
         }
@@ -701,15 +702,20 @@
                 margin: 25px 0 10px 0;
             }
             .item-b {
+                height: 20px;
                 font-size: 20px;
             }
             .item-c {
                 margin-bottom: 23px;
+                height: 15px;
             }
             .item-d {
                 margin-bottom: 5px;
+                height: 15px;
             }
-            .item-e {}
+            .item-e {
+                height: 15px;
+            }
         }
         .item-icon {
             position: relative;
@@ -737,6 +743,9 @@
             }
             .right {
                 width: 160px;
+                .item-a,.item-b,.item-c,.item-d {
+                    height: 40px;
+                }
             }
         }
     }
@@ -841,15 +850,20 @@
                         margin: 25px 0 10px 0;
                     }
                     .item-b {
+                        height: 20px;
                         font-size: 20px;
                     }
                     .item-c {
                         margin-bottom: 23px;
+                        height: 15px;
                     }
                     .item-d {
                         margin-bottom: 5px;
+                        height: 15px;
                     }
-                    .item-e {}
+                    .item-e {
+                        height: 15px;
+                    }
                 }
                 .item-icon {
                     position: relative;
@@ -876,6 +890,9 @@
                     }
                     .right {
                         width: 160px;
+                        .item-height {
+                            height: 40px;
+                        }
                     }
                 }
             }
