@@ -24,24 +24,30 @@ class bmapExamples {
             this.map = v;
         };
         this.setallNum = (a) => {
-            console.log(a)
             this.allNum = a;
             this.allNum.forEach((v) => {
                 let point = new BMap.Point(v.value[0], v.value[1]);
                 let opts = {
                     position: point,    // 指定文本标注所在的地理位置
-                    offset: new BMap.Size(-7, -40),    //设置文本偏移量
+                    offset: new BMap.Size(-6, -40),    //设置文本偏移量
                 }
-                let label = new BMap.Label((v.num > 9 ? 'N' : v.num), opts);  // 创建文本标注对象
+                let num = v.num;
+                if(v.num > 9){
+                    num = 'N';
+                }else if(v.num == 0){
+                    num = '';
+                }
+                let label = new BMap.Label(num, opts);  // 创建文本标注对象
                 label.setStyle({
                     color: "black",
-                    fontSize: "18px",
+                    fontSize: "12px",
                     fontFamily: "微软雅黑",
                     border: 'none',
                     fontWeight: 600,
                     backgroundColor: 'transparent',
                 });
                 label.alldts = v;
+                label.setZIndex(1);
                 this.pointList.push(label);
             });
         };

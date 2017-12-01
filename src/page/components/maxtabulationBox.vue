@@ -314,6 +314,7 @@
     }
 
     .mes-body-i4 {
+        overflow: hidden;
         width: 125px;
         letter-spacing: 0.2px;
     }
