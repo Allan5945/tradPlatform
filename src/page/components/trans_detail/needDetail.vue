@@ -1,5 +1,5 @@
 <template>
-    <div class="detail-wrapper" v-show="transDetail.transShow">
+    <div class="detail-wrapper" v-show="this.transShow">
         <header>
             <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
             <div class="head-til">{{detailData.title}}</div>
@@ -57,12 +57,13 @@
 </template>
 
 <script>
- import * as vx from 'vuex'
+ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  export default {
      data(){
          return{
              getDetail:[],
              detailData:[],
+             transShow:false,
              intentionCount:0,
              isIntentionMoney:false
          }
@@ -78,17 +79,10 @@
              this.$emit("formShow");
          }
      },
-      computed:{
-            ...vx.mapGetters([
-                'transDetail'
-            ]),
-
-
-      },
-      watch:{
-       "transDetail.userData.demandId" : function(){
-                //this.$emit('detail');
-
+      created() {
+        tabulationBoxTrigger.$on('getClickData', val => {
+          console.log("demandtype"+val.demandType);
+            if(val.demandType == 1){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -96,22 +90,23 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: this.transDetail.userData.demandId
+                    demandId: val.demandId
                 }
-            })
+                })
                 .then((response) => {
                     this.isIntentionMoney = response.data.isIntentionMoney;
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                 })
-                .then()
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-            }
-      }
+                this.transShow = true;
+            };
 
+        });
+      },
 }
 </script>
 

@@ -25,6 +25,8 @@
 </template>
 <script>
     import * as vx from 'vuex'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+
     import ig0 from './../../static/img/haveline.png'; // 航线需求图片
     import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
     import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
@@ -134,24 +136,12 @@
                 this.$bExample.setLinesList(pots,t);
             },
              getDetail: function (val) {
-                let userData ={ };
-                userData.demandId = val.data.id;
-                userData.employeeId = val.data.employeeId;
-
-               console.log( userData.demandId)
-               console.log(val.data.demandtype)
-               console.log(val.data.employeeId)
-                switch (val.data.demandtype){
-                      /* case "0":
-                           this.$emit("ShowLineDetail",userData);
-                           break;*/
-                        case "1":
-                            this.$store.dispatch('transDetail',userData);
-                            break;
-                        //case "2":
-                          //  this.$emit("ShowAgentDetail",demandId);
-                           // break;
-                    }
+                let targetData ={};
+                targetData.demandId = val.data.id;
+                targetData.employeeId = val.data.employeeId;
+                targetData.demandType = val.data.demandtype;
+                console.log(targetData)
+                tabulationBoxTrigger.$emit('getClickData',targetData);
            }
         },
         updated: function () {
