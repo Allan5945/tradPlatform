@@ -14,12 +14,9 @@
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <!-- <myIntention></myintention> -->
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-<<<<<<< HEAD
-        <airlineDetailPayAfter @click="test1 = !test1" v-if="test1"></airlineDetailPayAfter>
-=======
-        <toPublish v-show="show" @toShow="toShow"></toPublish>
+
         <airlineDetailPayAfter></airlineDetailPayAfter>
->>>>>>> 99243250e5c6bc727a6a1ed23a8b793ac99259b4
+
     </div>
 </template>
 

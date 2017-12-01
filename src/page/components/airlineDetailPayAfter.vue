@@ -336,6 +336,7 @@
 </template>
 <script>
     import * as vx from 'vuex'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
     import airlineWrite from './airlineWrite.vue'
 //    import airlinePay from './airlinePay.vue'
@@ -426,9 +427,45 @@
             }
         },
         mounted(){
-            this.initData();
+//            this.initData();
             //模拟状态码0
             this.showCode = 0;
+            tabulationBoxTrigger.$on('getClickData', val => {
+                console.log("demandtype"+val.demandType);
+                if(val.demandType == 0){
+                    this.$ajax({
+                        method: 'post',
+                        url: '/capacityRoutesDemandDetailFindById',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: {
+                            demandId: val.demandId
+                        }
+                    })
+                        .then((response) => {
+//                            this.isIntentionMoney = response.data.isIntentionMoney;
+//                            this.intentionCount = response.data.intentionCount;
+//                            this.detailData = response.data.data;
+                            this.userNum = response.data.intentionCount
+                            this.myData = response.data.data;
+                            this.releaseTime = this.myData.releasetime.split(" ")[0];
+                            this.dptTime0 = this.myData.dptTime.split(',')[0];
+                            this.dptTime1 = this.myData.dptTime.split(',')[1];
+                            this.pstTime0 = this.myData.dptTime.split(',')[0];
+                            this.pstTime1 = this.myData.dptTime.split(',')[1];
+                            this.sailingtime0 = this.myData.dptTime.split(',')[0];
+                            this.sailingtime1 = this.myData.dptTime.split(',')[1];
+                            this.periodValidity0 = this.myData.dptTime.split(',')[0];
+                            this.periodValidity1 = this.myData.dptTime.split(',')[1];
+                        })
+                        .catch((error) => {
+                                console.log(error);
+                            }
+                        );
+//                    this.transShow = true;
+                };
+            });
             this.show();
         },
         computed: {},
@@ -445,17 +482,17 @@
                     }
                 }) .then((response) => {
 //                    console.info(response.data)
-                    this.userNum = response.data.intentionCount
-                    this.myData = response.data.data;
-                    this.releaseTime = this.myData.releasetime.split(" ")[0];
-                    this.dptTime0 = this.myData.dptTime.split(',')[0];
-                    this.dptTime1 = this.myData.dptTime.split(',')[1];
-                    this.pstTime0 = this.myData.dptTime.split(',')[0];
-                    this.pstTime1 = this.myData.dptTime.split(',')[1];
-                    this.sailingtime0 = this.myData.dptTime.split(',')[0];
-                    this.sailingtime1 = this.myData.dptTime.split(',')[1];
-                    this.periodValidity0 = this.myData.dptTime.split(',')[0];
-                    this.periodValidity1 = this.myData.dptTime.split(',')[1];
+//                    this.userNum = response.data.intentionCount
+//                    this.myData = response.data.data;
+//                    this.releaseTime = this.myData.releasetime.split(" ")[0];
+//                    this.dptTime0 = this.myData.dptTime.split(',')[0];
+//                    this.dptTime1 = this.myData.dptTime.split(',')[1];
+//                    this.pstTime0 = this.myData.dptTime.split(',')[0];
+//                    this.pstTime1 = this.myData.dptTime.split(',')[1];
+//                    this.sailingtime0 = this.myData.dptTime.split(',')[0];
+//                    this.sailingtime1 = this.myData.dptTime.split(',')[1];
+//                    this.periodValidity0 = this.myData.dptTime.split(',')[0];
+//                    this.periodValidity1 = this.myData.dptTime.split(',')[1];
 //                    this.$store.dispatch('airlineData', response.data.data).then(() => {});
                 })
                     .catch((error) => {
