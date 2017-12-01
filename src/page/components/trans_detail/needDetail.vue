@@ -1,5 +1,5 @@
 <template>
-    <div class="detail-wrapper" v-show="this.transShow">
+    <div class="detail-wrapper">
         <header>
             <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
             <div class="head-til">{{detailData.title}}</div>
@@ -63,7 +63,6 @@
          return{
              getDetail:[],
              detailData:[],
-             transShow:false,
              intentionCount:0,
              isIntentionMoney:false
          }
@@ -102,7 +101,7 @@
                         console.log(error);
                     }
                 );
-                this.transShow = true;
+                this.$emit("transShow");
             };
 
         });

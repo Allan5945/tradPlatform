@@ -9,12 +9,11 @@
         <transition name="dialog">
             <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
-      <needDetail @formShow="formShow" v-if="detailShow" @detail="detail"></needDetail>
-       <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
+        <needDetail @formShow="formShow" v-if="detailShow" @transShow="transShow"></needDetail>
+        <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-      <!-- <myIntention></myintention> -->
+        <!-- <myIntention></myintention> -->
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <toPublish v-show="show" @toShow="toShow"></toPublish>
         <airlineDetailPayAfter @click="test1 = !test1" v-if="test1"></airlineDetailPayAfter>
     </div>
 </template>
@@ -49,7 +48,7 @@
                 payDialog:false,
                 intentFormShow:false,
                 planShow:false,
-                detailShow:true,
+                detailShow:false,
                 loadingData: {
                     airList: false,
                     demands: false,
@@ -97,7 +96,7 @@
             showPlan:function(){
                 this.planShow = false;
             },
-            detail:function(){
+            transShow:function(){
                 this.detailShow = true;
             },
             init:function () {
