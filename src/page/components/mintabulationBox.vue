@@ -1,7 +1,7 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
         <div v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
-            <div class="tabulation-item">
+            <div class="tabulation-item" @click="getDetail(key)">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
                     <div v-for="(item,d) in key.name">
@@ -132,7 +132,27 @@
                     }
                 }
                 this.$bExample.setLinesList(pots,t);
-            }
+            },
+             getDetail: function (val) {
+                let userData ={ };
+                userData.demandId = val.data.id;
+                userData.employeeId = val.data.employeeId;
+
+               console.log( userData.demandId)
+               console.log(val.data.demandtype)
+               console.log(val.data.employeeId)
+                switch (val.data.demandtype){
+                       /*case "0":
+                           this.$emit("ShowLineDetail",demandId);
+                           break;*/
+                        case "1":
+                            this.$store.dispatch('transDetail',userData);
+                            break;
+                        //case "2":
+                          //  this.$emit("ShowAgentDetail",demandId);
+                           // break;
+                    }
+           }
         },
         updated: function () {
             this.resetWindow();

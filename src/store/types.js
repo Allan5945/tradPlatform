@@ -11,7 +11,7 @@ const SETCITY  = 'SETCITY';
 const SETAIRTYPE  = 'SETAIRTYPE';
 const OPENSCREEN  = 'OPENSCREEN';
 const SETELECT  = 'SETELECT';
-export const TRANSDETAIL  = 'TRANSDETAIL';
+const TRANSDETAIL  = 'TRANSDETAIL';
 
 export {
     TEST,
@@ -25,5 +25,6 @@ export {
     SETCITY,
     SETAIRTYPE,
     OPENSCREEN,
-    SETELECT
+    SETELECT,
+    TRANSDETAIL
 }
