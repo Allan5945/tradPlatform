@@ -13,7 +13,7 @@
         <operationForm v-else-if="this.showType== 2" ></operationForm>
         <airlineReq v-else-if="this.showType== 3"></airlineReq>
         <agentTransForm v-else-if="this.showType== 4"></agentTransForm>
-
+        <airlineDelegation v-else-if="this.showType== 5"></airlineDelegation>
     </div>
 </template>
 <script>
@@ -21,6 +21,7 @@
     import agentTransForm from './agentTransForm.vue'
     import operationForm from './operationForm.vue'
     import airlineReq from './airlineReq.vue'
+    import airlineDelegation from './airlineDelegation.vue'
 
     export default {
         data () {
@@ -28,7 +29,7 @@
                 showBox: false,
                 isSel: false,
                 showType:'',
-                myShow:[1,2,3,4],
+                myShow:[1,2,3,4,5],
                 msg:'选择需求类型',
                 needType:['运力投放','运营委托','航线需求','委托运力投放','委托航线需求']
             }
@@ -37,7 +38,8 @@
             transportForm,
             operationForm,
             agentTransForm,
-            airlineReq
+            airlineReq,
+            airlineDelegation
         },
         methods:{
              getNeed: function(i){
