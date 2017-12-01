@@ -15,7 +15,7 @@
         <!-- <myIntention></myintention> -->
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
 
-        <airlineDetailPayAfter></airlineDetailPayAfter>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>
 
     </div>
 </template>
@@ -51,6 +51,7 @@
                 intentFormShow:false,
                 planShow:false,
                 detailShow:false,
+                detailShow2: false,
                 loadingData: {
                     airList: false,
                     demands: false,

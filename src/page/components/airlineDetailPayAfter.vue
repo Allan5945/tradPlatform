@@ -463,7 +463,7 @@
                                 console.log(error);
                             }
                         );
-//                    this.transShow = true;
+                    this.$emit('transShow');
                 };
             });
             this.show();
