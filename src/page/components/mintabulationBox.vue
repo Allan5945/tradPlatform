@@ -142,8 +142,8 @@
                console.log(val.data.demandtype)
                console.log(val.data.employeeId)
                 switch (val.data.demandtype){
-                       /*case "0":
-                           this.$emit("ShowLineDetail",demandId);
+                      /* case "0":
+                           this.$emit("ShowLineDetail",userData);
                            break;*/
                         case "1":
                             this.$store.dispatch('transDetail',userData);

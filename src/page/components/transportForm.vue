@@ -97,10 +97,10 @@
                 <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
                 <span class="num"><span >{{num}}</span>/35</span>
             </div>
-            <div class="form-box get-time">
-                <div class="t-title">发布有效期</div>
-               <div class="calendar time-btn" >
-                 <div class="myslec"  @click="calendarShow=!calendarShow" ref="timeDate"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
+            <div class="form-box get-time" ref="timeForm">
+                <div class="t-title" ref="timeTitle">发布有效期</div>
+               <div class="calendar time-btn" ref="timeDate">
+                 <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                  <div v-show="calendarShow" class="calendar-box popup">
                    <div class="selec-data">
                      <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
@@ -192,7 +192,7 @@
                 directText:'',
                 qyCode: '',
                 qyCode1:'',
-                airTypData: [],
+                airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 airCompanyData:[]
             }
         },
@@ -215,6 +215,9 @@
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
+                    this.$refs.timeDate.style.width = "213px";
+                    this.$refs.timeForm.style.width = "579px";
+                     this.$refs.timeTitle.style.width = "60px";
                 }else{
 
                 }
@@ -292,7 +295,7 @@
                 this.airCompanyId = this.airCompanyData[i][2];
             },
             getAirplaneTyp:function(){
-                this.$ajax({
+                /*this.$ajax({
                 url:"/getDemandsForCurrentEmployee",
                 method: 'post',
                 headers: {
@@ -302,13 +305,12 @@
                     page:2
                 }
             }) .then((response) => {
-                /*console.log(response.data.list.list[0].aircrfttyp);*/
                 response.data.list.list.forEach(item =>{
                     this.airTypData.push(item.aircrfttyp);
                 })
             }) .catch((error) => {
                     console.log(error);
-                });
+                });*/
                 this.airplTypShow = true;
             },
             getAirCompany: function(){
@@ -467,7 +469,6 @@
             dispaly:inline-block;
             width:30px;
             text-align:center;
-            font-size:2rem;
         }
     }
     .se-place{
@@ -493,7 +494,7 @@
         margin-left:14px;
         border:1px solid rgba(151,151,151,.3);
         border-radius:5px;
-        padding-left:44px;
+        padding:0 22px 0 44px;
         cursor:pointer;
     }
     .myslec span{
