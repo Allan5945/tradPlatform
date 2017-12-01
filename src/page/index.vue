@@ -15,7 +15,7 @@
       <!-- <myIntention></myintention> -->
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <toPublish v-show="show" @toShow="toShow"></toPublish>
-        <airlineDetailPayAfter @click="test1 = !test1" v-if="test1"></airlineDetailPayAfter>
+        <airlineDetailPayAfter></airlineDetailPayAfter>
     </div>
 </template>
 
