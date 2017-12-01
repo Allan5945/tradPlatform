@@ -1143,8 +1143,8 @@
     /*********/
     .container {
         position: absolute;
-        top: 100px;
-        right: 100px;
+        top: 65px;
+        right: 0px;
         padding: 20px 20px 0 20px;
         width: 580px;
         max-height: 630px;
@@ -1445,7 +1445,7 @@
 
     .sixth {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         margin-bottom: 44px;
         button {
             padding: 9px 20px;
