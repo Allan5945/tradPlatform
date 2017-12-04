@@ -29,40 +29,40 @@
                         name: "航点",
                         iconUrl: hd
                     }];
-                switch (this.role.role) {
-                    case '0':
-                        iconList.push(
-                            {
-                                name: "航线需求",
-                                iconUrl: hxxq
-                            });
-                        break;
-                    case '1':
-                        iconList.push(
-                            {
-                                name: "运力需求",
-                                iconUrl: ylxq
-                            });
-                        break;
-                    case '2':
-                        iconList.push(  {
-                                name: "航线需求",
-                                iconUrl: hxxq
-                            },
-                            {
-                                name: "运力需求",
-                                iconUrl: ylxq
-                            }
-                           );
-                        break;
+                if(this.role != undefined){
+                    switch (this.role.role) {
+                        case '0':
+                            iconList.push(
+                                {
+                                    name: "航线需求",
+                                    iconUrl: hxxq
+                                });
+                            break;
+                        case '1':
+                            iconList.push(
+                                {
+                                    name: "运力需求",
+                                    iconUrl: ylxq
+                                });
+                            break;
+                        case '2':
+                            iconList.push(  {
+                                    name: "航线需求",
+                                    iconUrl: hxxq
+                                },
+                                {
+                                    name: "运力需求",
+                                    iconUrl: ylxq
+                                }
+                            );
+                            break;
+                    }
                 }
-                console.log(iconList);
                 return iconList;
             }
 
         },
         mounted: function () {
-            console.log(this.role)
         }
     }
 </script>

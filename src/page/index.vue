@@ -11,9 +11,9 @@
         <needDetail @formShow="formShow" v-if="detailShow" @transShow="transShow"></needDetail>
         <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-         <infPanel></infPanel>
+        <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2' @closeThis="closeThis"></airlineDetailPayAfter>
     </div>
 </template>
 
@@ -78,21 +78,14 @@
             closeForm() {
                 this.intentFormShow = !this.intentFormShow;
             },
-            sureDialog() {
+            closeThis() {
+                this.detailShow2 = false;
+            },
+            sureDialog(){
                 this.intentFormShow = false;
                 this.planShow = true;
                 this.payDialog = true;
                 this.detailShow = false;
-                /* const self = this;
-                 switch (self.dialog_type){
-                     case 'clear':
-                         self.$store.dispatch('clearevent');
-                         break;
-                     case 'del':
-                         self.$store.dispatch('delevent',self.del_info);
-                         break;
-                 }
-                 this.dialog = false;*/
             },
             showPlan: function () {
                 this.planShow = false;
@@ -100,8 +93,12 @@
             transShow: function () {
                 this.detailShow = true;
             },
-            init: function () {
-                if (
+            transShow2: function () {
+//                console.info(3);
+                this.detailShow2 = true;
+            },
+            init:function () {
+                if(
                     this.loadingData.airList &&
                     this.loadingData.cityList &&
                     this.loadingData.demands &&
@@ -213,10 +210,9 @@
 
 <style lang="scss">
     .dialog-enter-active, .dialog-leave-active {
-        transition: opacity .3s;
-    }
-
-    .dialog-enter, .dialog-leave-to {
-        opacity: 0;
-    }
+     transition: opacity .3s;
+}
+.dialog-enter, .dialog-leave-to{
+    opacity: 0;
+}
 </style>
