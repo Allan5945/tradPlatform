@@ -5,18 +5,15 @@
         <toPublish v-show="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-
         <transition name="dialog">
-            <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
+            <transDialog v-show="dialog" @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
         <needDetail @formShow="formShow" v-if="detailShow" @transShow="transShow"></needDetail>
         <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-        <!-- <myIntention></myintention> -->
-      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-
-        <!--<airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>-->
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2' @closeThis="closeThis"></airlineDetailPayAfter>
+         <infPanel></infPanel>
+        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>
     </div>
 </template>
 
@@ -33,37 +30,38 @@
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
-    import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
-    import {conversionsCity,conversions} from './../public/js/conversions'
+    import paySuccess from './../page/components/trans_detail/paySuccess.vue'
+    import {conversionsCity, conversions} from './../public/js/conversions'
     import airlineReq from './components/airlineReq.vue'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import airlineDelegation from './../page/components/airlineDelegation.vue'
+    import infPanel from './../page/components/infPanel.vue'
 
     export default {
         data() {
             return {
-                test1:false,
-                renderComponent:false,
+                test1: false,
+                renderComponent: false,
                 name: 1,
                 show: false,
-                dialog:false,
-                payDialog:false,
-                intentFormShow:false,
-                planShow:false,
-                detailShow:false,
+                dialog: false,
+                payDialog: false,
+                intentFormShow: false,
+                planShow: false,
+                detailShow: false,
                 detailShow2: false,
                 loadingData: {
                     airList: false,
                     demands: false,
                     cityList: false,
-                    data:{
-                        airListData:null,
-                        cityListData:null
+                    data: {
+                        airListData: null,
+                        cityListData: null
                     }
                 },
                 allDot: '',
                 test: 555,
-                demandId :''
+                demandId: ''
             }
         },
         methods: {
@@ -74,54 +72,48 @@
             toShow() {
                 this.show = !this.show;
             },
-            formShow(){
+            formShow() {
                 this.intentFormShow = !this.intentFormShow;
             },
-            closeForm(){
+            closeForm() {
                 this.intentFormShow = !this.intentFormShow;
             },
-            closeThis() {
-                this.detailShow2 = false;
-            },
-            sureDialog(){
+            sureDialog() {
                 this.intentFormShow = false;
                 this.planShow = true;
                 this.payDialog = true;
                 this.detailShow = false;
-               /* const self = this;
-                switch (self.dialog_type){
-                    case 'clear':
-                        self.$store.dispatch('clearevent');
-                        break;
-                    case 'del':
-                        self.$store.dispatch('delevent',self.del_info);
-                        break;
-                }
-                this.dialog = false;*/
+                /* const self = this;
+                 switch (self.dialog_type){
+                     case 'clear':
+                         self.$store.dispatch('clearevent');
+                         break;
+                     case 'del':
+                         self.$store.dispatch('delevent',self.del_info);
+                         break;
+                 }
+                 this.dialog = false;*/
             },
-            showPlan:function(){
+            showPlan: function () {
                 this.planShow = false;
             },
-            transShow:function(){
+            transShow: function () {
                 this.detailShow = true;
             },
-            transShow2: function () {
-//                console.info(3);
-                this.detailShow2 = true;
-            },
-            init:function () {
-                if(
+            init: function () {
+                if (
                     this.loadingData.airList &&
                     this.loadingData.cityList &&
                     this.loadingData.demands &&
                     this.loadingData.data.airListData != null &&
                     this.loadingData.data.cityListData != null
-                ){
-                    this.$store.dispatch('initialize',this.loadingData.data).then(() => {
+                ) {
+                    this.$store.dispatch('initialize', this.loadingData.data).then(() => {
                         this.renderComponent = true;
                     });
 
-                };
+                }
+                ;
             }
         },
         beforeMount: function () {
@@ -213,16 +205,18 @@
             paySuccess,
             airlineReq,
             airlineDetailPayAfter,
-            airlineDelegation
+            airlineDelegation,
+            infPanel
         }
     }
 </script>
 
 <style lang="scss">
     .dialog-enter-active, .dialog-leave-active {
-     transition: opacity .3s;
-}
-.dialog-enter, .dialog-leave-to{
-    opacity: 0;
-}
+        transition: opacity .3s;
+    }
+
+    .dialog-enter, .dialog-leave-to {
+        opacity: 0;
+    }
 </style>

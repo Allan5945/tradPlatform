@@ -13,8 +13,10 @@ export const state = {
         monoData: {      // 单一数据（例如：航线需求||运力需求||我发出的需求）
             list: [],  // 存储数据
             type: 0,   // 查询类型
-            code: ''  // 查询三字码
+            code: '',  // 查询三字码
+            name:''
         },  // 需求列表-通过点击图标数据,
+        monoName:'',
         monoPage: 1,   // 需求列表-通过点击图标数据,加载的页码
         conditions: {  // 需求列表-全部筛选条件
             open:false,

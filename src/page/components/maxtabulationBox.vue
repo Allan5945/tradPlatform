@@ -1,7 +1,8 @@
 <template>
     <div class="demand-list">
         <div></div>
-        <div class="mes-body-h popup" @click="getDetail(key)" v-for="(key,i) in renderData">
+        <div :class="{'tagRed':!key.data.renew}" class="mes-body-h popup" @click="getDetail(key)"
+             v-for="(key,i) in renderData">
             <div class="mes-body-i0">
                 <span @click="seted(key)" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':key.data.set}">&#xe723;</span>
                 <img :src="key.img" alt="">
@@ -38,24 +39,22 @@
     import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
     export default {
         data() {
-            return {
-
-            }
+            return {}
         },
         filters: {
             capitalizeType: function (val) {
                 return val;
             }
         },
-        methods:{
-            dropLine:function () {
+        methods: {
+            dropLine: function () {
 
             },
             getDetail: function (val) {
                 tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
             },
-            seted:function (v) {
-                this.$store.dispatch('setelect',{t:v,a:false}).then(() => {
+            seted: function (v) {
+                this.$store.dispatch('setelect', {t: v, a: false}).then(() => {
                 });
                 this.$emit('resetSingleSet');
             }
@@ -64,9 +63,9 @@
             singleElection
         },
         mounted: function () {
+
         },
-        watch:{
-        },
+        watch: {},
         computed: {
             ...vx.mapGetters([
                 'demandList',
@@ -79,19 +78,20 @@
                 if (this.demandList.type) {
                     d = this.demandList.hybridData.list == null ? [] : this.demandList.hybridData.list;
                 } else {
-                    d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;;
+                    d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;
+                    ;
                 }
                 d.forEach((val) => {
                     let img, name = [], tag;
-                    if (val.dptNm != null) {
+                    if (val.dptNm != null && val.dptNm != '') {
                         name.push(val.dptNm)
                     }
                     ;
-                    if (val.pstNm != null) {
+                    if (val.pstNm != null && val.pstNm != '') {
                         name.push(val.pstNm)
                     }
                     ;
-                    if (val.arrvNm != null) {
+                    if (val.arrvNm != null && val.arrvNm != '') {
                         name.push(val.arrvNm)
                     }
                     ;
@@ -117,7 +117,7 @@
                         case "2":
                             tag = tag2;
                             break;
-                        case "3":
+                        case "3" || "4":
                             tag = tag3;
                             break;
                     }
@@ -176,11 +176,11 @@
                         c.push(v);
                     }
                 });
-                if(this.conditionsOpen){
-                    this.$emit('renderDataLength',c.length);
+                if (this.conditionsOpen) {
+                    this.$emit('renderDataLength', c.length);
                     return c;
-                }else{
-                    this.$emit('renderDataLength',a.length);
+                } else {
+                    this.$emit('renderDataLength', a.length);
                     return a;
                 }
             }
@@ -192,15 +192,18 @@
     .demand-list {
         padding: 0 20px;
     }
-    .no-data{
+
+    .no-data {
         color: #ff3c28;
     }
+
     @mixin user-select {
         -moz-user-select: none;
         -khtml-user-select: none;
         user-select: none;
     }
-    .acquiescence{
+
+    .acquiescence {
         @include user-select;
         font-family: iconfont;
         font-size: 1.7rem;
@@ -210,7 +213,8 @@
         display: inline-block;
         position: relative;
     }
-    .acquiescenceSet:before{
+
+    .acquiescenceSet:before {
         width: 17px;
         height: 19px;
         content: '\e6cc';
@@ -221,7 +225,9 @@
         left: 0;
         color: #3c78ff;
     }
+
     .mes-body-h {
+        position: relative;
         /*background-color: white;*/
         display: flex;
         flex-flow: row nowrap;
@@ -230,8 +236,8 @@
         align-items: center;
         margin-bottom: 10px;
         box-shadow: 0 2px 11px rgba(85, 85, 85, .1);
-        &:hover{
-            background-color: rgba(229,229,229,.2);
+        &:hover {
+            background-color: rgba(229, 229, 229, .2);
             cursor: pointer;
         }
         > div {
@@ -242,6 +248,7 @@
             color: rgba(96, 94, 124, 1);
         }
     }
+
     .tabulation-item {
         height: 40px;
         display: flex;
@@ -279,6 +286,7 @@
 
         }
     }
+
     .mes-body-i0 {
         width: 60px;
     }
@@ -328,4 +336,13 @@
         letter-spacing: 0.2px;
     }
 
+    .tagRed:before {
+        content: '\e61e';
+        font-family: iconfont;
+        color: #ff656f;
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        font-size: 12px;
+    }
 </style>

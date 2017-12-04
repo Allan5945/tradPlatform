@@ -31,9 +31,11 @@ const mutations = {
         switch (vl.t){
             case 0:
                 state.demandList.monoData = vl.v;
+                state.demandList.monoName = vl.n;
                 break;
             case 1:
                 state.demandList.monoData = vl.v;
+                state.demandList.monoName = vl.n;
                 break;
             case 2:
                 state.demandList.monoData.list = state.demandList.monoData.list.concat(vl.v);
@@ -43,6 +45,7 @@ const mutations = {
     [types.HYBRIDDATA](state,vl) {
         if(!state.demandList.type){
             state.demandList.type = true;
+            state.demandList.monoName = '';
         }
         if(vl != ''){
             switch (vl.t){

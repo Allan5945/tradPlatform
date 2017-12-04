@@ -6,10 +6,12 @@
             </div>
             <div class="mes-cont-box" @click.stop="screenHsShow = false">
                 <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
-                    <input id="close-input" :class="{'search-set':searchSet}"  placeholder="搜索关键词" @blur="lose()" @input="openList('a')" type="text"
+                    <input id="close-input" :class="{'search-set':searchSet}" placeholder="搜索关键词" @blur="lose()"
+                           @input="openList('a')" type="text"
                            @focus="history" :disabled="searchSet"
                            v-model="searchText">
-                    <span class="search" title="搜索" @mouseover.stop="openSearch" @click="query" v-if="bgqy">&#xe6c3;</span>
+                    <span class="search" title="搜索" @mouseover.stop="openSearch" @click="query"
+                          v-if="bgqy">&#xe6c3;</span>
                     <loading class="search-ing" title="搜索中..." v-if="bgqying"></loading>
                     <span v-if="bgqyed" class="search-ed btn-w" @click="removeSearchSet">&#xe62c;</span>
                 </div>
@@ -57,10 +59,10 @@
     export default {
         data() {
             return {
-                dataL:0,
+                dataL: 0,
                 screenHsShow: false,
                 search: false,
-                searchSet:false,
+                searchSet: false,
                 isSearch: false,
 //                holder: '',
                 searchText: '',
@@ -85,31 +87,33 @@
             renderDataLength: function (v) {
                 this.dataL = v;
             },
-            removeSearchSet:function () {
+            removeSearchSet: function () {
                 this.searchSet = false;
                 this.bgqy = true;
                 this.bgqying = false;
                 this.bgqyed = false;
                 this.searchText = '';
-                this.$store.dispatch('hybridData',{v:'',t:1}).then(() => {});
+                this.$store.dispatch('hybridData', {v: ''}).then(() => {
+                });
             },
             openMax: function () {
                 this.$emit('openMax', 'max');
             },
             lose: function () {
                 setTimeout(() => {
-                    if (this.$airMes(this.airList,this.searchText) == '' && this.$cityMes(this.cityList,this.searchText) == '') {
+                    if (this.$airMes(this.airList, this.searchText) == '' && this.$cityMes(this.cityList, this.searchText) == '') {
                         this.searchText = '';
                     }
                 }, 200);
             },
             screenHs: function (t) {
-                if(!t){
-                    this.$store.dispatch('setCity',{v:'$&',t:false}).then(() => {
+                if (!t) {
+                    this.$store.dispatch('setCity', {v: '$&', t: false}).then(() => {
                     });
-                    this.$store.dispatch('openScreen',false).then(() => {
+                    this.$store.dispatch('openScreen', false).then(() => {
                     });
-                };
+                }
+                ;
                 this.screenHsShow = false;
             },
             openScreen: function () {
@@ -166,7 +170,7 @@
                             itia: this.qyCode.code,
                             page: 1,
                             type: 0,
-                            itiaType:this.qyCode.type
+                            itiaType: this.qyCode.type
                         }
                     }).then((response) => {
                         if (response.data) {
@@ -180,7 +184,7 @@
                                 ar.list = [];
                             }
                             ;
-                            this.$store.dispatch('monoData', {v: ar, t: 1}).then(() => {
+                            this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode.name}).then(() => {
                             });
                         }
                     })
@@ -234,6 +238,14 @@
             }
         },
         mounted: function () {
+            if (this.demandList.monoName != '') {
+                this.searchText = this.demandList.monoName;
+                this.searchSet = true;
+                this.search = true;
+                this.bgqy = false;
+                this.bgqying = false;
+                this.bgqyed = true;
+            }
         }
     }
 </script>
@@ -261,9 +273,11 @@
     .bounce-enter-active {
         animation: bounce-in .3s;
     }
-    .search-set{
+
+    .search-set {
         color: #3c78ff !important;
     }
+
     .bounce-leave-active {
         animation: bounce-in .3s reverse;
     }
@@ -297,7 +311,7 @@
 
     .screen-hs {
         position: absolute;
-        top:33px;
+        top: 33px;
         left: 5px;
         z-index: 11;
     }
@@ -324,7 +338,8 @@
         overflow-y: scroll;
         z-index: 10;
     }
-    .search{
+
+    .search {
         font-family: iconfont;
         font-size: 2.3rem;
         color: #605E7C;
@@ -342,6 +357,7 @@
             color: #3c78ff;
         }
     }
+
     .search-ing {
         width: 23px;
         height: 30px;
@@ -349,7 +365,8 @@
         display: inline-block;
         transform: scale(.25);
     }
-    .search-ed{
+
+    .search-ed {
         font-family: iconfont;
         font-size: 1.2rem;
         color: #3c78ff;
@@ -367,6 +384,7 @@
         background-color: white;
         border-radius: 50%;
     }
+
     .message-box {
         width: 340px;
         height: 100%;

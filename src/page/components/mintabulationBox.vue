@@ -1,6 +1,6 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div :class="{'tagRed':key.data.renew}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
+        <div :class="{'tagRed':!key.data.renew}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
             <div class="tabulation-item" @click="getDetail(key)">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
@@ -45,7 +45,7 @@
             // 更改提示框高度
             window.onresize = () => {
                 if (this.set != '') {
-                    clearTimeout(this.set)
+                    clearTimeout(this.set);
                 }
                 ;
                 this.set = setTimeout(() => {
@@ -164,18 +164,19 @@
                 }
                 d.forEach((val) => {
                     let img, name = [], tag;
-                    if (val.dptNm != null) {
+                    if (val.dptNm != null && val.dptNm != '') {
                         name.push(val.dptNm)
                     }
                     ;
-                    if (val.pstNm != null) {
+                    if (val.pstNm != null && val.pstNm != '') {
                         name.push(val.pstNm)
                     }
                     ;
-                    if (val.arrvNm != null) {
+                    if (val.arrvNm != null && val.arrvNm != '') {
                         name.push(val.arrvNm)
                     }
                     ;
+
                     switch (val.demandtype) {
                         case "0":
                             img = ig0;
@@ -198,7 +199,7 @@
                         case "2":
                             tag = tag2;
                             break;
-                        case "3":
+                        case "3" || "4":
                             tag = tag3;
                             break;
                     }
