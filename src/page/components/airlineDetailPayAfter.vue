@@ -3,7 +3,7 @@
         <div class="first-show" v-show="firstShow">
             <div class="first item-container">
                 <span class="font-gray">需求详情</span>
-                <span class="close-icon">&times;</span>
+                <span class="close-icon" @click="closeThisFn">&times;</span>
             </div>
             <div class="second item-container">
                 <div class="sec-top">
@@ -63,7 +63,7 @@
                         <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
-                        <div class="item-d">{{myData.subsidypolicyStr}}</div>
+                        <div class="item-d">{{myData.remark}}</div>
                         <!--<div>有补贴</div>-->
                     </div>
                 </div>
@@ -426,13 +426,9 @@
                 subsidyList: ['保底','定补','按人头']*/
             }
         },
-        mounted(){
-//            this.initData();
-            //模拟状态码0
-            this.showCode = 0;
-            tabulationBoxTrigger.$on('getClickData', val => {
-                console.log("demandtype"+val.demandType);
-                if(val.demandType == 0){
+        created() {
+            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+                if(val.data.demandtype == 0){
                     this.$ajax({
                         method: 'post',
                         url: '/capacityRoutesDemandDetailFindById',
@@ -440,7 +436,7 @@
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         params: {
-                            demandId: val.demandId
+                            demandId: val.data.id
                         }
                     })
                         .then((response) => {
@@ -466,10 +462,18 @@
                     this.$emit('transShow');
                 };
             });
+        },
+        mounted(){
+//            this.initData();
+            //模拟状态码0
+            this.showCode = 0;
             this.show();
         },
         computed: {},
         methods: {
+            closeThisFn: function () {
+                this.$emit('closeThis')
+            },
             initData: function () {
                 this.$ajax({
                     url:"/capacityRoutesDemandDetailFindById",

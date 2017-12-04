@@ -19,18 +19,40 @@
 </template>
 
 <script>
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
         data(){
             return{
                 Btext: '确认缴纳',
-                iconShow:false
+                iconShow:false,
+                sendData: {}
             }
+        },
+        created() {
+            tabulationBoxTrigger.$on('tabulationBoxTrigger',val => {
+                this.sendData.id = val.data.id;
+//                this.sendData.employeeId = val.data.employeeId;
+            })
         },
         methods: {
             cancelEvent(){
                 this.$emit('cancel');
             },
             sureEvent(){
+                this.sendData.intentionMoneyState = '0';
+                console.info(this.sendData)
+                this.$ajax({
+                    url: "/changeIntentionMoneyStatusForResponse",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.sendData
+                }).then((response) => {
+                    console.info(response.data)
+                }).catch((error) => {
+                    console.log(error);
+                });
                 this.iconShow = true;
                 this.Btext = '';
                 let that = this;

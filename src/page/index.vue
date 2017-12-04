@@ -15,7 +15,8 @@
         <!-- <myIntention></myintention> -->
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
 
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>
+        <!--<airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>-->
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2' @closeThis="closeThis"></airlineDetailPayAfter>
     </div>
 </template>
 
@@ -79,6 +80,9 @@
             closeForm(){
                 this.intentFormShow = !this.intentFormShow;
             },
+            closeThis() {
+                this.detailShow2 = false;
+            },
             sureDialog(){
                 this.intentFormShow = false;
                 this.planShow = true;
@@ -100,6 +104,10 @@
             },
             transShow:function(){
                 this.detailShow = true;
+            },
+            transShow2: function () {
+                console.info(3);
+                this.detailShow2 = true;
             },
             init:function () {
                 if(

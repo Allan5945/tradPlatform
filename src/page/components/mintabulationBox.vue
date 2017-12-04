@@ -135,6 +135,7 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
+                console.info(val)
                 tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
             }
         },
