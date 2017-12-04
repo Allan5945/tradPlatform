@@ -36,7 +36,7 @@
                 </div>
                 <div class="number-tag">
                     <div class="btn-w">标记为已读</div>
-                    <div class="btn-w">收藏</div>
+                    <div class="btn-w" @click="tagRead">收藏</div>
                 </div>
             </div>
         </div>
@@ -103,6 +103,40 @@
             }
         },
         methods: {
+            tagRead:function () {
+                let v = [];
+                if(this.demandList.type){
+                    this.demandList.hybridData.list.forEach((vl)=>{
+                        if(vl.set){
+                           v.push(vl.id)
+                        }
+                    });
+                }else{
+                    this.demandList.monoData.list.forEach((vl)=>{
+                        if(vl.set){
+                            v.push(vl.id)
+                        }
+                    });
+                }
+                if(v.length == 0)return false;
+                this.$ajax({
+                    method: 'post',
+                    url:"/addCollect",
+                    params:{
+                        demandId  :v.join(','),
+                    },
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then((response) => {
+
+                    })
+                    .catch((error) => {
+
+                        }
+                    );
+            },
             renderDataLength: function (v) {
                 this.dataL = v;
             },
@@ -245,7 +279,8 @@
                 'close',
                 'demandList',
                 'airList',
-                'cityList'
+                'cityList',
+                'conditionsOpen'
             ]),
             renderData: function () {
                 return this.demandList.hybridData.list.length;

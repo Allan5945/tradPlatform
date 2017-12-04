@@ -1,6 +1,6 @@
 <template>
     <div class="iconList">
-        <div class="iconList-item" v-for="key in iconList"><img v-bind:src="key.iconUrl" alt="">航线需求</div>
+        <div class="iconList-item" v-for="key in iconList"><img v-bind:src="key.iconUrl" alt="">{{key.name}}</div>
     </div>
 </template>
 <script>

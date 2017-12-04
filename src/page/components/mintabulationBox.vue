@@ -1,6 +1,6 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
+        <div :class="{'tagRed':key.data.renew}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
             <div class="tabulation-item" @click="getDetail(key)">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
@@ -26,7 +26,6 @@
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-
     import ig0 from './../../static/img/haveline.png'; // 航线需求图片
     import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
     import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
@@ -117,38 +116,33 @@
                     this.hidden = false;
                 }
             },
-            drawLine:function (key,t){
+            drawLine: function (key, t) {
                 let pots = [];
-                if(t){
-                    if(key.data.arrvCt != null && key.data.arrvCt != ''){
-                        let jw = this.$cityMes(this.cityList,key.data.arrvCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0],jw[1]))
+                if (t) {
+                    if (key.data.arrvCt != null && key.data.arrvCt != '') {
+                        let jw = this.$cityMes(this.cityList, key.data.arrvCt).cityCoordinate.split(',');
+                        pots.push(new BMap.Point(jw[0], jw[1]))
                     }
-                    if(key.data.dptCt != null && key.data.dptCt != ''){
-                        let jw = this.$cityMes(this.cityList,key.data.dptCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0],jw[1]))
+                    if (key.data.dptCt != null && key.data.dptCt != '') {
+                        let jw = this.$cityMes(this.cityList, key.data.dptCt).cityCoordinate.split(',');
+                        pots.push(new BMap.Point(jw[0], jw[1]))
                     }
-                    if(key.data.pstCt != null && key.data.pstCt != ''){
-                        let jw = this.$cityMes(this.cityList,key.data.pstCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0],jw[1]))
+                    if (key.data.pstCt != null && key.data.pstCt != '') {
+                        let jw = this.$cityMes(this.cityList, key.data.pstCt).cityCoordinate.split(',');
+                        pots.push(new BMap.Point(jw[0], jw[1]))
                     }
                 }
-                this.$bExample.setLinesList(pots,t);
+                this.$bExample.setLinesList(pots, t);
             },
-             getDetail: function (val){
-                let targetData ={};
-                targetData.demandId = val.data.id;
-                targetData.employeeId = val.data.employeeId;
-                targetData.demandType = val.data.demandtype;
-                console.log(targetData)
-                tabulationBoxTrigger.$emit('getClickData',targetData);
-           }
+            getDetail: function (val) {
+                tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
+            }
         },
         updated: function () {
             this.resetWindow();
         },
         watch: {
-            demandList:function () {
+            demandList: function () {
 
             }
         },
@@ -161,11 +155,11 @@
                 'cityList'
             ]),
             renderData: function () {
-                let d, a = [],c = [];
+                let d, a = [], c = [];
                 if (this.demandList.type) {
-                    d = this.demandList.hybridData.list;
+                    d = this.demandList.hybridData.list == null ? [] : this.demandList.hybridData.list;
                 } else {
-                    d = this.demandList.monoData.list;
+                    d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;;
                 }
                 d.forEach((val) => {
                     let img, name = [], tag;
@@ -215,58 +209,58 @@
                         data: val
                     })
                 });
-
-                a.forEach((v)=>{
+                a.forEach((v) => {
                     let sr = {
-                        city:false,
-                        flyGrade:false,
-                        airType:true,
-                        subsidyPolicy:true,
+                        city: false,
+                        flyGrade: false,
+                        airType: true,
+                        subsidyPolicy: true,
                     };
                     let cy = this.demandList.conditions.city.s;
-                    if(cy.length > 0){
-                        if(
+                    if (cy.length > 0) {
+                        if (
                             (v.data.dptCt != null && v.data.dptCt != '' && cy.indexOf(v.data.dptCt) != -1) ||
-                            (v.data.arrvCt != null && v.data.arrvCt != '' && cy.indexOf(v.data.arrvCt) != -1)||
+                            (v.data.arrvCt != null && v.data.arrvCt != '' && cy.indexOf(v.data.arrvCt) != -1) ||
                             (v.data.pst != null && v.data.pst != '' && cy.indexOf(v.data.pst) != -1)
-                        ){
+                        ) {
                             sr.city = true;
                         }
-                    }else{
+                    } else {
                         sr.city = true;
                     }
 
                     let flyGrade = this.demandList.conditions.flyGrade.s;
 
-                    if(flyGrade.length > 0){
-                        if(
+                    if (flyGrade.length > 0) {
+                        if (
                             (v.data.dptFltLvl != null && v.data.dptFltLvl != '' && flyGrade.indexOf(v.data.dptFltLvl) != -1) ||
-                            (v.data.arrvFltLvl != null && v.data.arrvFltLvl != '' && flyGrade.indexOf(v.data.arrvFltLvl) != -1)||
+                            (v.data.arrvFltLvl != null && v.data.arrvFltLvl != '' && flyGrade.indexOf(v.data.arrvFltLvl) != -1) ||
                             (v.data.pstFltLvl != null && v.data.pstFltLvl != '' && flyGrade.indexOf(v.data.pstFltLvl) != -1)
-                        ){
+                        ) {
                             sr.city = true;
                         }
-                    }else{
+                    } else {
                         sr.flyGrade = true;
                     }
 
                     let airType = v.data.aircrfttyp;
-                    if(airType != null && this.demandList.conditions.airType != '' && airType != this.demandList.conditions.airType){
+                    if (airType != null && this.demandList.conditions.airType != '' && airType != this.demandList.conditions.airType) {
                         sr.airType = false;
                     }
                     let subsidyPolicy = this.demandList.conditions.subsidyPolicy.s;
-                    if(subsidyPolicy.length > 0 && subsidyPolicy.indexOf(v.data.subsidypolicyStr) == -1){
+                    if (subsidyPolicy.length > 0 && subsidyPolicy.indexOf(v.data.subsidypolicyStr) == -1) {
                         sr.subsidyPolicy = false;
-                    };
-                    if(sr.flyGrade && sr.airType && sr.city && sr.subsidyPolicy){
+                    }
+                    ;
+                    if (sr.flyGrade && sr.airType && sr.city && sr.subsidyPolicy) {
                         c.push(v);
                     }
                 });
-                if(this.conditionsOpen){
-                    this.$emit('renderDataLength',c.length);
+                if (this.conditionsOpen) {
+                    this.$emit('renderDataLength', c.length);
                     return c;
-                }else{
-                    this.$emit('renderDataLength',a.length);
+                } else {
+                    this.$emit('renderDataLength', a.length);
                     return a;
                 }
             }
@@ -282,8 +276,18 @@
             margin-left: -110%;
         }
     }
-    .no-data{
+
+    .no-data {
         color: #ff3c28;
+    }
+    .tagRed:before{
+        content:'\e61e';
+        font-family: iconfont;
+        color: #ff656f;
+        position: absolute;
+        right: 0px;
+        top: 3px;
+        font-size: 12px;
     }
     .class-item0:after {
         position: absolute;
@@ -360,12 +364,13 @@
         padding: 0 20px;
         position: relative;
         > div {
+            position: relative;
             height: 105px;
             padding: 20px 0 0 40px;
             border-bottom: 1px solid #f3f3f3;
-            &:hover{
+            &:hover {
                 cursor: pointer;
-                background-color: rgba(229,229,229,.2);
+                background-color: rgba(229, 229, 229, .2);
                 border-radius: 7px;
             }
         }

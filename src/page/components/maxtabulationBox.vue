@@ -1,7 +1,7 @@
 <template>
     <div class="demand-list">
         <div></div>
-        <div class="mes-body-h popup" @click="dropLine(key)" v-for="(key,i) in renderData">
+        <div class="mes-body-h popup" @click="getDetail(key)" v-for="(key,i) in renderData">
             <div class="mes-body-i0">
                 <span @click="seted(key)" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':key.data.set}">&#xe723;</span>
                 <img :src="key.img" alt="">
@@ -28,6 +28,7 @@
 <script>
     import * as vx from 'vuex'
     import singleElection from './singleElection.vue'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import ig0 from './../../static/img/haveline.png'; // 航线需求图片
     import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
     import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
@@ -49,6 +50,9 @@
         methods:{
             dropLine:function () {
 
+            },
+            getDetail: function (val) {
+                tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
             },
             seted:function (v) {
                 this.$store.dispatch('setelect',{t:v,a:false}).then(() => {
@@ -73,9 +77,9 @@
             renderData: function () {
                 let d, a = [], c = [];
                 if (this.demandList.type) {
-                    d = this.demandList.hybridData.list;
+                    d = this.demandList.hybridData.list == null ? [] : this.demandList.hybridData.list;
                 } else {
-                    d = this.demandList.monoData.list;
+                    d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;;
                 }
                 d.forEach((val) => {
                     let img, name = [], tag;

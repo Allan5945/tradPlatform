@@ -140,7 +140,7 @@
             this.allDot.forEach((v)=>{
                 let mes = this.$cityMes(this.cityList,v.dpt);
                 let obj = v.obj.split(',');
-                let demandType = v.demandType.split(',');  // 需求类型数组
+                let demandType = v.demandType == null ? []:v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
                 let cityIcao = mes.cityIcao;
                 let coor = mes.cityCoordinate.split(',');
@@ -149,36 +149,71 @@
                     tag:'',
                     dbSize:16
                 };
-                if(obj.indexOf('0') != -1){
+
+                if(obj.indexOf('0') != -1){ // 我发出的需求
                     demand.tag = i6;
                     demand.dbSize = 16;
-                }else if(obj.indexOf('1') != -1){
+                }else if(obj.indexOf('1') != -1){  // 别人发出的需求
                     demand.tag = i7;
                     demand.dbSize = 6;
-                    type = 1;
-                }
-                if(demandType.indexOf('0') != -1 && demandType.indexOf('1') != -1){
-                    quantity = i1;
-                    type = 2;
-                }else if(demandType.indexOf('0') != -1){
-                    type = 0;
-                    if(v.num == 0){
-                        quantity = i2;
-                    }else{
-                        quantity = i3;
+                    if(demandType.indexOf('0') != -1 && demandType.indexOf('1') != -1){
+                        quantity = i1;
+                        type = 2;
+                    }else if(demandType.indexOf('0') != -1){
+                        type = 0;
+                        if(v.num == 0){
+                            quantity = i2;
+                        }else{
+                            quantity = i3;
+                        }
+                    }else if(demandType.indexOf('1') != -1){
+                        type = 1;
+                        if(v.num == 0){
+                            quantity = i4;
+                        }else{
+                            quantity = i5;
+                        }
                     }
-                }else if(demandType.indexOf('1') != -1){
-                    type = 1;
-                    if(v.num == 0){
-                        quantity = i4;
-                    }else{
-                        quantity = i5;
-                    }
                 }
+
+
+
+//
+//                if(obj = '0'){
+//
+//                }else
+//
+//                if(obj.indexOf('0') != -1){
+//                    demand.tag = i6;
+//                    demand.dbSize = 16;
+//                }else if(obj.indexOf('1') != -1){
+//                    demand.tag = i7;
+//                    demand.dbSize = 6;
+//                    type = 1;
+//                }
+
+//                if(demandType.indexOf('0') != -1 && demandType.indexOf('1') != -1){
+//                    quantity = i1;
+//                    type = 2;
+//                }else if(demandType.indexOf('0') != -1){
+//                    type = 0;
+//                    if(v.num == 0){
+//                        quantity = i2;
+//                    }else{
+//                        quantity = i3;
+//                    }
+//                }else if(demandType.indexOf('1') != -1){
+//                    type = 1;
+//                    if(v.num == 0){
+//                        quantity = i4;
+//                    }else{
+//                        quantity = i5;
+//                    }
+//                }
                 if(
                     v.cityCoordinateJ != null &&
                     v.cityCoordinateW != null &&
-                    v.demandType != null &&
+//                    v.demandType != null &&
 //                    v.newInfo != null &&
                     v.num != null &&
                     v.obj != null
@@ -225,7 +260,9 @@
                         symbolOffset:[0,-25],
                         num:v.num
                     };
-                    a.push(_a);
+                    if(quantity != ''){
+                        a.push(_a);
+                    }
                 }
             });
             this.myChart = echarts.init(document.getElementById('map-warp'));
@@ -238,7 +275,9 @@
                     "type": 'bmap',
                     "mapStyle":zs
                 },
-                "tooltip": {trigger: 'item'},
+                "tooltip": {trigger: function () {
+                    return '';
+                }},
                 "series": [
                     {
                         'name':'a',

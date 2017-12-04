@@ -3,9 +3,9 @@ export const state = {
     close: true,  // ** 事件冒泡关闭触发
     airList: '',  // ** 所以机场列表信息
     cityList: '',  // ** 所以城市列表信息
-    conditionsOpen:false,
+    conditionsOpen:false,  // 是否打开筛选条件
     demandList: {  // ** 需求列表数据
-        type: true,      // 当前操作数据类型
+        type: true,      // 当前操作数据类型 true - 混合数据点（hybridPage） || false - 单类型数据（monoData）
         hybridData: {    // 混合全部数据（例如：航线需求&&运力需求&&我发出的需求）
             list: []     // 存储数据
         }, // 需求列表-全部列表数据

@@ -29,7 +29,7 @@ class bmapExamples {
                 let point = new BMap.Point(v.value[0], v.value[1]);
                 let opts = {
                     position: point,    // 指定文本标注所在的地理位置
-                    offset: new BMap.Size(-6, -40),    //设置文本偏移量
+                    offset: new BMap.Size(-5, -40),    //设置文本偏移量
                 }
                 let num = v.num;
                 if(v.num > 9){
@@ -47,7 +47,7 @@ class bmapExamples {
                     backgroundColor: 'transparent',
                 });
                 label.alldts = v;
-                label.setZIndex(1);
+                // label.setZIndex(1);
                 this.pointList.push(label);
             });
         };
@@ -58,10 +58,12 @@ class bmapExamples {
             })
         };
         this.updateLine = (v) => {
-            console.log(v)
             this.linesList = '';
         };
         this.init = () => {
+            this.map.enableScrollWheelZoom(12);
+            // this.map.setMaxZoom(8);
+            // this.map.setMinZoom(5);
             this.pointList.forEach((v) => {
                 this.map.addOverlay(v);
             })

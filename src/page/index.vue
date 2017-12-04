@@ -16,7 +16,6 @@
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
 
         <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>
-
     </div>
 </template>
 
@@ -167,7 +166,7 @@
                         if (
                             val.cityCoordinateJ != null &&
                             val.cityCoordinateW != null &&
-                            val.demandType != null &&
+//                            val.demandType != null &&
                             val.dpt != null &&
 //                            val.newInfo != null &&
                             val.num != null &&
