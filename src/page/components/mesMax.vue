@@ -6,7 +6,8 @@
                 <div class="mes-head-c" @click.stop>
                     <div class="mes-cont-box" @mouseout="closeSearch" @click="screenHsShow = false">
                         <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
-                            <input id="close-input" :class="{'search-set':searchSet}"  placeholder="搜索关键词" @blur="lose()" @input="openList('a')" type="text"
+                            <input id="close-input" :class="{'search-set':searchSet}" placeholder="搜索关键词" @blur="lose()"
+                                   @input="openList('a')" type="text"
                                    @focus="history" :disabled="searchSet"
                                    v-model="searchText">
                             <span class="search" title="搜索" @mouseover.stop="openSearch" @click="query" v-if="bgqy">&#xe6c3;</span>
@@ -14,7 +15,8 @@
                             <span v-if="bgqyed" class="search-ed btn-w" @click="removeSearchSet">&#xe62c;</span>
                         </div>
                         <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
-                        <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
+                        <airportS class="aisx" v-on:resData="resData" :searchText="searchText"
+                                  v-show="isSearch"></airportS>
                     </div>
                     <div class="screen">
                         <span @click="openScreen">&#xe6a7;</span>
@@ -46,8 +48,12 @@
                     <span @click="seted()" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':single.set}">&#xe723;</span>
                     类型
                 </div>
-                <div class="mes-body-i1">航点/匹配度<order :order.sync="order" class="order-x"></order></div>
-                <div class="mes-body-i2">发布时间<order :order.sync="order" class="order-x"></order></div>
+                <div class="mes-body-i1">航点/匹配度
+                    <order :order.sync="order" class="order-x"></order>
+                </div>
+                <div class="mes-body-i2">发布时间
+                    <order :order.sync="order" class="order-x"></order>
+                </div>
                 <div class="mes-body-i3">需求进度</div>
                 <div class="mes-body-i3">时刻</div>
                 <div class="mes-body-i3">班期</div>
@@ -55,7 +61,8 @@
                 <div class="mes-body-i4">补助</div>
                 <div class="mes-body-i4">其他说明</div>
             </div>
-            <tabulationBox class="mes-body-b scroll" v-on:renderDataLength="renderDataLength" v-on:resetSingleSet="resetSingleSet" :singled="single"></tabulationBox>
+            <tabulationBox class="mes-body-b scroll" v-on:renderDataLength="renderDataLength"
+                           v-on:resetSingleSet="resetSingleSet" :singled="single"></tabulationBox>
         </div>
     </div>
 </template>
@@ -72,16 +79,16 @@
     export default {
         data() {
             return {
-                dataL:0,
-                order:{
+                dataL: 0,
+                order: {
                     set: true
                 },
-                match: {set:false},  // 只看与我匹配的
+                match: {set: false},  // 只看与我匹配的
                 holder: '',
-                single: {set:false},  // 类型选择
+                single: {set: false},  // 类型选择
                 screenHsShow: false,
                 search: false,
-                searchSet:false,
+                searchSet: false,
                 isSearch: false,
 //                holder: '',
                 searchText: '',
@@ -103,27 +110,27 @@
             }
         },
         methods: {
-            tagRead:function () {
+            tagRead: function () {
                 let v = [];
-                if(this.demandList.type){
-                    this.demandList.hybridData.list.forEach((vl)=>{
-                        if(vl.set){
-                           v.push(vl.id)
+                if (this.demandList.type) {
+                    this.demandList.hybridData.list.forEach((vl) => {
+                        if (vl.set) {
+                            v.push(vl.id)
                         }
                     });
-                }else{
-                    this.demandList.monoData.list.forEach((vl)=>{
-                        if(vl.set){
+                } else {
+                    this.demandList.monoData.list.forEach((vl) => {
+                        if (vl.set) {
                             v.push(vl.id)
                         }
                     });
                 }
-                if(v.length == 0)return false;
+                if (v.length == 0) return false;
                 this.$ajax({
                     method: 'post',
-                    url:"/addCollect",
-                    params:{
-                        demandId  :v.join(','),
+                    url: "/addCollect",
+                    params: {
+                        demandId: v.join(','),
                     },
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -140,28 +147,29 @@
             renderDataLength: function (v) {
                 this.dataL = v;
             },
-            resetSingleSet:function () {
+            resetSingleSet: function () {
                 this.single.set = false;
             },
             lose: function () {
                 setTimeout(() => {
-                    if (this.$airMes(this.airList,this.searchText) == '' && this.$cityMes(this.cityList,this.searchText) == '') {
+                    if (this.$airMes(this.airList, this.searchText) == '' && this.$cityMes(this.cityList, this.searchText) == '') {
                         this.searchText = '';
                     }
                 }, 200);
             },
-            seted:function () {
+            seted: function () {
                 this.single.set = !this.single.set;
-                this.$store.dispatch('setelect',{t:this.single.set,a:true}).then(() => {
+                this.$store.dispatch('setelect', {t: this.single.set, a: true}).then(() => {
                 });
             },
-            removeSearchSet:function () {
+            removeSearchSet: function () {
                 this.searchSet = false;
                 this.bgqy = true;
                 this.bgqying = false;
                 this.bgqyed = false;
                 this.searchText = '';
-                this.$store.dispatch('hybridData',{v:'',t:1}).then(() => {});
+                this.$store.dispatch('hybridData', {v: '', t: 1}).then(() => {
+                });
             },
             openSearch: function () {
                 this.search = true;
@@ -183,12 +191,13 @@
                 this.$emit('openMin', 'min')
             },
             screenHs: function (t) {
-                if(!t){
-                    this.$store.dispatch('setCity',{v:'$&',t:false}).then(() => {
+                if (!t) {
+                    this.$store.dispatch('setCity', {v: '$&', t: false}).then(() => {
                     });
-                    this.$store.dispatch('openScreen',false).then(() => {
+                    this.$store.dispatch('openScreen', false).then(() => {
                     });
-                };
+                }
+                ;
                 this.screenHsShow = false;
             },
             closeSearch: function () {
@@ -242,12 +251,11 @@
                             itia: this.qyCode.code,
                             page: 1,
                             type: 0,
-                            itiaType:this.qyCode.type
+                            itiaType: this.qyCode.type
                         }
                     }).then((response) => {
                         if (response.data) {
                             let ar = response.data.list;
-
                             this.bgqy = false;
                             this.bgqying = false;
                             this.bgqyed = true;
@@ -256,7 +264,7 @@
                                 ar.list = [];
                             }
                             ;
-                            this.$store.dispatch('monoData', {v: ar, t: 1}).then(() => {
+                            this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode.name}).then(() => {
                             });
                         }
                     })
@@ -286,8 +294,18 @@
                 return this.demandList.hybridData.list.length;
             }
         },
+        mounted: function () {
+            if (this.demandList.monoName != '') {
+                this.searchText = this.demandList.monoName;
+                this.searchSet = true;
+                this.search = true;
+                this.bgqy = false;
+                this.bgqying = false;
+                this.bgqyed = true;
+            }
+        },
         watch: {
-            single:function () {
+            single: function () {
 
             },
             close: function () {
@@ -337,12 +355,14 @@
     .bounce-leave-active {
         animation: bounce-in .3s reverse;
     }
+
     @mixin user-select {
         -moz-user-select: none;
         -khtml-user-select: none;
         user-select: none;
     }
-    .acquiescence{
+
+    .acquiescence {
         @include user-select;
         font-family: iconfont;
         font-size: 1.7rem;
@@ -352,7 +372,8 @@
         display: inline-block;
         position: relative;
     }
-    .acquiescenceSet:before{
+
+    .acquiescenceSet:before {
         width: 17px;
         height: 19px;
         content: '\e6cc';
@@ -363,6 +384,7 @@
         left: 0;
         color: #3c78ff;
     }
+
     .search-ing {
         width: 23px;
         height: 30px;
@@ -370,16 +392,19 @@
         display: inline-block;
         transform: scale(.25);
     }
-    .mes-body{
+
+    .mes-body {
         padding-top: 15px;
         color: #605E7C;
         flex: 1;
         display: flex;
         flex-flow: column nowrap;
     }
-    .order-x{
+
+    .order-x {
         margin-left: 5px;
     }
+
     .mes-body-h {
         display: flex;
         flex-flow: row nowrap;
@@ -390,7 +415,7 @@
             justify-content: flex-start;
             align-items: center;
             margin-right: 20px;
-            color: rgba( 96,94,124,.65);
+            color: rgba(96, 94, 124, .65);
         }
     }
 
@@ -478,7 +503,7 @@
         }
     }
 
-    .mes-body-b{
+    .mes-body-b {
         flex: 1;
         overflow-y: scroll;
     }
@@ -488,10 +513,10 @@
     .bounce-enter-active {
         animation: bounce-in .3s;
     }
-    .search-set{
+
+    .search-set {
         color: #3c78ff !important;
     }
-
 
     .screen, .amplification {
         height: 25px;
@@ -514,7 +539,7 @@
 
     .screen-hs {
         position: absolute;
-        top:33px;
+        top: 33px;
         left: 5px;
         z-index: 11;
     }
@@ -528,7 +553,7 @@
         top: 25px;
         left: 0px;
         width: 260px;
-        max-height: 210px;
+        /*max-height: 210px;*/
         z-index: 1;
     }
 
@@ -541,7 +566,8 @@
         overflow-y: scroll;
         z-index: 10;
     }
-    .search{
+
+    .search {
         font-family: iconfont;
         font-size: 2.3rem;
         color: #605E7C;
@@ -559,6 +585,7 @@
             color: #3c78ff;
         }
     }
+
     .search-ing {
         width: 23px;
         height: 30px;
@@ -566,7 +593,8 @@
         display: inline-block;
         transform: scale(.25);
     }
-    .search-ed{
+
+    .search-ed {
         font-family: iconfont;
         font-size: 1.2rem;
         color: #3c78ff;
@@ -584,6 +612,7 @@
         background-color: white;
         border-radius: 50%;
     }
+
     .message-box {
         width: 340px;
         height: 100%;
