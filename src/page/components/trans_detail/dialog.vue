@@ -29,8 +29,9 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('tabulationBoxTrigger',val => {
-                this.sendData.id = val.data.id;
+            tabulationBoxTrigger.$on('responseText',(val) => {
+                console.info(val);
+                this.sendData.id = val;
 //                this.sendData.employeeId = val.data.employeeId;
             })
         },
@@ -39,7 +40,7 @@
                 this.$emit('cancel');
             },
             sureEvent(){
-                this.sendData.intentionMoneyState = '0';
+                this.sendData.intentionStatu = '0';
                 console.info(this.sendData)
                 this.$ajax({
                     url: "/changeIntentionMoneyStatusForResponse",

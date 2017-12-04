@@ -106,7 +106,7 @@
                 this.detailShow = true;
             },
             transShow2: function () {
-                console.info(3);
+//                console.info(3);
                 this.detailShow2 = true;
             },
             init:function () {

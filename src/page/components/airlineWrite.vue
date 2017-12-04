@@ -516,7 +516,8 @@
                 spaceList: ['意向区域', '意向机场'],
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
-                sendData: {}
+                sendData: {},
+                responseId: ''
             }
         },
         components: {
@@ -656,12 +657,16 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info(response)
+                    console.info(response.data.response.id)
+                    this.responseId = response.data.response.id;
+                    tabulationBoxTrigger.$emit('responseText', this.responseId);
+                    console.info(this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {
                     console.log(error);
                 });
                 this.$emit('change-showCode');
+//                console.info('000')
             },
             closeThis: function () {
                 this.$emit('close-this');
