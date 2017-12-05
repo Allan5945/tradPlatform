@@ -351,14 +351,15 @@
 </div>
 </template>
 <script>
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import airAreaSearch from './../airAreaSearch.vue'
     import airportS from './../airportSearch.vue'
     import calendar from './../calendar'
-    import * as vx from 'vuex'
 
     export default {
         data() {
             return {
+                demandData:{},
                 warn1Show: false,  //联系人警告
                 warn2Show: false,  //联系方式警告
                 warn3Show: false,  //始发地警告
@@ -478,9 +479,6 @@
             }
         },
         computed: {
-              ...vx.mapGetters([
-                'transDetail'
-            ]),
             sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
             },
@@ -488,6 +486,11 @@
                 return this.calendarInitDay3 + ',' +this.calendarInitDay4;
             }
         },
+        mounted() {
+        tabulationBoxTrigger.$on('getClickData', val => {
+            this.demandData = val;
+        });
+     },
         methods: {
             warn4Fn: function () {
                 console.info(4)
@@ -498,24 +501,11 @@
             },
             //发送数据
             submitData: function () {
-                /*if(this.user == '') {
-                    this.warn1Show = true;
-                    return
-                }if(this.phoneNum == '') {
-                    this.warn2Show = true;
-                    return
-                }if(this.firArea == '') {
-                    this.warn3Show = true;
-                    return
-                }if(this.typeChoose == '') {
-                    this.warn4Show = true;
-                    return
-                }*/
                 this.$emit("sumitForm");
 
                 let sendData = {};
-               sendData.demandId = this.transDetail.userData.demandId;
-                sendData.employeeId = this.transDetail.userData.employeeId;
+               sendData.demandId = this.demandData.demandId;
+                sendData.employeeId =this.demandData.employeeId;
                 //sendData.id = '0';
                 sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 sendData.contact = this.user;  //必填 联系人
@@ -577,12 +567,8 @@
                     },
                     params: sendData
                 }) .then((response) => {
-                    let userData ={ };
-                        userData.demandId = this.transDetail.userData.demandId;
-                        userData.employeeId = this.transDetail.userData.employeeId;
-                        userData.responseId = response.data.response.id;
-                     this.$store.dispatch('transDetail',userData);
-//
+                        this.demandData.responseId = response.data.response.id;
+                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
                 }) .catch((error) => {
                     console.log(error);
                 });

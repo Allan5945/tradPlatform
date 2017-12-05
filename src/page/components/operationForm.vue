@@ -5,7 +5,7 @@
                 <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
             </div>
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact">
             </div>
             <div class="form-box" style="position:relative;">
                 <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
@@ -25,15 +25,16 @@
                 </div>
             </div>
             <div class="form-box" style="position:relative;">
-                <div class="t-title">航班号</div><input type="text" placeholder="请输入选择" v-model="flightNum" v-on:keyup="getflightNum">
-                <div class="num-list popup scroll" v-show="flightListShow">
+                <div class="t-title">航班号</div>
+                <input type="text" placeholder="请输入" v-model="flightNum">
+                <!-- <div class="num-list popup scroll" v-show="flightListShow">
                     <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
-                </div>
+                </div> -->
             </div>
             <div class="form-box pad">
                     <div class="t-title">小时成本</div>
                     <div class="t-input">
-                        <input type="text" placeholder="填写举例：3.5">
+                        <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
                         <span>元</span>
                 </div>
             </div>
@@ -44,8 +45,8 @@
             </div>
         </div>
         <div class="t-btn">
-            <div class="confirm-btn">提交</div>
-            <div class="cancel-btn">取消</div>
+            <div class="confirm-btn" @click="submit">提交</div>
+            <div class="cancel-btn" @click="cancel">取消</div>
         </div>
     </div>
 </template>
@@ -58,6 +59,8 @@
                 isSel: false,
                 isError: false,
                 flightListShow:false,
+                contact:'',
+                hourcost:'',
                 tip: '',
                 phoneNum:'',
                 flightNum:'',
@@ -77,6 +80,34 @@
                 }else{
                     this.isError = false;
                 }
+            },
+            submit:function(){
+                let demandData = { };
+                demandData.demandtype = "2";
+                demandData.contact = this.contact;
+                demandData.iHome = this.phoneNum;
+                demandData.demandtypeStr = this.msg;
+                //demandData.demandStateStr =
+                demandData.fltNbr  = this.flightNum;
+                demandData.hourcost = this.hourcost;
+                demandData.remark = this.tip;
+                this.$ajax({
+                url:"/demandAdd",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: demandData
+                }) .then((response) => {
+                        //console.log(response.opResult);
+                }) .catch((error) => {
+                        console.log(error);
+                    });
+
+                 this.$emit("closeForm");
+            },
+            cancel: function(){
+                this.$emit("closeForm");
             },
             getflight: function(i){
                 this.flightNum = this.flightData[i];

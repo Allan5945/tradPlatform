@@ -429,9 +429,12 @@
                 subsidyList: ['保底','定补','按人头']*/
             }
         },
-        created() {
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                if(val.data.demandtype == 0){
+        mounted(){
+//            this.initData();
+            //模拟状态码0
+            this.showCode = 0;
+            tabulationBoxTrigger.$on('getClickData', val => {
+                if(val.demandType == 0){
                     this.$ajax({
                         method: 'post',
                         url: '/capacityRoutesDemandDetailFindById',

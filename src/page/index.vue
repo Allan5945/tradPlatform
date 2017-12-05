@@ -5,15 +5,17 @@
         <toPublish v-show="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
+
         <transition name="dialog">
-            <transDialog v-show="dialog" @cancel="dialog = false" @sure="sureDialog"></transDialog>
+            <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
-        <needDetail @formShow="formShow" v-if="detailShow" @transShow="transShow"></needDetail>
-        <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
-        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-        <infPanel></infPanel>
-        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2' @closeThis="closeThis"></airlineDetailPayAfter>
+        <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow"></needDetail>
+        <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
+        <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
+        <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow"></myintention>
+         <infPanel></infPanel>
+      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
     </div>
 </template>
 
@@ -30,38 +32,37 @@
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
-    import paySuccess from './../page/components/trans_detail/paySuccess.vue'
-    import {conversionsCity, conversions} from './../public/js/conversions'
-    import airlineReq from './components/airlineReq.vue'
+    import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
+    import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
-    import airlineDelegation from './../page/components/airlineDelegation.vue'
     import infPanel from './../page/components/infPanel.vue'
 
     export default {
         data() {
             return {
-                test1: false,
-                renderComponent: false,
+                test1:false,
+                renderComponent:false,
                 name: 1,
                 show: false,
-                dialog: false,
-                payDialog: false,
-                intentFormShow: false,
-                planShow: false,
-                detailShow: false,
+                dialog:false,
+                payDialog:false,
+                intentFormShow:false,
+                planShow:false,
+                intentShow:false,
+                detailShow:false,
                 detailShow2: false,
                 loadingData: {
                     airList: false,
                     demands: false,
                     cityList: false,
-                    data: {
-                        airListData: null,
-                        cityListData: null
+                    data:{
+                        airListData:null,
+                        cityListData:null
                     }
                 },
                 allDot: '',
                 test: 555,
-                demandId: ''
+                demandId :''
             }
         },
         methods: {
@@ -72,13 +73,13 @@
             toShow() {
                 this.show = !this.show;
             },
-            formShow() {
+            formShow(){
                 this.intentFormShow = !this.intentFormShow;
             },
-            closeForm() {
+            closeForm(){
                 this.intentFormShow = !this.intentFormShow;
             },
-            closeThis() {
+             closeThis() {
                 this.detailShow2 = false;
             },
             sureDialog(){
@@ -87,14 +88,13 @@
                 this.payDialog = true;
                 this.detailShow = false;
             },
-            showPlan: function () {
+            showPlan:function(){
                 this.planShow = false;
             },
-            transShow: function () {
+            transShow:function(){
                 this.detailShow = true;
             },
             transShow2: function () {
-//                console.info(3);
                 this.detailShow2 = true;
             },
             init:function () {
@@ -104,13 +104,12 @@
                     this.loadingData.demands &&
                     this.loadingData.data.airListData != null &&
                     this.loadingData.data.cityListData != null
-                ) {
-                    this.$store.dispatch('initialize', this.loadingData.data).then(() => {
+                ){
+                    this.$store.dispatch('initialize',this.loadingData.data).then(() => {
                         this.renderComponent = true;
                     });
 
-                }
-                ;
+                };
             }
         },
         beforeMount: function () {
@@ -163,7 +162,7 @@
                         if (
                             val.cityCoordinateJ != null &&
                             val.cityCoordinateW != null &&
-//                            val.demandType != null &&
+                            val.demandType != null &&
                             val.dpt != null &&
 //                            val.newInfo != null &&
                             val.num != null &&
@@ -200,9 +199,7 @@
             transDialog,
             myIntention,
             paySuccess,
-            airlineReq,
             airlineDetailPayAfter,
-            airlineDelegation,
             infPanel
         }
     }

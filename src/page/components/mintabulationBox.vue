@@ -135,8 +135,12 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
-                console.info(val.data)
-                tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
+                let targetData ={};
+                targetData.demandId = val.data.id;
+                targetData.employeeId = val.data.employeeId;
+                targetData.demandType = val.data.demandtype;
+                console.log(targetData)
+                tabulationBoxTrigger.$emit('getClickData',targetData);
             }
         },
         updated: function () {

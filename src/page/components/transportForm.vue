@@ -1,5 +1,5 @@
 <template>
-    <div class="t-form scroll popup" v-show="showForm">
+    <div class="t-form scroll popup">
         <div class="t-must">
             <div class="form-box">
                 <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact">
@@ -53,9 +53,12 @@
             </div>
             <div class="form-box air-route">
                 <div class="t-title">意向航线</div>
-                <input type="text" placeholder="起飞机场" v-model="intendedDpt"><span class="icon-item ">&#xe672;</span>
-                <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst"><span class="icon-item ">&#xe672;</span>
-                <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv">
+                <input type="text" placeholder="起飞机场" v-model="intendedDpt" v-on:keyup="openSearch3"><span class="icon-item ">&#xe672;</span>
+                <airportS class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS>
+                <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" v-on:keyup="openSearch4"><span class="icon-item ">&#xe672;</span>
+                <airportS class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS>
+                <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" v-on:keyup="openSearch5">
+                <airportS class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS>
             </div>
             <div class="form-box">
                 <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
@@ -125,8 +128,8 @@
                 <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
             </div>
             <div class="direction t-radio" style="position:relative;">
-                <input type="text" v-show="this.post == 'type3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
-                <div class="history" v-show="this.post == 'type3'" style="top:-5px;left:2px;line-height:26px;">
+                <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
+                <div class="history" v-show="this.post == '3'" style="top:-5px;left:2px;line-height:26px;">
                     <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
                 </div>
                 <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
@@ -145,7 +148,6 @@
     export default {
         data () {
             return{
-                showForm:true,
                 showBox: false,
                 boxShow1: false,
                 boxShow2: false,
@@ -190,8 +192,15 @@
                 dispatchText:'',
                 directSearch:false,
                 directText:'',
+                dptSearch:false,
+                pstSearch:false,
+                arrvSearch:false,
                 qyCode: '',
                 qyCode1:'',
+                qyCode2:'',
+                qyCode3:'',
+                qyCode4:'',
+                qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 airCompanyData:[]
             }
@@ -237,6 +246,15 @@
              openSearch2: function(){
                 this.directSearch =true;
             },
+             openSearch3: function(){
+                this.dptSearch =true;
+            },
+             openSearch4: function(){
+                this.pstSearch =true;
+            },
+             openSearch5: function(){
+                this.arrvSearch =true;
+            },
           /*  verifyPhon:function(){
                 let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
                 if((!pattern.test(this.phoneNum)){
@@ -268,7 +286,7 @@
                 this.searchData1.splice(i,1);
             },
             cancel:function(){
-                this.showForm = false;
+                this.$emit("closeForm");
             },
             resData: function (data) {
                 this.isSearch = false;
@@ -284,6 +302,21 @@
                 this.directSearch = false;
                 this.directText = data.name;
                 this.qyCode2 = data.code;
+            },
+            dptData: function (data) {
+                this.dptSearch = false;
+                this.intendedDpt = data.name;
+                this.qyCode3 = data.code;
+            },
+            pstData: function (data) {
+                this.pstSearch = false;
+                this.intendedPst = data.name;
+                this.qyCode4 = data.code;
+            },
+            arrvData: function (data) {
+                this.arrvSearch = false;
+                this.intendedArrv = data.name;
+                this.qyCode5 = data.code;
             },
             getAirType: function(i){
                 this.airplaneTyp = this.airTypData[i];
@@ -315,7 +348,7 @@
             },
             getAirCompany: function(){
                 this.$ajax({
-                url:"/getDemandsForCurrentEmployee",
+                url:"/airCompenyList",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
@@ -324,11 +357,10 @@
                     page:2
                 }
             }) .then((response) => {
-              /*  console.log(response.data.list.list[8].capacityCompany.airlnCd);*/
-                response.data.list.list.forEach(item =>{
+                response.data.list.forEach(item =>{
                     let myCompany = [];
-                    myCompany.push(item.capacityCompany.airlnCd);
-                    myCompany.push(item.capacityCompany.icao);
+                    myCompany.push(item.airlnCd);
+                    myCompany.push(item.icao);
                     myCompany.push(item.capacitycompany);
                     this.airCompanyData.push(myCompany);
                 })
@@ -343,11 +375,11 @@
                     demandData.demandtype = "1";
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.timeStart + ' - '+ this.timeEnd;
+                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
-                    demandData.intendedDpt = this.intendedDpt;
-                    demandData.intendedPst = this.intendedPst;
-                    demandData.intendedArrv = this.intendedArrv;
+                    demandData.intendedDpt = this.qyCode3;
+                    demandData.intendedPst = this.qyCode4;
+                    demandData.intendedArrv = this.qyCode5;
                     demandData.aircrfttyp = this.airplaneTyp;
                     demandData.dpt = this.qyCode;
                     demandData.dptState = this.dptState[0];
@@ -373,7 +405,7 @@
                     console.log(error);
                 });
 
-                this.showForm = false;
+                this.$emit("closeForm");
             }
         },
         computed:{
