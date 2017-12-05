@@ -538,6 +538,10 @@
                 this.sendData.demandId = val.data.id;
                 this.sendData.employeeId = val.data.employeeId;
             })
+            tabulationBoxTrigger.$on('supProperty',val => {
+                this.sendData.title = val.title;
+                this.sendData.periodValidity = val.periodValidity;
+            })
         },
         mounted() {
 //            console.info(this.acceptData)

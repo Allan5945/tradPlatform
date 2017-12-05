@@ -17,7 +17,7 @@
                 <div class="start item">
                     <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
                         <span v-show="myData.dptState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.dpt}}</h2></div>
+                    <div class="item-b"><h2>{{myData.dptNm}}</h2></div>
                     <div class="item-c font-gray">
                         <span v-if="myData.arrvAcceptnearairport == 0">接收</span>
                         <span v-else>不接收</span>临近机场</div>
@@ -34,7 +34,7 @@
                 <div class="pass item">
                     <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
                         <span v-show="myData.pstState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.pst}}</h2></div>
+                    <div class="item-b"><h2>{{myData.pstNm}}</h2></div>
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">出港资源</div>
                     <div class="item-e">
@@ -49,7 +49,7 @@
                 <div class="arrive item">
                     <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
                         <span v-show="myData.arrvState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.arrv}}</h2></div>
+                    <div class="item-b"><h2>{{myData.arrvNm}}</h2></div>
                     <!--下方有空格-->
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
@@ -99,7 +99,7 @@
             </div>
             <div class="sixth item-container">
                 <h2>收到的意向</h2>
-                <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">2</span>位用户发起意向</span>
+                <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
             </div>
             <div class="seventh item-container" v-show="secondButtonShow">
                 <span class="danger">*您还未缴纳意向金，缴纳后可查看详细列表</span>
@@ -386,6 +386,7 @@
                 isIntentionMoney: '',
                 isSelf: '',
                 subsidypolicy: '',//补贴政策
+                listData: [],
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -468,7 +469,7 @@
                             this.isIntentionMoney = response.data.isIntentionMoney;
 //                            this.intentionCount = response.data.intentionCount;
 //                            this.detailData = response.data.data;
-
+                            this.listData.push()
                             this.userNum = response.data.intentionCount;
                             this.myData = response.data.data;
                             this.releaseTime = this.myData.releasetime.split(" ")[0];
@@ -476,10 +477,10 @@
                             this.dptTime1 = this.myData.dptTime.split(',')[1];
                             this.pstTime0 = this.myData.dptTime.split(',')[0];
                             this.pstTime1 = this.myData.dptTime.split(',')[1];
-                            this.sailingtime0 = this.myData.dptTime.split(',')[0];
-                            this.sailingtime1 = this.myData.dptTime.split(',')[1];
-                            this.periodValidity0 = this.myData.dptTime.split(',')[0];
-                            this.periodValidity1 = this.myData.dptTime.split(',')[1];
+                            this.sailingtime0 = this.myData.sailingtime.split(',')[0];
+                            this.sailingtime1 = this.myData.sailingtime.split(',')[1];
+                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
+                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
                             if (this.myData.subsidypolicy == 0) {
                                 this.subsidypolicy = '定补'
                             }
@@ -592,6 +593,10 @@
             //点击“我有意向”，组件“请填写完整方案”显示
             airlineWriteFn: function () {
                 this.airlineWriteShow = true;
+                let supProperty = {};
+                supProperty.title = this.myData.title;
+                supProperty.periodValidity = this.myData.periodValidity;
+                tabulationBoxTrigger.$emit('supProperty',supProperty);
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
