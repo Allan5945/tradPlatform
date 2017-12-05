@@ -189,7 +189,7 @@
 
      },
       mounted:function(){
-          this.$ajax({
+          /*this.$ajax({
                 method: 'post',
                 url: '/capacitydemand/capacityDemandFindById',
                 headers: {
@@ -202,7 +202,7 @@
                 .catch((error) => {
                         console.log(error);
                     }
-                );
+                );*/
       }
 
 }

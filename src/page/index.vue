@@ -79,21 +79,14 @@
             closeForm(){
                 this.intentFormShow = !this.intentFormShow;
             },
+             closeThis() {
+                this.detailShow2 = false;
+            },
             sureDialog(){
                 this.intentFormShow = false;
                 this.planShow = true;
                 this.payDialog = true;
                 this.detailShow = false;
-               /* const self = this;
-                switch (self.dialog_type){
-                    case 'clear':
-                        self.$store.dispatch('clearevent');
-                        break;
-                    case 'del':
-                        self.$store.dispatch('delevent',self.del_info);
-                        break;
-                }
-                this.dialog = false;*/
             },
             showPlan:function(){
                 this.planShow = false;
