@@ -432,6 +432,7 @@
             //模拟状态码0
             this.showCode = 0;
             tabulationBoxTrigger.$on('getClickData', val => {
+                console.log("mine-demandtype:"+val.demandType);
                 if(val.demandType == 0){
                     this.$ajax({
                         method: 'post',
