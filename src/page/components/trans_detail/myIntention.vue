@@ -1,7 +1,7 @@
 <template>
-    <div class="plan-wrapper scroll" v-show="planShow" >
+    <div class="plan-wrapper scroll">
         <header>
-            <div class="top-til">需求详情<span>X</span></div>
+            <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
             <div class="head-til">成都新开找运力</div>
             <div class="note">
                 <span>创建于2017.12.12</span>
@@ -55,7 +55,7 @@
             <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
-                    <div>已有<span style="color:#3C78FF;font-weight:bold;">2</span>位用户发起意向</div>
+                    <div>已有<span>2</span>位用户发起意向</div>
                 </div>
                 <div class="intent-form">
                     <div>
@@ -65,8 +65,8 @@
                     <div class="intent-box">
                          <div class="intent-item">
                             <div class="time">11.04.2017</div>
-                            <div class="person">南方航空<span>--</span></div>
-                            <div class="detail" @click="closeDetail">查看详情</div>
+                            <div class="person">南方航空<span class="iconfont">&#xe602;</span></div>
+                            <div class="detail" @click="closeDetail">{{text}}</div>
                         </div>
                         <div class="intent-detail" v-show="detailShow">
                             <div class="airline">
@@ -81,7 +81,7 @@
                                         <div>08:00 - 12:00</div>
                                     </div>
                                 </div>
-                                <div><span>--</span></div>
+                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
                                     <div>经停机场</div>
                                     <div>北京西苑</div>
@@ -90,7 +90,7 @@
                                         <div>带协调</div>
                                     </div>
                                 </div>
-                                <div><span>--</span></div>
+                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
                                     <div>到达区域</div>
                                     <div>华北地区</div>
@@ -147,101 +147,10 @@
                                     说明内容说明内容说明内容说明内容说明内容说明内容容说明内容说明内容说明内容</div>
                                 </div>
                             </div>
-                            <div class="sure-btn">选定</div>
+                            <div class="sure-btn" @click="toSelect">选定</div>
                         </div>
                     </div>
-                     <div class="intent-box">
-                         <div class="intent-item">
-                            <div class="time">11.04.2017</div>
-                            <div class="person">南方航空<span>--</span></div>
-                            <div class="detail" @click="closeDetail">查看详情</div>
-                        </div>
-                        <div class="intent-detail" v-show="detailShow">
-                            <div class="airline">
-                                <div class="airplace">
-                                    <div>始发机场</div>
-                                    <div>
-                                        <div>成都双流</div>
-                                        <div>接受临近机场</div>
-                                    </div>
-                                    <div class="resouse">
-                                        <div>出港资源</div>
-                                        <div>08:00 - 12:00</div>
-                                    </div>
-                                </div>
-                                <div><span>--</span></div>
-                                <div class="airplace">
-                                    <div>经停机场</div>
-                                    <div>北京西苑</div>
-                                    <div class="resouse">
-                                        <div>出港资源</div>
-                                        <div>带协调</div>
-                                    </div>
-                                </div>
-                                <div><span>--</span></div>
-                                <div class="airplace">
-                                    <div>到达区域</div>
-                                    <div>华北地区</div>
-                                </div>
-                            </div>
-                            <div class="table-form">
-                                <div>
-                                    <div>拟开时间</div>
-                                    <div>2017.11.11 - 2018.11.11</div>
-                                </div>
-                                <div>
-                                    <div>拟开班期</div>
-                                    <div>待定</div>
-                                </div>
-                                <div>
-                                    <div>拟开机型</div>
-                                    <div>AA2222</div>
-                                </div>
-                                <div>
-                                    <div>座位数</div>
-                                    <div>180</div>
-                                </div>
-                                <div>
-                                    <div>客量预期</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>客座率预期</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>补贴政策</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>小时成本</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>运力归属</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>运力基地</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>是否调度</div>
-                                    <div>华北地区</div>
-                                </div>
-                                <div class="tips">
-                                    <div>其他说明</div>
-                                    <div>说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容
-                                    说明内容说明内容说明内容说明内容说明内容说明内容容说明内容说明内容说明内容</div>
-                                </div>
-                            </div>
-                            <div class="sure-btn">选定</div>
-                        </div>
-                    </div>
-
                 </div>
-
-
             </div>
 
         </div>
@@ -258,14 +167,25 @@
  export default {
      data(){
          return{
-             planShow:true,
-             detailShow:false
+             detailShow:false,
+             text:"查看详情"
          }
      },
      methods:{
          closeDetail:function(){
              this.detailShow = !this.detailShow;
+             if(this.detailShow){
+                this.text = "收起详情";
+             }else{
+                 this.text = "查看详情";
+             }
          },
+         closeIntent:function(){
+            this.$emit('closeIntent');
+         },
+         toSelect:function(){
+            this.$emit("formShow");
+         }
 
      },
       mounted:function(){
@@ -299,6 +219,7 @@
         height:100%;
         overflow: hidden;
         overflow-y:scroll;
+        color:#605E7C;
         background-color:#fff;
         header{
             width:100%;
@@ -321,6 +242,7 @@
           height:41px;
           line-height:41px;
           font-size:1.2rem;
+          color:rgba(96, 94, 124, 0.7);
           background-color:#fff;
           padding:0 15px 0 40px;
           span{
@@ -338,7 +260,8 @@
           }
         }
         .head-til{
-          font-size:20px;
+          font-size:2rem;
+          font-weight:bold;
           margin-top:30px;
           padding-left:40px;
           height:20px;
@@ -347,6 +270,7 @@
         .note{
           height:12px;
           line-height:12px;
+          color:rgba(96, 94, 124, 0.7);
           padding:20px 0 18px 40px;
           span{
             margin-right:30px;
@@ -370,6 +294,7 @@
           }
           >div:nth-of-type(1){
               width:80px;
+              color:rgba(96, 94, 124, 0.7);
           }
           >div:nth-of-type(2){
               width:160px;
@@ -400,10 +325,13 @@
              padding-left:40px;
           }
           >div:nth-of-type(2){
-              height:20px;
-              line-height:20px;
-              padding-left:40px;
-              color:#605E7C;
+             height:20px;
+             color:rgba(96, 94, 124, 0.7);
+             line-height:20px;
+             padding-left:40px;
+          }
+          span{
+             color:#3C78FF;
           }
         }
         .intent-detail{
@@ -491,10 +419,13 @@
                     width:80px;
                 }
                 .person{
+                    display:flex;
                     width:120px;
                     span{
-                        width:40px;
+                        font-size:25px;
+                        margin-left:10px;
                     }
+
                 }
                 .detail{
                     width:60px;

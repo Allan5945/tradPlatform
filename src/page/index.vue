@@ -9,13 +9,14 @@
         <transition name="dialog">
             <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
-        <needDetail @formShow="formShow" v-if="detailShow" @transShow="transShow"></needDetail>
-        <myPlan v-if="planShow" @showPlan="showPlan"></myplan>
-        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-        <!-- <myIntention></myintention> -->
+        <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow"></needDetail>
+        <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
+        <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
+        <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow"></myintention>
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
 
         <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2 = true'></airlineDetailPayAfter>
+
     </div>
 </template>
 
@@ -34,9 +35,7 @@
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
-    import airlineReq from './components/airlineReq.vue'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
-    import airlineDelegation from './../page/components/airlineDelegation.vue'
 
     export default {
         data() {
@@ -49,6 +48,7 @@
                 payDialog:false,
                 intentFormShow:false,
                 planShow:false,
+                intentShow:false,
                 detailShow:false,
                 detailShow2: false,
                 loadingData: {
@@ -166,7 +166,7 @@
                         if (
                             val.cityCoordinateJ != null &&
                             val.cityCoordinateW != null &&
-//                            val.demandType != null &&
+                            val.demandType != null &&
                             val.dpt != null &&
 //                            val.newInfo != null &&
                             val.num != null &&
@@ -203,9 +203,7 @@
             transDialog,
             myIntention,
             paySuccess,
-            airlineReq,
             airlineDetailPayAfter,
-            airlineDelegation
         }
     }
 </script>

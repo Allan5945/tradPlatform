@@ -12,8 +12,8 @@
     export default {
         data () {
             return {
-                username:'CAadmin',
-                password:'admin',
+                username:'jichang',
+                password:'1',
                 name:1
             }
         },

@@ -2,49 +2,49 @@
     <div class="plan-wrapper scroll" >
         <header>
             <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">成都新开找运力</div>
+            <div class="head-til">找运力。。。。</div>
             <div class="tips">
-                <span>创建于2017.12.12</span>
-                <span>已有2位用户发起意向</span>
+                <span>创建于{{detailData.releasetime}}</span>
+                <span>已有{{intentionCount}}位用户发起意向</span>
             </div>
         </header>
         <div class="content">
             <div class="table-form">
                 <div >
                     <div>出港时刻</div>
-                    <div>08:00 - 12:00</div>
+                    <div>{{detailData.dptTime}}</div>
                 </div>
                 <div>
                     <div>班期</div>
-                    <div>待定</div>
+                    <div>{{detailData.days}}</div>
                 </div>
                 <div>
                     <div>机型</div>
-                    <div>AA2222</div>
+                    <div>{{detailData.aircrfttyp}}</div>
                 </div>
-                <div>
+                 <div>
                     <div>运力基地</div>
-                    <div>双流机场</div>
+                    <div>{{detailData.dptNm}}</div>
                 </div>
                 <div>
                     <div>运力归属</div>
-                    <div>东方航空</div>
+                    <div>{{detailData.capacitycompany}}</div>
                 </div>
                 <div>
                     <div>座位布局</div>
-                    <div>F8Y160</div>
+                    <div>{{detailData.seating}}</div>
                 </div>
                 <div>
                     <div>小时成本</div>
-                    <div>1万元/小时</div>
+                    <div>{{detailData.hourscost}}万/小时</div>
                 </div>
                 <div>
                     <div>接受调度</div>
-                    <div>武汉</div>
+                    <div>{{detailData.schedulingStr}}</div>
                 </div>
                 <div>
                     <div>有效期</div>
-                    <div>2017.12.1 - 2018.12.1</div>
+                    <div>{{detailData.periodValidity}}</div>
                 </div>
             </div>
             <div class="myplan">
@@ -56,77 +56,81 @@
                     <div class="airplace">
                         <div>始发机场</div>
                         <div>
-                            <div>成都双流</div>
+                            <div>{{planData.dpt}}</div>
                             <div>接受临近机场</div>
                         </div>
                          <div class="resouse">
                             <div>出港资源</div>
-                            <div>08:00 - 12:00</div>
+                            <div>{{planData.dptTime}}</div>
                         </div>
                     </div>
                     <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                     <div class="airplace">
                         <div>经停机场</div>
-                        <div>北京西苑</div>
+                        <div>{{planData.pst}}</div>
                         <div class="resouse">
                             <div>出港资源</div>
-                            <div>带协调</div>
+                            <div>{{planData.pstTime}}</div>
                         </div>
                     </div>
                     <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                     <div class="airplace">
                         <div>到达区域</div>
-                        <div>华北地区</div>
+                        <div>{{planData.arrv}}</div>
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{planData.arrvTime}}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="table-form">
                     <div>
                         <div>拟开时间</div>
-                        <div>2017.11.11 - 2018.11.11</div>
+                        <div>{{planData.sailingtime}}</div>
                     </div>
                     <div>
                         <div>拟开班期</div>
-                        <div>待定</div>
+                        <div>{{planData.days}}</div>
                     </div>
                     <div>
                         <div>拟开机型</div>
-                        <div>AA2222</div>
+                        <div>{{planData.aircrfttyp}}</div>
                     </div>
                     <div>
                         <div>座位数</div>
-                        <div>180</div>
+                        <div>{{planData.seating}}</div>
                     </div>
                     <div>
                         <div>客量预期</div>
-                        <div>80人/班</div>
+                        <div>{{planData.avgguestexpect}}</div>
                     </div>
                     <div>
                         <div>客座率预期</div>
-                        <div>80人/班</div>
+                        <div>{{planData.loadfactorsexpect}}</div>
                     </div>
                     <div>
                         <div>补贴政策</div>
-                        <div>80人/班</div>
+                        <div>{{planData.subsidypolicy}}</div>
                     </div>
                     <div>
                         <div>小时成本</div>
-                        <div>80人/班</div>
+                        <div>{{planData.hourscost}}</div>
                     </div>
                      <div>
                         <div>运力归属</div>
-                        <div>80人/班</div>
+                        <div>{{planData.capacitycompany}}</div>
                     </div>
                      <div>
                         <div>运力基地</div>
-                        <div>80人/班</div>
+                        <div>{{planData.dpt}}</div>
                     </div>
                      <div>
                         <div>是否调度</div>
-                        <div>华北地区</div>
+                        <div>{{planData.scheduling}}</div>
                     </div>
                     <div class="tips">
                         <div>其他说明</div>
-                        <div>说明内容说明内容说明内容说明内容说明内容说明内容</div>
+                        <div>{{planData.remark}}</div>
                     </div>
                 </div>
 
@@ -143,12 +147,15 @@
 </template>
 
 <script>
-   import * as vx from 'vuex'
+ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  export default {
      data(){
          return{
              planShow:true,
-             planData:[]
+             planData:[],
+             detailData:[],
+             intentionCount:0,
+             demandData:{}
          }
      },
      methods:{
@@ -158,33 +165,56 @@
 
      },
       computed:{
-            ...vx.mapGetters([
-                'transDetail'
-            ]),
 
 
       },
       mounted:function(){
-           this.$ajax({
-                method: 'post',
-                url: '/changeIntentionMoneyStatusForResponse',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    id:this.transDetail.userData.responseId,
-                    intentionStatu:'0'
+            tabulationBoxTrigger.$on('getdemandData', val => {
+                this.demandData = val;
+                console.log(this.demandData);
+                if(this.demandData.responseId){
+                     this.$ajax({
+                          method: 'post',
+                          url: '/capacityRoutesDemandDetailFindById',
+                          headers: {
+                              'Content-type': 'application/x-www-form-urlencoded'
+                          },
+                            params: {
+                              demandId: this.demandData.demandId
+                          }
+                          })
+                          .then((response) => {
+                              this.intentionCount = response.data.intentionCount;
+                              this.detailData = response.data.data;
+                          })
+                          .catch((error) => {
+                                  console.log(error);
+                              }
+                          );
+                     this.$ajax({
+                          method: 'post',
+                          url: '/changeIntentionMoneyStatusForResponse',
+                          headers: {
+                              'Content-type': 'application/x-www-form-urlencoded'
+                          },
+                            params: {
+                              id:this.demandData.responseId,
+                              intentionStatu:'0'
 
-                }
-            })
-                .then((response) => {
-                   this.planData = response.data;
-                })
-                .then()
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+                          }
+                      })
+                          .then((response) => {
+                             this.planData = response.data.data;
+                             console.log(this.planData)
+
+                          })
+                          .catch((error) => {
+                                  console.log(error);
+                              }
+                          );
+                          }
+                      });
+
       }
 
 }

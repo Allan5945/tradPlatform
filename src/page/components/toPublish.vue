@@ -9,10 +9,10 @@
                <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
            </div>
         </div>
-        <transportForm v-if="this.showType== 1" ></transportForm>
-        <operationForm v-else-if="this.showType== 2" ></operationForm>
+        <transportForm v-if="this.showType== 1" @closeForm="closeForm"></transportForm>
+        <operationForm v-else-if="this.showType== 2" @closeForm="closeForm"></operationForm>
         <airlineReq v-else-if="this.showType== 3"></airlineReq>
-        <agentTransForm v-else-if="this.showType== 4"></agentTransForm>
+        <agentTransForm v-else-if="this.showType== 4" @closeForm="closeForm"></agentTransForm>
         <airlineDelegation v-else-if="this.showType== 5"></airlineDelegation>
     </div>
 </template>
@@ -46,6 +46,9 @@
                 this.msg = this.needType[i];
                 this.isSel = true;
                 this.showType = this.myShow[i];
+            },
+            closeForm: function(){
+                this.showType = '';
             }
         }
     }

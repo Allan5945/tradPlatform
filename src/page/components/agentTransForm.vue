@@ -1,8 +1,8 @@
 <template>
-    <div class="t-form scroll popup" v-show="showForm">
+    <div class="t-form scroll popup">
         <div class="t-must">
             <div class="form-box">
-                <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人">
+                <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact">
             </div>
             <div class="form-box">
                 <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
@@ -18,14 +18,14 @@
                         <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
                     </div>
                     <div class="selected" v-if="this.getTime == 'true'">
-                        <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}:00</div>
+                        <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
                         <span>-</span>
-                        <div @click="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}:00</div>
+                        <div @click="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
                       <div class="time-table popup time-start" v-show="boxShow1">
-                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}:00</div>
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
                       </div>
                       <div class="time-table popup time-end" v-show="boxShow2">
-                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}:00</div>
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}</div>
                       </div>
                     </div>
                     <div class="t-radio">
@@ -53,9 +53,12 @@
             </div>
             <div class="form-box air-route">
                 <div class="t-title">意向航线</div>
-                <input type="text" placeholder="起飞机场"><span class="icon-item ">&#xe672;</span>
-                <input type="text" placeholder="经停机场（可选填）"><span class="icon-item ">&#xe672;</span>
-                <input type="text" placeholder="目标机场（可选填）">
+                <input type="text" placeholder="起飞机场" v-model="intendedDpt" v-on:keyup="openSearch3"><span class="icon-item ">&#xe672;</span>
+                <airportS class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS>
+                <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" v-on:keyup="openSearch4"><span class="icon-item ">&#xe672;</span>
+                <airportS class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS>
+                <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" v-on:keyup="openSearch5">
+                <airportS class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS>
             </div>
             <div class="form-box">
                 <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
@@ -77,10 +80,10 @@
                 </div>
             </div>
             <div class="form-box reset">
-                <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160">
+                <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
             </div>
             <div class="form-box pad1 taken">
-                <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本">
+                <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost">
                 <span>w/h</span>
             </div>
             <div class="form-box  pad1 dispatch">
@@ -97,10 +100,10 @@
                 <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
                 <span class="num"><span >{{num}}</span>/35</span>
             </div>
-            <div class="form-box get-time">
-                <div class="t-title">发布有效期</div>
-               <div class="calendar time-btn" >
-                 <div class="myslec"  @click="calendarShow=!calendarShow" ref="timeDate"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
+            <div class="form-box get-time" ref="timeForm">
+                <div class="t-title" ref="timeTitle">发布有效期</div>
+               <div class="calendar time-btn" ref="timeDate">
+                 <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                  <div v-show="calendarShow" class="calendar-box popup">
                    <div class="selec-data">
                      <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
@@ -114,6 +117,24 @@
                </div>
             </div>
         </div>
+        <!-- <div class="post-type">
+            <div class="t-radio">
+                <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
+            </div>
+            <div class="t-radio">
+                <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
+            </div>
+            <div class="t-radio">
+                <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
+            </div>
+            <div class="direction t-radio" style="position:relative;">
+                <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
+                <div class="history" v-show="this.post == '3'" style="top:-5px;left:2px;line-height:26px;">
+                    <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
+                </div>
+                <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
+            </div>
+        </div> -->
         <div class="t-btn">
             <div class="confirm-btn " @click="confirm">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
@@ -126,7 +147,6 @@
     export default {
         data () {
             return{
-                showForm:true,
                 showBox: false,
                 boxShow1: false,
                 boxShow2: false,
@@ -140,10 +160,19 @@
                 pickEnd:false,
                 airplTypShow:false,
                 airCompanyShow:false,
+                contact: '',
+                intendedDpt:'',
+                intendedPst:'',
+                intendedArrv:'',
                 airplaneTyp:'',
                 airCompany:'',
-                timeStart:'00',
-                timeEnd:'00',
+                airCompanyId: 0,
+                dptState:[0,1],//运力基地：机场为0，地区为1
+                seat:'',
+                hourcost:'',
+                post:'0',
+                timeStart:'00:00',
+                timeEnd:'00:00',
                 tip: '',
                 searchData:["双流机场","武当山机场"],
                 searchData1:["双流机场","武当山机场"],
@@ -153,16 +182,25 @@
                 calendarInitDay1: '',
                 calendarInitDay2: '',
                 calendarShow: false,
-                timeData:['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18',
-                '19','20','21','22','23','00'],
+                timeData:['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00',
+                '19:00','20:00','21:00','22:00','23:00','00:00'],
                 timeShow: true,
                 isSearch: false,
                 searchText: '',
                 dispatchSearch:false,
                 dispatchText:'',
+                directSearch:false,
+                directText:'',
+                dptSearch:false,
+                pstSearch:false,
+                arrvSearch:false,
                 qyCode: '',
                 qyCode1:'',
-                airTypData: [],
+                qyCode2:'',
+                qyCode3:'',
+                qyCode4:'',
+                qyCode5:'',
+                airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 airCompanyData:[]
             }
         },
@@ -185,6 +223,9 @@
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
+                    this.$refs.timeDate.style.width = "213px";
+                    this.$refs.timeForm.style.width = "579px";
+                     this.$refs.timeTitle.style.width = "60px";
                 }else{
 
                 }
@@ -200,6 +241,25 @@
             },
             /*closeSearch1: function(){
                     this.isSearch = false;
+            },*/
+             openSearch2: function(){
+                this.directSearch =true;
+            },
+             openSearch3: function(){
+                this.dptSearch =true;
+            },
+             openSearch4: function(){
+                this.pstSearch =true;
+            },
+             openSearch5: function(){
+                this.arrvSearch =true;
+            },
+          /*  verifyPhon:function(){
+                let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
+                if((!pattern.test(this.phoneNum)){
+                    this.isError = true;
+                }
+                this.isError = true;
             },*/
             verifyPhon: function () {
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
@@ -221,8 +281,11 @@
             delItem:function(i){
                 this.searchData.splice(i,1);
             },
+             delItem1:function(i){
+                this.searchData1.splice(i,1);
+            },
             cancel:function(){
-                this.showForm = false;
+                this.$emit("closeForm");
             },
             resData: function (data) {
                 this.isSearch = false;
@@ -234,6 +297,26 @@
                 this.dispatchText = data.name;
                 this.qyCode1 = data.code;
             },
+            directData: function(data){
+                this.directSearch = false;
+                this.directText = data.name;
+                this.qyCode2 = data.code;
+            },
+            dptData: function (data) {
+                this.dptSearch = false;
+                this.intendedDpt = data.name;
+                this.qyCode3 = data.code;
+            },
+            pstData: function (data) {
+                this.pstSearch = false;
+                this.intendedPst = data.name;
+                this.qyCode4 = data.code;
+            },
+            arrvData: function (data) {
+                this.arrvSearch = false;
+                this.intendedArrv = data.name;
+                this.qyCode5 = data.code;
+            },
             getAirType: function(i){
                 this.airplaneTyp = this.airTypData[i];
                 this.airplTypShow = false;
@@ -241,9 +324,10 @@
             getCompanyList: function(i){
                 this.airCompany = this.airCompanyData[i][0];
                 this.airCompanyShow = false;
+                this.airCompanyId = this.airCompanyData[i][2];
             },
             getAirplaneTyp:function(){
-                this.$ajax({
+                /*this.$ajax({
                 url:"/getDemandsForCurrentEmployee",
                 method: 'post',
                 headers: {
@@ -253,18 +337,17 @@
                     page:2
                 }
             }) .then((response) => {
-                /*console.log(response.data.list.list[0].aircrfttyp);*/
                 response.data.list.list.forEach(item =>{
                     this.airTypData.push(item.aircrfttyp);
                 })
             }) .catch((error) => {
                     console.log(error);
-                });
+                });*/
                 this.airplTypShow = true;
             },
             getAirCompany: function(){
                 this.$ajax({
-                url:"/getDemandsForCurrentEmployee",
+                url:"/airCompenyList",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
@@ -273,11 +356,11 @@
                     page:2
                 }
             }) .then((response) => {
-              /*  console.log(response.data.list.list[8].capacityCompany.airlnCd);*/
-                response.data.list.list.forEach(item =>{
+                response.data.list.forEach(item =>{
                     let myCompany = [];
-                    myCompany.push(item.capacityCompany.airlnCd);
-                    myCompany.push(item.capacityCompany.icao);
+                    myCompany.push(item.airlnCd);
+                    myCompany.push(item.icao);
+                    myCompany.push(item.capacitycompany);
                     this.airCompanyData.push(myCompany);
                 })
             }).catch((error) => {
@@ -287,25 +370,41 @@
                 this.airCompanyShow = true;
             },
             confirm:function(){
-                let demand = {
-
-
-                };
-
+                let demandData = { };
+                    demandData.demandtype = "4";
+                    demandData.contact = this.contact;
+                    demandData.iHome = this.phoneNum;
+                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
+                    demandData.days   = this.getFlight =='true'? this.msg: '无';
+                    demandData.intendedDpt = this.qyCode3;
+                    demandData.intendedPst = this.qyCode4;
+                    demandData.intendedArrv = this.qyCode5;
+                    demandData.aircrfttyp = this.airplaneTyp;
+                    demandData.dpt = this.qyCode;
+                    demandData.dptState = this.dptState[0];
+                    demandData.capacitycompany = this.airCompanyId;
+                    demandData.seating = this.seat;
+                    demandData.hourcost = this.hourcost;
+                    demandData.schedulingStr = this.dispatch == false? '无':'有';
+                    demandData.remark = this.tip;
+                    demandData.periodValidity = this.myDate;
+                    demandData.publicway = this.post;
+                    //demandData.directionalgoal = this.directText;
+                    //demandData.demandprogress = '0';
                  this.$ajax({
                 url:"/demandAdd",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
-                params: {
-                    page:2
-                }
+                params: demandData
             }) .then((response) => {
-
+                    //console.log(response.opResult);
             }) .catch((error) => {
                     console.log(error);
                 });
+
+                this.$emit("closeForm");
             }
         },
         computed:{
@@ -318,20 +417,7 @@
 
         },
          beforeMount:function () {
-            this.$ajax({
-                url:"/getDemandsForCurrentEmployee?page=2",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    /*page:this.demandList.hybridPage*/
-                }
-            }) .then((response) => {
-                /*this.$store.dispatch('hybridData', response.data.list.list).then(() => {});*/
-            }).catch((error) => {
-                    console.log(error);
-                });
+
 
 
         }
@@ -343,8 +429,8 @@
     input {
         outline:none;
         border: 0;
-        font-size:1.2rem;
         color: #605E7C;
+        font-size:1.2rem;
         box-sizing:border-box;
         padding-left:5px;
         border-bottom:1px solid rgba(151,151,151,.3);
@@ -408,12 +494,12 @@
         padding:20px 0 34px 0;
         >input{
             width:138px;
+            height:26px;
         }
         >span{
             dispaly:inline-block;
             width:30px;
             text-align:center;
-            font-size:2rem;
         }
     }
     .se-place{
@@ -428,7 +514,7 @@
         .num{
             position:absolute;
             right:2px;
-            top:21px;
+            top:20px;
         }
     }
     .get-time .time-btn{
@@ -439,7 +525,7 @@
         margin-left:14px;
         border:1px solid rgba(151,151,151,.3);
         border-radius:5px;
-        padding-left:44px;
+        padding:0 22px 0 44px;
         cursor:pointer;
     }
     .myslec span{
@@ -450,13 +536,23 @@
         text-align:center;
         border-right:1px solid rgba(151,151,151,.3);
     }
+    .post-type{
+        display: flex;
+        margin: 40px 0 70px 0;
+        .t-radio{
+            margin-right:20px;
+            height:26px;
+            line-height:26px;
+        }
+    }
     .t-btn{
         font-size: 1.5rem;
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:50px 0 22px 0;
+        margin-bottom:22px;
+        margin-top:40px;
         >div{
           height:40px;
           line-height:40px;
@@ -466,6 +562,11 @@
           background-color:#3c78ff;
           cursor:pointer;
 
+        }
+        .agent-btn{
+          width:100px;
+          margin-right: 20px;
+          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .confirm-btn{
           width:190px;
@@ -482,6 +583,12 @@
         }
     }
     .confirm-btn:hover{
+           background-color: rgba(80, 139, 255,1);
+          color: white !important;
+          cursor: pointer;
+          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+    }
+    .agent-btn:hover{
            background-color: rgba(80, 139, 255,1);
           color: white !important;
           cursor: pointer;
@@ -565,7 +672,7 @@
         >span{
             position:absolute;
             right:0;
-            top:21px;
+            top:20px;
         }
     }
 
@@ -729,7 +836,6 @@
     height: 100%;
     width: 75px;
     font-size: 12px;
-    padding-left:15px;
     border:0;
     outline: none;
     border-bottom: 1px solid rgba(151, 151, 151, 0.3);
