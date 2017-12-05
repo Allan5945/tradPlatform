@@ -12,16 +12,10 @@
         <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow"></myintention>
-<<<<<<< HEAD
-         <infPanel></infPanel>
-      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-=======
         <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
         <routeNetwork></routeNetwork>
->>>>>>> 741f96622a315939c3bb1d3da01f601ed3642ced
     </div>
 </template>
 
