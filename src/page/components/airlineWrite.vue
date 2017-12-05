@@ -356,14 +356,14 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">运力归属</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="avgguestExpect"
+                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="capacitycompany"
                                        style="border: 0;width: 136px;">
                             </div>
                         </div>
                         <div class="left item-child">
                             <span>运力基地</span>　
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="loadfactorsExpect"
+                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="transportBase"
                                        style="border: 0;">
                             </div>
                         </div>
@@ -372,7 +372,7 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="avgguestExpect"
+                                <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="hourConst"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                         </div>
@@ -517,7 +517,10 @@
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
                 sendData: {},
-                responseId: ''
+                responseId: '',
+                capacitycompany: '',//运力归属
+                hourConst: '',             //小时成本
+                transportBase: '',          //运力基地
             }
         },
         components: {
@@ -595,7 +598,7 @@
                 }*/
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
-                this.sendData.iHome = this.phoneNum;//必填 联系方式
+                this.sendData.Ihome = this.phoneNum;//必填 联系方式
                 if (this.dptState == 0) {
                     this.sendData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
                 }
@@ -646,20 +649,23 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-
+                this.sendData.capacitycompany = this.capacitycompany;   //运力归属
+                this.sendData.dpt = this.transportBase;   //运力基地
+                this.sendData.hourscost = this.hourConst;   //小时成本
                 console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
                     url: "/responseAdd",
-                    method: 'post',
+                    method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info(response.data.response.id)
+                    console.info(response)
                     this.responseId = response.data.response.id;
                     tabulationBoxTrigger.$emit('responseText', this.responseId);
+                    tabulationBoxTrigger.$emit('responseObject', response.data);
                     console.info(this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {

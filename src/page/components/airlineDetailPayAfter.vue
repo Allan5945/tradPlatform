@@ -63,8 +63,8 @@
                         <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
-                        <div class="item-d" v-if="myData.remark == ''">有补贴</div>
-                        <div class="item-d" v-else>{{myData.remark}}</div>
+                        <div class="item-d" v-if="myData.subsidypolicy == ''">有补贴</div>
+                        <div class="item-d" v-else>{{subsidypolicy}}</div>
                         <!--<div>有补贴</div>-->
                     </div>
                 </div>
@@ -89,10 +89,7 @@
         <div class="second-show" v-show="secondShow">
             <div class="fifth item-container">
                 <div class="left font-gray">其他说明</div>
-                <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                    其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                    其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                </div>
+                <div class="right">{{myData.remark}}</div>
             </div>
             <div class="sixth item-container">
                 <h2>收到的意向</h2>
@@ -376,7 +373,8 @@
                 periodValidity0: '',
                 periodValidity1: '',
                 isIntentionMoney: '',
-                isSelf: ''
+                isSelf: '',
+                subsidypolicy: '',//补贴政策
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -462,6 +460,17 @@
                             this.sailingtime1 = this.myData.dptTime.split(',')[1];
                             this.periodValidity0 = this.myData.dptTime.split(',')[0];
                             this.periodValidity1 = this.myData.dptTime.split(',')[1];
+                            if(this.myData.subsidypolicy == 0) {
+                                this.subsidypolicy = '定补'
+                            }if(this.myData.subsidypolicy == 1) {
+                                this.subsidypolicy = '保底'
+                            }if(this.myData.subsidypolicy == 2) {
+                                this.subsidypolicy = '人头补'
+                            }if(this.myData.subsidypolicy == 3) {
+                                this.subsidypolicy = '待议'
+                            }if(this.myData.subsidypolicy == 3) {
+                                this.subsidypolicy = '无补贴'
+                            }
                         })
                         .catch((error) => {
                                 console.log(error);
@@ -559,6 +568,11 @@
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
                 this.showCode = 1;
+                tabulationBoxTrigger.$on('responseObject',(val) => {
+                    console.info(val);
+                    this.myData = val.response;
+//                this.sendData.employeeId = val.data.employeeId;
+                })
                 this.show();
             },
             //点击“缴纳意向金”，组件“缴纳意向金”显示
