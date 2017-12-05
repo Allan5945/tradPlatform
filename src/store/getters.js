@@ -26,4 +26,8 @@ export default {
     conditionsOpen:(state)=>{
         return state.conditionsOpen;
     },
+    routeNetwork:(state)=>{
+        return state.routeNetwork;
+    }
+
 }

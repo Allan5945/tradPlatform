@@ -68,6 +68,6 @@ export const state = {
     transDetail:{
         transShow:false,
         userData:{}
-    }
-
+    },
+    routeNetwork:[], // ** 航线网络图数据
 };
