@@ -1,0 +1,134 @@
+<template>
+    <div class="nav-box popup" @click.stop>
+        <div class="font-bold-x nav1">首页</div>
+        <div class="font-bold-x nav1">新闻资讯</div>
+        <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
+            <div>
+                <span class="icon-item">&#xe60f;</span>
+                <span class="font-bold-x">个人中心</span>
+                <span class="icon-item icon-item1">&#xe605;</span>
+            </div>
+            <userCenter v-if="userShow"></userCenter>
+        </div>
+        <div @click="toolShow = !toolShow;userShow=false" class="nav3">
+            <div>
+                <span class="icon-item">&#xe601;</span>
+                <span class="font-bold-x">工具 &nbsp;</span>
+                <span class="icon-item icon-item1">&#xe605;</span>
+            </div>
+            <tool v-if="toolShow"></tool>
+        </div>
+        <div>
+            <div id="posted-btn" class="btn btn-b" @click="toPublish">
+                <span class="icon-item icon-cl">&#xe606;</span>
+                发布
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import * as vx from 'vuex'
+    import tool from './../tools.vue'
+    import userCenter from './../userCenter.vue'
+    export default {
+        data() {
+            return {
+                toolShow:false,
+                userShow:false,
+            }
+        },
+        components: {
+            tool,
+            userCenter,
+        },
+        methods:{
+            toPublish:function() {
+                this.$emit("toShow");
+            }
+        },
+        watch:{
+            close:function () {
+                this.toolShow = false;
+                this.userShow = false;
+            }
+        },
+        computed:{
+            ...vx.mapGetters([
+                'close'
+            ]),
+        },
+    }
+</script>
+<style scoped lang="scss">
+    @mixin user-select {
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
+    }
+    .font-bold-x:hover{
+        font-weight: bold;
+    }
+    .nav1{
+        width: 126px;
+    }
+    .nav2,.nav3{
+        width: 126px;
+    }
+    .nav-box {
+        position: absolute;
+        right: 60px;
+        top:40px;
+        z-index: 10;
+        display: flex;
+        color: #605E7C;
+        width: 606px;
+        font-size: 1.4rem;
+        @include user-select;
+        > div {
+            height: 40px;
+            line-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-flow: row wrap;
+            cursor: pointer;
+            /*width: 120px;*/
+            color: #605E7C;
+            font-size:1.4rem;
+        }
+        >div:last-of-type{
+            left: 506px;
+            width: 120px;
+            position: absolute;
+        }
+        > div:hover {
+            color: #446cea;
+        }
+        > div:active {
+            color: #446cea;
+        }
+    }
+    .user-center {
+
+    }
+    .icon-item {
+        font-size: 1.6rem;
+        font-family: iconfont;
+    }
+    .icon-item1{
+        color: #446cea;
+    }
+    #posted-btn {
+        width: 120px;
+        border-radius: 15px;
+        height: 30px;
+        color: white;
+    }
+
+    .icon-cl {
+        color: white;
+        display: inline-block;
+        width: 25px;
+        text-align: left;
+    }
+</style>

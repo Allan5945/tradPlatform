@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-show="thisShow">
         <div class="bg-color must">
             <div class="right item-child">
                 <div style="display: flex;">
@@ -356,6 +356,7 @@
     export default {
         data() {
             return {
+                thisShow: true,
                 warn1Show: false,  //联系人警告
                 warn2Show: false,  //联系方式警告
                 warn3Show: false,  //始发地警告
@@ -490,8 +491,8 @@
             },
             //发送数据
             submitData: function () {
-                /*//表单验证（部分）
-                if(this.user == '') {
+                //表单验证（部分）
+                /*if(this.user == '') {
                     this.warn1Show = true;
                     return
                 }if(this.phoneNum == '') {
@@ -571,6 +572,7 @@
                 }) .catch((error) => {
                     console.log(error);
                 });
+                this.thisShow = false;
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -1168,6 +1170,7 @@
         border-radius: 4px;
         box-shadow: 0 2px 11px rgba(85,85,85,0.1);
         background: white;
+        z-index: 2;
         .items {
             border-radius: 4px;
         }
