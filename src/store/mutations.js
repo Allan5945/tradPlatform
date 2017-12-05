@@ -184,6 +184,9 @@ const mutations = {
             })
         }
     },
+    [types.ROUTERNETWORK](state,vl) {
+        state.routeNetwork = vl;
+    },
 };
 export default {
 	state,

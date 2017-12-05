@@ -40,5 +40,8 @@ export default {
     },
     setelect:({commit},vl)=>{
         commit(types.SETELECT,vl)
+    },
+    routeNetwork:({commit},vl)=>{
+        commit(types.ROUTERNETWORK,vl)
     }
 }

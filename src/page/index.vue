@@ -5,7 +5,6 @@
         <toPublish v-show="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-
         <transition name="dialog">
             <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
@@ -13,9 +12,10 @@
         <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow"></myintention>
-         <infPanel></infPanel>
-      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <infPanel></infPanel>
+        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <routeNetwork></routeNetwork>
     </div>
 </template>
 
@@ -24,7 +24,7 @@
     import index from './../page/index.vue'
     import bmap from './../bmap/bmap.vue'
     import navigation from './../page/components/navigation.vue'
-    import tagIcon from './../page/components/tagIcon.vue'
+    import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './../page/components/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
@@ -36,7 +36,7 @@
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './../page/components/infPanel.vue'
-
+    import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     export default {
         data() {
             return {
@@ -55,14 +55,15 @@
                     airList: false,
                     demands: false,
                     cityList: false,
-                    data:{
-                        airListData:null,
-                        cityListData:null
+                    routeNetwork:false,
+                    data: {
+                        airListData: null,
+                        cityListData: null,
                     }
                 },
                 allDot: '',
                 test: 555,
-                demandId :''
+                demandId: ''
             }
         },
         methods: {
@@ -102,14 +103,16 @@
                     this.loadingData.airList &&
                     this.loadingData.cityList &&
                     this.loadingData.demands &&
+                    this.loadingData.routeNetwork &&
                     this.loadingData.data.airListData != null &&
                     this.loadingData.data.cityListData != null
-                ){
-                    this.$store.dispatch('initialize',this.loadingData.data).then(() => {
+                ) {
+                    this.$store.dispatch('initialize', this.loadingData.data).then(() => {
                         this.renderComponent = true;
                     });
 
-                };
+                }
+                ;
             }
         },
         beforeMount: function () {
@@ -162,7 +165,7 @@
                         if (
                             val.cityCoordinateJ != null &&
                             val.cityCoordinateW != null &&
-                            val.demandType != null &&
+//                            val.demandType != null &&
                             val.dpt != null &&
 //                            val.newInfo != null &&
                             val.num != null &&
@@ -174,6 +177,25 @@
                     this.allDot = arr;
                     this.loadingData.demands = true;
                     this.init();
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            this.$ajax({
+                method: 'post',
+                url: '/getAirportListByCode',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then((response) => {
+                    if(response.data.list != null){
+                        this.$store.dispatch('routeNetwork', response.data.list).then(() => {
+                        });
+                        this.loadingData.routeNetwork = true;
+                        this.init();
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -200,6 +222,7 @@
             myIntention,
             paySuccess,
             airlineDetailPayAfter,
+            routeNetwork,
             infPanel
         }
     }
