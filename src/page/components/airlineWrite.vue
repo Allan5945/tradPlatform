@@ -541,6 +541,7 @@
             tabulationBoxTrigger.$on('supProperty',val => {
                 this.sendData.title = val.title;
                 this.sendData.periodValidity = val.periodValidity;
+                this.sendData.releasetime = val.releasetime;
             })
         },
         mounted() {
@@ -627,7 +628,7 @@
                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
                this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
                this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
-               this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
+//               this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
 //                sendData.pst = this.secAreaCode;   //选填 经停地
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
                 if (this.pstState == 0) {
@@ -668,8 +669,9 @@
                 }).then((response) => {
                     console.info(response)
                     this.responseId = response.data.response.id;
-                    tabulationBoxTrigger.$emit('responseText', this.responseId);
-                    tabulationBoxTrigger.$emit('responseObject', response.data);
+
+                    tabulationBoxTrigger.$emit('responseText', this.responseId); //向dialog.vue传responseId
+                    tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
                     console.info(this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {

@@ -17,7 +17,11 @@
                 <div class="start item">
                     <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
                         <span v-show="myData.dptState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.dptNm}}</h2></div>
+                    <div class="item-b"><h2>
+                            <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
+                            <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
+                        </h2>
+                    </div>
                     <div class="item-c font-gray">
                         <span v-if="myData.arrvAcceptnearairport == 0">接收</span>
                         <span v-else>不接收</span>临近机场</div>
@@ -34,7 +38,11 @@
                 <div class="pass item">
                     <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
                         <span v-show="myData.pstState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.pstNm}}</h2></div>
+                    <div class="item-b"><h2>
+                            <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
+                            <span v-show="myData.pstState == 1">{{myData.pst}}</span>
+                        </h2>
+                    </div>
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">出港资源</div>
                     <div class="item-e">
@@ -49,7 +57,11 @@
                 <div class="arrive item">
                     <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
                         <span v-show="myData.arrvState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.arrvNm}}</h2></div>
+                    <div class="item-b"><h2>
+                            <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
+                            <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
+                        </h2>
+                    </div>
                     <!--下方有空格-->
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
@@ -449,11 +461,11 @@
 //            this.showCode = 0;
             console.info(this.role)
             console.info('min-tabulationBoxTrigger')
-            tabulationBoxTrigger.$on('getClickData', val => {
-//                console.info('mine-val:')
-//                console.info(val.demandId)
+            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+                console.info('getClickData:')
+                console.info(val.data)
                 this.showCode = 0;
-                if (val.demandType == 0) {
+                if (val.data.demandtype == 0) {
                     this.$ajax({
                         method: 'post',
                         url: '/capacityRoutesDemandDetailFindById',
@@ -461,7 +473,7 @@
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         params: {
-                            demandId: val.demandId
+                            demandId: val.data.id
                         }
                     })
                         .then((response) => {
@@ -475,8 +487,8 @@
                             this.releaseTime = this.myData.releasetime.split(" ")[0];
                             this.dptTime0 = this.myData.dptTime.split(',')[0];
                             this.dptTime1 = this.myData.dptTime.split(',')[1];
-                            this.pstTime0 = this.myData.dptTime.split(',')[0];
-                            this.pstTime1 = this.myData.dptTime.split(',')[1];
+                            this.pstTime0 = this.myData.pstTime.split(',')[0];
+                            this.pstTime1 = this.myData.pstTime.split(',')[1];
                             this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                             this.sailingtime1 = this.myData.sailingtime.split(',')[1];
                             this.periodValidity0 = this.myData.periodValidity.split(',')[0];
@@ -501,7 +513,6 @@
                                 console.log(error);
                             }
                         );
-                    console.info('333333')
                     this.$emit('transShow');
                 }
             });
@@ -596,14 +607,25 @@
                 let supProperty = {};
                 supProperty.title = this.myData.title;
                 supProperty.periodValidity = this.myData.periodValidity;
-                tabulationBoxTrigger.$emit('supProperty',supProperty);
+                supProperty.releasetime = this.myData.releasetime;
+                tabulationBoxTrigger.$emit('supProperty',supProperty); //向airlineWrite.vue传一些数据
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
                 this.showCode = 1;
+                //接收airWrite.vue传来的对象
                 tabulationBoxTrigger.$on('responseObject', (val) => {
                     console.info(val);
                     this.myData = val.response;
+                    this.releaseTime = this.myData.releasetime.split(" ")[0];
+                    this.dptTime0 = this.myData.dptTime.split(',')[0];
+                    this.dptTime1 = this.myData.dptTime.split(',')[1];
+                    this.pstTime0 = this.myData.pstTime.split(',')[0];
+                    this.pstTime1 = this.myData.pstTime.split(',')[1];
+                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
+                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
+                    this.periodValidity0 = val.periodValidity.split(',')[0];
+                    this.periodValidity1 = val.periodValidity.split(',')[1];
 //                this.sendData.employeeId = val.data.employeeId;
                 })
                 this.show();

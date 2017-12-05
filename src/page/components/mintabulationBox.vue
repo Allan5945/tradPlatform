@@ -136,12 +136,7 @@
             },
             getDetail: function (val) {
                 console.info(val)
-                let targetData ={};
-                targetData.demandId = val.data.id;
-                targetData.employeeId = val.data.employeeId;
-                targetData.demandType = val.data.demandtype;
-                console.log(targetData)
-                tabulationBoxTrigger.$emit('getClickData',targetData);
+                tabulationBoxTrigger.$emit('tabulationBoxTrigger',val);
             }
         },
         updated: function () {
