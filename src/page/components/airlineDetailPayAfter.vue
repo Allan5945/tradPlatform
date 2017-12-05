@@ -63,7 +63,8 @@
                         <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
-                        <div class="item-d">{{myData.remark}}</div>
+                        <div class="item-d" v-if="myData.remark == ''">有补贴</div>
+                        <div class="item-d" v-else>{{myData.remark}}</div>
                         <!--<div>有补贴</div>-->
                     </div>
                 </div>
@@ -373,7 +374,9 @@
                 sailingtime0: '',
                 sailingtime1: '',
                 periodValidity0: '',
-                periodValidity1: ''
+                periodValidity1: '',
+                isIntentionMoney: '',
+                isSelf: ''
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -440,10 +443,12 @@
                         }
                     })
                         .then((response) => {
-//                            this.isIntentionMoney = response.data.isIntentionMoney;
+                            this.isSelf = response.data.isSelf;
+                            this.isIntentionMoney = response.data.isIntentionMoney;
 //                            this.intentionCount = response.data.intentionCount;
 //                            this.detailData = response.data.data;
-                            this.userNum = response.data.intentionCount
+
+                            this.userNum = response.data.intentionCount;
                             this.myData = response.data.data;
                             this.releaseTime = this.myData.releasetime.split(" ")[0];
                             this.dptTime0 = this.myData.dptTime.split(',')[0];
@@ -466,7 +471,12 @@
         mounted(){
 //            this.initData();
             //模拟状态码0
-            this.showCode = 0;
+            if(this.isSelf == true) {
+                this.showCode = 1;
+            }else {
+                this.showCode = 0;
+            }
+//            this.showCode = 0;
             this.show();
         },
         computed: {},
@@ -686,7 +696,7 @@
         background: white;
         color: $font-color;
         /*transform:translate(0,0);*/
-        z-index: 1;
+        z-index: 10;
     }
     .ald-container::-webkit-scrollbar {
         width: 7px;
