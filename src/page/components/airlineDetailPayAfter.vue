@@ -15,9 +15,12 @@
             </div>
             <div class="third item-container">
                 <div class="start item">
-                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
+                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
+                        <span v-show="myData.dptState == 1">区域</span></div>
                     <div class="item-b"><h2>{{myData.dpt}}</h2></div>
-                    <div class="item-c font-gray">{{myData.dptAcceptnearairportStr}}临近机场</div>
+                    <div class="item-c font-gray">
+                        <span v-if="myData.arrvAcceptnearairport == 0">接收</span>
+                        <span v-else>不接收</span>临近机场</div>
                     <div class="item-d font-gray">出港资源</div>
                     <div class="item-e">
                         <span v-show="myData.dptTimeresources == 0">{{dptTime0}}-{{dptTime1}}</span>
@@ -29,8 +32,9 @@
                     <span class="icon-item">&#xe672;</span>
                 </div>
                 <div class="pass item">
-                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
-                    <div class="item-b"><h2>北京南苑</h2></div>
+                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
+                        <span v-show="myData.pstState == 1">区域</span></div>
+                    <div class="item-b"><h2>{{myData.pst}}</h2></div>
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">出港资源</div>
                     <div class="item-e">
@@ -43,8 +47,9 @@
                     <span class="icon-item">&#xe672;</span>
                 </div>
                 <div class="arrive item">
-                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
-                    <div class="item-b"><h2>华北地区</h2></div>
+                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
+                        <span v-show="myData.arrvState == 1">区域</span></div>
+                    <div class="item-b"><h2>{{myData.arrv}}</h2></div>
                     <!--下方有空格-->
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
@@ -79,7 +84,8 @@
                         <div class="item-a">{{myData.days}}</div>
                         <div class="item-b">{{myData.seating}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                        <div class="item-d" style="display: flex;">{{periodValidity0}}-{{periodValidity1}} <span class="icon-item" v-show="secondShow">&#xe653;</span></div>
+                        <div class="item-d" style="display: flex;">{{periodValidity0}}-{{periodValidity1}} <span
+                                class="icon-item" v-show="secondShow">&#xe653;</span></div>
                     </div>
                 </div>
             </div>
@@ -122,7 +128,9 @@
                         <div class="center-right">
                             <span class="icon-item">&#xe602; <span class="reminder"></span></span>
                         </div>
-                        <div class="right" @click="purposeDetailShow = !purposeDetailShow" style="color: #3c78ff; cursor: pointer;">查看详情</div>
+                        <div class="right" @click="purposeDetailShow = !purposeDetailShow"
+                             style="color: #3c78ff; cursor: pointer;">查看详情
+                        </div>
                     </div>
                     <div v-show="purposeDetailShow">
                         <div class="item-second">
@@ -208,101 +216,101 @@
                         </div>
                     </div>
                 </div>
-               <!-- <div class="nine-item">
-                    <div class="item-first">
-                        <div class="left">11.04.2017</div>
-                        <div class="center-left">南方航空</div>
-                        <div class="center-right">
-                            <span class="icon-item">&#xe602; <span class="reminder"></span></span>
-                        </div>
-                        <div class="right" style="color: #3c78ff; cursor:pointer;">查看详情</div>
-                    </div>
+                <!-- <div class="nine-item">
+                     <div class="item-first">
+                         <div class="left">11.04.2017</div>
+                         <div class="center-left">南方航空</div>
+                         <div class="center-right">
+                             <span class="icon-item">&#xe602; <span class="reminder"></span></span>
+                         </div>
+                         <div class="right" style="color: #3c78ff; cursor:pointer;">查看详情</div>
+                     </div>
 
-                    <div>
-                        <div class="item-second">
-                            <div class="start item">
-                                <div class="item-a">始发机场</div>
-                                <div class="item-b"><h2>成都双流</h2></div>
-                                <div class="item-c">接受临近机场</div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">08:00-12:00</div>
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="pass item">
-                                <div class="item-a">经停机场</div>
-                                <div class="item-b"><h2>北京南苑</h2></div>
-                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">带协调</div>
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="arrive item">
-                                <div class="item-a">到达区域</div>
-                                <div class="item-b"><h2>华北地区</h2></div>
+                     <div>
+                         <div class="item-second">
+                             <div class="start item">
+                                 <div class="item-a">始发机场</div>
+                                 <div class="item-b"><h2>成都双流</h2></div>
+                                 <div class="item-c">接受临近机场</div>
+                                 <div class="item-d">出港资源</div>
+                                 <div class="item-e">08:00-12:00</div>
+                             </div>
+                             <div class="item-icon">
+                                 <span class="icon-item">&#xe672;</span>
+                             </div>
+                             <div class="pass item">
+                                 <div class="item-a">经停机场</div>
+                                 <div class="item-b"><h2>北京南苑</h2></div>
+                                 <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                 <div class="item-d">出港资源</div>
+                                 <div class="item-e">带协调</div>
+                             </div>
+                             <div class="item-icon">
+                                 <span class="icon-item">&#xe672;</span>
+                             </div>
+                             <div class="arrive item">
+                                 <div class="item-a">到达区域</div>
+                                 <div class="item-b"><h2>华北地区</h2></div>
 
-                                &lt;!&ndash;下方有空格&ndash;&gt;
-                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                            </div>
-                        </div>
-                        <div class="item-third">
-                            <div class="items">
-                                <div class="left item font-gray">
-                                    <div>拟开时间</div>
-                                    <div>拟飞机型</div>
-                                    <div>客量期望</div>
-                                    <div>补贴政策</div>
-                                    <div>运力归属</div>
-                                    <div>是否调度</div>
-                                </div>
-                                <div class="right item">
-                                    <div>2017.11.11-2018.11.11</div>
-                                    <div>AA2222</div>
-                                    <div>80人/均班</div>
-                                    <div>按人头</div>
-                                    <div>东方航空</div>
-                                    <div>华北地区</div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="left item font-gray">
-                                    <div>拟开班期</div>
-                                    <div>座位数</div>
-                                    <div>客座率期望</div>
-                                    <div>小时成本</div>
-                                    <div>运力基地</div>
-                                </div>
-                                <div class="right item">
-                                    <div>待定</div>
-                                    <div>180</div>
-                                    <div>80%</div>
-                                    <div>8万元/小时</div>
-                                    <div>成都双流</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-fourth">
-                            <div class="left font-gray">其他说明</div>
-                            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                            </div>
-                        </div>
-                        <div class="item-fifth">
-                            <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn">选定</button>
-                        </div>
-                        <div class="item-sixth" v-show="fourthButtonShow">
-                            <button class="btn btn-w btn-change" @click="airlineAffirmFn">已选定（点击此次可再次编译）</button>
-                            <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
-                        </div>
-                    </div>
-                </div>
-           -->
+                                 &lt;!&ndash;下方有空格&ndash;&gt;
+                                 <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                 <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                 <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                             </div>
+                         </div>
+                         <div class="item-third">
+                             <div class="items">
+                                 <div class="left item font-gray">
+                                     <div>拟开时间</div>
+                                     <div>拟飞机型</div>
+                                     <div>客量期望</div>
+                                     <div>补贴政策</div>
+                                     <div>运力归属</div>
+                                     <div>是否调度</div>
+                                 </div>
+                                 <div class="right item">
+                                     <div>2017.11.11-2018.11.11</div>
+                                     <div>AA2222</div>
+                                     <div>80人/均班</div>
+                                     <div>按人头</div>
+                                     <div>东方航空</div>
+                                     <div>华北地区</div>
+                                 </div>
+                             </div>
+                             <div class="items">
+                                 <div class="left item font-gray">
+                                     <div>拟开班期</div>
+                                     <div>座位数</div>
+                                     <div>客座率期望</div>
+                                     <div>小时成本</div>
+                                     <div>运力基地</div>
+                                 </div>
+                                 <div class="right item">
+                                     <div>待定</div>
+                                     <div>180</div>
+                                     <div>80%</div>
+                                     <div>8万元/小时</div>
+                                     <div>成都双流</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="item-fourth">
+                             <div class="left font-gray">其他说明</div>
+                             <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                                 其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                                 其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                             </div>
+                         </div>
+                         <div class="item-fifth">
+                             <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn">选定</button>
+                         </div>
+                         <div class="item-sixth" v-show="fourthButtonShow">
+                             <button class="btn btn-w btn-change" @click="airlineAffirmFn">已选定（点击此次可再次编译）</button>
+                             <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
+                         </div>
+                     </div>
+                 </div>
+            -->
             </div>
         </div>
         <div class="first-button" v-show="firstButtonShow">
@@ -325,9 +333,11 @@
                 <button class="btn btn-w">结束需求</button>
             </div>
         </div>
-        <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW" :acceptData="myData"></airlineWrite>
+        <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
+                      :acceptData="myData"></airlineWrite>
         <!--<airlinePay v-show="airlinePayShow" @close-this="closeAlPayFn" @change-showCode="changeShowCodeP"></airlinePay>-->
-        <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
+        <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn"
+                       @change-showCode="changeShowCodeA"></airlineAffirm>
         <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
         <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
     </div>
@@ -337,10 +347,11 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
     import airlineWrite from './airlineWrite.vue'
-//    import airlinePay from './airlinePay.vue'
+    //    import airlinePay from './airlinePay.vue'
     import airlineAffirm from './airlineAffirm.vue'
     import paySuccess from './trans_detail/paySuccess.vue'
     import airlinePay from './trans_detail/dialog.vue'
+
     export default {
         data() {
             return {
@@ -427,13 +438,21 @@
                 subsidyList: ['保底','定补','按人头']*/
             }
         },
-        mounted(){
+        created() {
+//            this.initData();
+
+        },
+        mounted() {
 //            this.initData();
             //模拟状态码0
-            this.showCode = 0;
+//            this.showCode = 0;
+            console.info(this.role)
+            console.info('min-tabulationBoxTrigger')
             tabulationBoxTrigger.$on('getClickData', val => {
-                console.log("mine-demandtype:"+val.demandType);
-                if(val.demandType == 0){
+//                console.info('mine-val:')
+//                console.info(val.demandId)
+                this.showCode = 0;
+                if (val.demandType == 0) {
                     this.$ajax({
                         method: 'post',
                         url: '/capacityRoutesDemandDetailFindById',
@@ -441,7 +460,7 @@
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         params: {
-                            demandId: val.data.id
+                            demandId: val.demandId
                         }
                     })
                         .then((response) => {
@@ -461,15 +480,19 @@
                             this.sailingtime1 = this.myData.dptTime.split(',')[1];
                             this.periodValidity0 = this.myData.dptTime.split(',')[0];
                             this.periodValidity1 = this.myData.dptTime.split(',')[1];
-                            if(this.myData.subsidypolicy == 0) {
+                            if (this.myData.subsidypolicy == 0) {
                                 this.subsidypolicy = '定补'
-                            }if(this.myData.subsidypolicy == 1) {
+                            }
+                            if (this.myData.subsidypolicy == 1) {
                                 this.subsidypolicy = '保底'
-                            }if(this.myData.subsidypolicy == 2) {
+                            }
+                            if (this.myData.subsidypolicy == 2) {
                                 this.subsidypolicy = '人头补'
-                            }if(this.myData.subsidypolicy == 3) {
+                            }
+                            if (this.myData.subsidypolicy == 3) {
                                 this.subsidypolicy = '待议'
-                            }if(this.myData.subsidypolicy == 3) {
+                            }
+                            if (this.myData.subsidypolicy == 3) {
                                 this.subsidypolicy = '无补贴'
                             }
                         })
@@ -477,27 +500,28 @@
                                 console.log(error);
                             }
                         );
+                    console.info('333333')
                     this.$emit('transShow');
-                };
+                }
             });
-        },
-        mounted(){
-//            this.initData();
-            //模拟状态码0
-            if(this.isSelf == true) {
+            if (this.isSelf == true) {
                 this.showCode = 1;
-            }else {
+            } else {
                 this.showCode = 0;
             }
 //            this.showCode = 0;
             this.show();
         },
-        computed: {},
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
         methods: {
             closeThisFn: function () {
                 this.$emit('closeThis')
             },
-            initData: function () {
+            /*initData: function () {
                 this.$ajax({
                     url:"/capacityRoutesDemandDetailFindById",
                     method: 'post',
@@ -525,16 +549,17 @@
                     .catch((error) => {
                         console.log(error);
                     });
-            },
+            },*/
             show: function () {
-                if(this.showCode === 0) {
+                if (this.showCode === 0) {
                     this.firstShow = true;
                     this.firstButtonShow = true;
                     this.secondButtonShow = false;
                     this.thirdButtonShow = false;
                     this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
-                }if(this.showCode === 1) {
+                }
+                if (this.showCode === 1) {
                     this.firstShow = true;
                     this.secondShow = true;
                     this.firstButtonShow = false;
@@ -542,7 +567,8 @@
                     this.thirdButtonShow = false;
                     this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
-                }if(this.showCode === 2) {
+                }
+                if (this.showCode === 2) {
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
@@ -551,7 +577,8 @@
                     this.thirdButtonShow = true;
                     this.fourthButtonShow = false;
                     this.fifthButtonShow = true;
-                }if(this.showCode === 3) {
+                }
+                if (this.showCode === 3) {
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
@@ -569,7 +596,7 @@
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
                 this.showCode = 1;
-                tabulationBoxTrigger.$on('responseObject',(val) => {
+                tabulationBoxTrigger.$on('responseObject', (val) => {
                     console.info(val);
                     this.myData = val.response;
 //                this.sendData.employeeId = val.data.employeeId;
@@ -659,21 +686,26 @@
         line-height: $line-height;
         max-height: $line-height * $lines;
     }
+
     /**************************/
     h2 {
         margin: 0;
         font-size: 18px;
         line-height: 20px;
     }
+
     .font-gray {
         color: rgba(96, 94, 124, 0.7);
     }
+
     .font-bold {
         font-weight: bold;
     }
+
     .danger {
         color: #FF9393;
     }
+
     .icon-item {
         position: relative;
         font-size: 1.6rem;
@@ -688,21 +720,23 @@
             border-radius: 100%;
         }
     }
+
     .btn-b {
         outline: none;
         border: 0;
     }
+
     .btn-w {
         outline: none;
     }
-
 
     .wrapper {
 
         /*min-height: 600px;*/
         /*max-height: 700px;*/
     }
-    .ald-container{
+
+    .ald-container {
         position: absolute;
         top: 0px;
         right: 0px;
@@ -716,18 +750,22 @@
         /*transform:translate(0,0);*/
         z-index: 10;
     }
+
     .ald-container::-webkit-scrollbar {
         width: 7px;
     }
+
     .ald-container::-webkit-scrollbar-thumb {
         /*height: 56px;*/
         background: #D8D8D8;
         border-radius: 4px;
     }
+
     .item-container {
         display: flex;
         padding: 0 40px;
     }
+
     .first {
         position: relative;
         justify-content: space-between;
@@ -746,10 +784,11 @@
             border-radius: 100%;
         }
     }
+
     .second {
         flex-direction: column;
         height: 100px;
-        background: rgba(216,216,216, .17);
+        background: rgba(216, 216, 216, .17);
         .sec-top {
             margin: 30px 0 15px 0;
             height: 25px;
@@ -760,6 +799,7 @@
             margin-left: 3px;
         }
     }
+
     .third {
         position: relative;
         justify-content: space-between;
@@ -788,7 +828,7 @@
         }
         .item-icon {
             position: relative;
-            >span {
+            > span {
                 position: absolute;
                 top: 55px;
                 left: 50%;
@@ -796,6 +836,7 @@
             }
         }
     }
+
     .fourth {
         justify-content: space-between;
         .items {
@@ -812,12 +853,13 @@
             }
             .right {
                 width: 160px;
-                .item-a,.item-b,.item-c,.item-d {
+                .item-a, .item-b, .item-c, .item-d {
                     height: 40px;
                 }
             }
         }
     }
+
     .fifth {
         padding-top: 20px;
         height: 80px;
@@ -830,11 +872,12 @@
             @include line-clamp(3);
         }
     }
+
     .sixth {
         flex-direction: column;
         margin: 20px 0;
         height: 100px;
-        background: rgba(216,216,216, .17);
+        background: rgba(216, 216, 216, .17);
         h2 {
             margin: 30px 0 20px 0;
         }
@@ -842,13 +885,15 @@
             line-height: 12px;
         }
     }
+
     .seventh {
         margin-bottom: 40px;
     }
+
     .eighth {
         margin: 30px 0 25px 0;
         line-height: 20px;
-        .left{
+        .left {
             width: 60px;
         }
         .up-down {
@@ -873,13 +918,14 @@
             width: 60px;
         }
     }
+
     .ninth {
         padding: 0 20px;
         .nine-item {
             position: relative;
             margin-bottom: 6px;
             /*padding-bottom: 95px;*/
-            background: rgba(216,216,216, .17);
+            background: rgba(216, 216, 216, .17);
             .item-first {
                 display: flex;
                 align-items: center;
@@ -936,7 +982,7 @@
                 }
                 .item-icon {
                     position: relative;
-                    >span {
+                    > span {
                         position: absolute;
                         top: 55px;
                         left: 50%;
@@ -985,13 +1031,13 @@
                 bottom: 30px;
                 display: flex;
                 height: 28px;
-                >.btn-b {
+                > .btn-b {
                     width: 250px;
                     border-radius: 20px;
                     color: white;
                     background: #3c78ff;
                     &:hover {
-                        background: rgba(60,120,255,0.7);
+                        background: rgba(60, 120, 255, 0.7);
                     }
                     &:active {
                         background: #336bea;
@@ -1004,7 +1050,7 @@
                 bottom: 30px;
                 display: flex;
                 height: 28px;
-                >.btn-w {
+                > .btn-w {
                     border-radius: 20px;
                 }
                 .btn-change {
@@ -1017,6 +1063,7 @@
             }
         }
     }
+
     .first-button {
         position: fixed;
         right: 0;
@@ -1032,25 +1079,26 @@
             display: flex;
             margin-top: 18px;
             height: 40px;
-            >.btn-b {
+            > .btn-b {
                 margin-right: 10px;
                 width: 230px;
                 color: white;
                 border-radius: 20px;
                 background: #3c78ff;
                 &:hover {
-                    background: rgba(60,120,255,0.7);
+                    background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
                 }
             }
-            >.btn-w {
+            > .btn-w {
                 width: 80px;
                 border-radius: 20px;
             }
         }
     }
+
     .second-button {
         position: fixed;
         right: 0;
@@ -1066,25 +1114,26 @@
             margin-top: 18px;
             margin-left: 90px;
             height: 40px;
-            >.btn-b {
+            > .btn-b {
                 margin-right: 14px;
                 width: 300px;
                 color: white;
                 border-radius: 20px;
                 background: #3c78ff;
                 &:hover {
-                    background: rgba(60,120,255,0.7);
+                    background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
                 }
             }
-            >.btn-w {
+            > .btn-w {
                 width: 100px;
                 border-radius: 20px;
             }
         }
     }
+
     .bottom {
         position: fixed;
         right: 0;
@@ -1100,20 +1149,20 @@
             margin-top: 18px;
             margin-left: 140px;
             height: 40px;
-            >.btn-b {
+            > .btn-b {
                 margin-right: 14px;
                 width: 200px;
                 color: white;
                 border-radius: 20px;
                 background: #3c78ff;
                 &:hover {
-                    background: rgba(60,120,255,0.7);
+                    background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
                 }
             }
-            >.btn-w {
+            > .btn-w {
                 width: 100px;
                 border-radius: 20px;
             }

@@ -12,7 +12,7 @@
     export default {
         data () {
             return {
-                username:'jichang',
+                username:'hangsi',
                 password:'1',
                 name:1
             }

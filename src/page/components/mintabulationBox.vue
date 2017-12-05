@@ -135,6 +135,7 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
+                console.info(val)
                 let targetData ={};
                 targetData.demandId = val.data.id;
                 targetData.employeeId = val.data.employeeId;
