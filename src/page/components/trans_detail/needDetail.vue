@@ -80,6 +80,7 @@
      },
       mounted() {
         tabulationBoxTrigger.$on('getClickData', val => {
+
             console.log("demandtype"+val.demandType);
             if(val.demandType == 1){
                 this.$ajax({
