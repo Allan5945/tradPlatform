@@ -55,8 +55,8 @@
     import * as vx from 'vuex'
     import check from './checkComponents.vue'
     import check1 from './checkComponents_1.vue'
-    import airportS from './airportSearch.vue'
-    import cityS from './citySearch.vue'
+    import airportS from '../../reuseComponents/airportSearch.vue'
+    import cityS from '../../reuseComponents/citySearch.vue'
 
     export default {
         data() {
@@ -195,7 +195,7 @@
         color: #605E7C;
         font-size: 1.2rem;
         width: 164px;
-        background-image: url("./../../static/img/sbottom.png");
+        background-image: url("../../../static/img/sbottom.png");
         background-repeat: no-repeat;
         background-size: 22px;
         background-position: 135px 0;

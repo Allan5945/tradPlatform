@@ -16,7 +16,8 @@
             <div class="tabulation-mes">
                 <div v-for="ite in key.simpleDemand">
                     <span>{{ite.key}}</span>
-                    <div>{{ite.val}}</div>
+                    <div :title="ite.val" v-if="ite.val != 'null' && ite.val != ''">{{ite.val}}</div>
+                    <div :title="ite.val" v-else>-</div>
                 </div>
             </div>
         </div>
@@ -26,13 +27,13 @@
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-    import ig0 from './../../static/img/haveline.png'; // 航线需求图片
-    import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
-    import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
-    import tag0 from './../../static/img/jd/1.png'; // 航线托管需求图片
-    import tag1 from './../../static/img/jd/2.png'; // 航线托管需求图片
-    import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
-    import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
+    import ig0 from '../../../static/img/haveline.png'; // 航线需求图片
+    import ig1 from '../../../static/img/haveyun.png'; // 运力需求图片
+    import ig2 from '../../../static/img/fcqq.png'; // 航线托管需求图片
+    import tag0 from '../../../static/img/jd/1.png'; // 航线托管需求图片
+    import tag1 from '../../../static/img/jd/2.png'; // 航线托管需求图片
+    import tag2 from '../../../static/img/jd/3.png'; // 航线托管需求图片
+    import tag3 from '../../../static/img/jd/4.png'; // 航线托管需求图片
 
     export default {
         data() {
@@ -323,6 +324,7 @@
 
     .tabulation-mes {
         > div {
+            width: 25%;
             > span {
                 display: inline-block;
                 padding-bottom: 8px;
@@ -332,6 +334,10 @@
             > div {
                 font-size: 1.3em;
                 color: #605E7C;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+
             }
         }
         display: flex;

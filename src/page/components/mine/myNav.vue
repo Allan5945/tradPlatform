@@ -28,8 +28,8 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import tool from './../tools.vue'
-    import userCenter from './../userCenter.vue'
+    import tool from '../toolbar/tools.vue'
+    import userCenter from '../toolbar/userCenter.vue'
     export default {
         data() {
             return {
