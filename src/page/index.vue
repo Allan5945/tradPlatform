@@ -10,13 +10,14 @@
         </transition>
         <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
         <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
+        <respondAirport></respondAirport>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-         <!--<myIndex></myIndex>-->
+       <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
          <!--<myIndexFzz></myIndexFzz>-->
     </div>
@@ -33,8 +34,9 @@
     import needDetail from './../page/components/trans_detail/needDetail.vue'
     import intentForm from './../page/components/trans_detail/intentForm.vue'
     import myPlan from './../page/components/trans_detail/myPlan.vue'
-    import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
+    import transDialog from './../page/components/trans_detail/dialog.vue'
+    import respondAirport from './../page/components/trans_detail/respondAirport.vue'
     import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
@@ -256,6 +258,7 @@
             myPublish,
             myPurpose,
             routeNetwork,
+            respondAirport
         }
     }
 </script>

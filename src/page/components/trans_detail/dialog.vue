@@ -175,9 +175,5 @@
         border:1px solid #c0ccda;
         cursor:pointer;
     }
-    @keyframes dialog {
-        from{
-            top: 15%;
-        }
-    }
+
 </style>

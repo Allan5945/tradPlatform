@@ -177,7 +177,7 @@
                 tip: '',
                 searchData:["双流机场","武当山机场"],
                 searchData1:["双流机场","武当山机场"],
-                msg:'选择班机类型',
+                msg:'选择班期类型',
                 stateType:['待定','满排','半排'],
                 myDate:'选择起始时间',
                 calendarInitDay1: '',
