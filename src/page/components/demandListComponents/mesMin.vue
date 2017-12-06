@@ -49,11 +49,11 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import airportS from './airportSearch.vue'
-    import hisy from './hisy.vue'
+    import airportS from '../airportSearch.vue'
+    import hisy from '../hisy.vue'
     import tabulationBox from './mintabulationBox.vue'
-    import screen from './screen-hs.vue'
-    import singleElection from './singleElection.vue'
+    import screen from '../screen-hs.vue'
+    import singleElection from '../singleElection.vue'
     import loading from '$src/page/state/locading.vue'
 
     export default {

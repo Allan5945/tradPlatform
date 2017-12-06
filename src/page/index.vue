@@ -14,11 +14,11 @@
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
          <infPanel></infPanel>
-      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
          <!--<myIndex></myIndex>-->
         <routeNetwork></routeNetwork>
-         <myIndexFzz></myIndexFzz>
+         <!--<myIndexFzz></myIndexFzz>-->
     </div>
 </template>
 
@@ -28,7 +28,7 @@
     import bmap from './../bmap/bmap.vue'
     import navigation from './../page/components/navigation.vue'
     import tagIcon from './components/independenceComponents/tagIcon.vue'
-    import messageBox from './../page/components/mesBox.vue'
+    import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
     import intentForm from './../page/components/trans_detail/intentForm.vue'
