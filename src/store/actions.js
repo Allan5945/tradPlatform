@@ -49,5 +49,8 @@ export default {
     },
     tagread:({commit},vl)=>{
         commit(types.TAGREAD,vl)
+    },
+    changeOrder:({commit},vl)=>{
+        commit(types.CHANGEORDER,vl)
     }
 }

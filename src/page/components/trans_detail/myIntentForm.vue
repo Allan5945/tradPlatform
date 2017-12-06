@@ -355,6 +355,8 @@
     import airAreaSearch from './../airAreaSearch.vue'
     import airportS from './../airportSearch.vue'
     import calendar from './../calendar'
+    import * as vx from 'vuex'
+
 
     export default {
         data() {
@@ -480,6 +482,9 @@
             }
         },
         computed: {
+             ...vx.mapGetters([
+                'role'
+            ]),
             sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
             },
@@ -493,6 +498,11 @@
         });
         tabulationBoxTrigger.$on('sendTable',val => {
             this.getIntentData = val;
+            /*sendData.dptState = this.dptState
+            sendData.dptAcceptnearairport = this.dptAcceptnearairport
+            sendData.dptTimeresources = this.dptTimeresources;
+            sendData.arrvTimeresources = this.arrvTimeresources;
+*/
         });
      },
         methods: {
@@ -507,8 +517,6 @@
             submitData: function () {
 
                 let sendData =this.getIntentData;
-               sendData.demandId = this.demandData.demandId;
-                sendData.employeeId =this.demandData.employeeId;
                 //sendData.id = '0';
                 sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 sendData.contact = this.user;  //必填 联系人
@@ -525,9 +533,9 @@
                 sendData.dptTimeresources = this.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 sendData.pstTimeresources = this.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 sendData.arrvTimeresources = this.arrvTimeresources;        //选填 到达地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
-                this.dptTime = this.startTime1Show + ',' + this.endTime1Show;
-                this.pstTime = this.startTime2Show + ',' + this.endTime2Show;
-                this.arrvTime = this.startTime3Show + ',' + this.endTime3Show;
+                this.dptTime = this.startTime1Show + '-' + this.endTime1Show;
+                this.pstTime = this.startTime2Show + '-' + this.endTime2Show;
+                this.arrvTime = this.startTime3Show + '-' + this.endTime3Show;
                 sendData.dptTime = this.dptTime;
                 sendData.pstTime = this.pstTime;
                 sendData.arrvTime = this.arrvTime;
@@ -563,12 +571,17 @@
 
                 console.info(sendData);
                 this.$ajax({
-                    url:"/responseAdd",
+                    url:"/selectedResponse",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: sendData
+                    params: {
+                        responseData:sendData,
+                        id: this.getIntentData.id,
+                        employeeId:this.role.id,
+                        status:0
+                    }
                 }) .then((response) => {
                         this.demandData.responseId = response.data.response.id;
                         tabulationBoxTrigger.$emit('getdemandData',this.demandData);

@@ -54,7 +54,7 @@
         <div class="intent">
             <div class="intent-til">
                 <div>收到的意向</div>
-                <div>已有{{this.intentionCount }}位用户发起意向</div>
+                <div>已有<span>{{this.intentionCount }}</span>位用户发起意向</div>
             </div>
             <div class="intent-form">
                 <div>
@@ -64,7 +64,7 @@
                 <div class="intent-box" v-for=" val in planData" v-if="intentListShow">
                      <div class="intent-item">
                         <div class="time">{{val.responsedate}}</div>
-                        <div class="person">南方航空<span class="iconfont">&#xe602;</span></div>
+                        <div class="person">{{val.intentionCompanyName}}<span class="iconfont">&#xe602;</span></div>
                         <div class="detail" @click="closeDetail">{{text}}</div>
                     </div>
                     <div class="intent-detail" v-show="detailShow">
@@ -73,7 +73,7 @@
                                 <div>始发机场</div>
                                 <div>
                                     <div>{{val.dpt}}</div>
-                                    <div>接受临近机场</div>
+                                    <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">
                                     <div>出港资源</div>
@@ -83,7 +83,10 @@
                             <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                             <div class="airplace">
                                 <div>经停机场</div>
-                                <div>{{val.pst}}</div>
+                                <div>
+                                    <div>{{val.pst}}</div>
+                                    <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
+                                </div>
                                 <div class="resouse">
                                     <div>出港资源</div>
                                     <div>{{val.pstTime}}</div>
@@ -92,7 +95,14 @@
                             <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                             <div class="airplace">
                                 <div>到达区域</div>
-                                <div>{{val.arrv}}</div>
+                                <div>
+                                    <div>{{val.arrv}}</div>
+                                    <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
+                                </div>
+                                <div class="resouse">
+                                    <div>出港资源</div>
+                                    <div>{{val.arrvTime}}</div>
+                                </div>
                             </div>
                         </div>
                         <div class="table-form">
@@ -114,11 +124,11 @@
                             </div>
                             <div>
                                 <div>客量预期</div>
-                                <div>{{val.avgguestexpect}}</div>
+                                <div>{{val.avgguestexpect}}人</div>
                             </div>
                             <div>
                                 <div>客座率预期</div>
-                                <div>{{val.loadfactorsexpect}}</div>
+                                <div>{{val.loadfactorsexpect}}%</div>
                             </div>
                             <div>
                                 <div>补贴政策</div>
@@ -126,7 +136,7 @@
                             </div>
                             <div>
                                 <div>小时成本</div>
-                                <div>{{planData.hourscost}}</div>
+                                <div>{{planData.hourscost}}万元/小时</div>
                             </div>
                             <div>
                                 <div>运力归属</div>
@@ -148,7 +158,7 @@
                         <div class="sure-btn" @click="toSelect(val)" v-if="selShow">选定</div>
                         <div class="btns" v-else>
                             <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
-                            <div class="cancel-btn" @click="cancelSel">撤销选定</div>
+                            <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                         </div>
                     </div>
                 </div>
@@ -196,8 +206,26 @@ import * as vx from 'vuex'
             tabulationBoxTrigger.$emit('sendTable',val);
             this.$emit("formShow");
          },
-         cancelSel:function(){
-          this.selShow = true;
+         cancelSel:function(val){
+          this.$ajax({
+                method: 'post',
+                url: '/selectedResponse',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    employeeId:this.role.id,
+                    id:val.id,
+                    status:1
+                }
+                })
+                .then((response) => {
+                     this.selShow = true;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
          }
 
      },
@@ -477,6 +505,7 @@ import * as vx from 'vuex'
                 .time{
                     margin:0 40px 0 20px;
                     width:80px;
+                    overflow:hidden;
                 }
                 .person{
                     display:flex;

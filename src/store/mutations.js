@@ -218,6 +218,9 @@ const mutations = {
             });
         })
     },
+    [types.CHANGEORDER](state,vl) {
+        state.demandList.conditions.order = !state.demandList.conditions.order;
+    },
 };
 export default {
 	state,

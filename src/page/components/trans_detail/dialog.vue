@@ -44,6 +44,11 @@
             sureEvent(){
                 this.sendData.intentionStatu = '0';
                 console.info(this.sendData)
+                let that = this;
+                setTimeout(function(){
+                    that.$emit('cancel');
+                    that.$emit('sure');
+                },1000)
                 this.$ajax({
                     url: "/changeIntentionMoneyStatusForResponse",
                     method: 'post',
@@ -58,11 +63,7 @@
                 });
                 this.iconShow = true;
                 this.Btext = '';
-                let that = this;
-               setTimeout(function(){
-                    that.$emit('cancel');
-                    that.$emit('sure');
-                },1000)
+
 
             }
         }

@@ -185,6 +185,7 @@
                           .then((response) => {
                               this.intentionCount = response.data.intentionCount;
                               this.detailData = response.data.data;
+                              console.log(this.detailData)
                           })
                           .catch((error) => {
                                   console.log(error);
@@ -211,8 +212,8 @@
                                   console.log(error);
                               }
                           );
-                          }
-                      });
+                }
+            });
 
       }
 
