@@ -23,8 +23,8 @@
             <div class="mes-body-i4">{{key.data.subsidypolicyStr}}</div>
             <div class="mes-body-i4">{{key.data.remark}}</div>
             <div class="move-panel" v-if="showPanel && i == iPanel">
-                <div class="btn-w" v-if="(key.data.collectType == 0)" @click="futurePanel(key)">添加收藏</div>
-                <div class="btn-w" v-if="(key.data.collectType != 0)" @click="alreadyPanel(key)">取消收藏</div>
+                <div class="btn-w" v-if="(key.data.collectType == 0)" @click="alreadyPanel(key,true)">添加收藏</div>
+                <div class="btn-w" v-if="(key.data.collectType != 0)" @click="alreadyPanel(key,false)">取消收藏</div>
             </div>
         </div>
         <div v-if="(renderData.length == 0)" class="no-data">无数据!</div>
@@ -55,11 +55,49 @@
             }
         },
         methods: {
-            alreadyPanel: function () {
-                
-            },
-            futurePanel: function () {
+            alreadyPanel: function (key,t) {
+                let v = [key.id];
+                if(t){
+                    this.$ajax({
+                        method: 'post',
+                        url: "/addCollect",
+                        params: {
+                            demandIds: v.join(','),
+                        },
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then((response) => {
+                            if(response.data.opResult == '0'){
+                                this.$store.dispatch('tagread',{t:true,v});
+                            }
+                        })
+                        .catch((error) => {
 
+                            }
+                        );
+                }else{
+                    this.$ajax({
+                        method: 'post',
+                        url: "/delCollect",
+                        params: {
+                            demandIds: v.join(','),
+                        },
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then((response) => {
+                            if(response.data.opResult == '0'){
+                                this.$store.dispatch('tagread',{t:false,v});
+                            }
+                        })
+                        .catch((error) => {
+
+                            }
+                        );
+                }
             },
             getDetail: function (val) {
                 if(val.data.renew == 0){
