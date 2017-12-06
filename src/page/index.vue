@@ -19,9 +19,6 @@
          <!--<myIndex></myIndex>-->
         <routeNetwork></routeNetwork>
          <myIndexFzz></myIndexFzz>
-        <!--<myPurpose></myPurpose>-->
-
-        <!--<myPublish></myPublish>-->
     </div>
 </template>
 

@@ -25,10 +25,10 @@
             </div>
             <div class="choose">
                 <div class="items bg-color">
-                    <airAreaSearch v-show="airAreaSearchShow1" @li-click="getArea1"></airAreaSearch>
-                    <airAreaSearch v-show="airAreaSearchShow2" @li-click="getArea2"></airAreaSearch>
-                    <airAreaSearch v-show="airAreaSearchShow3" @li-click="getArea3"></airAreaSearch>
                     <div class="first">
+                        <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1" @li-click="getArea1"></airAreaSearch>
+                        <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow2" @li-click="getArea2"></airAreaSearch>
+                        <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow3" @li-click="getArea3"></airAreaSearch>
                         <div class="start item">
                             <div class="top" @click="space1 = !space1">
                                 <span>{{space1ShowTitle}}</span>&nbsp;
@@ -668,10 +668,10 @@
                     console.info('response:')
                     console.info(response)
                     let responseIDMes = {};           //响应ID，响应者ID
-                    responseIDMes.Id = response.data.response.id; //响应ID
+                    responseIDMes.responseId = response.data.response.id; //响应ID
                     responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
                     console.info("responseIDMes:")
-                    console.info(responseIDMes)
+                    console
 
                     tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
                     tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
@@ -859,11 +859,10 @@
                     this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = false;
                     this.dptState = 0;
+                }if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
+                    this.secondShow = false;
+//                    this.dptState = '';
                 }
-                /*if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
-                                    this.secondShow = false;
-                                    this.dptState = '';
-                                }*/
             },
             space2Fn: function (item) {
                 this.space2ShowTitle = item;
@@ -886,11 +885,10 @@
                     this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = false;
                     this.pstState = 0;
+                }if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
+                    this.secondShow = false;
+//                    this.pstState = '';
                 }
-                /*if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
-                                    this.secondShow = false;
-                                    this.pstState = '';
-                                }*/
             },
             space3Fn: function (item) {
                 this.space3ShowTitle = item;
@@ -913,11 +911,10 @@
                     this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = false;
                     this.arrvState = 0;
+                }if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
+                    this.secondShow = false;
+                    this.arrvState = '';
                 }
-                /*if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
-                                    this.secondShow = false;
-                                    this.arrvState = '';
-                                }*/
             },
             scheduleListFn: function (item) {
                 this.scheduleShow = item;
@@ -1384,10 +1381,15 @@
     }
 
     .first {
+        position: relative;
         display: flex;
         justify-content: space-between;
         /*align-items: flex-end;*/
         padding: 20px 20px 10px 20px;
+        .airAreaSearch {
+            top: 90px;
+            left: 0;
+        }
         .item {
             display: flex;
             flex-direction: column;
