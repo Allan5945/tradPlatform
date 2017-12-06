@@ -5,10 +5,10 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import hxxq from './../../static/img/hxxq.png'
-    import ylxq from './../../static/img/ylxq.png'
-    import fcqq from './../../static/img/fcqq.png'
-    import hd from './../../static/img/hd.png'
+    import hxxq from '../../../static/img/hxxq.png'
+    import ylxq from '../../../static/img/ylxq.png'
+    import fcqq from '../../../static/img/fcqq.png'
+    import hd from '../../../static/img/hd.png'
 
     export default {
         data() {

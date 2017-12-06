@@ -37,7 +37,7 @@
                     只看与我匹配的
                 </div>
                 <div class="number-tag">
-                    <div class="btn-w">标记为已读</div>
+                    <div class="btn-w" @click="batchRed">标记为已读</div>
                     <div class="btn-w" @click="tagRead">收藏</div>
                 </div>
             </div>
@@ -110,6 +110,33 @@
             }
         },
         methods: {
+            batchRed:function () {
+                let ob = (this.demandList.type ? this.demandList.hybridData.list : this.demandList.monoData.list),ar = [];
+                ob.forEach((v)=>{
+                    if(v.set)ar.push(v.id);
+                });
+                if(ar.length != 0){
+                    this.$ajax({
+                        method: 'post',
+                        url: '/employeeDemandAdd',
+                        params:{
+                            employeeDemandIds:ar.join(',')
+                        },
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then((response) => {
+                            if(response.data.opResult == '0'){
+                                this.$store.dispatch('changeRenew',ar);
+                            }
+                        })
+                        .catch((error) => {
+                                console.log(error);
+                            }
+                        );
+                }
+            },
             tagRead: function () {
                 let v = [];
                 if (this.demandList.type) {
@@ -121,7 +148,7 @@
                 } else {
                     this.demandList.monoData.list.forEach((vl) => {
                         if (vl.set) {
-                            v.push(vl.id)
+                            v.push(vl.id);
                         }
                     });
                 }
@@ -130,14 +157,16 @@
                     method: 'post',
                     url: "/addCollect",
                     params: {
-                        demandId: v.join(','),
+                        demandIds: v.join(','),
                     },
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     }
                 })
                     .then((response) => {
-
+                        if(response.data.opResult == '0'){
+                            this.$store.dispatch('tagread',{t:true,v});
+                        }
                     })
                     .catch((error) => {
 

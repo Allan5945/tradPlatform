@@ -23,7 +23,7 @@
                     method: 'post',
                     url: '/login',
                     params:{
-                        username:this.username,//BKadmin*权限0 //KYadmin*权限1 //TGOadmin*权限2
+                        username:this.username,//BKadmin*权限0 //KYadmin*权限1 //TGOadmin*权限2d
                         password:this.password
                     },
                     headers: {
@@ -45,7 +45,7 @@
             }
         },
         mounted:function () {
-            this.logined();
+//            this.logined();
         },
         computed:{
             ...vx.mapGetters([

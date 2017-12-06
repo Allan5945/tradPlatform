@@ -1,12 +1,12 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div :class="{'tagRed':!key.data.renew}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
+        <div :class="{'tagRed':(key.data.renew == 0)}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
             <div class="tabulation-item" @click="getDetail(key)">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
                     <div v-for="(item,d) in key.name">
                         <div>
-                            <div :class="{rolling:(item.length > 4)}">{{item}}</div>
+                            <div :class="{rolling:(item.length > 4),'colored':!(key.data.renew == '0')}">{{item}}</div>
                         </div>
                         <span v-if="d != key.name.length - 1">-</span>
                     </div>
@@ -135,7 +135,28 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
-                tabulationBoxTrigger.$emit('tabulationBoxTrigger',val);
+                if(val.data.renew == 0){
+                    this.$ajax({
+                        method: 'post',
+                        url: '/employeeDemandAdd',
+                        params:{
+                            employeeDemandIds:val.data.id
+                        },
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then((response) => {
+                            if(response.data.opResult == 0){
+                                this.$store.dispatch('changeRenew',[val.data.id])
+                            }
+                        })
+                        .catch((error) => {
+                                console.log(error);
+                            }
+                        );
+                };
+                tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
             }
         },
         updated: function () {
@@ -375,5 +396,8 @@
                 border-radius: 7px;
             }
         }
+    }
+    .colored{
+        color:rgba(96,94,124,.6) !important;
     }
 </style>
