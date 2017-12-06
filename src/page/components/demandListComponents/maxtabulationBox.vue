@@ -3,7 +3,7 @@
         <div></div>
         <div :class="{'tagRed':(key.data.renew == '0'),'already-read':(key.data.collectType != 0)}" class="mes-body-h popup" @click="getDetail(key)"
              v-for="(key,i) in renderData" @mouseover="showPanel = true;iPanel = i" @mouseout="showPanel = false">
-            <div class="mes-body-i0">
+            <div class="mes-body-i0" @click.stop>
                 <span @click="seted(key)" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':key.data.set}">&#xe723;</span>
                 <img :src="key.img" alt="">
             </div>
@@ -23,8 +23,8 @@
             <div class="mes-body-i3">{{key.data.subsidypolicyStr}}</div>
             <div class="mes-body-i4">{{key.data.remark}}</div>
             <div class="move-panel" v-if="showPanel && i == iPanel">
-                <div class="btn-w" v-if="(key.data.collectType == 0)" @click="alreadyPanel(key,true)">添加收藏</div>
-                <div class="btn-w" v-if="(key.data.collectType != 0)" @click="alreadyPanel(key,false)">取消收藏</div>
+                <div class="btn-w" v-if="(key.data.collectType == 0)" @click.stop="alreadyPanel(key,true)">添加收藏</div>
+                <div class="btn-w" v-if="(key.data.collectType != 0)" @click.stop="alreadyPanel(key,false)">取消收藏</div>
             </div>
         </div>
         <div v-if="(renderData.length == 0)" class="no-data">无数据!</div>
@@ -34,13 +34,13 @@
     import * as vx from 'vuex'
     import singleElection from './singleElection.vue'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-    import ig0 from './../../static/img/haveline.png'; // 航线需求图片
-    import ig1 from './../../static/img/haveyun.png'; // 运力需求图片
-    import ig2 from './../../static/img/fcqq.png'; // 航线托管需求图片
-    import tag0 from './../../static/img/jd/1.png'; // 航线托管需求图片
-    import tag1 from './../../static/img/jd/2.png'; // 航线托管需求图片
-    import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
-    import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
+    import ig0 from '../../../static/img/haveline.png'; // 航线需求图片
+    import ig1 from '../../../static/img/haveyun.png'; // 运力需求图片
+    import ig2 from '../../../static/img/fcqq.png'; // 航线托管需求图片
+    import tag0 from '../../../static/img/jd/1.png'; // 航线托管需求图片
+    import tag1 from '../../../static/img/jd/2.png'; // 航线托管需求图片
+    import tag2 from '../../../static/img/jd/3.png'; // 航线托管需求图片
+    import tag3 from '../../../static/img/jd/4.png'; // 航线托管需求图片
 
     export default {
         data() {
@@ -152,19 +152,7 @@
                     ;
                 }
                 d.forEach((val) => {
-                    let img, name = [], tag;
-                    if (val.dptNm != null && val.dptNm != '') {
-                        name.push(val.dptNm)
-                    }
-                    ;
-                    if (val.pstNm != null && val.pstNm != '') {
-                        name.push(val.pstNm)
-                    }
-                    ;
-                    if (val.arrvNm != null && val.arrvNm != '') {
-                        name.push(val.arrvNm)
-                    }
-                    ;
+                    let img, tag;
                     switch (val.demandtype) {
                         case "0":
                             img = ig0;
@@ -193,7 +181,7 @@
                     }
                     a.push({
                         img,
-                        name,
+                        name:val.title.split('-'),
                         tag,
                         simpleDemand: val.simpleDemand,
                         data: val
@@ -248,9 +236,15 @@
                 });
                 if (this.conditionsOpen) {
                     this.$emit('renderDataLength', c.length);
+                    if(this.demandList.conditions.order){
+                        return c.reverse();
+                    };
                     return c;
                 } else {
                     this.$emit('renderDataLength', a.length);
+                    if(this.demandList.conditions.order){
+                        return a.reverse();
+                    };
                     return a;
                 }
             }
@@ -296,7 +290,7 @@
         position: relative;
     }
     .already-read:after{
-        content: url(./../../static/img/sc/ysc.png);
+        content: url(../../../static/img/sc/ysc.png);
         position: absolute;
         right: 2px;
         top: 0;

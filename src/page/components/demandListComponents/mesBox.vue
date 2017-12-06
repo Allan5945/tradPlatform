@@ -8,7 +8,7 @@
     import mesMaxComponent from './mesMax.vue'
     import mesMinComponent from './mesMin.vue'
     import * as vx from 'vuex'
-    import conversions from './../../public/js/conversions'
+    import conversions from '../../../public/js/conversions'
     export default {
         data(){
             return{

@@ -49,10 +49,10 @@
                     类型
                 </div>
                 <div class="mes-body-i1">航点/匹配度
-                    <order :order.sync="order" class="order-x"></order>
+                    <!--<order :order.sync="order" class="order-x"></order>-->
                 </div>
                 <div class="mes-body-i2">发布时间
-                    <order :order.sync="order" class="order-x"></order>
+                    <order :order="orderTime" v-on:order="orderTimeHandling" class="order-x"></order>
                 </div>
                 <div class="mes-body-i3">需求进度</div>
                 <div class="mes-body-i3">时刻</div>
@@ -68,19 +68,19 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import airportS from './airportSearch.vue'
+    import airportS from '../../reuseComponents/airportSearch.vue'
     import hisy from './hisy.vue'
     import screen from './screen-hs.vue'
     import singleElection from './singleElection.vue'
-    import order from './order.vue'
-    import loading from '$src/page/state/locading.vue'
+    import order from '../../reuseComponents/order.vue'
+    import loading from '$src/page/reuseComponents/locading.vue'
     import tabulationBox from './maxtabulationBox.vue'
 
     export default {
         data() {
             return {
                 dataL: 0,
-                order: {
+                orderTime: {
                     set: true
                 },
                 match: {set: false},  // 只看与我匹配的
@@ -110,6 +110,10 @@
             }
         },
         methods: {
+            orderTimeHandling:function () {
+                this.orderTime.set = ! this.orderTime.set;
+                this.$store.dispatch('changeOrder');
+            },
             batchRed: function () {
                 let ob = (this.demandList.type ? this.demandList.hybridData.list : this.demandList.monoData.list),
                     ar = [];
@@ -325,6 +329,9 @@
             }
         },
         mounted: function () {
+            if(this.demandList.conditions.order){
+                this.orderTime.set = false;
+            }
             if (this.demandList.monoName != '') {
                 this.searchText = this.demandList.monoName;
                 this.searchSet = true;

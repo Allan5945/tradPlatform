@@ -9,12 +9,10 @@
         props:['order'],
         methods:{
             orderTop:function () {
-                this.order.set = !this.order.set;
-                this.$emit('update:order',this.order);
+                this.$emit('order',this.order);
             },
             orderBottom:function () {
-                this.order.set = !this.order.set;
-                this.$emit('update:order',this.order);
+                this.$emit('order',this.order);
             }
         }
     }

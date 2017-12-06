@@ -146,8 +146,8 @@
     }
     .area-container {
         position: absolute;
-        top: 0px;
-        left: 0px;
+        /*top: 0px;
+        left: 0px;*/
         width: 430px;
         background: white;
         border-radius: 10px;
