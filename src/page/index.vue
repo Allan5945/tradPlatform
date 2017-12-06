@@ -16,8 +16,12 @@
          <infPanel></infPanel>
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-        <!-- <myIndex></myIndex> -->
+         <!--<myIndex></myIndex>-->
         <routeNetwork></routeNetwork>
+         <myIndexFzz></myIndexFzz>
+        <!--<myPurpose></myPurpose>-->
+
+        <!--<myPublish></myPublish>-->
     </div>
 </template>
 
@@ -41,6 +45,11 @@
     import infPanel from './../page/components/infPanel.vue'
 
     import myIndex from './../page/components/mine/myIndex.vue'
+    import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
+    import myPublish from './../page/components/mine/myPublish.vue'
+    import myPurpose from './../page/components/mine/myPurpose.vue'
+
+
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     export default {
         data() {
@@ -243,6 +252,9 @@
             infPanel,
             myIntentForm,
             myIndex,
+            myIndexFzz,
+            myPublish,
+            myPurpose,
             routeNetwork,
         }
     }

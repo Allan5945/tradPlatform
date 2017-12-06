@@ -17,19 +17,25 @@
             <div class="my-list" >
                 <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" @click="getTable(index)">{{val}}</div>
             </div>
-             <myTable></myTable>
+            <!--我的发布-->
+             <!--<myPublishList></myPublishList>-->
+
+            <!--我的意向-->
+             <myPurposeList></myPurposeList>
         </div>
     </div>
 </template>
 
 <script>
 import myNav from './myNav.vue';
-import myTable from './myPublishList.vue';
+import myPublishList from './myPublishList.vue';
+import myPurposeList from './myPurposeList.vue';
 import myPic from './../../../static/img/haveline.png';
     export default {
         data(){
             return{
-                myList:["审核列表","委托/托管","我的发布","我的意向","我的订单","我的收藏","公司账户"]
+                myList:["审核列表","委托/托管","我的发布","我的意向","我的订单","我的收藏","公司账户"],
+                isActive: true
             }
         },
         methods: {
@@ -44,7 +50,9 @@ import myPic from './../../../static/img/haveline.png';
         },
         components: {
             myNav,
-            myTable
+//            myTable改成myPublishList
+            myPublishList,//我的发布
+            myPurposeList //我的意向
         }
     }
 </script>
