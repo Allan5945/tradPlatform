@@ -112,9 +112,12 @@
             },
             transShow:function(){
                 this.detailShow = true;
+                this.detailShow2 = false;
+
             },
             transShow2: function () {
                 this.detailShow2 = true;
+                this.detailShow = false;
             },
             init:function () {
                 if(

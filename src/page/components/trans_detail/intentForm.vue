@@ -504,8 +504,6 @@
             },
             //发送数据
             submitData: function () {
-                this.$emit("sumitForm");
-                console.log(this.demandData)
                 let sendData = {};
                sendData.demandId = this.demandData.demandId;
                 sendData.employeeId =this.demandData.employeeId;
@@ -571,10 +569,14 @@
                     params: sendData
                 }) .then((response) => {
                         this.demandData.responseId = response.data.response.id;
+                        if(this.demandData.responseId){
+                            this.$emit("sumitForm");
+                        }
                         tabulationBoxTrigger.$emit('getdemandData',this.demandData);
                 }) .catch((error) => {
                     console.log(error);
                 });
+
             },
             //点击关闭所有下拉
             closeAll: function () {
