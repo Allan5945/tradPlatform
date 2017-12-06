@@ -135,10 +135,7 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
-<<<<<<< HEAD
                 console.info(val)
-                tabulationBoxTrigger.$emit('tabulationBoxTrigger',val);
-=======
                 if(val.data.renew == 0){
                     this.$ajax({
                         method: 'post',
@@ -161,7 +158,6 @@
                         );
                 };
                 tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
->>>>>>> 48036e33a7a75fb7b37a0a629a130eb87dee6287
             }
         },
         updated: function () {
