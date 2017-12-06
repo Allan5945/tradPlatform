@@ -495,7 +495,7 @@
             if (this.isSelf == true) {
                 this.showCode = 1;
             } else {
-                this.showCode = 1;
+                this.showCode = 0;
             }
 //            this.showCode = 0;
             this.show();
