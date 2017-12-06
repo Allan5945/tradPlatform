@@ -343,7 +343,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b btn-blue" @click="submitData">支付意向金提交意向</button>
+                <button class="btn-b btn-blue" @click="submitData">确认选定该意向</button>
                 <button class="btn-c btn-cancel" @click="cancel">取消</button>
             </div>
         </div>
@@ -360,6 +360,7 @@
         data() {
             return {
                 demandData:{},
+                getIntentData:{},
                 warn1Show: false,  //联系人警告
                 warn2Show: false,  //联系方式警告
                 warn3Show: false,  //始发地警告
@@ -487,11 +488,11 @@
             }
         },
         mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.demandData.demandId = val.data.id;
-                this.demandData.employeeId = val.data.employeeId;
-                this.demandData.demandType = val.data.demandtype;
-
+        tabulationBoxTrigger.$on('getClickData', val => {
+            this.demandData = val;
+        });
+        tabulationBoxTrigger.$on('sendTable',val => {
+            this.getIntentData = val;
         });
      },
         methods: {
@@ -500,13 +501,12 @@
                 this.warn4Show = true;
             },
             cancel:function(){
-                this.$emit('closeForm');
+                this.$emit('closeMyForm');
             },
             //发送数据
             submitData: function () {
-                this.$emit("sumitForm");
-                console.log(this.demandData)
-                let sendData = {};
+
+                let sendData =this.getIntentData;
                sendData.demandId = this.demandData.demandId;
                 sendData.employeeId =this.demandData.employeeId;
                 //sendData.id = '0';
@@ -575,6 +575,10 @@
                 }) .catch((error) => {
                     console.log(error);
                 });
+
+
+                tabulationBoxTrigger.$emit('getTable',sendData);
+                this.$emit('closeMyForm');
             },
             //点击关闭所有下拉
             closeAll: function () {
