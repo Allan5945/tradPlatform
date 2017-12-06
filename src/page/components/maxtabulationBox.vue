@@ -1,8 +1,8 @@
 <template>
     <div class="demand-list">
         <div></div>
-        <div :class="{'tagRed':!key.data.renew}" class="mes-body-h popup" @click="getDetail(key)"
-             v-for="(key,i) in renderData">
+        <div :class="{'tagRed':(key.data.renew == '0'),'already-read':(key.data.collectType != 0)}" class="mes-body-h popup" @click="getDetail(key)"
+             v-for="(key,i) in renderData" @mouseover="showPanel = true;iPanel = i" @mouseout="showPanel = false">
             <div class="mes-body-i0">
                 <span @click="seted(key)" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':key.data.set}">&#xe723;</span>
                 <img :src="key.img" alt="">
@@ -10,7 +10,7 @@
             <div class="font-bold mes-body-i1">
                 <div v-for="(item,d) in key.name">
                     <div>
-                        <div :class="{rolling:(item.length > 4)}">{{item}}</div>
+                        <div :class="{rolling:(item.length > 4),'colored':!(key.data.renew == '0')}">{{item}}</div>
                     </div>
                     <span v-if="d != key.name.length - 1">-</span>
                 </div>
@@ -22,6 +22,10 @@
             <div class="mes-body-i3">{{key.data.aircrfttyp}}</div>
             <div class="mes-body-i4">{{key.data.subsidypolicyStr}}</div>
             <div class="mes-body-i4">{{key.data.remark}}</div>
+            <div class="move-panel" v-if="showPanel && i == iPanel">
+                <div class="btn-w" v-if="(key.data.collectType == 0)" @click="futurePanel(key)">添加收藏</div>
+                <div class="btn-w" v-if="(key.data.collectType != 0)" @click="alreadyPanel(key)">取消收藏</div>
+            </div>
         </div>
         <div v-if="(renderData.length == 0)" class="no-data">无数据!</div>
     </div>
@@ -37,9 +41,13 @@
     import tag1 from './../../static/img/jd/2.png'; // 航线托管需求图片
     import tag2 from './../../static/img/jd/3.png'; // 航线托管需求图片
     import tag3 from './../../static/img/jd/4.png'; // 航线托管需求图片
+
     export default {
         data() {
-            return {}
+            return {
+                showPanel:false,
+                iPanel:0
+            }
         },
         filters: {
             capitalizeType: function (val) {
@@ -47,10 +55,34 @@
             }
         },
         methods: {
-            dropLine: function () {
+            alreadyPanel: function () {
+                
+            },
+            futurePanel: function () {
 
             },
             getDetail: function (val) {
+                if(val.data.renew == 0){
+                    this.$ajax({
+                        method: 'post',
+                        url: '/employeeDemandAdd',
+                        params:{
+                            employeeDemandIds:val.data.id
+                        },
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then((response) => {
+                            if(response.data.opResult == '0'){
+                                this.$store.dispatch('changeRenew',[val.data.id])
+                            }
+                        })
+                        .catch((error) => {
+                                console.log(error);
+                            }
+                        );
+                };
                 tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
             },
             seted: function (v) {
@@ -189,6 +221,18 @@
     }
 </script>
 <style scoped lang="scss">
+    .move-panel{
+        position: absolute;
+        right: 120px;
+        >div{
+            border-radius: 15px;
+            margin-right: 13px;
+            padding: 0 10px;
+            color: rgba(96, 94, 124, 0.65);
+            height: 20px;
+            line-height: 20px;
+        }
+    }
     .demand-list {
         padding: 0 20px;
     }
@@ -213,7 +257,17 @@
         display: inline-block;
         position: relative;
     }
-
+    .already-read:after{
+        content: url(./../../static/img/sc/ysc.png);
+        position: absolute;
+        right: 2px;
+        top: 0;
+        width: 0;
+        height: 30px;
+    }
+    .colored{
+        color:rgba(96,94,124,.6) !important;
+    }
     .acquiescenceSet:before {
         width: 17px;
         height: 19px;

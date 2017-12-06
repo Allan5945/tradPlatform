@@ -43,5 +43,11 @@ export default {
     },
     routeNetwork:({commit},vl)=>{
         commit(types.ROUTERNETWORK,vl)
+    },
+    changeRenew:({commit},vl)=>{
+        commit(types.CHANGERENEW,vl)
+    },
+    tagread:({commit},vl)=>{
+        commit(types.TAGREAD,vl)
     }
 }

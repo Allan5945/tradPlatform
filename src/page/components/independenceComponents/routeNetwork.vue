@@ -1,5 +1,5 @@
 <template>
-    <div class="route-network user-select">
+    <div class="route-network user-select" v-if="role.role!='2'">
         本司航线网络图
         <div id='turnLine' @click="change" :class="{'iskg0':!ched,'iskg1':ched}" class='iskg'>
             <span :class="{'iskgCkecked':ched}" class='turn-off'>&#xe61e;</span>
@@ -7,6 +7,7 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex';
     import tabulationBoxTrigger from "$src/public/js/tabulationBoxTrigger.js";
     export default {
         data() {
@@ -17,12 +18,13 @@
         methods: {
             change: function () {
                 this.ched = !this.ched;
-                console.log(999)
                 tabulationBoxTrigger.$emit('routeNetwork',this.ched);
             }
         },
         computed:{
-
+            ...vx.mapGetters([
+                'role'
+            ])
         },
         mounted:function () {
         }

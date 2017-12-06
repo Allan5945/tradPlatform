@@ -26,20 +26,41 @@
                 'c_updated',
                 'airList',
                 'cityList',
-                'close'
+                'close',
+                'routeNetwork',
+                'role'
             ]),
         },
         mounted: function () {
-            tabulationBoxTrigger.$on('routeNetwork',function (v) {
-                if(!v){  // 打开航线网络图
 
-                }
+            let ar = [];
+            this.routeNetwork.forEach((v)=>{
+                let selAir = this.$airMes(this.airList,v.dptIata);
+                let ourAir = this.$airMes(this.airList,v.arrvIata);
+                ar.push({
+                    fromName:selAir.airportName,
+                    toName:ourAir.airportName,
+                    coords:[[selAir.cityCoordinateW,selAir.cityCoordinateJ],[ourAir.cityCoordinateW,ourAir.cityCoordinateJ]]
+                })
             });
+
             let a = [], // 航线需求列表
                 d = [], // 我发出的需求 -无
                 b = [], // 我的需求 -有
                 code, // 三字码
-                type; // 需求类型 0 = 航线需求，1 = 运力需求，2 = 航线需求和运力需求，3 = 我的需求
+                type, // 需求类型 0 = 航线需求，1 = 运力需求，2 = 航线需求和运力需求，3 = 我的需求
+                network = {
+                    "name": "routeNetwork",
+                    "type": "lines",
+                    "coordinateSystem": "bmap",
+                    "zlevel": 2,
+                    "lineStyle": {
+                        "normal": {"color": "#336BEA", "width": 1, "opacity": 0.4, "curveness": 0.2}
+                    },
+                    "data": ar
+                };
+
+
             this.allDot.forEach((v) => {
                 let mes = this.$cityMes(this.cityList, v.dpt);
                 let obj = v.obj.split(',');
@@ -145,6 +166,7 @@
                     }
                 }
             });
+
             this.myChart = echarts.init(document.getElementById('map-warp'));
             let option = {
                 "bmap": {
@@ -155,13 +177,21 @@
                     "type": 'bmap',
                     "mapStyle": zs
                 },
+                legend: {
+                    show:false,
+                    data: ['routeNetwork'],
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    selectedMode: 'multiple',
+                    selected:{
+                        'routeNetwork':false
+                    }
+                },
                 "tooltip": {
                     trigger: function () {
                         return '';
                     }
-                },
-                legend:{
-                    data:[{name:''}]
                 },
                 "series": [
                     {
@@ -236,12 +266,28 @@
                             }
                         }
                     },
+                    network
                 ]
             };
             this.myChart.setOption(option);
+            let _this = this;
+            tabulationBoxTrigger.$on('routeNetwork',function (v) {
+                if(!v){  // 打开航线网络图
+                    _this.myChart.dispatchAction({
+                        type: 'legendSelect',
+                        name:"routeNetwork"
+                    })
+                }else{
+                    _this.myChart.dispatchAction({
+                        type: 'legendUnSelect',
+                        name:"routeNetwork"
+                    })
+                }
+            });
             this.$bExample.setmap(this.myChart.getModel().getComponent('bmap').getBMap());
             this.$bExample.setallNum(a);
             this.$bExample.init();
+
             this.myChart.on('click', (a) => {
                 let type = 0; // 1 查询选择机场中由当前用户提出的需求 || 0 查询选择机场的所有需求
                 if (a.data.type == 3) {

@@ -45,7 +45,7 @@
             }
         },
         mounted:function () {
-            this.logined();
+//            this.logined();
         },
         computed:{
             ...vx.mapGetters([
