@@ -58,6 +58,7 @@
 
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+ import * as vx from 'vuex';
  export default {
      data(){
          return{
@@ -69,7 +70,7 @@
      },
      methods:{
          closeDetail:function(){
-
+            this.$emit("closeDetail")
          },
          haveInvent:function(){
             /* if(!this.isIntentionMoney){
@@ -78,11 +79,15 @@
              this.$emit("formShow");
          }
      },
+     computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
       mounted() {
-        tabulationBoxTrigger.$on('getClickData', val => {
-
-            console.log("demandtype"+val.demandType);
-            if(val.demandType == 1){
+        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+            if(val.data.demandtype == 1 && this.role.role == 1){
+               console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -90,7 +95,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.demandId
+                    demandId: val.data.id
                 }
                 })
                 .then((response) => {

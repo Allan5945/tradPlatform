@@ -2,7 +2,7 @@
     <div class="plan-wrapper scroll" >
         <header>
             <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">找运力。。。。</div>
+            <div class="head-til">{{detailData.title}}</div>
             <div class="tips">
                 <span>创建于{{detailData.releasetime}}</span>
                 <span>已有{{intentionCount}}位用户发起意向</span>
@@ -171,7 +171,6 @@
       mounted:function(){
             tabulationBoxTrigger.$on('getdemandData', val => {
                 this.demandData = val;
-                console.log(this.demandData);
                 if(this.demandData.responseId){
                      this.$ajax({
                           method: 'post',

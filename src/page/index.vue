@@ -8,13 +8,15 @@
         <transition name="dialog">
             <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
-        <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow"></needDetail>
+        <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
         <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-        <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow"></myintention>
-        <infPanel></infPanel>
-        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
+         <infPanel></infPanel>
+      <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
     </div>
 </template>
@@ -32,10 +34,13 @@
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
+    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './../page/components/infPanel.vue'
+
+    import myIndex from './../page/components/mine/myIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     export default {
         data() {
@@ -49,6 +54,7 @@
                 intentFormShow:false,
                 planShow:false,
                 intentShow:false,
+                myFormShow:false,
                 detailShow:false,
                 detailShow2: false,
                 loadingData: {
@@ -77,8 +83,20 @@
             formShow(){
                 this.intentFormShow = !this.intentFormShow;
             },
+            formShow1(){
+                this.myFormShow = !this.myFormShow
+            },
+            openIntent() {
+                this.intentShow = true;
+            },
             closeForm(){
                 this.intentFormShow = !this.intentFormShow;
+            },
+            closeMyForm(){
+                this.myFormShow = !this.myFormShow;
+            },
+            closeDetail(){
+                this.detailShow =false;
             },
              closeThis() {
                 this.detailShow2 = false;
@@ -222,8 +240,10 @@
             myIntention,
             paySuccess,
             airlineDetailPayAfter,
+            infPanel,
+            myIntentForm,
+            myIndex,
             routeNetwork,
-            infPanel
         }
     }
 </script>

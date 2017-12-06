@@ -187,6 +187,37 @@ const mutations = {
     [types.ROUTERNETWORK](state,vl) {
         state.routeNetwork = vl;
     },
+    [types.CHANGERENEW](state,vl) {
+        vl.forEach((v)=>{
+            if(state.demandList.type){
+                state.demandList.hybridData.list.forEach((v2,i)=>{
+                    if(v2.id == v){
+                        state.demandList.hybridData.list[i].renew = '1';
+                    }
+                })
+            }else{
+                state.demandList.monoData.list.forEach((v2)=>{
+                    if(v2.id == v){
+                        state.demandList.hybridData.list[i].renew = '1';
+                    }
+                })
+            }
+        })
+    },
+    [types.TAGREAD](state,vl) {  // vl.t  0,表示取消收藏，1添加收藏
+        vl.v.forEach((v)=>{
+            let ar = (state.demandList.type ? state.demandList.hybridData.list : state.demandList.monoData.list);
+            ar.forEach((v2,i)=>{
+                if(v2.id == v){
+                    if(vl.t){
+                        ar[i].collectType = 1;
+                    }else{
+                        ar[i].collectType = 0;
+                    }
+                }
+            });
+        })
+    },
 };
 export default {
 	state,

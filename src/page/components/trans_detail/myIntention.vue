@@ -2,9 +2,9 @@
     <div class="plan-wrapper scroll">
         <header>
             <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-            <div class="head-til">成都新开找运力</div>
+            <div class="head-til">{{detailData.title}}</div>
             <div class="note">
-                <span>创建于2017.12.12</span>
+                <span>创建于{{detailData.releasetime}}</span>
                 <span>状态：<span style="color:#3C78FF;">洽谈中</span></span>
             </div>
         </header>
@@ -12,146 +12,148 @@
             <div class="table-form">
                 <div >
                     <div>出港时刻</div>
-                    <div>08:00 - 12:00</div>
+                    <div>{{detailData.dptTime}}</div>
                 </div>
                 <div>
                     <div>班期</div>
-                    <div>待定</div>
+                    <div>{{detailData.days}}</div>
                 </div>
                 <div>
                     <div>机型</div>
-                    <div>AA2222</div>
+                    <div>{{detailData.aircrfttyp}}</div>
                 </div>
-                <div>
+                 <div>
                     <div>运力基地</div>
-                    <div>双流机场</div>
+                    <div>{{detailData.dptNm}}</div>
                 </div>
                 <div>
                     <div>运力归属</div>
-                    <div>东方航空</div>
+                    <div>{{detailData.capacitycompany}}</div>
                 </div>
                 <div>
                     <div>座位布局</div>
-                    <div>F8Y160</div>
+                    <div>{{detailData.seating}}</div>
                 </div>
                 <div>
                     <div>小时成本</div>
-                    <div>1万元/小时</div>
+                    <div>{{detailData.hourscost}}万/小时</div>
                 </div>
                 <div>
                     <div>接受调度</div>
-                    <div>武汉</div>
+                    <div>{{detailData.schedulingStr}}</div>
                 </div>
                 <div>
                     <div>有效期</div>
-                    <div>2017.12.1 - 2018.12.1</div>
+                    <div>{{detailData.periodValidity}}</div>
                 </div>
                  <div class="tips">
                     <div>其他说明</div>
-                    <div>说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容
-                        说明内容说明内容说明内容说明内容说明内容说明内容容说明内容说明内容说明内容</div>
-                    </div>
+                    <div>{{detailData.remark}}</div>
+                 </div>
             </div>
-            <div class="intent">
-                <div class="intent-til">
-                    <div>收到的意向</div>
-                    <div>已有<span>2</span>位用户发起意向</div>
+        <div class="intent">
+            <div class="intent-til">
+                <div>收到的意向</div>
+                <div>已有{{this.intentionCount }}位用户发起意向</div>
+            </div>
+            <div class="intent-form">
+                <div>
+                    <div>收到时间<span>--</span></div>
+                    <div>意向方</div>
                 </div>
-                <div class="intent-form">
-                    <div>
-                        <div>收到时间<span>--</span></div>
-                        <div>意向方</div>
+                <div class="intent-box" v-for=" val in planData" v-if="intentListShow">
+                     <div class="intent-item">
+                        <div class="time">{{val.responsedate}}</div>
+                        <div class="person">南方航空<span class="iconfont">&#xe602;</span></div>
+                        <div class="detail" @click="closeDetail">{{text}}</div>
                     </div>
-                    <div class="intent-box">
-                         <div class="intent-item">
-                            <div class="time">11.04.2017</div>
-                            <div class="person">南方航空<span class="iconfont">&#xe602;</span></div>
-                            <div class="detail" @click="closeDetail">{{text}}</div>
-                        </div>
-                        <div class="intent-detail" v-show="detailShow">
-                            <div class="airline">
-                                <div class="airplace">
-                                    <div>始发机场</div>
-                                    <div>
-                                        <div>成都双流</div>
-                                        <div>接受临近机场</div>
-                                    </div>
-                                    <div class="resouse">
-                                        <div>出港资源</div>
-                                        <div>08:00 - 12:00</div>
-                                    </div>
+                    <div class="intent-detail" v-show="detailShow">
+                        <div class="airline">
+                            <div class="airplace">
+                                <div>始发机场</div>
+                                <div>
+                                    <div>{{val.dpt}}</div>
+                                    <div>接受临近机场</div>
                                 </div>
-                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
-                                <div class="airplace">
-                                    <div>经停机场</div>
-                                    <div>北京西苑</div>
-                                    <div class="resouse">
-                                        <div>出港资源</div>
-                                        <div>带协调</div>
-                                    </div>
-                                </div>
-                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
-                                <div class="airplace">
-                                    <div>到达区域</div>
-                                    <div>华北地区</div>
+                                <div class="resouse">
+                                    <div>出港资源</div>
+                                    <div>{{val.dptTime}}</div>
                                 </div>
                             </div>
-                            <div class="table-form">
-                                <div>
-                                    <div>拟开时间</div>
-                                    <div>2017.11.11 - 2018.11.11</div>
-                                </div>
-                                <div>
-                                    <div>拟开班期</div>
-                                    <div>待定</div>
-                                </div>
-                                <div>
-                                    <div>拟开机型</div>
-                                    <div>AA2222</div>
-                                </div>
-                                <div>
-                                    <div>座位数</div>
-                                    <div>180</div>
-                                </div>
-                                <div>
-                                    <div>客量预期</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>客座率预期</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>补贴政策</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>小时成本</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>运力归属</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>运力基地</div>
-                                    <div>80人/班</div>
-                                </div>
-                                <div>
-                                    <div>是否调度</div>
-                                    <div>华北地区</div>
-                                </div>
-                                <div class="tips">
-                                    <div>其他说明</div>
-                                    <div>说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容说明内容
-                                    说明内容说明内容说明内容说明内容说明内容说明内容容说明内容说明内容说明内容</div>
+                            <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                            <div class="airplace">
+                                <div>经停机场</div>
+                                <div>{{val.pst}}</div>
+                                <div class="resouse">
+                                    <div>出港资源</div>
+                                    <div>{{val.pstTime}}</div>
                                 </div>
                             </div>
-                            <div class="sure-btn" @click="toSelect">选定</div>
+                            <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                            <div class="airplace">
+                                <div>到达区域</div>
+                                <div>{{val.arrv}}</div>
+                            </div>
+                        </div>
+                        <div class="table-form">
+                            <div>
+                                <div>拟开时间</div>
+                                <div>{{val.sailingtime}}</div>
+                            </div>
+                            <div>
+                                <div>拟开班期</div>
+                                <div>{{val.days}}</div>
+                            </div>
+                            <div>
+                                <div>拟开机型</div>
+                                <div>{{val.aircrfttyp}}</div>
+                            </div>
+                            <div>
+                                <div>座位数</div>
+                                <div>{{planData.seating}}</div>
+                            </div>
+                            <div>
+                                <div>客量预期</div>
+                                <div>{{val.avgguestexpect}}</div>
+                            </div>
+                            <div>
+                                <div>客座率预期</div>
+                                <div>{{val.loadfactorsexpect}}</div>
+                            </div>
+                            <div>
+                                <div>补贴政策</div>
+                                <div>{{val.subsidypolicy}}</div>
+                            </div>
+                            <div>
+                                <div>小时成本</div>
+                                <div>{{planData.hourscost}}</div>
+                            </div>
+                            <div>
+                                <div>运力归属</div>
+                                <div>{{val.capacitycompany}}</div>
+                            </div>
+                            <div>
+                                <div>运力基地</div>
+                                <div>{{val.dpt}}</div>
+                            </div>
+                            <div>
+                                <div>是否调度</div>
+                                <div>{{val.scheduling}}</div>
+                            </div>
+                            <div class="tips">
+                                <div>其他说明</div>
+                                <div>{{val.remark}}</div>
+                            </div>
+                        </div>
+                        <div class="sure-btn" @click="toSelect(val)" v-if="selShow">选定</div>
+                        <div class="btns" v-else>
+                            <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
+                            <div class="cancel-btn" @click="cancelSel">撤销选定</div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
         </div>
         <footer>
@@ -164,11 +166,18 @@
 </template>
 
 <script>
+import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+import * as vx from 'vuex'
  export default {
      data(){
          return{
              detailShow:false,
-             text:"查看详情"
+             intentListShow:false,
+             selShow:true,
+             text:"查看详情",
+             detailData:{},
+             planData:{},
+             intentionCount:0,
          }
      },
      methods:{
@@ -183,28 +192,55 @@
          closeIntent:function(){
             this.$emit('closeIntent');
          },
-         toSelect:function(){
+         toSelect:function(val){
+            tabulationBoxTrigger.$emit('sendTable',val);
             this.$emit("formShow");
+         },
+         cancelSel:function(){
+          this.selShow = true;
          }
 
      },
-      mounted:function(){
-          /*this.$ajax({
+      computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
+      mounted() {
+        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+
+            console.log("demandtype"+val.data.demandtype);
+            if(val.data.demandtype == 1 && this.role.role == 0){
+                this.$ajax({
                 method: 'post',
-                url: '/capacitydemand/capacityDemandFindById',
+                url: '/capacityRoutesDemandDetailFindById',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId: val.data.id
                 }
-            })
+                })
                 .then((response) => {
-
+                    this.intentionCount = response.data.intentionCount;
+                    this.detailData = response.data.data;
+                    this.planData = response.data.responseList;
+                    if(this.planData){
+                      this.intentListShow = true;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
-                );*/
-      }
+                );
+             this.$emit("openIntent");
+            };
+        });
 
+          tabulationBoxTrigger.$on('getTable',val=>{
+              this.selShow = false;
+            });
+     },
 }
 </script>
 
@@ -347,6 +383,30 @@
                 margin-bottom:25px;
                 text-align:center;
                 cursor:pointer;
+            }
+             .btns{
+                height:28px;
+                line-height:28px;
+                display: flex;
+                justify-content: center;
+                margin-top:12px;
+                margin-bottom:25px;
+                cursor:pointer;
+                .sel-btn{
+                  width:250px;
+                  color:#fff;
+                  background-color:#3C78FF;
+                  margin-right:10px;
+                  border-radius:100px;
+                  text-align:center;
+                }
+                .cancel-btn{
+                  width:100px;
+                  color:#fff;
+                  background-color:#3C78FF;
+                  border-radius:100px;
+                  text-align:center;
+                }
             }
         }
         .airline{

@@ -104,7 +104,7 @@
             padding-bottom: 20px;
             > div:nth-child(1){
                 font-size: 12px;
-                color: #605e7c;
+                color: rgba(96,94,124,.8);
                 height: 17px;
             }
             > div:nth-child(2){
