@@ -39,7 +39,7 @@
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
-    import infPanel from './components/bmap/infPanel.vue'
+    import infPanel from './components/independenceComponents/infPanel.vue'
 
     import myIndex from './../page/components/mine/myIndex.vue'
     import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
