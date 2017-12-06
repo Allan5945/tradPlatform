@@ -313,15 +313,14 @@
                     <div class="third-d item">
                         <div class="right item-child">
                             <span>补贴政策</span>　
+
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="subsidyYes"
-                                           checked/><label for="subsidyYes" class="input-label">有补贴</label>
-                                    <div class="choose-border" style="align-items: center; width: 118px;"
-                                         @click="subsidy = !subsidy">
+                                    <input type="radio" class="magic-radio" name="subsidy" id="subsidyYes" checked/>
+                                    <label for="subsidyYes" class="input-label">有补贴</label>
+                                    <div class="choose-border" style="align-items: center; width: 118px;"  @click="subsidy = !subsidy">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
-                                        <div class="triangle-big"
-                                             style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
+                                        <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
                                         <ul class="choose-type want-subsidy" v-show="subsidy">
                                             <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
                                         </ul>
@@ -329,22 +328,20 @@
                                 </div>
                                 <div style="display: flex">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="subsidyNo"
-                                               @click="subsidyClick1"/><label for="subsidyNo"
-                                                                              class="input-label">无补贴</label>
+                                        <input type="radio" class="magic-radio" name="subsidy" id="subsidyNo" @click="subsidyClick1"/>
+                                        <label for="subsidyNo" class="input-label">无补贴</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="subsidyTalk"
-                                               @click="subsidyClick2"/><label for="subsidyTalk"
-                                                                              class="input-label">可面谈</label>
+                                        <input type="radio" class="magic-radio" name="subsidy" id="subsidyTalk" @click="subsidyClick2"/>
+                                        <label for="subsidyTalk" class="input-label">可面谈</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="left item-child">
                             <div class="vertical-center">
-                                <input type="radio" class="magic-radio" id="acceptDispatch"/><label for="acceptDispatch"
-                                                                                                    class="input-label">接受调度</label>
+                                <input type="radio" class="magic-radio" id="acceptDispatch"/>
+                                <label for="acceptDispatch" class="input-label">接受调度</label>
                             </div>
                             <!--<span class="margin-right">拦标价格</span>　
                             <div class="choose-input">
@@ -620,14 +617,14 @@
                 this.dptTime = this.startTime1Show + ',' + this.endTime1Show;
                 this.pstTime = this.startTime2Show + ',' + this.endTime2Show;
                 this.arrvTime = this.startTime3Show + ',' + this.endTime3Show;
-               this.sendData.dptTime = this.dptTime;
-               this.sendData.pstTime = this.pstTime;
-               this.sendData.arrvTime = this.arrvTime;
-               this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
-               this.sendData.days = this.scheduleShow;      //必填 班期
-               this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
-               this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
-               this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
+                this.sendData.dptTime = this.dptTime;
+                this.sendData.pstTime = this.pstTime;
+                this.sendData.arrvTime = this.arrvTime;
+                this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
+                this.sendData.days = this.scheduleShow;      //必填 班期
+                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
+                this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
+                this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
 //               this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
 //                sendData.pst = this.secAreaCode;   //选填 经停地
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
@@ -657,6 +654,7 @@
                 this.sendData.capacitycompany = this.capacitycompany;   //运力归属
                 this.sendData.dpt = this.transportBase;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
+                console.info('sendData:');
                 console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
@@ -667,12 +665,17 @@
                     },
                     params: this.sendData
                 }).then((response) => {
+                    console.info('response:')
                     console.info(response)
-                    this.responseId = response.data.response.id;
+                    let responseIDMes = {};           //响应ID，响应者ID
+                    responseIDMes.Id = response.data.response.id; //响应ID
+                    responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
+                    console.info("responseIDMes:")
+                    console.info(responseIDMes)
 
-                    tabulationBoxTrigger.$emit('responseText', this.responseId); //向dialog.vue传responseId
+                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
                     tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
-                    console.info(this.responseId);
+                    console.info('responseId:' + this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {
                     console.log(error);

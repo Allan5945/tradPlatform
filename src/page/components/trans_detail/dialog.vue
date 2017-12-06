@@ -29,10 +29,12 @@
             }
         },
         created() {
+            // 接收airlineWrite.vue传来的参数
             tabulationBoxTrigger.$on('responseText',(val) => {
+                console.info('dialog接收airlineWrite:');
                 console.info(val);
-                this.sendData.id = val;
-//                this.sendData.employeeId = val.data.employeeId;
+                this.sendData.id = val.Id;
+                this.sendData.employeeId = val.employeeId;
             })
         },
         methods: {
