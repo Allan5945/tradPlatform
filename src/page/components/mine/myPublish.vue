@@ -5,8 +5,11 @@
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
         <div class="second item-container">
+            <div class="anew-publish">
+                重新发布
+            </div>
             <div class="top">
-                成都-北京-上海航线需求
+                <span>成都-北京-上海航线需求</span>
             </div>
             <div class="bottom">
                 <span class="font-gray" style="margin-right: 46px;">创建于2017.12.12</span>
@@ -112,6 +115,8 @@
         /*padding-bottom: 100px;*/
         width: 600px;
         height: 100%;
+        min-height: 700px;
+        font-size: 1.2rem;
         background: white;
         transform:translate(0,0);
         z-index: 12;
@@ -139,11 +144,27 @@
         }
     }
     .second {
+        position: relative;
         flex-direction: column;
         margin-bottom: 50px;
         height: 100px;
         background: rgba(216,216,216, .17);
+        .anew-publish {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 20px;
+            color: white;
+            border-radius: 20px;
+            background: #3C78FF;
+            cursor: pointer;
+        }
         .top {
+            display: flex;
             margin: 30px 0 15px 0;
             font-size: 20px;
         }

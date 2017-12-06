@@ -48,8 +48,7 @@
                             <span>1</span>
                         </span>
                         </div>
-                        <div class="list-f item color">
-                            查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
                 </div>
@@ -163,6 +162,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
+        font-size: 1.2rem;
         background: #F8F8F8;
     }
     .miList-container {

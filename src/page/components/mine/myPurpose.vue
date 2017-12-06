@@ -138,7 +138,7 @@
 
         </div>
         <footer>
-            <div class="btn">
+            <div class="buttons">
                 <div class="btn btn-w cancel-btn">取消意向</div>
                 <div class="btn btn-w col-btn">收藏</div>
             </div>
@@ -227,7 +227,9 @@
         width:600px;
         box-sizing:border-box;
         height:100%;
+        min-height: 700px;
         color:#605E7C;
+        font-size: 1.2rem;
         overflow: hidden;
         overflow-y:scroll;
         background-color:#fff;
@@ -242,7 +244,7 @@
           right:20px;
           width:560px;
           background-color:#fff;
-          height:100px;
+          height:110px;
         }
     }
     header{
@@ -384,9 +386,11 @@
         }
     footer{
         border-top: 1px solid #ccc;
-          .btn{
+          .buttons{
+              display: flex;
+              justify-content: center;
               height:40px;
-              margin:20px 0 40px 0;
+              margin-top:30px;
               >div{
                   height:40px;
                   line-height:40px;

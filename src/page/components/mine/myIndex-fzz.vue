@@ -18,10 +18,10 @@
                 <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" @click="getTable(index)">{{val}}</div>
             </div>
             <!--我的发布-->
-             <!--<myPublishList></myPublishList>-->
+             <myPublishList></myPublishList>
 
             <!--我的意向-->
-             <myPurposeList></myPurposeList>
+             <!--<myPurposeList></myPurposeList>-->
         </div>
     </div>
 </template>

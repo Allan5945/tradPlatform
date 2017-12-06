@@ -149,6 +149,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
+        font-size: 1.2rem;
         background: #F8F8F8;
     }
     .miList-container {

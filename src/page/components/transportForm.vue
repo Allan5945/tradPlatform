@@ -71,7 +71,7 @@
               <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
             <div class="form-box reset">
-                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
+                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany">
                 <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
                     <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
                     <span>{{item[0]}}</span>
@@ -357,6 +357,7 @@
                     page:2
                 }
             }) .then((response) => {
+                    console.info(response)
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);

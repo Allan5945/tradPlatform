@@ -353,15 +353,23 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">运力归属</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="capacitycompany"
-                                       style="border: 0;width: 136px;">
+                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany"
+                                       @click="getAirCompany" style="border: 0;width: 136px;">
                             </div>
+                            <ul class="choose-type air-company" v-show="airCompanyShow">
+                                <li v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
+                                    <span>{{item[0]}}</span>
+                                    <span>{{item[1]}}</span>
+                                </li>
+                            </ul>
                         </div>
                         <div class="left item-child">
                             <span>运力基地</span>　
-                            <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="transportBase"
-                                       style="border: 0;">
+                            <div class="choose-input" style="position: relative;">
+                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea"
+                                       @focus="fourAreaFn" style="border: 0;">
+                                <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-show="isSearch4"
+                                          style="left: -45px;"></airportS>
                             </div>
                         </div>
                     </div>
@@ -443,6 +451,8 @@
                 secAreaCode: '', //三字码（只有城市有）
                 thirdArea: '', //到达地 3的意向区域
                 thirdAreaCode: '', //三字码（只有城市有）
+                fourArea: '', // 运力基地
+                fourAreaCode: '', //三字码（只有城市有）
 
                 areaInput1: '', //输入的机场或区域
                 areaInput2: '', //输入的机场或区域
@@ -464,10 +474,12 @@
                 qyCode1: "", //始发点机场三字码
                 qyCode2: "", //经停地机场三字码
                 qyCode3: "", //到达地机场三字码
+                qyCode4: "", //运力基地三字码
                 searchText: '',
                 isSearch1: false,//机场搜索是否显示
                 isSearch2: false,
                 isSearch3: false,
+                isSearch4: false,
                 isSearchCode1: -1, //选择区域或机场 0为意向区域，1为意向机场
                 isSearchCode2: -1,
                 isSearchCode3: -1,
@@ -515,11 +527,13 @@
                 subsidyList: ['保底', '定补', '按人头'],
                 sendData: {},//从airlineDetailPayAfter.vue获取的数据
                 responseId: '',
-                capacitycompany: '',//运力归属
+                airCompany: '',//运力归属
                 hourConst: '',             //小时成本
                 transportBase: '',          //运力基地
                 index: '',                  //payAfter列表的index
-
+ 		airCompanyData: [], //航司内容
+                airCompanyShow: false, //下拉列表是否显示
+                airCompanyId: 0,    //航司3字码
             }
         },
         components: {
@@ -660,8 +674,8 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-                this.sendData.capacitycompany = this.capacitycompany;   //运力归属
-                this.sendData.dpt = this.transportBase;   //运力基地
+                this.sendData.capacitycompany = this.airCompanyId;   //运力归属
+//                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
                 this.sendData.index = this.index;           //payAfter列表的index
                 console.info('sendData:');
@@ -720,6 +734,35 @@
                 } else {
                     this.warnShow = false;
                 }
+            },
+            // 获取航司内容
+            getAirCompany: function () {
+                this.$ajax({
+                    url: "/airCompenyList",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        page: 2
+                    }
+                }).then((response) => {
+                    response.data.list.forEach(item => {
+                        let myCompany = [];
+                        myCompany.push(item.airlnCd);
+                        myCompany.push(item.icao);
+                        myCompany.push(item.capacitycompany);
+                        this.airCompanyData.push(myCompany);
+                    })
+                }).catch((error) => {
+                    console.log(error);
+                });
+                this.airCompanyShow = true;
+            },
+            getCompanyList: function (i) {
+                this.airCompany = this.airCompanyData[i][0];
+                this.airCompanyShow = false;
+                this.airCompanyId = this.airCompanyData[i][2];
             },
             //区域选择，获取点击的区域
             getArea1: function (areaMes) {
@@ -796,6 +839,14 @@
 
                 }
             },
+            //运力基地获取焦点事件
+            fourAreaFn: function () {
+                this.isSearch4 = true;
+            },
+            /*//运力基地失去焦点事件
+            fourAreaBlurFn: function () {
+                this.isSearch4 = false;
+            },*/
             // 意向机场/意向区域，input失去焦点
             airportBlurFn1: function () {
                 this.space1 = false;
@@ -846,6 +897,11 @@
                 this.isSearch3 = false;
                 this.thirdArea = data.name;
                 this.qyCode3 = data.code;
+            },
+            resData4: function (data) {
+                this.isSearch4 = false;
+                this.fourArea = data.name;
+                this.qyCode4 = data.code;
             },
             // 选择意向区域或意向机场 0为区域，1为机场
             space1Fn: function (item) {
@@ -1392,6 +1448,7 @@
     }
 
     .first {
+        position: relative;
         display: flex;
         justify-content: space-between;
         /*align-items: flex-end;*/
@@ -1615,6 +1672,21 @@
         }
         .third-e {
             padding: 17px 0;
+            .air-company {
+                top: 26px;
+                left: 0px;
+                width: 260px;
+                max-height: 210px;
+                overflow-y: scroll;
+            }
+            .air-company::-webkit-scrollbar {
+                width: 7px;
+            }
+            .air-company::-webkit-scrollbar-thumb {
+                height: 56px;
+                background: #D8D8D8;
+                border-radius: 4px;
+            }
         }
         .third-f {
             padding: 17px 0 21px 0;
