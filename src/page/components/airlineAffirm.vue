@@ -395,7 +395,7 @@
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import airAreaSearch from './airAreaSearch.vue'
-    import airportS from './airportSearch.vue'
+    import airportS from '../reuseComponents/airportSearch.vue'
     import calendar from './calendar'
 
     export default {

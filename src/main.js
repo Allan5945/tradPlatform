@@ -6,7 +6,7 @@ import {Radio } from 'element-ui'
 
 import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
-import bmapExamples from './bmap/bmapExamples'
+import bmapExamples from './page/components/bmap/bmapExamples'
 
 
 import routerConfig from './router/routerConfig.js'

@@ -143,7 +143,7 @@
 </template>
 <script>
  import calendar from './calendar'
- import airportS from './airportSearch.vue'
+ import airportS from '../reuseComponents/airportSearch.vue'
     export default {
         data () {
             return{

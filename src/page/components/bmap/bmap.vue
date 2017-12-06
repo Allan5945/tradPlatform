@@ -4,11 +4,11 @@
 
 <script>
     import echarts from 'echarts';
-    import '../static/js/bmap.js';
+    import '../../../static/js/bmap.js';
     import * as vx from 'vuex';
     import bmapExamples from './bmapExamples.js';
     import tabulationBoxTrigger from "$src/public/js/tabulationBoxTrigger.js";
-    import {sy,zs,i1,i2,i3,i4,i5,i6,i7,planePath2} from "$src/bmap/bmapResources.js";
+    import {sy,zs,i1,i2,i3,i4,i5,i6,i7,planePath2} from "./bmapResources";
 
     export default {
         data() {

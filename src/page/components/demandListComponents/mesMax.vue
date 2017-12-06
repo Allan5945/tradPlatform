@@ -68,12 +68,12 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import airportS from '../airportSearch.vue'
-    import hisy from '../hisy.vue'
-    import screen from '../screen-hs.vue'
-    import singleElection from '../singleElection.vue'
-    import order from '../order.vue'
-    import loading from '$src/page/state/locading.vue'
+    import airportS from '../../reuseComponents/airportSearch.vue'
+    import hisy from './hisy.vue'
+    import screen from './screen-hs.vue'
+    import singleElection from './singleElection.vue'
+    import order from '../../reuseComponents/order.vue'
+    import loading from '$src/page/reuseComponents/locading.vue'
     import tabulationBox from './maxtabulationBox.vue'
 
     export default {

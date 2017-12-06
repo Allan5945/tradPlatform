@@ -32,7 +32,7 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import singleElection from '../singleElection.vue'
+    import singleElection from './singleElection.vue'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import ig0 from '../../../static/img/haveline.png'; // 航线需求图片
     import ig1 from '../../../static/img/haveyun.png'; // 运力需求图片

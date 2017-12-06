@@ -11,5 +11,5 @@
     }
 </script>
 <style scoped lang="scss">
-    @import "./../../public/css/dropDowBbox";
+    @import "../../../public/css/dropDowBbox";
 </style>

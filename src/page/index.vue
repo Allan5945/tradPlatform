@@ -25,8 +25,8 @@
 <script>
     import * as vx from 'vuex'
     import index from './../page/index.vue'
-    import bmap from './../bmap/bmap.vue'
-    import navigation from './../page/components/navigation.vue'
+    import bmap from './components/bmap/bmap.vue'
+    import navigation from './components/toolbar/navigation.vue'
     import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
@@ -39,7 +39,7 @@
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
-    import infPanel from './../page/components/infPanel.vue'
+    import infPanel from './components/bmap/infPanel.vue'
 
     import myIndex from './../page/components/mine/myIndex.vue'
     import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
