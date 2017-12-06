@@ -17,13 +17,17 @@
                 <div class="start item">
                     <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
                         <span v-show="myData.dptState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.dptNm}}</h2></div>
+                    <div class="item-b"><h2>
+                            <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
+                            <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
+                        </h2>
+                    </div>
                     <div class="item-c font-gray">
-                        <span v-if="myData.arrvAcceptnearairport == 0">接收</span>
+                        <span v-if="myData.dptAcceptnearairport === 0">接收</span>
                         <span v-else>不接收</span>临近机场</div>
                     <div class="item-d font-gray">出港资源</div>
                     <div class="item-e">
-                        <span v-show="myData.dptTimeresources == 0">{{dptTime0}}-{{dptTime1}}</span>
+                        <span v-show="myData.dptTimeresources == 0">{{dptTime0}}</span>
                         <span v-show="myData.dptTimeresources == 1">待协调</span>
                         <span v-show="myData.dptTimeresources == 2">时刻充足</span>
                     </div>
@@ -34,7 +38,11 @@
                 <div class="pass item">
                     <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
                         <span v-show="myData.pstState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.pstNm}}</h2></div>
+                    <div class="item-b"><h2>
+                            <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
+                            <span v-show="myData.pstState == 1">{{myData.pst}}</span>
+                        </h2>
+                    </div>
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">出港资源</div>
                     <div class="item-e">
@@ -49,7 +57,11 @@
                 <div class="arrive item">
                     <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
                         <span v-show="myData.arrvState == 1">区域</span></div>
-                    <div class="item-b"><h2>{{myData.arrvNm}}</h2></div>
+                    <div class="item-b"><h2>
+                            <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
+                            <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
+                        </h2>
+                    </div>
                     <!--下方有空格-->
                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                     <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
@@ -84,8 +96,9 @@
                         <div class="item-a">{{myData.days}}</div>
                         <div class="item-b">{{myData.seating}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                        <div class="item-d" style="display: flex;">{{periodValidity0}}-{{periodValidity1}} <span
-                                class="icon-item" v-show="secondShow">&#xe653;</span></div>
+                        <div class="item-d" style="display: flex;">{{periodValidity0}}
+                            <!--<span class="icon-item" v-show="secondShow">&#xe653;</span>-->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -121,10 +134,10 @@
                 </div>
             </div>
             <div class="ninth">
-                <div class="nine-item">
+                <div class="nine-item" v-for="(item,index) in listData">
                     <div class="item-first">
-                        <div class="left">11.04.2017</div>
-                        <div class="center-left">南方航空</div>
+                        <div class="left">{{item.responsedate}}</div>
+                        <div class="center-left">{{item.intentionCompanyName}}</div>
                         <div class="center-right">
                             <span class="icon-item">&#xe602; <span class="reminder"></span></span>
                         </div>
@@ -135,33 +148,76 @@
                     <div v-show="purposeDetailShow">
                         <div class="item-second">
                             <div class="start item">
-                                <div class="item-a">始发机场</div>
+                                <div class="item-a font-gray">始发<span v-show="item.dptState == 0">机场</span>
+                                    <span v-show="item.dptState == 1">区域</span></div>
+                                <div class="item-b"><h2>
+                                    <span v-show="item.dptState == 0">{{item.dptNm}}</span>
+                                    <span v-show="item.dptState == 1">{{item.dpt}}</span>
+                                </h2>
+                                </div>
+                                <div class="item-c font-gray">
+                                    <span v-if="item.dptAcceptnearairport === 0">接收</span>
+                                    <span v-else>不接收</span>临近机场</div>
+                                <div class="item-d font-gray">出港资源</div>
+                                <div class="item-e">
+                                    <span v-show="item.dptTimeresources == 0">{{item.dptTime}}</span>
+                                    <span v-show="item.dptTimeresources == 1">待协调</span>
+                                    <span v-show="item.dptTimeresources == 2">时刻充足</span>
+                                </div>
+
+                                <!--<div class="item-a">始发机场</div>
                                 <div class="item-b"><h2>成都双流</h2></div>
                                 <div class="item-c">接受临近机场</div>
                                 <div class="item-d">出港资源</div>
-                                <div class="item-e">08:00-12:00</div>
+                                <div class="item-e">08:00-12:00</div>-->
                             </div>
                             <div class="item-icon">
                                 <span class="icon-item">&#xe672;</span>
                             </div>
                             <div class="pass item">
-                                <div class="item-a">经停机场</div>
+                                <div class="item-a font-gray">经停<span v-show="item.pstState == 0">机场</span>
+                                    <span v-show="item.pstState == 1">区域</span></div>
+                                <div class="item-b"><h2>
+                                    <span v-show="item.pstState == 0">{{item.pstNm}}</span>
+                                    <span v-show="item.pstState == 1">{{item.pst}}</span>
+                                </h2>
+                                </div>
+                                <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                                <div class="item-d font-gray">出港资源</div>
+                                <div class="item-e">
+                                    <span v-show="item.pstTimeresources == 0">{{item.pstTime}}</span>
+                                    <span v-show="item.pstTimeresources == 1">待协调</span>
+                                    <span v-show="item.pstTimeresources == 2">时刻充足</span>
+                                </div>
+                                <!--<div class="item-a">经停机场</div>
                                 <div class="item-b"><h2>北京南苑</h2></div>
-                                <div class="item-c">&nbsp;<!--此处有空格--></div>
+                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
                                 <div class="item-d">出港资源</div>
-                                <div class="item-e">带协调</div>
+                                <div class="item-e">带协调</div>-->
                             </div>
                             <div class="item-icon">
                                 <span class="icon-item">&#xe672;</span>
                             </div>
                             <div class="arrive item">
-                                <div class="item-a">到达区域</div>
+                                <div class="item-a font-gray">到达<span v-show="item.arrvState == 0">机场</span>
+                                    <span v-show="item.arrvState == 1">区域</span></div>
+                                <div class="item-b"><h2>
+                                    <span v-show="item.arrvState == 0">{{item.arrvNm}}</span>
+                                    <span v-show="item.arrvState == 1">{{item.arrv}}</span>
+                                </h2>
+                                </div>
+                                <!--下方有空格-->
+                                <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                                <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
+                                <div class="item-e">&nbsp;<!--此处有空格--></div>
+
+                                <!--<div class="item-a">到达区域</div>
                                 <div class="item-b"><h2>华北地区</h2></div>
 
-                                <!--下方有空格-->
-                                <div class="item-c">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d">&nbsp;<!--此处有空格--></div>
-                                <div class="item-e">&nbsp;<!--此处有空格--></div>
+                                &lt;!&ndash;下方有空格&ndash;&gt;
+                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>-->
                             </div>
                         </div>
                         <div class="item-third">
@@ -175,12 +231,29 @@
                                     <div>是否调度</div>
                                 </div>
                                 <div class="right item">
-                                    <div class="item-height">2017.11.11-2018.11.11</div>
+                                    <div class="item-a">{{item.sailingtime}}</div>
+                                    <div class="item-b">{{item.aircrfttyp}}</div>
+                                    <div class="item-c">{{item.loadfactorsexpect}}人/均班</div>
+                                    <div class="item-d" v-if="item.subsidypolicy === ''">有补贴</div>
+                                    <div class="item-d" v-if="item.subsidypolicy == 0">定补</div>
+                                    <div class="item-d" v-if="item.subsidypolicy == 1">保底</div>
+                                    <div class="item-d" v-if="item.subsidypolicy == 2">人头补</div>
+                                    <div class="item-d" v-if="item.subsidypolicy == 3">待议</div>
+                                    <div class="item-d" v-if="item.subsidypolicy == 4">无补贴</div>
+
+                                    <div class="item-height">{{item.capacitycompany}}</div>
+                                    <div class="item-height">
+                                        <span v-show="item.scheduling == 0">接受</span>
+                                        <span v-show="item.scheduling == 1">不接受</span>
+                                    </div>
+
+
+                                    <!--<div class="item-height">2017.11.11-2018.11.11</div>
                                     <div class="item-height">AA2222</div>
                                     <div class="item-height">80人/均班</div>
                                     <div class="item-height">按人头</div>
                                     <div class="item-height">东方航空</div>
-                                    <div class="item-height">华北地区</div>
+                                    <div class="item-height">华北地区</div>-->
                                 </div>
                             </div>
                             <div class="items">
@@ -192,125 +265,36 @@
                                     <div>运力基地</div>
                                 </div>
                                 <div class="right item">
-                                    <div class="item-height">待定</div>
+                                    <div class="item-height">{{item.days}}</div>
+                                    <div class="item-height">{{item.seating}}</div>
+                                    <div class="item-height">{{item.loadfactorsexpect}}%</div>
+                                    <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
+                                    <div class="item-height">{{item.dpt}}</div>
+
+
+                                   <!-- <div class="item-height">待定</div>
                                     <div class="item-height">180</div>
                                     <div class="item-height">80%</div>
                                     <div class="item-height">8万元/小时</div>
-                                    <div class="item-height">成都双流</div>
+                                    <div class="item-height">成都双流</div>-->
                                 </div>
                             </div>
                         </div>
                         <div class="item-fourth">
                             <div class="left font-gray">其他说明</div>
-                            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                            <div class="right">
+                                {{item.remark}}
                             </div>
                         </div>
                         <div class="item-fifth">
-                            <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn">选定</button>
+                            <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn(item,index)">选定</button>
                         </div>
                         <div class="item-sixth" v-show="fourthButtonShow">
-                            <button class="btn btn-w btn-change" @click="airlineAffirmFn">已选定（点击此次可再次编译）</button>
+                            <button class="btn btn-w btn-change" @click="airlineAffirmFn(item,index)">已选定（点击此次可再次编译）</button>
                             <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="nine-item">
-                     <div class="item-first">
-                         <div class="left">11.04.2017</div>
-                         <div class="center-left">南方航空</div>
-                         <div class="center-right">
-                             <span class="icon-item">&#xe602; <span class="reminder"></span></span>
-                         </div>
-                         <div class="right" style="color: #3c78ff; cursor:pointer;">查看详情</div>
-                     </div>
-
-                     <div>
-                         <div class="item-second">
-                             <div class="start item">
-                                 <div class="item-a">始发机场</div>
-                                 <div class="item-b"><h2>成都双流</h2></div>
-                                 <div class="item-c">接受临近机场</div>
-                                 <div class="item-d">出港资源</div>
-                                 <div class="item-e">08:00-12:00</div>
-                             </div>
-                             <div class="item-icon">
-                                 <span class="icon-item">&#xe672;</span>
-                             </div>
-                             <div class="pass item">
-                                 <div class="item-a">经停机场</div>
-                                 <div class="item-b"><h2>北京南苑</h2></div>
-                                 <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                 <div class="item-d">出港资源</div>
-                                 <div class="item-e">带协调</div>
-                             </div>
-                             <div class="item-icon">
-                                 <span class="icon-item">&#xe672;</span>
-                             </div>
-                             <div class="arrive item">
-                                 <div class="item-a">到达区域</div>
-                                 <div class="item-b"><h2>华北地区</h2></div>
-
-                                 &lt;!&ndash;下方有空格&ndash;&gt;
-                                 <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                 <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                 <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                             </div>
-                         </div>
-                         <div class="item-third">
-                             <div class="items">
-                                 <div class="left item font-gray">
-                                     <div>拟开时间</div>
-                                     <div>拟飞机型</div>
-                                     <div>客量期望</div>
-                                     <div>补贴政策</div>
-                                     <div>运力归属</div>
-                                     <div>是否调度</div>
-                                 </div>
-                                 <div class="right item">
-                                     <div>2017.11.11-2018.11.11</div>
-                                     <div>AA2222</div>
-                                     <div>80人/均班</div>
-                                     <div>按人头</div>
-                                     <div>东方航空</div>
-                                     <div>华北地区</div>
-                                 </div>
-                             </div>
-                             <div class="items">
-                                 <div class="left item font-gray">
-                                     <div>拟开班期</div>
-                                     <div>座位数</div>
-                                     <div>客座率期望</div>
-                                     <div>小时成本</div>
-                                     <div>运力基地</div>
-                                 </div>
-                                 <div class="right item">
-                                     <div>待定</div>
-                                     <div>180</div>
-                                     <div>80%</div>
-                                     <div>8万元/小时</div>
-                                     <div>成都双流</div>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="item-fourth">
-                             <div class="left font-gray">其他说明</div>
-                             <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                 其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                                 其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                             </div>
-                         </div>
-                         <div class="item-fifth">
-                             <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn">选定</button>
-                         </div>
-                         <div class="item-sixth" v-show="fourthButtonShow">
-                             <button class="btn btn-w btn-change" @click="airlineAffirmFn">已选定（点击此次可再次编译）</button>
-                             <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
-                         </div>
-                     </div>
-                 </div>
-            -->
             </div>
         </div>
         <div class="first-button" v-show="firstButtonShow">
@@ -329,8 +313,8 @@
 
         <div class="bottom" v-show="fifthButtonShow">
             <div class="buttons">
-                <button class="btn btn-b">委托代理</button>
-                <button class="btn btn-w">结束需求</button>
+                <button class="btn btn-b" @click="closeThisFn()">委托代理</button>
+                <button class="btn btn-w" @click="closeThisFn">结束需求</button>
             </div>
         </div>
         <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
@@ -386,7 +370,7 @@
                 isIntentionMoney: '',
                 isSelf: '',
                 subsidypolicy: '',//补贴政策
-                listData: [],
+                listData: [],    //下方的列表详情
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -449,11 +433,11 @@
 //            this.showCode = 0;
             console.info(this.role)
             console.info('min-tabulationBoxTrigger')
-            tabulationBoxTrigger.$on('getClickData', val => {
-//                console.info('mine-val:')
-//                console.info(val.demandId)
+            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+                console.info('tabulationBoxTrigger:')
+                console.info(val.data)
                 this.showCode = 0;
-                if (val.demandType == 0) {
+                if (val.data.demandtype == 0) {
                     this.$ajax({
                         method: 'post',
                         url: '/capacityRoutesDemandDetailFindById',
@@ -461,22 +445,25 @@
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         params: {
-                            demandId: val.demandId
+                            demandId: val.data.id
                         }
                     })
                         .then((response) => {
+                            console.info('response:')
+                            console.info(response.data.responseList)
                             this.isSelf = response.data.isSelf;
                             this.isIntentionMoney = response.data.isIntentionMoney;
 //                            this.intentionCount = response.data.intentionCount;
 //                            this.detailData = response.data.data;
-                            this.listData.push()
+                            this.listData = response.data.responseList;   //获取意向列表
                             this.userNum = response.data.intentionCount;
                             this.myData = response.data.data;
                             this.releaseTime = this.myData.releasetime.split(" ")[0];
-                            this.dptTime0 = this.myData.dptTime.split(',')[0];
-                            this.dptTime1 = this.myData.dptTime.split(',')[1];
-                            this.pstTime0 = this.myData.dptTime.split(',')[0];
-                            this.pstTime1 = this.myData.dptTime.split(',')[1];
+//                            this.dptTime0 = this.myData.dptTime.split(',')[0];
+//                            this.dptTime1 = this.myData.dptTime.split(',')[1];
+                            this.dptTime0 = this.myData.dptTime;
+                            this.pstTime0 = this.myData.pstTime.split(',')[0];
+                            this.pstTime1 = this.myData.pstTime.split(',')[1];
                             this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                             this.sailingtime1 = this.myData.sailingtime.split(',')[1];
                             this.periodValidity0 = this.myData.periodValidity.split(',')[0];
@@ -501,10 +488,10 @@
                                 console.log(error);
                             }
                         );
-                    console.info('333333')
                     this.$emit('transShow');
                 }
             });
+            // 从airlineAffirm接受参数
             if (this.isSelf == true) {
                 this.showCode = 1;
             } else {
@@ -596,14 +583,25 @@
                 let supProperty = {};
                 supProperty.title = this.myData.title;
                 supProperty.periodValidity = this.myData.periodValidity;
-                tabulationBoxTrigger.$emit('supProperty',supProperty);
+                supProperty.releasetime = this.myData.releasetime;
+                tabulationBoxTrigger.$emit('supProperty',supProperty); //向airlineWrite.vue传一些数据
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
-                this.showCode = 1;
+//                this.showCode = 1;
+                //接收airWrite.vue传来的对象
                 tabulationBoxTrigger.$on('responseObject', (val) => {
                     console.info(val);
-                    this.myData = val.response;
+                    /*this.myData = val.response;
+                    this.releaseTime = this.myData.releasetime.split(" ")[0];
+                    this.dptTime0 = this.myData.dptTime.split(',')[0];
+                    this.dptTime1 = this.myData.dptTime.split(',')[1];
+                    this.pstTime0 = this.myData.pstTime.split(',')[0];
+                    this.pstTime1 = this.myData.pstTime.split(',')[1];
+                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
+                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
+                    this.periodValidity0 = val.periodValidity.split(',')[0];
+                    this.periodValidity1 = val.periodValidity.split(',')[1];*/
 //                this.sendData.employeeId = val.data.employeeId;
                 })
                 this.show();
@@ -619,16 +617,43 @@
                 this.show();
             },
             //点击“选定”，组件“请确认以下方案”显示
-            airlineAffirmFn: function () {
+            airlineAffirmFn: function (item,index) {
                 this.airlineAffirmShow = true;
+                item.index = index;
+                console.info('item:')
+                console.info(item)
+                tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
             changeShowCodeA: function () {
+                console.info('提交意向')
                 this.showCode = 3;
+                tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => {
+                    console.info('payAfter从AffirmToDetailPayAfter:')
+                    console.info(val)
+                    let index = val.index;
+                    this.listData.splice(index,1,val)
+                })
                 this.show();
+
             },
             //点击“撤销选定”，showCode变成2状态
             airlineAffirmUnchooseFn: function () {
+                let airlineAffirmUnchooseData = {};
+
+                this.$ajax({
+                    url:"/selectedResponse",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params:  airlineAffirmUnchooseData
+                }) .then((response) => {
+                    console.info(response.data)
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
                 this.showCode = 2;
                 this.show();
             },
@@ -641,6 +666,7 @@
             },
             closeAlAffirmFn: function () {
                 this.airlineAffirmShow = false;
+                console.info('取消')
             },
             closePaySucssFn: function () {
                 this.paySuccessShow = false;
@@ -942,6 +968,8 @@
                 .left {
                     margin-right: 40px;
                     width: 80px;
+                    height: 15px;
+                    overflow-y: hidden;
                 }
                 .center-left {
                     width: 80px;

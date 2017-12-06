@@ -20,7 +20,7 @@
             <div class="mes-body-i3">{{key.data.pstTime}}</div>
             <div class="mes-body-i3">{{key.data.days}}</div>
             <div class="mes-body-i3">{{key.data.aircrfttyp}}</div>
-            <div class="mes-body-i4">{{key.data.subsidypolicyStr}}</div>
+            <div class="mes-body-i3">{{key.data.subsidypolicyStr}}</div>
             <div class="mes-body-i4">{{key.data.remark}}</div>
             <div class="move-panel" v-if="showPanel && i == iPanel">
                 <div class="btn-w" v-if="(key.data.collectType == 0)" @click="alreadyPanel(key,true)">添加收藏</div>
@@ -56,7 +56,7 @@
         },
         methods: {
             alreadyPanel: function (key,t) {
-                let v = [key.id];
+                let v = [key.data.id];
                 if(t){
                     this.$ajax({
                         method: 'post',
@@ -82,7 +82,7 @@
                         method: 'post',
                         url: "/delCollect",
                         params: {
-                            demandIds: v.join(','),
+                            demandId: v.join(','),
                         },
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
@@ -419,8 +419,13 @@
 
     .mes-body-i4 {
         overflow: hidden;
-        width: 125px;
         letter-spacing: 0.2px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        width: 170px;
+        margin-right: 0 !important;
+        text-overflow: ellipsis;
     }
 
     .mes-body-ix {

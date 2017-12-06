@@ -15,7 +15,7 @@
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
          <infPanel></infPanel>
       <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='detailShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
         <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
     </div>
