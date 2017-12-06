@@ -58,7 +58,7 @@
                 <div class="mes-body-i3">时刻</div>
                 <div class="mes-body-i3">班期</div>
                 <div class="mes-body-i3">机型</div>
-                <div class="mes-body-i4">补助</div>
+                <div class="mes-body-i3">补助</div>
                 <div class="mes-body-i4">其他说明</div>
             </div>
             <tabulationBox class="mes-body-b scroll" v-on:renderDataLength="renderDataLength"
@@ -110,25 +110,26 @@
             }
         },
         methods: {
-            batchRed:function () {
-                let ob = (this.demandList.type ? this.demandList.hybridData.list : this.demandList.monoData.list),ar = [];
-                ob.forEach((v)=>{
-                    if(v.set)ar.push(v.id);
+            batchRed: function () {
+                let ob = (this.demandList.type ? this.demandList.hybridData.list : this.demandList.monoData.list),
+                    ar = [];
+                ob.forEach((v) => {
+                    if (v.set) ar.push(v.id);
                 });
-                if(ar.length != 0){
+                if (ar.length != 0) {
                     this.$ajax({
                         method: 'post',
                         url: '/employeeDemandAdd',
-                        params:{
-                            employeeDemandIds:ar.join(',')
+                        params: {
+                            employeeDemandIds: ar.join(',')
                         },
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
                         }
                     })
                         .then((response) => {
-                            if(response.data.opResult == '0'){
-                                this.$store.dispatch('changeRenew',ar);
+                            if (response.data.opResult == '0') {
+                                this.$store.dispatch('changeRenew', ar);
                             }
                         })
                         .catch((error) => {
@@ -164,8 +165,8 @@
                     }
                 })
                     .then((response) => {
-                        if(response.data.opResult == '0'){
-                            this.$store.dispatch('tagread',{t:true,v});
+                        if (response.data.opResult == '0') {
+                            this.$store.dispatch('tagread', {t: true, v});
                         }
                     })
                     .catch((error) => {
@@ -293,7 +294,7 @@
                                 ar.list = [];
                             }
                             ;
-                            this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode.name}).then(() => {
+                            this.$store.dispatch('monoData', {v: ar, t: 1, n: this.qyCode.name}).then(() => {
                             });
                         }
                     })
@@ -465,7 +466,8 @@
     }
 
     .mes-body-i4 {
-        width: 125px;
+        width: 170px;
+        margin-right: 0 !important;
     }
 
     .mes-body-ix {
