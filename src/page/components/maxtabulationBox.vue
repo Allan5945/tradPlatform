@@ -152,19 +152,7 @@
                     ;
                 }
                 d.forEach((val) => {
-                    let img, name = [], tag;
-                    if (val.dptNm != null && val.dptNm != '') {
-                        name.push(val.dptNm)
-                    }
-                    ;
-                    if (val.pstNm != null && val.pstNm != '') {
-                        name.push(val.pstNm)
-                    }
-                    ;
-                    if (val.arrvNm != null && val.arrvNm != '') {
-                        name.push(val.arrvNm)
-                    }
-                    ;
+                    let img, tag;
                     switch (val.demandtype) {
                         case "0":
                             img = ig0;
@@ -193,7 +181,7 @@
                     }
                     a.push({
                         img,
-                        name,
+                        name:val.title.split('-'),
                         tag,
                         simpleDemand: val.simpleDemand,
                         data: val
@@ -248,9 +236,15 @@
                 });
                 if (this.conditionsOpen) {
                     this.$emit('renderDataLength', c.length);
+                    if(this.demandList.conditions.order){
+                        return c.reverse();
+                    };
                     return c;
                 } else {
                     this.$emit('renderDataLength', a.length);
+                    if(this.demandList.conditions.order){
+                        return a.reverse();
+                    };
                     return a;
                 }
             }
