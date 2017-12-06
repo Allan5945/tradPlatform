@@ -1,56 +1,45 @@
 <template>
     <div class="detail-wrapper">
         <header>
-            <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title}}</div>
+            <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
+            <div class="head-til">运营托管详情1111</div>
+            <div class="contact">联系用户</div>
             <div class="tips">
-                <span>创建于{{detailData.releasetime}}</span>
-                <span>已有{{intentionCount}}位用户发起意向</span>
+                <div>委托方&nbsp;成都双流机场</div>
+                <div>创建于2017.12.12</div>
+                <div>状态: <span>待处理</span></div>
             </div>
         </header>
         <div class="content">
-            <div >
-                <div>出港时刻</div>
-                <div>{{detailData.dptTime}}</div>
+            <div class="content-box">
+                <div >
+                    <div>航班号</div>
+                    <div>HU8888</div>
+                </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>6.5万/小时</div>
+                </div>
+                <div>
+                    <div>其他说明</div>
+                    <div>无补贴政策</div>
+                </div>
             </div>
-            <div>
-                <div>班期</div>
-                <div>{{detailData.days}}</div>
-            </div>
-            <div>
-                <div>机型</div>
-                <div>{{detailData.aircrfttyp}}</div>
-            </div>
-             <div>
-                <div>运力基地</div>
-                <div>{{detailData.dptNm}}</div>
-            </div>
-            <div>
-                <div>运力归属</div>
-                <div>***</div>
-            </div>
-            <div>
-                <div>座位布局</div>
-                <div>{{detailData.seating}}</div>
-            </div>
-            <div>
-                <div>小时成本</div>
-                <div>{{detailData.hourscost}}万/小时</div>
-            </div>
-            <div>
-                <div>接受调度</div>
-                <div>{{detailData.schedulingStr}}</div>
-            </div>
-            <div>
-                <div>有效期</div>
-                <div>{{detailData.periodValidity}}</div>
+            <div class="content-box border">
+                <div>
+                    <div>联系人</div>
+                    <div>张三</div>
+                </div>
+                <div>
+                    <div>联系电话</div>
+                    <div>5409095445</div>
+                </div>
             </div>
         </div>
         <footer>
-            <div>*隐藏信息在提交意向后可查看</div>
             <div class="btn">
-                <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn">收藏</div>
+                <div class="test-btn">测评该需求</div>
+                <div class="can-btn" @click="cancel">拒绝</div>
             </div>
         </footer>
     </div>
@@ -62,51 +51,22 @@
  export default {
      data(){
          return{
-             getDetail:[],
-             detailData:[],
-             intentionCount:0
+
          }
      },
      methods:{
-         closeDetail:function(){
-            this.$emit("closeDetail")
-         },
-         haveInvent:function(){
-             this.$emit("formShow");
-         }
+        closeDetail:function(){
+          this.$emit("close");
+        },
+        cancel:function(){
+          this.$emit("showDialog");
+        }
      },
      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
+
         },
       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
-               console.log("demandtype"+val.data.demandtype);
-                this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: val.data.id
-                }
-                })
-                .then((response) => {
-                    if(response.data.opResult == "004"){
-                        this.$emit("transShow");
-                    }
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-            };
-        });
+
      },
 }
 </script>
@@ -121,18 +81,22 @@
         height:100%;
         min-height:600px;
         color:#605E7C;
+        font-size:1.2rem;
         background-color:#fff;
         header{
             width:100%;
             height:141px;
             background-color:rgba(216,216,216,.17);
+            position:relative;
+        }
+        .content{
+            padding:60px 40px 0 40px;
         }
         footer{
           position:absolute;
           bottom:0;
           left:0;
           width:100%;
-          height:140px;
         }
     }
     header{
@@ -167,24 +131,41 @@
           height:20px;
           line-height:20px;
         }
+        .contact{
+            position:absolute;
+            right:15px;
+            top:60px;
+            width:100px;
+            height:20px;
+            line-height:20px;
+            color:#ffffff;
+            text-align:center;
+            background-color:#3c78ff;
+            border-radius:100px;
+            cursor:pointer;
+        }
         .tips{
+          position:relative;
           height:12px;
           line-height:12px;
           color:rgba(96, 94, 124, 0.7);
           padding:20px 0 18px 40px;
-          span{
+          display:flex;
+          div{
             margin-right:30px;
+          }
+          span{
+            color:#3c78ff;
           }
         }
     }
-    .content{
-      height:260px;
-      padding:60px 40px 0 40px;
+
+    .content-box{
       flex-wrap: wrap;
       display: flex;
+      margin-bottom:40px;
       >div{
           width:240px;
-          height:40px;
           display: flex;
           >div{
               margin-bottom:20px;
@@ -203,19 +184,16 @@
           margin-right:40px;
       }
     }
+    .border{
+      padding-top:40px;
+      border-top:1px solid #ccc;
+    }
     footer{
-        >div:nth-of-type(1){
-              margin: 0 20px;
-              padding-left:20px;
-              height:40px;
-              color:rgba(96, 94, 124, 0.7);
-              box-sizing:border-box;
-              border-bottom:1px solid #ccc;
-          }
+          border-top:1px solid #ccc;
           .btn{
               height:40px;
-              margin:18px 0 42px 0;
-              >.intent-btn{
+              margin:40px 0;
+              .test-btn{
                   width:230px;
                   height:40px;
                   line-height:40px;
@@ -232,7 +210,7 @@
                     margin-right:15px;
                   }
               }
-               >.col-btn{
+               .can-btn{
                   width:80px;
                   height:40px;
                   line-height:40px;
