@@ -489,7 +489,7 @@
                             if (this.isSelf == true && this.isIntentionMoney == false) {
                                 console.info('payAfter:' + 1)
                                 this.showCode = 1;
-                            } if (this.isSelf == true && this.isIntentionMoney == true) {
+                            }if (this.isSelf == true && this.isIntentionMoney == true) {
                                 console.info('payAfter:' + 3)
                                 this.showCode = 3;
                             }if (this.isSelf == false) {

@@ -1,74 +1,119 @@
 <template>
     <div class="ald-container">
         <div class="first item-container">
-            <span>需求详情</span>
+            <span>航线托管详情</span>
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
         <div class="second item-container">
             <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn">
-                重新发布
+                联系客服 <span class="icon-item">&#xe720;</span>
             </div>
-            <div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
+            <!--<div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
                 <span class="icon-item">&#xe653;</span>编辑
-            </div>
+            </div>-->
             <div class="top">
                 <span style="height: 25px;">{{myData.title}}</span>
             </div>
             <div class="bottom">
-                <span class="font-gray" style="margin-right: 46px;">创建于{{releasetime}}</span>
+                <span class="font-gray" style="margin-right: 25px;">委托方　成都双流机场</span>
+                <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
                 <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogress}}</span>
-                    <span style="color: red; font-weight: bold;">审核未通过</span>
+                    <!--<span style="color: red; font-weight: bold;">审核未通过</span>-->
                 </span>
             </div>
         </div>
+        <div class="third item-container">
+            <div class="start item">
+                <div class="item-a font-gray">始发机场</div>
+                <div class="item-b">成都双流</div>
+                <div class="item-c font-gray">接受临近机场</div>
+                <div class="item-d font-gray">出港资源</div>
+                <div class="item-e">08:00-12:00</div>
+            </div>
+            <div class="pass item" style="display: flex; align-items: center;">
+                <span class="left-icon icon-item">&#xe6ad;</span>
+                <div class="border-dashed"></div>
+                <span class="right-icon icon-item">&#xe672;</span>
+            </div>
+            <div class="arrive item">
+                <div class="item-a font-gray">到达区域</div>
+                <div class="item-b">华北地区</div>
+
+                <!--下方有空格-->
+                <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
+                <div class="item-e">&nbsp;<!--此处有空格--></div>
+            </div>
+        </div>
+        <div class="line"></div>
         <div class="fourth item-container">
             <div class="items">
                 <div class="left item">
-                    <div class="font-gray">出港时刻</div>
-                    <div class="font-gray">机型</div>
-                    <div class="font-gray">运力归属</div>
-                    <div class="font-gray">小时成本</div>
-                    <div class="font-gray">有效期</div>
+                    <div class="font-gray">拟开时间</div>
+                    <div class="font-gray">拟飞机型</div>
+                    <div class="font-gray">客量期望</div>
+                    <div class="font-gray">补贴政策</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">{{myData.dptTime}}</div>
-                    <div class="item-height">{{myData.aircrfttyp}}</div>
-                    <div class="item-height">{{myData.capacityCompany}}</div>
-                    <div class="item-height">{{myData.hourscost}}万元/小时</div>
-                    <div class="item-height" style="display: flex;">{{myData.periodValidity}}<span class="icon-item">&#xe653;</span></div>
+                    <div class="item-height">2017.11.11-2018.11.11</div>
+                    <div class="item-height">AA2222</div>
+                    <div class="item-height">80人/均班</div>
+                    <div class="item-height">按人头</div>
                 </div>
             </div>
             <div class="items">
                 <div class="left item">
-                    <div class="font-gray">班期</div>
-                    <div class="font-gray">运力基地</div>
-                    <div class="font-gray">座位布局</div>
-                    <div class="font-gray">接受调度</div>
+                    <div class="font-gray">拟开班期</div>
+                    <div class="font-gray">座位数</div>
+                    <div class="font-gray">客座率期望</div>
+                    <div class="font-gray">有效期</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">{{myData.days}}</div>
-                    <div class="item-height">{{myData.dpt}}</div>
-                    <div class="item-height">{{myData.seating}}</div>
-                    <div class="item-height">{{myData.schedulinePort}}</div>
+                    <div class="item-height">待定</div>
+                    <div class="item-height">180</div>
+                    <div class="item-height">80%</div>
+                    <div class="item-height">2017.11.11-2018.11.11</div>
                 </div>
             </div>
         </div>
         <div class="fifth item-container">
             <div class="left font-gray">其他说明</div>
-            <div class="right">{{myData.remark}}</div>
-        </div>
-        <div class="seventh item-container">
-            <span class="danger" v-show="true">*XXXX事情有误，请重新输入</span>
-        </div>
-        <span class="line"></span>
-        <div class="eighth">
-            <div class="buttons">
-                <button class="btn btn-w" v-show="false">结束需求</button>
+            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
             </div>
+        </div>
+        <div class="line"></div>
+        <div class="sixth item-container">
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">联系人</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">张三</div>
+                </div>
+            </div>
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">联系方式</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">12345678911</div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="seventh item-container">
+            <span class="danger" v-show="true">*XXXX事情有误，请重新输入</span>
+        </div>-->
+        <div class="eighth">
+            <span class="line" style="position:absolute; top: 0px;"></span>
             <div class="buttons">
+                <button class="btn btn-w">撤回该托管</button>
+            </div>
+            <!--<div class="buttons">
                 <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;">重新发布</button>
                 <button class="btn btn-w" style="width: 100px;">结束需求</button>
-            </div>
+            </div>-->
         </div>
         <editMyPublishNeed v-show="editMyPublishNeedShow" @close-this="closeEditMyPublishNeed"></editMyPublishNeed>
     </div>
@@ -80,8 +125,8 @@
         data() {
             return {
                 myData: {},             // 获取的数据渲染到页面上
-                anewPublishShow: false, //“重新发布”是否显示
-                editPublishShow: true, // “编辑”是否显示
+                anewPublishShow: true, //“重新发布”是否显示
+                editPublishShow: false, // “编辑”是否显示
                 releasetime: '',        //创建时间
                 editMyPublishNeedShow: false, //编辑需求表单
             }
@@ -114,7 +159,7 @@
             },
             //点击“重新发布”
             anewPublishClickFn: function () {
-                alert('重新发布')
+                alert('联系客服')
             },
             // 点击“编辑”
             editPublishClickFn: function () {
@@ -139,6 +184,13 @@
         max-height: $line-height * $lines;
     }
     /**************************/
+    /*虚线，弧线*/
+    .border-dashed {
+        width: 155px;
+        height: 50px;
+        border-top: 1px dashed #9E9E9E;
+        border-radius: 100%;
+    }
     .font-gray {
         color: rgba(96, 94, 124, 0.7);
     }
@@ -160,14 +212,24 @@
         position: absolute;
         top: 0px;
         right: 0px;
-        /*padding-bottom: 100px;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
         width: 600px;
         height: 100%;
-        min-height: 700px;
+        /*min-height: 700px;*/
         font-size: 1.2rem;
         background: white;
+        overflow-y: scroll;
         z-index: 12;
     }
+    .ald-container::-webkit-scrollbar {
+        width: 7px;
+    }
+    .ald-container::-webkit-scrollbar-thumb {
+        background: #D8D8D8;
+        border-radius: 4px;
+    }
+
     .item-container {
         display: flex;
         padding: 0 40px;
@@ -193,7 +255,7 @@
     .second {
         position: relative;
         flex-direction: column;
-        margin-bottom: 50px;
+        margin-bottom: 35px;
         height: 100px;
         background: rgba(216,216,216, .17);
         .anew-publish {
@@ -231,8 +293,98 @@
             margin-left: 3px;
         }
     }
+    .third {
+        position: relative;
+        justify-content: space-between;
+        margin-bottom: 22px;
+        .item {
+            /*width: 140px;*/
+            height: 160px;
+            .item-a {
+                margin: 25px 0 10px 0;
+                height: 15px;
+            }
+            .item-b {
+                height: 25px;
+                font-size: 20px;
+            }
+            .item-c {
+                margin-bottom: 23px;
+                height: 15px;
+            }
+            .item-d {
+                margin-bottom: 5px;
+                height: 15px;
+            }
+            .item-e {
+                height: 15px;
+            }
+        }
+        .pass {
+            position: relative;
+            >span {
+                position: absolute;
+                top: 50%;
+                margin-top: -35px;
+                font-size: 2.6rem;
+                color: #9E9E9E;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%;
+                    margin-left: -5px;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 100%;
+                    background: #D8D8D8;
+                }
+            }
+            .left-icon {
+                left: -11px;
+            }
+            .right-icon {
+                right: -11px;
+            }
+        }
+    }
     .fourth {
         justify-content: space-between;
+        margin: 12px 0 15px 0;
+        .items {
+            display: flex;
+            width: 240px;
+            .item {
+                line-height: 40px;
+            }
+            .left {
+                width: 80px;
+            }
+            .right {
+                width: 160px;
+                .item-height {
+                    height: 40px;
+                }
+            }
+        }
+    }
+    .fifth {
+        margin-top: 20px;
+        height: 100px;
+        .left {
+            flex-shrink: 0;
+            width: 80px;
+            line-height: 20px;
+        }
+        .right {
+            @include line-clamp(3);
+        }
+    }
+    .sixth {
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 110px;
+        height: 100px;
         .items {
             display: flex;
             width: 240px;
@@ -253,38 +405,27 @@
             }
         }
     }
-    .fifth {
-        margin-top: 20px;
-        height: 100px;
-        .left {
-            flex-shrink: 0;
-            width: 80px;
-            line-height: 20px;
-        }
-        .right {
-            @include line-clamp(3);
-        }
-    }
     .seventh {
         position: absolute;
         bottom: 125px;
     }
     .line {
-        position: absolute;
+        /*position: absolute;
         left: 20px;
-        bottom: 110px;
+        bottom: 110px;*/
+        margin: 0 auto;
         width: 560px;
         height: 2px;
         background: #f3f3f3;
     }
     .eighth {
-        position: absolute;
-        left: 20px;
+        position: fixed;
+        right: 0px;
         bottom: 0;
         display: flex;
         justify-content: center;
         /*align-items: center;*/
-        width: 560px;
+        width: 600px;
         height: 100px;
         background: white;
         .buttons {
