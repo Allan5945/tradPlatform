@@ -57,6 +57,7 @@
         methods: {
             alreadyPanel: function (key,t) {
                 let v = [key.data.id];
+                let v2 = [key.data.collectId]
                 if(t){
                     this.$ajax({
                         method: 'post',
@@ -82,7 +83,7 @@
                         method: 'post',
                         url: "/delCollect",
                         params: {
-                            demandId: v.join(','),
+                            demandId: v2.join(','),
                         },
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
