@@ -492,9 +492,11 @@
                 }
             });
             // 从airlineAffirm接受参数
-            if (this.isSelf == true) {
+            if (this.isSelf == true && this.isIntentionMoney == false) {
                 this.showCode = 1;
-            } else {
+            } if (this.isSelf == true && this.isIntentionMoney == true) {
+                this.showCode = 3;
+            }if (this.isSelf == false) {
                 this.showCode = 0;
             }
             this.show();
