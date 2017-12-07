@@ -497,7 +497,6 @@
             } else {
                 this.showCode = 0;
             }
-//            this.showCode = 0;
             this.show();
         },
         computed: {
