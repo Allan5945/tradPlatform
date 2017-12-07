@@ -17,9 +17,9 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-        <myIndex></myIndex>
+        <!--<myIndex></myIndex>-->
         <routeNetwork></routeNetwork>
-         <myIndexFzz></myIndexFzz>
+         <!--<myIndexFzz></myIndexFzz>-->
     </div>
 </template>
 
@@ -275,10 +275,4 @@
 </script>
 
 <style lang="scss">
-    .dialog-enter-active, .dialog-leave-active {
-     transition: opacity .3s;
-}
-.dialog-enter, .dialog-leave-to{
-    opacity: 0;
-}
 </style>
