@@ -1,0 +1,246 @@
+<template>
+    <div class="plan-wrapper scroll" >
+        <header>
+            <div class="head-til">{{ndetailData.title||"-"}}</div>
+            <div class="tips">
+                <span>创建于{{ ndetailData.releasetime||"-" }}</span>
+                <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
+            </div>
+        </header>
+        <div class="content">
+            <div class="myplan">
+                <div class="airline">
+                    <div class="airplace">
+                        <div>始发机场</div>
+                        <div>
+                            <div>{{ndetailData.dpt||"-"}}</div>
+                            <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
+                        </div>
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{ndetailData.dptTime||"待协调"}}</div>
+                        </div>
+                    </div>
+                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                    <div class="airplace">
+                        <div>经停机场</div>
+                        <div>
+                            <div>{{ndetailData.pst||"-"}}</div>
+                            <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
+                        </div>
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{ndetailData.pstTime||"待协调"}}</div>
+                        </div>
+                    </div>
+                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                    <div class="airplace">
+                        <div>到达区域</div>
+                        <div>
+                            <div>{{ndetailData.arrv||"-"}}</div>
+                            <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
+                        </div>
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{ndetailData.arrvTime||"待协调"}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-form">
+                    <div>
+                        <div>拟开时间</div>
+                        <div>{{ndetailData.sailingtime||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>拟开班期</div>
+                        <div>{{ndetailData.days||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>拟开机型</div>
+                        <div>{{ndetailData.aircrfttyp||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>座位数</div>
+                        <div>{{ndetailData.seating||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>客量预期</div>
+                        <div>{{ndetailData.avgguestexpect+"人"||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>客座率预期</div>
+                        <div>{{ndetailData.loadfactorsexpect||"-"}}%</div>
+                    </div>
+                    <div>
+                        <div>补贴政策</div>
+                        <div>{{subsidyList[ndetailData.subsidypolicy]||"-"}}</div>
+
+                    </div>
+                    <div>
+                        <div>小时成本</div>
+                        <div>{{ndetailData.hourscost||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>运力归属</div>
+                        <div>{{ndetailData.capacitycompany||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>运力基地</div>
+                        <div>{{ndetailData.dpt||"-"}}</div>
+                    </div>
+                    <div>
+                        <div>是否调度</div>
+                        <div>{{ndetailData.scheduling||"-"}}</div>
+                    </div>
+                    <div style="width: 100%;">
+                        <div>其他说明</div>
+                        <div style="width: 80%;">{{ndetailData.remark||"-"}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        data(){
+            return{
+                subsidyList:["定补","保底","人头补","无补贴"]
+            }
+        },
+        props:["ndetailData"],
+        mounted: function () {
+
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .plan-wrapper{
+        position:absolute;
+        right:0;
+        width:100%;
+        max-height: 75%;
+        box-sizing:border-box;
+        color:#605E7C;
+        overflow: hidden;
+        overflow-y:scroll;
+        background-color:#fff;
+        header{
+            width:100%;
+            background-color:rgba(216,216,216,.2);
+        }
+        footer{
+            position:fixed;
+            bottom:0;
+            right:0;
+            width:600px;
+            background-color:#fff;
+            height:100px;
+        }
+    }
+    header{
+        padding: 20px 40px 0 50px;
+        .head-til{
+            font-size:20px;
+            font-weight:bold;
+            margin-top:30px;
+            height:20px;
+            line-height:20px;
+        }
+        .tips{
+            height:12px;
+            line-height:12px;
+            color:rgba(96, 94, 124, 0.7);
+            padding:20px 0;
+            span{
+                margin-right:30px;
+            }
+        }
+    }
+    .table-form{
+        width:100%;
+        box-sizing:border-box;
+        padding:40px 80px;
+        flex-wrap: wrap;
+        display: flex;
+        >div{
+            width:280px;
+            height:40px;
+            display: flex;
+            >div{
+                margin-bottom:20px;
+                height:20px;
+                line-height:20px;
+            }
+            >div:nth-of-type(1){
+                width:90px;
+                color:rgba(96, 94, 124, 0.7);
+            }
+            >div:nth-of-type(2){
+                width:160px;
+            }
+        }
+        >div:nth-of-type(odd){
+            margin-right:40px;
+        }
+    }
+    .myplan{
+        margin-bottom:140px;
+        .airline{
+            display:flex;
+            padding:20px 0 0 40px;
+            margin: 0 40px;
+            box-sizing:border-box;
+            border-bottom:1px solid #ccc;
+            >div:nth-of-type(odd){
+                width:140px;
+            }
+            >div:nth-of-type(even){
+                width:50px;
+            }
+        }
+    }
+    .airplace{
+        margin-top:20px;
+        >div:nth-of-type(2){
+            height:45px;
+            font-size:2rem;
+            font-weight:bold;
+            padding-top:15px;
+            >div:nth-of-type(2){
+                font-size:1rem;
+                font-weight:normal;
+            }
+        }
+        .resouse{
+            margin:20px 0;
+        }
+    }
+    footer{
+        border-top: 1px solid #ccc;
+        .btn{
+            height:40px;
+            margin:20px 0 40px 0;
+            >div{
+                height:40px;
+                line-height:40px;
+                font-size:1.5rem;
+                color:#605E7C;
+                background-color:#fff;
+                text-align:center;
+                border-radius:100px;
+                cursor:pointer;
+                box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+            }
+            .cancel-btn{
+                width:100px;
+                margin-right:10px;
+            }
+            .col-btn{
+                width:80px;
+            }
+        }
+    }
+</style>

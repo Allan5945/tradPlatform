@@ -38,7 +38,7 @@
                             航线需求
                         </div>
                         <div class="list-c item color">
-                            <span>成都-北京航线新开 找运力，XXXXXXXXXX</span>
+                            <span>成都-北京航线新开1111 找运力，XXXXXXXXXX</span>
                         </div>
                         <div class="list-d item">
                             需求审核
@@ -110,7 +110,7 @@
             // 点击关闭
             closeThisFn: function () {
                 this.myPublishShow = false;
-            }
+            },
         },
         components: {
             stateList,
