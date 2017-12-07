@@ -1,5 +1,5 @@
 <template>
-    <div class="plan-wrapper scroll" v-show="isShow">
+    <div class="plan-wrapper scroll">
         <header>
             <div class="top-til">需求详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
             <div class="head-til">{{detailData.title}}</div>
@@ -56,8 +56,7 @@
                     <div class="airplace">
                         <div>始发机场</div>
                         <div>
-                            <div>{{planData.dpt}}</div>
-                            <div>接受临近机场</div>
+                           <div  v-if="this.planData.dpt !== null">{{planData.dpt}}</div>
                         </div>
                          <div class="resouse">
                             <div>出港资源</div>
@@ -153,7 +152,6 @@
      data(){
          return{
              planShow:true,
-             isShow:false,
              planData:[],
              detailData:[],
              intentionCount:0,
@@ -162,7 +160,7 @@
      },
      methods:{
          closeDetail:function(){
-             this.isShow = false;
+             this.$emit('responseClose')
          },
 
      },
@@ -187,7 +185,7 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "003"){
-                        this.isShow = true;
+                        this.$emit('responseShow');
                     }
                     this.isIntentionMoney = response.data.isIntentionMoney;
                     this.intentionCount = response.data.intentionCount;
