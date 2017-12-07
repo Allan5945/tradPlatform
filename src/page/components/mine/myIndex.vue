@@ -28,7 +28,7 @@
 
 <script>
 import myNav from './myNav.vue';
-import operAgent from './operAgent.vue';
+import operAgent from './myOperAgent.vue';
 import myCollection from './myCollection.vue';
 
 

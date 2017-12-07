@@ -17,9 +17,13 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+
       <!-- <myIndex></myIndex> -->
+
+        <myIndex></myIndex>
+>>>>>>> c069b9504c166f98f3c09c8bd47b9e35e5318341
         <routeNetwork></routeNetwork>
-         <!--<myIndexFzz></myIndexFzz>-->
+         <myIndexFzz></myIndexFzz>
     </div>
 </template>
 

@@ -436,7 +436,7 @@
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
                 console.info('tabulationBoxTrigger:')
                 console.info(val.data)
-                this.showCode = 0;
+//                this.showCode = 0;
                 if (val.data.demandtype == 0) {
                     this.$ajax({
                         method: 'post',
@@ -483,6 +483,20 @@
                             if (this.myData.subsidypolicy == 3) {
                                 this.subsidypolicy = '无补贴'
                             }
+
+                            // 从airlineAffirm接受参数
+                            // 修改this.showCode
+                            if (this.isSelf == true && this.isIntentionMoney == false) {
+                                console.info('payAfter:' + 1)
+                                this.showCode = 1;
+                            }if (this.isSelf == true && this.isIntentionMoney == true) {
+                                console.info('payAfter:' + 3)
+                                this.showCode = 3;
+                            }if (this.isSelf == false) {
+                                console.info('payAfter:' + 0)
+                                this.showCode = 0;
+                            }
+                            this.show();
                         })
                         .catch((error) => {
                                 console.log(error);
@@ -491,13 +505,7 @@
                     this.$emit('transShow');
                 }
             });
-            // 从airlineAffirm接受参数
-            if (this.isSelf == true) {
-                this.showCode = 1;
-            } else {
-                this.showCode = 0;
-            }
-            this.show();
+
         },
         computed: {
             ...vx.mapGetters([
@@ -540,6 +548,7 @@
             show: function () {
                 if (this.showCode === 0) {
                     this.firstShow = true;
+                    this.secondShow = false;
                     this.firstButtonShow = true;
                     this.secondButtonShow = false;
                     this.thirdButtonShow = false;

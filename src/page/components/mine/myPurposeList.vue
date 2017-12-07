@@ -70,8 +70,10 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['运力需求','航线需求'],
-                state: ['意见征集','订单确认','已撤回','需求关闭','落选'],
+                type: ['运力投放','航线需求'],
+                state: [],
+                state1: ['意见征集','订单确认','交易完成','已撤回','需求关闭','落选'],
+                state2: ['意见征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],
                 myPurposeShow: false, // myPublish是否显示
             }
         },
@@ -86,6 +88,11 @@
             },
             typeClickFn: function (item) {
                 this.typeWriting = item;
+                if(item == '运力投放') {
+                    this.state = this.state1;
+                }if(item == '航线需求') {
+                    this.state = this.state2;
+                }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
@@ -149,6 +156,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
+        height: 434px;
         font-size: 1.2rem;
         background: #F8F8F8;
     }
