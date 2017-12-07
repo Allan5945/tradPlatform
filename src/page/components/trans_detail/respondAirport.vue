@@ -184,13 +184,13 @@
                 }
                 })
                 .then((response) => {
-                    if(response.data.opResult == "003"){
+                    if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
                         this.$emit('responseShow');
+                        this.isIntentionMoney = response.data.isIntentionMoney;
+                        this.intentionCount = response.data.intentionCount;
+                        this.detailData = response.data.data;
+                        this.planData = response.data.receiveIntention;
                     }
-                    this.isIntentionMoney = response.data.isIntentionMoney;
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
-                    this.planData = response.data.receiveIntention;
 
                 })
                 .catch((error) => {

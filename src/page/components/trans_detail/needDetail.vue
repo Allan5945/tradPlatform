@@ -95,7 +95,7 @@
                 }
                 })
                 .then((response) => {
-                    if(response.data.opResult == "004"){
+                    if(response.data.opResult == "004"|| response.data.receiveIntention == null){
                         this.$emit("transShow");
                     }
                     this.intentionCount = response.data.intentionCount;

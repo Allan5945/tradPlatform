@@ -17,7 +17,7 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-       <!-- <myIndex></myIndex> -->
+      <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
          <!--<myIndexFzz></myIndexFzz>-->
     </div>
@@ -97,6 +97,7 @@
             },
             openIntent() {
                 this.intentShow = true;
+                this.detailShow2 = false;
             },
             closeForm(){
                 this.intentFormShow = !this.intentFormShow;
@@ -137,6 +138,7 @@
                 this.detailShow2 = true;
                 this.detailShow = false;
                 this.respond = false;
+                this.intentShow = false;
             },
             init:function () {
                 if(

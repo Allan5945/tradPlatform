@@ -17,96 +17,62 @@
                             <li v-for="item in type" @click="typeClickFn(item)">{{item}}</li>
                         </ul>
                     </div>
-                    <div class="list-p item">发布人</div>
                     <div class="list-c item">
                         发布标题
                     </div>
                     <div class="list-d item" @click="stateShowFn">
-                        {{stateWriting}}
+                        <span>{{stateWriting}}</span>
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
                     </div>
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="list items">
-                    <div class="list-a item">
-                        11.04.2017
-                    </div>
-                    <div class="list-b item">
-                        航线需求
-                    </div>
-                     <div class="list-p item">
-                        用户名
-                    </div>
-                    <div class="list-c item color">
-                        成都-北京航线新开 找运力，XXXXXXXXXX
-                    </div>
-                    <div class="list-d item">
-                        需求审核
-                    </div>
-                    <div class="list-e item">
+                <div class="lists-containt">
+                    <!--点击列表展示发布详情-->
+                    <div class="list items" :class="{'list-active':false}" >
+                        <div class="list-a item">
+                            11.04.2017
+                        </div>
+                        <div class="list-b item">
+                            航线需求
+                        </div>
+                        <div class="list-c item color">
+                            <span>成都-北京航线新开 找运力，XXXXXXXXXX</span>
+                        </div>
+                        <div class="list-d item">
+                            需求审核
+                        </div>
+                        <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
-                    </div>
-                    <div class="list-f item color" @click="AgentDetail">
-                        查看详情<span class="icon-item">&#xe686;</span>
-                    </div>
-                </div>
-                <div class="list items">
-                    <div class="list-a item">
-                        11.04.2017
-                    </div>
-                    <div class="list-b item">
-                        航线需求
-                    </div>
-                     <div class="list-p item">
-                        用户名
-                    </div>
-                    <div class="list-c item color">
-                        成都-北京航线新开 找运力，XXXXXXXXXX
-                    </div>
-                    <div class="list-d item">
-                        需求审核
-                    </div>
-                    <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
-                        </span>
-                    </div>
-                    <div class="list-f item color" @click="deleDetail">
-                        查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
+                        <div class="list-f item color" @click="openDetail">查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <agentDetail @close="closeAgentDetail" v-show="agentShow"></agentDetail>
-        <deleDetail></deleDetail>
+        <collectDetail v-show="detailShow" @closeDetail="closeDetail"></collectDetail>
     </div>
 </template>
 <script>
     import stateList from './stateList.vue'
-    import agentDetail from './operAgentDetail.vue';
-    import deleDetail from './operDeleDetail.vue';
+    import collectDetail from './collectDetail.vue';
 
     export default {
         data() {
             return {
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
+                detailShow:false,
                 typeWriting: '需求类型',
                 stateWriting: '状态',
-                agentShow:false,
-                deleShow:false,
-                type:  ['航线委托','运力委托','托管'],
-                state: [],
-                state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭']
+                //不同需求类型展现的状态不同
+                type: ['运力投放','航线需求'],
+                state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
             }
-        },
-        mounted() {
-            this.state = this.state1;
         },
         methods: {
             typeShowFn: function () {
@@ -117,32 +83,20 @@
             },
             typeClickFn: function (item) {
                 this.typeWriting = item;
-                this.stateWriting = '状态';
-                if(item == '航线委托' || item == '运力委托') {
-                    this.state = this.state2;
-                }
-                if(item == '托管') {
-                    this.state = this.state1;
-                }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-            AgentDetail:function(){ //托管详情
-                this.agentShow = true;
+             openDetail:function(){
+                this.detailShow = true;
             },
-            deleDetail:function(){ //委托详情
-                this.deleShow = true;
-            },
-            closeAgentDetail:function(){
-                this.agentShow = false;
-            },
-
+            closeDetail:function(){
+                 this.detailShow = false;
+            }
         },
         components: {
             stateList,
-            agentDetail,
-            deleDetail
+            collectDetail
         }
     }
 </script>
@@ -186,20 +140,35 @@
         color: #3c78ff;
     }
     .miList-wrapper {
+        position: absolute;
+        bottom: 0;
+        left: 0;
         width: 100%;
+        font-size: 1.2rem;
         background: #F8F8F8;
-        font-size:1.2rem;
     }
     .miList-container {
         margin: 0 auto;
         padding-top: 40px;
         width: 1000px;
         height: 340px;
-        &::after {
+        .lists-containt {
+            height: 280px;
+            overflow-y: scroll;
+        }
+        .lists-containt::-webkit-scrollbar {
+            width: 7px;
+        }
+        .lists-containt::-webkit-scrollbar-thumb {
+            height: 56px;
+            background: #D8D8D8;
+            border-radius: 4px;
+        }
+        /*&::after {
             display: block;
             height: 60px;
             content: '';
-        }
+        }*/
     }
     .items {
         display: flex;
@@ -243,20 +212,23 @@
                 }
             }
         }
-        .list-p{
-            width: 120px;
-            margin-right: 40px;
-        }
         .list-c {
             margin-right: 40px;
-            width: 160px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            width: 320px;
+            >span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
         .list-d {
             position: relative;
             width: 80px;
+            >span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
         .list-e {
             margin-right: 160px;
@@ -303,5 +275,9 @@
         .list-f {
             cursor: pointer;
         }
+    }
+    .list-active {
+        border: 1px solid #d0d0d0;
+        background: #ebebeb;
     }
 </style>

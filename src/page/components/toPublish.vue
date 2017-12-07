@@ -10,10 +10,10 @@
            </div>
         </div>
         <transportForm v-if="this.showType== 1" @closeForm="closeForm"></transportForm>
-        <operationForm v-else-if="this.showType== 2" @closeForm="closeForm"></operationForm>
+        <agentTransForm v-else-if="this.showType== 2" @closeForm="closeForm"></agentTransForm>
         <airlineReq v-else-if="this.showType== 3"></airlineReq>
-        <agentTransForm v-else-if="this.showType== 4" @closeForm="closeForm"></agentTransForm>
-        <airlineDelegation v-else-if="this.showType== 5"></airlineDelegation>
+        <airlineDelegation v-else-if="this.showType== 4"></airlineDelegation>
+        <operationForm v-else-if="this.showType== 5" @closeForm="closeForm"></operationForm>
     </div>
 </template>
 <script>
@@ -22,7 +22,7 @@
     import operationForm from './operationForm.vue'
     import airlineReq from './airlineReq.vue'
     import airlineDelegation from './airlineDelegation.vue'
-
+    import * as vx from 'vuex';
     export default {
         data () {
             return{
@@ -31,8 +31,26 @@
                 showType:'',
                 myShow:[1,2,3,4,5],
                 msg:'选择需求类型',
-                needType:['运力投放','运营委托','航线需求','委托运力投放','委托航线需求']
+                needType:[],
+                needType1:['运力投放','委托运力投放'],
+                needType2:['航线需求','委托航线需求','运营托管'],
+                needType3:['运力投放','委托运力投放','航线需求','委托航线需求','运营托管'],
             }
+        },
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
+        mounted() {
+            if(this.role.role == 0){ //角色为航司
+                this.needType = this.needType1;
+            }else if(this.role.role == 1){//角色为机场
+                this.needType = this.needType2;
+            }else if(this.role.role == 2){//角色为太美
+                this.needType = this.needType3;
+            }
+
         },
         components:{
             transportForm,
@@ -43,9 +61,13 @@
         },
         methods:{
              getNeed: function(i){
+                if(this.role.role == 1){ //角色为机场
+                    this.showType = this.myShow[i+2];
+                }else{//角色为航司和太美
+                    this.showType = this.myShow[i];
+                }
                 this.msg = this.needType[i];
                 this.isSel = true;
-                this.showType = this.myShow[i];
             },
             closeForm: function(){
                 this.showType = '';
