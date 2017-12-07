@@ -10,7 +10,7 @@
         </transition>
         <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
         <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
-        <respondAirport></respondAirport>
+        <respondAirport @responseShow="responShow" @responseClose="responClose" v-show="respond"></respondAirport>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
@@ -61,6 +61,7 @@
                 payDialog:false,
                 intentFormShow:false,
                 planShow:false,
+                respond:false,
                 intentShow:false,
                 myFormShow:false,
                 detailShow:false,
@@ -106,6 +107,14 @@
             closeDetail(){
                 this.detailShow =false;
             },
+            responShow(){
+                this.respond = true;
+                this.detailShow = false;
+                this.detailShow2 = false;
+            },
+            responClose(){
+                this.respond = false;
+            },
              closeThis() {
                 this.detailShow2 = false;
             },
@@ -121,11 +130,13 @@
             transShow:function(){
                 this.detailShow = true;
                 this.detailShow2 = false;
+                this.respond = false;
 
             },
             transShow2: function () {
                 this.detailShow2 = true;
                 this.detailShow = false;
+                this.respond = false;
             },
             init:function () {
                 if(
