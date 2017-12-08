@@ -136,7 +136,6 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
-                console.info(val)
                 if(val.data.renew == 0){
                     this.$ajax({
                         method: 'post',

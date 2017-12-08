@@ -9,7 +9,8 @@ var plugins = require('./plugins.js');
 module.exports = {
     entry: './src/main.js',
     output: {
-        path: path.resolve(__dirname, '../dist'), // Y:\test
+        // path: path.resolve(__dirname, '../dist'), // Y:\test
+        path: 'E:\\workspace\\taimei-hangyu-1-0\\src\\main\\WebContent\\dist', // Y:\test
         publicPath: process.env.NODE_ENV == 'production' ? './../../../dist/' : '',
         filename: '[name].build.js' // '[name]-[hash].js'
     },
