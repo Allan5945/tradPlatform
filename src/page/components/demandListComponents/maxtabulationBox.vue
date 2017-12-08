@@ -41,7 +41,6 @@
     import tag1 from '../../../static/img/jd/2.png'; // 航线托管需求图片
     import tag2 from '../../../static/img/jd/3.png'; // 航线托管需求图片
     import tag3 from '../../../static/img/jd/4.png'; // 航线托管需求图片
-
     export default {
         data() {
             return {
@@ -57,7 +56,8 @@
         methods: {
             alreadyPanel: function (key,t) {
                 let v = [key.data.id];
-                let v2 = [key.data.collectId]
+                let v2 = [key.data.collectId];
+                let v3 = [{key:[key.data.demandId],val:key.data.collectId}];
                 if(t){
                     this.$ajax({
                         method: 'post',
@@ -71,7 +71,7 @@
                     })
                         .then((response) => {
                             if(response.data.opResult == '0'){
-                                this.$store.dispatch('tagread',{t:true,v});
+                                this.$store.dispatch('tagread',{t:true,v:response.data.list});
                             }
                         })
                         .catch((error) => {
@@ -83,7 +83,7 @@
                         method: 'post',
                         url: "/delCollect",
                         params: {
-                            demandId: v2.join(','),
+                            collectId: v2.join(','),
                         },
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
@@ -91,7 +91,7 @@
                     })
                         .then((response) => {
                             if(response.data.opResult == '0'){
-                                this.$store.dispatch('tagread',{t:false,v});
+                                this.$store.dispatch('tagread',{t:false,v:v3});
                             }
                         })
                         .catch((error) => {
