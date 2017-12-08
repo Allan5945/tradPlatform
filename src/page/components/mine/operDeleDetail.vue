@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="detail-wrapper">
+        <div class="detail-wrapper scroll" >
             <header>
                 <div class="top-til">航线委托详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">成都-北京-上海航线需求</div>
@@ -88,7 +88,7 @@
             </div>
             <div class="sub-need" v-show="orderShow">
                   <div class="need-til">关联的子需求</div>
-                  <div class="need-btn">新建子需求</div>
+                  <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
             <footer>
                 <div class="foot-tips"></div>
@@ -102,7 +102,7 @@
                 </div>
             </footer>
         </div>
-        <!-- <operDeleForm></operDeleForm> -->
+        <operDeleForm v-show="formShow"></operDeleForm>
     </div>
 </template>
 
@@ -112,15 +112,19 @@ import operDeleForm from './operDeleForm.vue'
      data(){
          return{
             dialogShow:false,
-            orderShow:false
+            orderShow:false,
+            formShow:false
          }
      },
      methods:{
-        closeDetail:function(){
+        closeDetail(){
           this.$emit("close");
         },
-        refuse:function(){
+        refuse(){
 
+        },
+        newNeed(){
+          this.formShow = true;
         },
         accept(){
             this.orderShow = true;
@@ -150,7 +154,7 @@ import operDeleForm from './operDeleForm.vue'
         top:0;
         right:0;
         z-index: 12;
-        width:600px;
+        width:607px;
         height:100%;
         min-height:600px;
         color:#605E7C;
@@ -158,6 +162,11 @@ import operDeleForm from './operDeleForm.vue'
         overflow: hidden;
         overflow-y:scroll;
         background-color:#fff;
+        &::after {
+            display: block;
+            height: 160px;
+            content: '';
+        }
         header{
             width:100%;
             height:141px;

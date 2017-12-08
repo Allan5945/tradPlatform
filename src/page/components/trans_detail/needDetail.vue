@@ -50,7 +50,8 @@
             <div>*隐藏信息在提交意向后可查看</div>
             <div class="btn">
                 <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn">收藏</div>
+                <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
+                <div class="col-btn"  v-else>已收藏</div>
             </div>
         </footer>
     </div>
@@ -64,7 +65,9 @@
          return{
              getDetail:[],
              detailData:[],
-             intentionCount:0
+             intentionCount:0,
+             demandId:'',
+             isCollect:true
          }
      },
      methods:{
@@ -73,6 +76,25 @@
          },
          haveInvent:function(){
              this.$emit("formShow");
+         },
+         collect:function(){
+             this.$ajax({
+                method: 'post',
+                url: '/addCollect',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandIds: this.demandId
+                }
+                })
+                .then((response) => {
+                  this.isCollect = false;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
          }
      },
      computed: {
@@ -84,6 +106,7 @@
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             if(val.data.demandtype == 1 && this.role.role == 1){
                console.log("demandtype"+val.data.demandtype);
+                this.demandId = val.data.id;
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -91,7 +114,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: this.demandId
                 }
                 })
                 .then((response) => {
@@ -100,6 +123,9 @@
                     }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
+                     if(response.data.isAlreadyCollect == 1){
+                        this.isCollect = false;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -107,6 +133,9 @@
                 );
             };
         });
+
+
+
      },
 }
 </script>

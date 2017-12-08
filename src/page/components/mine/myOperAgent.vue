@@ -29,60 +29,35 @@
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="list items">
+                <div class="list items" v-for="val in myList">
                     <div class="list-a item">
-                        11.04.2017
+                        {{val.releaseTime}}
                     </div>
                     <div class="list-b item">
-                        航线需求
+                        <!--  {{myDemand(val.demandType)}} -->
                     </div>
                      <div class="list-p item">
-                        用户名
+                        {{val.nickName}}
                     </div>
                     <div class="list-c item color">
-                        成都-北京航线新开 找运力，XXXXXXXXXX
+                        {{val.title}}
                     </div>
                     <div class="list-d item">
-                        需求审核
+                      <!--  {{progress(val.demandProgress)}} -->
                     </div>
                     <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
                     </div>
-                    <div class="list-f item color" @click="AgentDetail">
-                        查看详情<span class="icon-item">&#xe686;</span>
-                    </div>
-                </div>
-                <div class="list items">
-                    <div class="list-a item">
-                        11.04.2017
-                    </div>
-                    <div class="list-b item">
-                        航线需求
-                    </div>
-                     <div class="list-p item">
-                        用户名
-                    </div>
-                    <div class="list-c item color">
-                        成都-北京航线新开 找运力，XXXXXXXXXX
-                    </div>
-                    <div class="list-d item">
-                        需求审核
-                    </div>
-                    <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
-                        </span>
-                    </div>
-                    <div class="list-f item color" @click="deleDetail">
+                    <div class="list-f item color" @click="getDetail(val)">
                         查看详情<span class="icon-item">&#xe686;</span>
                     </div>
                 </div>
             </div>
         </div>
         <agentDetail @close="closeAgentDetail" v-show="agentShow"></agentDetail>
-        <deleDetail></deleDetail>
+        <deleDetail @close="closeDeleDetail" v-show="deleShow"></deleDetail>
     </div>
 </template>
 <script>
@@ -102,11 +77,31 @@
                 type:  ['航线委托','运力委托','托管'],
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭']
+                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                myList:null
             }
         },
         mounted() {
             this.state = this.state1;
+
+             this.$ajax({
+                method: 'post',
+                url: '/selectCommissionedAndCustodyDemandList',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    page: 1,
+                    pageNo:4
+                }
+                })
+                .then((response) => {
+                     this.myList = response.data.list.list;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         methods: {
             typeShowFn: function () {
@@ -128,15 +123,19 @@
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-            AgentDetail:function(){ //托管详情
-                this.agentShow = true;
-            },
-            deleDetail:function(){ //委托详情
-                this.deleShow = true;
-            },
             closeAgentDetail:function(){
                 this.agentShow = false;
             },
+            closeDeleDetail:function(){
+                 this.deleShow = false;
+            },
+            getDetail:function(val){
+                if(val.demandType == '2'){//托管详情
+                    this.agentShow = true;
+                }else{//委托详情
+                      this.deleShow = true;
+                }
+            }
 
         },
         components: {
