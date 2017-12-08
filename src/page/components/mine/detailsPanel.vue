@@ -82,11 +82,23 @@
             closeReason: function () {//取消
                 this.reason.text = '';
                 this.show.swrapper = false;
+            },
+            getScrollWidth: function () {
+                var noScroll, scroll, oDiv = document.createElement("DIV");
+                oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+                noScroll = document.body.appendChild(oDiv).clientWidth;
+                oDiv.style.overflowY = "scroll";
+                scroll = oDiv.clientWidth;
+                document.body.removeChild(oDiv);
+                return noScroll-scroll;
             }
         },
         created: function () {
+            let fdom = document.querySelector('.my-center')
+            fdom.style.overflow = 'hidden';
+            fdom.style.right = this.getScrollWidth()+'px';
+
             //取出拒绝原因
-            //console.log(this.detailData)
             let that = this;
             let id = this.detailData.id;
             this.$ajax({
@@ -100,6 +112,12 @@
             }).catch(err=>{
 
             })
+        },
+        destroyed: function () {
+            let fdom = document.querySelector('.my-center')
+            fdom.style.overflow = 'auto';
+            fdom.style.right = '0';
+//            document.body.style.height = 'auto';
         }
     }
 </script>
@@ -140,6 +158,7 @@
         height: 100%;
         top: 0;
         left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
         z-index: 11;
     }
     .shadow{

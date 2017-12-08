@@ -156,7 +156,7 @@
             }
         },
         beforeMount: function () {
-            if (this.role == null) window.location.href = '#/login'
+//            if (this.role == null) window.location.href = '#/login'
         },
         mounted: function () {
             this.$ajax({

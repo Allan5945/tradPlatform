@@ -65,7 +65,7 @@ export const state = {
             },
         },
     },
-    role:null,// ** 用户角色信息
+    role: window.sessionStorage.getItem('role')? JSON.parse(window.sessionStorage.getItem('role')):null,// ** 用户角色信息
     transDetail:{
         transShow:false,
         userData:{}

@@ -110,9 +110,6 @@
             }
         },
         props:["ndetailData"],
-        mounted: function () {
-
-        }
     }
 </script>
 
@@ -125,7 +122,6 @@
         box-sizing:border-box;
         color:#605E7C;
         overflow: hidden;
-        overflow-y:scroll;
         background-color:#fff;
         header{
             width:100%;

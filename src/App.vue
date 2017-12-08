@@ -12,6 +12,9 @@
 
             }
         },
+        components: {
+
+        },
         methods: {
             ...vx.mapActions([
                 'close'
@@ -23,19 +26,44 @@
         mounted: function () {
 
         },
+        destroyed: function () {
+            alert("App has destroyed!");
+        },
         computed: {
             ...vx.mapGetters([
                 'c_updated',
                 'airList'
             ])
-        },
-        components: {
-
         }
     }
 </script>
 
 <style>
+    /* 通用滚动条样式 chrome */
+    /*滚动条*/
+    ::-webkit-scrollbar-thumb{
+        background-color: rgb(195, 195, 195);
+        height:50px;
+        outline-offset:-2px;
+        outline:0px solid #fff;
+        -webkit-border-radius:4px;
+    }
+    /*---鼠标点击滚动条显示样式--*/
+    ::-webkit-scrollbar-thumb:hover{
+        background-color: rgb(205, 205, 205);
+        cursor: pointer;
+    }
+    /*---滚动条大小--*/
+    ::-webkit-scrollbar{
+        width:6px;
+        height:8px;
+    }
+    /*---滚动框背景样式--*/
+    ::-webkit-scrollbar-track-piece{
+        background-color:rgba(153, 153, 153, 0.1);
+        -webkit-border-radius:0;
+    }
+
     /*通用動畫效果*/
     /*淡入淡出*/
     .fade-enter-active, .fade-leave-active {
