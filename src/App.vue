@@ -96,4 +96,13 @@
         transform: translateX(50px);
         opacity: 0;
     }
+
+    .dialog-enter-active, .dialog-leave-active {
+        transition: opacity .3s;
+    }
+    .dialog-enter, .dialog-leave-to{
+        opacity: 0;
+    }
+    /* 机场控件 */
+
 </style>

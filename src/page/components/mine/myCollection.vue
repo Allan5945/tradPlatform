@@ -30,82 +30,49 @@
                 </div>
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
-                    <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
+                    <div class="list items" :class="{'list-active':false}" >
                         <div class="list-a item">
-                            {{item.releasetime}}
+                            11.04.2017
                         </div>
                         <div class="list-b item">
-                            {{item.demandtype}}
+                            航线需求
                         </div>
                         <div class="list-c item color">
-                            <span>{{item.title}}</span>
+                            <span>成都-北京航线新开 找运力，XXXXXXXXXX</span>
                         </div>
                         <div class="list-d item">
-                            {{item.demandprogress}}
+                            需求审核
                         </div>
                         <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
                         </div>
-                        <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="list-f item color" @click="openDetail">查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn"></myPublish>
-        <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn"></myPublishTransportEntrust>
-        <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn"></myPublishAirLineEntrust>
+        <collectDetail v-show="detailShow" @closeDetail="closeDetail"></collectDetail>
     </div>
 </template>
 <script>
-    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
-    import myPublish from './myPublish.vue'
-    import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
-    import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
+    import collectDetail from './collectDetail.vue';
 
     export default {
         data() {
             return {
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
+                detailShow:false,
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['运力投放','委托运力投放','航线需求','委托航线需求','运营托管'],
-                state: [],
-                state1: ['需求发布','意见征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
-                state2: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state3: ['待处理','处理中','意见征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
-                state4: ['需求发布','意见征集','订单确认','关闭(审核不通过、下架、过期)','交易完成'],
-                myPublishShow: false,       // myPublish(我的发布-审核未通过)是否显示
-                myPublishTransportEntrustShow: false, // myPublishEntrust（我的发布-发布的运力托管）是否显示
-                myPublishAirLineEntrustShow: false,   //myPublishAirLineEntrust（我的发布-发布的航线托管）是否显示
-                myData: [],                 // 将获取的数据，渲染到页面上
-                listItemIndex: '',          // 被点击列的index，用来使其变成active
+                type: ['运力投放','航线需求'],
+                state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
             }
-        },
-        mounted() {
-            this.state = this.state1;
-            this.$ajax({
-                url:"/getTheReleaseDemandOfMine",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:1,
-                    orderType: 1 //发布时间排序类型 0-倒序 1-正序
-                }
-            }) .then((response) => {
-                console.info('myPublishList获取的数据:')
-                console.info(response)
-                this.myData = response.data.list.list;
-            }).catch((error) => {
-                console.log(error);
-            });
         },
         methods: {
             typeShowFn: function () {
@@ -116,48 +83,20 @@
             },
             typeClickFn: function (item) {
                 this.typeWriting = item;
-                if(item == '航线需求') {
-                    this.state = this.state1;
-                }if(item == '运营托管') {
-                    this.state = this.state2;
-                }if(item == '委托运力投放' || item == '委托航线需求') {
-                    this.state = this.state3;
-                }if(item == '运力投放') {
-                    this.state = this.state4;
-                }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-            // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
-            listClickFn: function (item,index) {
-                this.listItemIndex = index; //变成active状态
-                tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPublish.vue
-//                this.myPublishShow = true;
-//                this.myPublishTransportEntrustShow = true;
-                this.myPublishAirLineEntrustShow = true;
+             openDetail:function(){
+                this.detailShow = true;
             },
-            // 点击关闭:我的发布-审核未通过
-            closeMyPublishShowFn: function () {
-                this.myPublishShow = false;
-                this.listItemIndex = '';
-            },
-            // 点击关闭:我的发布-发布的运力托管
-            closeMyPublishTransportEntrustFn: function () {
-                this.myPublishTransportEntrustShow = false;
-                this.listItemIndex = '';
-            },
-            // 点击关闭:我的发布-发布的航线托管
-            closeMyPublishAirLineEntrustFn: function () {
-                this.myPublishAirLineEntrustShow = false;
-                this.listItemIndex = '';
+            closeDetail:function(){
+                 this.detailShow = false;
             }
         },
         components: {
             stateList,
-            myPublish,
-            myPublishTransportEntrust,
-            myPublishAirLineEntrust
+            collectDetail
         }
     }
 </script>
@@ -201,11 +140,10 @@
         color: #3c78ff;
     }
     .miList-wrapper {
-        /*position: absolute;
+        position: absolute;
         bottom: 0;
-        left: 0;*/
+        left: 0;
         width: 100%;
-        height: 434px;
         font-size: 1.2rem;
         background: #F8F8F8;
     }

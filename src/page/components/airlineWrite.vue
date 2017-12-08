@@ -1382,7 +1382,7 @@
         right: 100px;*/
         padding: 20px 20px 0 20px;
         width: 580px;
-        max-height: 556px;
+        height: 590px;
         overflow-y: scroll;
         overflow-x: visible;
         border-radius: 4px;
