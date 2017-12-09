@@ -19,7 +19,8 @@
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
         <!--<myIndex></myIndex>-->
         <routeNetwork></routeNetwork>
-         <myIndexFzz></myIndexFzz>
+         <!--<myIndexFzz></myIndexFzz>-->
+        <!--<timelyCommunication></timelyCommunication>-->
     </div>
 </template>
 
@@ -32,7 +33,7 @@
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm1.vue'
+    import intentForm from './../page/components/trans_detail/intentForm.vue'
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
@@ -47,9 +48,10 @@
     import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
     import myPublish from './components/mine/myPublishNeed.vue'
     import myPurpose from './../page/components/mine/myPurpose.vue'
-
-
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
+    //test
+    import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
+
     export default {
         data() {
             return {
@@ -271,7 +273,8 @@
             myPublish,
             myPurpose,
             routeNetwork,
-            respondAirport
+            respondAirport,
+//            timelyCommunication
         }
     }
 </script>
