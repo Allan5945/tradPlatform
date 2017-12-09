@@ -2,59 +2,46 @@
     <div class="my-center">
         <myNav ></myNav>
         <div class="mine">
-            <div class="my-info">
-                <div class="my-pic">
-                    <img :src='img' alt="">
-                    <span class="iconfont">&#xe645;</span>
+            <div class="my-msg">
+                <div class="my-info">
+                    <div class="my-pic">
+                        <img :src='img' alt="">
+                        <span class="iconfont">&#xe645;</span>
+                    </div>
+                    <div class="name">张二狗</div>
+                    <div class="work-info">
+                        <div class="position">太美航空&nbsp;市场部</div>
+                        <div>成单量：<span>10</span></div>
+                        <div>成单率：<span>50%</span></div>
+                    </div>
                 </div>
-                <div class="name">张二狗</div>
-                <div class="work-info">
-                    <div class="position">太美航空&nbsp;市场部</div>
-                    <div>成单量：<span>10</span></div>
-                    <div>成单率：<span>50%</span></div>
+                <div class="my-list" >
+                    <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" >{{val}}</div>
                 </div>
             </div>
-            <div class="my-list" >
-                <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" @click="getTable(index)">{{val}}</div>
-            </div>
-             <operAgent @getDetail="openOpera"></operAgent>
-             <operAgentDetail @close="closeOpera" v-show="operShow" @showDialog="showDialog"></operAgentDetail>
-            <refuseDialog @sure="sureDialog" @cancel="cancelDialog" v-show="dialogShow"></refuseDialog>
         </div>
+       <!-- <operAgent></operAgent> -->
+       <myCollection></myCollection>
+
     </div>
 </template>
 
 <script>
 import myNav from './myNav.vue';
-import operAgent from './operAgent.vue';
-import operAgentDetail from './operAgentDetail.vue';
-import refuseDialog from './refuseDialog.vue';
+import operAgent from './myOperAgent.vue';
+import myCollection from './myCollection.vue';
+
+
 import myPic from './../../../static/img/haveline.png';
     export default {
         data(){
             return{
                 myList:["审核列表","委托/托管","我的发布","我的意向","我的订单","我的收藏","公司账户"],
                 isActive:false,
-                operShow:false,
-                dialogShow:false,
             }
         },
         methods: {
-            closeOpera(){
-                this.operShow = false;
-            },
-            openOpera(){
-                this.operShow = true;
-            },
-            showDialog(){
-                this.dialogShow = true;
-            },
-            sureDialog(){
-                this.dialogShow = false;
-            },
-            cancelDialog(){
-                this.dialogShow = false;
-            }
+
         },
         computed:{
             img:function(){
@@ -64,8 +51,7 @@ import myPic from './../../../static/img/haveline.png';
         components: {
             myNav,
             operAgent,
-            operAgentDetail,
-            refuseDialog
+            myCollection
         }
     }
 </script>
@@ -82,9 +68,14 @@ import myPic from './../../../static/img/haveline.png';
         background: #fff;
         z-index:11;
         .mine{
-            width:1000px;
+            position:relative;
+            width:100%;
             padding-top:200px;
-            margin:0 auto;
+            .my-msg{
+                width:1000px;
+                margin:0 auto;
+            }
+
         }
     }
     .my-info{

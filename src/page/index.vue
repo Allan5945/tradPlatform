@@ -17,9 +17,9 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-        <myIndex></myIndex>
+       <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
-         <myIndexFzz></myIndexFzz>
+         <!--<myIndexFzz></myIndexFzz>-->
     </div>
 </template>
 
@@ -97,6 +97,7 @@
             },
             openIntent() {
                 this.intentShow = true;
+                this.detailShow2 = false;
             },
             closeForm(){
                 this.intentFormShow = !this.intentFormShow;
@@ -137,6 +138,7 @@
                 this.detailShow2 = true;
                 this.detailShow = false;
                 this.respond = false;
+                this.intentShow = false;
             },
             init:function () {
                 if(
@@ -156,7 +158,7 @@
             }
         },
         beforeMount: function () {
-            if (this.role == null) window.location.href = '#/login'
+//            if (this.role == null) window.location.href = '#/login'
         },
         mounted: function () {
             this.$ajax({
@@ -275,10 +277,4 @@
 </script>
 
 <style lang="scss">
-    .dialog-enter-active, .dialog-leave-active {
-     transition: opacity .3s;
-}
-.dialog-enter, .dialog-leave-to{
-    opacity: 0;
-}
 </style>

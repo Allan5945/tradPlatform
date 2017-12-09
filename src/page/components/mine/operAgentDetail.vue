@@ -1,57 +1,60 @@
 <template>
-    <div class="detail-wrapper">
-        <header>
-            <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-            <div class="head-til">运营托管详情1111</div>
-            <div class="contact">联系用户</div>
-            <div class="tips">
-                <div>委托方&nbsp;成都双流机场</div>
-                <div>创建于2017.12.12</div>
-                <div>状态: <span>待处理</span></div>
+    <div>
+        <div class="detail-wrapper">
+            <header>
+                <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
+                <div class="head-til">运营托管详情1111</div>
+                <div class="contact">联系用户</div>
+                <div class="tips">
+                    <div>委托方&nbsp;成都双流机场</div>
+                    <div>创建于2017.12.12</div>
+                    <div>状态: <span>已拒绝</span></div>
+                </div>
+            </header>
+            <div class="content">
+                <div class="content-box">
+                    <div >
+                        <div>航班号</div>
+                        <div>HU8888</div>
+                    </div>
+                    <div>
+                        <div>小时成本</div>
+                        <div>6.5万/小时</div>
+                    </div>
+                    <div>
+                        <div>其他说明</div>
+                        <div>无补贴政策</div>
+                    </div>
+                </div>
+                <div class="content-box border">
+                    <div>
+                        <div>联系人</div>
+                        <div>张三</div>
+                    </div>
+                    <div>
+                        <div>联系方式</div>
+                        <div>5409095445</div>
+                    </div>
+                </div>
             </div>
-        </header>
-        <div class="content">
-            <div class="content-box">
-                <div >
-                    <div>航班号</div>
-                    <div>HU8888</div>
+            <footer>
+                <div class="foot-tips">*拒绝原因</div>
+                <div class="btn">
+                    <div class="test-btn">测评该需求</div>
+                    <div class="can-btn" @click="cancel">拒绝</div>
                 </div>
-                <div>
-                    <div>小时成本</div>
-                    <div>6.5万/小时</div>
-                </div>
-                <div>
-                    <div>其他说明</div>
-                    <div>无补贴政策</div>
-                </div>
-            </div>
-            <div class="content-box border">
-                <div>
-                    <div>联系人</div>
-                    <div>张三</div>
-                </div>
-                <div>
-                    <div>联系电话</div>
-                    <div>5409095445</div>
-                </div>
-            </div>
+            </footer>
         </div>
-        <footer>
-            <div class="btn">
-                <div class="test-btn">测评该需求</div>
-                <div class="can-btn" @click="cancel">拒绝</div>
-            </div>
-        </footer>
+        <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog"></refuseDialog>
     </div>
 </template>
 
 <script>
- import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import * as vx from 'vuex';
+import refuseDialog from './refuseDialog.vue';
  export default {
      data(){
          return{
-
+            dialogShow:false
          }
      },
      methods:{
@@ -59,7 +62,13 @@
           this.$emit("close");
         },
         cancel:function(){
-          this.$emit("showDialog");
+          this.dialogShow = true;
+        },
+        sureDialog(){
+          this.dialogShow = false;
+        },
+        cancelDialog(){
+          this.dialogShow = false;
         }
      },
      computed: {
@@ -68,6 +77,9 @@
       mounted() {
 
      },
+     components: {
+          refuseDialog
+     }
 }
 </script>
 
@@ -155,7 +167,7 @@
             margin-right:30px;
           }
           span{
-            color:#3c78ff;
+            color:red;
           }
         }
     }
@@ -189,7 +201,12 @@
       border-top:1px solid #ccc;
     }
     footer{
-          border-top:1px solid #ccc;
+          .foot-tips{
+            height:40px;
+            margin:0 20px;
+            border-bottom:1px solid #ccc;
+            color: red;
+          }
           .btn{
               height:40px;
               margin:40px 0;

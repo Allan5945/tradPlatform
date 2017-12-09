@@ -1,7 +1,7 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div :class="{'tagRed':(key.data.renew == 0)}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
-            <div class="tabulation-item" @click="getDetail(key)">
+        <div :class="{'tagRed':(key.data.renew == 0)}" @click="getDetail(key)" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
+            <div class="tabulation-item">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
                     <div v-for="(item,d) in key.name">
@@ -136,7 +136,6 @@
                 this.$bExample.setLinesList(pots, t);
             },
             getDetail: function (val) {
-                console.info(val)
                 if(val.data.renew == 0){
                     this.$ajax({
                         method: 'post',

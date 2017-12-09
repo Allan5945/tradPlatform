@@ -33,22 +33,24 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     }
                 })
-                    .then((response) => {
-                        if(response.data.obj != undefined){
-                            this.$store.dispatch('role',response.data.obj).then((e) => {});
-                            window.location.href='#/index';
-                        }else{
-                            alert('错了')
-                        }
-                    })
-                    .catch((error) => {
-                            console.log(error);
-                        }
-                    );
+                .then((response) => {
+                    if(response.data.obj != undefined){
+                        this.$store.dispatch('role',response.data.obj).then((e) => {});
+                        window.sessionStorage.setItem('isLogin','ok');
+                        window.sessionStorage.setItem('role',JSON.stringify(response.data.obj));
+                        this.$router.push("index");
+                    }else{
+                        alert('错了')
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
             }
         },
-        mounted:function () {
-            this.logined();
+        created:function () {
+            window.sessionStorage.clear();
         },
         computed:{
             ...vx.mapGetters([

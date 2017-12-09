@@ -5,7 +5,7 @@
             <div class="head-til">{{detailData.title}}</div>
             <div class="tips">
                 <span>创建于{{detailData.releasetime}}</span>
-                <span>已有{{intentionCount}}位用户发起意向</span>
+                <span class="intent-count">已有{{intentionCount}}位用户发起意向</span>
             </div>
         </header>
         <div class="content">
@@ -50,91 +50,70 @@
             <div>*隐藏信息在提交意向后可查看</div>
             <div class="btn">
                 <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
-                <div class="col-btn"  v-else>已收藏</div>
+                <div class="col-btn" @click="cancelCollect">取消收藏</div>
             </div>
         </footer>
     </div>
 </template>
 
 <script>
- import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import * as vx from 'vuex';
+ /*import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+ import * as vx from 'vuex';*/
  export default {
      data(){
          return{
-             getDetail:[],
-             detailData:[],
-             intentionCount:0,
-             demandId:'',
-             isCollect:true
+             detailData:{},
+             intentionCount:0
          }
      },
      methods:{
-         closeDetail:function(){
-            this.$emit("closeDetail")
-         },
-         haveInvent:function(){
-             this.$emit("formShow");
-         },
-         collect:function(){
-             this.$ajax({
+         cancelCollect:function(){
+            this.$ajax({
                 method: 'post',
-                url: '/addCollect',
+                url: '/delCollectByDemandId',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandIds: this.demandId
-                }
+                    demandId:this.demandId
+                  }
                 })
                 .then((response) => {
-                  this.isCollect = false;
+                     this.$emit("closeDetail");
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+         },
+         closeDetail:function(){
+              this.$emit("closeDetail");
+         },
+         haveInvent:function(){
+
          }
      },
-     computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },
-      mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
-               console.log("demandtype"+val.data.demandtype);
-                this.demandId = val.data.id;
-                this.$ajax({
+    props:['demandId'],
+
+    mounted() {
+          this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: this.demandId
-                }
+                    demandId:this.demandId
+                  }
                 })
                 .then((response) => {
-                    if(response.data.opResult == "004"|| response.data.receiveIntention == null){
-                        this.$emit("transShow");
-                    }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
-                     if(response.data.isAlreadyCollect == 1){
-                        this.isCollect = false;
-                    }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-            };
-        });
-
-
 
      },
 }
@@ -148,6 +127,7 @@
         z-index: 12;
         width:600px;
         height:100%;
+        font-size:1.2rem;
         min-height:600px;
         color:#605E7C;
         background-color:#fff;
@@ -203,6 +183,9 @@
           padding:20px 0 18px 40px;
           span{
             margin-right:30px;
+          }
+          .intent-count{
+            color:#3c78ff;
           }
         }
     }
@@ -262,7 +245,7 @@
                   }
               }
                >.col-btn{
-                  width:80px;
+                  width:100px;
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
