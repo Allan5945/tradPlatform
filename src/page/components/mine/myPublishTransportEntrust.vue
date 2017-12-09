@@ -5,20 +5,23 @@
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
         <div class="second item-container">
-            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn">
+            <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
                 联系客服 <span class="icon-item">&#xe720;</span>
             </div>
-            <!--<div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
+            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn">
+                重新发布
+            </div>
+            <div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
                 <span class="icon-item">&#xe653;</span>编辑
-            </div>-->
+            </div>
             <div class="top">
                 <span style="height: 25px;">{{myData.title}}</span>
             </div>
             <div class="bottom">
                 <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
                 <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
-                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogressStr}}</span>
-                    <!--<span style="color: red; font-weight: bold;">审核未通过</span>-->
+                <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
+                    <span v-else>{{myData.demandprogressStr}}</span>
                 </span>
             </div>
         </div>
@@ -61,33 +64,38 @@
                 </div>
             </div>
         </div>
-        <!--<div class="seventh item-container">
-            <span class="danger" v-show="true">*XXXX事情有误，请重新输入</span>
-        </div>-->
+        <div class="seventh item-container">
+            <span class="danger" v-show="wrongTextShow">*XXXX事情有误，请重新输入</span>
+        </div>
         <span class="line" style="position:absolute; left: 20px; bottom: 110px;"></span>
         <div class="eighth">
-            <div class="buttons">
+            <div class="buttons" v-if="buttonShow == true">
                 <button class="btn btn-w" @click="recallFn(),closeThisFn()">撤回该托管</button>
             </div>
-            <!--<div class="buttons">
-                <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;">重新发布</button>
-                <button class="btn btn-w" style="width: 100px;">结束需求</button>
-            </div>-->
+            <div class="buttons" v-else>
+                <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;"  @click="anewPublishClickFn2(),closeThisFn()">重新发布</button>
+                <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">撤回该托管</button>
+            </div>
         </div>
-        <editMyPublishNeed v-show="editMyPublishNeedShow" @close-this="closeEditMyPublishNeed"></editMyPublishNeed>
+        <editOperationForm  v-if="editOperationFormShow" @close-this="closeEditOperationForm" @change-showCode="changeShowCodeFn"></editOperationForm>
     </div>
 </template>
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editMyPublishNeed from './editTransportForm.vue'
+    import editOperationForm from './editOperationForm.vue'
     export default {
         data() {
             return {
                 myData: {},             // 获取的数据渲染到页面上
-                anewPublishShow: true, //“重新发布”是否显示
+                anewPublishShow: false, //“重新发布”是否显示
+                linkServiceShow: false, // "联系客服"是否显示
                 editPublishShow: false, // “编辑”是否显示
+                demandStateText: false, //"审核未通过"是否显示
+                wrongTextShow: false,  // 错误提示是否显示
+                buttonShow: true,      // 按钮显示一个或两个
                 releasetime: '',        //创建时间
-                editMyPublishNeedShow: false, //编辑需求表单
+                editOperationFormShow: false, //编辑需求表单
+//                editAirlineReqShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
             }
         },
@@ -97,6 +105,14 @@
                 console.info('从myPublishList获取的数据:');
                 console.info(val);
                 this.myData = val;
+                // 状态有误时显示的内容
+//                this.wrongShow();
+                if(this.myData.demandstate == 2){
+                    this.wrongShow();
+                }else{
+                    this.show();
+//                    this.wrongShow();
+                }
                 //将创建时间顺序改变
                 let time1 = this.myData.releasetime.split('.');
                 let time2 = [];
@@ -111,23 +127,70 @@
         computed: {
         },
         components: {
-            editMyPublishNeed
+            editOperationForm
         },
         methods: {
+            // 格式无误时显示的内容
+            show: function () {
+                this.buttonShow = true; //下方按钮显示1个
+                this.linkServiceShow = true; // 上方“联系客服”按钮
+                this.editPublishShow = false;  // 上方“编辑”按钮
+                this.anewPublishShow = false; //上方“重新发布”按钮
+                this.demandStateText = false; //"审核未通过"是否显示
+                this.wrongTextShow = false;  //警告信息
+            },
+            // “格式有误时显示的内容
+            wrongShow: function () {
+                this.buttonShow = true; //下方按钮显示1个
+                this.linkServiceShow = false; // 上方“联系客服”按钮
+                this.editPublishShow = false;  // 上方“编辑”按钮
+                this.anewPublishShow = true; //上方“重新发布”按钮
+                this.demandStateText = true; //"审核未通过"是否显示
+                this.wrongTextShow = true;   //警告信息
+            },
             closeThisFn: function () {
                 this.$emit('close-this');
             },
+            // 点击“联系客服”
+            linkServiceClickFn: function () {
+                alert('联系客服');
+            },
             //点击“重新发布”
             anewPublishClickFn: function () {
-                alert('联系客服')
+//                alert('重新发布')
+                this.buttonShow = false; //下方按钮显示1个
+                this.linkServiceShow = false; // 上方“联系客服”按钮
+                this.editPublishShow = true;  // 上方“编辑”按钮
+                this.anewPublishShow = false; //上方“重新发布”按钮
             },
             // 点击“编辑”
             editPublishClickFn: function () {
-                this.editMyPublishNeedShow = true
+                this.editOperationFormShow = true
+            },
+            // 点击表单的“确认”后
+            changeShowCodeFn: function () {
+                this.editPublishShow = false;
+                this.anewPublishShow = false;
+                this.wrongTextShow = false;
+                tabulationBoxTrigger.$on('sendToMyPublish',(val) => {
+                    this.myData = val;
+                    //将创建时间顺序改变
+                    /*let time1 = this.myData.releasetime.split('.');
+                    let time2 = [];
+                    for(let i = time1.length - 1; i >= 0; i--){
+                        time2.push(time1[i]);
+                    }
+                    this.releasetime = time2.join('.');*/
+                });
             },
             //关闭“编辑需求”表单
-            closeEditMyPublishNeed: function () {
-                this.editMyPublishNeedShow = false;
+            closeEditOperationForm: function () {
+                this.editOperationFormShow = false;
+            },
+
+            //点击下方“重新发布”
+            anewPublishClickFn2: function () {
+                alert('重新发布');
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {

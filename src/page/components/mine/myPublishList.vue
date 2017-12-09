@@ -45,7 +45,7 @@
                         </div>
                         <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
+                            <span v-show="talkNumShow">1</span>
                         </span>
                         </div>
                         <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
@@ -60,6 +60,7 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
     import myPublish from './myPublishNeed.vue'
@@ -74,7 +75,10 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['运力投放','委托运力投放','航线需求','委托航线需求','运营托管'],
+//                type: [],
+                type: [],
+                type0: ['运力投放','委托运力投放'], // 0：航司方登录
+                type1: ['航线需求','委托航线需求','运营托管'], // 1：机场方登录
                 state: [],
                 state1: ['需求发布','意见征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
                 state2: ['待处理','测评中','已接受','已拒绝','已关闭'],
@@ -84,10 +88,22 @@
                 myPublishTransportEntrustShow: false, // myPublishEntrust（我的发布-发布的运力托管）是否显示
                 myPublishAirLineEntrustShow: false,   //myPublishAirLineEntrust（我的发布-发布的航线托管）是否显示
                 myData: [],                 // 将获取的数据，渲染到页面上
+                myData0: [],                 // 航司能看到的数据，渲染到页面上
+                myData1: [],                 // 机场能看到的数据，渲染到页面上
                 listItemIndex: '',          // 被点击列的index，用来使其变成active
+                talkNumShow: false,         //是否有对话
             }
         },
         mounted() {
+            // 判断是机场(1)还是航司(0)登录
+            if(this.role.role == 0) {
+                this.type = this.type0;
+                this.myData = this.myData0;
+            }if(this.role.role == 1) {
+                this.type = this.type1;
+                this.myData = this.myData1;
+            }
+
             this.state = this.state1;
             this.$ajax({
                 url:"/getTheReleaseDemandOfMine",
@@ -102,10 +118,23 @@
             }) .then((response) => {
                 console.info('myPublishList获取的数据:')
                 console.info(response)
-                this.myData = response.data.list.list;
+                response.data.list.list.forEach((val) => {
+                    if(val.demandtype == 1 || val.demandtype == 4 ){
+                        this.myData0.push(val);
+                    }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
+                        this.myData1.push(val);
+                    }
+//                    this.myData.push(val);
+                })
+//                this.myData = response.data.list.list;
             }).catch((error) => {
                 console.log(error);
             });
+        },
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ]),
         },
         methods: {
             typeShowFn: function () {
@@ -159,19 +188,19 @@
                     this.myPublishTransportEntrustShow = true;
                     this.myPublishAirLineEntrustShow = false;
                     this.myPublishShow = false;
-                }if(item.demandtype == 4 || item.demandtype == 3){
+                }if(item.demandtype == 3 || item.demandtype == 4){
                     // 航线委托详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = true;
                     this.myPublishShow = false;
                 }if(item.demandtype == 0 || item.demandtype == 1){
                     //  审核未通过，需求详情
-                    /*this.myPublishTransportEntrustShow = false;
+                    this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = true;*/
+                    this.myPublishShow = true;
 //                    this.myPublishTransportEntrustShow = true;
 //                    this.myPublishAirLineEntrustShow = true;
-                    this.myPublishShow = true;
+//                    this.myPublishShow = true;
                 }
 
             },

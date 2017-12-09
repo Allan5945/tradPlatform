@@ -45,7 +45,7 @@
                         </div>
                         <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
+                            <span v-show="talkNumShow">1</span>
                         </span>
                         </div>
                         <div class="list-f item color">
@@ -75,6 +75,7 @@
                 state1: ['意见征集','订单确认','交易完成','已撤回','需求关闭','落选'],
                 state2: ['意见征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],
                 myPurposeShow: false, // myPublish是否显示
+                talkNumShow: false,         //是否有对话
             }
         },
         mounted() {},
