@@ -1,9 +1,9 @@
 <template>
     <div class="wrap" @click.self="closeAll">
         <div class="box shadow">
-            <h2 class="mgr-l">需求详情</h2>
+            <p class="mgr-l">需求详情<span  class="iconfont closer" @click="closeAll">&#xe62c;</span></p>
 
-            <airlineReq :ndetailData="metaData" v-if="metaData"></airlineReq>
+            <airlineReq :ndetailData="metaData" :type="detailData.demandtype" v-if="metaData"></airlineReq>
 
             <footer class="footer flex-center">
                 <template v-if="detailData.demandstate=='未处理'">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import airlineReq from './airlineReq.vue'
+    import airlineReq from './detailListModule.vue'
     export default{
         data(){
             return {
@@ -48,7 +48,8 @@
                     text: '',
                     textLength:0
                 },
-                metaData: null
+                metaData: null,
+                fatherScroll:true
             }
         },
         components: {airlineReq},
@@ -95,9 +96,11 @@
         },
         created: function () {
             let fdom = document.querySelector('.my-center')
-            fdom.style.overflow = 'hidden';
-            fdom.style.right = this.getScrollWidth()+'px';
-
+            if(fdom.offsetHeight===fdom.scrollHeight===fdom.clientHeight){
+                this.fatherScroll = false;
+                fdom.style.overflow = 'hidden';
+                fdom.style.right = this.getScrollWidth()+'px';
+            }
             //取出拒绝原因
             let that = this;
             let id = this.detailData.id;
@@ -114,16 +117,16 @@
             })
         },
         destroyed: function () {
-            let fdom = document.querySelector('.my-center')
-            fdom.style.overflow = 'auto';
-            fdom.style.right = '0';
-//            document.body.style.height = 'auto';
+            if(this.fatherScroll){
+                let fdom = document.querySelector('.my-center')
+                fdom.style.overflow = 'auto';
+                fdom.style.right = '0';
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-
 　　.input textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
     $bt-c: #605e7c;
     $txt-c: #3c78ff;
@@ -138,7 +141,8 @@
         color: $bt-c;
     }
     .mgr-l{
-        margin-left: 30px;
+        color: rgba(96,94,124,.7);
+        margin: 0 0 20px 30px;
     }
     .flex-center{
         display: flex;
@@ -150,6 +154,21 @@
         position: absolute;
         top: -35%;
         left: 10px;
+    }
+    .closer{
+        display: inline-block;
+        position: absolute;
+        right: 3%;
+        top: 5px;
+        margin-top:9px;
+        width:22px;
+        height:22px;
+        line-height:22px;
+        text-align:center;
+        color:#3C78FF;
+        border:1px solid #ededed;
+        border-radius: 11px;
+        cursor:pointer;
     }
     /*主體内容*/
     .wrap{
