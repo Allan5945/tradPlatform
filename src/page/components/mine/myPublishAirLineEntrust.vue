@@ -1,7 +1,7 @@
 <template>
     <div class="ald-container">
         <div class="first item-container">
-            <span>航线托管详情</span>
+            <span>{{myData.demandtypeStr}}详情</span>
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
         <div class="second item-container">
@@ -15,20 +15,21 @@
                 <span style="height: 25px;">{{myData.title}}</span>
             </div>
             <div class="bottom">
-                <span class="font-gray" style="margin-right: 25px;">委托方　成都双流机场</span>
+                <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
                 <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
-                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogress}}</span>
+                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogressStr}}</span>
                     <!--<span style="color: red; font-weight: bold;">审核未通过</span>-->
                 </span>
             </div>
         </div>
         <div class="third item-container">
             <div class="start item">
-                <div class="item-a font-gray">始发机场</div>
-                <div class="item-b">成都双流</div>
-                <div class="item-c font-gray">接受临近机场</div>
+                <div class="item-a font-gray">始发<span v-if="myData.dptState == 1">区域</span><span v-else>机场</span>
+                </div>
+                <div class="item-b"><span v-if="myData.dptState == 1">{{myData.dpt}}</span><span v-else>{{myData.dptNm}}</span></div>
+                <div class="item-c font-gray">{{myData.dptAcceptnearairportStr}}临近机场</div>
                 <div class="item-d font-gray">出港资源</div>
-                <div class="item-e">08:00-12:00</div>
+                <div class="item-e">{{myData.dptTimeresourcesStr}}</div>
             </div>
             <div class="pass item" style="display: flex; align-items: center;">
                 <span class="left-icon icon-item">&#xe6ad;</span>
@@ -36,8 +37,9 @@
                 <span class="right-icon icon-item">&#xe672;</span>
             </div>
             <div class="arrive item">
-                <div class="item-a font-gray">到达区域</div>
-                <div class="item-b">华北地区</div>
+                <div class="item-a font-gray">到达<span v-if="myData.arrvState == 1">区域</span><span v-else>机场</span>
+                </div>
+                <div class="item-b"><span v-if="myData.arrvState == 1">{{myData.arrv}}</span><span v-else>{{myData.arrvNm}}</span></div>
 
                 <!--下方有空格-->
                 <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
@@ -55,10 +57,10 @@
                     <div class="font-gray">补贴政策</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">2017.11.11-2018.11.11</div>
-                    <div class="item-height">AA2222</div>
-                    <div class="item-height">80人/均班</div>
-                    <div class="item-height">按人头</div>
+                    <div class="item-height">{{myData.sailingtime}}</div>
+                    <div class="item-height">{{myData.aircrfttyp}}</div>
+                    <div class="item-height">{{myData.avgguestexpect}}人/均班</div>
+                    <div class="item-height">{{myData.subsidypolicyStr}}</div>
                 </div>
             </div>
             <div class="items">
@@ -69,18 +71,16 @@
                     <div class="font-gray">有效期</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">待定</div>
-                    <div class="item-height">180</div>
-                    <div class="item-height">80%</div>
-                    <div class="item-height">2017.11.11-2018.11.11</div>
+                    <div class="item-height">{{myData.days}}</div>
+                    <div class="item-height">{{myData.seating}}</div>
+                    <div class="item-height">{{myData.loadfactorsexpect}}%</div>
+                    <div class="item-height">{{myData.periodValidity}}</div>
                 </div>
             </div>
         </div>
         <div class="fifth item-container">
             <div class="left font-gray">其他说明</div>
-            <div class="right">其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
-                其他说明其他说明其他说明其他说明其他说明其他说明其他说明其他说明
+            <div class="right">{{myData.remark}}
             </div>
         </div>
         <div class="line"></div>
@@ -90,7 +90,7 @@
                     <div class="font-gray">联系人</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">张三</div>
+                    <div class="item-height">{{myData.contact}}</div>
                 </div>
             </div>
             <div class="items">
@@ -98,7 +98,7 @@
                     <div class="font-gray">联系方式</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">12345678911</div>
+                    <div class="item-height">{{myData.iHome}}</div>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
         <div class="eighth">
             <span class="line" style="position:absolute; top: 0px;"></span>
             <div class="buttons">
-                <button class="btn btn-w">撤回该托管</button>
+                <button class="btn btn-w" @click="recallFn(),closeThisFn()">撤回该托管</button>
             </div>
             <!--<div class="buttons">
                 <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;">重新发布</button>
@@ -119,8 +119,9 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editMyPublishNeed from './editMyPublishNeed.vue'
+    import editMyPublishNeed from './editTransportForm.vue'
     export default {
         data() {
             return {
@@ -129,9 +130,12 @@
                 editPublishShow: false, // “编辑”是否显示
                 releasetime: '',        //创建时间
                 editMyPublishNeedShow: false, //编辑需求表单
+                recallData: {},         //点击“撤回该托管”传的数据
             }
         },
         mounted() {
+            console.info('vuex:role:')
+            console.info(this.role);
             // 从myPublishList获取参数，并渲染到页面上
             tabulationBoxTrigger.$on('sendDataToMyPublish',val => {
                 console.info('从myPublishList获取的数据:');
@@ -149,6 +153,9 @@
             //判断审核是否通过,“重新发布”是否显示
         },
         computed: {
+            ...vx.mapGetters([
+                'role'
+            ]),
         },
         components: {
             editMyPublishNeed
@@ -168,6 +175,25 @@
             //关闭“编辑需求”表单
             closeEditMyPublishNeed: function () {
                 this.editMyPublishNeedShow = false;
+            },
+            // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
+            recallFn: function () {
+                this.recallData.id = this.myData.id;
+                this.recallData.demandprogress = 3;
+                console.info(this.recallData);
+                this.$ajax({
+                    url:"/demandUpdate",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.recallData
+                }) .then((response) => {
+                    console.info(response.data)
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
             },
         }
     }
@@ -216,6 +242,7 @@
         /*flex-direction: column;*/
         width: 600px;
         height: 100%;
+        min-height: 900px;
         /*min-height: 700px;*/
         font-size: 1.2rem;
         background: white;
@@ -419,7 +446,7 @@
         background: #f3f3f3;
     }
     .eighth {
-        position: fixed;
+        position: absolute;
         right: 0px;
         bottom: 0;
         display: flex;

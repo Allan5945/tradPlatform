@@ -20,9 +20,9 @@
 
         </div>
         <!--我的发布-->
-        <!--<myPublishList></myPublishList>-->
+        <myPublishList></myPublishList>
         <!--我的意向-->
-        <myPurposeList></myPurposeList>
+        <!--<myPurposeList></myPurposeList>-->
     </div>
 </template>
 
