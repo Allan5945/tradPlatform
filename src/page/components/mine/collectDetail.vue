@@ -1,69 +1,74 @@
 <template>
-    <div class="detail-wrapper">
-        <header>
-            <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title}}</div>
-            <div class="tips">
-                <span>创建于{{detailData.releasetime}}</span>
-                <span class="intent-count">已有{{intentionCount}}位用户发起意向</span>
+    <div>
+        <div class="detail-wrapper">
+            <header>
+                <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title}}</div>
+                <div class="tips">
+                    <span>创建于{{detailData.releasetime}}</span>
+                    <span class="intent-count">已有{{intentionCount}}位用户发起意向</span>
+                </div>
+            </header>
+            <div class="content">
+                <div >
+                    <div>出港时刻</div>
+                    <div>{{detailData.dptTime}}</div>
+                </div>
+                <div>
+                    <div>班期</div>
+                    <div>{{detailData.days}}</div>
+                </div>
+                <div>
+                    <div>机型</div>
+                    <div>{{detailData.aircrfttyp}}</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>***</div>
+                </div>
+                <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating}}</div>
+                </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost}}万/小时</div>
+                </div>
+                <div>
+                    <div>接受调度</div>
+                    <div>{{detailData.schedulingStr}}</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div>{{detailData.periodValidity}}</div>
+                </div>
             </div>
-        </header>
-        <div class="content">
-            <div >
-                <div>出港时刻</div>
-                <div>{{detailData.dptTime}}</div>
-            </div>
-            <div>
-                <div>班期</div>
-                <div>{{detailData.days}}</div>
-            </div>
-            <div>
-                <div>机型</div>
-                <div>{{detailData.aircrfttyp}}</div>
-            </div>
-             <div>
-                <div>运力基地</div>
-                <div>{{detailData.dptNm}}</div>
-            </div>
-            <div>
-                <div>运力归属</div>
-                <div>***</div>
-            </div>
-            <div>
-                <div>座位布局</div>
-                <div>{{detailData.seating}}</div>
-            </div>
-            <div>
-                <div>小时成本</div>
-                <div>{{detailData.hourscost}}万/小时</div>
-            </div>
-            <div>
-                <div>接受调度</div>
-                <div>{{detailData.schedulingStr}}</div>
-            </div>
-            <div>
-                <div>有效期</div>
-                <div>{{detailData.periodValidity}}</div>
-            </div>
+            <footer>
+                <div>*隐藏信息在提交意向后可查看</div>
+                <div class="btn">
+                    <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn" @click="cancelCollect">取消收藏</div>
+                </div>
+            </footer>
         </div>
-        <footer>
-            <div>*隐藏信息在提交意向后可查看</div>
-            <div class="btn">
-                <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn" @click="cancelCollect">取消收藏</div>
-            </div>
-        </footer>
+       <intentForm v-show="intentFormShow" @closeForm="closeForm"></intentForm>
     </div>
 </template>
 
 <script>
  /*import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';*/
+ import intentForm from './../trans_detail/intentForm.vue'
  export default {
      data(){
          return{
              detailData:{},
-             intentionCount:0
+             intentionCount:0,
+             intentFormShow:false
          }
      },
      methods:{
@@ -90,7 +95,10 @@
               this.$emit("closeDetail");
          },
          haveInvent:function(){
-
+            this.intentFormShow = true;
+         },
+         closeForm:function(){
+            this.intentFormShow = false;
          }
      },
     props:['demandId'],
@@ -116,6 +124,9 @@
                 );
 
      },
+    components:{
+        intentForm
+     }
 }
 </script>
 

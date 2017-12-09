@@ -20,8 +20,8 @@
                 </div>
             </div>
         </div>
-       <!-- <operAgent></operAgent> -->
-       <myCollection></myCollection>
+       <operAgent></operAgent>
+      <!--  <myCollection></myCollection> -->
 
     </div>
 </template>
@@ -64,13 +64,13 @@ import myPic from './../../../static/img/haveline.png';
         bottom: 0;
         left: 0;
         overflow: auto;
-        font-size:1.4rem;
         background: #fff;
         z-index:11;
         .mine{
             position:relative;
             width:100%;
             padding-top:200px;
+            font-size:1.4rem;
             .my-msg{
                 width:1000px;
                 margin:0 auto;

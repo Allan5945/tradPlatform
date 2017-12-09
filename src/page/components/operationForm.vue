@@ -35,7 +35,7 @@
                     <div class="t-title">小时成本</div>
                     <div class="t-input">
                         <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                        <span>元</span>
+                        <span>万元</span>
                 </div>
             </div>
             <div class="form-box tips">
