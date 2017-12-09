@@ -50,7 +50,7 @@
             <div>*隐藏信息在提交意向后可查看</div>
             <div class="btn">
                 <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn" @click="closeDetail">取消收藏</div>
+                <div class="col-btn" @click="cancelCollect">取消收藏</div>
             </div>
         </footer>
     </div>
@@ -62,26 +62,58 @@
  export default {
      data(){
          return{
-             getDetail:[],
-             detailData:[],
+             detailData:{},
              intentionCount:0
          }
      },
      methods:{
+         cancelCollect:function(){
+            this.$ajax({
+                method: 'post',
+                url: '/delCollectByDemandId',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.demandId
+                  }
+                })
+                .then((response) => {
+                     this.$emit("closeDetail");
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+         },
          closeDetail:function(){
-            this.$emit("closeDetail");
+              this.$emit("closeDetail");
          },
          haveInvent:function(){
 
          }
      },
-   /*  computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },*/
-      mounted() {
+    props:['demandId'],
 
+    mounted() {
+          this.$ajax({
+                method: 'post',
+                url: '/capacityRoutesDemandDetailFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.demandId
+                  }
+                })
+                .then((response) => {
+                    this.intentionCount = response.data.intentionCount;
+                    this.detailData = response.data.data;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
 
      },
 }

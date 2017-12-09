@@ -45,7 +45,7 @@
 
     import myIndex from './../page/components/mine/myIndex.vue'
     import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
-    import myPublish from './../page/components/mine/myPublish.vue'
+    import myPublish from './components/mine/myPublishNeed.vue'
     import myPurpose from './../page/components/mine/myPurpose.vue'
 
 

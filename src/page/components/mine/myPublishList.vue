@@ -35,7 +35,7 @@
                             {{item.releasetime}}
                         </div>
                         <div class="list-b item">
-                            {{item.demandtype}}
+                            {{item.demandtypeStr}}
                         </div>
                         <div class="list-c item color">
                             <span>{{item.title}}</span>
@@ -62,7 +62,7 @@
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
-    import myPublish from './myPublish.vue'
+    import myPublish from './myPublishNeed.vue'
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
 
@@ -132,10 +132,48 @@
             // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
-                tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPublish.vue
-//                this.myPublishShow = true;
-//                this.myPublishTransportEntrustShow = true;
-                this.myPublishAirLineEntrustShow = true;
+                console.info('listItem:')
+                console.info(item)
+                this.$ajax({
+                    url:"/demandFind",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId: item.id //发布时间排序类型 0-倒序 1-正序
+                    }
+                }) .then((response) => {
+                    console.info('我的发布详情:')
+                    console.info(response.data.data)
+                    tabulationBoxTrigger.$emit('sendDataToMyPublish',response.data.data); //将item的参数传递给myPublishNeed.vue
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+                //['运力投放','委托运力投放','航线需求','委托航线需求','运营托管'],
+//                响应的需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
+//                 除去0和1两种状态, 其他状态不再地图上呈现，仅在太美角色个人中心的委托列表中呈现。
+                if(item.demandtype == 2){
+                    // 运营托管详情
+                    this.myPublishTransportEntrustShow = true;
+                    this.myPublishAirLineEntrustShow = false;
+                    this.myPublishShow = false;
+                }if(item.demandtype == 4 || item.demandtype == 3){
+                    // 航线委托详情
+                    this.myPublishTransportEntrustShow = false;
+                    this.myPublishAirLineEntrustShow = true;
+                    this.myPublishShow = false;
+                }if(item.demandtype == 0 || item.demandtype == 1){
+                    //  审核未通过，需求详情
+                    /*this.myPublishTransportEntrustShow = false;
+                    this.myPublishAirLineEntrustShow = false;
+                    this.myPublishShow = true;*/
+//                    this.myPublishTransportEntrustShow = true;
+//                    this.myPublishAirLineEntrustShow = true;
+                    this.myPublishShow = true;
+                }
+
             },
             // 点击关闭:我的发布-审核未通过
             closeMyPublishShowFn: function () {
@@ -205,7 +243,7 @@
         bottom: 0;
         left: 0;*/
         width: 100%;
-        height: 434px;
+        /*height: 434px;*/
         font-size: 1.2rem;
         background: #F8F8F8;
     }

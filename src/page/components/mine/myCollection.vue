@@ -5,9 +5,9 @@
                 <div class="title items">
                     <div class="list-a item">
                         发布时间
-                        <div class="up-down" style="margin-left: 10px">
-                            <span class="icon-item icon-up active">&#xe605;</span>
-                            <span class="icon-item icon-down">&#xe605;</span>
+                        <div class="up-down" style="margin-left: 10px" @click="timeSort">
+                            <span class="icon-item icon-up" :class="{active:sorted}">&#xe605;</span>
+                            <span class="icon-item icon-down" :class="{active:!sorted}">&#xe605;</span>
                         </div>
                     </div>
                     <div class="list-b item" @click="typeShowFn">
@@ -30,31 +30,31 @@
                 </div>
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
-                    <div class="list items" :class="{'list-active':false}" >
+                    <div class="list items" :class="{'list-active':false}" v-for="val in collectList" >
                         <div class="list-a item">
-                            11.04.2017
+                            {{val.releaseTime}}
                         </div>
                         <div class="list-b item">
-                            航线需求
+                             {{myDemand(val.demandType)}}
                         </div>
                         <div class="list-c item color">
-                            <span>成都-北京航线新开 找运力，XXXXXXXXXX</span>
+                            <span>{{val.title}}</span>
                         </div>
                         <div class="list-d item">
-                            需求审核
+                            {{progress(val.demandProgress)}}
                         </div>
                         <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
                         </div>
-                        <div class="list-f item color" @click="openDetail">查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="list-f item color" @click="openDetail(val)">查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <collectDetail v-show="detailShow" @closeDetail="closeDetail"></collectDetail>
+        <collectDetail v-if="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
     </div>
 </template>
 <script>
@@ -67,11 +67,14 @@
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
                 detailShow:false,
+                sorted:true,
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: ['运力投放','航线需求'],
                 state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
+                collectList:null,
+                demandId:null
             }
         },
         methods: {
@@ -87,13 +90,76 @@
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-             openDetail:function(){
+             openDetail:function(val){
+                this.demandId = val.id;
                 this.detailShow = true;
             },
             closeDetail:function(){
                  this.detailShow = false;
+                 //this.collectList.$delete(key);
+            },
+            timeSort:function(){
+                this.sorted = !this.sorted;
+
+            },
+            myDemand:function(val){
+               if(val == 0){
+                    return "航线需求";
+               }
+               else if(val == 1){
+                    return "运力投放";
+               }
+            },
+            progress:function(val){
+                switch (val) {
+                        case "0":
+                            return "需求发布";
+                            break;
+                        case "1":
+                            return "意向征集";
+                            break;
+                        case "2":
+                            return "订单确认";
+                            break;
+                        case "3":
+                            return "关闭";
+                            break;
+                        case "4":
+                            return "订单完成";
+                            break;
+                        case "9":
+                            return "需求审核";
+                            break;
+                    }
             }
         },
+        computed:{
+            timeselec:function(){
+                return this.sorted? 'Desc': 'Asc';
+            }
+        },
+        mounted() {
+          this.$ajax({
+                method: 'post',
+                url: '/selectCollectList',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: {
+                    page: 1,
+                    pageNo:4,
+                    releaseTime:this.timeselec
+                }
+                })
+                .then((response) => {
+                   this.collectList = response.data.list.list;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+
+     },
         components: {
             stateList,
             collectDetail
@@ -140,9 +206,6 @@
         color: #3c78ff;
     }
     .miList-wrapper {
-        position: absolute;
-        bottom: 0;
-        left: 0;
         width: 100%;
         font-size: 1.2rem;
         background: #F8F8F8;
@@ -184,6 +247,7 @@
             .up-down {
                 position: relative;
                 width: 20px;
+                cursor:pointer;
                 .active {
                     color: $icon-color;
                 }

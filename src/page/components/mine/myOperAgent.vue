@@ -56,13 +56,35 @@
                         </div>
                     </div>
                 </div>
+                <div class="list items" v-for="val in myList">
+                    <div class="list-a item">
+                        {{val.releaseTime}}
+                    </div>
+                    <div class="list-b item">
+                        <!--  {{myDemand(val.demandType)}} -->
+                    </div>
+                     <div class="list-p item">
+                        {{val.nickName}}
+                    </div>
+                    <div class="list-c item color">
+                        {{val.title}}
+                    </div>
+                    <div class="list-d item">
+                      <!--  {{progress(val.demandProgress)}} -->
+                    </div>
+                    <div class="list-e item">
+                        <span class="icon-item talk-icon">&#xe602;
+                            <span>1</span>
+                        </span>
+                    </div>
+                    <div class="list-f item color" @click="getDetail(val)">
+                        查看详情<span class="icon-item">&#xe686;</span>
+                    </div>
+                </div>
             </div>
         </div>
         <agentDetail @close="closeAgentDetail" v-show="agentShow"></agentDetail>
         <deleDetail @close="closeDeleDetail" v-show="deleShow"></deleDetail>
-        <transition name="slidex-fade">
-            <detailsPanel v-if="detailsPanel.show" :detailData="detailsPanel.data" v-on:control="turnDetailPanel"></detailsPanel>
-        </transition>
     </div>
 </template>
 <script>
@@ -87,12 +109,31 @@
                     show:false,
                     data:{}
                 },
-                detailsData: null
+                detailsData: null,
+                myList:null
             }
         },
         mounted() {
             this.state = this.state1;
             this.getListData();
+             this.$ajax({
+                method: 'post',
+                url: '/selectCommissionedAndCustodyDemandList',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    page: 1,
+                    pageNo:4
+                }
+                })
+                .then((response) => {
+                     this.myList = response.data.list.list;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         methods: {
             typeShowFn: function () {
@@ -114,12 +155,6 @@
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-            AgentDetail:function(){ //托管详情
-                this.agentShow = true;
-            },
-            deleDetail:function(){ //委托详情
-                this.deleShow = true;
-            },
             closeAgentDetail:function(){
                 this.agentShow = false;
             },
@@ -132,8 +167,11 @@
                 }
 
             },
-            closeDeleDetail:function(){
+            closeDeleDetail:function() {
                 this.deleShow = false;
+            },
+            closeDeleDetail:function(){
+                 this.deleShow = false;
             },
             getDetail:function(val){
                 if(val.demandType == '2'){//托管详情
@@ -165,7 +203,7 @@
                         alert('暂无返回，请稍后重试。')
                     }
                 }).catch(err=>{
-
+                      this.deleShow = true;
                 })
             }
         },

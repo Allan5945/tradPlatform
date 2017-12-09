@@ -16,12 +16,12 @@
                     </div>
                 </div>
                 <div class="my-list" >
-                    <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" @click="getTable(index)">{{val}}</div>
+                    <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" >{{val}}</div>
                 </div>
             </div>
-            <!-- <myCollection></myCollection> -->
         </div>
-        <operAgent></operAgent>
+       <!-- <operAgent></operAgent> -->
+       <myCollection></myCollection>
 
     </div>
 </template>

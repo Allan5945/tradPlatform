@@ -1,7 +1,7 @@
 <template>
     <div class="ald-container">
         <div class="first item-container">
-            <span>需求详情</span>
+            <span>{{myData.demandtypeStr}}详情</span>
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
         <div class="second item-container">
@@ -16,7 +16,7 @@
             </div>
             <div class="bottom">
                 <span class="font-gray" style="margin-right: 46px;">创建于{{releasetime}}</span>
-                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogress}}</span>
+                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogressStr}}</span>
                     <span style="color: red; font-weight: bold;">审核未通过</span>
                 </span>
             </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="right item">
                     <div class="item-height">{{myData.days}}</div>
-                    <div class="item-height">{{myData.dpt}}</div>
+                    <div class="item-height"><span v-if="myData.dptState == 1">{{myData.dpt}}</span><span v-else>{{myData.dptNm}}</span></div>
                     <div class="item-height">{{myData.seating}}</div>
                     <div class="item-height">{{myData.schedulinePort}}</div>
                 </div>
@@ -67,15 +67,16 @@
             </div>
             <div class="buttons">
                 <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;">重新发布</button>
-                <button class="btn btn-w" style="width: 100px;">结束需求</button>
+                <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">结束需求</button>
             </div>
         </div>
-        <editMyPublishNeed v-show="editMyPublishNeedShow" @close-this="closeEditMyPublishNeed"></editMyPublishNeed>
+        <editTransportForm v-show="editTransportFormShow" @close-this="closeEditTransportForm"></editTransportForm>
     </div>
 </template>
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editMyPublishNeed from './editMyPublishNeed.vue'
+    import editTransportForm from './editTransportForm.vue'
+
     export default {
         data() {
             return {
@@ -83,7 +84,8 @@
                 anewPublishShow: false, //“重新发布”是否显示
                 editPublishShow: true, // “编辑”是否显示
                 releasetime: '',        //创建时间
-                editMyPublishNeedShow: false, //编辑需求表单
+                editTransportFormShow: false, //编辑需求表单
+                recallData: {},         //点击“撤回该托管”传的数据
             }
         },
         mounted() {
@@ -106,7 +108,7 @@
         computed: {
         },
         components: {
-            editMyPublishNeed
+            editTransportForm
         },
         methods: {
             closeThisFn: function () {
@@ -118,11 +120,30 @@
             },
             // 点击“编辑”
             editPublishClickFn: function () {
-                this.editMyPublishNeedShow = true
+                this.editTransportFormShow = true
             },
             //关闭“编辑需求”表单
-            closeEditMyPublishNeed: function () {
-                this.editMyPublishNeedShow = false;
+            closeEditTransportForm: function () {
+                this.editTransportFormShow = false;
+            },
+            // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
+            recallFn: function () {
+                this.recallData.id = this.myData.id;
+                this.recallData.demandprogress = 3;
+                console.info(this.recallData);
+                this.$ajax({
+                    url:"/demandUpdate",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.recallData
+                }) .then((response) => {
+                    console.info(response.data)
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
             },
         }
     }
@@ -233,6 +254,7 @@
     }
     .fourth {
         justify-content: space-between;
+        align-items: flex-start;
         .items {
             display: flex;
             width: 240px;

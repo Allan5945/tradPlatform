@@ -156,7 +156,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 434px;
+        /*height: 434px;*/
         font-size: 1.2rem;
         background: #F8F8F8;
     }

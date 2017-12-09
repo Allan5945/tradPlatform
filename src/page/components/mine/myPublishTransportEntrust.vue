@@ -1,7 +1,7 @@
 <template>
     <div class="ald-container">
         <div class="first item-container">
-            <span>运营托管详情</span>
+            <span>{{myData.demandtypeStr}}详情</span>
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
         <div class="second item-container">
@@ -15,9 +15,9 @@
                 <span style="height: 25px;">{{myData.title}}</span>
             </div>
             <div class="bottom">
-                <span class="font-gray" style="margin-right: 25px;">委托方　成都双流机场</span>
+                <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
                 <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
-                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogress}}</span>
+                <span class="font-gray">状态:　<span v-show="true">{{myData.demandprogressStr}}</span>
                     <!--<span style="color: red; font-weight: bold;">审核未通过</span>-->
                 </span>
             </div>
@@ -29,8 +29,8 @@
                     <div class="font-gray">其他说明</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">HU8888</div>
-                    <div class="item-height">无补贴政策</div>
+                    <div class="item-height">{{myData.fltNbr}}</div>
+                    <div class="item-height">{{myData.remark}}</div>
                 </div>
             </div>
             <div class="items">
@@ -38,7 +38,7 @@
                     <div class="font-gray">小时成本</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">6.5万/小时</div>
+                    <div class="item-height">{{myData.hourscost}}万/小时</div>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                     <div class="font-gray">联系人</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">张三</div>
+                    <div class="item-height">{{myData.contact}}</div>
                 </div>
             </div>
             <div class="items">
@@ -57,7 +57,7 @@
                     <div class="font-gray">联系方式</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">12345678911</div>
+                    <div class="item-height">{{myData.iHome}}</div>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
         <span class="line" style="position:absolute; left: 20px; bottom: 110px;"></span>
         <div class="eighth">
             <div class="buttons">
-                <button class="btn btn-w">撤回该托管</button>
+                <button class="btn btn-w" @click="recallFn(),closeThisFn()">撤回该托管</button>
             </div>
             <!--<div class="buttons">
                 <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;">重新发布</button>
@@ -79,7 +79,7 @@
 </template>
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editMyPublishNeed from './editMyPublishNeed.vue'
+    import editMyPublishNeed from './editTransportForm.vue'
     export default {
         data() {
             return {
@@ -88,6 +88,7 @@
                 editPublishShow: false, // “编辑”是否显示
                 releasetime: '',        //创建时间
                 editMyPublishNeedShow: false, //编辑需求表单
+                recallData: {},         //点击“撤回该托管”传的数据
             }
         },
         mounted() {
@@ -127,6 +128,25 @@
             //关闭“编辑需求”表单
             closeEditMyPublishNeed: function () {
                 this.editMyPublishNeedShow = false;
+            },
+            // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
+            recallFn: function () {
+                this.recallData.id = this.myData.id;
+                this.recallData.demandprogress = 3;
+                console.info(this.recallData);
+                this.$ajax({
+                    url:"/demandUpdate",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.recallData
+                }) .then((response) => {
+                    console.info(response.data)
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
             },
         }
     }

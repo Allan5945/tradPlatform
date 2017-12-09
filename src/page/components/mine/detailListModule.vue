@@ -142,7 +142,7 @@
                             <div>班期</div>
                             <div>{{ndetailData.days+"人"||"-"}}</div>
                         </div>
-                        <div style="width: 100%;margin: 10px 0;">
+                        <div style="width: 100%;margin: 10px">
                             <div>意向航线</div>
                             <div style="width: 80%;line-height: 5px;">
                                 {{ndetailData.dpt||"-"}}
