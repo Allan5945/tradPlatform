@@ -29,67 +29,47 @@
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="list items">
-                    <div class="list-a item">
-                        11.04.2017
-                    </div>
-                    <div class="list-b item">
-                        航线需求
-                    </div>
-                     <div class="list-p item">
-                        用户名
-                    </div>
-                    <div class="list-c item color">
-                        成都-北京航线新开 找运力，XXXXXXXXXX
-                    </div>
-                    <div class="list-d item">
-                        需求审核
-                    </div>
-                    <div class="list-e item">
+                <div v-if="detailsData">
+                    <div class="list items"   v-for="ditem in detailsData.list">
+                        <div class="list-a item">
+                            {{ ditem.releasetime }}
+                        </div>
+                        <div class="list-b item">
+                            {{ ditem.demandtype }}
+                        </div>
+                        <div class="list-p item">
+                            {{ ditem.nickName }}
+                        </div>
+                        <div class="list-c item color">
+                            {{ ditem.title }}
+                        </div>
+                        <div class="list-d item">
+                            {{ ditem.demandstate }}
+                        </div>
+                        <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
-                    </div>
-                    <div class="list-f item color" @click="AgentDetail">
-                        查看详情<span class="icon-item">&#xe686;</span>
-                    </div>
-                </div>
-                <div class="list items">
-                    <div class="list-a item">
-                        11.04.2017
-                    </div>
-                    <div class="list-b item">
-                        航线需求
-                    </div>
-                     <div class="list-p item">
-                        用户名
-                    </div>
-                    <div class="list-c item color">
-                        成都-北京航线新开 找运力，XXXXXXXXXX
-                    </div>
-                    <div class="list-d item">
-                        需求审核
-                    </div>
-                    <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
-                        </span>
-                    </div>
-                    <div class="list-f item color" @click="deleDetail">
-                        查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
+                        <div class="list-f item color" @click="openDetail(ditem)">
+                            查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <agentDetail @close="closeAgentDetail" v-show="agentShow"></agentDetail>
-        <deleDetail></deleDetail>
+        <deleDetail @close="closeDeleDetail" v-show="deleShow"></deleDetail>
+        <transition name="slidex-fade">
+            <detailsPanel v-if="detailsPanel.show" :detailData="detailsPanel.data" v-on:control="turnDetailPanel"></detailsPanel>
+        </transition>
     </div>
 </template>
 <script>
     import stateList from './stateList.vue'
     import agentDetail from './operAgentDetail.vue';
     import deleDetail from './operDeleDetail.vue';
-
+    import detailsPanel from './detailsPanel.vue';
     export default {
         data() {
             return {
@@ -102,11 +82,17 @@
                 type:  ['航线委托','运力委托','托管'],
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭']
+                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                detailsPanel:{
+                    show:false,
+                    data:{}
+                },
+                detailsData: null
             }
         },
         mounted() {
             this.state = this.state1;
+            this.getListData();
         },
         methods: {
             typeShowFn: function () {
@@ -137,12 +123,57 @@
             closeAgentDetail:function(){
                 this.agentShow = false;
             },
+            openDetail:function (item) {
+                return this.turnDetailPanel(item);
+                if(item.demandstate === "未处理"){
+                    this.turnDetailPanel(item);
+                }else{
+                    this.getDetail(item);
+                }
 
+            },
+            closeDeleDetail:function(){
+                this.deleShow = false;
+            },
+            getDetail:function(val){
+                if(val.demandType == '2'){//托管详情
+                    this.agentShow = true;
+                }else{//委托详情
+                    this.deleShow = true;
+                }
+            },
+            turnDetailPanel: function (item) {
+                this.detailsPanel.data = item;
+                this.detailsPanel.show = !this.detailsPanel.show;
+            },
+            getListData:function () {
+                let that = this;
+                this.$ajax({
+                    method: 'GET',
+                    url: '/getDemandOfReviewList',
+                    params: {
+                        demandType : '' ,
+                        demandState : '',
+                        page: 1,
+                        orderType : 0
+                    }
+                }).then(res=>{
+                    if(res && res.data.opResult==0){
+                        that.detailsData = res.data.list;
+                    }else{
+                        that.detailsData = null;
+                        alert('暂无返回，请稍后重试。')
+                    }
+                }).catch(err=>{
+
+                })
+            }
         },
         components: {
             stateList,
             agentDetail,
-            deleDetail
+            deleDetail,
+            detailsPanel
         }
     }
 </script>
