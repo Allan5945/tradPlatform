@@ -3,45 +3,49 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">运营托管详情1111</div>
+                <div class="head-til">{{detailData.title}}</div>
                 <div class="contact">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;成都双流机场</div>
-                    <div>创建于2017.12.12</div>
-                    <div>状态: <span>已拒绝</span></div>
+                    <div>创建于{{detailData.releasetime}}</div>
+                    <div>状态:
+                        <span v-if="testingShow" class="testing">测评中</span>
+                        <span v-else class="refused">已拒绝</span>
+                    </div>
                 </div>
             </header>
             <div class="content">
                 <div class="content-box">
                     <div >
                         <div>航班号</div>
-                        <div>HU8888</div>
+                        <div>{{detailData.fltNbr}}</div>
                     </div>
                     <div>
                         <div>小时成本</div>
-                        <div>6.5万/小时</div>
+                        <div>{{detailData.hourscost}}万/小时</div>
                     </div>
-                    <div>
+                    <div class="note">
                         <div>其他说明</div>
-                        <div>无补贴政策</div>
+                        <div class="note-text">{{detailData.remark}}</div>
                     </div>
                 </div>
                 <div class="content-box border">
                     <div>
                         <div>联系人</div>
-                        <div>张三</div>
+                        <div>{{detailData.contact}}</div>
                     </div>
                     <div>
                         <div>联系方式</div>
-                        <div>5409095445</div>
+                        <div>{{detailData.iHome}}</div>
                     </div>
                 </div>
             </div>
             <footer>
-                <div class="foot-tips">*拒绝原因</div>
+                <div class="foot-tips" v-if="testingShow">*需求测评中...</div>
+                <div class="foot-tips red" v-else>*拒绝原因:{{refuseText}}</div>
                 <div class="btn">
-                    <div class="test-btn">测评该需求</div>
-                    <div class="can-btn" @click="cancel">拒绝</div>
+                    <div class="test-btn" v-if="testingShow">测评该需求</div>
+                    <div class="can-btn" @click="cancel" v-if="testingShow">拒绝</div>
                 </div>
             </footer>
         </div>
@@ -54,9 +58,13 @@ import refuseDialog from './refuseDialog.vue';
  export default {
      data(){
          return{
-            dialogShow:false
+            dialogShow:false,
+            testingShow:true,
+            detailData:{},
+            refuseText:''
          }
      },
+      props:['demandId'],
      methods:{
         closeDetail:function(){
           this.$emit("close");
@@ -64,8 +72,10 @@ import refuseDialog from './refuseDialog.vue';
         cancel:function(){
           this.dialogShow = true;
         },
-        sureDialog(){
+        sureDialog(text){
           this.dialogShow = false;
+          this.testingShow =false;
+          this.refuseText = text;
         },
         cancelDialog(){
           this.dialogShow = false;
@@ -75,6 +85,25 @@ import refuseDialog from './refuseDialog.vue';
 
         },
       mounted() {
+          this.$ajax({
+                method: 'post',
+                url: '/getCommissionedAndCustodyDemandDetails',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.demandId
+                  }
+                })
+                .then((response) => {
+                    this.intentionCount = response.data.intentionCount;
+                    this.detailData = response.data.demandDetail;
+                    console.log( this.detailData)
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
 
      },
      components: {
@@ -166,7 +195,10 @@ import refuseDialog from './refuseDialog.vue';
           div{
             margin-right:30px;
           }
-          span{
+          .testing{
+            color:#3c78ff;
+          }
+          .refused{
             color:red;
           }
         }
@@ -195,7 +227,15 @@ import refuseDialog from './refuseDialog.vue';
       >div:nth-of-type(odd){
           margin-right:40px;
       }
+      .note{
+          width:520px;
+          height:40px;
+          .note-text{
+            width:440px;
+          }
+      }
     }
+
     .border{
       padding-top:40px;
       border-top:1px solid #ccc;
@@ -205,7 +245,10 @@ import refuseDialog from './refuseDialog.vue';
             height:40px;
             margin:0 20px;
             border-bottom:1px solid #ccc;
-            color: red;
+            color: rgba(96, 94, 124, 0.7);
+          }
+          .red{
+            color:red;
           }
           .btn{
               height:40px;

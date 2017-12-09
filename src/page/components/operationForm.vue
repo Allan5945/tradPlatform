@@ -35,7 +35,7 @@
                     <div class="t-title">小时成本</div>
                     <div class="t-input">
                         <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                        <span>元</span>
+                        <span>万元</span>
                 </div>
             </div>
             <div class="form-box tips">
@@ -89,7 +89,7 @@
                 demandData.demandtypeStr = this.msg;
                 //demandData.demandStateStr =
                 demandData.fltNbr  = this.flightNum;
-                demandData.hourcost = this.hourcost;
+                demandData.hourscost = this.hourcost;
                 demandData.remark = this.tip;
                 this.$ajax({
                 url:"/demandAdd",
@@ -207,7 +207,7 @@
             width:180px;
             border-bottom:1px solid rgba(151,151,151,.3);
             >input{
-                width:164px;
+                width:150px;
                 background-color: #FBFBFB;
                 border:0;
             }

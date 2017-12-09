@@ -123,8 +123,10 @@
                     }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
-                     if(response.data.isAlreadyCollect == 1){
+                     if(response.data.isAlreadyCollect == true){
                         this.isCollect = false;
+                    }else if(response.data.isAlreadyCollect == false){
+                       this.isCollect = true;
                     }
                 })
                 .catch((error) => {

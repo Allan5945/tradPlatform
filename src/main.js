@@ -21,6 +21,15 @@ Vue.prototype.$bExample = new bmapExamples();    // 挂载
 
 Vue.use(Radio);
 
+// axios.interceptors.response.use(data => {
+//     return data
+// }, error => {
+//     Message.error({
+//         message: '加载失败'
+//     })
+//     return Promise.reject(error)
+// });
+
 new Vue({
     el: '#app',
     router,

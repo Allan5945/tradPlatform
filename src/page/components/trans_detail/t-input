@@ -355,6 +355,7 @@
     import airAreaSearch from './../airAreaSearch.vue'
     import airportS from '../../reuseComponents/airportSearch.vue'
     import calendar from './../calendar'
+
     export default {
         data() {
             return {
@@ -364,6 +365,8 @@
                 warn3Show: false,  //始发地警告
                 warn4Show: false,  //机型警告
                 warn5Show: false,  //班期警告
+
+
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
                 second2Show: false,//显示“是否接受临近机场”
@@ -394,6 +397,7 @@
                 secAreaCode: '', //三字码（只有城市有）
                 thirdArea: '', //到达地 3的意向区域
                 thirdAreaCode: '', //三字码（只有城市有）
+
                 areaInput1: '', //输入的机场或区域
                 areaInput2: '', //输入的机场或区域
                 areaInput3: '',
@@ -422,7 +426,9 @@
                 isSearchCode2: -1,
                 isSearchCode3: -1,
                 /****************/
+
                 inputRadio: '&#xe622;',
+
                 dptTimeresources: 0,//始发地时刻资源，(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 pstTimeresources: 0,//经停地时刻资源，(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 arrvTimeresources: 0,//到达地时刻资源，(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
@@ -439,17 +445,21 @@
                 space2Show: '请先选择经停点类型（选填）',
                 space3Show: '请先选择到达点类型',
                 publicwayStrCode: 0,//公开方式
+
                 calendarInitDay1: '', //日历
                 calendarInitDay2: '',
                 calendarInitDay3: '',
                 calendarInitDay4: '',
                 calendarShow1: false,
                 calendarShow2: false,
+
                 space1ShowTitle: '始发点类型',
                 space2ShowTitle: '经停点类型',
                 space3ShowTitle: '到达点类型',
+
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
+
                 scheduleShow: '选择班期类型',
                 subsidyShow: '选择补贴类型',
                 timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
@@ -481,6 +491,7 @@
                 this.demandData.demandId = val.data.id;
                 this.demandData.employeeId = val.data.employeeId;
                 this.demandData.demandType = val.data.demandtype;
+
         });
      },
         methods: {
@@ -547,6 +558,7 @@
                 sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 sendData.seating = this.seatingNum;            // 选填 座位数
                 sendData.remark = this.remarkMsg;              // 选填 备注说明
+
                 console.info(sendData);
                 this.$ajax({
                     url:"/responseAdd",
@@ -564,6 +576,7 @@
                 }) .catch((error) => {
                     console.log(error);
                 });
+
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -579,6 +592,7 @@
                 this.schedule = false;
                 this.airTypeShow = false; //拟飞机型下拉
                 this.subsidy = false;
+
             },
             // 电话号码验证
             verifyPhon: function () {
@@ -638,6 +652,7 @@
                 this.arrvTimeresources = 2;
                 this.arrvTime = '';
             },
+
             // 获取机型数据
             getAirType: function () {
                 this.airTypeShow = true;
@@ -653,11 +668,13 @@
                     this.isSearch1 = true;
                     this.isSearch2 = false;
                     this.isSearch3 = false;
+
                 }
                 if(this.isSearchCode1 == 0){
                     this.airAreaSearchShow1 = true;
                     this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = false;
+
                 }
             },
             // 意向机场/意向区域，input失去焦点
@@ -669,6 +686,7 @@
                     this.isSearch1 = false;
                     this.isSearch2 = true;
                     this.isSearch3 = false;
+
                 }
                 if(this.isSearchCode2 == 0){
                     this.airAreaSearchShow1 = false;
@@ -848,6 +866,7 @@
             endTime3Fn: function (item) {
                 this.endTime3Show = item;
             }
+
         }
     }
 </script>
@@ -899,9 +918,11 @@
             opacity: 0.5;
         }
     }
+
     .margin-right {
         margin-right: 10px;
     }
+
     .choose-time {
         display: flex;
         align-items: center;
@@ -919,6 +940,7 @@
             border-right: 1px solid $border-color;
         }
     }
+
     .choose-border {
         position: relative;
         display: flex;
@@ -928,6 +950,7 @@
         border-radius: 4px;
         cursor: pointer;
     }
+
     .choose-input {
         display: flex;
         justify-content: space-between;
@@ -935,6 +958,7 @@
         color: $font-color;
         border-bottom: 1px solid $border-color;
     }
+
     .choose-type {
         position: absolute;
         margin: 0;
@@ -957,6 +981,7 @@
             }
         }
     }
+
     .btn-blue {
         border: 0;
         border-radius: 20px;
@@ -968,12 +993,14 @@
             opacity: 0.7;
         }
     }
+
     .btn-cancel {
         font-size: 1.5rem;
         border: 1px solid rgba(96, 94, 124, 0.37);
         border-radius: 20px;
         background: transparent;
     }
+
     .triangle-big {
         width: 0;
         height: 0;
@@ -981,6 +1008,7 @@
         border-right: 6px solid transparent;
         border-top: 7px solid $icon-color;
     }
+
     .triangle-little {
         width: 0;
         height: 0;
@@ -988,10 +1016,12 @@
         border-right: 4.5px solid transparent;
         border-top: 5px solid $icon-color;
     }
+
     .warn {
         height: 20px;
         color: #FF9393;
     }
+
     .input-mes {
         flex-grow: 1;
         padding-left: 10px;
@@ -1027,6 +1057,7 @@
         cursor: pointer;
     }
     /***********/
+
     /****************radio样式更改******************/
     .magic-radio {
         position: absolute;
@@ -1053,6 +1084,7 @@
         }
     }
     /****************************/
+
     /*日历样式*/
     #search{
         padding-top: 100px;
@@ -1160,9 +1192,11 @@
         background: #D8D8D8;
         border-radius: 4px;
     }
+
     .bg-color {
         background: #FBFBFB;
     }
+
     .must {
         display: flex;
         justify-content: space-between;
@@ -1180,9 +1214,11 @@
             line-height: 26px;
         }
     }
+
     .choose {
         //  padding: 0 20px;
     }
+
     .first {
         display: flex;
         justify-content: space-between;
@@ -1268,6 +1304,7 @@
             width: 160px;
         }
     }
+
     .sec-accept {
         margin-bottom: 20px;
         .top {
@@ -1278,6 +1315,7 @@
             height: 20px;
         }
     }
+
     .sec-resource {
         .top {
             height: 20px;
@@ -1325,6 +1363,7 @@
             height: 20px;
         }
     }
+
     .third {
         padding: 0 20px;
         margin: 10px 0;
@@ -1397,6 +1436,7 @@
             }
         }
     }
+
     .fourth {
         display: flex;
         flex-direction: column;
@@ -1418,6 +1458,7 @@
             width: 240px;
         }
     }
+
     .fifth {
         display: flex;
         padding: 40px 0 70px 0;
@@ -1429,6 +1470,7 @@
             margin-right: 20px;
         }
     }
+
     .sixth {
         display: flex;
         justify-content: center;

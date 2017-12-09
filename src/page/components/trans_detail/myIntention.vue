@@ -58,7 +58,10 @@
             </div>
             <div class="intent-form">
                 <div>
-                    <div>收到时间<span>--</span></div>
+                    <div>收到时间
+                      <span class="iconfont icon-up active">&#xe605;</span>
+                      <span class="iconfont icon-down">&#xe605;</span>
+                    </div>
                     <div>意向方</div>
                 </div>
                 <div class="intent-box" v-for=" val in planData" v-if="intentListShow">
@@ -482,6 +485,7 @@ import * as vx from 'vuex'
         }
         .intent-form{
             >div:nth-of-type(1){
+                position:relative;
                 height:75px;
                 width:100%;
                 box-sizing:border-box;
@@ -490,6 +494,15 @@ import * as vx from 'vuex'
                     display:inline-block;
                     width:80px;
                     padding-right:40px;
+                }
+                 .icon-up {
+                    position: absolute;
+                    bottom: 33px;
+                    transform: rotate(180deg);
+                }
+                .icon-down {
+                    position: absolute;
+                    top: 33px;
                 }
             }
             .intent-box{
