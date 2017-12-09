@@ -20,8 +20,8 @@
                 </div>
             </div>
         </div>
-       <operAgent></operAgent>
-      <!--  <myCollection></myCollection> -->
+     <operAgent></operAgent>
+      <!-- <myCollection></myCollection> -->
 
     </div>
 </template>

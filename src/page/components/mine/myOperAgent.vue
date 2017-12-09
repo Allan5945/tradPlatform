@@ -34,7 +34,7 @@
                         {{val.releaseTime}}
                     </div>
                     <div class="list-b item">
-                        <!--  {{myDemand(val.demandType)}} -->
+                       {{myDemand(val.demandType)}}
                     </div>
                      <div class="list-p item">
                         {{val.nickName}}
@@ -43,7 +43,7 @@
                         {{val.title}}
                     </div>
                     <div class="list-d item">
-                      <!--  {{progress(val.demandProgress)}} -->
+                      {{progress(val.demandProgress)}}
                     </div>
                     <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
@@ -56,8 +56,8 @@
                 </div>
             </div>
         </div>
-        <agentDetail @close="closeAgentDetail" v-show="agentShow"></agentDetail>
-        <deleDetail @close="closeDeleDetail" v-show="deleShow"></deleDetail>
+        <agentDetail @close="closeAgentDetail" v-if="agentShow" :demandId="demandId"></agentDetail>
+        <deleDetail @close="closeDeleDetail" v-if="deleShow" :demandId="demandId"></deleDetail>
     </div>
 </template>
 <script>
@@ -78,7 +78,8 @@
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
                 state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
-                myList:null
+                myList:null,
+                demandId:null
             }
         },
         mounted() {
@@ -130,11 +131,42 @@
                  this.deleShow = false;
             },
             getDetail:function(val){
+                 this.demandId = val.id;
                 if(val.demandType == '2'){//托管详情
                     this.agentShow = true;
                 }else{//委托详情
                       this.deleShow = true;
                 }
+            },
+              myDemand:function(val){
+               if(val == 2){
+                    return "运营托管";
+               }
+               else if(val == 3){
+                    return "航线委托";
+               }
+                else if(val == 4){
+                    return "运力委托";
+               }
+            },
+            progress:function(val){
+                switch (val) {
+                        case "3":
+                            return "已关闭";
+                            break;
+                        case "7":
+                            return "待处理";
+                            break;
+                        case "8":
+                            return "已接受";
+                            break;
+                        case "9":
+                            return "处理中";
+                            break;
+                        case "10":
+                            return "已拒绝";
+                            break;
+                    }
             }
 
         },

@@ -4,7 +4,7 @@
             <div class="til">请填写拒绝原因</div>
             <div class="content">
                 <div class="reson">拒绝原因</div>
-                <div class="r-input"><input type="text" placeholder="请选填"></div>
+                <div class="r-input"><input type="text" placeholder="可选填" v-model="refuseText"></div>
             </div>
             <div class="btns">
                 <div class="sure-btn" @click="sure">确认</div>
@@ -18,12 +18,12 @@
     export default {
         data(){
             return{
-
+                refuseText:''
             }
         },
         methods: {
             sure(){
-                this.$emit('sure');
+                this.$emit('sure', this.refuseText);
             },
             cancel(){
                 this.$emit('cancel');

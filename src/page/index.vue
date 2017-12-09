@@ -17,7 +17,7 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-      <!-- <myIndex></myIndex> -->
+        <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
          <!--<myIndexFzz></myIndexFzz>-->
     </div>
@@ -32,7 +32,7 @@
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm.vue'
+    import intentForm from './../page/components/trans_detail/intentForm1.vue'
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
