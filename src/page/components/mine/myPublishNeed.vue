@@ -112,8 +112,8 @@
                 if(this.myData.demandstate == 2){
                     this.wrongShow();
                 }else{
-//                    this.show();
-                    this.wrongShow();
+                    this.show();
+//                    this.wrongShow();
                 }
                 //将创建时间顺序改变
                 let time1 = this.myData.releasetime.split('.');
