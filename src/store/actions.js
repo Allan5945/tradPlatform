@@ -19,10 +19,6 @@ export default {
     role:({commit},vl)=>{
         commit(types.ROLE,vl)
     },
-    transDetail:({commit},vl)=>{
-        commit(types.TRANSDETAIL,vl)
-    },
-
     setFlyGrade:({commit},vl)=>{
         commit(types.FLYGRADE,vl)
     },
