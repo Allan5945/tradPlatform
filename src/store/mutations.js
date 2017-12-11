@@ -199,11 +199,13 @@ const mutations = {
             }
         })
     },
-    [types.TAGREAD](state,vl) {  // vl.t  0,表示取消收藏，1添加收藏
+    [types.TAGREAD](state,vl) {  // vl.t  false,表示取消收藏，true添加收藏
         vl.v.forEach((v)=>{
             let ar = (state.demandList.type ? state.demandList.hybridData.list : state.demandList.monoData.list);
             ar.forEach((v2,i)=>{
-                if(v2.demandId == v.key){
+                debugger
+                console.log(v2.id,v)
+                if(v2.id == v.key){
                     if(vl.t){
                         ar[i].collectId = v.val;
                         ar[i].collectType = 1;

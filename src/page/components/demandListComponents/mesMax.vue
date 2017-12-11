@@ -170,7 +170,8 @@
                 })
                     .then((response) => {
                         if (response.data.opResult == '0') {
-                            this.$store.dispatch('tagread', {t: true, v});
+                            debugger
+                            this.$store.dispatch('tagread', {t: true, v:response.data.list});
                         }
                     })
                     .catch((error) => {

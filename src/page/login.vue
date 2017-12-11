@@ -15,7 +15,7 @@
                 username:'jichang',
                 password:'1',
                 name:1
-//                username:'hangsi',
+//                username:'jichang',
 //                password:'1',
 //                name:1
             }

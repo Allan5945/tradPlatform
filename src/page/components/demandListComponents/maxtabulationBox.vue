@@ -57,7 +57,7 @@
             alreadyPanel: function (key,t) {
                 let v = [key.data.id];
                 let v2 = [key.data.collectId];
-                let v3 = [{key:[key.data.demandId],val:key.data.collectId}];
+                let v3 = [{key:key.data.id,val:key.data.collectId}];
                 if(t){
                     this.$ajax({
                         method: 'post',

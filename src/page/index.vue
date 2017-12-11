@@ -44,7 +44,6 @@
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './components/independenceComponents/infPanel.vue'
-
     import myIndex from './../page/components/mine/myIndex.vue'
     import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
     import myPublish from './components/mine/myPublishNeed.vue'
@@ -274,7 +273,7 @@
             myPurpose,
             routeNetwork,
             respondAirport,
-//            timelyCommunication
+            timelyCommunication
         }
     }
 </script>

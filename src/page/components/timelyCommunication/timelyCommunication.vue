@@ -99,37 +99,42 @@
                     </div>
                 </div>
                 <div class="personal">
-                    <div class="personal-panel">
-                        <div class="personal-panel-portrait">
-                            <img src="./../../../static/img/test/145.png"/>
-                        </div>
-                        <div class="personal-panel-name">
-                            <p>小二</p>
-                            <div class="">南方航空<span>市场部</span></div>
-                        </div>
-                    </div>
-                    <div class="demand-history">
-                        <div>成都双流找运力</div>
-                        <span>&#xe63b;</span>
-                    </div>
-                    <div class="demand-describe scroll">
-                       <div>
-                           <div>
-                               <div>始发机场</div>
-                               <div>双流机场</div>
-                           </div>
-                           <div>
-                               <div>始发机场</div>
-                               <div>双流机场</div>
-                           </div>
-                           <div>
-                               <div>始发机场</div>
-                               <div>双流机场</div>
-                           </div>
+                    <transition name="personal">
+                        <div class="personal-c" v-if="true">
+                            <div class="personal-panel">
+                                <div class="personal-panel-portrait">
+                                    <img src="./../../../static/img/test/145.png"/>
+                                </div>
+                                <div class="personal-panel-name">
+                                    <p>小二</p>
+                                    <div class="">南方航空<span>市场部</span></div>
+                                </div>
+                            </div>
+                            <div class="demand-history">
+                                <div>成都双流找运力</div>
+                                <span>&#xe63b;</span>
+                            </div>
+                            <div class="demand-describe scroll">
+                                <div>
+                                    <div>
+                                        <div>始发机场</div>
+                                        <div>双流机场</div>
+                                    </div>
+                                    <div>
+                                        <div>始发机场</div>
+                                        <div>双流机场</div>
+                                    </div>
+                                    <div>
+                                        <div>始发机场</div>
+                                        <div>双流机场</div>
+                                    </div>
 
-                       </div>
-                    </div>
-                    <div class="view-btn btn-w">查看订单详情</div>
+                                </div>
+                            </div>
+                            <div class="view-btn btn-w">查看订单详情</div>
+                        </div>
+                    </transition>
+                    <div class="personal-hy">历史</div>
                 </div>
             </div>
         </div>
@@ -177,6 +182,24 @@
     }
 </script>
 <style lang="scss" scoped>
+    @keyframes personal-in {
+        0% {
+           left: 0;
+        }
+        100% {
+            left: -200px;
+        }
+    }
+    .personal-enter-active {
+        animation: bounce-in .3s;
+    }
+
+    .personal-leave-active {
+        animation: personal-in .3s reverse;
+    }
+    .personal-c{
+        left: 0;
+    }
     .demand-describe{
         padding: 15px 0 15px 15px;
         flex: 1;
@@ -227,10 +250,13 @@
         }
     }
     .personal{
+        position: relative;
         padding: 0 ;
-        display: flex;
         flex: 1;
-        flex-flow: column nowrap;
+        >div{
+            width: 100%;
+            position: absolute;
+        }
     }
     .personal-panel{
         display: flex;
