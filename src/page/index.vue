@@ -20,7 +20,12 @@
         <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
          <!--<myIndexFzz></myIndexFzz>-->
+<<<<<<< HEAD
         <!-- <timelyCommunication></timelyCommunication> -->
+=======
+        <!--<timelyCommunication></timelyCommunication>-->
+        <router-view></router-view>
+>>>>>>> f7a0cdde7b162e11bfa2526dfdda9886ffca8c34
     </div>
 </template>
 
@@ -155,8 +160,7 @@
                         this.renderComponent = true;
                     });
 
-                }
-                ;
+                };
             }
         },
         beforeMount: function () {
@@ -268,8 +272,8 @@
             airlineDetailPayAfter,
             infPanel,
             myIntentForm,
-            myIndex,
-            myIndexFzz,
+//            myIndex,
+//            myIndexFzz,
             myPublish,
             myPurpose,
             routeNetwork,

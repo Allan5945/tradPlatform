@@ -1,17 +1,20 @@
 <template>
-    <div class="wrap" @click.self="closeAll">
+    <div class="wrap" @click.self="closeDetail">
+
         <div class="box shadow">
-            <p class="mgr-l">需求详情<span  class="iconfont closer" @click="closeAll">&#xe62c;</span></p>
-
-            <airlineReq :ndetailData="metaData" :type="detailData.demandtype" v-if="metaData"></airlineReq>
-
+            <p class="mgr-l">需求详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
+            <airlineReq :ndetailData="metaData" :type="typeList[detailData.demandtype]" v-if="metaData"></airlineReq>
             <footer class="footer flex-center">
                 <template v-if="detailData.demandstate=='未处理'">
                     <span class="btn btn-prime" @click="postPass">通过</span>
                     <span class="btn btn-gray" @click="show.swrapper=true">不通过</span>
                 </template>
-                <template v-if="detailData.demandstate!=='未处理'">
+                <template v-if="detailData.demandstate==='审核未通过'">
                     <span class="tips tips-top">*拒绝原因</span>
+                    <p v-text="detailData.reason || reason.text"></p>
+                </template>
+                <template v-if="detailData.demandstate==='审核通过'">
+                    <span class="tips tips-pas">*已通过审核</span>
                     <p v-text="detailData.name"></p>
                 </template>
             </footer>
@@ -49,7 +52,8 @@
                     textLength:0
                 },
                 metaData: null,
-                fatherScroll:true
+                fatherScroll:true,
+                typeList: ['航线需求','运力需求']
             }
         },
         components: {airlineReq},
@@ -66,26 +70,63 @@
             }
         },
         methods: {
-            closeAll:function () {//关闭所有
-                this.$emit("control",true);
+            closeDetail:function () {//关闭所有
+                this.$emit("closeAll");
             },
-            postPass:function () {//提交通过
-                //ajax
-                this.detailData.status = true;
+            changeState: function (state,reason) {
+                let rsk = reason||'';
+                return new Promise((resolve,reject)=>{
+                    this.$ajax({
+                        method: 'POST',
+                        url: '/checkDemand',
+                        params: {
+                            demandId : this.detailData.id,
+                            demandState: state,
+                            rek: rsk
+                        }
+                    }).then(res=>{
+                        /*
+                         opResult : 有0,1,2,3这几个值。
+                         0-成功，返回list;
+                         1-失败
+                         2-查询列表后台抛出异常；
+                         传入的参数为空
+                         */
+                        if(res.data.opResult===0){
+                            resolve(res.data.opResult);
+                        }else{
+                            reject("未处理成功");
+                        }
+                    }).catch(err=>{
+                        reject(err);
+                    })
+                })
+            },
+            postPass:function () {//审核通过
+                let that = this;
+                that.changeState(0).then((val)=>{
+                    that.detailData.demandstate = "审核通过";
+                },(err)=>{
+                    that.detailData.demandstate = "审核通过";
+                });
             },
             //拒绝
             postReason:function () {//提交
                 let that = this;
-                this.show.swrapper = false;
-                //ajax
-                //this.$emit("emit", that.reason.text);
+                that.show.swrapper = false;
+                that.changeState(1,that.reason.text).then((val)=>{
+                    that.detailData.demandstate = "审核未通过";
+                },(err)=>{
+                    that.detailData.demandstate = "审核未通过";
+                    that.detailData.reason = that.reason.text;
+                });
             },
             closeReason: function () {//取消
                 this.reason.text = '';
                 this.show.swrapper = false;
             },
             getScrollWidth: function () {
-                var noScroll, scroll, oDiv = document.createElement("DIV");
+                let noScroll, scroll, oDiv = document.createElement("DIV");
                 oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
                 noScroll = document.body.appendChild(oDiv).clientWidth;
                 oDiv.style.overflowY = "scroll";
@@ -95,7 +136,7 @@
             }
         },
         created: function () {
-            let fdom = document.querySelector('.my-center')
+            let fdom = document.querySelector('.my-center');
             if(fdom.offsetHeight===fdom.scrollHeight===fdom.clientHeight){
                 this.fatherScroll = false;
                 fdom.style.overflow = 'hidden';
@@ -113,8 +154,9 @@
             }).then(res=>{
                 that.metaData = res.data.data;
             }).catch(err=>{
-
             })
+        },
+        mounted:function () {
         },
         destroyed: function () {
             if(this.fatherScroll){
@@ -127,7 +169,7 @@
 </script>
 
 <style lang="scss" scoped>
-　　.input textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
+    　　.input textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
     $bt-c: #605e7c;
     $txt-c: #3c78ff;
     $bor-c: #efefef;
@@ -151,6 +193,12 @@
     }
     .tips-top{
         color: red;
+        position: absolute;
+        top: -35%;
+        left: 10px;
+    }
+    .tips-pas{
+        color: green;
         position: absolute;
         top: -35%;
         left: 10px;
@@ -220,7 +268,6 @@
         width: 100px;
         border: 1px solid #ccc;
     }
-
     .swrapper{
         position: absolute;
         width: 100%;

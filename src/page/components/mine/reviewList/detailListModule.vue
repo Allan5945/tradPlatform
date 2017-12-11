@@ -79,7 +79,7 @@
                         </div>
                         <div>
                             <div>客座率预期</div>
-                            <div>{{ndetailData.loadfactorsexpect||"-"}}%</div>
+                            <div>{{ndetailData.loadfactorsexpect ? ndetailData.loadfactorsexpect+"%" : "-"}}</div>
                         </div>
                         <div>
                             <div>补贴政策</div>
@@ -98,13 +98,12 @@
                 </div>
             </div>
         </template>
-        <template v-if="type==='运力需求'">
+        <template v-if="type==='运力投放'">
             <header>
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"运力需求":"-"}}</div>
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime||"-" }}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ type||"0" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -142,14 +141,14 @@
                             <div>班期</div>
                             <div>{{ndetailData.days+"人"||"-"}}</div>
                         </div>
-                        <div style="width: 100%;margin: 10px">
+                        <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;">
-                                {{ndetailData.dpt||"-"}}
+                            <div style="width: 80%;line-height: 5px;text-indent: 40px;">
+                                {{ndetailData.dpt||"WDS"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pst||"-"}}
+                                {{ndetailData.pst||"WDS"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrv||"-"}}
+                                {{ndetailData.arrv||"WDS"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>
@@ -185,6 +184,7 @@
         },
         props:["ndetailData","type"],
         mounted: function () {
+
         }
     }
 </script>

@@ -29,41 +29,42 @@
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="list items" v-for="val in myList">
-                    <div class="list-a item">
-                        {{val.releaseTime}}
-                    </div>
-                    <div class="list-b item">
-                       {{myDemand(val.demandType)}}
-                    </div>
-                     <div class="list-p item">
-                        {{val.nickName}}
-                    </div>
-                    <div class="list-c item color">
-                        {{val.title}}
-                    </div>
-                    <div class="list-d item">
-                      {{progress(val.demandProgress)}}
-                    </div>
-                    <div class="list-e item">
+                <div v-if="detailsData">
+                    <div class="list items"   v-for="ditem in detailsData.list">
+                        <div class="list-a item">
+                            {{ ditem.releasetime }}
+                        </div>
+                        <div class="list-b item">
+                            {{ ditem.demandtype }}
+                        </div>
+                        <div class="list-p item">
+                            {{ ditem.nickName }}
+                        </div>
+                        <div class="list-c item color">
+                            {{ ditem.title }}
+                        </div>
+                        <div class="list-d item">
+                            {{ ditem.demandstate }}
+                        </div>
+                        <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
-                    </div>
-                    <div class="list-f item color" @click="openDetail(val)">
-                        查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
+                        <div class="list-f item color" @click="openDetail(ditem)">
+                            查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <agentDetail @close="closeAgentDetail" v-if="agentShow" :demandId="demandId"></agentDetail>
-        <deleDetail @close="closeDeleDetail" v-if="deleShow" :demandId="demandId"></deleDetail>
     </div>
 </template>
 <script>
-    import stateList from './stateList.vue'
-    import agentDetail from './operAgentDetail.vue';
-    import deleDetail from './operDeleDetail.vue';
+    import stateList from '../stateList.vue'
+    import agentDetail from '../operAgentDetail.vue';
+    import deleDetail from '../operDeleDetail.vue';
+    import detailsPanel from './detailsPanel.vue';
     export default {
         data() {
             return {
@@ -77,13 +78,18 @@
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
                 state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
-                myList:null,
-                demandId:null
+                detailsPanel:{
+                    show:false,
+                    data:{}
+                },
+                detailsData: null,
+                myList:null
             }
         },
         mounted() {
             this.state = this.state1;
-             this.$ajax({
+            this.getListData();
+            this.$ajax({
                 method: 'post',
                 url: '/selectCommissionedAndCustodyDemandList',
                 headers: {
@@ -91,11 +97,11 @@
                 },
                 params: {
                     page: 1,
-                    pageNo:3
+                    pageNo:4
                 }
-                })
+            })
                 .then((response) => {
-                     this.myList = response.data.list.list;
+                    this.myList = response.data.list.list;
                 })
                 .catch((error) => {
                         console.log(error);
@@ -110,14 +116,6 @@
                 this.stateShow = !this.stateShow;
             },
             typeClickFn: function (item) {
-                this.typeWriting = item;
-                this.stateWriting = '状态';
-                if(item == '航线委托' || item == '运力委托') {
-                    this.state = this.state2;
-                }
-                if(item == '托管') {
-                    this.state = this.state1;
-                }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
@@ -125,52 +123,37 @@
             closeAgentDetail:function(){
                 this.agentShow = false;
             },
-            closeDeleDetail:function(){
-                 this.deleShow = false;
+            turnDetailPanel: function (item) {
+                this.detailsPanel.data = item;
+                this.detailsPanel.show = !this.detailsPanel.show;
             },
-            getDetail:function(val){
-                 this.demandId = val.id;
-                if(val.demandType == '2'){//托管详情
-                    this.agentShow = true;
-                }else{//委托详情
-                      this.deleShow = true;
-                }
-            },
-            myDemand:function(val){
-                if(val == 2){
-                    return "运营托管";
-                }
-                else if(val == 3){
-                    return "航线委托";
-                }
-                else if(val == 4){
-                    return "运力委托";
-                }
-            },
-            progress:function(val){
-                switch (val) {
-                        case "3":
-                            return "已关闭";
-                            break;
-                        case "7":
-                            return "待处理";
-                            break;
-                        case "8":
-                            return "已接受";
-                            break;
-                        case "9":
-                            return "处理中";
-                            break;
-                        case "10":
-                            return "已拒绝";
-                            break;
+            getListData:function () {
+                let that = this;
+                this.$ajax({
+                    method: 'GET',
+                    url: '/getDemandOfReviewList',
+                    params: {
+                        demandType : '' ,
+                        demandState : '',
+                        page: 1,
+                        orderType : 0
                     }
-            },
+                }).then(res=>{
+                    if(res && res.data.opResult==0){
+                        that.detailsData = res.data.list;
+                    }else{
+                        that.detailsData = null;
+                        alert('暂无返回，请稍后重试。')
+                    }
+                }).catch(err=>{
+                    this.deleShow = true;
+                })
+            }
         },
         components: {
             stateList,
             agentDetail,
-            deleDetail
+            detailsPanel
         }
     }
 </script>

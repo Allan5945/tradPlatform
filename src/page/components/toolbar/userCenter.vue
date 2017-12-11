@@ -1,22 +1,38 @@
 <template>
     <div class="tool popup" @click.stop>
-        <div><span>&#xe611;</span>设置</div>
-        <div><span>&#xe610;</span>个人资料</div>
-        <div><span>&#xe647;</span>退出</div>
+        <a to="" @click="logout">
+            <span>&#xe647;</span>
+            退出
+        </a>
+        <router-link to="/index/userCenter">
+            <span>&#xe647;</span>
+            个人中心
+        </router-link>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
+
     export default {
-        watch:{
-//            close:function () {
-//
-//            }
-        },
-        computed:{
+        watch: {},
+        computed: {
             ...vx.mapActions([
                 'close'
             ]),
+        },
+        methods: {
+            logout: function () {
+                this.$ajax.post('logout')
+                    .then((res)=>{
+                        if(res.data.opResult == 0){
+                            window.sessionStorage.setItem('isLogin',null);
+                            this.$router.push({path:'login'});
+                        }
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                    })
+            }
         }
     }
 </script>

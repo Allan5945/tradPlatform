@@ -63,7 +63,6 @@
             this.allDot.forEach((v) => {
 
                 let mes = this.$airMes(this.airList, v.dpt);
-                console.log(mes);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType == null ? [] : v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
@@ -174,7 +173,7 @@
                     "center": ["110.47", "32.40"], //
                     "zoom": 6,
                     "color": "red",
-                    "roam": "move",
+                    "roam": "true",
                     "type": 'bmap',
                     "mapStyle": zs
                 },

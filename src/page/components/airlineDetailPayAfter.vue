@@ -431,11 +431,11 @@
 //            this.initData();
             //模拟状态码0
 //            this.showCode = 0;
-            console.info(this.role)
-            console.info('min-tabulationBoxTrigger')
+//            console.info(this.role)
+//            console.info('min-tabulationBoxTrigger')
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                console.info('tabulationBoxTrigger:')
-                console.info(val.data)
+//                console.info('tabulationBoxTrigger:')
+//                console.info(val.data)
 //                this.showCode = 0;
                 if (val.data.demandtype == 0) {
                     this.$ajax({
@@ -449,8 +449,8 @@
                         }
                     })
                         .then((response) => {
-                            console.info('response:')
-                            console.info(response.data.responseList)
+//                            console.info('response:')
+//                            console.info(response.data.responseList)
                             this.isSelf = response.data.isSelf;
                             this.isIntentionMoney = response.data.isIntentionMoney;
 //                            this.intentionCount = response.data.intentionCount;

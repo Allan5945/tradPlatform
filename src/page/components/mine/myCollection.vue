@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <collectDetail v-if="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
+        <collectDetail v-show="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
     </div>
 </template>
 <script>
