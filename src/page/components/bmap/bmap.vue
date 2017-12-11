@@ -60,14 +60,15 @@
                     "data": ar
                 };
 
-
             this.allDot.forEach((v) => {
-                let mes = this.$cityMes(this.cityList, v.dpt);
+
+                let mes = this.$airMes(this.airList, v.dpt);
+                console.log(mes);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType == null ? [] : v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
                 let cityIcao = mes.cityIcao;
-                let coor = mes.cityCoordinate.split(',');
+                let coor = [mes.cityCoordinateW,mes.cityCoordinateJ];
                 code = v.dpt;
                 let qfType = false;
                 let demand = {

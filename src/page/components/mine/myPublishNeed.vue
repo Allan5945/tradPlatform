@@ -97,6 +97,7 @@
                 editTransportFormShow: false, //编辑需求表单
                 editAirlineReqShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
+                id: '',                 // 点击列表获取这条需求id
             }
         },
         mounted() {
@@ -105,6 +106,7 @@
                 console.info('从myPublishList获取的数据:');
                 console.info(val);
                 this.myData = val;
+                this.id = this.myData.id;
                 // 状态有误时显示的内容
 //                this.wrongShow();
                 if(this.myData.demandstate == 2){
@@ -180,7 +182,11 @@
                 this.anewPublishShow = false;
                 this.wrongTextShow = false;
                 tabulationBoxTrigger.$on('sendToMyPublish',(val) => {
+                    console.info('sendToMyPublish:')
+                    console.info(val)
                     this.myData = val;
+                    this.myData.id = this.id
+//                    console.info(this.id)
                     //将创建时间顺序改变
                     /*let time1 = this.myData.releasetime.split('.');
                     let time2 = [];
@@ -199,7 +205,20 @@
             },
             //点击下方“重新发布”
             anewPublishClickFn2: function () {
-                alert('重新发布');
+                console.info(this.myData);
+                this.$ajax({
+                    url:"/demandAdd",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.myData
+                }) .then((response) => {
+                    console.info(response.data)
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
             },
             // "撤回该托管",调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {

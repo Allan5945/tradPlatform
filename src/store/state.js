@@ -66,9 +66,5 @@ export const state = {
         },
     },
     role: window.sessionStorage.getItem('role')? JSON.parse(window.sessionStorage.getItem('role')):null,// ** 用户角色信息
-    transDetail:{
-        transShow:false,
-        userData:{}
-    },
     routeNetwork:[], // ** 航线网络图数据
 };
