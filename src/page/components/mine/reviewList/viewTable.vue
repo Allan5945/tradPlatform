@@ -5,9 +5,9 @@
                 <div class="title items">
                     <div class="list-a item">
                         发布时间
-                        <div class="up-down" style="margin-left: 10px" @click="timeSort">
-                            <span class="icon-item icon-up" :class="{active:sorted}">&#xe605;</span>
-                            <span class="icon-item icon-down" :class="{active:!sorted}">&#xe605;</span>
+                        <div class="up-down" style="margin-left: 10px">
+                            <span class="icon-item icon-up active">&#xe605;</span>
+                            <span class="icon-item icon-down">&#xe605;</span>
                         </div>
                     </div>
                     <div class="list-b item" @click="typeShowFn">
@@ -17,64 +17,71 @@
                             <li v-for="item in type" @click="typeClickFn(item)">{{item}}</li>
                         </ul>
                     </div>
+                    <div class="list-p item">发布人</div>
                     <div class="list-c item">
                         发布标题
                     </div>
                     <div class="list-d item" @click="stateShowFn">
-                        <span>{{stateWriting}}</span>
+                        {{stateWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
-                        <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
+                        <ul class="type-list" v-show="stateShow">
+                            <li v-for="item in state" @click="stateClickFn(item)">{{item}}</li>
+                        </ul>
                     </div>
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="lists-containt">
-                    <!--点击列表展示发布详情-->
-                    <div class="list items" :class="{'list-active':false}" v-for="val in collectList" >
+                <template v-if="detailsData">
+                    <div class="list items"   v-for="ditem in detailsData.list">
                         <div class="list-a item">
-                            {{val.releaseTime}}
+                            {{ ditem.releasetime }}
                         </div>
                         <div class="list-b item">
-                             {{myDemand(val.demandType)}}
+                            {{ type[ditem.demandtype]}}
+                        </div>
+                        <div class="list-p item">
+                            {{ ditem.employeeNm }}
                         </div>
                         <div class="list-c item color">
-                            <span>{{val.title}}</span>
+                            {{ ditem.title }}
                         </div>
                         <div class="list-d item">
-                            {{progress(val.demandProgress)}}
+                            {{ ditem.demandstate }}
                         </div>
                         <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
-                        </span>
                         </div>
-                        <div class="list-f item color" @click="openDetail(val)">查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="list-f item color" @click="turnDetailPanel(ditem)">
+                            查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
-        <collectDetail v-show="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
+        <transition name="slidex-fade">
+            <panel v-if="detailsPanel.show" :detailData="detailsPanel.data" v-on:closeAll="turnDetailPanel"></panel>
+        </transition>
     </div>
 </template>
 <script>
-    import stateList from './stateList.vue'
-    import collectDetail from './collectDetail.vue';
+    import panel from './panel.vue';
 
     export default {
         data() {
             return {
+                sorted:true,
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
-                detailShow:false,
-                sorted:true,
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['运力投放','航线需求'],
-                state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
-                collectList:null,
-                demandId:null
+                type: ['航线需求','运力投放'],
+                state: ['未通过','审核通过','审核未通过'],
+                demandId:null,
+                detailsPanel:{
+                    data:null,
+                    show:false,
+                },
+                detailsData: null,
             }
         },
         methods: {
@@ -90,79 +97,44 @@
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-             openDetail:function(val){
-                this.demandId = val.id;
-                this.detailShow = true;
-            },
-            closeDetail:function(){
-                 this.detailShow = false;
-                 //this.collectList.$delete(key);
-            },
             timeSort:function(){
                 this.sorted = !this.sorted;
 
             },
-            myDemand:function(val){
-               if(val == 0){
-                    return "航线需求";
-               }
-               else if(val == 1){
-                    return "运力投放";
-               }
+            turnDetailPanel: function (item) {
+                this.detailsPanel.data = item;
+                this.detailsPanel.show = !this.detailsPanel.show;
             },
-            progress:function(val){
-                switch (val) {
-                        case "0":
-                            return "需求发布";
-                            break;
-                        case "1":
-                            return "意向征集";
-                            break;
-                        case "2":
-                            return "订单确认";
-                            break;
-                        case "3":
-                            return "关闭";
-                            break;
-                        case "4":
-                            return "订单完成";
-                            break;
-                        case "9":
-                            return "需求审核";
-                            break;
+            getListData: function () {
+                let that = this;
+                this.$ajax({
+                    method: 'GET',
+                    url: '/getDemandOfReviewList',
+                    params: {
+                        demandType : '' ,
+                        demandState : '',
+                        page: 1,
+                        orderType : 0
                     }
+                }).then(res=>{
+                    if(res && res.data.opResult==0){
+                        that.detailsData = res.data.list;
+                    }else{
+                        that.detailsData = null;
+                        alert('暂无返回，请稍后重试。')
+                    }
+                }).catch(err=>{
+                    this.deleShow = true;
+                })
             }
         },
         computed:{
-            timeselec:function(){
-                return this.sorted? 'Desc': 'Asc';
-            }
         },
         mounted() {
-          this.$ajax({
-                method: 'post',
-                url: '/selectCollectList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page: 1,
-                    pageNo:4,
-                    releaseTime:this.timeselec
-                }
-                })
-                .then((response) => {
-                   this.collectList = response.data.list.list;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-
-     },
+            this.getListData()
+        },
         components: {
-            stateList,
-            collectDetail
+            panel,
         }
     }
 </script>
@@ -190,7 +162,6 @@
             }
         }
     }
-
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
@@ -207,31 +178,19 @@
     }
     .miList-wrapper {
         width: 100%;
-        font-size: 1.2rem;
         background: #F8F8F8;
+        font-size:1.2rem;
     }
     .miList-container {
         margin: 0 auto;
         padding-top: 40px;
         width: 1000px;
         height: 340px;
-        .lists-containt {
-            height: 280px;
-            overflow-y: scroll;
-        }
-        .lists-containt::-webkit-scrollbar {
-            width: 7px;
-        }
-        .lists-containt::-webkit-scrollbar-thumb {
-            height: 56px;
-            background: #D8D8D8;
-            border-radius: 4px;
-        }
-        /*&::after {
+        &::after {
             display: block;
             height: 60px;
             content: '';
-        }*/
+        }
     }
     .items {
         display: flex;
@@ -247,7 +206,6 @@
             .up-down {
                 position: relative;
                 width: 20px;
-                cursor:pointer;
                 .active {
                     color: $icon-color;
                 }
@@ -266,36 +224,33 @@
             position: relative;
             margin-right: 40px;
             width: 100px;
-            .type-list {
-                top: 40px;
-                left: 0;
-                li {
-                    display: flex;
-                    align-items: center;
-                    width: 103px;
-                }
+        }
+        .list-p{
+            width: 120px;
+            margin-right: 40px;
+        }
+        .type-list {
+            top: 40px;
+            left: 0;
+            li {
+                display: flex;
+                align-items: center;
+                width: 103px;
             }
         }
         .list-c {
             margin-right: 40px;
-            width: 320px;
-            >span {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow:ellipsis;
         }
         .list-d {
             position: relative;
             width: 80px;
-            >span {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
         }
         .list-e {
-            margin-right: 160px;
+            margin-right: 120px;
             width: 20px;
             .talk-icon {
                 position: relative;
@@ -339,9 +294,5 @@
         .list-f {
             cursor: pointer;
         }
-    }
-    .list-active {
-        border: 1px solid #d0d0d0;
-        background: #ebebeb;
     }
 </style>

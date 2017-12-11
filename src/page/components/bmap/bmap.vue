@@ -60,14 +60,14 @@
                     "data": ar
                 };
 
-
             this.allDot.forEach((v) => {
-                let mes = this.$cityMes(this.cityList, v.dpt);
+
+                let mes = this.$airMes(this.airList, v.dpt);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType == null ? [] : v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
                 let cityIcao = mes.cityIcao;
-                let coor = mes.cityCoordinate.split(',');
+                let coor = [mes.cityCoordinateW,mes.cityCoordinateJ];
                 code = v.dpt;
                 let qfType = false;
                 let demand = {
@@ -173,7 +173,7 @@
                     "center": ["110.47", "32.40"], //
                     "zoom": 6,
                     "color": "red",
-                    "roam": "move",
+                    "roam": "true",
                     "type": 'bmap',
                     "mapStyle": zs
                 },

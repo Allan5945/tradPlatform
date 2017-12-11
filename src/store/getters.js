@@ -20,9 +20,6 @@ export default {
     role:(state)=>{
         return state.role;
     },
-    transDetail:(state)=>{
-        return state.transDetail;
-    },
     conditionsOpen:(state)=>{
         return state.conditionsOpen;
     },

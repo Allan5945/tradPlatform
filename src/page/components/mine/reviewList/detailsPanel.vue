@@ -46,7 +46,8 @@
                 },
                 reason:{
                     text: '',
-                    textLength:0
+                    textLength:0,
+                    ispas: true
                 },
                 metaData: null,
                 fatherScroll:true
@@ -72,13 +73,32 @@
             postPass:function () {//提交通过
                 //ajax
                 this.detailData.status = true;
+                this.postAjax(0);
             },
             //拒绝
             postReason:function () {//提交
                 let that = this;
                 this.show.swrapper = false;
+                this.postAjax(1);
                 //ajax
                 //this.$emit("emit", that.reason.text);
+            },
+            postAjax: function (flag) {
+                let data = this.reason,
+                    id = this.detailData.id;
+                this.$ajax({
+                    method: 'GET',
+                    url: '/checkDemand',
+                    params: {
+                        demandId : id,
+                        demandState : flag,
+                        rek: data.text,
+                    }
+                }).then(res=>{
+                    that.metaData = res.data.data;
+                }).catch(err=>{
+
+                })
             },
             closeReason: function () {//取消
                 this.reason.text = '';

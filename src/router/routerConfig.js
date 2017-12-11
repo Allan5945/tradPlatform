@@ -2,9 +2,27 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import state from '../store'
 
+// 登录页面
 const login = resolve => require(['./../page/login.vue'], resolve);
+// 主页 ** 显示全部登录后的内容
 const index = resolve => require(['./../page/index.vue'], resolve);
-
+// 用户中心
+const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'], resolve);
+    //个人中心 7个板块组件
+        // 审核列表
+        const reviewList = resolve => require(['$src/page/components/mine/reviewList/viewTable.vue'], resolve);
+        // 委托/托管
+        // const entrust = resolve => require(['...'], resolve);
+        // 我的发布
+        const myRelease = resolve => require(['./../page/components/mine/myOperAgent.vue'], resolve);
+        // 我的意向
+        // const myIntention = resolve => require(['...'], resolve);
+        // 我的订单
+        // const myOrder = resolve => require(['...'], resolve);
+        // 我的收藏
+        const myCollection = resolve => require(['./../page/components/mine/myCollection.vue'], resolve);
+        // 公司账户
+        // const companyAccount = resolve => require(['...'], resolve);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -18,7 +36,29 @@ const router = new VueRouter({
             component: index,
             meta:{
                 requireAuth: true
-            }
+            },
+            children: [
+                {
+                    path: 'userCenter',
+                    component: userCenter,
+                    children: [
+                        {
+                            path: 'myCollection',
+                            component: myCollection
+                        },{
+                            path: 'myRelease',
+                            component: myRelease
+                        },{
+                            path: 'reviewList',
+                            component: reviewList
+                        },
+                        {
+                            path: '',
+                            component: myRelease
+                        },
+                    ]
+                }
+            ]
         },
         {
             path: '/login',

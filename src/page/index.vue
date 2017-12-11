@@ -19,8 +19,9 @@
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
         <!--<myIndex></myIndex>-->
         <routeNetwork></routeNetwork>
-         <myIndexFzz></myIndexFzz>
+         <!--<myIndexFzz></myIndexFzz>-->
         <!--<timelyCommunication></timelyCommunication>-->
+        <router-view></router-view>
     </div>
 </template>
 
@@ -155,8 +156,7 @@
                         this.renderComponent = true;
                     });
 
-                }
-                ;
+                };
             }
         },
         beforeMount: function () {
@@ -268,8 +268,8 @@
             airlineDetailPayAfter,
             infPanel,
             myIntentForm,
-            myIndex,
-            myIndexFzz,
+//            myIndex,
+//            myIndexFzz,
             myPublish,
             myPurpose,
             routeNetwork,
