@@ -79,6 +79,7 @@
                     page: 1,
                     pageNo:4,
                     demandType: null,
+                    demandProgress:null,
                     releaseTime:"Desc"
                 }
             }
@@ -93,6 +94,7 @@
             typeClickFn: function (item) {
                 this.typeWriting = item;
                 this.stateWriting = '状态';
+                this.sentData.demandProgress = '';
                 if(item == '航线需求') {
                     this.sentData.demandType = "0";
                 }else if(item == '运力投放') {
@@ -101,6 +103,7 @@
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
+                 this.sentData.demandProgress = this.turnProgress(item);
             },
              openDetail:function(val){
                 this.demandId = val.id;
@@ -145,6 +148,29 @@
                             break;
                     }
             },
+            turnProgress:function(val){
+                    switch (val) {
+                        case "需求发布":
+                            return "0";
+                            break;
+                        case "意向征集":
+                            return "1";
+                            break;
+                        case "订单确认":
+                            return "2";
+                            break;
+                        case "关闭":
+                            return "3";
+                            break;
+                        case "订单完成":
+                            return "4";
+                            break;
+                        case "需求审核":
+                            return "9";
+                            break;
+
+                    }
+            },
             getListData:function(){
                     let that = this;
                     this.$ajax({
@@ -162,13 +188,16 @@
                             console.log(error);
                         }
                     );
-            }
+            },
         },
         watch:{
             'sentData.releaseTime': function(){
                 this.getListData();
             },
             'sentData.demandType':function(){
+                this.getListData();
+            },
+             'sentData.demandProgress':function(){
                 this.getListData();
             },
         },

@@ -10,6 +10,23 @@
         </header>
         <div class="content">
             <div class="table-form">
+                 <div>
+                    <div>机型</div>
+                    <div>{{detailData.aircrfttyp}}</div>
+                </div>
+                 <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>{{detailData.capacitycompanyStr}}</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm}}</div>
+                </div>
+
                 <div >
                     <div>出港时刻</div>
                     <div>{{detailData.dptTime}}</div>
@@ -18,28 +35,20 @@
                     <div>班期</div>
                     <div>{{detailData.days}}</div>
                 </div>
-                <div>
-                    <div>机型</div>
-                    <div>{{detailData.aircrfttyp}}</div>
-                </div>
-                 <div>
-                    <div>运力基地</div>
-                    <div>{{detailData.dptNm}}</div>
-                </div>
-                <div>
-                    <div>运力归属</div>
-                    <div>{{detailData.capacitycompany}}</div>
-                </div>
-                <div>
-                    <div>座位布局</div>
-                    <div>{{detailData.seating}}</div>
+                <div class="intent-airline">
+                    <div>意向航线</div>
+                    <div class="i-line">
+                      {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
+                      {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
+                      {{detailData.intendedAirlines[0].arrvName}}
+                    </div>
                 </div>
                 <div>
                     <div>小时成本</div>
                     <div>{{detailData.hourscost}}万/小时</div>
                 </div>
                 <div>
-                    <div>接受调度</div>
+                    <div style="margin:0 0 0 40px;">接受调度</div>
                     <div>{{detailData.schedulingStr}}</div>
                 </div>
                 <div>
@@ -210,7 +219,7 @@
         position:absolute;
         top:0;
         right:0;
-        z-index: 12;
+        z-index: 16;
         width:600px;
         box-sizing:border-box;
         height:100%;
@@ -298,6 +307,18 @@
       }
       >div:nth-of-type(odd){
           margin-right:40px;
+      }
+      .intent-airline{
+          width:100%;
+          .i-line{
+              width:440px;
+              margin-right:0;
+              display: flex;
+              .iconfont{
+                display:block;
+                margin:0 25px;
+              }
+          }
       }
     }
     .myplan{

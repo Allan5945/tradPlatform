@@ -5,9 +5,9 @@
                 <div class="title items">
                     <div class="list-a item">
                         发布时间
-                        <div class="up-down" style="margin-left: 10px">
-                            <span class="icon-item icon-up active">&#xe605;</span>
-                            <span class="icon-item icon-down">&#xe605;</span>
+                        <div class="up-down" style="margin-left: 10px" @click="timeSort">
+                            <span class="icon-item icon-up" :class="{active:sorted}">&#xe605;</span>
+                            <span class="icon-item icon-down" :class="{active:!sorted}">&#xe605;</span>
                         </div>
                     </div>
                     <div class="list-b item" @click="typeShowFn">
@@ -75,6 +75,7 @@
                 stateWriting: '状态',
                 agentShow:false,
                 deleShow:false,
+                sorted:true,
                 type:  ['航线委托','运力委托','托管'],
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
@@ -85,7 +86,8 @@
                     page:1,
                     pageNo:4,
                     demandType: null,
-                    demandProgress:null
+                    demandProgress:null,
+                    releaseTime:"Desc"
                 }
             }
         },
@@ -99,7 +101,10 @@
             },
             'sentData.demandProgress':function(){
                 this.getListData();
-            }
+            },
+             'sentData.releaseTime': function(){
+                this.getListData();
+            },
         },
         methods: {
             typeShowFn: function () {
@@ -111,6 +116,7 @@
             typeClickFn: function (item) {
                 this.typeWriting = item;
                 this.stateWriting = '状态';
+                this.sentData.demandProgress = '';
                 if(item == '航线委托') {
                     this.state = this.state2;
                     this.sentData.demandType = "3";
@@ -131,6 +137,11 @@
             },
             closeDeleDetail:function(){
                  this.deleShow = false;
+            },
+             timeSort:function(){
+                this.sorted = !this.sorted;
+                this.sentData.releaseTime = this.sorted? 'Desc': 'Asc';
+
             },
             getDetail:function(val){
                  this.demandId = val.id;
@@ -206,6 +217,9 @@
                             return "8";
                             break;
                         case "处理中":
+                            return "9";
+                            break;
+                        case "测评中":
                             return "9";
                             break;
                         case "已拒绝":
@@ -308,6 +322,7 @@
             .up-down {
                 position: relative;
                 width: 20px;
+                cursor:pointer;
                 .active {
                     color: $icon-color;
                 }

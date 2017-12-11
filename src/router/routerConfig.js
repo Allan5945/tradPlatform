@@ -53,8 +53,8 @@ const router = new VueRouter({
                             component: reviewList
                         },
                         {
-                            path: '',
-                            component: myRelease
+                            path: 'entrust',
+                            component: entrust
                         },
                     ]
                 }

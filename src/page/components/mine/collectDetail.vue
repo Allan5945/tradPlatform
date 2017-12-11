@@ -135,7 +135,7 @@
         position:absolute;
         top:0;
         right:0;
-        z-index: 12;
+        z-index: 20;
         width:600px;
         height:100%;
         font-size:1.2rem;

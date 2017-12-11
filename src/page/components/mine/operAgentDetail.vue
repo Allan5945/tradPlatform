@@ -117,7 +117,7 @@ import refuseDialog from './refuseDialog.vue';
         position:absolute;
         top:0;
         right:0;
-        z-index: 12;
+        z-index: 20;
         width:600px;
         height:100%;
         min-height:600px;
