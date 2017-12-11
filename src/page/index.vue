@@ -17,15 +17,10 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-        <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
          <!--<myIndexFzz></myIndexFzz>-->
-<<<<<<< HEAD
-        <!-- <timelyCommunication></timelyCommunication> -->
-=======
         <!--<timelyCommunication></timelyCommunication>-->
         <router-view></router-view>
->>>>>>> f7a0cdde7b162e11bfa2526dfdda9886ffca8c34
     </div>
 </template>
 
@@ -43,7 +38,7 @@
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import respondAirport from './../page/components/trans_detail/respondAirport.vue'
-    import myIntentForm from './../page/components/trans_detail/myIntentForm1.vue'
+    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
