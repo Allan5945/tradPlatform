@@ -59,6 +59,8 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
     import myPurpose from './myPurpose.vue'
 
@@ -70,15 +72,92 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['运力投放','航线需求'],
+                type: [],
+                type0: ['运力投放'],
+                type1: ['航线需求'],
+                type2: ['运力投放','航线需求'],
                 state: [],
-                state1: ['意见征集','订单确认','交易完成','已撤回','需求关闭','落选'],
-                state2: ['意见征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],
+                state1: ['意见征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
+                state2: ['意见征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
                 myPurposeShow: false, // myPublish是否显示
                 talkNumShow: false,         //是否有对话
+                myData: [],                 // 将获取的数据，渲染到页面上
+                myData0: [],                 // 航司能看到的数据，渲染到页面上
+                myData1: [],                 // 机场能看到的数据，渲染到页面上
             }
         },
-        mounted() {},
+        created() {
+            this.$ajax({
+                url:"/getResponseListOfMine",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: {
+                    page:1,
+                    orderType: 0 //发布时间排序类型 0-倒序 1-正序
+                }
+            }) .then((response) => {
+                console.info('myPurposeList获取的数据:')
+                console.info(response)
+                console.info('this.role:');
+                console.info(this.role);
+                response.data.list.list.forEach((val) => {
+                    if(val.demandtype == '运力需求' ){
+                        this.myData0.push(val);
+//                        this.myData = this.myData0;
+                    }if(val.demandtype == '航线需求'){
+                        this.myData1.push(val);
+//                        this.myData = this.myData1;
+                    }
+//                    this.myData.push(val);
+                })
+//                this.myData = response.data.list.list;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        mounted() {
+            // 判断(0:航司,1:机场(政府),2:太美)
+            if(this.role.role == 0) {
+                this.type = this.type0;
+                this.myData = this.myData0;
+                this.typeWriting = '运力需求';
+            }if(this.role.role == 1) {
+                this.type = this.type1;
+                this.myData = this.myData1;
+                this.typeWriting = '航线需求';
+            }if(this.role.role == 2) {
+                this.type = this.type2;
+                this.myData = this.myData0.concat(this.myData1);
+            }
+
+            this.$ajax({
+                url:"/getResponseListOfMine",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: {
+                    page:1,
+                    orderType: 0 //发布时间排序类型 0-倒序 1-正序
+                }
+            }) .then((response) => {
+                console.info('myPublishList获取的数据:')
+                console.info(response)
+                response.data.list.list.forEach((val) => {
+                    if(val.demandtype == 1 || val.demandtype == 4 ){
+                        this.myData0.push(val);
+                    }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
+                        this.myData1.push(val);
+                    }
+//                    this.myData.push(val);
+                })
+//                this.myData = response.data.list.list;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
         methods: {
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
@@ -106,6 +185,11 @@
             closeThisFn: function () {
                 this.myPurposeShow = false;
             }
+        },
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ]),
         },
         components: {
             stateList,
@@ -153,9 +237,9 @@
         color: #3c78ff;
     }
     .miList-wrapper {
-        position: absolute;
+       /* position: absolute;
         bottom: 0;
-        left: 0;
+        left: 0;*/
         width: 100%;
         /*height: 434px;*/
         font-size: 1.2rem;

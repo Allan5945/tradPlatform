@@ -696,8 +696,8 @@
                     let responseIDMes = {};           //响应ID，响应者ID
                     responseIDMes.responseId = response.data.response.id; //响应ID
                     responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
-                    console.info("responseIDMes:")
-                    console
+                    console.info("responseIDMes:");
+                    console.info(responseIDMes);
 
                     tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
                     tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象

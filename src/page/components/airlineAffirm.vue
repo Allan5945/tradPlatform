@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="container-top">
-                <span class="title">请填写完整方案</span>
+                <span class="title">请填写完整方案{{employeeId}}</span>
                 <span class="close-icon" @click="closeThis">&times;</span>
             </div>
             <div class="bg-color must">
@@ -531,9 +531,12 @@
                 hourConst: '',             //小时成本
                 transportBase: '',          //运力基地
                 index: '',                  //payAfter列表的index
- 		airCompanyData: [], //航司内容
+ 		        airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
+                sendToAffirmData: {}, // 存储airlineDetailPayAfter传来的数据
+                id: '',
+                employeeId: '00',
             }
         },
         components: {
@@ -542,29 +545,32 @@
             calendar
         },
         watch: {
-            typeChoose: function () {
+            /*typeChoose: function () {
                 this.warn4Show = false;
-            }
+            }*/
         },
         created() {
             // 接受airlineDetailPayAfter.vue传来的数据
             tabulationBoxTrigger.$on('sendToAffirm',val => {
                 console.info('sendToAffirm:')
                 console.info(val)
-                this.sendData = val;
-                this.user = val.contact;
-                this.phoneNum = val.Ihome;
-                this.index = val.index;
-            }),
-                //接受airlineWrite.vue传来的数据
-                tabulationBoxTrigger.$on('responseText',val => {
-                    console.info('responseText:')
-                    console.info(val)
-                    this.id = val.Id;
-                    this.employeeId = val.employeeId;
-                })
+                this.id = val.id;
+                this.employeeId = val.employeeId;
+//                console.info('id:' + this.id)
+//                console.info('employeeId:' + this.employeeId)
+            })
+            console.log('id22:' + this.id)
+            console.info('employeeId22:' + this.employeeId)
+            //接受airlineWrite.vue传来的数据
+           /* tabulationBoxTrigger.$on('responseText',val => {
+                console.info('responseText:')
+                console.info(val)
+                this.id = val.Id;
+                this.employeeId = val.employeeId;
+            })*/
         },
         mounted() {
+
 //            console.info(this.acceptData)
             /*let acceptData = this.acceptData;
             if(acceptData.dptState == 0){
@@ -681,32 +687,32 @@
                 console.info('sendData:');
                 console.info(this.sendData);
 //                console.info(this.acceptData);
+                console.info('id2:' + this.id)
+                console.info('employeeId2:' + this.employeeId)
+                let ajaxData = {};
+                ajaxData.id = this.id;
+                ajaxData.employeeId = this.employeeId;
+                ajaxData.status = 0;
+                console.info('ajaxData:')
+                console.info(ajaxData)
                 this.$ajax({
-                    url: "/responseAdd",
+                    url: "/selectedResponse",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: this.sendData
+                    params: ajaxData
                 }).then((response) => {
                     console.info('response:')
                     console.info(response)
-                    /*let responseIDMes = {};           //响应ID，响应者ID
-                    responseIDMes.Id = response.data.response.id; //响应ID
-                    responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
-                    console.info("responseIDMes:")
-                    console.info(responseIDMes)
-                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
-                    tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
-                    console.info('responseId:' + this.responseId);*/
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {
                     console.log(error);
                 });
                 this.$emit('change-showCode');
+                console.info('this.sendData:');
+                console.info(this.sendData)
                 tabulationBoxTrigger.$emit('AffirmToDetailPayAfter', this.sendData); //向airlineDetailPayAfter.vue传数据
                 this.$emit('change-showCode');
-//                console.info('000')
             },
             closeThis: function () {
                 this.$emit('close-this');

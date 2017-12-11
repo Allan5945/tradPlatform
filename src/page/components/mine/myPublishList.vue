@@ -55,6 +55,7 @@
             </div>
         </div>
         <myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn"></myPublish>
+        <myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn"></myPublishAirline>
         <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn"></myPublishTransportEntrust>
         <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn"></myPublishAirLineEntrust>
     </div>
@@ -63,7 +64,8 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
-    import myPublish from './myPublishNeed.vue'
+    import myPublish from './myPublishNeed.vue' // 运力需求详情
+    import myPublishAirline from './myPublishAirline.vue' //航线需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
 
@@ -84,7 +86,8 @@
                 state2: ['待处理','测评中','已接受','已拒绝','已关闭'],
                 state3: ['待处理','处理中','意见征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
                 state4: ['需求发布','意见征集','订单确认','关闭(审核不通过、下架、过期)','交易完成'],
-                myPublishShow: false,       // myPublish(我的发布-审核未通过)是否显示
+                myPublishShow: false,       // myPublish(我的发布-运力详情)是否显示
+                myPublishAirlineShow: false, // 航线详情是否显示
                 myPublishTransportEntrustShow: false, // myPublishEntrust（我的发布-发布的运力托管）是否显示
                 myPublishAirLineEntrustShow: false,   //myPublishAirLineEntrust（我的发布-发布的航线托管）是否显示
                 myData: [],                 // 将获取的数据，渲染到页面上
@@ -94,8 +97,38 @@
                 talkNumShow: false,         //是否有对话
             }
         },
+        created() {
+            this.$ajax({
+                url:"/getTheReleaseDemandOfMine",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: {
+                    page:1,
+                    orderType: 0 //发布时间排序类型 0-倒序 1-正序
+                }
+            }) .then((response) => {
+                console.info('myPublishList获取的数据:')
+                console.info(response)
+                response.data.list.list.forEach((val) => {
+                    if(val.demandtype == 1 || val.demandtype == 4 ){
+                        this.myData0.push(val);
+//                        this.myData = this.myData0;
+                    }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
+                        this.myData1.push(val);
+//                        this.myData = this.myData1;
+                    }
+//                    this.myData.push(val);
+                })
+//                this.myData = response.data.list.list;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
         mounted() {
             // 判断是机场(1)还是航司(0)登录
+            console.info('this.role.role:'+ this.role.role)
             if(this.role.role == 0) {
                 this.type = this.type0;
                 this.myData = this.myData0;
@@ -105,31 +138,7 @@
             }
 
             this.state = this.state1;
-            this.$ajax({
-                url:"/getTheReleaseDemandOfMine",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:1,
-                    orderType: 1 //发布时间排序类型 0-倒序 1-正序
-                }
-            }) .then((response) => {
-                console.info('myPublishList获取的数据:')
-                console.info(response)
-                response.data.list.list.forEach((val) => {
-                    if(val.demandtype == 1 || val.demandtype == 4 ){
-                        this.myData0.push(val);
-                    }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
-                        this.myData1.push(val);
-                    }
-//                    this.myData.push(val);
-                })
-//                this.myData = response.data.list.list;
-            }).catch((error) => {
-                console.log(error);
-            });
+
         },
         computed: {
             ...vx.mapGetters([
@@ -188,25 +197,36 @@
                     this.myPublishTransportEntrustShow = true;
                     this.myPublishAirLineEntrustShow = false;
                     this.myPublishShow = false;
+                    this.myPublishAirlineShow = false;
                 }if(item.demandtype == 3 || item.demandtype == 4){
                     // 航线委托详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = true;
                     this.myPublishShow = false;
-                }if(item.demandtype == 0 || item.demandtype == 1){
-                    //  审核未通过，需求详情
+                    this.myPublishAirlineShow = false;
+                }if(item.demandtype == 1){
+                    //  审核未通过，运力需求详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
                     this.myPublishShow = true;
-//                    this.myPublishTransportEntrustShow = true;
-//                    this.myPublishAirLineEntrustShow = true;
-//                    this.myPublishShow = true;
+                    this.myPublishAirlineShow = false;
+                }if(item.demandtype == 0){
+                    //  审核未通过，航线需求详情
+                    this.myPublishTransportEntrustShow = false;
+                    this.myPublishAirLineEntrustShow = false;
+                    this.myPublishShow = false;
+                    this.myPublishAirlineShow = true;
                 }
 
             },
-            // 点击关闭:我的发布-审核未通过
+            // 点击关闭:我的发布-运力需求详情
             closeMyPublishShowFn: function () {
                 this.myPublishShow = false;
+                this.listItemIndex = '';
+            },
+            // 点击关闭:我的发布-行线需求详情
+            closeMyPublishAirlineFn: function () {
+                this.myPublishAirlineShow = false;
                 this.listItemIndex = '';
             },
             // 点击关闭:我的发布-发布的运力托管
@@ -223,6 +243,7 @@
         components: {
             stateList,
             myPublish,
+            myPublishAirline,
             myPublishTransportEntrust,
             myPublishAirLineEntrust
         }

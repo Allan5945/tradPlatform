@@ -492,7 +492,7 @@
                 }*/
 
                 let sendData = {};
-                sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+                sendData.demandtype = '3';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求、3:航线委托、4:运力委托）
                 sendData.contact = this.user;  //必填 联系人
                 sendData.iHome = this.phoneNum;//必填 联系方式
                 if(this.dptState == 0) {
