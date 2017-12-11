@@ -1,5 +1,5 @@
 <template>
-    <div class="plan-wrapper scroll" >
+    <div class="plan-wrapper" >
         <template v-if="type==='航线需求'">
             <header>
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"航线需求":"-"}}</div>
@@ -15,7 +15,7 @@
                         <div class="airplace">
                             <div>始发机场</div>
                             <div>
-                                <div>{{ndetailData.dpt||"-"}}</div>
+                                <div>{{ndetailData.dptNm||"-"}}</div>
                                 <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -27,7 +27,7 @@
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
-                                <div>{{ndetailData.pst||"-"}}</div>
+                                <div>{{ndetailData.pstNm||"-"}}</div>
                                 <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -39,7 +39,7 @@
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
-                                <div>{{ndetailData.arrv||"-"}}</div>
+                                <div>{{ndetailData.arrvNm||"-"}}</div>
                                 <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -98,7 +98,7 @@
                 </div>
             </div>
         </template>
-        <template v-if="type==='运力投放'">
+        <template v-else>
             <header>
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"运力需求":"-"}}</div>
                 <div class="tips">
@@ -139,16 +139,16 @@
                         </div>
                         <div>
                             <div>班期</div>
-                            <div>{{ndetailData.days+"人"||"-"}}</div>
+                            <div>{{ndetailData.days ? ndetailData.days+"人" : "-"}}</div>
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
                             <div style="width: 80%;line-height: 5px;text-indent: 40px;">
-                                {{ndetailData.dpt||"WDS"}}
+                                {{ndetailData.dptNm||"WDS"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pst||"WDS"}}
+                                {{ndetailData.pstNm||"WDS"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrv||"WDS"}}
+                                {{ndetailData.arrvNm||"WDS"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>
@@ -194,10 +194,11 @@
         position:absolute;
         right:0;
         width:100%;
-        max-height: 75%;
+        max-height: 70%;
         box-sizing:border-box;
         color:#605E7C;
         overflow: hidden;
+        overflow-y: auto;
         background-color:#fff;
         header{
             width:100%;
@@ -240,7 +241,7 @@
         display: flex;
         .flyicon{
             font-size: 32px;
-            margin: 0 30px;
+            margin: 0 10px;
         }
         >div{
             width:280px;
@@ -272,10 +273,11 @@
             box-sizing:border-box;
             border-bottom:1px solid #ccc;
             >div:nth-of-type(odd){
-                width:140px;
+                max-width:160px;
             }
             >div:nth-of-type(even){
-                width:50px;
+                width:60px;
+                text-align: center;
             }
         }
     }

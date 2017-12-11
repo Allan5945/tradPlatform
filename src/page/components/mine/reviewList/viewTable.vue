@@ -37,10 +37,10 @@
                             {{ ditem.releasetime }}
                         </div>
                         <div class="list-b item">
-                            {{ type[ditem.demandtype] || '某需求' }}
+                            {{ type[ditem.demandtype]}}
                         </div>
                         <div class="list-p item">
-                            {{ ditem.nickName }}
+                            {{ ditem.employeeNm }}
                         </div>
                         <div class="list-c item color">
                             {{ ditem.title }}
@@ -49,9 +49,6 @@
                             {{ ditem.demandstate }}
                         </div>
                         <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
-                        </span>
                         </div>
                         <div class="list-f item color" @click="turnDetailPanel(ditem)">
                             查看详情<span class="icon-item">&#xe686;</span>
@@ -243,17 +240,17 @@
         }
         .list-c {
             margin-right: 40px;
-            width: 160px;
+            width: 200px;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
+            text-overflow:ellipsis;
         }
         .list-d {
             position: relative;
             width: 80px;
         }
         .list-e {
-            margin-right: 160px;
+            margin-right: 120px;
             width: 20px;
             .talk-icon {
                 position: relative;
