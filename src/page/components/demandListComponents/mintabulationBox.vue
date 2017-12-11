@@ -1,6 +1,6 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div :class="{'tagRed':(key.data.renew == 0)}" @click="getDetail(key)" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
+        <div :class="{'tagRed':(key.data.renew == 0)}" @click="getDetail(key)" v-for="(key,index) in renderData" @mouseover="drawLine(key,true,key.type)" @mouseout="drawLine('',false,key.type)">
             <div class="tabulation-item">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
@@ -117,20 +117,21 @@
                     this.hidden = false;
                 }
             },
-            drawLine: function (key, t) {
+            drawLine: function (key, t ,s) {
+                if(s == 1)return;
                 let pots = [];
                 if (t) {
                     if (key.data.arrvCt != null && key.data.arrvCt != '') {
-                        let jw = this.$cityMes(this.cityList, key.data.arrvCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0], jw[1]))
+                        let jw = this.$airMes(this.airList, key.data.arrv);
+                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
                     }
                     if (key.data.dptCt != null && key.data.dptCt != '') {
-                        let jw = this.$cityMes(this.cityList, key.data.dptCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0], jw[1]))
+                        let jw = this.$airMes(this.airList, key.data.dpt);
+                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
                     }
                     if (key.data.pstCt != null && key.data.pstCt != '') {
-                        let jw = this.$cityMes(this.cityList, key.data.pstCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0], jw[1]))
+                        let jw = this.$airMes(this.airList, key.data.pst);
+                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
                     }
                 }
                 this.$bExample.setLinesList(pots, t);
@@ -174,7 +175,8 @@
                 'role',
                 'close',
                 'conditionsOpen',
-                'cityList'
+                'cityList',
+                'airList'
             ]),
             renderData: function () {
                 let d, a = [], c = [];
@@ -184,16 +186,19 @@
                     d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;;
                 }
                 d.forEach((val) => {
-                    let img, tag;
+                    let img, tag,type;
 
                     switch (val.demandtype) {
                         case "0":
+                            type = 0;
                             img = ig0;
                             break;
                         case "1":
+                            type = 1;
                             img = ig1;
                             break;
                         case "2":
+                            type = 2;
                             img = ig2;
                             break;
                     }
@@ -213,6 +218,7 @@
                             break;
                     }
                     a.push({
+                        type:type,
                         img,
                         name:val.title.split('-'),
                         tag,

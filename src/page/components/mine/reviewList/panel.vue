@@ -1,23 +1,24 @@
 <template>
     <div class="wrap" @click.self="closeDetail">
-
         <div class="box shadow">
             <p class="mgr-l">需求详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
-            <airlineReq :ndetailData="metaData" :type="typeList[detailData.demandtype]" v-if="metaData"></airlineReq>
-            <footer class="footer flex-center">
-                <template v-if="detailData.demandstate=='未处理'">
-                    <span class="btn btn-prime" @click="postPass">通过</span>
-                    <span class="btn btn-gray" @click="show.swrapper=true">不通过</span>
-                </template>
-                <template v-if="detailData.demandstate==='审核未通过'">
-                    <span class="tips tips-top">*拒绝原因</span>
-                    <p v-text="detailData.reason || reason.text"></p>
-                </template>
-                <template v-if="detailData.demandstate==='审核通过'">
-                    <span class="tips tips-pas">*已通过审核</span>
-                    <p v-text="detailData.name"></p>
-                </template>
-            </footer>
+            <listModule :ndetailData="metaData" :type="typeList[detailData.demandtype]" v-if="metaData"></listModule>
+            <template v-if="metaData">
+                <footer class="footer flex-center">
+                    <template v-if="detailData.demandstate=='未处理'">
+                        <span class="btn btn-prime" @click="postPass">通过</span>
+                        <span class="btn btn-gray" @click="show.swrapper=true">不通过</span>
+                    </template>
+                    <template v-if="detailData.demandstate==='审核未通过'">
+                        <span class="tips tips-top">*拒绝原因</span>
+                        <p v-text="metaData.rek || '无具体原因'"></p>
+                    </template>
+                    <template v-if="detailData.demandstate==='审核通过'">
+                        <span class="tips tips-pas">*已通过审核</span>
+                        <p v-text="detailData.name"></p>
+                    </template>
+                </footer>
+            </template>
         </div>
 
         <transition name="fade">
@@ -40,7 +41,9 @@
 </template>
 
 <script>
-    import airlineReq from './detailListModule.vue'
+    import listModule from './detailListModule.vue';
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+
     export default{
         data(){
             return {
@@ -53,10 +56,10 @@
                 },
                 metaData: null,
                 fatherScroll:true,
-                typeList: ['航线需求','运力需求']
+                typeList: ['航线需求','运力投放 ']
             }
         },
-        components: {airlineReq},
+        components: {listModule},
         props: ["detailData"],
         watch:{
             reason:{
@@ -106,8 +109,10 @@
                 let that = this;
                 that.changeState(0).then((val)=>{
                     that.detailData.demandstate = "审核通过";
+                    alert("success:审核通过");
                 },(err)=>{
                     that.detailData.demandstate = "审核通过";
+                    alert("faild:审核通过");
                 });
             },
             //拒绝
@@ -116,9 +121,11 @@
                 that.show.swrapper = false;
                 that.changeState(1,that.reason.text).then((val)=>{
                     that.detailData.demandstate = "审核未通过";
+                    that.metaData.rek = that.reason.text;
+                    alert("success:审核未通过");
                 },(err)=>{
                     that.detailData.demandstate = "审核未通过";
-                    that.detailData.reason = that.reason.text;
+                    alert("faild:审核未通过");
                 });
             },
             closeReason: function () {//取消
@@ -137,7 +144,7 @@
         },
         created: function () {
             let fdom = document.querySelector('.my-center');
-            if(fdom.offsetHeight===fdom.scrollHeight===fdom.clientHeight){
+            if(!(fdom.offsetHeight===fdom.scrollHeight===fdom.clientHeight)){
                 this.fatherScroll = false;
                 fdom.style.overflow = 'hidden';
                 fdom.style.right = this.getScrollWidth()+'px';
@@ -157,10 +164,12 @@
             })
         },
         mounted:function () {
+            tabulationBoxTrigger.hierarchy = true;
         },
         destroyed: function () {
+            tabulationBoxTrigger.hierarchy = false;
             if(this.fatherScroll){
-                let fdom = document.querySelector('.my-center')
+                let fdom = document.querySelector('.my-center');
                 fdom.style.overflow = 'auto';
                 fdom.style.right = '0';
             }

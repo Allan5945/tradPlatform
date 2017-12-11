@@ -33,8 +33,7 @@
             tabulationBoxTrigger.$on('responseText',(val) => {
                 console.info('dialog接收airlineWrite:');
                 console.info(val);
-                this.sendData.id = val.Id;
-                this.sendData.employeeId = val.employeeId;
+                this.sendData.demandId = val;
             })
         },
         methods: {
@@ -43,6 +42,7 @@
             },
             sureEvent(){
                 this.sendData.intentionStatu = '0';
+                console.info("sendData");
                 console.info(this.sendData)
                 let that = this;
                 setTimeout(function(){
@@ -50,21 +50,20 @@
                     that.$emit('sure');
                 },1000)
                 this.$ajax({
-                    url: "/changeIntentionMoneyStatusForResponse",
+                    url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info(response.data)
+                    console.info(response.data.responseList)
+                    tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向payAfter的意向列表传参数
                 }).catch((error) => {
                     console.log(error);
                 });
                 this.iconShow = true;
                 this.Btext = '';
-
-
             }
         }
     }

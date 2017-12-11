@@ -36,7 +36,6 @@
             <div class="arrive item">
                 <div class="item-a">到达区域</div>
                 <div class="item-b">华北地区</div>
-
                 <!--下方有空格-->
                 <div class="item-c">&nbsp;<!--此处有空格--></div>
                 <div class="item-d">&nbsp;<!--此处有空格--></div>

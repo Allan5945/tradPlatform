@@ -57,6 +57,16 @@
                 </div>
             </div>
         </div>
+        <div class="add-item item-container">
+            <div class="left item font-gray">意向机场</div>
+            <div class="right item">
+                <span>北京首都机场</span>
+                <span class="icon-item">&#xe672;</span>
+                <span>成都双流机场</span>
+                <span class="icon-item">&#xe672;</span>
+                <span>浦东机场</span>
+            </div>
+        </div>
         <div class="fifth item-container">
             <div class="left font-gray">其他说明</div>
             <div class="right">{{myData.remark}}</div>
@@ -368,6 +378,22 @@
             .right {
                 width: 160px;
             }
+        }
+    }
+    .add-item {
+        display: flex;
+        .item {
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        .left {
+            width: 80px;
+        }
+        .right {
+        }
+        .icon-item {
+            margin: 0 15px 0 20px;
         }
     }
     .fifth {

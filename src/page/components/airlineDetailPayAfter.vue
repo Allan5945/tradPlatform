@@ -141,11 +141,10 @@
                         <div class="center-right">
                             <span class="icon-item">&#xe602; <span class="reminder"></span></span>
                         </div>
-                        <div class="right" @click="purposeDetailShow = !purposeDetailShow"
-                             style="color: #3c78ff; cursor: pointer;">查看详情
+                        <div class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情
                         </div>
                     </div>
-                    <div v-show="purposeDetailShow">
+                    <div v-show="checkDetailIndex === index">
                         <div class="item-second">
                             <div class="start item">
                                 <div class="item-a font-gray">始发<span v-show="item.dptState == 0">机场</span>
@@ -286,10 +285,10 @@
                                 {{item.remark}}
                             </div>
                         </div>
-                        <div class="item-fifth">
-                            <button class="btn btn-b" v-show="thirdButtonShow" @click="airlineAffirmFn(item,index)">选定</button>
+                        <div class="item-fifth" v-if="releaseselectedShow">
+                            <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
                         </div>
-                        <div class="item-sixth" v-show="fourthButtonShow">
+                        <div class="item-sixth" v-else>
                             <button class="btn btn-w btn-change" @click="airlineAffirmFn(item,index)">已选定（点击此次可再次编译）</button>
                             <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn">撤销选定</button>
                         </div>
@@ -371,6 +370,9 @@
                 isSelf: '',
                 subsidypolicy: '',//补贴政策
                 listData: [],    //下方的列表详情
+                id: '',
+                checkDetailIndex: '', //点击“查看详情”对应的展开
+                releaseselectedShow: true,  //发布者是否已选定 0:表示选定,1:表示未选定
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -425,17 +427,11 @@
         },
         created() {
 //            this.initData();
-
-        },
-        mounted() {
-//            this.initData();
-            //模拟状态码0
-//            this.showCode = 0;
-//            console.info(this.role)
-//            console.info('min-tabulationBoxTrigger')
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-//                console.info('tabulationBoxTrigger:')
-//                console.info(val.data)
+                console.info('tabulationBoxTrigger:')
+                console.info(val.data)
+                this.id = val.data.id;
+                console.info(this.id)
 //                this.showCode = 0;
                 if (val.data.demandtype == 0) {
                     this.$ajax({
@@ -449,13 +445,16 @@
                         }
                     })
                         .then((response) => {
-//                            console.info('response:')
+                            console.info('response:')
+                            console.info(response)
 //                            console.info(response.data.responseList)
                             this.isSelf = response.data.isSelf;
-                            this.isIntentionMoney = response.data.isIntentionMoney;
+                            this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
+
 //                            this.intentionCount = response.data.intentionCount;
 //                            this.detailData = response.data.data;
-                            this.listData = response.data.responseList;   //获取意向列表
+
+//                            this.listData = response.data.responseList;   //获取意向列表
                             this.userNum = response.data.intentionCount;
                             this.myData = response.data.data;
                             this.releaseTime = this.myData.releasetime.split(" ")[0];
@@ -484,7 +483,6 @@
                                 this.subsidypolicy = '无补贴'
                             }
 
-                            // 从airlineAffirm接受参数
                             // 修改this.showCode
                             if (this.isSelf == true && this.isIntentionMoney == false) {
                                 console.info('payAfter:' + 1)
@@ -492,11 +490,32 @@
                             }if (this.isSelf == true && this.isIntentionMoney == true) {
                                 console.info('payAfter:' + 3)
                                 this.showCode = 3;
+
+                                // 获取意向列表数据
+                                let toAcceptrResponseList = {};
+                                toAcceptrResponseList.demandId = this.id;
+                                toAcceptrResponseList.intentionStatu = 0;
+                                this.$ajax({
+                                    url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
+                                    method: 'post',
+                                    headers: {
+                                        'Content-type': 'application/x-www-form-urlencoded'
+                                    },
+                                    params: toAcceptrResponseList
+                                }).then((response) => {
+                                    console.info('responseList:')
+                                    console.info(response.data.responseList)
+                                    tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向payAfter的意向列表传参数
+                                }).catch((error) => {
+                                    console.log(error);
+                                });
+
                             }if (this.isSelf == false) {
                                 console.info('payAfter:' + 0)
                                 this.showCode = 0;
                             }
                             this.show();
+
                         })
                         .catch((error) => {
                                 console.log(error);
@@ -505,6 +524,20 @@
                     this.$emit('transShow');
                 }
             });
+
+            tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //从dialog获取意向列表
+                console.info('从dialog获取意向列表:')
+                console.info(val)
+                this.listData = val;   //获取意向列表
+            }) //向payAfter的意向列表传参数
+
+        },
+        mounted() {
+//            this.initData();
+            //模拟状态码0
+//            this.showCode = 0;
+            console.info(this.role)
+//            console.info('min-tabulationBoxTrigger')
 
         },
         computed: {
@@ -551,8 +584,8 @@
                     this.secondShow = false;
                     this.firstButtonShow = true;
                     this.secondButtonShow = false;
-                    this.thirdButtonShow = false;
-                    this.fourthButtonShow = false;
+//                    this.thirdButtonShow = false;
+//                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
                 }
                 if (this.showCode === 1) {
@@ -560,8 +593,8 @@
                     this.secondShow = true;
                     this.firstButtonShow = false;
                     this.secondButtonShow = true;
-                    this.thirdButtonShow = false;
-                    this.fourthButtonShow = false;
+//                    this.thirdButtonShow = false;
+//                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
                 }
                 if (this.showCode === 2) {
@@ -570,8 +603,8 @@
                     this.thirdShow = true;
                     this.firstButtonShow = false;
                     this.secondButtonShow = false;
-                    this.thirdButtonShow = true;
-                    this.fourthButtonShow = false;
+//                    this.thirdButtonShow = true;
+//                    this.fourthButtonShow = false;
                     this.fifthButtonShow = true;
                 }
                 if (this.showCode === 3) {
@@ -580,8 +613,8 @@
                     this.thirdShow = true;
                     this.firstButtonShow = false;
                     this.secondButtonShow = false;
-                    this.thirdButtonShow = false;
-                    this.fourthButtonShow = true;
+//                    this.thirdButtonShow = false;
+//                    this.fourthButtonShow = true;
                     this.fifthButtonShow = true;
                 }
             },
@@ -600,23 +633,13 @@
                 //接收airWrite.vue传来的对象
                 tabulationBoxTrigger.$on('responseObject', (val) => {
                     console.info(val);
-                    /*this.myData = val.response;
-                    this.releaseTime = this.myData.releasetime.split(" ")[0];
-                    this.dptTime0 = this.myData.dptTime.split(',')[0];
-                    this.dptTime1 = this.myData.dptTime.split(',')[1];
-                    this.pstTime0 = this.myData.pstTime.split(',')[0];
-                    this.pstTime1 = this.myData.pstTime.split(',')[1];
-                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
-                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-                    this.periodValidity0 = val.periodValidity.split(',')[0];
-                    this.periodValidity1 = val.periodValidity.split(',')[1];*/
-//                this.sendData.employeeId = val.data.employeeId;
                 })
                 this.show();
             },
             //点击“缴纳意向金”，组件“缴纳意向金”显示
             airlinePayFn: function () {
                 this.airlinePayShow = true;
+                tabulationBoxTrigger.$emit('responseText',this.id)
             },
             //点击“确认缴纳”，this.showCode变成2
             changeShowCodeP: function () {
@@ -636,7 +659,7 @@
             changeShowCodeA: function () {
                 console.info('提交意向')
                 this.showCode = 3;
-                tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => {
+                tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => { //从airlintAffirm获取的数据
                     console.info('payAfter从AffirmToDetailPayAfter:')
                     console.info(val)
                     let index = val.index;
@@ -664,6 +687,21 @@
                 });
                 this.showCode = 2;
                 this.show();
+            },
+            // 点击意向列表的“查看详情”
+            checkDetail: function (item,index) {
+                this.checkDetailIndex = '';
+                this.checkDetailIndex = index;
+                console.info('item:')
+                console.info(item)
+                //发布者是否已选定 0:表示选定,1:表示未选定
+                if(item.releaseselected == 0){
+                    this.releaseselectedShow = false;
+                    console.info(0)
+                }else {
+                    this.releaseselectedShow = true;
+                    console.info(1)
+                }
             },
             //父子组件间信息的传递，点击x号关闭组件
             closeAlWriteFn: function () {

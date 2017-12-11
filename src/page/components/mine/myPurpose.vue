@@ -241,8 +241,8 @@
         footer{
           position:fixed;
           bottom:0;
-          right:20px;
-          width:560px;
+          right:0px;
+          width:600px;
           background-color:#fff;
           height:110px;
         }
