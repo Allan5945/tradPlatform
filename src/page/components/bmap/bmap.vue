@@ -173,7 +173,7 @@
                     "center": ["110.47", "32.40"], //
                     "zoom": 6,
                     "color": "red",
-                    "roam": "move",
+                    "roam": "true",
                     "type": 'bmap',
                     "mapStyle": zs
                 },
