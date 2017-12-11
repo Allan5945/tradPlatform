@@ -184,7 +184,7 @@
                 }) .then((response) => {
                     console.info('我的发布详情:')
                     console.info(response.data.data)
-                    tabulationBoxTrigger.$emit('sendDataToMyPublish',response.data.data); //将item的参数传递给myPublishNeed.vue
+                    tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.data); //将item的参数传递给myPurpose.vue
                 }).catch((error) => {
                     console.log(error);
                 });

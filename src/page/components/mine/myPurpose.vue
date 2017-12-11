@@ -163,11 +163,14 @@
              this.$emit('close-this');
          },
      },
-      computed:{ },
+      computed:{},
       mounted:function(){
-            tabulationBoxTrigger.$on('getdemandData', val => {
+            tabulationBoxTrigger.$on('sendDataToMyPurpose', val => {
                 this.demandData = val;
-                if(this.demandData.responseId){
+                console.info('sendDataToMyPurposeData:')
+                console.info(val)
+
+                /*if(this.demandData.responseId){
                      this.$ajax({
                           method: 'post',
                           url: '/capacityRoutesDemandDetailFindById',
@@ -207,7 +210,7 @@
                                   console.log(error);
                               }
                           );
-                          }
+                          }*/
                       });
 
       }

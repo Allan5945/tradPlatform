@@ -14,9 +14,9 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 委托/托管
          const entrust = resolve => require(['./../page/components/mine/myOperAgent.vue'], resolve);
         // 我的发布
-        const myRelease = resolve => require(['./../page/components/mine/myOperAgent.vue'], resolve);
+        const myRelease = resolve => require(['./../page/components/mine/myPublishList.vue'], resolve);
         // 我的意向
-        // const myIntention = resolve => require(['...'], resolve);
+        const myIntention = resolve => require(['./../page/components/mine/myPurposeList.vue'], resolve);
         // 我的订单
         // const myOrder = resolve => require(['...'], resolve);
         // 我的收藏
@@ -48,6 +48,9 @@ const router = new VueRouter({
                         },{
                             path: 'myRelease',
                             component: myRelease
+                        },{
+                            path: 'myIntention',
+                            component: myIntention
                         },{
                             path: 'reviewList',
                             component: reviewList
