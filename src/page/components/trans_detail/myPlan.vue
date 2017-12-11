@@ -35,14 +35,14 @@
                     <div>班期</div>
                     <div>{{detailData.days}}</div>
                 </div>
-                <div class="intent-airline">
-                    <div>意向航线</div>
-                    <div class="i-line">
-                      {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
-                      {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
-                      {{detailData.intendedAirlines[0].arrvName}}
-                    </div>
-                </div>
+               <div class="intent-airline" v-if="detailData.intendedAirlines">
+                   <div>意向航线</div>
+                   <div class="i-line">
+                     {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].arrvName}}
+                   </div>
+               </div>
                 <div>
                     <div>小时成本</div>
                     <div>{{detailData.hourscost}}万/小时</div>
