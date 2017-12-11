@@ -16,12 +16,13 @@
                     </div>
                 </div>
                 <div class="my-list" >
-                    <div class="my-list-item" :class="{selected:isActive}" v-for="(val,index) in myList" >{{val}}</div>
+                    <div class="my-list-item" :class="{'list-checked':index===chooseIndex}" v-for="(val,index) in myList" @click="choosePanel(val,index)">{{val}}</div>
                 </div>
             </div>
         </div>
-       <!-- <operAgent></operAgent> -->
-       <myCollection></myCollection>
+        <reviewList v-if="chooseIndex===0"></reviewList>
+        <operAgent v-if="chooseIndex===1"></operAgent>
+        <myCollection v-if="chooseIndex===2"></myCollection>
 
     </div>
 </template>
@@ -30,6 +31,8 @@
 import myNav from './myNav.vue';
 import operAgent from './myOperAgent.vue';
 import myCollection from './myCollection.vue';
+import reviewList from './reviewList/viewTable.vue'
+
 
 
 import myPic from './../../../static/img/haveline.png';
@@ -38,10 +41,13 @@ import myPic from './../../../static/img/haveline.png';
             return{
                 myList:["审核列表","委托/托管","我的发布","我的意向","我的订单","我的收藏","公司账户"],
                 isActive:false,
+                chooseIndex: 0
             }
         },
         methods: {
-
+            choosePanel:function (data,index) {
+                this.chooseIndex = index;
+            }
         },
         computed:{
             img:function(){
@@ -51,7 +57,8 @@ import myPic from './../../../static/img/haveline.png';
         components: {
             myNav,
             operAgent,
-            myCollection
+            myCollection,
+            reviewList
         }
     }
 </script>
@@ -126,7 +133,6 @@ import myPic from './../../../static/img/haveline.png';
             span{
                 color:#3c78ff;
             }
-
         }
     }
     .my-list{
@@ -142,8 +148,8 @@ import myPic from './../../../static/img/haveline.png';
                 border-bottom:3px solid #3c78ff;
             }
         }
-        .selected{
-             border-bottom:3px solid #3c78ff;
+        .list-checked{
+            border-bottom:3px solid #3c78ff;
         }
     }
 

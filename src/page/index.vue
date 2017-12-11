@@ -153,8 +153,7 @@
                         this.renderComponent = true;
                     });
 
-                }
-                ;
+                };
             }
         },
         beforeMount: function () {

@@ -24,82 +24,68 @@
                     <div class="list-d item" @click="stateShowFn">
                         {{stateWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
-                        <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
+                        <ul class="type-list" v-show="stateShow">
+                            <li v-for="item in state" @click="stateClickFn(item)">{{item}}</li>
+                        </ul>
                     </div>
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="list items" v-for="val in myList">
-                    <div class="list-a item">
-                        {{val.releaseTime}}
-                    </div>
-                    <div class="list-b item">
-                        <!--  {{myDemand(val.demandType)}} -->
-                    </div>
-                     <div class="list-p item">
-                        {{val.nickName}}
-                    </div>
-                    <div class="list-c item color">
-                        {{val.title}}
-                    </div>
-                    <div class="list-d item">
-                      <!--  {{progress(val.demandProgress)}} -->
-                    </div>
-                    <div class="list-e item">
+                <template v-if="detailsData">
+                    <div class="list items"   v-for="ditem in detailsData.list">
+                        <div class="list-a item">
+                            {{ ditem.releasetime }}
+                        </div>
+                        <div class="list-b item">
+                            {{ type[ditem.demandtype] || '某需求' }}
+                        </div>
+                        <div class="list-p item">
+                            {{ ditem.nickName }}
+                        </div>
+                        <div class="list-c item color">
+                            {{ ditem.title }}
+                        </div>
+                        <div class="list-d item">
+                            {{ ditem.demandstate }}
+                        </div>
+                        <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
+                        </div>
+                        <div class="list-f item color" @click="turnDetailPanel(ditem)">
+                            查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
                     </div>
-                    <div class="list-f item color" @click="openDetail(val)">
-                        查看详情<span class="icon-item">&#xe686;</span>
-                    </div>
-                </div>
+                </template>
             </div>
         </div>
-        <agentDetail @close="closeAgentDetail" v-show="agentShow"></agentDetail>
-        <deleDetail @close="closeDeleDetail" v-show="deleShow"></deleDetail>
+        <transition name="slidex-fade">
+            <panel v-if="detailsPanel.show" :detailData="detailsPanel.data" v-on:closeAll="turnDetailPanel"></panel>
+        </transition>
     </div>
 </template>
 <script>
-    import stateList from './stateList.vue'
-    import agentDetail from './operAgentDetail.vue';
-    import deleDetail from './operDeleDetail.vue';
+    import panel from './panel.vue';
+
     export default {
         data() {
             return {
+                sorted:true,
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
                 typeWriting: '需求类型',
                 stateWriting: '状态',
-                agentShow:false,
-                deleShow:false,
-                type:  ['航线委托','运力委托','托管'],
-                state: [],
-                state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
-                myList:null
-            }
-        },
-        mounted() {
-             this.state = this.state1;
-             this.$ajax({
-                method: 'post',
-                url: '/selectCommissionedAndCustodyDemandList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
+                //不同需求类型展现的状态不同
+                type: ['航线需求','运力投放'],
+                state: ['未通过','审核通过','审核未通过'],
+                demandId:null,
+                detailsPanel:{
+                    data:null,
+                    show:false,
                 },
-                params: {
-                    page: 1,
-                    pageNo:4
-                }
-                })
-                .then((response) => {
-                     this.myList = response.data.list.list;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+                detailsData: null,
+            }
         },
         methods: {
             typeShowFn: function () {
@@ -110,41 +96,48 @@
             },
             typeClickFn: function (item) {
                 this.typeWriting = item;
-                this.stateWriting = '状态';
-                if(item == '航线委托' || item == '运力委托') {
-                    this.state = this.state2;
-                }
-                if(item == '托管') {
-                    this.state = this.state1;
-                }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
-            closeAgentDetail:function(){
-                this.agentShow = false;
+            timeSort:function(){
+                this.sorted = !this.sorted;
+
             },
-            openDetail:function (item) {
-                this.getDetail(item);
+            turnDetailPanel: function (item) {
+                this.detailsPanel.data = item;
+                this.detailsPanel.show = !this.detailsPanel.show;
             },
-            closeDeleDetail:function() {
-                this.deleShow = false;
-            },
-            closeDeleDetail:function(){
-                 this.deleShow = false;
-            },
-            getDetail:function(val){
-                if(val.demandType == '2'){//托管详情
-                    this.agentShow = true;
-                }else{//委托详情
+            getListData: function () {
+                let that = this;
+                this.$ajax({
+                    method: 'GET',
+                    url: '/getDemandOfReviewList',
+                    params: {
+                        demandType : '' ,
+                        demandState : '',
+                        page: 1,
+                        orderType : 0
+                    }
+                }).then(res=>{
+                    if(res && res.data.opResult==0){
+                        that.detailsData = res.data.list;
+                    }else{
+                        that.detailsData = null;
+                        alert('暂无返回，请稍后重试。')
+                    }
+                }).catch(err=>{
                     this.deleShow = true;
-                }
-            },
+                })
+            }
+        },
+        computed:{
+        },
+        mounted() {
+            this.getListData()
         },
         components: {
-            stateList,
-            agentDetail,
-            deleDetail,
+            panel,
         }
     }
 </script>
@@ -172,7 +165,6 @@
             }
         }
     }
-
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
@@ -235,19 +227,19 @@
             position: relative;
             margin-right: 40px;
             width: 100px;
-            .type-list {
-                top: 40px;
-                left: 0;
-                li {
-                    display: flex;
-                    align-items: center;
-                    width: 103px;
-                }
-            }
         }
         .list-p{
             width: 120px;
             margin-right: 40px;
+        }
+        .type-list {
+            top: 40px;
+            left: 0;
+            li {
+                display: flex;
+                align-items: center;
+                width: 103px;
+            }
         }
         .list-c {
             margin-right: 40px;
