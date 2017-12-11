@@ -29,29 +29,31 @@
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="list items" v-for="val in myList">
-                    <div class="list-a item">
-                        {{val.releaseTime}}
-                    </div>
-                    <div class="list-b item">
-                       {{myDemand(val.demandType)}}
-                    </div>
-                     <div class="list-p item">
-                        {{val.nickName}}
-                    </div>
-                    <div class="list-c item color">
-                        {{val.title}}
-                    </div>
-                    <div class="list-d item">
-                      {{progress(val.demandProgress)}}
-                    </div>
-                    <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
-                        </span>
-                    </div>
-                    <div class="list-f item color" @click="openDetail(val)">
-                        查看详情<span class="icon-item">&#xe686;</span>
+                <div v-if="myList">
+                    <div class="list items" v-for="val in myList">
+                        <div class="list-a item">
+                            {{val.releaseTime}}
+                        </div>
+                        <div class="list-b item">
+                           {{getDemand(val.demandType)}}
+                        </div>
+                         <div class="list-p item">
+                            {{val.nickName}}
+                        </div>
+                        <div class="list-c item color">
+                            {{val.title}}
+                        </div>
+                        <div class="list-d item">
+                          {{getProgress(val.demandProgress)}}
+                        </div>
+                        <div class="list-e item">
+                            <span class="icon-item talk-icon">&#xe602;
+                                <span>1</span>
+                            </span>
+                        </div>
+                        <div class="list-f item color" @click="getDetail(val)">
+                            查看详情<span class="icon-item">&#xe686;</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,29 +80,26 @@
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
                 state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
                 myList:null,
-                demandId:null
+                demandId:null,
+                sentData:{
+                    page:1,
+                    pageNo:4,
+                    demandType: null,
+                    demandProgress:null
+                }
             }
         },
         mounted() {
             this.state = this.state1;
-             this.$ajax({
-                method: 'post',
-                url: '/selectCommissionedAndCustodyDemandList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page: 1,
-                    pageNo:3
-                }
-                })
-                .then((response) => {
-                     this.myList = response.data.list.list;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+            this.getListData();
+        },
+        watch:{
+            'sentData.demandType':function(){
+                this.getListData();
+            },
+            'sentData.demandProgress':function(){
+                this.getListData();
+            }
         },
         methods: {
             typeShowFn: function () {
@@ -112,15 +111,20 @@
             typeClickFn: function (item) {
                 this.typeWriting = item;
                 this.stateWriting = '状态';
-                if(item == '航线委托' || item == '运力委托') {
+                if(item == '航线委托') {
                     this.state = this.state2;
-                }
-                if(item == '托管') {
+                    this.sentData.demandType = "3";
+                }else if(item == '运力委托') {
+                    this.state = this.state2;
+                    this.sentData.demandType = "4";
+                }else if(item == '托管') {
                     this.state = this.state1;
+                    this.sentData.demandType = "2";
                 }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
+                this.sentData.demandProgress = this.turnProgress(item);
             },
             closeAgentDetail:function(){
                 this.agentShow = false;
@@ -136,8 +140,8 @@
                       this.deleShow = true;
                 }
             },
-            myDemand:function(val){
-                if(val == 2){
+            getDemand:function(val){
+               if(val == 2){
                     return "运营托管";
                 }
                 else if(val == 3){
@@ -147,10 +151,22 @@
                     return "运力委托";
                 }
             },
-            progress:function(val){
+            getProgress:function(val){
                 switch (val) {
+                        case "1":
+                            return "需求征集";
+                            break;
+                        case "2":
+                            return "订单确认";
+                            break;
                         case "3":
                             return "已关闭";
+                            break;
+                        case "4":
+                            return "订单完成";
+                            break;
+                        case "6":
+                            return "已完成";
                             break;
                         case "7":
                             return "待处理";
@@ -166,6 +182,55 @@
                             break;
                     }
             },
+            turnProgress:function(val){
+                 switch (val) {
+                        case "需求征集":
+                            return "1";
+                            break;
+                        case "订单确认":
+                            return "2";
+                            break;
+                        case "已关闭":
+                            return "3";
+                            break;
+                        case "订单完成":
+                            return "4";
+                            break;
+                        case "已完成":
+                            return "5";
+                            break;
+                        case "待处理":
+                            return "7";
+                            break;
+                        case "已接受":
+                            return "8";
+                            break;
+                        case "处理中":
+                            return "9";
+                            break;
+                        case "已拒绝":
+                            return "10";
+                            break;
+                    }
+            },
+            getListData:function () {
+                let that = this;
+                this.$ajax({
+                    method: 'GET',
+                    url: '/selectCommissionedAndCustodyDemandList',
+                    params: this.sentData
+                }).then(res => {
+                    if(res && res.data.opResult == 0){
+                        that.myList = res.data.list.list;
+                    }else{
+                        that.myList = null;
+                        alert('暂无返回，请稍后重试。')
+                    }
+                }).catch( error => {
+                        console.log(error);
+                    }
+                );
+            }
         },
         components: {
             stateList,

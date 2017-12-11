@@ -6,7 +6,7 @@
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="contact">联系用户</div>
                 <div class="tips">
-                    <div>委托方&nbsp;成都双流机场</div>
+                    <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
                     <div>状态:
                         <span v-if="testingShow" class="testing">测评中</span>
@@ -42,7 +42,7 @@
             </div>
             <footer>
                 <div class="foot-tips" v-if="testingShow">*需求测评中...</div>
-                <div class="foot-tips red" v-else>*拒绝原因:{{refuseText}}</div>
+                <div class="foot-tips red" v-else>*拒绝原因：{{refuseText}}</div>
                 <div class="btn">
                     <div class="test-btn" v-if="testingShow">测评该需求</div>
                     <div class="can-btn" @click="cancel" v-if="testingShow">拒绝</div>
@@ -61,7 +61,8 @@ import refuseDialog from './refuseDialog.vue';
             dialogShow:false,
             testingShow:true,
             detailData:{},
-            refuseText:''
+            refuseText:'',
+            CpyNm:''
          }
      },
       props:['demandId'],
@@ -96,9 +97,8 @@ import refuseDialog from './refuseDialog.vue';
                   }
                 })
                 .then((response) => {
-                    this.intentionCount = response.data.intentionCount;
+                    this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
-                    console.log( this.detailData)
                 })
                 .catch((error) => {
                         console.log(error);

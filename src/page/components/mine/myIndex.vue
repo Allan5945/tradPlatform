@@ -21,7 +21,13 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
         <router-view></router-view>
+=======
+     <!-- <operAgent></operAgent> -->
+      <myCollection></myCollection>
+
+>>>>>>> zser
     </div>
 </template>
 

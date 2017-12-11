@@ -18,7 +18,6 @@
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
         <routeNetwork></routeNetwork>
-         <!--<myIndexFzz></myIndexFzz>-->
         <!--<timelyCommunication></timelyCommunication>-->
         <router-view></router-view>
     </div>
