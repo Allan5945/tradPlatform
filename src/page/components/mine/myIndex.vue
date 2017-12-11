@@ -1,5 +1,6 @@
 <template>
     <div class="my-center">
+        <div class="test">x</div>
         <myNav ></myNav>
         <div class="mine">
             <div class="my-msg">
@@ -23,7 +24,6 @@
         <reviewList v-if="chooseIndex===0"></reviewList>
         <operAgent v-if="chooseIndex===1"></operAgent>
         <myCollection v-if="chooseIndex===2"></myCollection>
-
     </div>
 </template>
 
@@ -64,6 +64,11 @@ import myPic from './../../../static/img/haveline.png';
 </script>
 
 <style lang="scss" scoped>
+    .test{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
     .my-center{
         position: fixed;
         top: 0;
@@ -71,13 +76,13 @@ import myPic from './../../../static/img/haveline.png';
         bottom: 0;
         left: 0;
         overflow: auto;
-        font-size:1.4rem;
         background: #fff;
         z-index:11;
         .mine{
             position:relative;
             width:100%;
             padding-top:200px;
+            font-size:1.4rem;
             .my-msg{
                 width:1000px;
                 margin:0 auto;

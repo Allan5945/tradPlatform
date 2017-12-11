@@ -4,8 +4,7 @@ import {
     INITIALIZE,
     HYBRIDDATA,
     MONODATA,
-    ROLE,
-    TRANSDETAIL
+    ROLE
 } from './types'
 import Vue from 'vue'
 import * as types from './types'
@@ -63,10 +62,6 @@ const mutations = {
     },
     [types.ROLE](state,vl) {
         state.role = vl;
-    },
-    [TRANSDETAIL](state,vl){
-        state.transDetail.transShow = true;
-        state.transDetail.userData = vl;
     },
     [types.SUBSIDYPOLICY](state,vl) {
         if(state.demandList.conditions.subsidyPolicy.va[vl].s){

@@ -71,6 +71,7 @@
             },
             closeForm: function(){
                 this.showType = '';
+                this.msg = "选择需求类型";
             }
         }
     }

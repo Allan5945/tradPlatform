@@ -1,57 +1,65 @@
 <template>
-    <div class="agent-form scroll popup">
-        <div class="t-must">
-            <div class="form-box post-til">
-                <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
+    <div class="wrapper">
+
+        <div class="agent-form scroll popup">
+            <div class="container-top">
+                <span class="title">请填写完整方案</span>
+                <span class="close-icon" @click="closeThis">&times;</span>
             </div>
-            <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact">
+            <div class="t-must">
+                <div class="form-box post-til">
+                    <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
+                </div>
+                <div class="form-box">
+                    <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact">
+                </div>
+                <div class="form-box" style="position:relative;">
+                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
+                </div>
+                <div style="height:20px;width:100%;" v-if="isError"></div>
             </div>
-            <div class="form-box" style="position:relative;">
-                <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
-            </div>
-            <div style="height:20px;width:100%;" v-if="isError"></div>
-        </div>
-        <div class="t-optional">
-            <div class="form-box">
-                <div class="t-title">需求类型</div>
-                <div class="need-btn"  @click="showBox=!showBox">
-                    <div class="title" v-text="msg" :class="{selected:isSel}"></div>
-                    <span class="icon-item icon-item1">&#xe605;</span>
-                    <div class="selc-list dropDown popup" v-show="showBox">
-                        <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
+            <div class="t-optional">
+                <div class="form-box">
+                    <div class="t-title">需求类型</div>
+                    <div class="need-btn"  @click="showBox=!showBox">
+                        <div class="title" v-text="msg" :class="{selected:isSel}"></div>
+                        <span class="icon-item icon-item1">&#xe605;</span>
+                        <div class="selc-list dropDown popup" v-show="showBox">
+                            <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-box" style="position:relative;">
-                <div class="t-title">航班号</div>
-                <input type="text" placeholder="请输入" v-model="flightNum">
-                <!-- <div class="num-list popup scroll" v-show="flightListShow">
-                    <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
-                </div> -->
-            </div>
-            <div class="form-box pad">
-                    <div class="t-title">小时成本</div>
-                    <div class="t-input">
-                        <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                        <span>万元</span>
+                <div class="form-box" style="position:relative;">
+                    <div class="t-title">航班号</div>
+                    <input type="text" placeholder="请输入" v-model="flightNum">
+                    <!-- <div class="num-list popup scroll" v-show="flightListShow">
+                        <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
+                    </div> -->
+                </div>
+                <div class="form-box pad">
+                        <div class="t-title">小时成本</div>
+                        <div class="t-input">
+                            <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
+                            <span>元</span>
+                    </div>
+                </div>
+                <div class="form-box tips">
+                    <div class="t-title">其他说明</div>
+                    <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
+                    <div class="count"><span >{{countNum}}</span>/35</div>
                 </div>
             </div>
-            <div class="form-box tips">
-                <div class="t-title">其他说明</div>
-                <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
-                <div class="count"><span >{{countNum}}</span>/35</div>
+            <div class="t-btn">
+                <div class="confirm-btn" @click="submit(),closeThis()">提交</div>
+                <div class="cancel-btn" @click="closeThis">取消</div>
             </div>
-        </div>
-        <div class="t-btn">
-            <div class="confirm-btn" @click="submit">提交</div>
-            <div class="cancel-btn" @click="cancel">取消</div>
         </div>
     </div>
 </template>
 
 <script>
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  export default {
         data () {
             return{
@@ -89,7 +97,7 @@
                 demandData.demandtypeStr = this.msg;
                 //demandData.demandStateStr =
                 demandData.fltNbr  = this.flightNum;
-                demandData.hourscost = this.hourcost;
+                demandData.hourcost = this.hourcost;
                 demandData.remark = this.tip;
                 this.$ajax({
                 url:"/demandAdd",
@@ -104,10 +112,11 @@
                         console.log(error);
                     });
 
-                 this.$emit("closeForm");
+                 this.$emit("change-showCode");
+                tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
             },
-            cancel: function(){
-                this.$emit("closeForm");
+            closeThis: function(){
+                this.$emit("close-this");
             },
             getflight: function(i){
                 this.flightNum = this.flightData[i];
@@ -159,11 +168,46 @@
         padding-left:5px;
         border-bottom:1px solid rgba(151,151,151,.3);
     }
+    .wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .4);
+        z-index: 20;
+    }
+    .container-top {
+        position: relative;
+        margin: 10px 0 30px 20px;
+        .title {
+            width: 140px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+        }
+        .close-icon {
+            position: absolute;
+            top: -2px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border: 1px solid gray;
+            border-radius: 100%;
+            cursor: pointer;
+        }
+    }
     .agent-form{
-        position:absolute;
+       /* position:absolute;
         top:65px;
         left:0;
-        z-index:99;
+        z-index:99;*/
         box-sizing:border-box;
         overflow-y: scroll;
         font-size:1.2rem;
@@ -207,7 +251,7 @@
             width:180px;
             border-bottom:1px solid rgba(151,151,151,.3);
             >input{
-                width:150px;
+                width:164px;
                 background-color: #FBFBFB;
                 border:0;
             }
@@ -311,7 +355,7 @@
           width:80px;
           color:rgba(96,94,124,.6);
           box-sizing:border-box;
-          opacity:40%;
+          opacity: 0.4;
           background-color:#fff;
           border: 1px solid rgba(96,94,124,.6);
         }

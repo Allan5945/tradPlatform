@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="t-form scroll popup">
             <div class="container-top">
-                <span class="title">编辑需求</span>
+                <span class="title">请填写完整方案</span>
                 <span class="close-icon" @click="closeThis">&times;</span>
             </div>
             <div class="t-must">
@@ -10,7 +10,7 @@
                     <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact">
                 </div>
                 <div class="form-box">
-                    <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" v-model="phoneNum">
                     <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
                 </div>
                 <div style="height:20px;width:100%;" v-if="isError"></div>
@@ -76,7 +76,7 @@
                   <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
                 </div>
                 <div class="form-box reset">
-                    <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany">
+                    <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
                     <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
                         <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
                         <span>{{item[0]}}</span>
@@ -122,7 +122,7 @@
                    </div>
                 </div>
             </div>
-            <div class="post-type">
+            <!-- <div class="post-type">
                 <div class="t-radio">
                     <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
                 </div>
@@ -139,19 +139,18 @@
                     </div>
                     <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
                 </div>
-            </div>
+            </div> -->
             <div class="t-btn">
-                <!--<div class="agent-btn btn-b" @click="closeThis">委托代理</div>-->
-                <div class="confirm-btn btn-b" @click="confirm(),closeThis()">确认发布</div>
-                <div class="cancel-btn btn-w" @click="closeThis">取消</div>
+                <div class="confirm-btn " @click="confirm(),closeThis()">确认发布</div>
+                <div class="cancel-btn " @click="closeThis">取消</div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import calendar from '../calendar.vue'
- import airportS from '../../reuseComponents/airportSearch.vue'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+    import airportS from '$src/page/reuseComponents/airportSearch.vue'
+    import calendar from '$src/page/components/calendar'
     export default {
         data () {
             return{
@@ -269,13 +268,13 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
                 }
                 this.isError = true;
             },*/
-            verifyPhon: function () {
+            /*verifyPhon: function () {
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
                     this.isError = true;
                 }else{
                     this.isError = false;
                 }
-            },
+            },*/
             pickTime1: function(i) {
                 this.timeStart = this.timeData[i];
                 this.boxShow1 = false;
@@ -364,7 +363,6 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
                     page:2
                 }
             }) .then((response) => {
-                    console.info(response)
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
@@ -380,7 +378,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
             },
             confirm:function(){
                 let demandData = { };
-                    demandData.demandtype = "1";
+                    demandData.demandtype = "4";
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
@@ -400,38 +398,29 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
                     demandData.publicway = this.post;
                     //demandData.directionalgoal = this.directText;
                     //demandData.demandprogress = '0';
-                 this.$ajax({
-                    url:"/demandAdd",
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: demandData
-                }) .then((response) => {
-                        console.log(response);
-                }) .catch((error) => {
-                        console.log(error);
-                    });
-
-                this.$emit('change-showCode');
-                tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
-            }
+                    tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
+                     this.$ajax({
+                        url:"/demandAdd",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: demandData
+                    }) .then((response) => {
+                            //console.log(response.opResult);
+                    }) .catch((error) => {
+                            console.log(error);
+                        });
+                        this.$emit('change-showCode');
+            },
         },
         computed:{
             num: function(){
                 return this.tip.length <= 35? this.tip.length: 35;
             }
         },
-        watch:{
-
-
-        },
-         beforeMount:function () {
-
-
-
-        }
-
+        watch:{},
+         beforeMount:function () {}
     }
 </script>
 
@@ -449,48 +438,51 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
         display: flex;
-        justify-content: center;
         align-items: center;
-        background: rgba(0,0,0,.4);
-        z-index:99;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .4);
+        z-index: 20;
+    }
+    .container-top {
+        position: relative;
+        margin: 10px 0 30px 20px;
+        .title {
+            width: 140px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+        }
+        .close-icon {
+            position: absolute;
+            top: -2px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border: 1px solid gray;
+            border-radius: 100%;
+            cursor: pointer;
+        }
     }
     .t-form{
+        /*position:absolute;
+        top:65px;
+        left:0;*/
+        /*z-index:99;*/
+        box-sizing:border-box;
         overflow-y: scroll;
         font-size:1.2rem;
         padding:20px;
-        /*width:620px;
-        height:630px;*/
-        width: 580px;
-        height: 590px;
+        width:620px;
+        height:630px;
         color: #605E7C;
         border-radius:4px;
         background-color:#fff;
-        .container-top {
-            position: relative;
-            margin: 10px 0 30px 20px;
-            .title {
-                width: 140px;
-                height: 20px;
-                line-height: 20px;
-                font-size: 16px;
-            }
-            .close-icon {
-                position: absolute;
-                top: -2px;
-                right: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 22px;
-                height: 22px;
-                border: 1px solid gray;
-                border-radius: 100%;
-                cursor: pointer;
-            }
-        }
         .t-must,.t-optional{
             width:100%;
             box-sizing:border-box;
@@ -594,26 +586,52 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
         justify-content: flex-end;
         align-items: center;
         margin-bottom:22px;
+        margin-top:40px;
         >div{
           height:40px;
           line-height:40px;
           border-radius:100px;
           text-align:center;
+          color:#ffffff;
+          background-color:#3c78ff;
           cursor:pointer;
+
         }
         .agent-btn{
-            width:100px;
-            margin-right: 20px;
-            color: white;
+          width:100px;
+          margin-right: 20px;
+          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .confirm-btn{
-            width:190px;
-            margin:0 10px;
-            color: white;
+          width:190px;
+          margin:0 10px;
+          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .cancel-btn{
-            width:80px;
+          width:80px;
+          color:rgba(96,94,124,.6);
+          box-sizing:border-box;
+          opacity: 0.4;
+          background-color:#fff;
+          border: 1px solid rgba(96,94,124,.6);
         }
+    }
+    .confirm-btn:hover{
+           background-color: rgba(80, 139, 255,1);
+          color: white !important;
+          cursor: pointer;
+          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+    }
+    .agent-btn:hover{
+           background-color: rgba(80, 139, 255,1);
+          color: white !important;
+          cursor: pointer;
+          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+    }
+    .cancel-btn:hover {
+      background-color: rgba(256, 256, 256, .7);
+      cursor: pointer;
+      box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
     }
     .pad1{
         padding:20px 0 34px 0;
