@@ -11,7 +11,7 @@
                     </template>
                     <template v-if="detailData.demandstate==='审核未通过'">
                         <span class="tips tips-top">*拒绝原因</span>
-                        <p v-text="metaData.rek || reason.text"></p>
+                        <p v-text="metaData.rek || '无具体原因'"></p>
                     </template>
                     <template v-if="detailData.demandstate==='审核通过'">
                         <span class="tips tips-pas">*已通过审核</span>
@@ -107,8 +107,10 @@
                 let that = this;
                 that.changeState(0).then((val)=>{
                     that.detailData.demandstate = "审核通过";
+                    alert("success:审核通过");
                 },(err)=>{
                     that.detailData.demandstate = "审核通过";
+                    alert("faild:审核通过");
                 });
             },
             //拒绝
@@ -117,9 +119,11 @@
                 that.show.swrapper = false;
                 that.changeState(1,that.reason.text).then((val)=>{
                     that.detailData.demandstate = "审核未通过";
+                    that.metaData.rek = that.reason.text;
+                    alert("success:审核未通过");
                 },(err)=>{
                     that.detailData.demandstate = "审核未通过";
-                    that.detailData.reason = that.reason.text;
+                    alert("faild:审核未通过");
                 });
             },
             closeReason: function () {//取消
