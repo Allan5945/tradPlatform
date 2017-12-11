@@ -45,7 +45,7 @@ import myPic from './../../../static/img/haveline.png';
                     u: '/index/userCenter/myRelease'
                 }, {
                     n: "我的意向",
-                    u: '/index/userCenter'
+                    u: '/index/userCenter/myIntention'
                 }, {
                     n: "我的订单",
                     u: '/index/userCenter'

@@ -30,18 +30,18 @@
                 </div>
                 <div class="lists-containt">
                     <!--点击列表，展示意向详情-->
-                    <div class="list items" :class="{'list-active':false}" @click="listClickFn()">
+                    <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
                         <div class="list-a item">
-                            11.04.2017
+                            {{item.releasetime}}
                         </div>
                         <div class="list-b item">
-                            航线需求
+                            {{item.demandtype}}
                         </div>
                         <div class="list-c item color">
-                            <span>成都-北京航线新开 找运力，XXXXXXXXXX</span>
+                            <span>{{item.title}}</span>
                         </div>
                         <div class="list-d item">
-                            需求审核
+                            {{item.responseProgress}}
                         </div>
                         <div class="list-e item">
                         <span class="icon-item talk-icon">&#xe602;
@@ -73,7 +73,7 @@
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: [],
-                type0: ['运力投放'],
+                type0: ['运力需求'],
                 type1: ['航线需求'],
                 type2: ['运力投放','航线需求'],
                 state: [],
@@ -84,6 +84,7 @@
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上
+                listItemIndex: '',          // 被点击列的index，用来使其变成active
             }
         },
         created() {
@@ -103,7 +104,7 @@
                 console.info('this.role:');
                 console.info(this.role);
                 response.data.list.list.forEach((val) => {
-                    if(val.demandtype == '运力需求' ){
+                    if(val.demandtype == '运力需求' || val.demandtype == '运力投放'){
                         this.myData0.push(val);
 //                        this.myData = this.myData0;
                     }if(val.demandtype == '航线需求'){
@@ -123,10 +124,12 @@
                 this.type = this.type0;
                 this.myData = this.myData0;
                 this.typeWriting = '运力需求';
+                this.state = this.state2;
             }if(this.role.role == 1) {
                 this.type = this.type1;
                 this.myData = this.myData1;
                 this.typeWriting = '航线需求';
+                this.state = this.state1;
             }if(this.role.role == 2) {
                 this.type = this.type2;
                 this.myData = this.myData0.concat(this.myData1);
@@ -168,21 +171,41 @@
             },
             typeClickFn: function (item) {
                 this.typeWriting = item;
-                if(item == '运力投放') {
-                    this.state = this.state1;
-                }if(item == '航线需求') {
+                if(item == '运力投放' || item == '运力需求') {
                     this.state = this.state2;
+                }if(item == '航线需求') {
+                    this.state = this.state1;
                 }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
             },
             // 点击列表(list)，展示详情
-            listClickFn: function () {
+            listClickFn: function (item,index) {
+                this.listItemIndex = index; //变成active状态
                 this.myPurposeShow = true;
+                console.info('purposeItem:')
+                console.info(item)
+                this.$ajax({
+                    url:"/getResponseDetails",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        responseId: item.id //发布时间排序类型 0-倒序 1-正序
+                    }
+                }) .then((response) => {
+                    console.info('我的意向详情:')
+                    console.info(response.data.obj)
+                    tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.obj); //将item的参数传递给myPurpose.vue
+                }).catch((error) => {
+                    console.log(error);
+                });
             },
             // 点击关闭详情
             closeThisFn: function () {
+                this.listItemIndex = '';
                 this.myPurposeShow = false;
             }
         },
