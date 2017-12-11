@@ -384,8 +384,12 @@
                     demandData.dptState = this.dptState[0];
                     demandData.capacitycompany = this.airCompanyId;
                     demandData.seating = this.seat;
-                    demandData.hourcost = this.hourcost;
-                    demandData.schedulingStr = this.dispatch == false? '无':'有';
+                    demandData.hourscost = this.hourcost;
+                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
+                    demandData.scheduling = this.dispatch == false? '1':'0';
+                    if(this.dispatch){
+                        demandData.schedulinePort  = qyCode1;
+                    }
                     demandData.remark = this.tip;
                     demandData.periodValidity = this.myDate;
                     demandData.publicway = this.post;

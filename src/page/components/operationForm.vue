@@ -14,17 +14,17 @@
             <div style="height:20px;width:100%;" v-if="isError"></div>
         </div>
         <div class="t-optional">
+           <!--  <div class="form-box">
+               <div class="t-title">需求类型</div>
+               <div class="need-btn"  @click="showBox=!showBox">
+                   <div class="title" v-text="msg" :class="{selected:isSel}"></div>
+                   <span class="icon-item icon-item1">&#xe605;</span>
+                   <div class="selc-list dropDown popup" v-show="showBox">
+                       <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
+                   </div>
+               </div>
+           </div> -->
             <div class="form-box">
-                <div class="t-title">需求类型</div>
-                <div class="need-btn"  @click="showBox=!showBox">
-                    <div class="title" v-text="msg" :class="{selected:isSel}"></div>
-                    <span class="icon-item icon-item1">&#xe605;</span>
-                    <div class="selc-list dropDown popup" v-show="showBox">
-                        <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-box" style="position:relative;">
                 <div class="t-title">航班号</div>
                 <input type="text" placeholder="请输入" v-model="flightNum">
                 <!-- <div class="num-list popup scroll" v-show="flightListShow">
@@ -55,7 +55,7 @@
  export default {
         data () {
             return{
-                showBox: false,
+                //showBox: false,
                 isSel: false,
                 isError: false,
                 flightListShow:false,
@@ -65,15 +65,15 @@
                 phoneNum:'',
                 flightNum:'',
                 flightData:[],
-                msg:'选择需求类型',
-                needType:['运力投放','航线需求']
+                //msg:'选择需求类型',
+               // needType:['运力投放','航线需求']
             }
         },
         methods:{
-             getNeed: function(i) {
+            /* getNeed: function(i) {
                 this.msg = this.needType[i];
                 this.isSel = true;
-            },
+            },*/
             verifyPhon: function () {
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
                     this.isError = true;
@@ -86,8 +86,6 @@
                 demandData.demandtype = "2";
                 demandData.contact = this.contact;
                 demandData.iHome = this.phoneNum;
-                demandData.demandtypeStr = this.msg;
-                //demandData.demandStateStr =
                 demandData.fltNbr  = this.flightNum;
                 demandData.hourscost = this.hourcost;
                 demandData.remark = this.tip;
@@ -252,25 +250,25 @@
                 left:0;
             }
        }
-      .dropDown {
-          width:180px;
-          background-color: #fff;
-          border-radius: 4px;
-          z-index:999;
-          >div {
-            width: 100%;
-            height:35px;
-            box-sizing: border-box;
-            line-height:35px;
-            padding-left: 14px;
-            color: #605E7C;
-            font-size: 1.2rem;
-            cursor:pointer;
-            &:hover{
-                background-color:rgba(235,235,235,.5);
-            }
-          }
-      }
+     /*  .dropDown {
+         width:180px;
+         background-color: #fff;
+         border-radius: 4px;
+         z-index:999;
+         >div {
+           width: 100%;
+           height:35px;
+           box-sizing: border-box;
+           line-height:35px;
+           padding-left: 14px;
+           color: #605E7C;
+           font-size: 1.2rem;
+           cursor:pointer;
+           &:hover{
+               background-color:rgba(235,235,235,.5);
+           }
+         }
+     } */
       .tips{
         width:100%;
         position:relative;
@@ -330,7 +328,7 @@
     }
     .agent-form .pad{
       height:26px;
-      padding:17px 0;
+      padding:27px 0;
     }
     .count {
         position:absolute;
