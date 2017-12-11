@@ -21,21 +21,12 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
         <router-view></router-view>
-=======
-     <!-- <operAgent></operAgent> -->
-      <myCollection></myCollection>
-
->>>>>>> zser
     </div>
 </template>
 
 <script>
 import reviewList from './reviewList/viewTable.vue'
-
-
-
 import myPic from './../../../static/img/haveline.png';
     export default {
         data() {
@@ -45,7 +36,7 @@ import myPic from './../../../static/img/haveline.png';
                     u: '/index/userCenter/reviewList'
                 }, {
                     n: "委托/托管",
-                    u: '/index/userCenter'
+                    u: '/index/userCenter/entrust'
                 }, {
                     n: "我的发布",
                     u: '/index/userCenter/myRelease'
