@@ -17,9 +17,9 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-        <!--<myIndex></myIndex>-->
+        <!-- <myIndex></myIndex> -->
         <routeNetwork></routeNetwork>
-         <myIndexFzz></myIndexFzz>
+         <!-- <myIndexFzz></myIndexFzz> -->
     </div>
 </template>
 
@@ -32,12 +32,12 @@
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm1.vue'
+    import intentForm from './../page/components/trans_detail/intentForm.vue'
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import respondAirport from './../page/components/trans_detail/respondAirport.vue'
-    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
+    import myIntentForm from './../page/components/trans_detail/myIntentForm1.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'

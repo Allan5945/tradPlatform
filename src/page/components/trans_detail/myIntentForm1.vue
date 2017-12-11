@@ -710,7 +710,7 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        responseData:sendData,
+                        responseData:this.sendData,
                         id: this.getIntentData.id,
                         employeeId:this.role.id,
                         status:0
@@ -2337,8 +2337,12 @@
             })*/
         },
         mounted() {
-//            console.info(this.acceptData)
+            console.info('acceptData:')
+           console.info(this.acceptData)
             let acceptData = this.acceptData;
+            if(acceptData.dptState == '') {
+                console.info('kong')
+            }
             if (acceptData.dptState == 0) {
                 this.space1Fn('意向机场');
                 this.firArea = acceptData.dptNm;
