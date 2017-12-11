@@ -1,5 +1,6 @@
 <template>
     <div class="my-center">
+        <div class="test">x</div>
         <myNav ></myNav>
         <div class="mine">
             <div class="my-msg">
@@ -57,6 +58,11 @@ import myPic from './../../../static/img/haveline.png';
 </script>
 
 <style lang="scss" scoped>
+    .test{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
     .my-center{
         position: fixed;
         top: 0;
