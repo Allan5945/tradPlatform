@@ -54,7 +54,7 @@ const router = new VueRouter({
                         },
                         {
                             path: '',
-                            component: myRelease
+                            redirect:"reviewList"
                         },
                     ]
                 }

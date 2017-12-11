@@ -41,7 +41,9 @@
 </template>
 
 <script>
-    import listModule from './detailListModule.vue'
+    import listModule from './detailListModule.vue';
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+
     export default{
         data(){
             return {
@@ -162,10 +164,12 @@
             })
         },
         mounted:function () {
+            tabulationBoxTrigger.hierarchy = true;
         },
         destroyed: function () {
+            tabulationBoxTrigger.hierarchy = false;
             if(this.fatherScroll){
-                let fdom = document.querySelector('.my-center')
+                let fdom = document.querySelector('.my-center');
                 fdom.style.overflow = 'auto';
                 fdom.style.right = '0';
             }

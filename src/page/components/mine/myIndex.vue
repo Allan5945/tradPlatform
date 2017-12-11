@@ -1,5 +1,5 @@
 <template>
-    <div class="my-center">
+    <div class="my-center" :class="{'my-center-z':hierarchy}">
         <div class="mine">
             <div class="my-msg">
                 <div class="my-info">
@@ -27,10 +27,9 @@
 
 <script>
 import reviewList from './reviewList/viewTable.vue'
+import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+import myPic from './../../../static/img/145.jpg';
 
-
-
-import myPic from './../../../static/img/haveline.png';
     export default {
         data() {
             return {
@@ -63,9 +62,14 @@ import myPic from './../../../static/img/haveline.png';
         methods: {
 
         },
+        mounted:function () {
+        },
         computed:{
             img:function(){
                 return myPic;
+            },
+            hierarchy:function () {
+                return tabulationBoxTrigger.hierarchy;
             }
         },
         components: {
@@ -74,6 +78,9 @@ import myPic from './../../../static/img/haveline.png';
 </script>
 
 <style lang="scss" scoped>
+    .my-center-z{
+        z-index: 16 !important;
+    }
     .my-center {
         position: fixed;
         top: 0;

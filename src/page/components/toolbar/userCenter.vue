@@ -5,7 +5,7 @@
             退出
         </a>
         <router-link to="/index/userCenter">
-            <span>&#xe647;</span>
+            <span>&#xe60f;</span>
             个人中心
         </router-link>
     </div>
