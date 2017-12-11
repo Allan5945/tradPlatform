@@ -64,7 +64,7 @@
     import stateList from '../stateList.vue'
     import agentDetail from '../operAgentDetail.vue';
     import deleDetail from '../operDeleDetail.vue';
-    import detailsPanel from '../detailsPanel.vue';
+    import detailsPanel from './detailsPanel.vue';
     export default {
         data() {
             return {

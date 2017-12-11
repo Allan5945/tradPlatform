@@ -79,7 +79,7 @@
                         </div>
                         <div>
                             <div>客座率预期</div>
-                            <div>{{ndetailData.loadfactorsexpect||"-"}}%</div>
+                            <div>{{ndetailData.loadfactorsexpect ? ndetailData.loadfactorsexpect+"%" : "-"}}</div>
                         </div>
                         <div>
                             <div>补贴政策</div>

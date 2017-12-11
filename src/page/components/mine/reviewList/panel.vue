@@ -11,7 +11,7 @@
                 </template>
                 <template v-if="detailData.demandstate==='审核未通过'">
                     <span class="tips tips-top">*拒绝原因</span>
-                    <p v-text="reason.text"></p>
+                    <p v-text="detailData.reason || reason.text"></p>
                 </template>
                 <template v-if="detailData.demandstate==='审核通过'">
                     <span class="tips tips-pas">*已通过审核</span>
@@ -118,6 +118,7 @@
                     that.detailData.demandstate = "审核未通过";
                 },(err)=>{
                     that.detailData.demandstate = "审核未通过";
+                    that.detailData.reason = that.reason.text;
                 });
             },
             closeReason: function () {//取消
