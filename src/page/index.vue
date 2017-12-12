@@ -17,6 +17,7 @@
          <infPanel></infPanel>
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <myIndex></myIndex>
         <routeNetwork></routeNetwork>
         <!--<timelyCommunication></timelyCommunication>-->
         <router-view></router-view>
