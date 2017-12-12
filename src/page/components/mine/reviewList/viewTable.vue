@@ -21,7 +21,7 @@
                     <div class="list-c item">
                         发布标题
                     </div>
-                    <div class="list-d item " @click="stateShowFn">
+                    <div class="list-d item cancheck" @click="stateShowFn">
                         {{stateWriting}}
                         <div class="triangle-little" style="margin-left: 10px;"></div>
                         <ul class="type-list" v-show="stateShow">
