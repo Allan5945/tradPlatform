@@ -3,55 +3,57 @@
         <div class="miList-wrapper">
             <div class="miList-container">
                 <div class="title items">
-                    <div class="list-a item">
+                    <div class="list-a item cancheck" @click="timeSort">
                         发布时间
-                        <div class="up-down" style="margin-left: 10px">
-                            <span class="icon-item icon-up active">&#xe605;</span>
-                            <span class="icon-item icon-down">&#xe605;</span>
+                        <div class="up-down" style="margin-left: 10px;">
+                            <span class="icon-item icon-up" :class="{'active':sorted===true}">&#xe605;</span>
+                            <span class="icon-item icon-down" :class="{'active':sorted===false}">&#xe605;</span>
                         </div>
                     </div>
-                    <div class="list-b item" @click="typeShowFn">
+                    <div class="list-b item cancheck" @click="typeShowFn">
                         {{typeWriting}}
-                        <div class="triangle-little" style="margin-left: 10px"></div>
+                        <div class="triangle-little" style="margin-left: 10px;"></div>
                         <ul class="type-list" v-show="typeShow">
-                            <li v-for="item in type" @click="typeClickFn(item)">{{item}}</li>
+                            <li v-for="(item,key) in type" @click="typeClickFn(item,key)">{{item}}</li>
                         </ul>
                     </div>
                     <div class="list-p item">发布人</div>
                     <div class="list-c item">
                         发布标题
                     </div>
-                    <div class="list-d item" @click="stateShowFn">
+                    <div class="list-d item " @click="stateShowFn">
                         {{stateWriting}}
-                        <div class="triangle-little" style="margin-left: 10px"></div>
+                        <div class="triangle-little" style="margin-left: 10px;"></div>
                         <ul class="type-list" v-show="stateShow">
-                            <li v-for="item in state" @click="stateClickFn(item)">{{item}}</li>
+                            <li v-for="(item,key) in progressState" @click="stateClickFn(item,key)">{{item}}</li>
                         </ul>
                     </div>
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
                 <template v-if="detailsData">
-                    <div class="list items"   v-for="ditem in detailsData.list">
-                        <div class="list-a item">
-                            {{ ditem.releasetime }}
-                        </div>
-                        <div class="list-b item">
-                            {{ type[ditem.demandtype]}}
-                        </div>
-                        <div class="list-p item">
-                            {{ ditem.employeeNm }}
-                        </div>
-                        <div class="list-c item color">
-                            {{ ditem.title }}
-                        </div>
-                        <div class="list-d item">
-                            {{ ditem.demandstate }}
-                        </div>
-                        <div class="list-e item">
-                        </div>
-                        <div class="list-f item color" @click="turnDetailPanel(ditem)">
-                            查看详情<span class="icon-item">&#xe686;</span>
+                    <div class="list-container">
+                        <div class="list items"   v-for="ditem in detailsData.list">
+                            <div class="list-a item">
+                                {{ ditem.releasetime }}
+                            </div>
+                            <div class="list-b item">
+                                {{ type[ditem.demandtype]}}
+                            </div>
+                            <div class="list-p item">
+                                {{ ditem.employeeNm }}
+                            </div>
+                            <div class="list-c item color">
+                                {{ ditem.title }}
+                            </div>
+                            <div class="list-d item">
+                                {{ progressState[ditem.demandstate] || "未知状态" }}
+                            </div>
+                            <div class="list-e item">
+                            </div>
+                            <div class="list-f item color" @click="turnDetailPanel(ditem)">
+                                查看详情<span class="icon-item">&#xe686;</span>
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -68,54 +70,84 @@
     export default {
         data() {
             return {
-                sorted:true,
+                sorted: null,
+                filterDelay: true,
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: ['航线需求','运力投放'],
-                state: ['未通过','审核通过','审核未通过'],
+                progressState:{
+                    '4': '未处理',
+                    '5': '审核未通过',
+                    '6': '审核通过'
+                },
                 demandId:null,
                 detailsPanel:{
                     data:null,
                     show:false,
                 },
                 detailsData: null,
+                getParams: {    //请求参数
+                    demandType : '' ,
+                    demandState : '',
+                    page: 1,
+                    orderType : 0
+                }
             }
         },
         methods: {
+            delayChange: function () {  // 1000ms延迟
+                this.filterDelay = false;
+                setTimeout(()=>{
+                    this.filterDelay = true;
+                },1000)
+            },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
             stateShowFn: function () {
                 this.stateShow = !this.stateShow;
             },
-            typeClickFn: function (item) {
-                this.typeWriting = item;
+            timeSort:function(){    //日期排序
+                if(this.filterDelay){
+                    this.delayChange();
+                    this.sorted = !this.sorted;
+                    let s = this.sorted ? '1' : '0';
+                    this.getParams.orderType = s;
+                    this.getListData();
+                }
             },
-            stateClickFn: function (item) {
-                this.stateWriting = item;
+            typeClickFn: function (item,k) {    //筛选-需求类型
+                if(this.filterDelay && k!==this.getParams.demandType){
+                    this.typeWriting = item;
+                    this.delayChange();
+                    let s = this.sorted;
+                    this.getParams.demandType = k;
+                    this.getListData();
+                }
             },
-            timeSort:function(){
-                this.sorted = !this.sorted;
-
+            stateClickFn: function (item,k) {   //筛选-状态
+                if(this.filterDelay && k!==this.getParams.demandState){
+                    this.stateWriting = item;
+                    this.delayChange();
+                    let s = this.sorted;
+                    this.getParams.demandState = k;
+                    this.getListData();
+                }
             },
             turnDetailPanel: function (item) {
                 this.detailsPanel.data = item;
                 this.detailsPanel.show = !this.detailsPanel.show;
             },
             getListData: function () {
-                let that = this;
+                let that = this,
+                    params = that.getParams;
                 this.$ajax({
                     method: 'GET',
                     url: '/getDemandOfReviewList',
-                    params: {
-                        demandType : '' ,
-                        demandState : '',
-                        page: 1,
-                        orderType : 0
-                    }
+                    params: params
                 }).then(res=>{
                     if(res && res.data.opResult==0){
                         that.detailsData = res.data.list;
@@ -124,7 +156,7 @@
                         alert('暂无返回，请稍后重试。')
                     }
                 }).catch(err=>{
-                    this.deleShow = true;
+                    that.detailsPanel.show = false;
                 })
             }
         },
@@ -185,7 +217,6 @@
         margin: 0 auto;
         padding-top: 40px;
         width: 1000px;
-        height: 340px;
         &::after {
             display: block;
             height: 60px;
@@ -250,8 +281,7 @@
             width: 80px;
         }
         .list-e {
-            margin-right: 120px;
-            width: 20px;
+            width: 140px;
             .talk-icon {
                 position: relative;
                 font-size: 2.5rem;
@@ -294,5 +324,12 @@
         .list-f {
             cursor: pointer;
         }
+    }
+    .cancheck{
+        cursor: pointer;
+    }
+    .list-container{
+        height: 280px;
+        overflow-y: auto;
     }
 </style>

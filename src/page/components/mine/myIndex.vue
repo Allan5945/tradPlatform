@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="my-list">
-                    <router-link v-for="(val,index) in myList" :to="val.u">
+                    <router-link v-for="(val,index) in myList" :to="val.u" :key="index">
                         <div class="my-list-item" :class="{selected:(isActive == index)}" @click="isActive = index">{{val.n}}</div>
                     </router-link>
                 </div>
@@ -47,7 +47,7 @@ import myPic from './../../../static/img/145.jpg';
                     u: '/index/userCenter/myIntention'
                 }, {
                     n: "我的订单",
-                    u: '/index/userCenter'
+                    u: '/index/userCenter/myOrder'
                 }, {
                     n: "我的收藏",
                     u: '/index/userCenter/myCollection'
@@ -62,7 +62,7 @@ import myPic from './../../../static/img/145.jpg';
         methods: {
 
         },
-        mounted:function () {
+        created:function () {
         },
         computed:{
             img:function(){
