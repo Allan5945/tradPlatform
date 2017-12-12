@@ -78,20 +78,22 @@ const router = new VueRouter({
     ],
     model: 'history'
 })
-let token = false;
+let token = false,
+     ucPath = '/index/userCenter';
 router.beforeEach((to, from, next) => {
-    token = token || (window.sessionStorage.getItem('isLogin')==='ok');
-    if(to.meta.requireAuth){//需要登录
-        if(token) next();
-        else{
+    token = token || (window.sessionStorage.getItem('isLogin') === 'ok');
+    if (to.meta.requireAuth) {//需要登录
+        if (token) next();
+        else {
             next({
                 path: '/login',
                 // query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由，这步可后续做
             })
         }
-    }else{
+    } else {
         next();
     }
+
 })
 
 export default router

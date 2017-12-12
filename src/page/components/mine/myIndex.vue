@@ -87,7 +87,7 @@ import myPic from './../../../static/img/145.jpg';
         right: 0;
         bottom: 0;
         left: 0;
-        overflow: auto;
+        overflow: hidden;
         background: #fff;
         z-index: 11;
         .mine {

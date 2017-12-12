@@ -176,7 +176,7 @@
             }
         },
         mounted() {
-            this.getListData()
+            this.getListData();
         },
         components: {
             panel,
