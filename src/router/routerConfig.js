@@ -18,7 +18,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 我的意向
         const myIntention = resolve => require(['./../page/components/mine/myPurposeList.vue'], resolve);
         // 我的订单
-        // const myOrder = resolve => require(['...'], resolve);
+        const myOrder = resolve => require(['../page/components/mine/myOrder/orderTable.vue'], resolve);
         // 我的收藏
         const myCollection = resolve => require(['./../page/components/mine/myCollection.vue'], resolve);
         // 公司账户
@@ -43,6 +43,10 @@ const router = new VueRouter({
                     component: userCenter,
                     children: [
                         {
+                            path: 'reviewList',
+                            component: reviewList
+                        },
+                        {
                             path: 'myCollection',
                             component: myCollection
                         },{
@@ -51,13 +55,14 @@ const router = new VueRouter({
                         },{
                             path: 'myIntention',
                             component: myIntention
-                        },{
-                            path: 'reviewList',
-                            component: reviewList
                         },
                         {
                             path: 'entrust',
                             component: entrust
+                        },
+                        {
+                            path: 'myOrder',
+                            component: myOrder
                         }
                     ]
                 }
@@ -73,20 +78,22 @@ const router = new VueRouter({
     ],
     model: 'history'
 })
-
+let token = false,
+     ucPath = '/index/userCenter';
 router.beforeEach((to, from, next) => {
-    let token = window.sessionStorage.getItem('isLogin')==='ok';
-    if(to.meta.requireAuth){//需要登录
-        if(token) next();
-        else{
+    token = token || (window.sessionStorage.getItem('isLogin') === 'ok');
+    if (to.meta.requireAuth) {//需要登录
+        if (token) next();
+        else {
             next({
                 path: '/login',
                 // query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由，这步可后续做
             })
         }
-    }else{
+    } else {
         next();
     }
+
 })
 
 export default router

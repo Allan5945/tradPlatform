@@ -21,14 +21,18 @@ Vue.prototype.$bExample = new bmapExamples();    // 挂载
 
 Vue.use(Radio);
 
-// axios.interceptors.response.use(data => {
-//     return data
-// }, error => {
-//     Message.error({
-//         message: '加载失败'
-//     })
-//     return Promise.reject(error)
-// });
+axios.interceptors.response.use(data => {
+    return data
+}, error => {
+    if(error.response.status === 403){  //返回403则重新登录
+        window.sessionStorage.clear();
+        return router.push('/login');
+    }
+    Message.error({
+        message: '加载失败'
+    })
+    return Promise.reject(error)
+});
 
 new Vue({
     el: '#app',

@@ -48,5 +48,8 @@ export default {
     },
     changeOrder:({commit},vl)=>{
         commit(types.CHANGEORDER,vl)
-    }
+    },
+    changeUserCenterActive:({commit},vl)=>{
+        commit(types.USERCENTER,vl)
+    },
 }

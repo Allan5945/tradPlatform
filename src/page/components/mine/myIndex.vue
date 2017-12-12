@@ -15,8 +15,8 @@
                     </div>
                 </div>
                 <div class="my-list">
-                    <router-link v-for="(val,index) in myList" :to="val.u">
-                        <div class="my-list-item" :class="{selected:(isActive == index)}" @click="isActive = index">{{val.n}}</div>
+                    <router-link v-for="(val,index) in myList" :to="val.u" :key="index">
+                        <div class="my-list-item" :class="{selected:(userCenter.checked == index)}" @click="changeUserCenterActive({checked:index})">{{val.n}}</div>
                     </router-link>
                 </div>
             </div>
@@ -29,7 +29,7 @@
 import reviewList from './reviewList/viewTable.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import myPic from './../../../static/img/145.jpg';
-
+import * as vx from 'vuex'
     export default {
         data() {
             return {
@@ -47,7 +47,7 @@ import myPic from './../../../static/img/145.jpg';
                     u: '/index/userCenter/myIntention'
                 }, {
                     n: "我的订单",
-                    u: '/index/userCenter'
+                    u: '/index/userCenter/myOrder'
                 }, {
                     n: "我的收藏",
                     u: '/index/userCenter/myCollection'
@@ -60,11 +60,13 @@ import myPic from './../../../static/img/145.jpg';
             }
         },
         methods: {
-
+            ...vx.mapActions(['changeUserCenterActive'])
         },
-        mounted:function () {
+        created:function () {
+            console.log(this.$store.state.mutations.uesrCenter);
         },
         computed:{
+            ...vx.mapGetters(['userCenter']),
             img:function(){
                 return myPic;
             },
@@ -87,7 +89,7 @@ import myPic from './../../../static/img/145.jpg';
         right: 0;
         bottom: 0;
         left: 0;
-        overflow: auto;
+        overflow: hidden;
         background: #fff;
         z-index: 11;
         .mine {
