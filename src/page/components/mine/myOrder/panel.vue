@@ -1,42 +1,9 @@
 <template>
     <div class="wrap" @click.self="closeDetail">
         <div class="box shadow">
-            <p class="mgr-l">需求详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
-            <listModule :ndetailData="metaData" :type="typeList[detailData.demandtype]" v-if="metaData"></listModule>
-            <template v-if="metaData">
-                <footer class="footer flex-center">
-                    <template v-if="detailData.demandstate=='未处理'">
-                        <span class="btn btn-prime" @click="postPass">通过</span>
-                        <span class="btn btn-gray" @click="show.swrapper=true">不通过</span>
-                    </template>
-                    <template v-if="detailData.demandstate==='审核未通过'">
-                        <span class="tips tips-top">*拒绝原因</span>
-                        <p v-text="metaData.rek || '无具体原因'"></p>
-                    </template>
-                    <template v-if="detailData.demandstate==='审核通过'">
-                        <span class="tips tips-pas">*已通过审核</span>
-                        <p v-text="detailData.name"></p>
-                    </template>
-                </footer>
-            </template>
+            <p class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
+            <listModule :ndetailData="metaData" :type="typeList[detailData.demandType]" v-if="metaData"></listModule>
         </div>
-
-        <transition name="fade">
-            <div class="swrapper flex-center" v-show="show.swrapper">
-                <div class="rsn-box shadow">
-                    <h3>请填写不通过原因</h3>
-                    <div class="rsn-body">
-                        <span>原因:</span>
-                        <textarea class="txtarea" maxlength="100" v-model="reason.text"></textarea>
-                        <i class="letter-counter">{{reason.textLength}}/100</i>
-                    </div>
-                    <footer class="footer-s flex-center">
-                        <span class="btn btn-prime" style="width: 150px;" @click="postReason">确认</span>
-                        <span class="btn btn-gray" @click="closeReason">取消</span>
-                    </footer>
-                </div>
-            </div>
-        </transition>
     </div>
 </template>
 
@@ -55,6 +22,7 @@
                     textLength:0
                 },
                 metaData: null,
+                fatherScroll:true,
                 typeList: ['航线需求','运力投放 ']
             }
         },
@@ -87,13 +55,6 @@
                             rek: rsk
                         }
                     }).then(res=>{
-                        /*
-                         opResult : 有0,1,2,3这几个值。
-                         0-成功，返回list;
-                         1-失败
-                         2-查询列表后台抛出异常；
-                         传入的参数为空
-                         */
                         if(res.data.opResult===0){
                             resolve(res.data.opResult);
                         }else{
@@ -131,8 +92,24 @@
                 this.reason.text = '';
                 this.show.swrapper = false;
             },
+            getScrollWidth: function () {
+                let noScroll, scroll, oDiv = document.createElement("DIV");
+                oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+                noScroll = document.body.appendChild(oDiv).clientWidth;
+                oDiv.style.overflowY = "scroll";
+                scroll = oDiv.clientWidth;
+                document.body.removeChild(oDiv);
+                return noScroll-scroll;
+            }
         },
         created: function () {
+            let fdom = document.querySelector('.my-center');
+            if(!(fdom.offsetHeight===fdom.scrollHeight===fdom.clientHeight)){
+                this.fatherScroll = false;
+                fdom.style.overflow = 'hidden';
+                fdom.style.right = this.getScrollWidth()+'px';
+            }
+            //取出拒绝原因
             let that = this;
             let id = this.detailData.id;
             this.$ajax({
@@ -151,6 +128,11 @@
         },
         destroyed: function () {
             tabulationBoxTrigger.hierarchy = false;
+            if(this.fatherScroll){
+                let fdom = document.querySelector('.my-center');
+                fdom.style.overflow = 'auto';
+                fdom.style.right = '0';
+            }
         }
     }
 </script>
@@ -220,7 +202,7 @@
     }
     .box{
         position: absolute;
-        width: 600px;;
+        width: 600px;
         height: 100%;
         top: 0;
         right: 0;

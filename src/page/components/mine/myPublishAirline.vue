@@ -69,10 +69,10 @@
                     <div class="font-gray">补贴政策</div>
                 </div>
                 <div class="right item">
-                    <div>{{myData.sailingtime}}</div>
-                    <div>{{myData.aircrfttyp}}</div>
-                    <div>{{myData.aircrfttyp}}</div>
-                    <div>{{myData.subsidypolicyStr}}</div>
+                    <div class="item-height">{{myData.sailingtime}}</div>
+                    <div class="item-height">{{myData.aircrfttyp}}</div>
+                    <div class="item-height">{{myData.aircrfttyp}}</div>
+                    <div class="item-height">{{myData.subsidypolicyStr}}</div>
                 </div>
             </div>
             <div class="items">
@@ -83,10 +83,10 @@
                     <div class="font-gray">有效期</div>
                 </div>
                 <div class="right item">
-                    <div>{{myData.days}}</div>
-                    <div>{{myData.seating}}</div>
-                    <div>{{myData.loadfactorsexpect}}%</div>
-                    <div>{{myData.periodValidity}}</div>
+                    <div class="item-height">{{myData.days}}</div>
+                    <div class="item-height">{{myData.seating}}</div>
+                    <div class="item-height">{{myData.loadfactorsexpect}}%</div>
+                    <div class="item-height">{{myData.periodValidity}}</div>
                 </div>
             </div>
         </div>
@@ -260,12 +260,16 @@
                 this.recallData.demandprogress = 3;
                 console.info(this.recallData);
                 this.$ajax({
-                    url:"/demandUpdate",
+//                    url:"/demandUpdate",
+                    url: "closeDemandById",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: this.recallData
+//                    params: this.recallData
+                    params: {
+                        id: this.myData.id
+                    }
                 }) .then((response) => {
                     console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
@@ -392,6 +396,7 @@
                 margin: 25px 0 10px 0;
             }
             .item-b {
+                height: 25px;
                 font-size: 20px;
             }
             .item-c {

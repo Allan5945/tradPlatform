@@ -5,8 +5,7 @@
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"航线需求":"-"}}</div>
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime||"-" }}</span>
-                    <span>已有{{ ndetailData.num||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ type||"0" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -92,7 +91,7 @@
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
-                            <div style="width: 80%;">{{ndetailData.remark||"-"}}</div>
+                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
                 </div>
@@ -103,7 +102,7 @@
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"运力需求":"-"}}</div>
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime||"-" }}</span>
-                    <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
+                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -165,7 +164,7 @@
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
-                            <div style="width: 80%;word-wrap: break-word;">{{ndetailData.remark||"-"}}</div>
+                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
                 </div>
@@ -178,13 +177,19 @@
     export default {
         data(){
             return{
+                progressState:{
+                    '3': '关闭',
+                    '5': '交易完成',
+                    '6': '订单完成',
+                    '7': '佣金支付'
+                },
                 subsidyList:["定补","保底","人头补","无补贴"],
                 timeresources:["09:00-18:00",'待协调','充足']
             }
         },
         props:["ndetailData","type"],
-        mounted: function () {
-
+        created: function () {
+            this.ndetailData
         }
     }
 </script>
@@ -194,16 +199,14 @@
         position:absolute;
         right:0;
         width:100%;
-        max-height: 75%;
         box-sizing:border-box;
         color:#605E7C;
         overflow: hidden;
-        overflow-y: auto;
         background-color:#fff;
         header{
             width:100%;
             background-color:rgba(216,216,216,.2);
-            box-shadow:-5px 5px 15px rgba(216,216,216,.9) inset;
+            box-shadow: -5px 5px 15px rgba(216,216,216,.9) inset;
         }
         footer{
             position:fixed;
@@ -253,7 +256,7 @@
                 line-height:20px;
             }
             >div:nth-of-type(1){
-                width:90px;
+                width: 90px;
                 color:rgba(96, 94, 124, 0.7);
             }
             >div:nth-of-type(2){

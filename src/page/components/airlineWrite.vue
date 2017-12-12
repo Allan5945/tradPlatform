@@ -693,13 +693,18 @@
                 }).then((response) => {
                     console.info('response:')
                     console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功添加该意向！')
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
                     let responseIDMes = {};           //响应ID，响应者ID
                     responseIDMes.responseId = response.data.response.id; //响应ID
                     responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
                     console.info("responseIDMes:");
                     console.info(responseIDMes);
 
-                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
+//                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
                     tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
                     console.info('responseId:' + this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});

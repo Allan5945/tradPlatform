@@ -99,8 +99,8 @@
                     </div>
                 </div>
                 <div class="personal">
-                    <transition name="personal">
-                        <div class="personal-c" v-if="true">
+                    <transition name="slide-fade">
+                        <div class="personal-c" v-if="ishs">
                             <div class="personal-panel">
                                 <div class="personal-panel-portrait">
                                     <img src="./../../../static/img/test/145.png"/>
@@ -112,7 +112,7 @@
                             </div>
                             <div class="demand-history">
                                 <div>成都双流找运力</div>
-                                <span>&#xe63b;</span>
+                                <span @click="openhs">&#xe63b;</span>
                             </div>
                             <div class="demand-describe scroll">
                                 <div>
@@ -134,7 +134,9 @@
                             <div class="view-btn btn-w">查看订单详情</div>
                         </div>
                     </transition>
-                    <div class="personal-hy">历史</div>
+                    <transition name="slidehs-fade">
+                        <div class="personal-hy" @click="openhs">历史</div>
+                    </transition>
                 </div>
             </div>
         </div>
@@ -144,6 +146,7 @@
     export default {
         data(){
             return{
+                ishs:true,
                 timelyBox:'',
                 timelyBoxXY:{   // 最后设置的聊天框位置
                     x:10,
@@ -171,6 +174,9 @@
             }
         },
         methods:{
+            openhs:function () {
+                this.ishs = !this.ishs;
+            },
             bindDrop:function () {  // 绑定拖拽事件
                 this.dropData.mouseCoordinate.x = this.timelyBox.offsetLeft;
                 this.dropData.mouseCoordinate.y = this.timelyBox.offsetTop;
@@ -182,24 +188,35 @@
     }
 </script>
 <style lang="scss" scoped>
-    @keyframes personal-in {
-        0% {
-           left: 0;
-        }
-        100% {
-            left: -200px;
-        }
-    }
-    .personal-enter-active {
-        animation: bounce-in .3s;
-    }
-
-    .personal-leave-active {
-        animation: personal-in .3s reverse;
+    .personal-hy{
+        left: 0;
+        transform: translateX(200px);
     }
     .personal-c{
         left: 0;
     }
+    .slide-fade-enter-active {
+        transition: all .3s ease;
+    }
+    .slide-fade-leave-active {
+        transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to {
+        transform: translateX(-200px);
+        opacity: 0;
+    }
+
+    .slidehs-fade-enter-active {
+        transition: all .3s ease;
+    }
+    .slidehs-fade-leave-active {
+        transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slidehs-fade-enter, .slidehs-fade-leave-to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+
     .demand-describe{
         padding: 15px 0 15px 15px;
         flex: 1;
@@ -253,6 +270,7 @@
         position: relative;
         padding: 0 ;
         flex: 1;
+        overflow-x: hidden;
         >div{
             width: 100%;
             position: absolute;

@@ -138,7 +138,7 @@
             }
 
             this.state = this.state1;
-
+            tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         computed: {
             ...vx.mapGetters([
@@ -172,6 +172,7 @@
                 this.listItemIndex = index; //变成active状态
                 console.info('listItem:')
                 console.info(item)
+                tabulationBoxTrigger.hierarchy = true;
                 this.$ajax({
                     url:"/demandFind",
                     method: 'post',
@@ -184,7 +185,7 @@
                 }) .then((response) => {
                     console.info('我的发布详情:')
                     console.info(response.data.data)
-                    tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.data); //将item的参数传递给myPurpose.vue
+                    tabulationBoxTrigger.$emit('sendDataToMyPublish',response.data.data); //将item的参数传递给myPurpose.vue
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -223,21 +224,25 @@
             closeMyPublishShowFn: function () {
                 this.myPublishShow = false;
                 this.listItemIndex = '';
+                tabulationBoxTrigger.hierarchy = false;
             },
             // 点击关闭:我的发布-行线需求详情
             closeMyPublishAirlineFn: function () {
                 this.myPublishAirlineShow = false;
                 this.listItemIndex = '';
+                tabulationBoxTrigger.hierarchy = false;
             },
             // 点击关闭:我的发布-发布的运力托管
             closeMyPublishTransportEntrustFn: function () {
                 this.myPublishTransportEntrustShow = false;
                 this.listItemIndex = '';
+                tabulationBoxTrigger.hierarchy = false;
             },
             // 点击关闭:我的发布-发布的航线托管
             closeMyPublishAirLineEntrustFn: function () {
                 this.myPublishAirLineEntrustShow = false;
                 this.listItemIndex = '';
+                tabulationBoxTrigger.hierarchy = false;
             }
         },
         components: {
