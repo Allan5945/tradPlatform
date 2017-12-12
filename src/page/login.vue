@@ -12,12 +12,12 @@
     export default {
         data () {
             return {
-                username:'jichang',
-                password:'1',
-                name:1
 //                username:'jichang',
 //                password:'1',
 //                name:1
+                username:'hangsi',
+                password:'1',
+                name:1
             }
         },
         methods:{

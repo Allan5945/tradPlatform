@@ -693,6 +693,11 @@
                 }).then((response) => {
                     console.info('response:')
                     console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功添加该意向！')
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
                     let responseIDMes = {};           //响应ID，响应者ID
                     responseIDMes.responseId = response.data.response.id; //响应ID
                     responseIDMes.employeeId = response.data.response.employeeId; //响应者ID

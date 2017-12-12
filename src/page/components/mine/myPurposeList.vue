@@ -160,6 +160,7 @@
             }).catch((error) => {
                 console.log(error);
             });
+            tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         methods: {
             typeShowFn: function () {
@@ -186,6 +187,7 @@
                 this.myPurposeShow = true;
                 console.info('purposeItem:')
                 console.info(item)
+                tabulationBoxTrigger.hierarchy = true;
                 this.$ajax({
                     url:"/getResponseDetails",
                     method: 'post',
@@ -207,6 +209,7 @@
             closeThisFn: function () {
                 this.listItemIndex = '';
                 this.myPurposeShow = false;
+                tabulationBoxTrigger.hierarchy = false;
             }
         },
         computed: {

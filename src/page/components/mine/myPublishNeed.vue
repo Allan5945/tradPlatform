@@ -59,12 +59,15 @@
         </div>
         <div class="add-item item-container">
             <div class="left item font-gray">意向机场</div>
-            <div class="right item">
-                <span>北京首都机场</span>
+            <div class="right item" v-if="myData.intendedairline == 0">
+                <span>{{myData.intendedAirlines[0].dptName}}</span>
                 <span class="icon-item">&#xe672;</span>
-                <span>成都双流机场</span>
+                <span>{{myData.intendedAirlines[0].pstName}}</span>
                 <span class="icon-item">&#xe672;</span>
-                <span>浦东机场</span>
+                <span>{{myData.intendedAirlines[0].arrvName}}</span>
+            </div>
+            <div class="right item" v-else>
+                <span>无</span>
             </div>
         </div>
         <div class="fifth item-container">

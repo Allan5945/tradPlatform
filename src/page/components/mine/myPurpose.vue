@@ -170,7 +170,7 @@
                 console.info('sendDataToMyPurposeData:')
                 console.info(val)
 
-                /*if(this.demandData.responseId){
+                if(this.demandData.responseId){
                      this.$ajax({
                           method: 'post',
                           url: '/capacityRoutesDemandDetailFindById',
@@ -201,17 +201,17 @@
 
                           }
                       })
-                          .then((response) => {
-                             this.planData = response.data.data;
-                             console.log(this.planData)
+                      .then((response) => {
+                         this.planData = response.data.data;
+                         console.log(this.planData)
 
-                          })
-                          .catch((error) => {
-                                  console.log(error);
-                              }
-                          );
-                          }*/
-                      });
+                      })
+                      .catch((error) => {
+                              console.log(error);
+                          }
+                      );
+                      }
+                  });
 
       }
 
