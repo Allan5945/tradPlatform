@@ -25,6 +25,9 @@ export default {
     },
     routeNetwork:(state)=>{
         return state.routeNetwork;
+    },
+    userCenter:(state)=>{
+        return state.userCenter;
     }
 
 }

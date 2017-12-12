@@ -16,7 +16,7 @@
                 </div>
                 <div class="my-list">
                     <router-link v-for="(val,index) in myList" :to="val.u" :key="index">
-                        <div class="my-list-item" :class="{selected:(isActive == index)}" @click="isActive = index">{{val.n}}</div>
+                        <div class="my-list-item" :class="{selected:(userCenter.checked == index)}" @click="changeUserCenterActive({checked:index})">{{val.n}}</div>
                     </router-link>
                 </div>
             </div>
@@ -29,7 +29,7 @@
 import reviewList from './reviewList/viewTable.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import myPic from './../../../static/img/145.jpg';
-
+import * as vx from 'vuex'
     export default {
         data() {
             return {
@@ -60,11 +60,13 @@ import myPic from './../../../static/img/145.jpg';
             }
         },
         methods: {
-
+            ...vx.mapActions(['changeUserCenterActive'])
         },
         created:function () {
+            console.log(this.$store.state.mutations.uesrCenter);
         },
         computed:{
+            ...vx.mapGetters(['userCenter']),
             img:function(){
                 return myPic;
             },

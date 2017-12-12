@@ -1,12 +1,3 @@
-import {
-    TEST,
-    CLOSE,
-    INITIALIZE,
-    HYBRIDDATA,
-    MONODATA,
-    ROLE
-} from './types'
-import Vue from 'vue'
 import * as types from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -218,6 +209,9 @@ const mutations = {
     },
     [types.CHANGEORDER](state,vl) {
         state.demandList.conditions.order = !state.demandList.conditions.order;
+    },
+    [types.USERCENTER](state,val) {
+        state.userCenter.checked = val.checked;
     },
 };
 export default {

@@ -62,6 +62,7 @@
 </template>
 <script>
     import panel from './panel.vue';
+    import * as vx from 'vuex';
 
     export default {
         data() {
@@ -75,10 +76,6 @@
                 //不同需求类型展现的状态不同
                 type: ['航线需求','运力投放'],
                 progressState: {
-//                    '3': '关闭',
-//                    '5': '交易完成',
-//                    '6': '订单完成',
-//                    '7': '佣金支付'
                 },
                 demandId:null,
                 detailsPanel:{
@@ -105,6 +102,7 @@
             }
         },
         methods: {
+            ...vx.mapActions(['changeUserCenterActive']),
             delayChange: function () {  // 1000ms延迟
                 this.filterDelay = false;
                 setTimeout(()=>{
@@ -176,6 +174,7 @@
             }
         },
         mounted() {
+            this.changeUserCenterActive({checked:4});
             this.getListData();
         },
         components: {

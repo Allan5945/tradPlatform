@@ -422,9 +422,7 @@
 
 
         },
-         beforeMount:function () {
-
-
+        beforeMount:function () {
 
         }
 
