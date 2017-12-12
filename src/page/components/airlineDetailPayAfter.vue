@@ -300,7 +300,7 @@
             <span style="width: 560px;height: 2px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w">收藏</button>
+                <button class="btn btn-w" @click="addCollectFn">收藏</button>
             </div>
         </div>
         <div class="second-button" v-show="secondButtonShow">
@@ -312,7 +312,7 @@
 
         <div class="bottom" v-show="fifthButtonShow">
             <div class="buttons">
-                <button class="btn btn-b" @click="closeThisFn()">委托代理</button>
+                <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
                 <button class="btn btn-w" @click="closeThisFn">结束需求</button>
             </div>
         </div>
@@ -549,6 +549,30 @@
             closeThisFn: function () {
                 this.$emit('closeThis')
             },
+            // 点击“委托代理”(删除“委托代理”按钮)
+           /* entrustFn: function () {
+                this.$ajax({
+                    url:"/demandAdd",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demand: this.id
+                    }
+                }) .then((response) => {
+                    console.info('collect:')
+                    console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功收藏！')
+                    }else{
+                        alert('错误代码：'+ response.data.opResult)
+                    }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
+            },*/
             /*initData: function () {
                 this.$ajax({
                     url:"/capacityRoutesDemandDetailFindById",
@@ -626,6 +650,30 @@
                 supProperty.periodValidity = this.myData.periodValidity;
                 supProperty.releasetime = this.myData.releasetime;
                 tabulationBoxTrigger.$emit('supProperty',supProperty); //向airlineWrite.vue传一些数据
+            },
+            // 点击“收藏”
+            addCollectFn: function () {
+                this.$ajax({
+                    url:"/addCollect",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandIds: this.id
+                    }
+                }) .then((response) => {
+                    console.info('collect:')
+                    console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('收藏成功！')
+                    }else{
+                        alert('错误代码：'+ response.data.opResult)
+                    }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                }) .catch((error) => {
+                    console.log(error);
+                });
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
@@ -817,7 +865,8 @@
         position: absolute;
         top: 0px;
         right: 0px;
-        padding-bottom: 100px;
+        /*padding-bottom: 100px;*/
+        padding-bottom: 0;
         box-sizing: border-box;
         width: 600px;
         height: 100%;
@@ -826,6 +875,12 @@
         color: $font-color;
         /*transform:translate(0,0);*/
         z-index: 10;
+    }
+    .ald-container::after {
+        display: block;
+        height: 100px;
+        content: '';
+
     }
 
     .ald-container::-webkit-scrollbar {
@@ -1218,7 +1273,7 @@
         right: 0;
         bottom: 0;
         display: flex;
-        /*justify-content: center;*/
+        justify-content: center;
         width: 600px;
         height: 100px;
         background: white;
@@ -1226,7 +1281,7 @@
         .buttons {
             display: flex;
             margin-top: 18px;
-            margin-left: 140px;
+            /*margin-left: 140px;*/
             height: 40px;
             > .btn-b {
                 margin-right: 14px;
