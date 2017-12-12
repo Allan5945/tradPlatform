@@ -80,7 +80,7 @@ const router = new VueRouter({
 })
 let token = false;
 router.beforeEach((to, from, next) => {
-    let token = token || (window.sessionStorage.getItem('isLogin')==='ok');
+    token = token || (window.sessionStorage.getItem('isLogin')==='ok');
     if(to.meta.requireAuth){//需要登录
         if(token) next();
         else{
