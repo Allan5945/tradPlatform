@@ -704,7 +704,7 @@
                     console.info("responseIDMes:");
                     console.info(responseIDMes);
 
-                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
+//                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
                     tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
                     console.info('responseId:' + this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});

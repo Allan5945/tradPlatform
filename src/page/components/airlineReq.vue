@@ -567,7 +567,13 @@
                     },
                     params: sendData
                 }) .then((response) => {
-                    console.info(response.data)
+                    console.info('1response:')
+                    console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功发布！')
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);

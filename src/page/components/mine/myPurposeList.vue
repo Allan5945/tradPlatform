@@ -119,13 +119,13 @@
             });
         },
         mounted() {
-            // 判断(0:航司,1:机场(政府),2:太美)
-            if(this.role.role == 0) {
+            // 判断(0:航司,1:机场(政府),2:太美)，我的意向: 航司：航线需求,机场：运力需求
+            if(this.role.role == 1) {  // 机场
                 this.type = this.type0;
                 this.myData = this.myData0;
                 this.typeWriting = '运力需求';
                 this.state = this.state2;
-            }if(this.role.role == 1) {
+            }if(this.role.role == 0) {  // 航司
                 this.type = this.type1;
                 this.myData = this.myData1;
                 this.typeWriting = '航线需求';
@@ -183,8 +183,6 @@
             },
             // 点击列表(list)，展示详情
             listClickFn: function (item,index) {
-                this.listItemIndex = index; //变成active状态
-                this.myPurposeShow = true;
                 console.info('purposeItem:')
                 console.info(item)
                 tabulationBoxTrigger.hierarchy = true;
@@ -200,7 +198,14 @@
                 }) .then((response) => {
                     console.info('我的意向详情:')
                     console.info(response.data.obj)
-                    tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.obj); //将item的参数传递给myPurpose.vue
+                    if(response.data.opResult == 0){
+                        this.listItemIndex = index; //变成active状态
+                        this.myPurposeShow = true;
+                        tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.obj); //将item的参数传递给myPurpose.vue
+                    }else {
+                        alert('错误代码response.data.opResult：' + response.data.opResult)
+                    }
+
                 }).catch((error) => {
                     console.log(error);
                 });
