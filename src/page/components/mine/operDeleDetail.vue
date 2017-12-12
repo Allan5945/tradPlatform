@@ -6,7 +6,7 @@
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="contact">联系用户</div>
                 <div class="tips">
-                    <div>委托方&nbsp;成都双流机场</div>
+                    <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
                     <div v-show="orderShow"><span>委托响应中</span></div>
                 </div>
@@ -113,7 +113,8 @@ import operDeleForm from './operDeleForm.vue'
             dialogShow:false,
             orderShow:false,
             formShow:false,
-            detailData:{}
+            detailData:{},
+            CpyNm:''//委托方
          }
      },
       props:['demandId'],
@@ -152,7 +153,7 @@ import operDeleForm from './operDeleForm.vue'
                   }
                 })
                 .then((response) => {
-                    this.intentionCount = response.data.intentionCount;
+                    this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
                     console.log( this.detailData)
                 })
@@ -173,7 +174,7 @@ import operDeleForm from './operDeleForm.vue'
         position:absolute;
         top:0;
         right:0;
-        z-index: 12;
+        z-index: 20;
         width:607px;
         height:100%;
         min-height:600px;

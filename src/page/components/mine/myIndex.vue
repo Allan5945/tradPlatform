@@ -38,7 +38,7 @@ import myPic from './../../../static/img/145.jpg';
                     u: '/index/userCenter/reviewList'
                 }, {
                     n: "委托/托管",
-                    u: '/index/userCenter'
+                    u: '/index/userCenter/entrust'
                 }, {
                     n: "我的发布",
                     u: '/index/userCenter/myRelease'

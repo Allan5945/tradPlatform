@@ -4,7 +4,7 @@
             <span>&#xe647;</span>
             退出
         </a>
-        <router-link to="/index/userCenter">
+        <router-link to="/index/userCenter/reviewList">
             <span>&#xe60f;</span>
             个人中心
         </router-link>

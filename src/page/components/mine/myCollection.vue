@@ -28,7 +28,7 @@
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div class="lists-containt">
+                <div class="lists-containt" v-if="collectList">
                     <!--点击列表展示发布详情-->
                     <div class="list items" :class="{'list-active':false}" v-for="val in collectList" >
                         <div class="list-a item">
@@ -74,7 +74,14 @@
                 type: ['运力投放','航线需求'],
                 state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
                 collectList:null,
-                demandId:null
+                demandId:null,
+                sentData:{
+                    page: 1,
+                    pageNo:4,
+                    demandType: null,
+                    demandProgress:null,
+                    releaseTime:"Desc"
+                }
             }
         },
         methods: {
@@ -86,9 +93,17 @@
             },
             typeClickFn: function (item) {
                 this.typeWriting = item;
+                this.stateWriting = '状态';
+                this.sentData.demandProgress = '';
+                if(item == '航线需求') {
+                    this.sentData.demandType = "0";
+                }else if(item == '运力投放') {
+                    this.sentData.demandType = "1";
+                }
             },
             stateClickFn: function (item) {
                 this.stateWriting = item;
+                 this.sentData.demandProgress = this.turnProgress(item);
             },
              openDetail:function(val){
                 this.demandId = val.id;
@@ -100,13 +115,14 @@
             },
             timeSort:function(){
                 this.sorted = !this.sorted;
+                this.sentData.releaseTime = this.sorted? 'Desc': 'Asc';
 
             },
             myDemand:function(val){
-               if(val == 0){
+               if(val == '0'){
                     return "航线需求";
                }
-               else if(val == 1){
+               else if(val == '1'){
                     return "运力投放";
                }
             },
@@ -131,35 +147,63 @@
                             return "需求审核";
                             break;
                     }
-            }
+            },
+            turnProgress:function(val){
+                    switch (val) {
+                        case "需求发布":
+                            return "0";
+                            break;
+                        case "意向征集":
+                            return "1";
+                            break;
+                        case "订单确认":
+                            return "2";
+                            break;
+                        case "关闭":
+                            return "3";
+                            break;
+                        case "订单完成":
+                            return "4";
+                            break;
+                        case "需求审核":
+                            return "9";
+                            break;
+
+                    }
+            },
+            getListData:function(){
+                    let that = this;
+                    this.$ajax({
+                        method: 'GET',
+                        url: '/selectCollectList',
+                        params: this.sentData
+                    }).then(res => {
+                        if(res && res.data.opResult == 0){
+                            that.collectList = res.data.list.list;
+                        }else{
+                            that.collectList = null;
+                            alert('暂无返回，请稍后重试。')
+                        }
+                    }).catch( error => {
+                            console.log(error);
+                        }
+                    );
+            },
         },
-        computed:{
-            timeselec:function(){
-                return this.sorted? 'Desc': 'Asc';
-            }
+        watch:{
+            'sentData.releaseTime': function(){
+                this.getListData();
+            },
+            'sentData.demandType':function(){
+                this.getListData();
+            },
+             'sentData.demandProgress':function(){
+                this.getListData();
+            },
         },
         mounted() {
-          this.$ajax({
-                method: 'post',
-                url: '/selectCollectList',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page: 1,
-                    pageNo:4,
-                    releaseTime:this.timeselec
-                }
-                })
-                .then((response) => {
-                   this.collectList = response.data.list.list;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-
-     },
+            this.getListData();
+         },
         components: {
             stateList,
             collectDetail

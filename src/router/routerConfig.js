@@ -12,7 +12,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 审核列表
         const reviewList = resolve => require(['$src/page/components/mine/reviewList/viewTable.vue'], resolve);
         // 委托/托管
-        // const entrust = resolve => require(['...'], resolve);
+         const entrust = resolve => require(['./../page/components/mine/myOperAgent.vue'], resolve);
         // 我的发布
         const myRelease = resolve => require(['./../page/components/mine/myPublishList.vue'], resolve);
         // 我的意向
@@ -56,9 +56,9 @@ const router = new VueRouter({
                             component: reviewList
                         },
                         {
-                            path: '',
-                            redirect:"reviewList"
-                        },
+                            path: 'entrust',
+                            component: entrust
+                        }
                     ]
                 }
             ]

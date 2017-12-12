@@ -280,7 +280,7 @@ import * as vx from 'vuex'
         position:absolute;
         top:0;
         right:0;
-        z-index: 12;
+        z-index: 16;
         width:600px;
         box-sizing:border-box;
         height:100%;
