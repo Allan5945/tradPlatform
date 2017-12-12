@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="detail-wrapper">
+        <div class="detail-wrapper"  v-if="detailData">
             <header>
                 <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
@@ -9,7 +9,23 @@
                     <span class="intent-count">已有{{intentionCount}}位用户发起意向</span>
                 </div>
             </header>
-            <div class="content">
+            <div class="content airport">
+                <div>
+                <div>机型</div>
+                <div>{{detailData.aircrfttyp}}</div>
+                </div>
+                 <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>***</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm}}</div>
+                </div>
                 <div >
                     <div>出港时刻</div>
                     <div>{{detailData.dptTime}}</div>
@@ -18,27 +34,19 @@
                     <div>班期</div>
                     <div>{{detailData.days}}</div>
                 </div>
-                <div>
-                    <div>机型</div>
-                    <div>{{detailData.aircrfttyp}}</div>
-                </div>
-                 <div>
-                    <div>运力基地</div>
-                    <div>{{detailData.dptNm}}</div>
-                </div>
-                <div>
-                    <div>运力归属</div>
-                    <div>***</div>
-                </div>
-                <div>
-                    <div>座位布局</div>
-                    <div>{{detailData.seating}}</div>
-                </div>
+               <div class="intent-airline" v-if="detailData.intendedAirlines">
+                   <div>意向航线</div>
+                   <div class="i-line">
+                     {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].arrvName}}
+                   </div>
+               </div>
                 <div>
                     <div>小时成本</div>
                     <div>{{detailData.hourscost}}万/小时</div>
                 </div>
-                <div>
+                <div style="margin:0 0 0 40px;">
                     <div>接受调度</div>
                     <div>{{detailData.schedulingStr}}</div>
                 </div>
@@ -47,6 +55,81 @@
                     <div>{{detailData.periodValidity}}</div>
                 </div>
             </div>
+              <!-- <div class="airline">
+                    <div class="airline-detail">
+                        <div class="airline">
+                            <div class="airplace">
+                                <div>始发机场</div>
+                                <div>
+                                    <div>{{detailData.dpt}}</div>
+                                    <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
+                                </div>
+                                <div class="resouse">
+                                    <div>出港资源</div>
+                                    <div>{{detailData.dptTime}}</div>
+                                </div>
+                            </div>
+                            <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                            <div class="airplace">
+                                <div>经停机场</div>
+                                <div>
+                                    <div>{{detailData.pst}}</div>
+                                    <div v-if="detailData.pstAcceptnearairport == 0">接受临近机场</div>
+                                </div>
+                                <div class="resouse">
+                                    <div>出港资源</div>
+                                    <div>{{detailData.pstTime}}</div>
+                                </div>
+                            </div>
+                            <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                            <div class="airplace">
+                                <div>到达区域</div>
+                                <div>
+                                    <div>{{detailData.arrv}}</div>
+                                    <div v-if="detailData.arrvAcceptnearairport == 0">接受临近机场</div>
+                                </div>
+                                <div class="resouse">
+                                    <div>出港资源</div>
+                                    <div>{{detailData.arrvTime}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-form">
+                            <div>
+                                <div>拟开时间</div>
+                                <div>{{detailData.sailingtime}}</div>
+                            </div>
+                            <div>
+                                <div>拟开班期</div>
+                                <div>{{detailData.days}}</div>
+                            </div>
+                            <div>
+                                <div>拟飞机型</div>
+                                <div>{{detailData.aircrfttyp}}</div>
+                            </div>
+                            <div>
+                                <div>座位数</div>
+                                <div>{{detailData.seating}}</div>
+                            </div>
+                            <div>
+                                <div>客量期望</div>
+                                <div>{{detailData.avgguestexpect}}人</div>
+                            </div>
+                            <div>
+                                <div>客座率期望</div>
+                                <div>{{detailData.loadfactorsexpect}}%</div>
+                            </div>
+                            <div>
+                                <div>补贴政策</div>
+                                <div>{{detailData.subsidypolicy}}</div>
+                            </div>
+                            <div>
+                                <div>有效期</div>
+                                <div>{{detailData.periodValidity}}</div>
+                            </div>
+                        </div>
+                    </div>
+              </div> -->
             <footer>
                 <div>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
@@ -55,18 +138,19 @@
                 </div>
             </footer>
         </div>
-       <intentForm v-show="intentFormShow" @closeForm="closeForm"></intentForm>
+      <!--  <intentForm v-show="intentFormShow" @closeForm="closeForm"></intentForm> -->
     </div>
 </template>
 
 <script>
- /*import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import * as vx from 'vuex';*/
- import intentForm from './../trans_detail/intentForm.vue'
- export default {
+  import * as vx from 'vuex';
+ /* import intentForm from './../trans_detail/intentForm.vue'*/
+  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+
+  export default {
      data(){
          return{
-             detailData:{},
+             detailData:null,
              intentionCount:0,
              intentFormShow:false
          }
@@ -104,6 +188,8 @@
     props:['demandId'],
 
     mounted() {
+          tabulationBoxTrigger.hierarchy = true;
+          let that =this;
           this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -111,12 +197,17 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId:this.demandId
+                    demandId:that.demandId
                   }
                 })
                 .then((response) => {
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
+                    if(response){
+                        that.intentionCount = response.data.intentionCount;
+                        that.detailData = response.data.data;
+                    } else{
+                        that.detailData = null;
+                        alert('暂无返回，请稍后重试。')
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -124,8 +215,11 @@
                 );
 
      },
+    destroyed: function () {
+        tabulationBoxTrigger.hierarchy = false;
+    },
     components:{
-        intentForm
+        /*intentForm*/
      }
 }
 </script>
@@ -224,6 +318,18 @@
       }
       >div:nth-of-type(odd){
           margin-right:40px;
+      }
+      .intent-airline{
+          width:100%;
+          .i-line{
+              width:440px;
+              margin-right:0;
+              display: flex;
+              .iconfont{
+                display:block;
+                margin:0 25px;
+              }
+          }
       }
     }
     footer{

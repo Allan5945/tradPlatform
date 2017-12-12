@@ -20,7 +20,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 我的订单
         // const myOrder = resolve => require(['...'], resolve);
         // 我的收藏
-        const myCollection = resolve => require(['./../page/components/mine/myCollection.vue'], resolve);
+        const myCollection = resolve => require(['./../page/components/mine/collectList/myCollection.vue'], resolve);
         // 公司账户
         // const companyAccount = resolve => require(['...'], resolve);
 Vue.use(VueRouter);

@@ -416,11 +416,11 @@
     import calendar from './../calendar'
 
     export default {
-        props: {
+       /* props: {
             acceptData: {
                 type: Object
             }
-        },
+        },*/
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -556,20 +556,9 @@
                 this.warn4Show = false;
             }
         },
-        created() {
-           /* tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.sendData.demandId = val.data.id;
-                this.sendData.employeeId = val.data.employeeId;
-            })
-            tabulationBoxTrigger.$on('supProperty', val => {
-                this.sendData.title = val.title;
-                this.sendData.periodValidity = val.periodValidity;
-                this.sendData.releasetime = val.releasetime;
-            })*/
-        },
         mounted() {
 //            console.info(this.acceptData)
-            let acceptData = this.acceptData;
+            /*let acceptData = this.acceptData;
             if (acceptData.dptState == 0) {
                 this.space1Fn('意向机场');
                 this.firArea = acceptData.dptNm;
@@ -593,12 +582,13 @@
             if (acceptData.arrvState == 1) {
                 this.space3Fn('意向区域');
                 this.thirdArea = acceptData.arrv;
-            }
+            }*/
 
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
                     this.demandData.demandId = val.data.id;
                     this.demandData.employeeId = val.data.employeeId;
                     this.demandData.demandType = val.data.demandtype;
+                    console.log(this.demandData)
             });
         },
         computed: {
@@ -636,6 +626,7 @@
                     this.warn4Show = true;
                     return
                 }*/
+                 console.log(this.demandData)
                 this.sendData.demandId = this.demandData.demandId;
                 this.sendData.employeeId =this.demandData.employeeId;
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
@@ -1375,7 +1366,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 13;
+        z-index: 17;
     }
 
     .container {

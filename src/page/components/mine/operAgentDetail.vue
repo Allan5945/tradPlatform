@@ -9,7 +9,8 @@
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
                     <div>状态:
-                        <span v-if="testingShow" class="testing">测评中</span>
+                        <span v-if="testingShow" class="testing"  v-show="!isTest">测评中</span>
+                        <span v-if="testingShow" class="testing"  v-show="isTest">待处理</span>
                         <span v-else class="refused">已拒绝</span>
                     </div>
                 </div>
@@ -41,10 +42,12 @@
                 </div>
             </div>
             <footer>
-                <div class="foot-tips" v-if="testingShow">*需求测评中...</div>
+                <div class="foot-tips" v-if="testingShow"  v-show="isTest"></div>
+                <div class="foot-tips" v-if="testingShow"  v-show="!isTest">*需求测评中...</div>
                 <div class="foot-tips red" v-else>*拒绝原因：{{refuseText}}</div>
                 <div class="btn">
-                    <div class="test-btn" v-if="testingShow">测评该需求</div>
+                    <div class="test-btn" v-if="testingShow" @click="toTest" v-show="isTest">测评该需求</div>
+                    <div class="test-btn" v-if="testingShow" v-show="!isTest">接受委托</div>
                     <div class="can-btn" @click="cancel" v-if="testingShow">拒绝</div>
                 </div>
             </footer>
@@ -55,11 +58,14 @@
 
 <script>
 import refuseDialog from './refuseDialog.vue';
+import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+
  export default {
      data(){
          return{
             dialogShow:false,
             testingShow:true,
+            isTest:true,
             detailData:{},
             refuseText:'',
             CpyNm:''
@@ -72,6 +78,9 @@ import refuseDialog from './refuseDialog.vue';
         },
         cancel:function(){
           this.dialogShow = true;
+        },
+        toTest:function(){
+            this.isTest =false;
         },
         sureDialog(text){
           this.dialogShow = false;
@@ -86,6 +95,7 @@ import refuseDialog from './refuseDialog.vue';
 
         },
       mounted() {
+          tabulationBoxTrigger.hierarchy = true;
           this.$ajax({
                 method: 'post',
                 url: '/getCommissionedAndCustodyDemandDetails',
@@ -106,6 +116,9 @@ import refuseDialog from './refuseDialog.vue';
                 );
 
      },
+    destroyed: function () {
+        tabulationBoxTrigger.hierarchy = false;
+    },
      components: {
           refuseDialog
      }

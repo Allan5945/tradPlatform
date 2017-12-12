@@ -89,6 +89,7 @@
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
+            <!-- <sonNeedDetail></sonNeedDetail> -->
             <footer>
                 <div class="foot-tips"></div>
                 <div class="btn" v-if="orderShow">
@@ -101,12 +102,15 @@
                 </div>
             </footer>
         </div>
-        <operDeleForm v-show="formShow"></operDeleForm>
+        <operDeleForm v-show="formShow" @closeForm="closeForm" :demandId = "demandId"></operDeleForm>
     </div>
 </template>
 
 <script>
 import operDeleForm from './operDeleForm.vue'
+import sonNeedDetail from './sonNeedDetail.vue'
+import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+
  export default {
      data(){
          return{
@@ -136,12 +140,17 @@ import operDeleForm from './operDeleForm.vue'
         },
         cancel(){
 
+        },
+        closeForm(){
+          this.formShow =false;
         }
      },
      computed: {
 
         },
       mounted() {
+          tabulationBoxTrigger.$emit('getSonId', this.demandId);
+          tabulationBoxTrigger.hierarchy = true;
           this.$ajax({
                 method: 'post',
                 url: '/getCommissionedAndCustodyDemandDetails',
@@ -163,8 +172,12 @@ import operDeleForm from './operDeleForm.vue'
                 );
 
      },
+    destroyed: function () {
+        tabulationBoxTrigger.hierarchy = false;
+    },
      components: {
-        operDeleForm
+        operDeleForm,
+        sonNeedDetail
      }
 }
 </script>
