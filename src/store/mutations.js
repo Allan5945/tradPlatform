@@ -210,9 +210,6 @@ const mutations = {
     [types.CHANGEORDER](state,vl) {
         state.demandList.conditions.order = !state.demandList.conditions.order;
     },
-    [types.USERCENTER](state,val) {
-        state.userCenter.checked = val.checked;
-    },
 };
 export default {
 	state,
