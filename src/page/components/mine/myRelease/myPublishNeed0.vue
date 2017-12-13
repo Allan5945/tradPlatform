@@ -487,8 +487,9 @@
                             this.pstTime1 = this.myData.pstTime.split(',')[1];
                             this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                             this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
-                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
+                            this.periodValidity0 = this.myData.periodValidity;
+//                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
+//                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
                             if (this.myData.subsidypolicy == 0) {
                                 this.subsidypolicy = '定补'
                             }
