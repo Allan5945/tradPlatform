@@ -150,8 +150,8 @@
 </template>
 <script>
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import calendar from '../calendar.vue'
- import airportS from '../../reuseComponents/airportSearch.vue'
+ import calendar from '../../calendar.vue'
+ import airportS from '../../../reuseComponents/airportSearch.vue'
     export default {
         data () {
             return{

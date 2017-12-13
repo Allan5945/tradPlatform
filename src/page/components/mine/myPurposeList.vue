@@ -62,7 +62,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
-    import myPurpose from './myPurpose.vue'
+    import myPurpose from './myIntention/myPurpose.vue'
 
     export default {
         data() {
@@ -185,7 +185,6 @@
             listClickFn: function (item,index) {
                 console.info('purposeItem:')
                 console.info(item)
-                tabulationBoxTrigger.hierarchy = true;
                 this.$ajax({
                     url:"/getResponseDetails",
                     method: 'post',
@@ -202,6 +201,7 @@
                         this.listItemIndex = index; //变成active状态
                         this.myPurposeShow = true;
                         tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.obj); //将item的参数传递给myPurpose.vue
+                        tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                     }else {
                         alert('错误代码response.data.opResult：' + response.data.opResult)
                     }

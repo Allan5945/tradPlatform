@@ -62,7 +62,6 @@
 </template>
 <script>
     import panel from './panel.vue';
-    import * as vx from 'vuex';
 
     export default {
         data() {
@@ -102,7 +101,6 @@
             }
         },
         methods: {
-            ...vx.mapActions(['changeUserCenterActive']),
             delayChange: function () {  // 1000ms延迟
                 this.filterDelay = false;
                 setTimeout(()=>{
@@ -174,7 +172,6 @@
             }
         },
         mounted() {
-            this.changeUserCenterActive({checked:4});
             this.getListData();
         },
         components: {
