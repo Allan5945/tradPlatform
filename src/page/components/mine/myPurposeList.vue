@@ -62,7 +62,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from './stateList.vue'
-    import myPurpose from './myPurpose.vue'
+    import myPurpose from './myIntention/myPurpose.vue'
 
     export default {
         data() {

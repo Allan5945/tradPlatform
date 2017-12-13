@@ -96,8 +96,22 @@
                         <div class="item-a">{{myData.days}}</div>
                         <div class="item-b">{{myData.seating}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                        <div class="item-d" style="display: flex;">{{periodValidity0}}
-                            <!--<span class="icon-item" v-show="secondShow">&#xe653;</span>-->
+                        <div class="item-d" style="display: flex; position: relative;">{{periodValidity0}}
+                            <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
+                            <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
+                                <div class="selec-data">
+                                    <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
+                                    <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                    <div class="confirm-btn btn" @click="getMyDate1">确定</div>
+                                    <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                                </div>
+                                <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
+                                    <!-- 可传入初始值 -->
+                                </calendar>
+                                <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
+                                    <!-- 可传入初始值 -->
+                                </calendar>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -334,6 +348,7 @@
     import airlineAffirm from './airlineAffirm.vue'
     import paySuccess from './trans_detail/paySuccess.vue'
     import airlinePay from './trans_detail/dialog.vue'
+    import calendar from './calendar'
 
     export default {
         data() {
@@ -374,6 +389,11 @@
                 checkDetailIndex: '', //点击“查看详情”对应的展开
                 releaseselectedShow: true,  //发布者是否已选定 0:表示选定,1:表示未选定
                 airlineAffirmUnchooseData: {}, //“撤销选定”发的对象
+                /*日历*/
+                calendarInitDay1: '', //日历
+                calendarInitDay2: '',
+                calendarShow1: false,
+                myDate1: '',
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -466,8 +486,9 @@
                             this.pstTime1 = this.myData.pstTime.split(',')[1];
                             this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                             this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
-                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
+                            this.periodValidity0 = this.myData.periodValidity;
+//                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
+//                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
                             if (this.myData.subsidypolicy == 0) {
                                 this.subsidypolicy = '定补'
                             }
@@ -490,7 +511,6 @@
                             }if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
                                 this.showCode = 3;
-
                                 // 获取意向列表数据
                                 let toAcceptrResponseList = {};
                                 toAcceptrResponseList.demandId = this.id;
@@ -647,6 +667,23 @@
 //                    this.fourthButtonShow = true;
                     this.fifthButtonShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
+                }
+            },
+            // 日历
+            editCalendarFn: function () {
+                this.calendarShow1 = true;
+            },
+            getDate1: function (d) {//获取组件返回的日期
+                this.calendarInitDay1 = d.split('-').join('.');
+            },
+            getDate2: function (d) {
+                this.calendarInitDay2 = d.split('-').join('.');
+            },
+            getMyDate1: function () {//获取起始的日期
+                if (this.calendarInitDay1 && this.calendarInitDay2) {
+                    this.periodValidity0 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                    this.calendarShow1 = false;
+                } else {
                 }
             },
             //点击“我有意向”，组件“请填写完整方案”显示
@@ -810,7 +847,8 @@
 //            airlinePay,
             airlineAffirm,
             paySuccess,
-            airlinePay
+            airlinePay,
+            calendar
         }
     }
 </script>
@@ -870,6 +908,82 @@
     .btn-w {
         outline: none;
     }
+
+    /*日历样式*/
+    #search {
+        padding-top: 100px;
+    }
+
+    .left-side-box {
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+    .calendar-box {
+        position: absolute;
+        width: 540px;
+        height: 270px;
+        padding: 20px 10px 10px 10px;
+        z-index: 1;
+    }
+
+    .calendar-box .selec-data {
+        height: 30px;
+        font-size: 12px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .calendar-box .selec-data input {
+        height: 100%;
+        width: 75px;
+        font-size: 12px;
+        padding-left: 15px;
+        border: 0;
+        outline: none;
+        border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+    }
+
+    .calendar-box .selec-data span {
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+    }
+
+    .selec-data .btn {
+        position: absolute;
+        top: 0;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 100px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .selec-data .confirm-btn {
+        right: 0;
+        width: 60px;
+        color: #ffffff;
+        background-color: #3c78ff;
+    }
+
+    .selec-data .cancel-btn {
+        width: 50px;
+        color: rgba(96, 94, 124, .6);
+        box-sizing: border-box;
+        border: 1px solid rgba(96, 94, 124, .6);
+        right: 64px;
+    }
+
+    .popup {
+        border-radius: 4px;
+        opacity: 1;
+        background-color: white;
+        box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+    }
+
+    /*********/
 
     .wrapper {
 
@@ -994,16 +1108,17 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                line-height: 40px;
+                >div {
+                    display: flex;
+                    align-items: center;
+                    height: 40px;
+                }
             }
             .left {
                 width: 80px;
             }
             .right {
                 width: 160px;
-                .item-a, .item-b, .item-c, .item-d {
-                    height: 40px;
-                }
             }
         }
     }

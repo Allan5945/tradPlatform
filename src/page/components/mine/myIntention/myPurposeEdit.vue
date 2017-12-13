@@ -320,7 +320,7 @@
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
                                     <input type="radio" class="magic-radio" name="subsidy" id="subsidyYes" checked/>
-                                    <label for="subsidyYes" class="input-label">有补贴</label>
+                                    <label for="subsidyYes" class="input-label" @click="subsidyClick0">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px;"
                                          @click="subsidy = !subsidy">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
@@ -334,13 +334,13 @@
                                 <div style="display: flex">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="subsidy" id="subsidyNo"
-                                               @click="subsidyClick1"/>
-                                        <label for="subsidyNo" class="input-label">无补贴</label>
+                                               />
+                                        <label for="subsidyNo" class="input-label" @click="subsidyClick1">无补贴</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="subsidy" id="subsidyTalk"
-                                               @click="subsidyClick2"/>
-                                        <label for="subsidyTalk" class="input-label">可面谈</label>
+                                               />
+                                        <label for="subsidyTalk" class="input-label" @click="subsidyClick2">可面谈</label>
                                     </div>
                                 </div>
                             </div>
@@ -348,7 +348,7 @@
                         <div class="left item-child">
                             <div class="vertical-center">
                                 <input type="radio" class="magic-radio" id="acceptDispatch"/>
-                                <label for="acceptDispatch" class="input-label">接受调度</label>
+                                <label for="acceptDispatch" class="input-label" @click="jieshoudiaodu">接受调度</label>
                             </div>
                             <!--<span class="margin-right">拦标价格</span>　
                             <div class="choose-input">
@@ -667,7 +667,13 @@
                 }
 //                sendData.pstCt = this.secAreaCode; //不传
                 this.sendData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
-//                sendData.arrv = this.thirdAreaCode;//选填 到达地
+                /*if (this.arrvState == 0) {
+                    this.sendData.arrv = this.qyCode3;//选填 经停地，机场三字码
+                }
+                if (this.arrvState == 1) {
+                    this.sendData.arrv = this.thirdAreaCode;//选填 经停地
+                }*/
+//                this.sendData.arrv = this.thirdAreaCode;//选填 到达地
                 this.sendData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
                 if (this.arrvState == 0) {
                     this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
@@ -1027,11 +1033,19 @@
                 this.calendarInitDay4 = d.split('-').join('.');
             },
             //补贴点击，改变补贴码
+            subsidyClick0: function () {
+                console.info('有补贴')
+            },
             subsidyClick1: function () {
                 this.subsidyCode = 4;
+                console.info('无补贴')
             },
             subsidyClick2: function () {
                 this.subsidyCode = 3;
+                console.info('可面谈')
+            },
+            jieshoudiaodu: function () {
+                console.info('接受调度')
             },
             //点击定向发布
             directionPublic: function () {
@@ -1263,7 +1277,6 @@
         position: absolute;
         display: none;
     }
-
     .magic-radio + label {
         display: flex;
         align-items: center;
@@ -1278,15 +1291,14 @@
             border-radius: 50%;
         }
     }
-
     .magic-radio:checked + label {
         &:before {
             content: '\e622';
             color: $icon-color;
         }
     }
-
     /****************************/
+
 
     /*日历样式*/
     #search {

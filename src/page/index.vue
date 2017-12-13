@@ -46,8 +46,8 @@
     import infPanel from './components/independenceComponents/infPanel.vue'
     import myIndex from './../page/components/mine/myIndex.vue'
     import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
-    import myPublish from './components/mine/myPublishNeed.vue'
-    import myPurpose from './../page/components/mine/myPurpose.vue'
+    import myPublish from './components/mine/myRelease/myPublishNeed.vue'
+    import myPurpose from './components/mine/myIntention/myPurpose.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
