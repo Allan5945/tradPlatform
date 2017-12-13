@@ -217,7 +217,7 @@ import * as vx from 'vuex'
             this.$emit("formShow");
          },
          cancelSel:function(val){
-          this.$ajax({
+         /* this.$ajax({
                 method: 'post',
                 url: '/selectedResponse',
                 headers: {
@@ -230,13 +230,15 @@ import * as vx from 'vuex'
                 }
                 })
                 .then((response) => {
-                     this.selShow = true;
+
                 })
                 .catch((error) => {
                         console.log(error);
                     }
-                );
+                );*/
+                this.selShow = true;
          }
+
 
      },
       computed: {

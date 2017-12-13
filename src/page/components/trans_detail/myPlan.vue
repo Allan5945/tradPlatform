@@ -59,7 +59,7 @@
             <div class="myplan">
                 <div class="plan-til">
                     <div>我发出的方案</div>
-                    <div><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                    <div style="cursor:pointer;" @click="getSureForm"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                 </div>
                 <div class="airline">
                     <div class="airplace">
@@ -171,7 +171,9 @@
          closeDetail:function(){
              this.$emit('showPlan');
          },
-
+          getSureForm:function(){
+          this.$emit("getSureForm");
+         }
      },
       computed:{
 

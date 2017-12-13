@@ -9,9 +9,10 @@
             <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
         </transition>
         <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
-        <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
-        <respondAirport @responseShow="responShow" @responseClose="responClose" v-show="respond"></respondAirport>
+        <myPlan v-show="planShow" @showPlan="showPlan" @getSureForm="getSureForm"></myplan>
+        <respondAirport @responseShow="responShow" @responseClose="responClose" v-show="respond" @getSureForm="getSureForm"></respondAirport>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
+        <sureForm v-show="sureFormShow" @closeForm="closeSureForm"></sureForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
          <infPanel></infPanel>
@@ -34,12 +35,13 @@
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
     import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm.vue'
+    import intentForm from './../page/components/trans_detail/intentForm1.vue'
+    import sureForm from './../page/components/trans_detail/sureForm.vue'
     import myPlan from './../page/components/trans_detail/myPlan.vue'
     import myIntention from './../page/components/trans_detail/myIntention.vue'
     import transDialog from './../page/components/trans_detail/dialog.vue'
     import respondAirport from './../page/components/trans_detail/respondAirport.vue'
-    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
+    import myIntentForm from './../page/components/trans_detail/myIntentForm1.vue'
     import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
@@ -65,6 +67,7 @@
                 dialog:false,
                 payDialog:false,
                 intentFormShow:false,
+                sureFormShow:false,
                 planShow:false,
                 respond:false,
                 intentShow:false,
@@ -109,6 +112,12 @@
             },
             closeForm(){
                 this.intentFormShow = !this.intentFormShow;
+            },
+            closeSureForm(){
+                 this.sureFormShow = !this.sureFormShow;
+            },
+            getSureForm(){
+                this.sureFormShow = !this.sureFormShow;
             },
             closeMyForm(){
                 this.myFormShow = !this.myFormShow;
@@ -313,6 +322,7 @@
             toPublish,
             needDetail,
             intentForm,
+            sureForm,
             myPlan,
             transDialog,
             myIntention,
