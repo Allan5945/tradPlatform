@@ -1,6 +1,6 @@
 <template>
-    <div class="timely-box popup" :style="renTimelyBoxXY" ref="timely-box" @mousedown="bindDrop"  @mouseup="clearDrop"
-    @mouseover="">
+    <div class="timely-box popup" :style="renTimelyBoxXY" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
+    @mousemove="transitionDrop">
         <div class="timely-nav">
             <div class="timely-nav-checked information">
                 <p>成都双流运力</p>
@@ -19,8 +19,8 @@
             <div class="timely-content-head">
                 <div class="timely-title">成都双流找运力意向<span>洽谈中</span></div>
                 <div class="timely-window">
-                    <div class="btn-w timely-window-s">&#xe667;</div>
-                    <div class="btn-w timely-window-d">&#xe62c;</div>
+                    <div class="btn-w timely-window-s" @click="initDis(false)">&#xe667;</div>
+                    <div class="btn-w timely-window-d" @click="initDis(true)">&#xe62c;</div>
                 </div>
             </div>
             <div class="timely-content-body">
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <div class="chat-function-input">
-                        <textarea name="a" class="scroll"></textarea>
+                        <textarea name="a" class="scroll" ref="textarea"></textarea>
                         <div class="btn btn-b user-select" id="req-bth">发送</div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                             </div>
                             <div class="demand-history">
                                 <div>成都双流找运力</div>
-                                <span @click="openhs">&#xe63b;</span>
+                                <span @click="openhs" title="历史记录">&#xe63b;</span>
                             </div>
                             <div class="demand-describe scroll">
                                 <div>
@@ -131,11 +131,24 @@
 
                                 </div>
                             </div>
-                            <div class="view-btn btn-w">查看订单详情</div>
                         </div>
                     </transition>
+                    <div class="personal-hy-btn btn btn-b" v-if="!ishs" @click="openhs"></div>
+                    <div class="view-btn btn-w" v-if="ishs">查看订单详情</div>
                     <transition name="slidehs-fade">
-                        <div class="personal-hy" @click="openhs">历史</div>
+                        <div class="personal-hy" v-if="!ishs">
+                            <div class="personal-hy-t">
+                                运力修改记录(5条)
+                            </div>
+                            <div class="personal-hy-i"
+                                 @mouseover="viewHsy(true,i)"
+                                 @mouseout="viewHsy(false,i)"
+                                 v-for="(key,i) in modifyHistory">
+                                <div>{{key.t}}</div>
+                                <div>{{key.c}}</div>
+                                <span v-if="(i == selectModifyHistory)">&#xe686;</span>
+                            </div>
+                        </div>
                     </transition>
                 </div>
             </div>
@@ -143,10 +156,16 @@
     </div>
 </template>
 <script>
+    import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
     export default {
         data(){
             return{
-                ishs:true,
+                ishs:false,
+                selectModifyHistory:null,
+                modifyHistory:[{
+                    t:'2017.08.07',
+                    c:"xx修改了方案"
+                }],
                 timelyBox:'',
                 timelyBoxXY:{   // 最后设置的聊天框位置
                     x:10,
@@ -161,6 +180,7 @@
             }
         },
         mounted:function () {
+            this.$refs.textarea.focus();
             this.timelyBox = this.$refs['timely-box'];
             let app = document.getElementById('app');
             let left = (app.offsetWidth - this.timelyBox.offsetWidth)/2;
@@ -171,29 +191,104 @@
         computed:{
             renTimelyBoxXY:function () {
                 return `left:${this.timelyBoxXY.x}px;top:${this.timelyBoxXY.y}px`;
+            },
+            dis:function () {  // 计算聊天框是显示还是关闭
+                return {
+                    shut:localCommunication.chat.shut,
+                    narrow:localCommunication.chat.narrow
+                };
             }
         },
         methods:{
+            initDis(t) {
+                if(t){
+                    localCommunication.chat.shut = false;
+                    localCommunication.chat.narrow = true;
+                }else{
+                    localCommunication.chat.narrow = false;
+                }
+            },
+            viewHsy:function (t,i) {
+                if(t)this.selectModifyHistory = i;
+                if(!t)this.selectModifyHistory = null;
+            },
             openhs:function () {
                 this.ishs = !this.ishs;
             },
-            bindDrop:function () {  // 绑定拖拽事件
+            transitionDrop:function (e) {
+//                console.log(66)
+            },
+            clearAndBindDrop:function () {  // 绑定拖拽事件
                 this.dropData.mouseCoordinate.x = this.timelyBox.offsetLeft;
                 this.dropData.mouseCoordinate.y = this.timelyBox.offsetTop;
-            },
-            clearDrop:function () {  // 移除拖拽事件
-                console.log(7);
             }
         }
     }
 </script>
 <style lang="scss" scoped>
+    .personal-hy-i{
+        display: flex;
+        height: 34px;
+        align-items: center;
+        position: relative;
+        >span{
+            font-family: iconfont;
+            position: absolute;
+            right: 0;
+            top: 12px;
+            &:hover{
+               color: #3c78ff;
+                cursor: pointer;
+            }
+        }
+        >div:nth-child(1){
+            color: #605E7C;
+            width: 70px;
+        }
+        >div:nth-child(2){
+            color: #605E7C;
+            font-weight: 600;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100px;
+        }
+    }
+    .personal-hy-btn{
+        position: absolute;
+        top: 50%;
+        left: -25px;
+        width: 50px !important;
+        height: 50px !important;
+        margin-top:-25px ;
+        border-radius: 50%;
+        text-align: right;
+        &:before{
+            writing-mode: tb-rl;
+            position: absolute;
+            content:'返回';
+            right: 5px;
+            font-size: 12px;
+            color: white;
+            top: 12px;
+        }
+    }
+    .personal-hy-t{
+        height: 46px;
+        display: flex;align-items: center;
+        border-bottom: 1px solid  rgba(151,151,151,.2);
+        color: #605E7C;
+        margin-bottom: 8px;
+    }
     .personal-hy{
         left: 0;
-        transform: translateX(200px);
+        padding:0 8px 0 20px;
     }
     .personal-c{
         left: 0;
+        display: flex;
+        flex-flow: column;
+        padding: 0 15px;
     }
     .slide-fade-enter-active {
         transition: all .3s ease;
@@ -205,7 +300,6 @@
         transform: translateX(-200px);
         opacity: 0;
     }
-
     .slidehs-fade-enter-active {
         transition: all .3s ease;
     }
@@ -213,15 +307,21 @@
         transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
     .slidehs-fade-enter, .slidehs-fade-leave-to {
-        transform: translateX(0px);
+        transform: translateX(200px);
         opacity: 1;
     }
+    .slidehs-fade-enter-to, .slidehs-fade-leave {
+        transform: translateX(0px);
+        opacity: 0;
+    }
+
 
     .demand-describe{
-        padding: 15px 0 15px 15px;
+        /*padding: 15px 0 15px 15px;*/
         flex: 1;
         overflow-x: hidden;
-        overflow-y: scroll;
+        /*overflow-y: scroll;*/
+        height: 80px;
         >div{
            >div{
                display:flex;
@@ -247,6 +347,7 @@
         text-align: center;
         line-height: 20px;
         margin: 10px auto;
+        bottom:5px;
     }
     .demand-history{
         display: flex;
@@ -256,7 +357,7 @@
         justify-content: space-between;
         color: #605E7C;
         border-bottom: 1px solid #efefef;
-        padding: 0 15px;
+        /*padding: 0 15px;*/
         >div{
             font-weight: bold;
         }
@@ -264,21 +365,24 @@
             font-family: iconfont;
             font-size: 1.8rem;
             cursor: pointer;
+            &:hover{
+                color: #3c78ff;
+            }
         }
     }
     .personal{
         position: relative;
-        padding: 0 ;
         flex: 1;
         overflow-x: hidden;
+        padding: 0 8px 0 20px;
         >div{
-            width: 100%;
+            /*width: 200px;*/
             position: absolute;
         }
     }
     .personal-panel{
         display: flex;
-        padding: 25px 15px 20px 15px;
+        padding: 25px 0 20px 0;
         border-bottom: 1px solid #efefef;
         height: 60px;
     }
@@ -319,7 +423,8 @@
     }
     .chat-function-input{
         >textarea{
-            border: 1px solid #efefef;
+            /*border: 1px solid #efefef;*/
+            border: none;
             resize:none;
             height: 77px;
             width: 535px;
@@ -499,6 +604,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 20px;
+        z-index: 3;
     }
 
     .timely-window {

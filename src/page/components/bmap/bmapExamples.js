@@ -1,4 +1,4 @@
-class bmapExamples {
+class BmapExamples {
     constructor(map = '', allNum = []) {
         this.map = map;
         this.allNum = allNum;
@@ -71,4 +71,4 @@ class bmapExamples {
     }
 }
 
-export default bmapExamples;
+export default BmapExamples;

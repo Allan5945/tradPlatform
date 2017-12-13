@@ -1,11 +1,13 @@
 var path = require('path')
 var webpack = require('webpack')
-
-
-var dev = require('./dev.js')
+var dev = require('./dev.js');
 
 module.exports = {
     entry: './src/main.js',
+    // entry: {
+    //     'babel-polyfill': 'babel-polyfill',
+    //     main: './src/main.js'
+    // },
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
