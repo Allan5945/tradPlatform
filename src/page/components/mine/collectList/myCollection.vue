@@ -54,11 +54,11 @@
                 </div>
             </div>
         </div>
-        <collectDetail v-show="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
+        <collectDetail v-if="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
     </div>
 </template>
 <script>
-    import stateList from './stateList.vue'
+    import stateList from './../stateList.vue'
     import collectDetail from './collectDetail.vue';
 
     export default {
@@ -142,6 +142,9 @@
                             break;
                         case "4":
                             return "订单完成";
+                            break;
+                         case "6":
+                            return "交易完成";
                             break;
                         case "9":
                             return "需求审核";

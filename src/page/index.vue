@@ -18,9 +18,10 @@
         <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
         <!--<myIndex></myIndex>-->
-        <routeNetwork></routeNetwork>
-        <!--<timelyCommunication></timelyCommunication>-->
+        <routeNetwork v-if="role.role != '2'"></routeNetwork>
+        <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
+        <newsTip></newsTip>
     </div>
 </template>
 
@@ -50,6 +51,9 @@
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
+    import newsTip from './components/toolbar/newsTip.vue';
+
+    import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
         data() {
@@ -87,6 +91,9 @@
                 'close',
                 'initialize'
             ]),
+            contactClient(){  // 联系客户
+
+            },
             toShow() {
                 this.show = !this.show;
             },
@@ -133,7 +140,6 @@
                 this.detailShow = true;
                 this.detailShow2 = false;
                 this.respond = false;
-
             },
             transShow2: function () {
                 this.detailShow2 = true;
@@ -158,9 +164,49 @@
             }
         },
         beforeMount: function () {
-//            if (this.role == null) window.location.href = '#/login'
+
         },
         mounted: function () {
+//            let ass = new WebSocket(`ws://localhost/socket?name=${this.role.id}`);
+//            let ws = new WebSocket(`ws://localhost/socket?name=${this.role.id}`);
+//            this.$chatSocket.init(ws);
+//            this.$chatSocket.sss = ass;
+//            console.log(this.$chatSocket)
+//            if('WebSocket' in window){
+//                this.$chatSocket.ws = new WebSocket(`ws://localhost/socket?name=${this.role.id}`);
+//            }else if('MozWebSocket' in window){
+//                this.$chatSocket.ws = new MozWebSocket(`ws://localhost/socket?name=${this.role.id}`);
+//            }else{
+//                alert("not support");
+//            }
+//            this.$chatSocket.ws.onopen = ()=>{
+//                console.log(666666666)
+//            };
+
+
+//            var ws = new WebSocket('ws://192.168.10.194:8081/socket?name=1');
+//            ws.onopen = function(evt) {
+//                console.log("打开连接");
+//            };
+//            ws.onmessage = function(evt) {
+//                console.log( "收到消息: " + evt.data);
+//            };
+//            ws.onclose = function(evt) {
+//                console.log("关闭连接");
+//            };
+
+            var wss = new WebSocket('ws://localhost:8088/socket?name=1');
+            wss.onopen = function(evt) {
+                console.log("打开连接");
+            };
+            wss.onmessage = function(evt) {
+                console.log( "收到消息: " + evt.data);
+            };
+            wss.onclose = function(evt) {
+                console.log("关闭连接");
+            };
+
+
             this.$ajax({
                 method: 'post',
                 url: '/airList',
@@ -235,23 +281,31 @@
                     if(response.data.list != null){
                         this.$store.dispatch('routeNetwork', response.data.list).then(() => {
                         });
-                        this.loadingData.routeNetwork = true;
-                        this.init();
                     }
+                    this.loadingData.routeNetwork = true;
+                    this.init();
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+//
         },
         computed: {
             ...vx.mapGetters([
                 'c_updated',
                 'airList',
                 'role'
-            ])
+            ]),
+            dis:function () {  // 计算聊天框是显示还是关闭
+                return {
+                    shut:localCommunication.chat.shut,
+                    narrow:localCommunication.chat.narrow
+                };
+            }
         },
         components: {
+            newsTip,
             bmap,
             navigation,
             tagIcon,

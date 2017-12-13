@@ -552,16 +552,16 @@
         created() {
             // 接受airlineDetailPayAfter.vue传来的数据
             tabulationBoxTrigger.$on('sendToAffirm',val => {
-                console.info('sendToAffirm:')
-                console.info(val)
+//                console.info('sendToAffirm:')
+//                console.info(val)
                 this.sendToAffirmData = val;
                 this.id = val.id;
                 this.employeeId = val.employeeId;
 //                console.info('id:' + this.id)
 //                console.info('employeeId:' + this.employeeId)
             })
-            console.log('id22:' + this.id)
-            console.info('employeeId22:' + this.employeeId)
+//            console.log('id22:' + this.id)
+//            console.info('employeeId22:' + this.employeeId)
             //接受airlineWrite.vue传来的数据
            /* tabulationBoxTrigger.$on('responseText',val => {
                 console.info('responseText:')

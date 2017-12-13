@@ -322,7 +322,11 @@
       }
     }
     .myplan{
-        margin-bottom:140px;
+        &::after {
+            display: block;
+            height: 140px;
+            content: '';
+        }
         .plan-til{
             height:80px;
             width:100%;

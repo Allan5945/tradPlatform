@@ -485,10 +485,10 @@
                             }
                             // 修改this.showCode
                             if (this.isSelf == true && this.isIntentionMoney == false) {
-                                console.info('payAfter:' + 1)
+//                                console.info('payAfter:' + 1)
                                 this.showCode = 1;
                             }if (this.isSelf == true && this.isIntentionMoney == true) {
-                                console.info('payAfter:' + 3)
+//                                console.info('payAfter:' + 3)
                                 this.showCode = 3;
 
                                 // 获取意向列表数据
@@ -511,7 +511,7 @@
                                 });
 
                             }if (this.isSelf == false) {
-                                console.info('payAfter:' + 0)
+//                                console.info('payAfter:' + 0)
                                 this.showCode = 0;
                             }
                             this.show();
@@ -526,8 +526,8 @@
             });
 
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
-                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
-                console.info(val)
+//                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
+//                console.info(val)
                 this.listData = val;   //获取意向列表
             }) //向payAfter的意向列表传参数
 
@@ -536,7 +536,7 @@
 //            this.initData();
             //模拟状态码0
 //            this.showCode = 0;
-            console.info(this.role)
+//            console.info(this.role)
 //            console.info('min-tabulationBoxTrigger')
 
         },
