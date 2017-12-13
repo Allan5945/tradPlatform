@@ -5,19 +5,8 @@
         <toPublish v-show="show"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-        <transition name="dialog">
-            <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
-        </transition>
-        <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
-        <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
-        <respondAirport @responseShow="responShow" @responseClose="responClose" v-show="respond"></respondAirport>
-        <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-        <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
          <infPanel></infPanel>
-        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-        <!--<myIndex></myIndex>-->
         <routeNetwork v-if="role.role != '2'"></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
@@ -33,19 +22,9 @@
     import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
-    import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm.vue'
-    import myPlan from './../page/components/trans_detail/myPlan.vue'
-    import myIntention from './../page/components/trans_detail/myIntention.vue'
-    import transDialog from './../page/components/trans_detail/dialog.vue'
-    import respondAirport from './../page/components/trans_detail/respondAirport.vue'
-    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
-    import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './components/independenceComponents/infPanel.vue'
-    import myIndex from './../page/components/mine/myIndex.vue'
-    import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
     import myPublish from './components/mine/myPublishNeed.vue'
     import myPurpose from './../page/components/mine/myPurpose.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
