@@ -1,80 +1,35 @@
 <template>
     <div>
-        <div class="detail-wrapper scroll" >
+        <div class="detail-wrapper">
             <header>
-                <div class="top-til">{{detailData.demandtypeStr}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
+                <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="contact">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
-                    <div v-show="orderShow"><span>委托响应中</span></div>
+                    <div>状态:
+                        <span v-if="testingShow" class="testing">{{detailData.demandprogressStr}}</span>
+                        <span v-else class="refused">已拒绝</span>
+                    </div>
                 </div>
             </header>
             <div class="content">
-                <div class="airline">
-                    <div class="air-box">
-                        <div>始发机场</div>
-                        <div  class="place">
-                            <div>{{detailData.dptNm}}</div>
-                            <div>{{detailData.dptAcceptnearairportStr}}临近机场</div>
-                        </div>
-                        <div>
-                            <div>出港时刻</div>
-                            <div>{{detailData.dptTime}}</div>
-                       </div>
-                    </div>
-                    <div class="air-box">
-                        <div>到达机场</div>
-                        <div class="place">
-                            <div>{{detailData.arrvNm}}</div>
-                            <div>{{detailData.arrvAcceptnearairportStr}}临近机场</div>
-                        </div>
-                        <div>
-                            <div>出港时刻</div>
-                            <div>{{detailData.arrvTime}}</div>
-                       </div>
-                    </div>
-                </div>
-                <div class="content-box border">
+                <div class="content-box">
                     <div >
-                        <div>拟开时间</div>
-                        <div>{{detailData.sailingtime}}</div>
+                        <div>航班号</div>
+                        <div>{{detailData.fltNbr}}</div>
                     </div>
                     <div>
-                        <div>拟开班期</div>
-                        <div>{{detailData.days}}</div>
-                    </div>
-                    <div>
-                        <div>拟飞机型</div>
-                        <div>{{detailData.aircrfttyp}}</div>
-                    </div>
-                     <div>
-                        <div>座位布局</div>
-                        <div>{{detailData.seating}}</div>
-                    </div>
-                     <div>
-                        <div>客量期望</div>
-                        <div>{{detailData.avgguestexpect}}人</div>
-                    </div>
-                    <div>
-                        <div>客座率期望</div>
-                        <div>{{detailData.loadfactorsexpect}}%</div>
-                    </div>
-                    <div>
-                        <div>补贴政策</div>
-                        <div>{{detailData.subsidypolicynumber }}</div>
-                    </div>
-                    <div>
-                        <div>有效期</div>
-                        <div>{{detailData.periodValidity}}</div>
+                        <div>小时成本</div>
+                        <div>{{detailData.hourscost}}万/小时</div>
                     </div>
                     <div class="note">
                         <div>其他说明</div>
                         <div class="note-text">{{detailData.remark}}</div>
                     </div>
                 </div>
-                <div class="content-box ">
+                <div class="content-box border">
                     <div>
                         <div>联系人</div>
                         <div>{{detailData.contact}}</div>
@@ -85,71 +40,117 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-need" v-show="orderShow">
-                  <div class="need-til">关联的子需求</div>
-                  <div class="need-btn" @click="newNeed">新建子需求</div>
-            </div>
-            <!-- <sonNeedDetail></sonNeedDetail> -->
-            <footer>
-                <div class="foot-tips"></div>
-                <div class="btn" v-if="orderShow">
-                    <div class="test-btn" @click="order" >订单完成</div>
-                    <div class="can-btn" @click="cancel">取消</div>
-                </div>
-                <div class="btn" v-else>
-                    <div class="test-btn" @click="accept">接受委托</div>
-                    <div class="can-btn" @click="refuse">拒绝</div>
+            <footer v-show="isAccept">
+                <div class="foot-tips" v-if="testingShow"  v-show="isTest"></div>
+                <div class="foot-tips" v-if="testingShow"  v-show="!isTest">*需求测评中...</div>
+                <div class="foot-tips red" v-else>*拒绝原因：{{refuseText}}</div>
+                <div class="btn">
+                    <div class="test-btn" v-if="testingShow" @click="toTest" v-show="isTest">测评该需求</div>
+                    <div class="test-btn" v-if="testingShow" @click="accepted" v-show="!isTest">接受委托</div>
+                    <div class="can-btn" @click="cancel" v-if="testingShow">拒绝</div>
                 </div>
             </footer>
         </div>
-        <operDeleForm v-show="formShow" @closeForm="closeForm" :demandId = "demandId"></operDeleForm>
+        <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog"></refuseDialog>
     </div>
 </template>
 
 <script>
-import operDeleForm from './operDeleForm.vue'
-import sonNeedDetail from './sonNeedDetail.vue'
+import refuseDialog from './refuseDialog.vue';
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 
  export default {
      data(){
          return{
             dialogShow:false,
-            orderShow:false,
-            formShow:false,
+            testingShow:true,
+            isTest:true,
+            isAccept:true,
             detailData:{},
-            CpyNm:''//委托方
+            refuseText:'',
+            CpyNm:'',
          }
      },
       props:['demandId'],
      methods:{
-        closeDetail(){
+        closeDetail:function(){
           this.$emit("close");
         },
-        refuse(){
+        cancel:function(){
+          this.dialogShow = true;
+        },
+        toTest:function(){
+            this.isTest =false;
+            this.$ajax({
+                method: 'post',
+                url: '/demandUpdate',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.demandId,
+                    demandprogress:'9'
+                  }
+                })
+                .then((response) => {
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
 
         },
-        newNeed(){
-          this.formShow = true;
+        sureDialog(text){
+          this.dialogShow = false;
+          this.testingShow =false;
+          this.refuseText = text;
+          this.$ajax({
+                method: 'post',
+                url: '/demandUpdate',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.demandId,
+                    demandprogress:'10',
+                    rek: text
+                  }
+                })
+                .then((response) => {
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
-        accept(){
-            this.orderShow = true;
+        accepted(){
+              this.$emit("close");
+              this.$ajax({
+                method: 'post',
+                url: '/demandUpdate',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.demandId,
+                    demandprogress:'8',
+                  }
+                })
+                .then((response) => {
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
-        order(){
-
-        },
-        cancel(){
-
-        },
-        closeForm(){
-          this.formShow =false;
+        cancelDialog(){
+          this.dialogShow = false;
         }
      },
      computed: {
 
         },
       mounted() {
-          tabulationBoxTrigger.$emit('getSonId', this.demandId);
           tabulationBoxTrigger.hierarchy = true;
           this.$ajax({
                 method: 'post',
@@ -164,7 +165,18 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                 .then((response) => {
                     this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
-                    console.log( this.detailData)
+                    this.demandprogress =  this.detailData.demandprogress;
+                      //状态处理
+                      if(this.detailData.demandprogress == '9'){
+                          this.isTest = !this.isTest;
+                      }else if(this.detailData.demandprogress == '10'){
+                          this.testingShow =false;
+                          this.refuseText = this.detailData.rek;
+                      }else if(this.detailData.demandprogress == '8'){
+                          this.isTest = !this.isTest;
+                          this.isAccept =false;
+
+                      }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -176,8 +188,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
         tabulationBoxTrigger.hierarchy = false;
     },
      components: {
-        operDeleForm,
-        sonNeedDetail
+          refuseDialog
      }
 }
 </script>
@@ -188,19 +199,12 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
         top:0;
         right:0;
         z-index: 20;
-        width:607px;
+        width:600px;
         height:100%;
         min-height:600px;
         color:#605E7C;
         font-size:1.2rem;
-        overflow: hidden;
-        overflow-y:scroll;
         background-color:#fff;
-        &::after {
-            display: block;
-            height: 160px;
-            content: '';
-        }
         header{
             width:100%;
             height:141px;
@@ -208,14 +212,13 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
             position:relative;
         }
         .content{
-            padding:40px 40px 0 40px;
+            padding:60px 40px 0 40px;
         }
         footer{
-          position:fixed;
+          position:absolute;
           bottom:0;
-          right:0;
-          width:600px;
-          background-color:#fff;
+          left:0;
+          width:100%;
         }
     }
     header{
@@ -262,7 +265,6 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
             background-color:#3c78ff;
             border-radius:100px;
             cursor:pointer;
-            box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
         }
         .tips{
           position:relative;
@@ -274,36 +276,19 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
           div{
             margin-right:30px;
           }
-          span{
+          .testing{
             color:#3c78ff;
           }
-        }
-    }
-    .airline{
-      display:flex;
-      margin-bottom:20px;
-      justify-content: space-between;
-      .air-box{
-       width:140px;
-       overflow:hidden;
-        >div{
-          margin-top:10px;
-        }
-        .place{
-          height:45px;
-          padding-bottom:20px;
-          div:first-of-type{
-            font-size:20px;
-            font-weight:bold;
+          .refused{
+            color:red;
           }
         }
-      }
     }
 
     .content-box{
       flex-wrap: wrap;
       display: flex;
-      margin-bottom:20px;
+      margin-bottom:40px;
       >div{
           width:240px;
           display: flex;
@@ -323,54 +308,28 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
       >div:nth-of-type(odd){
           margin-right:40px;
       }
-      >.note{
+      .note{
           width:520px;
-          height:60px;
+          height:40px;
           .note-text{
             width:440px;
           }
       }
     }
-    .border{
-      padding-top:20px;
-      border-top:1px solid #ccc;
-      border-bottom:1px solid #ccc;
-    }
-    .sub-need{
-      position:relative;
-      width:100%;
-      height:80px;
-      margin-top:20px;
-      background-color:rgba(216,216,216,.17);
-      .need-til{
-          height:80px;
-          line-height:80px;
-          margin-left:40px;
-          font-size:20px;
-          font-weight:bold;
-      }
-      .need-btn{
-        position:absolute;
-        top:20px;
-        right:20px;
-        width:100px;
-         height:20px;
-        line-height:20px;
-        color:#ffffff;
-        text-align:center;
-        background-color:#3c78ff;
-        border-radius:100px;
-        cursor:pointer;
-        box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
 
-      }
+    .border{
+      padding-top:40px;
+      border-top:1px solid #ccc;
     }
     footer{
           .foot-tips{
             height:40px;
             margin:0 20px;
             border-bottom:1px solid #ccc;
-            color: red;
+            color: rgba(96, 94, 124, 0.7);
+          }
+          .red{
+            color:red;
           }
           .btn{
               height:40px;
@@ -397,12 +356,12 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:rgba(96,94,124,.6);
+                  color:#605E7C;
                   background-color:#fff;
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
-                  border:1px solid rgba(96,94,124,.6);
+                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
               }
           }
     }

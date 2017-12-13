@@ -20,9 +20,9 @@
     </div>
 </template>
 <script>
-    import TransForm from './sonTransForm.vue'
-    import transForm from './../transportForm.vue'
-    import airlineReq from './../airlineReq.vue'
+    import transForm from './sonTransForm.vue'
+    /*import transForm from './../transportForm.vue'*/
+    import airlineReq from './../../airlineReq.vue'
     export default {
         data() {
             return {

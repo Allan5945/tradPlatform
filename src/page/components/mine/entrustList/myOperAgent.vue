@@ -63,9 +63,10 @@
     </div>
 </template>
 <script>
-    import stateList from './stateList.vue'
+    import stateList from './../stateList.vue'
     import agentDetail from './operAgentDetail.vue';
     import deleDetail from './operDeleDetail.vue';
+    import * as vx from 'vuex';
     export default {
         data() {
             return {
@@ -76,7 +77,10 @@
                 agentShow:false,
                 deleShow:false,
                 sorted:true,
-                type:  ['航线委托','运力委托','托管'],
+                type: [],
+                type1:['航线委托'],
+                type2:['运力委托'],
+                type3:['航线委托','运力委托','托管'],
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
                 state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
@@ -94,6 +98,18 @@
         mounted() {
             this.state = this.state1;
             this.getListData();
+            if(this.role.role == 0){
+                this.type = this.type2;
+            }else if(this.role.role == 1){
+                this.type = this.type1;
+            }else if(this.role.role == 2){
+                this.type = this.type3;
+            }
+        },
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
         },
         watch:{
             'sentData.demandType':function(){

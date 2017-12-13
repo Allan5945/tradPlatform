@@ -12,7 +12,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 审核列表
         const reviewList = resolve => require(['$src/page/components/mine/reviewList/viewTable.vue'], resolve);
         // 委托/托管
-         const entrust = resolve => require(['./../page/components/mine/myOperAgent.vue'], resolve);
+         const entrust = resolve => require(['./../page/components/mine/entrustList/myOperAgent.vue'], resolve);
         // 我的发布
         const myRelease = resolve => require(['./../page/components/mine/myPublishList.vue'], resolve);
         // 我的意向
@@ -20,7 +20,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 我的订单
         const myOrder = resolve => require(['../page/components/mine/myOrder/orderTable.vue'], resolve);
         // 我的收藏
-        const myCollection = resolve => require(['./../page/components/mine/collectList/myCollection.vue'], resolve);
+        const myCollection = resolve => require(['./../page/components/mine/myCollection/myCollection.vue'], resolve);
         // 公司账户
         // const companyAccount = resolve => require(['...'], resolve);
 Vue.use(VueRouter);
