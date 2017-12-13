@@ -112,6 +112,14 @@
             text-align:left;
             padding:0 14px;
             cursor:pointer;
+            &:after{
+                content:'.';
+                visibility:hidden;
+                clear:both;
+                display: block;
+                width:0;
+                height:0;
+            }
             .title{
                 color: rgba(96,94,124,.4);
                 font-size:1.2rem;

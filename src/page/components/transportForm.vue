@@ -54,11 +54,11 @@
             <div class="form-box air-route">
                 <div class="t-title">意向航线</div>
                 <input type="text" placeholder="起飞机场" v-model="intendedDpt" v-on:keyup="openSearch3"><span class="icon-item ">&#xe672;</span>
-                <airportS class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS>
+                <airportS1 class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS1>
                 <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" v-on:keyup="openSearch4"><span class="icon-item ">&#xe672;</span>
-                <airportS class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS>
+                <airportS1 class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS1>
                 <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" v-on:keyup="openSearch5">
-                <airportS class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS>
+                <airportS1 class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS1>
             </div>
             <div class="form-box">
                 <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
@@ -136,7 +136,6 @@
             </div>
         </div>
         <div class="t-btn">
-            <div class="agent-btn ">委托代理</div>
             <div class="confirm-btn " @click="confirm">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
         </div>
@@ -144,7 +143,8 @@
 </template>
 <script>
  import calendar from './calendar'
- import airportS from '../reuseComponents/airportSearch.vue'
+ import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
+ import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
     export default {
         data () {
             return{
@@ -207,7 +207,8 @@
         },
         components:{
             calendar,
-            airportS
+            airportS,
+            airportS1
         },
         methods:{
              getNeed: function(i) {
@@ -566,11 +567,6 @@
           cursor:pointer;
 
         }
-        .agent-btn{
-          width:100px;
-          margin-right: 20px;
-          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
-        }
         .confirm-btn{
           width:190px;
           margin:0 10px;
@@ -586,12 +582,6 @@
         }
     }
     .confirm-btn:hover{
-           background-color: rgba(80, 139, 255,1);
-          color: white !important;
-          cursor: pointer;
-          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
-    }
-    .agent-btn:hover{
            background-color: rgba(80, 139, 255,1);
           color: white !important;
           cursor: pointer;

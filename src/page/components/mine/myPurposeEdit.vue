@@ -3,7 +3,7 @@
         <div class="container">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
-                <span class="close-icon iconfont" @click="cancel" >&#xe62c;</span>
+                <span class="close-icon" @click="closeThis">&times;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -401,22 +401,20 @@
                 </div>
             </div>
             <div class="sixth">
-                <!-- <button class="btn-b" @click="submitData(),closeThis()">提交意向</button>
-                <button class="btn-w" @click="closeThis">取消</button> -->
-                <button class="btn-b btn-blue" @click="submitData">支付意向金提交意向</button>
-                <button class="btn-c btn-cancel" @click="cancel">取消</button>
+                <button class="btn-b" @click="submitData(),closeThis()">提交意向</button>
+                <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
     </div>
 </template>
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-    import airAreaSearch from './../airAreaSearch.vue'
-    import airportS from '../../reuseComponents/airportSearch.vue'
-    import calendar from './../calendar'
+    import airAreaSearch from '$src/page/components/airAreaSearch.vue'
+    import airportS from '$src/page/reuseComponents/airportSearch.vue'
+    import calendar from '$src/page/components/calendar'
 
     export default {
-       /* props: {
+        /*props: {
             acceptData: {
                 type: Object
             }
@@ -543,7 +541,6 @@
                 airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
-                demandData:{}
             }
         },
         components: {
@@ -555,6 +552,22 @@
             typeChoose: function () {
                 this.warn4Show = false;
             }
+        },
+        created() {
+            /*tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+                this.sendData.demandId = val.data.id;
+                this.sendData.employeeId = val.data.employeeId;
+            })
+            tabulationBoxTrigger.$on('supProperty', val => {
+                this.sendData.title = val.title;
+                this.sendData.periodValidity = val.periodValidity;
+                this.sendData.releasetime = val.releasetime;
+            })*/
+            tabulationBoxTrigger.$on('sendToMyPurposeEdit',val => { //从myPurpose接受来的数据
+                console.info('sendToMyPurposeEdit:')
+                console.info(val)
+                this.sendData = val;
+            })
         },
         mounted() {
 //            console.info(this.acceptData)
@@ -583,13 +596,6 @@
                 this.space3Fn('意向区域');
                 this.thirdArea = acceptData.arrv;
             }*/
-
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                    this.demandData.demandId = val.data.id;
-                    this.demandData.employeeId = val.data.employeeId;
-                    this.demandData.demandType = val.data.demandtype;
-                    console.log(this.demandData)
-            });
         },
         computed: {
             sailingtime: function () {
@@ -603,9 +609,6 @@
             warn4Fn: function () {
                 console.info(4)
                 this.warn4Show = true;
-            },
-             cancel:function(){
-                this.$emit('closeForm');
             },
             //发送数据
             submitData: function () {
@@ -626,12 +629,9 @@
                     this.warn4Show = true;
                     return
                 }*/
-                 console.log(this.demandData)
-                this.sendData.demandId = this.demandData.demandId;
-                this.sendData.employeeId =this.demandData.employeeId;
-                this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+                this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
-                this.sendData.ihome = this.phoneNum;//必填 联系方式
+                this.sendData.Ihome = this.phoneNum;//必填 联系方式
                 if (this.dptState == 0) {
                     this.sendData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
                 }
@@ -685,25 +685,32 @@
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
 //                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('sendData:');
+                console.info('000sendData:')
                 console.info(this.sendData);
-//                console.info(this.acceptData);
                 this.$ajax({
-                    url: "/responseAdd",
+                    url: "/updateResponseSelective",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: this.sendData
                 }).then((response) => {
-                     this.demandData.responseId = response.data.response.id;
-                        if(this.demandData.responseId){
-                            this.$emit("sumitForm");
-                        }
-                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
+                    console.info('response:')
+                    console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功添加该意向！')
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
+                    tabulationBoxTrigger.$emit('editSendToMyPurpose', this.sendData);  //向myPurpose.vue传对象
                 }).catch((error) => {
                     console.log(error);
                 });
+                this.$emit('change-showCode');
+//                console.info('000')
+            },
+            closeThis: function () {
+                this.$emit('close-this');
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -1172,7 +1179,7 @@
         }
     }
 
-    .btn-blue {
+    /*.btn-blue {
         border: 0;
         border-radius: 20px;
         background: $icon-color;
@@ -1182,14 +1189,14 @@
         &:hover {
             opacity: 0.7;
         }
-    }
+    }*/
 
-    .btn-cancel {
+    /*.btn-cancel {
         font-size: 1.5rem;
         border: 1px solid $font-color;
         border-radius: 20px;
         background: transparent;
-    }
+    }*/
 
     .triangle-big {
         width: 0;
@@ -1366,7 +1373,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 17;
+        z-index: 200;
     }
 
     .container {
@@ -1408,7 +1415,6 @@
             position: absolute;
             top: -2px;
             right: 0;
-            color:#3c78ff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1728,22 +1734,35 @@
 
     .sixth {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         margin-bottom: 44px;
         button {
+            padding: 9px 0;
             outline: none;
             font-size: 1.5rem;
-            height:40px;
-            line-height: 40px;
+            line-height: 20px;
             cursor: pointer;
         }
-        .btn-c {
-            margin-right: 30px;
-            width: 100px;
-        }
         .btn-b {
-            margin-right: 10px;
+            margin-left: 120px;
+            margin-right: 20px;
             width: 200px;
+            color: white;
+            border-radius: 20px;
+            border: 0;
+            outline: none;
+            &:hover {
+                background: rgba(60, 120, 255, 0.7);
+            }
+            &:active {
+                background: #336bea;
+            }
+        }
+        .btn-w {
+            width: 100px;
+            border-radius: 20px;
+            border: 0;
+            outline: none;
         }
     }
 </style>

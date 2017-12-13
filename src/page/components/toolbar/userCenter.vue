@@ -1,6 +1,6 @@
 <template>
-    <div class="tool popup" @click.stop>
-        <a to="" @click="logout">
+    <div class="tool popup">
+        <a @click="logout">
             <span>&#xe647;</span>
             退出
         </a>
@@ -8,10 +8,17 @@
             <span>&#xe60f;</span>
             个人中心
         </router-link>
+        <a>
+            <div class="contact-client btn btn-b" @click="initDis">
+                联系客户
+                <span>&#xe60f;</span>
+            </div>
+        </a>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
+    import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
         watch: {},
@@ -32,10 +39,27 @@
                     .catch((err)=>{
                         console.log(err);
                     })
+            },
+            initDis(){
+                localCommunication.chat.shut = true;
+                localCommunication.chat.narrow = true;
             }
         }
     }
 </script>
 <style scoped lang="scss">
     @import "../../../public/css/dropDowBbox";
+    .contact-client{
+        width: 78px;
+        border-radius: 16px;
+        color: white;
+        font-size: 1.2rem;
+        padding: 5px 12px;
+        display: flex;
+        justify-content: space-between;
+        >span{
+            font-family: iconfont;
+            font-size: 1.5rem;
+        }
+    }
 </style>

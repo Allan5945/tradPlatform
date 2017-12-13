@@ -1,80 +1,18 @@
 <template>
-    <div class="plan-wrapper scroll">
-        <header>
-            <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title}}</div>
-            <div class="note">
-                <span>创建于{{detailData.releasetime}}</span>
-                <span>状态：<span style="color:#3C78FF;">洽谈中</span></span>
-            </div>
-        </header>
-        <div class="content">
-            <div class="table-form">
-                <div>
-                    <div>机型</div>
-                    <div>{{detailData.aircrfttyp}}</div>
-                </div>
-                 <div>
-                    <div>座位布局</div>
-                    <div>{{detailData.seating}}</div>
-                </div>
-                 <div>
-                    <div>运力归属</div>
-                    <div>{{detailData.capacitycompany}}</div>
-                </div>
-                <div>
-                    <div>运力基地</div>
-                    <div>{{detailData.dptNm}}</div>
-                </div>
-                <div>
-                    <div>出港时刻</div>
-                    <div>{{detailData.dptTime}}</div>
-                </div>
-                <div>
-                    <div>班期</div>
-                    <div>{{detailData.days}}</div>
-                </div>
-                <div class="intent-airline" v-if="detailData.intendedAirlines">
-                   <div>意向航线</div>
-                   <div class="i-line">
-                     {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
-                     {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
-                     {{detailData.intendedAirlines[0].arrvName}}
-                   </div>
-               </div>
-                <div>
-                    <div>小时成本</div>
-                    <div>{{detailData.hourscost}}万/小时</div>
-                </div>
-                <div style="margin:0 0 0 40px;">
-                    <div>接受调度</div>
-                    <div>{{detailData.schedulingStr}}</div>
-                </div>
-                <div>
-                    <div>有效期</div>
-                    <div>{{detailData.periodValidity}}</div>
-                </div>
-                 <div class="tips">
-                    <div>其他说明</div>
-                    <div>{{detailData.remark}}</div>
-                 </div>
-            </div>
-        <div class="intent">
-            <div class="intent-til">
-                <div>收到的意向</div>
-                <div>已有<span>{{this.intentionCount }}</span>位用户发起意向</div>
-            </div>
+    <div>
+         <div class="intent">
             <div class="intent-form">
                 <div>
-                    <div>收到时间
+                    <div>发布时间
                       <span class="iconfont icon-up active">&#xe605;</span>
                       <span class="iconfont icon-down">&#xe605;</span>
                     </div>
-                    <div>意向方</div>
+                    <div>发布标题</div>
+                    <div>需求状态</div>
                 </div>
                 <div class="intent-box" v-for=" val in planData" v-if="intentListShow">
                      <div class="intent-item">
-                        <div class="time">{{val.responsedate}}</div>
+                        <div class="time">2012.12.13</div>
                         <div class="person">{{val.intentionCompanyName}}<span class="iconfont">&#xe602;</span></div>
                         <div class="detail" @click="closeDetail">{{text}}</div>
                     </div>
@@ -166,192 +104,40 @@
                                 <div>{{val.remark}}</div>
                             </div>
                         </div>
-                        <div class="sure-btn" @click="toSelect(val)" v-if="selShow">选定</div>
-                        <div class="btns" v-else>
-                            <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
-                            <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        </div>
-        <footer>
-            <div class="btn">
-                <div class="col-btn">结束需求</div>
-            </div>
-        </footer>
     </div>
 </template>
-
 <script>
-import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-import * as vx from 'vuex'
- export default {
-     data(){
-         return{
-             detailShow:false,
-             intentListShow:false,
-             selShow:true,
-             text:"查看详情",
-             detailData:{},
-             planData:{},
-             intentionCount:0,
-         }
-     },
-     methods:{
-         closeDetail:function(){
-             this.detailShow = !this.detailShow;
-             if(this.detailShow){
-                this.text = "收起详情";
-             }else{
-                 this.text = "查看详情";
-             }
-         },
-         closeIntent:function(){
-            this.$emit('closeIntent');
-         },
-         toSelect:function(val){
-            tabulationBoxTrigger.$emit('sendTable',val);
-            this.$emit("formShow");
-         },
-         cancelSel:function(val){
-          this.$ajax({
-                method: 'post',
-                url: '/selectedResponse',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    employeeId:this.role.id,
-                    id:val.id,
-                    status:1
-                }
-                })
-                .then((response) => {
-                     this.selShow = true;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-         }
-
-     },
-      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
+    export default {
+        data () {
+            return{
+                showBox: false,
+                isSel: false,
+                showType:'',
+            }
         },
-      mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+        mounted() {
 
-            console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && this.role.role == 0){
-                this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: val.data.id
-                }
-                })
-                .then((response) => {
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
-                    this.planData = response.data.responseList;
-                    if(this.planData){
-                      this.intentListShow = true;
-                    }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-             this.$emit("openIntent");
-            };
-        });
+        },
+        components:{
 
-          tabulationBoxTrigger.$on('getTable',val=>{
-              this.selShow = false;
-            });
-     },
-}
+        },
+        methods:{
+             getNeed: function(i){
+
+            },
+            closeForm: function(){
+
+            }
+        }
+    }
 </script>
 
-<style lang="scss" scoped>
-    .plan-wrapper{
-        position:absolute;
-        top:0;
-        right:0;
-        z-index: 16;
-        width:600px;
-        box-sizing:border-box;
-        height:100%;
-        overflow: hidden;
-        overflow-y:scroll;
-        color:#605E7C;
-        background-color:#fff;
-        header{
-            width:100%;
-            height:141px;
-            background-color:rgba(216,216,216,.2);
-        }
-        footer{
-          position:fixed;
-          bottom:0;
-          right:0;
-          width:600px;
-          background-color:#fff;
-          height:100px;
-        }
-    }
-    header{
-        .top-til{
-          justify-content: space-between;
-          display: flex;
-          height:41px;
-          line-height:41px;
-          font-size:1.2rem;
-          color:rgba(96, 94, 124, 0.7);
-          background-color:#fff;
-          padding:0 15px 0 40px;
-          span{
-            display:block;
-            box-sizing:border-box;
-            margin-top:9px;
-            width:22px;
-            height:22px;
-            line-height:22px;
-            text-align:center;
-            color:#3C78FF;
-            border:1px solid #ededed;
-            border-radius:100%;
-            cursor:pointer;
-          }
-        }
-        .head-til{
-          font-size:2rem;
-          font-weight:bold;
-          margin-top:30px;
-          padding-left:40px;
-          height:20px;
-          line-height:20px;
-        }
-        .note{
-          height:12px;
-          line-height:12px;
-          color:rgba(96, 94, 124, 0.7);
-          padding:20px 0 18px 40px;
-          span{
-            margin-right:30px;
-          }
-        }
-    }
-    .table-form{
+<style scoped lang="scss">
+     .table-form{
       width:100%;
       box-sizing:border-box;
       padding:60px 0 60px 40px;
@@ -557,29 +343,6 @@ import * as vx from 'vuex'
             }
 
         }
-    footer{
-        border-top: 1px solid #ccc;
-          .btn{
-              height:40px;
-              margin:20px 0 40px 0;
-              >div{
-                  height:40px;
-                  line-height:40px;
-                  font-size:1.5rem;
-                  color:#605E7C;
-                  background-color:#fff;
-                  text-align:center;
-                  border-radius:100px;
-                  cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
-              }
-               .col-btn{
-                  width:120px;
-                  &:hover{
-                    color:#fff;
-                    background-color: #3C78FF;
-                  }
-              }
-          }
-    }
 </style>
+
+

@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="container-top">
-                <span class="title">请填写完整方案{{employeeId}}</span>
+                <span class="title">请确认以下方案</span>
                 <span class="close-icon" @click="closeThis">&times;</span>
             </div>
             <div class="bg-color must">
@@ -394,7 +394,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b" @click="submitData(),closeThis()">提交意向</button>
+                <button class="btn-b" @click="submitData(),closeThis()">确认选定该意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -552,15 +552,16 @@
         created() {
             // 接受airlineDetailPayAfter.vue传来的数据
             tabulationBoxTrigger.$on('sendToAffirm',val => {
-                console.info('sendToAffirm:')
-                console.info(val)
+//                console.info('sendToAffirm:')
+//                console.info(val)
+                this.sendToAffirmData = val;
                 this.id = val.id;
                 this.employeeId = val.employeeId;
 //                console.info('id:' + this.id)
 //                console.info('employeeId:' + this.employeeId)
             })
-            console.log('id22:' + this.id)
-            console.info('employeeId22:' + this.employeeId)
+//            console.log('id22:' + this.id)
+//            console.info('employeeId22:' + this.employeeId)
             //接受airlineWrite.vue传来的数据
            /* tabulationBoxTrigger.$on('responseText',val => {
                 console.info('responseText:')
@@ -570,7 +571,6 @@
             })*/
         },
         mounted() {
-
 //            console.info(this.acceptData)
             /*let acceptData = this.acceptData;
             if(acceptData.dptState == 0){
@@ -610,6 +610,8 @@
             },
             //发送数据
             submitData: function () {
+                console.info('this.sendToAffirmData:')
+                console.info(this.sendToAffirmData)
                 //表单验证（部分）
                 /*if (this.user == '') {
                     this.warn1Show = true;
@@ -627,92 +629,93 @@
                     this.warn4Show = true;
                     return
                 }*/
-                this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
-                this.sendData.contact = this.user;  //必填 联系人
-                this.sendData.Ihome = this.phoneNum;//必填 联系方式
+                this.sendToAffirmData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+                this.sendToAffirmData.contact = this.user;  //必填 联系人
+                this.sendToAffirmData.Ihome = this.phoneNum;//必填 联系方式
                 if (this.dptState == 0) {
-                    this.sendData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
+                    this.sendToAffirmData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
                 }
                 if (this.dptState == 1) {
-                    this.sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
+                    this.sendToAffirmData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
                 }
 //                sendData.dpt = this.firAreaCode;
-                this.sendData.dptState = this.dptState;         //始发地类型（0：机场，1：区域）
+                this.sendToAffirmData.dptState = this.dptState;         //始发地类型（0：机场，1：区域）
 //                sendData.dptCt = this.firAreaCode; //不传
-                this.sendData.dptAcceptnearairport = this.dptAcceptnearairport; //必填 始发地是否接收临近机场(0:接收,1:不接收)
-                this.sendData.dptTimeresources = this.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
-                this.sendData.pstTimeresources = this.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
-                this.sendData.arrvTimeresources = this.arrvTimeresources;        //选填 到达地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.sendToAffirmData.dptAcceptnearairport = this.dptAcceptnearairport; //必填 始发地是否接收临近机场(0:接收,1:不接收)
+                this.sendToAffirmData.dptTimeresources = this.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.sendToAffirmData.pstTimeresources = this.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.sendToAffirmData.arrvTimeresources = this.arrvTimeresources;        //选填 到达地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 this.dptTime = this.startTime1Show + ',' + this.endTime1Show;
                 this.pstTime = this.startTime2Show + ',' + this.endTime2Show;
                 this.arrvTime = this.startTime3Show + ',' + this.endTime3Show;
-                this.sendData.dptTime = this.dptTime;
-                this.sendData.pstTime = this.pstTime;
-                this.sendData.arrvTime = this.arrvTime;
-                this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
-                this.sendData.days = this.scheduleShow;      //必填 班期
-                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
-                this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
-                this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
+                this.sendToAffirmData.dptTime = this.dptTime;
+                this.sendToAffirmData.pstTime = this.pstTime;
+                this.sendToAffirmData.arrvTime = this.arrvTime;
+                this.sendToAffirmData.aircrfttyp = this.typeChoose;  //必填 机型
+                this.sendToAffirmData.days = this.scheduleShow;      //必填 班期
+                this.sendToAffirmData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
+                this.sendToAffirmData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
+                this.sendToAffirmData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
 //               this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
 //                sendData.pst = this.secAreaCode;   //选填 经停地
-                this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
+                this.sendToAffirmData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
                 if (this.pstState == 0) {
-                    this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
+                    this.sendToAffirmData.pst = this.qyCode2;//选填 经停地，机场三字码
                 }
                 if (this.pstState == 1) {
-                    this.sendData.pst = this.secArea;//选填 经停地
+                    this.sendToAffirmData.pst = this.secArea;//选填 经停地
                 }
 //                sendData.pstCt = this.secAreaCode; //不传
-                this.sendData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
+                this.sendToAffirmData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
 //                sendData.arrv = this.thirdAreaCode;//选填 到达地
-                this.sendData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
+                this.sendToAffirmData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
                 if (this.arrvState == 0) {
-                    this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
+                    this.sendToAffirmData.arrv = this.qyCode3;//选填 到达地，机场三字码
                 }
                 if (this.arrvState == 1) {
-                    this.sendData.arrv = this.thirdArea//选填 到达地
+                    this.sendToAffirmData.arrv = this.thirdArea//选填 到达地
                 }
 //                sendData.arrvCt = this.thirdAreaCode; //不传
-                this.sendData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
-                this.sendData.blockbidprice = this.blockbidPrice; //选填 拦标价格
-                this.sendData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
-                this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
-                this.sendData.seating = this.seatingNum;            // 选填 座位数
-                this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-                this.sendData.capacitycompany = this.airCompanyId;   //运力归属
+                this.sendToAffirmData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
+                this.sendToAffirmData.blockbidprice = this.blockbidPrice; //选填 拦标价格
+                this.sendToAffirmData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
+                this.sendToAffirmData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
+                this.sendToAffirmData.seating = this.seatingNum;            // 选填 座位数
+                this.sendToAffirmData.remark = this.remarkMsg;              // 选填 备注说明
+                this.sendToAffirmData.capacitycompany = this.airCompanyId;   //运力归属
 //                this.sendData.dpt = this.qyCode4;   //运力基地
-                this.sendData.hourscost = this.hourConst;   //小时成本
-                this.sendData.index = this.index;           //payAfter列表的index
-                console.info('sendData:');
-                console.info(this.sendData);
+                this.sendToAffirmData.hourscost = this.hourConst;   //小时成本
+                this.sendToAffirmData.index = this.index;           //payAfter列表的index
+                this.sendToAffirmData.releaseselected = 0;          //发布者是否已选定 0:表示选定,1:表示未选定
+                console.info('sendToAffirmData:');
+                console.info(this.sendToAffirmData);
 //                console.info(this.acceptData);
-                console.info('id2:' + this.id)
-                console.info('employeeId2:' + this.employeeId)
-                let ajaxData = {};
+                /*let ajaxData = {};
                 ajaxData.id = this.id;
                 ajaxData.employeeId = this.employeeId;
                 ajaxData.status = 0;
                 console.info('ajaxData:')
-                console.info(ajaxData)
+                console.info(ajaxData)*/
                 this.$ajax({
                     url: "/selectedResponse",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: ajaxData
+                    params: this.sendToAffirmData
                 }).then((response) => {
                     console.info('response:')
                     console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功选定该意向！');
+                        this.$emit('change-showCode');
+                        tabulationBoxTrigger.$emit('AffirmToDetailPayAfter', this.sendToAffirmData); //向airlineDetailPayAfter.vue传数据
+                    }else{
+                        alert('错误代码：' + response.data.opResult);
+                    }
                 }).catch((error) => {
                     console.log(error);
                 });
-                this.$emit('change-showCode');
-                console.info('this.sendData:');
-                console.info(this.sendData)
-                tabulationBoxTrigger.$emit('AffirmToDetailPayAfter', this.sendData); //向airlineDetailPayAfter.vue传数据
-                this.$emit('change-showCode');
             },
             closeThis: function () {
                 this.$emit('close-this');

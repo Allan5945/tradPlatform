@@ -1,5 +1,5 @@
 <template>
-    <div class="tool popup" @click.stop>
+    <div class="tool popup">
         <router-link to="">
             <span>&#xe671;</span>航路测算
         </router-link>

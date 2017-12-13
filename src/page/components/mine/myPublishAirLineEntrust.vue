@@ -279,16 +279,20 @@
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {
-                this.recallData.id = this.myData.id;
-                this.recallData.demandprogress = 3;
-                console.info(this.recallData);
+//                this.recallData.id = this.myData.id;
+//                this.recallData.demandprogress = 3;
+//                console.info(this.recallData);
                 this.$ajax({
-                    url:"/demandUpdate",
+//                    url:"/demandUpdate",
+                    url: "closeDemandById",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: this.recallData
+//                    params: this.recallData
+                    params: {
+                        id: this.myData.id
+                    }
                 }) .then((response) => {
                     console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});

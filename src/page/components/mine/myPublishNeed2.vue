@@ -329,11 +329,11 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
-    import airlineWrite from './airlineWrite.vue'
+    import airlineWrite from '$src/page/components/airlineWrite.vue'
     //    import airlinePay from './airlinePay.vue'
-    import airlineAffirm from './airlineAffirm.vue'
-    import paySuccess from './trans_detail/paySuccess.vue'
-    import airlinePay from './trans_detail/dialog.vue'
+    import airlineAffirm from '$src/page/components/airlineAffirm.vue'
+    import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
+    import airlinePay from '$src/page/components/trans_detail/dialog.vue'
 
     export default {
         data() {
@@ -428,8 +428,8 @@
         },
         created() {
 //            this.initData();
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                console.info('tabulationBoxTrigger:')
+            tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
+                console.info('sendDataToMyPublish:')
                 console.info(val.data)
                 this.id = val.data.id;
 //                console.info(this.id)
@@ -485,10 +485,10 @@
                             }
                             // 修改this.showCode
                             if (this.isSelf == true && this.isIntentionMoney == false) {
-//                                console.info('payAfter:' + 1)
+                                console.info('payAfter:' + 1)
                                 this.showCode = 1;
                             }if (this.isSelf == true && this.isIntentionMoney == true) {
-//                                console.info('payAfter:' + 3)
+                                console.info('payAfter:' + 3)
                                 this.showCode = 3;
 
                                 // 获取意向列表数据
@@ -511,7 +511,7 @@
                                 });
 
                             }if (this.isSelf == false) {
-//                                console.info('payAfter:' + 0)
+                                console.info('payAfter:' + 0)
                                 this.showCode = 0;
                             }
                             this.show();
@@ -526,8 +526,8 @@
             });
 
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
-//                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
-//                console.info(val)
+                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
+                console.info(val)
                 this.listData = val;   //获取意向列表
             }) //向payAfter的意向列表传参数
 
@@ -536,7 +536,7 @@
 //            this.initData();
             //模拟状态码0
 //            this.showCode = 0;
-//            console.info(this.role)
+            console.info(this.role)
 //            console.info('min-tabulationBoxTrigger')
 
         },

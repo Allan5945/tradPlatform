@@ -71,7 +71,7 @@
               <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
             </div>
             <div class="form-box reset">
-                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
+                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany">
                 <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
                     <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
                     <span>{{item[0]}}</span>
@@ -117,7 +117,7 @@
                </div>
             </div>
         </div>
-        <!-- <div class="post-type">
+        <div class="post-type">
             <div class="t-radio">
                 <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
             </div>
@@ -134,7 +134,7 @@
                 </div>
                 <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
             </div>
-        </div> -->
+        </div>
         <div class="t-btn">
             <div class="confirm-btn " @click="confirm">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
@@ -142,9 +142,10 @@
     </div>
 </template>
 <script>
- import calendar from './calendar'
- import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
- import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import calendar from './../calendar'
+ import airportS from './../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
+ import airportS1 from './../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     export default {
         data () {
             return{
@@ -329,22 +330,6 @@
                 this.airCompanyId = this.airCompanyData[i][2];
             },
             getAirplaneTyp:function(){
-                /*this.$ajax({
-                url:"/getDemandsForCurrentEmployee",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:2
-                }
-            }) .then((response) => {
-                response.data.list.list.forEach(item =>{
-                    this.airTypData.push(item.aircrfttyp);
-                })
-            }) .catch((error) => {
-                    console.log(error);
-                });*/
                 this.airplTypShow = true;
             },
             getAirCompany: function(){
@@ -358,6 +343,7 @@
                     page:2
                 }
             }) .then((response) => {
+                    console.info(response)
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
@@ -373,7 +359,11 @@
             },
             confirm:function(){
                 let demandData = { };
-                    demandData.demandtype = "4";
+
+                 tabulationBoxTrigger.$on('getSonId', val => {
+                    demandData.demandId = val;
+                });
+                    demandData.demandtype = "1";
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
@@ -390,7 +380,7 @@
                     demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
                     demandData.scheduling = this.dispatch == false? '1':'0';
                     if(this.dispatch){
-                        demandData.schedulinePort  = qyCode1;
+                        demandData.schedulinePort  = this.qyCode1;
                     }
                     demandData.remark = this.tip;
                     demandData.periodValidity = this.myDate;
@@ -398,7 +388,7 @@
                     //demandData.directionalgoal = this.directText;
                     //demandData.demandprogress = '0';
                  this.$ajax({
-                url:"/demandAdd",
+                url:"/sonDemandAdd",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
@@ -558,7 +548,6 @@
         justify-content: flex-end;
         align-items: center;
         margin-bottom:22px;
-        margin-top:40px;
         >div{
           height:40px;
           line-height:40px;
@@ -568,11 +557,6 @@
           background-color:#3c78ff;
           cursor:pointer;
 
-        }
-        .agent-btn{
-          width:100px;
-          margin-right: 20px;
-          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .confirm-btn{
           width:190px;
@@ -589,12 +573,6 @@
         }
     }
     .confirm-btn:hover{
-           background-color: rgba(80, 139, 255,1);
-          color: white !important;
-          cursor: pointer;
-          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
-    }
-    .agent-btn:hover{
            background-color: rgba(80, 139, 255,1);
           color: white !important;
           cursor: pointer;

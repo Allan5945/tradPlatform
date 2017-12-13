@@ -50,7 +50,7 @@
             <div class="myplan">
                 <div class="plan-til">
                     <div>我发出的方案</div>
-                    <div><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                    <div @click="EditFn"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                 </div>
                 <div class="airline">
                     <div class="airplace">
@@ -135,86 +135,173 @@
                 </div>
 
             </div>
-
         </div>
         <footer>
-            <div class="buttons">
-                <div class="btn btn-w cancel-btn">取消意向</div>
-                <div class="btn btn-w col-btn">收藏</div>
+            <div class="buttons" v-if="btnShow">
+                <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
+                <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+            </div>
+            <div class="buttons" v-else>
+                <div class="btn btn-b" @click="sureClickFn">确认方案</div>
+                <div class="btn btn-w col-btn2" @click="cancelPurposeFn(),closeThisFn()">拒绝并撤回</div>
             </div>
         </footer>
+        <myPurposeEdit v-show="myPurposeEditShow" @close-this="closeThis"></myPurposeEdit>
     </div>
 </template>
 
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+ import myPurposeEdit from './myPurposeEdit.vue'
  export default {
      data(){
          return{
              planShow:true,
-             planData:[],
-             detailData:[],
+             planData:{},
+             detailData:{},
              intentionCount:0,
-             demandData:{}
+             demandData:{},
+             myPurposeEditShow: false, //编辑表单是否显示
+             id: '',
+             demandId: '',
+             cancelPurposeData: {},
+             btnShow: true,
          }
+     },
+     mounted:function(){
+         tabulationBoxTrigger.$on('sendDataToMyPurpose', val => { //接受myPurposeList.vue传来的将item的参数
+//                this.demandData = val;
+             this.detailData = val.demand;
+             this.planData = val;
+             this.id = val.id;
+             this.demandId = val.demandId;
+             if(this.planData.releaseselected != 0){ //releaseselected=0:发布者已选定，1：发布者取消选定
+                 this.btnShow = true;
+             }else {
+                 this.btnShow = false;
+             }
+             console.info('sendDataToMyPurposeData:')
+             console.info(val)
+         });
+         tabulationBoxTrigger.$emit('editSendToMyPurpose',val => { //接受myPurposeEdit.vue传来的参数（此处为响应者点击的按钮）
+             this.detailData = val;
+         })
      },
      methods:{
          closeThisFn: function () {
              this.$emit('close-this');
          },
+         EditFn: function () {
+             this.myPurposeEditShow = true;
+             tabulationBoxTrigger.$emit('sendToMyPurposeEdit',this.planData); // 向myPurposeEdit.vue传递数据
+         },
+         closeThis: function () {
+             this.myPurposeEditShow = false;
+         },
+         // 点击“取消意向”
+         deleteClickFn: function () {
+             console.info(this.id)
+             this.$ajax({
+                 url:"/ResponseDel",
+                 method: 'post',
+                 headers: {
+                     'Content-type': 'application/x-www-form-urlencoded'
+                 },
+                 params: {
+                     id: this.id
+                 }
+             }) .then((response) => {
+                 console.info(response)
+                 if(response.data.opResult === '0'){
+                     alert('成功删除该意向!');
+                 }else{
+                     alert('错误代码：' + response.data.opResult);
+                 }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+             }) .catch((error) => {
+                 console.log(error);
+             });
+         },
+         // 点击“收藏”
+         addCollectFn: function () {
+             this.$ajax({
+                 url:"/addCollect",
+                 method: 'post',
+                 headers: {
+                     'Content-type': 'application/x-www-form-urlencoded'
+                 },
+                 params: {
+                     demandIds: this.id
+                 }
+             }) .then((response) => {
+                 console.info('collect:')
+                 console.info(response)
+                 if(response.data.opResult === '0'){
+                     alert('收藏成功！')
+                 }else{
+                     alert('错误代码：'+ response.data.opResult)
+                 }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+             }) .catch((error) => {
+                 console.log(error);
+             });
+         },
+
+         // 点击“确认方案”
+         sureClickFn: function () {
+             this.cancelPurposeData.releaseselected = 0;
+             this.cancelPurposeData.responseselected = 0;
+             this.cancelPurposeData.id = this.id;
+             this.cancelPurposeData.demandId = this.demandId;
+             this.$ajax({
+                 url:"/selectedResponse",
+                 method: 'post',
+                 headers: {
+                     'Content-type': 'application/x-www-form-urlencoded'
+                 },
+                 params: this.cancelPurposeData
+             }) .then((response) => {
+                 console.info(response)
+                 if(response.data.opResult === '0'){
+                     alert('成功确认方案!');
+                 }else{
+                     alert('错误代码：' + response.data.opResult);
+                 }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+             }) .catch((error) => {
+                 console.log(error);
+             });
+         },
+         // 点击“拒绝并撤回”
+         cancelPurposeFn: function () {
+             this.cancelPurposeData.releaseselected = 0;
+             this.cancelPurposeData.responseselected = 1;
+             this.cancelPurposeData.id = this.id;
+             this.cancelPurposeData.demandId = this.demandId;
+             this.$ajax({
+                 url:"/selectedResponse",
+                 method: 'post',
+                 headers: {
+                     'Content-type': 'application/x-www-form-urlencoded'
+                 },
+                 params: this.cancelPurposeData
+             }) .then((response) => {
+                 console.info(response)
+                 if(response.data.opResult === '0'){
+                     alert('成功取消该意向!');
+                 }else{
+                     alert('错误代码：' + response.data.opResult);
+                 }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+             }) .catch((error) => {
+                 console.log(error);
+             });
+         },
      },
-      computed:{},
-      mounted:function(){
-            tabulationBoxTrigger.$on('sendDataToMyPurpose', val => {
-                this.demandData = val;
-                console.info('sendDataToMyPurposeData:')
-                console.info(val)
-
-                if(this.demandData.responseId){
-                     this.$ajax({
-                          method: 'post',
-                          url: '/capacityRoutesDemandDetailFindById',
-                          headers: {
-                              'Content-type': 'application/x-www-form-urlencoded'
-                          },
-                            params: {
-                              demandId: this.demandData.demandId
-                          }
-                          })
-                          .then((response) => {
-                              this.intentionCount = response.data.intentionCount;
-                              this.detailData = response.data.data;
-                          })
-                          .catch((error) => {
-                                  console.log(error);
-                              }
-                          );
-                     this.$ajax({
-                          method: 'post',
-                          url: '/changeIntentionMoneyStatusForResponse',
-                          headers: {
-                              'Content-type': 'application/x-www-form-urlencoded'
-                          },
-                            params: {
-                              id:this.demandData.responseId,
-                              intentionStatu:'0'
-
-                          }
-                      })
-                      .then((response) => {
-                         this.planData = response.data.data;
-                         console.log(this.planData)
-
-                      })
-                      .catch((error) => {
-                              console.log(error);
-                          }
-                      );
-                      }
-                  });
-
-      }
-
+     computed:{},
+     components: {
+         myPurposeEdit
+     }
 }
 </script>
 
@@ -347,7 +434,7 @@
         }
         .airline{
             display:flex;
-            padding:20px 0 0 40px;
+            padding-top:20px;
             margin: 0 40px;
             box-sizing:border-box;
             border-bottom:1px solid #ccc;
@@ -410,6 +497,22 @@
               }
                .col-btn{
                   width:80px;
+              }
+              .btn-b {
+                  margin-right: 20px;
+                  width: 150px;
+                  border-radius: 20px;
+                  color: white;
+                  background: #3c78ff;
+                  &:hover {
+                      background: rgba(60, 120, 255, 0.7);
+                  }
+                  &:active {
+                      background: #336bea;
+                  }
+              }
+              .col-btn2 {
+                  width: 150px;
               }
           }
     }

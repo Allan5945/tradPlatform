@@ -47,7 +47,7 @@
         </div>
         <div class="add-item item-container">
             <div class="left item font-gray">意向机场</div>
-            <div class="right item" v-if="myData.intendedairline == 0">
+            <div class="right item" v-if="myData.intendedairline === '0'">
                 <span>{{myData.intendedAirlines[0].dptName}}</span>
                 <span class="icon-item">&#xe672;</span>
                 <span>{{myData.intendedAirlines[0].pstName}}</span>
@@ -227,12 +227,16 @@
                 this.recallData.demandprogress = 3;
                 console.info(this.recallData);
                 this.$ajax({
-                    url:"/demandUpdate",
+//                    url:"/demandUpdate",
+                    url: "closeDemandById",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: this.recallData
+//                    params: this.recallData
+                    params: {
+                        id: this.myData.id
+                    }
                 }) .then((response) => {
                     console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
