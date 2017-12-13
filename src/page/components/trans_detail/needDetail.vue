@@ -80,7 +80,7 @@
      },
      methods:{
          closeDetail:function(){
-            this.$emit("closeDetail")
+            this.$emit("closeDetail");
          },
          haveInvent:function(){
              this.$emit("formShow");

@@ -1,7 +1,7 @@
 <template>
     <div >
         <transition name="dialog">
-            <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
+            <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
         </transition>
         <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
         <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
@@ -9,28 +9,23 @@
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
-         <infPanel></infPanel>
-        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
+        <paySuccess @cancel="closePayDialog" v-show="payDialog"></paySuccess>
     </div>
 </template>
 
 <script>
-    import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm.vue'
-    import myPlan from './../page/components/trans_detail/myPlan.vue'
-    import myIntention from './../page/components/trans_detail/myIntention.vue'
-    import transDialog from './../page/components/trans_detail/dialog.vue'
-    import respondAirport from './../page/components/trans_detail/respondAirport.vue'
-    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
-    import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
+    import needDetail from './needDetail.vue'
+    import intentForm from './intentForm.vue'
+    import myPlan from './myPlan.vue'
+    import myIntention from './myIntention.vue'
+    import transDialog from './dialog.vue'
+    import respondAirport from './respondAirport.vue'
+    import myIntentForm from './myIntentForm.vue'
+    import paySuccess  from './paySuccess.vue'
 
     export default {
         data() {
             return {
-                test1:false,
-                renderComponent:false,
-                name: 1,
-                show: false,
                 dialog:false,
                 payDialog:false,
                 intentFormShow:false,
@@ -39,26 +34,24 @@
                 intentShow:false,
                 myFormShow:false,
                 detailShow:false,
-                detailShow2: false,
-                demandId: ''
             }
         },
         methods: {
             formShow(){
-                this.intentFormShow = !this.intentFormShow;
+                this.intentFormShow = true;
             },
             formShow1(){
-                this.myFormShow = !this.myFormShow
+                this.myFormShow = true;
             },
             openIntent() {
                 this.intentShow = true;
-                this.detailShow2 = false;
+                this.$emit('closeAirline');
             },
             closeForm(){
-                this.intentFormShow = !this.intentFormShow;
+                this.intentFormShow = false;
             },
             closeMyForm(){
-                this.myFormShow = !this.myFormShow;
+                this.myFormShow = false;
             },
             closeDetail(){
                 this.detailShow =false;
@@ -66,13 +59,10 @@
             responShow(){
                 this.respond = true;
                 this.detailShow = false;
-                this.detailShow2 = false;
+                this.$emit('closeAirline');
             },
             responClose(){
                 this.respond = false;
-            },
-             closeThis() {
-                this.detailShow2 = false;
             },
             sureDialog(){
                 this.intentFormShow = false;
@@ -80,20 +70,20 @@
                 this.payDialog = true;
                 this.detailShow = false;
             },
-            showPlan:function(){
+            showPlan(){
                 this.planShow = false;
             },
-            transShow:function(){
+            transShow(){
                 this.detailShow = true;
-                this.detailShow2 = false;
                 this.respond = false;
+                this.$emit('closeAirline');
             },
-            transShow2: function () {
-                this.detailShow2 = true;
-                this.detailShow = false;
-                this.respond = false;
-                this.intentShow = false;
+            closeDialog(){
+                this.dialog = false;
             },
+            closePayDialog(){
+                this.payDialog = false;
+            }
         },
         beforeMount: function () {
 
@@ -109,7 +99,6 @@
             myIntention,
             paySuccess,
             myIntentForm,
-            myPublish,
             respondAirport
         }
     }

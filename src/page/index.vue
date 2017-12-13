@@ -2,15 +2,17 @@
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
         <navigation @toShow="toShow"></navigation>
-        <toPublish v-show="show"></toPublish>
+        <toPublish v-show="publichShow"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
          <infPanel></infPanel>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
+         <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>
         <routeNetwork v-if="role.role != '2'"></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
         <newsTip></newsTip>
+
     </div>
 </template>
 
@@ -25,8 +27,7 @@
     import {conversionsCity,conversions} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './components/independenceComponents/infPanel.vue'
-    import myPublish from './components/mine/myPublishNeed.vue'
-    import myPurpose from './../page/components/mine/myPurpose.vue'
+    import transIndex from './components/trans_detail/transIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
@@ -40,16 +41,9 @@
                 test1:false,
                 renderComponent:false,
                 name: 1,
-                show: false,
-                dialog:false,
-                payDialog:false,
-                intentFormShow:false,
-                planShow:false,
-                respond:false,
-                intentShow:false,
-                myFormShow:false,
+                publichShow: false,
                 detailShow:false,
-                detailShow2: false,
+                detailShow2:false,
                 loadingData: {
                     airList: false,
                     demands: false,
@@ -74,57 +68,18 @@
 
             },
             toShow() {
-                this.show = !this.show;
-            },
-            formShow(){
-                this.intentFormShow = !this.intentFormShow;
-            },
-            formShow1(){
-                this.myFormShow = !this.myFormShow
-            },
-            openIntent() {
-                this.intentShow = true;
-                this.detailShow2 = false;
-            },
-            closeForm(){
-                this.intentFormShow = !this.intentFormShow;
-            },
-            closeMyForm(){
-                this.myFormShow = !this.myFormShow;
-            },
-            closeDetail(){
-                this.detailShow =false;
-            },
-            responShow(){
-                this.respond = true;
-                this.detailShow = false;
-                this.detailShow2 = false;
-            },
-            responClose(){
-                this.respond = false;
+                this.publichShow = !this.publichShow;
             },
              closeThis() {
                 this.detailShow2 = false;
             },
-            sureDialog(){
-                this.intentFormShow = false;
-                this.planShow = true;
-                this.payDialog = true;
-                this.detailShow = false;
-            },
-            showPlan:function(){
-                this.planShow = false;
-            },
-            transShow:function(){
+            closeAirline:function(){
                 this.detailShow = true;
                 this.detailShow2 = false;
-                this.respond = false;
             },
-            transShow2: function () {
+            closeTrans: function () {
                 this.detailShow2 = true;
                 this.detailShow = false;
-                this.respond = false;
-                this.intentShow = false;
             },
             init:function () {
                 if(
@@ -290,21 +245,10 @@
             tagIcon,
             messageBox,
             toPublish,
-            needDetail,
-            intentForm,
-            myPlan,
-            transDialog,
-            myIntention,
-            paySuccess,
             airlineDetailPayAfter,
+            transIndex,
             infPanel,
-            myIntentForm,
-//            myIndex,
-//            myIndexFzz,
-            myPublish,
-            myPurpose,
             routeNetwork,
-            respondAirport,
             timelyCommunication
         }
     }
