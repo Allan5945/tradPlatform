@@ -366,7 +366,7 @@
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
                     myCompany.push(item.icao);
-                    myCompany.push(item.capacitycompany);
+                    myCompany.push(item.id);
                     this.airCompanyData.push(myCompany);
                 })
             }).catch((error) => {
@@ -402,14 +402,14 @@
                     //demandData.directionalgoal = this.directText;
                     //demandData.demandprogress = '0';
                  this.$ajax({
-                url:"/demandAdd",
+                url:"/airCompenyList",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                 params: demandData
             }) .then((response) => {
-                    //console.log(response.opResult);
+
             }) .catch((error) => {
                     console.log(error);
                 });

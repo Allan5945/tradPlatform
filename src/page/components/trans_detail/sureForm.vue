@@ -416,11 +416,6 @@
     import calendar from './../calendar'
 
     export default {
-       /* props: {
-            acceptData: {
-                type: Object
-            }
-        },*/
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -537,7 +532,6 @@
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
                 sendData: {},
-                responseId: '',
                 airCompany: '',//运力归属
                 hourConst: '',             //小时成本
                 airCompanyData: [], //航司内容
@@ -546,6 +540,7 @@
                 demandData:{}
             }
         },
+        props:["responseId"],
         components: {
             airAreaSearch,
             airportS,
@@ -557,39 +552,12 @@
             }
         },
         mounted() {
-//            console.info(this.acceptData)
-            /*let acceptData = this.acceptData;
-            if (acceptData.dptState == 0) {
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }
-            if (acceptData.dptState == 1) {
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if (acceptData.pstState == 0) {
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }
-            if (acceptData.pstState == 1) {
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if (acceptData.arrvState == 0) {
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }
-            if (acceptData.arrvState == 1) {
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }*/
-
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+            /*tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
                     this.demandData.demandId = val.data.id;
                     this.demandData.employeeId = val.data.employeeId;
                     this.demandData.demandType = val.data.demandtype;
                     console.log(this.demandData)
-            });
+            });*/
         },
         computed: {
             sailingtime: function () {
@@ -626,9 +594,7 @@
                     this.warn4Show = true;
                     return
                 }*/
-                 console.log(this.demandData)
-                this.sendData.demandId = this.demandData.demandId;
-                this.sendData.employeeId =this.demandData.employeeId;
+                this.sendData.id = this.responseId;
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -689,19 +655,21 @@
                 console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
-                    url: "/responseAdd",
+                    url: "/updateResponseSelective",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: this.sendData
                 }).then((response) => {
-                     this.demandData.responseId = response.data.response.id;
-                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
+                    if(response.data.opResult == "0"){
+                        alert("修改方案成功！")
+                         this.$emit('closeForm');
+                  }
                 }).catch((error) => {
                     console.log(error);
                 });
-                this.$emit('closeForm');
+
             },
             //点击关闭所有下拉
             closeAll: function () {
