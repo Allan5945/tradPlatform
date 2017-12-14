@@ -132,10 +132,16 @@
                 this.state = this.state1;
             }if(this.role.role == 2) {
                 this.type = this.type2;
-                this.myData = this.myData0.concat(this.myData1);
+                /*this.myData0.forEach((val) => {
+                    this.myData.push(val);
+                });*/
+                this.myData1.forEach((val) => {
+                    this.myData.push(val);
+                });
+                console.info(this.myData);
             }
 
-            this.$ajax({
+            /*this.$ajax({
                 url:"/getResponseListOfMine",
                 method: 'post',
                 headers: {
@@ -159,7 +165,7 @@
 //                this.myData = response.data.list.list;
             }).catch((error) => {
                 console.log(error);
-            });
+            });*/
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         methods: {

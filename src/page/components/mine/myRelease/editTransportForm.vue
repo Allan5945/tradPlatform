@@ -20,7 +20,7 @@
                     <div class="t-title">出港时刻</div>
                     <div class="radio-box">
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
+                            <input type="radio" class="magic-radio" id="eTSFtimeYes" v-model="getTime" value="true" ><label for="eTSFtimeYes">有&nbsp;</label>
                         </div>
                         <div class="selected" v-if="this.getTime == 'true'">
                             <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
@@ -34,7 +34,7 @@
                           </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
+                            <input type="radio" class="magic-radio" id="eTSFtimeNo" v-model="getTime" value="false"><label for="eTSFtimeNo">无</label>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="t-title">是否有班期</div>
                     <div class="radio-box">
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="flightYes" v-model="getFlight" value="true"><label for="flightYes">有&nbsp;</label>
+                            <input type="radio" class="magic-radio" id="eTSFflightYes" v-model="getFlight" value="true"><label for="eTSFflightYes">有&nbsp;</label>
                         </div>
                         <div class="selected border" @click="showBox=!showBox" v-show="this.getFlight == 'true'">
                             <span class="fl-til" v-text="msg" :class="{selec:isSel}"></span>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="flase"><label for="flightNo">无</label>
+                            <input type="radio" class="magic-radio" id="eTSFflightNo" v-model="getFlight" value="flase"><label for="eTSFflightNo">无</label>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="form-box  pad1 dispatch">
                     <div class="t-checkbox">
-                        <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
+                        <input type="checkbox" name=" " id="eTSFdispatch" class="magic-radio" v-model="dispatch"><label for="eTSFdispatch">接受调度</label>
                     </div>
                     <input type="text" v-show="dispatch" v-model="dispatchText" v-on:keyup="openSearch1" placeholder=" ">
                     <airportS class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS>
@@ -124,13 +124,13 @@
             </div>
             <div class="post-type">
                 <div class="t-radio">
-                    <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
+                    <input type="radio" name="type" id="eTSFtype1" class="magic-radio" v-model="post" value="0"><label for="eTSFtype1">对所有人公开</label>
                 </div>
                 <div class="t-radio">
-                    <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
+                    <input type="radio" name="type" id="eTSFtype2" class="magic-radio" v-model="post" value="1"><label for="eTSFtype2">对认证用户公开</label>
                 </div>
                 <div class="t-radio">
-                    <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
+                    <input type="radio" name="type" id="eTSFtype3" class="magic-radio" v-model="post" value="3"><label for="eTSFtype3">定向发布</label>
                 </div>
                 <div class="direction t-radio" style="position:relative;">
                     <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">

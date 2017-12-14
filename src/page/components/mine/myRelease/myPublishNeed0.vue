@@ -691,6 +691,28 @@
                 if (this.calendarInitDay1 && this.calendarInitDay2) {
                     this.periodValidity0 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow1 = false;
+                    let editDate = {};
+                    editDate.id = this.id;
+                    editDate.periodValidity = this.periodValidity0;
+                    this.$ajax({
+                        url:"/demandUpdate",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: editDate
+                    }) .then((response) => {
+                        console.info('1response:')
+                        console.info(response)
+                        if(response.data.opResult === '0'){
+                            alert('有效期修改成功！')
+                        }else{
+                            alert('错误代码：' + response.data.opResult)
+                        }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                    }) .catch((error) => {
+                        console.log(error);
+                    });
                 } else {
                 }
             },
