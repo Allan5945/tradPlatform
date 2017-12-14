@@ -5,15 +5,15 @@
             <listModule :ndetailData="metaData" :type="typeList[detailData.demandtype]" v-if="metaData"></listModule>
             <template v-if="metaData">
                 <footer class="footer flex-center">
-                    <template v-if="detailData.demandstate=='未处理'">
+                    <template v-if="detailData.demandStateStr=='未处理'">
                         <span class="btn btn-prime" @click="postPass">通过</span>
                         <span class="btn btn-gray" @click="show.swrapper=true">不通过</span>
                     </template>
-                    <template v-if="detailData.demandstate==='审核未通过'">
+                    <template v-if="detailData.demandStateStr==='审核未通过'">
                         <span class="tips tips-top">*拒绝原因</span>
                         <p v-text="metaData.rek || '无具体原因'"></p>
                     </template>
-                    <template v-if="detailData.demandstate==='审核通过'">
+                    <template v-if="detailData.demandStateStr==='审核通过'">
                         <span class="tips tips-pas">*已通过审核</span>
                         <p v-text="detailData.name"></p>
                     </template>

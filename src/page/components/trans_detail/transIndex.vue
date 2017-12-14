@@ -10,6 +10,7 @@
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
         <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
         <paySuccess @cancel="closePayDialog" v-show="payDialog"></paySuccess>
+        <sureForm v-show="sureFormShow" @closeForm="closeSureForm"></sureForm>
     </div>
 </template>
 
@@ -22,6 +23,7 @@
     import respondAirport from './respondAirport.vue'
     import myIntentForm from './myIntentForm.vue'
     import paySuccess  from './paySuccess.vue'
+    import sureForm from './sureForm.vue'
 
     export default {
         data() {
@@ -32,6 +34,7 @@
                 planShow:false,
                 respond:false,
                 intentShow:false,
+                sureFormShow:false,
                 myFormShow:false,
                 detailShow:false,
             }
@@ -52,6 +55,9 @@
             },
             closeMyForm(){
                 this.myFormShow = false;
+            },
+            closeSureForm(){
+                 this.sureFormShow = false;
             },
             closeDetail(){
                 this.detailShow =false;
@@ -99,7 +105,8 @@
             myIntention,
             paySuccess,
             myIntentForm,
-            respondAirport
+            respondAirport,
+            sureForm
         }
     }
 </script>

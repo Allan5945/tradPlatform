@@ -169,7 +169,7 @@
                         <div class="sure-btn" @click="toSelect(val)" v-if="selShow">选定</div>
                         <div class="btns" v-else>
                             <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
-                            <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                            <div class="cancel-btn" @click="cancelSel(val),closeThisFn()">撤销选定</div>
                         </div>
                     </div>
                 </div>
@@ -182,11 +182,14 @@
                 <div class="col-btn">结束需求</div>
             </div>
         </footer>
+        <myPublishIntentForm v-show="myPublishIntentFormShow" @close-this="closeThisFn"></myPublishIntentForm>
     </div>
 </template>
 
 <script>
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+import myPublishIntentForm from './myPublishIntentForm.vue';
+
 import * as vx from 'vuex'
  export default {
      data(){
@@ -198,9 +201,14 @@ import * as vx from 'vuex'
              detailData:{},
              planData:{},
              intentionCount:0,
+             myPublishIntentFormShow: false, // 表单是否显示
          }
      },
      methods:{
+         //关闭弹出的表单
+         closeThisFn: function () {
+             this.myPublishIntentFormShow = false
+         },
          closeDetail:function(){
              this.detailShow = !this.detailShow;
              if(this.detailShow){
@@ -210,14 +218,15 @@ import * as vx from 'vuex'
              }
          },
          closeIntent:function(){
-            this.$emit('closeIntent');
+            this.$emit('close-this');
          },
          toSelect:function(val){
-            tabulationBoxTrigger.$emit('sendTable',val);
-            this.$emit("formShow");
+             this.myPublishIntentFormShow = true;
+             tabulationBoxTrigger.$emit('sendTable',val);
+             this.$emit("formShow");
          },
          cancelSel:function(val){
-         /* this.$ajax({
+          this.$ajax({
                 method: 'post',
                 url: '/selectedResponse',
                 headers: {
@@ -230,27 +239,28 @@ import * as vx from 'vuex'
                 }
                 })
                 .then((response) => {
-
+                     this.selShow = true;
                 })
                 .catch((error) => {
                         console.log(error);
                     }
-                );*/
-                this.selShow = true;
+                );
          }
-
 
      },
       computed: {
             ...vx.mapGetters([
                 'role'
             ])
-        },
+      },
+      components: {
+          myPublishIntentForm
+      },
       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-
-            console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && (this.role.role == 0||this.role.role == 2)){
+        tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
+            console.info('111111sendDataToMyPublish:')
+            console.info(val)
+            if(val.demandtype == 1 && this.role.role == 0){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -258,10 +268,12 @@ import * as vx from 'vuex'
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: val.id
                 }
                 })
                 .then((response) => {
+                    console.info('11111response:')
+                    console.info(response)
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                     this.planData = response.data.responseList;

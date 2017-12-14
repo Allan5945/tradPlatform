@@ -165,7 +165,7 @@
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
-                            <div style="width: 80%;word-wrap: break-word;">{{ndetailData.remark||"-"}}</div>
+                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
                 </div>

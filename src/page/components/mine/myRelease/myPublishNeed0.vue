@@ -96,7 +96,7 @@
                         <div class="item-a">{{myData.days}}</div>
                         <div class="item-b">{{myData.seating}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                        <div class="item-d" style="display: flex; position: relative;">{{periodValidity0}}
+                        <div class="item-d" style="display: flex;position: relative;">{{periodValidity0}}
                             <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
                             <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
                                 <div class="selec-data">
@@ -155,8 +155,8 @@
                         <div class="center-right">
                             <span class="icon-item">&#xe602; <span class="reminder"></span></span>
                         </div>
-                        <div class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情
-                        </div>
+                        <div v-if="checkDetailShow" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
+                        <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
                     </div>
                     <div v-show="checkDetailIndex === index">
                         <div class="item-second">
@@ -342,13 +342,12 @@
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-
-    import airlineWrite from './airlineWrite.vue'
+    import airlineWrite from '$src/page/components/airlineWrite.vue'
     //    import airlinePay from './airlinePay.vue'
-    import airlineAffirm from './airlineAffirm.vue'
-    import paySuccess from './trans_detail/paySuccess.vue'
-    import airlinePay from './trans_detail/dialog.vue'
-    import calendar from './calendar'
+    import airlineAffirm from '$src/page/components/airlineAffirm.vue'
+    import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
+    import airlinePay from '$src/page/components/trans_detail/dialog.vue'
+    import calendar from '$src/page/components/calendar'
 
     export default {
         data() {
@@ -386,6 +385,7 @@
                 subsidypolicy: '',//补贴政策
                 listData: [],    //下方的列表详情
                 id: '',
+                checkDetailShow: true, // "查看详情"是否显示，true:显示，flase：不显示
                 checkDetailIndex: '', //点击“查看详情”对应的展开
                 releaseselectedShow: true,  //发布者是否已选定 0:表示选定,1:表示未选定
                 airlineAffirmUnchooseData: {}, //“撤销选定”发的对象
@@ -448,13 +448,14 @@
         },
         created() {
 //            this.initData();
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                console.info('tabulationBoxTrigger:')
-                console.info(val.data)
-                this.id = val.data.id;
+            tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
+                console.info('000000sendDataToMyPublish:')
+                console.info(val)
+//                this.id = val.data.id;
+                this.id = val.id;
 //                console.info(this.id)
 //                this.showCode = 0;
-                if (val.data.demandtype == 0) {
+                if (val.demandtype == 0) {
                     this.$ajax({
                         method: 'post',
                         url: '/capacityRoutesDemandDetailFindById',
@@ -462,7 +463,7 @@
                             'Content-type': 'application/x-www-form-urlencoded'
                         },
                         params: {
-                            demandId: val.data.id
+                            demandId: this.id
                         }
                     })
                         .then((response) => {
@@ -499,17 +500,20 @@
                                 this.subsidypolicy = '人头补'
                             }
                             if (this.myData.subsidypolicy == 3) {
+                                this.subsidypolicy = '其他'
+                            }
+                            if (this.myData.subsidypolicy == 4) {
                                 this.subsidypolicy = '待议'
                             }
-                            if (this.myData.subsidypolicy == 3) {
+                            if (this.myData.subsidypolicy == 5) {
                                 this.subsidypolicy = '无补贴'
                             }
                             // 修改this.showCode
                             if (this.isSelf == true && this.isIntentionMoney == false) {
-//                                console.info('payAfter:' + 1)
+                                console.info('payAfter:' + 1)
                                 this.showCode = 1;
-                            }if (this.isSelf == true && this.isIntentionMoney == true) {
-//                                console.info('payAfter:' + 3)
+                            }if (this.isSelf == true && this.isIntentionMoney == true) { //是自己发布的，并且已经缴纳意向金
+                                console.info('payAfter:' + 3)
                                 this.showCode = 3;
                                 // 获取意向列表数据
                                 let toAcceptrResponseList = {};
@@ -531,7 +535,7 @@
                                 });
 
                             }if (this.isSelf == false) {
-//                                console.info('payAfter:' + 0)
+                                console.info('payAfter:' + 0)
                                 this.showCode = 0;
                             }
                             this.show();
@@ -546,8 +550,8 @@
             });
 
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
-//                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
-//                console.info(val)
+                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
+                console.info(val)
                 this.listData = val;   //获取意向列表
             }) //向payAfter的意向列表传参数
 
@@ -556,7 +560,7 @@
 //            this.initData();
             //模拟状态码0
 //            this.showCode = 0;
-//            console.info(this.role)
+            console.info(this.role)
 //            console.info('min-tabulationBoxTrigger')
 
         },
@@ -567,7 +571,7 @@
         },
         methods: {
             closeThisFn: function () {
-                this.$emit('closeThis')
+                this.$emit('close-this')
             },
             // 点击“结束需求”按钮
             endNeed: function () {
@@ -633,6 +637,7 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
+                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
                 if (this.showCode === 1) {
@@ -644,6 +649,7 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
+                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
                 if (this.showCode === 2) {
@@ -655,6 +661,7 @@
 //                    this.thirdButtonShow = true;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = true;
+                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
                 if (this.showCode === 3) {
@@ -666,12 +673,13 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = true;
                     this.fifthButtonShow = true;
+                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
             },
             // 日历
             editCalendarFn: function () {
-                this.calendarShow1 = true;
+                this.calendarShow1 = !this.calendarShow1;
             },
             getDate1: function (d) {//获取组件返回的日期
                 this.calendarInitDay1 = d.split('-').join('.');
@@ -793,6 +801,7 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
+                this.checkDetailShow = false;
                 console.info('item:')
                 console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
@@ -803,6 +812,11 @@
                     this.releaseselectedShow = true;
 //                    console.info(1)
                 }
+            },
+            //点击“收起详情”
+            checkDetailUp: function (item,index) {
+                this.checkDetailIndex = '';
+                this.checkDetailShow = true;
             },
             //父子组件间信息的传递，点击x号关闭组件
             closeAlWriteFn: function () {
@@ -908,7 +922,6 @@
     .btn-w {
         outline: none;
     }
-
     /*日历样式*/
     #search {
         padding-top: 100px;
@@ -984,7 +997,6 @@
     }
 
     /*********/
-
     .wrapper {
 
         /*min-height: 600px;*/
