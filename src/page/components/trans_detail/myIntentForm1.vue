@@ -4032,7 +4032,9 @@
                     this.warn4Show = true;
                     return
                 }*/
+                //this.sendData.responseId =this.responseId;
                 this.sendData.responseId =this.responseId;
+                console.log(this.responseId)
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -4100,13 +4102,15 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-
+                     if(response.data.opResult == "0"){
+                        alert("确认方案成功！")
+                        this.$emit('closeMyForm');
+                  }
                 }).catch((error) => {
                     console.log(error);
                 });
 
                 tabulationBoxTrigger.$emit('getTable',this.sendData);
-                this.$emit('closeMyForm');
             },
             //点击关闭所有下拉
             closeAll: function () {

@@ -184,7 +184,7 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :responseId="planData.id"></myIntentForm>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :responseId="responseId"></myIntentForm>
     </div>
 </template>
 
@@ -204,6 +204,7 @@
              planData:{},
              selectData:{},
              intentionCount:0,
+             responseId:''
          }
      },
      methods:{
@@ -222,6 +223,7 @@
             tabulationBoxTrigger.$emit('sendTable',val);
             this.myFormShow = true;
             this.selectData = val;
+            this.responseId = val.id;
             this.selectData.releaseselected = '0';
             this.$ajax({
                 method: 'post',
