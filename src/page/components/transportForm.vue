@@ -2,10 +2,10 @@
     <div class="t-form scroll popup">
         <div class="t-must">
             <div class="form-box">
-                <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20">
             </div>
             <div class="form-box">
-                <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
                 <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
             </div>
             <div style="height:20px;width:100%;" v-if="isError"></div>
@@ -267,6 +267,9 @@
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
                     this.isError = true;
                 }else{
+                    this.isError = false;
+                }
+                if(this.phoneNum == ''){
                     this.isError = false;
                 }
             },

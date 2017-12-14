@@ -59,7 +59,7 @@
             <div class="myplan">
                 <div class="plan-til">
                     <div>我发出的方案</div>
-                    <div><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                    <div style="cursor:pointer;" @click="getSureForm"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                 </div>
                 <div class="airline">
                     <div class="airplace">
@@ -169,8 +169,11 @@
      },
      methods:{
          closeDetail:function(){
-             this.$emit('responseClose')
+             this.$emit('responseClose');
          },
+         getSureForm:function(){
+          this.$emit("getSureForm");
+         }
 
      },
       computed:{
@@ -180,7 +183,7 @@
       },
        mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
+            if(val.data.demandtype == 1 && (this.role.role == 1||this.role.role == 2)){
                console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',

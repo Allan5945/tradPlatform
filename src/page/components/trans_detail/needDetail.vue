@@ -80,7 +80,7 @@
      },
      methods:{
          closeDetail:function(){
-            this.$emit("closeDetail")
+            this.$emit("closeDetail");
          },
          haveInvent:function(){
              this.$emit("formShow");
@@ -112,7 +112,7 @@
         },
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
+            if(val.data.demandtype == 1 && (this.role.role == 1 || this.role.role == 2)){
                console.log("demandtype"+val.data.demandtype);
                 this.demandId = val.data.id;
                 this.$ajax({

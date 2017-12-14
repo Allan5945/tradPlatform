@@ -416,11 +416,11 @@
     import calendar from './../calendar'
 
     export default {
-        props: {
+       /* props: {
             acceptData: {
                 type: Object
             }
-        },
+        },*/
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -570,7 +570,7 @@
         },
         mounted() {
 //            console.info(this.acceptData)
-            let acceptData = this.acceptData;
+            /*let acceptData = this.acceptData;
             if (acceptData.dptState == 0) {
                 this.space1Fn('意向机场');
                 this.firArea = acceptData.dptNm;
@@ -594,7 +594,7 @@
             if (acceptData.arrvState == 1) {
                 this.space3Fn('意向区域');
                 this.thirdArea = acceptData.arrv;
-            }
+            }*/
 
             tabulationBoxTrigger.$on('getClickData', val => {
                 this.demandData = val;
@@ -722,7 +722,7 @@
                     console.log(error);
                 });
 
-                tabulationBoxTrigger.$emit('getTable',sendData);
+                tabulationBoxTrigger.$emit('getTable',this.sendData);
                 this.$emit('closeMyForm');
             },
             //点击关闭所有下拉
@@ -3953,11 +3953,11 @@
     import * as vx from 'vuex'
 
     export default {
-        props: {
+      /*  props: {
             acceptData: {
                 type: Object
             }
-        },
+        },*/
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -4106,7 +4106,7 @@
             })*/
         },
         mounted() {
-            let acceptData = this.acceptData;
+            /*let acceptData = this.acceptData;
             if (acceptData.dptState == 0) {
                 this.space1Fn('意向机场');
                 this.firArea = acceptData.dptNm;
@@ -4131,7 +4131,7 @@
                 this.space3Fn('意向区域');
                 this.thirdArea = acceptData.arrv;
             }
-
+*/
             tabulationBoxTrigger.$on('getClickData', val => {
                 this.demandData = val;
             });
@@ -4249,7 +4249,7 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        responseData:sendData,
+                        responseData:this.sendData,
                         id: this.getIntentData.id,
                         employeeId:this.role.id,
                         status:0
@@ -4261,7 +4261,7 @@
                     console.log(error);
                 });
 
-                tabulationBoxTrigger.$emit('getTable',sendData);
+                tabulationBoxTrigger.$emit('getTable',this.sendData);
                 this.$emit('closeMyForm');
             },
             //点击关闭所有下拉
@@ -4925,7 +4925,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 13;
+        z-index: 30;
     }
 
     .container {

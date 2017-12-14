@@ -142,9 +142,9 @@
     </div>
 </template>
 <script>
- import calendar from './../calendar'
- import airportS from './../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
- import airportS1 from './../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import calendar from './../../calendar'
+ import airportS from './../../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
+ import airportS1 from './../../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     export default {
         data () {
@@ -203,7 +203,8 @@
                 qyCode4:'',
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
-                airCompanyData:[]
+                airCompanyData:[],
+                demandData:{}
             }
         },
         components:{
@@ -358,33 +359,29 @@
                 this.airCompanyShow = true;
             },
             confirm:function(){
-                let demandData = { };
 
-                 tabulationBoxTrigger.$on('getSonId', val => {
-                    demandData.demandId = val;
-                });
-                    demandData.demandtype = "1";
-                    demandData.contact = this.contact;
-                    demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
-                    demandData.days   = this.getFlight =='true'? this.msg: '无';
-                    demandData.intendedDpt = this.qyCode3;
-                    demandData.intendedPst = this.qyCode4;
-                    demandData.intendedArrv = this.qyCode5;
-                    demandData.aircrfttyp = this.airplaneTyp;
-                    demandData.dpt = this.qyCode;
-                    demandData.dptState = this.dptState[0];
-                    demandData.capacitycompany = this.airCompanyId;
-                    demandData.seating = this.seat;
-                    demandData.hourscost = this.hourcost;
-                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
-                    demandData.scheduling = this.dispatch == false? '1':'0';
+                    this.demandData.demandtype = "1";
+                    this.demandData.contact = this.contact;
+                    this.demandData.iHome = this.phoneNum;
+                    this.demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
+                    this.demandData.days   = this.getFlight =='true'? this.msg: '无';
+                    this.demandData.intendedDpt = this.qyCode3;
+                    this.demandData.intendedPst = this.qyCode4;
+                    this.demandData.intendedArrv = this.qyCode5;
+                    this.demandData.aircrfttyp = this.airplaneTyp;
+                    this.demandData.dpt = this.qyCode;
+                    this.demandData.dptState = this.dptState[0];
+                    this.demandData.capacitycompany = this.airCompanyId;
+                    this.demandData.seating = this.seat;
+                    this.demandData.hourscost = this.hourcost;
+                    this.demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
+                    this.demandData.scheduling = this.dispatch == false? '1':'0';
                     if(this.dispatch){
-                        demandData.schedulinePort  = this.qyCode1;
+                        this.demandData.schedulinePort  = this.qyCode1;
                     }
-                    demandData.remark = this.tip;
-                    demandData.periodValidity = this.myDate;
-                    demandData.publicway = this.post;
+                    this.demandData.remark = this.tip;
+                    this.demandData.periodValidity = this.myDate;
+                    this.demandData.publicway = this.post;
                     //demandData.directionalgoal = this.directText;
                     //demandData.demandprogress = '0';
                  this.$ajax({
@@ -393,7 +390,7 @@
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
-                params: demandData
+                params: this.demandData
             }) .then((response) => {
                     //console.log(response.opResult);
             }) .catch((error) => {
@@ -412,10 +409,10 @@
 
 
         },
-         beforeMount:function () {
-
-
-
+         mounted:function () {
+              tabulationBoxTrigger.$on('getSonId', val => {
+                    this.demandData.demandId = val;
+                });
         }
 
     }

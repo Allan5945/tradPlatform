@@ -10,7 +10,7 @@
                     <div>发布标题</div>
                     <div>需求状态</div>
                 </div>
-                <div class="intent-box" v-for=" val in planData" v-if="intentListShow">
+                <div class="intent-box" v-for=" val in detailData">
                      <div class="intent-item">
                         <div class="time">2012.12.13</div>
                         <div class="person">{{val.intentionCompanyName}}<span class="iconfont">&#xe602;</span></div>
@@ -114,13 +114,28 @@
     export default {
         data () {
             return{
-                showBox: false,
-                isSel: false,
-                showType:'',
+              detailData:{}
             }
         },
+        props:['demandId'],
         mounted() {
-
+          this.$ajax({
+                method: 'post',
+                url: '/getCommissionedAndCustodyDemandDetails',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.demandId
+                  }
+                })
+                .then((response) => {
+                    this.detailData = response.data.listSonDemands;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         components:{
 
