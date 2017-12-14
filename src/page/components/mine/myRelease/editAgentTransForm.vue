@@ -20,7 +20,7 @@
                     <div class="t-title">出港时刻</div>
                     <div class="radio-box">
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
+                            <input type="radio" class="magic-radio" id="eATFtimeYes" v-model="getTime" value="true" ><label for="eATFtimeYes">有&nbsp;</label>
                         </div>
                         <div class="selected" v-if="this.getTime == 'true'">
                             <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
@@ -34,7 +34,7 @@
                           </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
+                            <input type="radio" class="magic-radio" id="eATFtimeNo" v-model="getTime" value="false"><label for="eATFtimeNo">无</label>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="t-title">是否有班期</div>
                     <div class="radio-box">
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="flightYes" v-model="getFlight" value="true"><label for="flightYes">有&nbsp;</label>
+                            <input type="radio" class="magic-radio" id="eATFflightYes" v-model="getFlight" value="true"><label for="eATFflightYes">有&nbsp;</label>
                         </div>
                         <div class="selected border" @click="showBox=!showBox" v-show="this.getFlight == 'true'">
                             <span class="fl-til" v-text="msg" :class="{selec:isSel}"></span>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="flase"><label for="flightNo">无</label>
+                            <input type="radio" class="magic-radio" id="eATFflightNo" v-model="getFlight" value="flase"><label for="eATFflightNo">无</label>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="form-box  pad1 dispatch">
                     <div class="t-checkbox">
-                        <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
+                        <input type="checkbox" name=" " id="eATFdispatch" class="magic-radio" v-model="dispatch"><label for="eATFdispatch">接受调度</label>
                     </div>
                     <input type="text" v-show="dispatch" v-model="dispatchText" v-on:keyup="openSearch1" placeholder=" ">
                     <airportS class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS>

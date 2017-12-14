@@ -204,16 +204,15 @@
                     // 运营托管详情
                     this.myPublishTransportEntrustShow = true;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = false;
+                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
-
 //                    this.myPublishAirlineShow = false;
                 }if(item.demandtype == 3 || item.demandtype == 4){
                     // 航线委托详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = true;
-                    this.myPublishShow = false;
+                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
 //                    this.myPublishAirlineShow = false;
@@ -221,7 +220,7 @@
                     //  运力需求详情（航司发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = false;
+                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = true;
 //                    this.myPublishAirlineShow = false;
@@ -229,7 +228,7 @@
                     //  航线需求详情（机场发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = false;
+                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = true;
                     this.myPublishShow1 = false;
 //                    this.myPublishAirlineShow = true;
