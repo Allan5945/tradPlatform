@@ -94,7 +94,7 @@
                          2-查询列表后台抛出异常；
                          传入的参数为空
                          */
-                        if(res.data.opResult===0){
+                        if(res.data.opResult==0){
                             resolve(res.data.opResult);
                         }else{
                             reject("未处理成功");
@@ -107,10 +107,9 @@
             postPass:function () {//审核通过
                 let that = this;
                 that.changeState(0).then((val)=>{
-                    that.detailData.demandstate = "审核通过";
+                    that.detailData.demandstate = "6";
                     alert("success:审核通过");
                 },(err)=>{
-                    that.detailData.demandstate = "审核通过";
                     alert("faild:审核通过");
                 });
             },
@@ -119,11 +118,10 @@
                 let that = this;
                 that.show.swrapper = false;
                 that.changeState(1,that.reason.text).then((val)=>{
-                    that.detailData.demandstate = "审核未通过";
+                    that.detailData.demandstate = "5";
                     that.metaData.rek = that.reason.text;
                     alert("success:审核未通过");
                 },(err)=>{
-                    that.detailData.demandstate = "审核未通过";
                     alert("faild:审核未通过");
                 });
             },

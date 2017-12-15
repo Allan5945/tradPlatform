@@ -537,16 +537,15 @@
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
                 sendData: {},
-                responseId: '',
                 airCompany: '',//运力归属
                 hourConst: '',             //小时成本
                 airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
-                demandData:{},
                 getIntentData:{},
             }
         },
+        props:["responseId"],
         components: {
             airAreaSearch,
             airportS,
@@ -557,55 +556,9 @@
                 this.warn4Show = false;
             }
         },
-        created() {
-           /* tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.sendData.demandId = val.data.id;
-                this.sendData.employeeId = val.data.employeeId;
-            })
-            tabulationBoxTrigger.$on('supProperty', val => {
-                this.sendData.title = val.title;
-                this.sendData.periodValidity = val.periodValidity;
-                this.sendData.releasetime = val.releasetime;
-            })*/
-        },
         mounted() {
-//            console.info(this.acceptData)
-            /*let acceptData = this.acceptData;
-            if (acceptData.dptState == 0) {
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }
-            if (acceptData.dptState == 1) {
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if (acceptData.pstState == 0) {
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }
-            if (acceptData.pstState == 1) {
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if (acceptData.arrvState == 0) {
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }
-            if (acceptData.arrvState == 1) {
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }*/
-
-            tabulationBoxTrigger.$on('getClickData', val => {
-                this.demandData = val;
-            });
             tabulationBoxTrigger.$on('sendTable',val => {
                 this.getIntentData = val;
-                /*sendData.dptState = this.dptState
-                sendData.dptAcceptnearairport = this.dptAcceptnearairport
-                sendData.dptTimeresources = this.dptTimeresources;
-                sendData.arrvTimeresources = this.arrvTimeresources;
-    */
             });
         },
         computed: {
@@ -643,7 +596,9 @@
                     this.warn4Show = true;
                     return
                 }*/
-                this.sendData =this.getIntentData;
+                //this.sendData = this.getIntentData;
+                this.sendData.id=this.responseId;
+                 console.log(this.sendData.responseId)
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -704,26 +659,22 @@
                 console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
-                    url: "/selectedResponse",
+                    url: "/updateResponseSelective",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: {
-                        responseData:this.sendData,
-                        id: this.getIntentData.id,
-                        employeeId:this.role.id,
-                        status:0
-                    }
+                    params:this.sendData
                 }).then((response) => {
-                    this.demandData.responseId = response.data.response.id;
-                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
+                    if(response.data.opResult == "0"){
+                        alert("修改成功！")
+                        this.$emit('closeMyForm');
+                  }
                 }).catch((error) => {
                     console.log(error);
                 });
 
                 tabulationBoxTrigger.$emit('getTable',this.sendData);
-                this.$emit('closeMyForm');
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -2306,13 +2257,12 @@
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
                 sendData: {},
-                responseId: '',
                 airCompany: '',//运力归属
                 hourConst: '',             //小时成本
                 airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
-                demandData:{}
+
             }
         },
         components: {
@@ -2325,59 +2275,9 @@
                 this.warn4Show = false;
             }
         },
-        created() {
-           /* tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.sendData.demandId = val.data.id;
-                this.sendData.employeeId = val.data.employeeId;
-            })
-            tabulationBoxTrigger.$on('supProperty', val => {
-                this.sendData.title = val.title;
-                this.sendData.periodValidity = val.periodValidity;
-                this.sendData.releasetime = val.releasetime;
-            })*/
-        },
         mounted() {
-            console.info('acceptData:')
-           console.info(this.acceptData)
-            let acceptData = this.acceptData;
-            if(acceptData.dptState == '') {
-                console.info('kong')
-            }
-            if (acceptData.dptState == 0) {
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }
-            if (acceptData.dptState == 1) {
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if (acceptData.pstState == 0) {
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }
-            if (acceptData.pstState == 1) {
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if (acceptData.arrvState == 0) {
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }
-            if (acceptData.arrvState == 1) {
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }
-
-            tabulationBoxTrigger.$on('getClickData', val => {
-            this.demandData = val;
-            });
             tabulationBoxTrigger.$on('sendTable',val => {
                 this.getIntentData = val;
-                /*sendData.dptState = this.dptState
-                sendData.dptAcceptnearairport = this.dptAcceptnearairport
-                sendData.dptTimeresources = this.dptTimeresources;
-                sendData.arrvTimeresources = this.arrvTimeresources;
-    */
             });
         },
         computed: {
@@ -2483,11 +2383,7 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-                     this.demandData.responseId = response.data.response.id;
-                        if(this.demandData.responseId){
-                            this.$emit("sumitForm");
-                        }
-                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
+
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -4074,16 +3970,15 @@
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
                 sendData: {},
-                responseId: '',
                 airCompany: '',//运力归属
                 hourConst: '',             //小时成本
                 airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
-                demandData:{},
                 getIntentData:{}
             }
         },
+        props:["responseId"],
         components: {
             airAreaSearch,
             airportS,
@@ -4094,54 +3989,9 @@
                 this.warn4Show = false;
             }
         },
-        created() {
-           /* tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.sendData.demandId = val.data.id;
-                this.sendData.employeeId = val.data.employeeId;
-            })
-            tabulationBoxTrigger.$on('supProperty', val => {
-                this.sendData.title = val.title;
-                this.sendData.periodValidity = val.periodValidity;
-                this.sendData.releasetime = val.releasetime;
-            })*/
-        },
         mounted() {
-            /*let acceptData = this.acceptData;
-            if (acceptData.dptState == 0) {
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }
-            if (acceptData.dptState == 1) {
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if (acceptData.pstState == 0) {
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }
-            if (acceptData.pstState == 1) {
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if (acceptData.arrvState == 0) {
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }
-            if (acceptData.arrvState == 1) {
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }
-*/
-            tabulationBoxTrigger.$on('getClickData', val => {
-                this.demandData = val;
-            });
             tabulationBoxTrigger.$on('sendTable',val => {
                 this.getIntentData = val;
-                /*sendData.dptState = this.dptState
-                sendData.dptAcceptnearairport = this.dptAcceptnearairport
-                sendData.dptTimeresources = this.dptTimeresources;
-                sendData.arrvTimeresources = this.arrvTimeresources;
-    */
             });
         },
         computed: {
@@ -4182,7 +4032,9 @@
                     this.warn4Show = true;
                     return
                 }*/
-                this.sendData =this.getIntentData;
+                //this.sendData.responseId =this.responseId;
+                this.sendData.id =this.responseId;
+                console.log(this.responseId)
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -4243,26 +4095,22 @@
                 console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
-                    url: "/selectedResponse",
+                    url: "/updateResponseSelective",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: {
-                        responseData:this.sendData,
-                        id: this.getIntentData.id,
-                        employeeId:this.role.id,
-                        status:0
-                    }
+                    params: this.sendData
                 }).then((response) => {
-                        this.demandData.responseId = response.data.response.id;
-                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
+                     if(response.data.opResult == "0"){
+                        alert("修改意向成功！")
+                        this.$emit('closeMyForm');
+                  }
                 }).catch((error) => {
                     console.log(error);
                 });
 
                 tabulationBoxTrigger.$emit('getTable',this.sendData);
-                this.$emit('closeMyForm');
             },
             //点击关闭所有下拉
             closeAll: function () {
