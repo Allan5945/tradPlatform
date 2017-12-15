@@ -4,9 +4,9 @@
             <header>
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"航线需求":"-"}}</div>
                 <div class="tips">
-                    <span>创建于{{ ndetailData.releasetime||"-" }}</span>
-                    <span>已有{{ ndetailData.num||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ type||"0" }}</span></span>
+                    <span>委托方 {{ ndetailData.num||"成都双流" }}</span>
+                    <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
+                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -92,7 +92,7 @@
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
-                            <div style="width: 80%;">{{ndetailData.remark||"-"}}</div>
+                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
                 </div>
@@ -102,8 +102,9 @@
             <header>
                 <div class="head-til">{{ndetailData.title?ndetailData.title+"运力需求":"-"}}</div>
                 <div class="tips">
-                    <span>创建于{{ ndetailData.releasetime||"-" }}</span>
+                    <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
+                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -139,7 +140,7 @@
                         </div>
                         <div>
                             <div>班期</div>
-                            <div>{{ndetailData.days ? ndetailData.days+"人" : "-"}}</div>
+                            <div>{{ndetailData.days || "-"}}</div>
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
@@ -157,7 +158,7 @@
                         </div>
                         <div>
                             <div>接受调度</div>
-                            <div>{{ndetailData.scheduling||"不接受"}}</div>
+                            <div>{{schedulingList[ndetailData.scheduling]||"不接受"}}</div>
                         </div>
                         <div>
                             <div>有效期</div>
@@ -179,7 +180,9 @@
         data(){
             return{
                 subsidyList:["定补","保底","人头补","无补贴"],
-                timeresources:["09:00-18:00",'待协调','充足']
+                timeresources:["09:00-18:00",'待协调','充足'],
+                schedulingList: ["接受","不接受"],
+                progressState: ["未处理","审核未通过","审核通过"]
             }
         },
         props:["ndetailData","type"],

@@ -50,6 +50,12 @@
                                 {{ progressState[ditem.demandstate] || "未知状态" }}
                             </div>
                             <div class="list-e item">
+                                <!--
+                                <span class="icon-item talk-icon">
+                                    &#xe602;
+                                    <span>1</span>
+                                </span>
+                                -->
                             </div>
                             <div class="list-f item color" @click="turnDetailPanel(ditem)">
                                 查看详情<span class="icon-item">&#xe686;</span>
