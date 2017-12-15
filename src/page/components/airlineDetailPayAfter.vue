@@ -10,13 +10,16 @@
                     {{myData.title}}航线需求
                 </div>
                 <div class="sec-bottom font-gray">
-                    <span style="margin-right: 40px;">创建于{{releaseTime}}</span><span>已有{{userNum}}位用户发起意向</span>
+                    <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
+                    <span style="margin-right: 30px;">已有{{userNum}}位用户发起意向</span>
+                    <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
+                        <span v-else>{{myData.demandprogressStr}}</span>
+                    </span>
                 </div>
             </div>
             <div class="third item-container">
                 <div class="start item">
-                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
-                        <span v-show="myData.dptState == 1">区域</span></div>
+                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
                     <div class="item-b"><h2>
                             <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
                             <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
@@ -36,8 +39,7 @@
                     <span class="icon-item">&#xe672;</span>
                 </div>
                 <div class="pass item">
-                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
-                        <span v-show="myData.pstState == 1">区域</span></div>
+                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
                     <div class="item-b"><h2>
                             <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
                             <span v-show="myData.pstState == 1">{{myData.pst}}</span>
@@ -55,8 +57,7 @@
                     <span class="icon-item">&#xe672;</span>
                 </div>
                 <div class="arrive item">
-                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
-                        <span v-show="myData.arrvState == 1">区域</span></div>
+                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
                     <div class="item-b"><h2>
                             <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
                             <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
@@ -394,6 +395,7 @@
                 calendarInitDay2: '',
                 calendarShow1: false,
                 myDate1: '',
+                demandStateText: false, //"审核未通过"是否显示
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码

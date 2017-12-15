@@ -1,152 +1,155 @@
 <template>
-    <div class="plan-wrapper scroll" >
-        <header>
-            <div class="top-til">需求详情<span @click="closeThisFn" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title}}</div>
-            <div class="tips">
-                <span>创建于{{detailData.releasetime}}</span>
-                <span>已有{{intentionCount}}位用户发起意向</span>
-            </div>
-        </header>
-        <div class="content">
-            <div class="table-form">
-                <div >
-                    <div>出港时刻</div>
-                    <div>{{detailData.dptTime}}</div>
+    <div class="wrapper" @click.self="closeThisFn">
+
+        <div class="plan-wrapper scroll" >
+            <header>
+                <div class="top-til">需求详情<span @click="closeThisFn" class="iconfont">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title}}</div>
+                <div class="tips">
+                    <span>创建于{{detailData.releasetime}}</span>
+                    <span>已有{{intentionCount}}位用户发起意向</span>
                 </div>
-                <div>
-                    <div>班期</div>
-                    <div>{{detailData.days}}</div>
-                </div>
-                <div>
-                    <div>机型</div>
-                    <div>{{detailData.aircrfttyp}}</div>
-                </div>
-                 <div>
-                    <div>运力基地</div>
-                    <div>{{detailData.dptNm}}</div>
-                </div>
-                <div>
-                    <div>运力归属</div>
-                    <div>{{detailData.capacitycompany}}</div>
-                </div>
-                <div>
-                    <div>座位布局</div>
-                    <div>{{detailData.seating}}</div>
-                </div>
-                <div>
-                    <div>小时成本</div>
-                    <div>{{detailData.hourscost}}万/小时</div>
-                </div>
-                <div>
-                    <div>接受调度</div>
-                    <div>{{detailData.schedulingStr}}</div>
-                </div>
-                <div>
-                    <div>有效期</div>
-                    <div>{{detailData.periodValidity}}</div>
-                </div>
-            </div>
-            <div class="myplan">
-                <div class="plan-til">
-                    <div>我发出的方案</div>
-                    <div @click="EditFn"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
-                </div>
-                <div class="airline">
-                    <div class="airplace">
-                        <div>始发机场</div>
-                        <div>
-                            <div>{{planData.dpt}}</div>
-                            <div>接受临近机场</div>
-                        </div>
-                         <div class="resouse">
-                            <div>出港资源</div>
-                            <div>{{planData.dptTime}}</div>
-                        </div>
-                    </div>
-                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
-                    <div class="airplace">
-                        <div>经停机场</div>
-                        <div>{{planData.pst}}</div>
-                        <div class="resouse">
-                            <div>出港资源</div>
-                            <div>{{planData.pstTime}}</div>
-                        </div>
-                    </div>
-                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
-                    <div class="airplace">
-                        <div>到达区域</div>
-                        <div>{{planData.arrv}}</div>
-                        <div class="resouse">
-                            <div>出港资源</div>
-                            <div>{{planData.arrvTime}}</div>
-                        </div>
-                    </div>
-                </div>
+            </header>
+            <div class="content">
                 <div class="table-form">
-                    <div>
-                        <div>拟开时间</div>
-                        <div>{{planData.sailingtime}}</div>
+                    <div >
+                        <div>出港时刻</div>
+                        <div>{{detailData.dptTime}}</div>
                     </div>
                     <div>
-                        <div>拟开班期</div>
-                        <div>{{planData.days}}</div>
+                        <div>班期</div>
+                        <div>{{detailData.days}}</div>
                     </div>
                     <div>
-                        <div>拟开机型</div>
-                        <div>{{planData.aircrfttyp}}</div>
-                    </div>
-                    <div>
-                        <div>座位数</div>
-                        <div>{{planData.seating}}</div>
-                    </div>
-                    <div>
-                        <div>客量预期</div>
-                        <div>{{planData.avgguestexpect}}</div>
-                    </div>
-                    <div>
-                        <div>客座率预期</div>
-                        <div>{{planData.loadfactorsexpect}}</div>
-                    </div>
-                    <div>
-                        <div>补贴政策</div>
-                        <div>{{planData.subsidypolicy}}</div>
-                    </div>
-                    <div>
-                        <div>小时成本</div>
-                        <div>{{planData.hourscost}}</div>
-                    </div>
-                     <div>
-                        <div>运力归属</div>
-                        <div>{{planData.capacitycompany}}</div>
+                        <div>机型</div>
+                        <div>{{detailData.aircrfttyp}}</div>
                     </div>
                      <div>
                         <div>运力基地</div>
-                        <div>{{planData.dpt}}</div>
+                        <div>{{detailData.dptNm}}</div>
                     </div>
-                     <div>
-                        <div>是否调度</div>
-                        <div>{{planData.scheduling}}</div>
+                    <div>
+                        <div>运力归属</div>
+                        <div>{{detailData.capacitycompany}}</div>
                     </div>
-                    <div class="tips">
-                        <div>其他说明</div>
-                        <div>{{planData.remark}}</div>
+                    <div>
+                        <div>座位布局</div>
+                        <div>{{detailData.seating}}</div>
+                    </div>
+                    <div>
+                        <div>小时成本</div>
+                        <div>{{detailData.hourscost}}万/小时</div>
+                    </div>
+                    <div>
+                        <div>接受调度</div>
+                        <div>{{detailData.schedulingStr}}</div>
+                    </div>
+                    <div>
+                        <div>有效期</div>
+                        <div>{{detailData.periodValidity}}</div>
                     </div>
                 </div>
+                <div class="myplan">
+                    <div class="plan-til">
+                        <div>我发出的方案</div>
+                        <div @click="EditFn"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                    </div>
+                    <div class="airline">
+                        <div class="airplace">
+                            <div>始发机场</div>
+                            <div>
+                                <div>{{planData.dpt}}</div>
+                                <div>接受临近机场</div>
+                            </div>
+                             <div class="resouse">
+                                <div>出港资源</div>
+                                <div>{{planData.dptTime}}</div>
+                            </div>
+                        </div>
+                        <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                        <div class="airplace">
+                            <div>经停机场</div>
+                            <div>{{planData.pst}}</div>
+                            <div class="resouse">
+                                <div>出港资源</div>
+                                <div>{{planData.pstTime}}</div>
+                            </div>
+                        </div>
+                        <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                        <div class="airplace">
+                            <div>到达区域</div>
+                            <div>{{planData.arrv}}</div>
+                            <div class="resouse">
+                                <div>出港资源</div>
+                                <div>{{planData.arrvTime}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-form">
+                        <div>
+                            <div>拟开时间</div>
+                            <div>{{planData.sailingtime}}</div>
+                        </div>
+                        <div>
+                            <div>拟开班期</div>
+                            <div>{{planData.days}}</div>
+                        </div>
+                        <div>
+                            <div>拟开机型</div>
+                            <div>{{planData.aircrfttyp}}</div>
+                        </div>
+                        <div>
+                            <div>座位数</div>
+                            <div>{{planData.seating}}</div>
+                        </div>
+                        <div>
+                            <div>客量预期</div>
+                            <div>{{planData.avgguestexpect}}</div>
+                        </div>
+                        <div>
+                            <div>客座率预期</div>
+                            <div>{{planData.loadfactorsexpect}}</div>
+                        </div>
+                        <div>
+                            <div>补贴政策</div>
+                            <div>{{planData.subsidypolicy}}</div>
+                        </div>
+                        <div>
+                            <div>小时成本</div>
+                            <div>{{planData.hourscost}}</div>
+                        </div>
+                         <div>
+                            <div>运力归属</div>
+                            <div>{{planData.capacitycompany}}</div>
+                        </div>
+                         <div>
+                            <div>运力基地</div>
+                            <div>{{planData.dpt}}</div>
+                        </div>
+                         <div>
+                            <div>是否调度</div>
+                            <div>{{planData.scheduling}}</div>
+                        </div>
+                        <div class="tips">
+                            <div>其他说明</div>
+                            <div>{{planData.remark}}</div>
+                        </div>
+                    </div>
 
+                </div>
             </div>
+            <footer>
+                <div class="buttons" v-if="btnShow">
+                    <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
+                    <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+                </div>
+                <div class="buttons" v-else>
+                    <div class="btn btn-b" @click="sureClickFn">确认方案</div>
+                    <div class="btn btn-w col-btn2" @click="cancelPurposeFn(),closeThisFn()">拒绝并撤回</div>
+                </div>
+            </footer>
+            <myPurposeEdit v-show="myPurposeEditShow" @close-this="closeThis"></myPurposeEdit>
         </div>
-        <footer>
-            <div class="buttons" v-if="btnShow">
-                <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
-                <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
-            </div>
-            <div class="buttons" v-else>
-                <div class="btn btn-b" @click="sureClickFn">确认方案</div>
-                <div class="btn btn-w col-btn2" @click="cancelPurposeFn(),closeThisFn()">拒绝并撤回</div>
-            </div>
-        </footer>
-        <myPurposeEdit v-show="myPurposeEditShow" @close-this="closeThis"></myPurposeEdit>
     </div>
 </template>
 
@@ -286,7 +289,7 @@
                  },
                  params: this.cancelPurposeData
              }) .then((response) => {
-                 console.info(response)
+                 console.info(response);
                  if(response.data.opResult === '0'){
                      alert('成功取消该意向!');
                  }else{
@@ -308,6 +311,15 @@
 <style lang="scss" scoped>
     .btn-w {
         outline: none;
+    }
+    .wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
     }
     .plan-wrapper{
         position:absolute;
@@ -331,7 +343,7 @@
         footer{
           position:fixed;
           bottom:0;
-          right:0px;
+          right:0;
           width:600px;
           background-color:#fff;
           height:110px;

@@ -5,9 +5,9 @@
                 <div class="title items">
                     <div class="list-a item">
                         发布时间
-                        <div class="up-down" style="margin-left: 10px">
-                            <span class="icon-item icon-up active">&#xe605;</span>
-                            <span class="icon-item icon-down">&#xe605;</span>
+                        <div class="up-down" style="margin-left: 10px" @click="timeUpDownClick">
+                            <span class="icon-item icon-up" :class="{active: timeUpDown == true}">&#xe605;</span>
+                            <span class="icon-item icon-down" :class="{active: timeUpDown == false}">&#xe605;</span>
                         </div>
                     </div>
                     <div class="list-b item" @click="typeShowFn">
@@ -55,14 +55,16 @@
                 </div>
             </div>
         </div>
-        <myPurpose v-show="myPurposeShow" @close-this="closeThisFn"></myPurpose>
+        <transition name="slidex-fade">
+            <myPurpose v-show="myPurposeShow" @close-this="closeThisFn"></myPurpose>
+        </transition>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-    import stateList from './stateList.vue'
-    import myPurpose from './myIntention/myPurpose.vue'
+    import stateList from '../stateList.vue'
+    import myPurpose from './myPurpose.vue'
 
     export default {
         data() {
@@ -77,98 +79,96 @@
                 type1: ['航线需求'],
                 type2: ['运力投放','航线需求'],
                 state: [],
-                state1: ['意见征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
-                state2: ['意见征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
+                state1: ['意向征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
+                state2: ['意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
                 myPurposeShow: false, // myPublish是否显示
                 talkNumShow: false,         //是否有对话
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上
+                myData2: [],                 // 太美能看到的数据，渲染到页面上
                 listItemIndex: '',          // 被点击列的index，用来使其变成active
+                timeUpDown: true,           // 通过时间进行排序
+                sendData:{                   // 请求的参数
+                    page:1,                  // 页码，必传
+//                    pageNo:4,
+                    demandType: '',         // 查询需求类型 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
+                    responseProgress: '',   // 状态 [0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付]
+                    orderType: 0            // 发布时间排序类型，0:倒序，1:正序
+                },
             }
         },
-        created() {
-            this.$ajax({
-                url:"/getResponseListOfMine",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:1,
-                    orderType: 0 //发布时间排序类型 0-倒序 1-正序
-                }
-            }) .then((response) => {
-                console.info('myPurposeList获取的数据:')
-                console.info(response)
-                console.info('this.role:');
-                console.info(this.role);
-                response.data.list.list.forEach((val) => {
-                    if(val.demandtype == '运力需求' || val.demandtype == '运力投放'){
-                        this.myData0.push(val);
-//                        this.myData = this.myData0;
-                    }if(val.demandtype == '航线需求'){
-                        this.myData1.push(val);
-//                        this.myData = this.myData1;
-                    }
-//                    this.myData.push(val);
+        watch:{
+            'sendData.orderType': function () {
+                this.getListData();
+            },
+            'sendData.demandType': function () {
+                this.getListData();
+            },
+            'sendData.responseProgress': function () {
+                this.getListData();
+            },
+            myData0: function () {
+                this.myData0.forEach((val) => {
+                    this.myData2.push(val)
                 })
-//                this.myData = response.data.list.list;
-            }).catch((error) => {
-                console.log(error);
-            });
+            },
+            myData1: function () {
+                this.myData1.forEach((val) => {
+                    this.myData2.push(val)
+                })
+            }
         },
         mounted() {
-            // 判断(0:航司,1:机场(政府),2:太美)，我的意向: 航司：航线需求,机场：运力需求
-            if(this.role.role == 1) {  // 机场
-                this.type = this.type0;
-                this.myData = this.myData0;
-                this.typeWriting = '运力需求';
-                this.state = this.state2;
-            }if(this.role.role == 0) {  // 航司
-                this.type = this.type1;
-                this.myData = this.myData1;
-                this.typeWriting = '航线需求';
-                this.state = this.state1;
-            }if(this.role.role == 2) {
-                this.type = this.type2;
-                /*this.myData0.forEach((val) => {
-                    this.myData.push(val);
-                });*/
-                this.myData1.forEach((val) => {
-                    this.myData.push(val);
-                });
-                console.info(this.myData);
-            }
-
-            /*this.$ajax({
-                url:"/getResponseListOfMine",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:1,
-                    orderType: 0 //发布时间排序类型 0-倒序 1-正序
-                }
-            }) .then((response) => {
-                console.info('myPublishList获取的数据:')
-                console.info(response)
-                response.data.list.list.forEach((val) => {
-                    if(val.demandtype == 1 || val.demandtype == 4 ){
-                        this.myData0.push(val);
-                    }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
-                        this.myData1.push(val);
-                    }
-//                    this.myData.push(val);
-                })
-//                this.myData = response.data.list.list;
-            }).catch((error) => {
-                console.log(error);
-            });*/
+            this.judgeRole();
+            this.getListData();
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         methods: {
+            // 角色判断(0:航司,1:机场(政府),2:太美)，我的意向: 航司：航线需求,机场：运力需求
+            judgeRole: function () {
+                if(this.role.role == 1) {  // 机场
+                    this.type = this.type0;
+                    this.myData = this.myData0;
+                    this.typeWriting = '运力需求';
+                    this.state = this.state2;
+                }if(this.role.role == 0) {  // 航司
+                    this.type = this.type1;
+                    this.myData = this.myData1;
+                    this.typeWriting = '航线需求';
+                    this.state = this.state1;
+                }if(this.role.role == 2) {
+                    this.type = this.type2;
+                    this.myData = this.myData2;
+                }
+            },
+            // ajax获取列表数据
+            getListData: function () {
+                this.$ajax({
+                    url:"/getResponseListOfMine",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.sendData
+                }) .then((response) => {
+                    if(response.data.opResult === '0') {
+                        response.data.list.list.forEach((val) => {
+                            if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
+                                this.myData0.push(val);
+                            }
+                            if (val.demandtype == '航线需求') {
+                                this.myData1.push(val);
+                            }
+                        });
+                        this.judgeRole();
+                    }else {
+                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+            },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
@@ -176,16 +176,50 @@
                 console.info(0)
                 this.stateShow = !this.stateShow;
             },
+            // 通过“发布时间”选择展示内容
+            timeUpDownClick: function () {
+                this.myData0 = [];
+                this.myData1 = [];
+                this.timeUpDown = !this.timeUpDown;
+                this.sendData.orderType = this.timeUpDown ? 0 : 1;
+            },
+            // 通过“需求类型”选择展示内容 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
             typeClickFn: function (item) {
+                this.myData0 = [];
+                this.myData1 = [];
                 this.typeWriting = item;
+                this.sendData.responseProgress = '';
+                this.stateWriting = '状态';
                 if(item == '运力投放' || item == '运力需求') {
                     this.state = this.state2;
+                    this.sendData.demandType = 1;
                 }if(item == '航线需求') {
                     this.state = this.state1;
+                    this.sendData.demandType = 0;
                 }
             },
+            // 通过“状态”选择展示内容  [0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付]
             stateClickFn: function (item) {
+                this.myData0 = [];
+                this.myData1 = [];
                 this.stateWriting = item;
+                if(item == '意向征集') {
+                    this.sendData.responseProgress = 0;
+                }if(item == '订单确认') {
+                    this.sendData.responseProgress = 1;
+                }if(item == '已撤回') {
+                    this.sendData.responseProgress = 2;
+                }if(item == '需求关闭') {
+                    this.sendData.responseProgress = 3;
+                }if(item == '落选状态' || item == '落选') {
+                    this.sendData.responseProgress = 4;
+                }if(item == '交易完成') {
+                    this.sendData.responseProgress = 5;
+                }if(item == '订单完成') {
+                    this.sendData.responseProgress = 6;
+                }if(item == '佣金支付') {
+                    this.sendData.responseProgress = 7;
+                }
             },
             // 点击列表(list)，展示详情
             listClickFn: function (item,index) {

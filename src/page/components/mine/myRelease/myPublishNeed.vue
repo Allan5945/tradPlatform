@@ -1,94 +1,96 @@
 <template>
-    <div class="ald-container">
-        <div class="first item-container">
-            <span>{{myData.demandtypeStr}}详情</span>
-            <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
-        </div>
-        <div class="second item-container">
-            <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
-                联系客服 <span class="icon-item">&#xe720;</span>
+    <div class="wrapper" @click.self="closeThisFn">
+        <div class="ald-container">
+            <div class="first item-container">
+                <span>{{myData.demandtypeStr}}详情</span>
+                <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
             </div>
-            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn">
-                重新发布
-            </div>
-            <div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
-                <span class="icon-item">&#xe653;</span>编辑
-            </div>
-            <div class="top">
-                <span style="height: 25px;">{{myData.title}}</span>
-            </div>
-            <div class="bottom">
-                <span class="font-gray" style="margin-right: 46px; width: 160px;">创建于{{releasetime}}</span>
-                <span class="font-gray">状态:　
-                    <span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
-                    <span v-else>{{myData.demandprogressStr}}</span>
-                </span>
-            </div>
-        </div>
-        <div class="fourth item-container">
-            <div class="items">
-                <div class="left item">
-                    <div class="font-gray">出港时刻</div>
-                    <div class="font-gray">机型</div>
-                    <div class="font-gray">运力归属</div>
-                    <div class="font-gray">小时成本</div>
-                    <div class="font-gray">有效期</div>
+            <div class="second item-container">
+                <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
+                    联系客服 <span class="icon-item">&#xe720;</span>
                 </div>
-                <div class="right item">
-                    <div class="item-height">{{myData.dptTime}}</div>
-                    <div class="item-height">{{myData.aircrfttyp}}</div>
-                    <div class="item-height">{{myData.capacityCompany}}</div>
-                    <div class="item-height">{{myData.hourscost}}万元/小时</div>
-                    <div class="item-height" style="display: flex;">{{myData.periodValidity}}<span class="icon-item">&#xe653;</span></div>
+                <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn">
+                    重新发布
+                </div>
+                <div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
+                    <span class="icon-item">&#xe653;</span>编辑
+                </div>
+                <div class="top">
+                    <span style="height: 25px;">{{myData.title}}</span>
+                </div>
+                <div class="bottom">
+                    <span class="font-gray" style="margin-right: 46px; width: 160px;">创建于{{releasetime}}</span>
+                    <span class="font-gray">状态:　
+                        <span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
+                        <span v-else>{{myData.demandprogressStr}}</span>
+                    </span>
                 </div>
             </div>
-            <div class="items">
-                <div class="left item">
-                    <div class="font-gray">班期</div>
-                    <div class="font-gray">运力基地</div>
-                    <div class="font-gray">座位布局</div>
-                    <div class="font-gray">接受调度</div>
+            <div class="fourth item-container">
+                <div class="items">
+                    <div class="left item">
+                        <div class="font-gray">出港时刻</div>
+                        <div class="font-gray">机型</div>
+                        <div class="font-gray">运力归属</div>
+                        <div class="font-gray">小时成本</div>
+                        <div class="font-gray">有效期</div>
+                    </div>
+                    <div class="right item">
+                        <div class="item-height">{{myData.dptTime}}</div>
+                        <div class="item-height">{{myData.aircrfttyp}}</div>
+                        <div class="item-height">{{myData.capacityCompany}}</div>
+                        <div class="item-height">{{myData.hourscost}}万元/小时</div>
+                        <div class="item-height" style="display: flex;">{{myData.periodValidity}}<span class="icon-item">&#xe653;</span></div>
+                    </div>
                 </div>
-                <div class="right item">
-                    <div class="item-height">{{myData.days}}</div>
-                    <div class="item-height"><span v-if="myData.dptState == 1">{{myData.dpt}}</span><span v-else>{{myData.dptNm}}</span></div>
-                    <div class="item-height">{{myData.seating}}</div>
-                    <div class="item-height">{{myData.schedulinePort}}</div>
+                <div class="items">
+                    <div class="left item">
+                        <div class="font-gray">班期</div>
+                        <div class="font-gray">运力基地</div>
+                        <div class="font-gray">座位布局</div>
+                        <div class="font-gray">接受调度</div>
+                    </div>
+                    <div class="right item">
+                        <div class="item-height">{{myData.days}}</div>
+                        <div class="item-height"><span v-if="myData.dptState == 1">{{myData.dpt}}</span><span v-else>{{myData.dptNm}}</span></div>
+                        <div class="item-height">{{myData.seating}}</div>
+                        <div class="item-height">{{myData.schedulinePort}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="add-item item-container">
-            <div class="left item font-gray">意向机场</div>
-            <div class="right item" v-if="myData.intendedairline === '0'">
-                <span>{{myData.intendedAirlines[0].dptName}}</span>
-                <span class="icon-item">&#xe672;</span>
-                <span>{{myData.intendedAirlines[0].pstName}}</span>
-                <span class="icon-item">&#xe672;</span>
-                <span>{{myData.intendedAirlines[0].arrvName}}</span>
+            <div class="add-item item-container">
+                <div class="left item font-gray">意向机场</div>
+                <div class="right item" v-if="myData.intendedairline === '0'">
+                    <span>{{myData.intendedAirlines[0].dptName}}</span>
+                    <span class="icon-item">&#xe672;</span>
+                    <span>{{myData.intendedAirlines[0].pstName}}</span>
+                    <span class="icon-item">&#xe672;</span>
+                    <span>{{myData.intendedAirlines[0].arrvName}}</span>
+                </div>
+                <div class="right item" v-else>
+                    <span>无</span>
+                </div>
             </div>
-            <div class="right item" v-else>
-                <span>无</span>
+            <div class="fifth item-container">
+                <div class="left font-gray">其他说明</div>
+                <div class="right">{{myData.remark}}</div>
             </div>
-        </div>
-        <div class="fifth item-container">
-            <div class="left font-gray">其他说明</div>
-            <div class="right">{{myData.remark}}</div>
-        </div>
-        <div class="seventh item-container">
-            <span v-show="wrongTextShow" class="danger">*XXXX事情有误，请重新输入</span>
-        </div>
-        <span class="line"></span>
-        <div class="eighth">
-            <div class="buttons" v-if="buttonShow == true">
-                <button class="btn btn-w" @click="recallFn(),closeThisFn()">结束需求</button>
+            <div class="seventh item-container">
+                <span v-show="wrongTextShow" class="danger">*XXXX事情有误，请重新输入</span>
             </div>
-            <div class="buttons" v-else>
-                <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;" @click="anewPublishClickFn2(),closeThisFn()">重新发布</button>
-                <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">结束需求</button>
+            <span class="line"></span>
+            <div class="eighth">
+                <div class="buttons" v-if="buttonShow == true">
+                    <button class="btn btn-w" @click="recallFn(),closeThisFn()">结束需求</button>
+                </div>
+                <div class="buttons" v-else>
+                    <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;" @click="anewPublishClickFn2(),closeThisFn()">重新发布</button>
+                    <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">结束需求</button>
+                </div>
             </div>
+            <editTransportForm v-if="editTransportFormShow" @close-this="closeEditTransportForm" @change-showCode="changeShowCodeFn"></editTransportForm>
+            <editAirlineReq v-if="editAirlineReqShow" @close-this="closeEditAirlineReq" @change-showCode="changeShowCodeFn"></editAirlineReq>
         </div>
-        <editTransportForm v-if="editTransportFormShow" @close-this="closeEditTransportForm" @change-showCode="changeShowCodeFn"></editTransportForm>
-        <editAirlineReq v-if="editAirlineReqShow" @close-this="closeEditAirlineReq" @change-showCode="changeShowCodeFn"></editAirlineReq>
     </div>
 </template>
 <script>
@@ -287,6 +289,15 @@
     }
     .btn-w {
         outline: none;
+    }
+    .wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
     }
     .ald-container{
         position: absolute;

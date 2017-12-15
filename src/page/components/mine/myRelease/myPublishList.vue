@@ -5,9 +5,9 @@
                 <div class="title items">
                     <div class="list-a item">
                         发布时间
-                        <div class="up-down" style="margin-left: 10px">
-                            <span class="icon-item icon-up active">&#xe605;</span>
-                            <span class="icon-item icon-down">&#xe605;</span>
+                        <div class="up-down" style="margin-left: 10px" @click="timeUpDownClick">
+                            <span class="icon-item icon-up" :class="{active: timeUpDown == true}">&#xe605;</span>
+                            <span class="icon-item icon-down" :class="{active: timeUpDown == false}">&#xe605;</span>
                         </div>
                     </div>
                     <div class="list-b item" @click="typeShowFn">
@@ -54,25 +54,27 @@
                 </div>
             </div>
         </div>
-        <myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn"></myPublish>
-        <myPublish0 v-show="myPublishShow0" @close-this="closeMyPublishShowFn0"></myPublish0>
-        <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1"></myPublishNeed1>
-        <myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn"></myPublishAirline>
-        <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn"></myPublishTransportEntrust>
-        <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn"></myPublishAirLineEntrust>
+        <transition-group name="slidex-fade">
+            <myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>
+            <myPublish0 v-show="myPublishShow0" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
+            <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1" :key="3"></myPublishNeed1>
+            <myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>
+            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
+            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
+        </transition-group>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-    import stateList from './stateList.vue'
-    import myPublish from './myRelease/myPublishNeed.vue' // 运力需求详情
-    import myPublish0 from './myRelease/myPublishNeed0.vue' // 航线需求详情
-    import myPublishNeed1 from './myRelease/myPublishNeed1.vue' // 运力需求详情
+    import stateList from '../stateList.vue'
+    import myPublish from './myPublishNeed.vue' // 运力需求详情
+    import myPublish0 from './myPublishNeed0.vue' // 航线需求详情
+    import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
 
-    import myPublishAirline from './myRelease/myPublishAirline.vue' //航线需求详情
-    import myPublishTransportEntrust from './myRelease/myPublishTransportEntrust.vue'
-    import myPublishAirLineEntrust from './myRelease/myPublishAirLineEntrust.vue'
+    import myPublishAirline from './myPublishAirline.vue' //航线需求详情
+    import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
+    import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
 
     export default {
         data() {
@@ -87,10 +89,10 @@
                 type0: ['运力投放','委托运力投放'], // 0：航司方登录
                 type1: ['航线需求','委托航线需求','运营托管'], // 1：机场方登录
                 state: [],
-                state1: ['需求发布','意见征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
+                state1: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
                 state2: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state3: ['待处理','处理中','意见征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
-                state4: ['需求发布','意见征集','订单确认','关闭(审核不通过、下架、过期)','交易完成'],
+                state3: ['待处理','处理中','意向征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                state4: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','交易完成'],
                 myPublishShow: false,       // myPublish(我的发布-运力详情)是否显示
                 myPublishShow0: false,       // myPublish(运力详情 + 航线详情)是否显示
                 myPublishShow1: false,       // 运力详情显示
@@ -101,51 +103,38 @@
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上
                 listItemIndex: '',          // 被点击列的index，用来使其变成active
-                talkNumShow: false,         //是否有对话
-            }
-        },
-        created() {
-            this.$ajax({
-                url:"/getTheReleaseDemandOfMine",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
+                talkNumShow: false,         // 是否有对话
+
+                timeUpDown: true,           // 通过时间进行排序
+                sendData:{                   // 请求的参数
+                    page:1,                  // 页码，必传
+//                    pageNo:4,
+                    demandType: '',         // 查询需求类型 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
+                    demandProgress:'',      // 状态类型 0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、
+                                                // 4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝
+                    orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
-                params: {
-                    page:1,
-                    orderType: 0 //发布时间排序类型 0-倒序 1-正序
-                }
-            }) .then((response) => {
-                console.info('myPublishList获取的数据:')
-                console.info(response)
-                response.data.list.list.forEach((val) => {
-                    if(val.demandtype == 1 || val.demandtype == 4 ){
-                        this.myData0.push(val);
-//                        this.myData = this.myData0;
-                    }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
-                        this.myData1.push(val);
-//                        this.myData = this.myData1;
-                    }
-//                    this.myData.push(val);
-                })
-//                this.myData = response.data.list.list;
-            }).catch((error) => {
-                console.log(error);
-            });
+            }
         },
         mounted() {
-            // 判断是机场(1)还是航司(0)登录
-            console.info('this.role.role:'+ this.role.role)
-            if(this.role.role == 0) {
-                this.type = this.type0;
-                this.myData = this.myData0;
-            }if(this.role.role == 1) {
-                this.type = this.type1;
-                this.myData = this.myData1;
-            }
-
-            this.state = this.state1;
+            this.judgeRole();
+            this.getListData();
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
+        },
+        watch: {
+            'sendData.orderType': function () {
+                this.getListData();
+//                this.judgeRole();
+            },
+            'sendData.demandType': function () {
+                this.getListData();
+//                this.judgeRole();
+            },
+            'sendData.demandProgress': function () {
+                console.info('1')
+                this.getListData();
+//                this.judgeRole();
+            },
         },
         computed: {
             ...vx.mapGetters([
@@ -153,27 +142,118 @@
             ]),
         },
         methods: {
+            // 根据登陆角色不同，展示的数据不同
+            judgeRole: function () {
+                // 判断是机场(1)还是航司(0)登录
+                console.info('this.role.role:'+ this.role.role)
+                console.info(this.myData)
+                if(this.role.role == 0) {
+                    this.type = this.type0;
+                    this.myData = this.myData0;
+                }if(this.role.role == 1) {
+                    this.type = this.type1;
+                    this.myData = this.myData1;
+                }
+            },
+            // ajax获取列表数据
+            getListData: function () {
+                this.$ajax({
+                    url:"/getTheReleaseDemandOfMine",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.sendData
+                }) .then((response) => {
+                    console.info('myPublishList获取的数据:')
+                    console.info(response)
+                    if(response.data.opResult === '0') {
+//                        alert('我的发布列表')
+                        response.data.list.list.forEach((val) => {
+                            if(val.demandtype == 1 || val.demandtype == 4 ){
+                                this.myData0.push(val);
+                            }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
+                                this.myData1.push(val);
+                            }
+                        })
+                        this.judgeRole();
+                    }else {
+                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+            },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
             stateShowFn: function () {
                 this.stateShow = !this.stateShow;
             },
+            // 通过“发布时间”选择展示内容
+            timeUpDownClick: function () {
+                this.myData0 = [];
+                this.myData1 = [];
+                this.timeUpDown = !this.timeUpDown;
+                this.sendData.orderType = this.timeUpDown ? 0 : 1;
+            },
+            // 通过“需求类型”选择展示内容 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
             typeClickFn: function (item) {
+                this.myData0 = [];
+                this.myData1 = [];
                 this.typeWriting = item;
+                this.sendData.demandProgress = '';
+                this.stateWriting = '状态';
                 if(item == '航线需求') {
                     this.state = this.state1;
+                    this.sendData.demandType = 0;
                 }if(item == '运营托管') {
                     this.state = this.state2;
+                    this.sendData.demandType = 2;
                 }if(item == '委托运力投放' || item == '委托航线需求') {
                     this.state = this.state3;
+                    if(item == '委托运力投放') {
+                        this.sendData.demandType = 4;
+                    }if(item == '委托航线需求') {
+                        this.sendData.demandType = 3;
+                    }
                 }if(item == '运力投放') {
                     this.state = this.state4;
+                    this.sendData.demandType = 1;
                 }
             },
+            // 通过“状态”选择展示内容  状态类型 0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、
+            // 4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝
             stateClickFn: function (item) {
+                this.myData0 = [];
+                this.myData1 = [];
                 this.stateWriting = item;
+                if(item == '需求发布') {
+                    this.sendData.demandProgress = 0;
+                }if(item == '意向征集') {
+                    console.info(0)
+                    this.sendData.demandProgress = 1;
+                }if(item == '订单确认') {
+                    this.sendData.demandProgress = 2;
+                }if(item == '关闭(审核不通过、下架、过期)' || item == '已关闭') {
+                    this.sendData.demandProgress = 3;
+                }if(item == '订单完成') {
+                    this.sendData.demandProgress = 4;
+                }if(item == '佣金支付') {
+                    this.sendData.demandProgress = 5;
+                }if(item == '交易完成' || item == '已完成') {
+                    this.sendData.demandProgress = 6;
+                }if(item == '待处理') {
+                    this.sendData.demandProgress = 7;
+                }if(item == '已接受') {
+                    this.sendData.demandProgress = 8;
+                }if(item == '处理中' || item == '测评中') {
+                    this.sendData.demandProgress = 9;
+                }if(item == '已拒绝') {
+                    this.sendData.demandProgress = 10;
+                }
             },
+
             // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
@@ -368,6 +448,7 @@
             .up-down {
                 position: relative;
                 width: 20px;
+                cursor: pointer;
                 .active {
                     color: $icon-color;
                 }

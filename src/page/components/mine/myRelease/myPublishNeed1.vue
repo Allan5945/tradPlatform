@@ -1,5 +1,6 @@
 <template>
-    <div class="plan-wrapper scroll">
+    <div class="wrapper" @click.self="closeIntent">
+        <div class="plan-wrapper scroll">
         <header>
             <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
             <div class="head-til">{{detailData.title}}</div>
@@ -184,6 +185,8 @@
         </footer>
         <myPublishIntentForm v-show="myPublishIntentFormShow" @close-this="closeThisFn"></myPublishIntentForm>
     </div>
+
+    </div>
 </template>
 
 <script>
@@ -297,6 +300,15 @@ import * as vx from 'vuex'
 </script>
 
 <style lang="scss" scoped>
+    .wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
+    }
     .plan-wrapper{
         position:absolute;
         top:0;

@@ -1,342 +1,348 @@
 <template>
-    <div class="ald-container">
-        <div class="first-show" v-show="firstShow">
-            <div class="first item-container">
-                <span class="font-gray">需求详情</span>
-                <span class="close-icon" @click="closeThisFn">&times;</span>
-            </div>
-            <div class="second item-container">
-                <div class="sec-top">
-                    {{myData.title}}航线需求
+    <div class="wrapper"@click.self="closeThisFn">
+        <div class="ald-container">
+            <div class="first-show" v-show="firstShow">
+                <div class="first item-container">
+                    <span class="font-gray">需求详情</span>
+                    <span class="close-icon" @click="closeThisFn">&times;</span>
                 </div>
-                <div class="sec-bottom font-gray">
-                    <span style="margin-right: 40px;">创建于{{releaseTime}}</span><span>已有{{userNum}}位用户发起意向</span>
-                </div>
-            </div>
-            <div class="third item-container">
-                <div class="start item">
-                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
-                        <span v-show="myData.dptState == 1">区域</span></div>
-                    <div class="item-b"><h2>
-                            <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
-                            <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
-                        </h2>
+                <div class="second item-container">
+                    <div class="sec-top">
+                        {{myData.title}}航线需求
                     </div>
-                    <div class="item-c font-gray">
-                        <span v-if="myData.dptAcceptnearairport === 0">接收</span>
-                        <span v-else>不接收</span>临近机场</div>
-                    <div class="item-d font-gray">出港资源</div>
-                    <div class="item-e">
-                        <span v-show="myData.dptTimeresources == 0">{{dptTime0}}</span>
-                        <span v-show="myData.dptTimeresources == 1">待协调</span>
-                        <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                    <div class="sec-bottom font-gray">
+                        <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
+                        <span style="margin-right: 30px;">已有{{userNum}}位用户发起意向</span>
+                        <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
+                            <span v-else>{{myData.demandprogressStr}}</span>
+                        </span>
                     </div>
                 </div>
-                <div class="item-icon">
-                    <span class="icon-item">&#xe672;</span>
+                <div class="third item-container">
+                    <div class="start item">
+                        <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
+                            <span v-show="myData.dptState == 1">区域</span></div>
+                        <div class="item-b"><h2>
+                                <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
+                                <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
+                            </h2>
+                        </div>
+                        <div class="item-c font-gray">
+                            <span v-if="myData.dptAcceptnearairport === 0">接收</span>
+                            <span v-else>不接收</span>临近机场</div>
+                        <div class="item-d font-gray">出港资源</div>
+                        <div class="item-e">
+                            <span v-show="myData.dptTimeresources == 0">{{dptTime0}}</span>
+                            <span v-show="myData.dptTimeresources == 1">待协调</span>
+                            <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                        </div>
+                    </div>
+                    <div class="item-icon">
+                        <span class="icon-item">&#xe672;</span>
+                    </div>
+                    <div class="pass item">
+                        <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
+                            <span v-show="myData.pstState == 1">区域</span></div>
+                        <div class="item-b"><h2>
+                                <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
+                                <span v-show="myData.pstState == 1">{{myData.pst}}</span>
+                            </h2>
+                        </div>
+                        <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                        <div class="item-d font-gray">出港资源</div>
+                        <div class="item-e">
+                            <span v-show="myData.pstTimeresources == 0">{{pstTime0}}-{{pstTime1}}</span>
+                            <span v-show="myData.pstTimeresources == 1">待协调</span>
+                            <span v-show="myData.pstTimeresources == 2">时刻充足</span>
+                        </div>
+                    </div>
+                    <div class="item-icon">
+                        <span class="icon-item">&#xe672;</span>
+                    </div>
+                    <div class="arrive item">
+                        <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
+                            <span v-show="myData.arrvState == 1">区域</span></div>
+                        <div class="item-b"><h2>
+                                <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
+                                <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
+                            </h2>
+                        </div>
+                        <!--下方有空格-->
+                        <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                        <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
+                        <div class="item-e">&nbsp;<!--此处有空格--></div>
+                    </div>
                 </div>
-                <div class="pass item">
-                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
-                        <span v-show="myData.pstState == 1">区域</span></div>
-                    <div class="item-b"><h2>
-                            <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
-                            <span v-show="myData.pstState == 1">{{myData.pst}}</span>
-                        </h2>
+                <div class="fourth item-container">
+                    <div class="items">
+                        <div class="left item font-gray">
+                            <div>拟开时间</div>
+                            <div>拟飞机型</div>
+                            <div>客量期望</div>
+                            <div>补贴政策</div>
+                        </div>
+                        <div class="right item">
+                            <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
+                            <div class="item-b">{{myData.aircrfttyp}}</div>
+                            <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
+                            <div class="item-d" v-if="myData.subsidypolicy == ''">有补贴</div>
+                            <div class="item-d" v-else>{{subsidypolicy}}</div>
+                            <!--<div>有补贴</div>-->
+                        </div>
                     </div>
-                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-d font-gray">出港资源</div>
-                    <div class="item-e">
-                        <span v-show="myData.pstTimeresources == 0">{{pstTime0}}-{{pstTime1}}</span>
-                        <span v-show="myData.pstTimeresources == 1">待协调</span>
-                        <span v-show="myData.pstTimeresources == 2">时刻充足</span>
-                    </div>
-                </div>
-                <div class="item-icon">
-                    <span class="icon-item">&#xe672;</span>
-                </div>
-                <div class="arrive item">
-                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
-                        <span v-show="myData.arrvState == 1">区域</span></div>
-                    <div class="item-b"><h2>
-                            <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
-                            <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
-                        </h2>
-                    </div>
-                    <!--下方有空格-->
-                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-e">&nbsp;<!--此处有空格--></div>
-                </div>
-            </div>
-            <div class="fourth item-container">
-                <div class="items">
-                    <div class="left item font-gray">
-                        <div>拟开时间</div>
-                        <div>拟飞机型</div>
-                        <div>客量期望</div>
-                        <div>补贴政策</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
-                        <div class="item-b">{{myData.aircrfttyp}}</div>
-                        <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
-                        <div class="item-d" v-if="myData.subsidypolicy == ''">有补贴</div>
-                        <div class="item-d" v-else>{{subsidypolicy}}</div>
-                        <!--<div>有补贴</div>-->
-                    </div>
-                </div>
-                <div class="items">
-                    <div class="left item font-gray">
-                        <div>拟开班期</div>
-                        <div>座位数</div>
-                        <div>客座率期望</div>
-                        <div>有效期</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-a">{{myData.days}}</div>
-                        <div class="item-b">{{myData.seating}}</div>
-                        <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                        <div class="item-d" style="display: flex;position: relative;">{{periodValidity0}}
-                            <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
-                            <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
-                                <div class="selec-data">
-                                    <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                                    <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
-                                    <div class="confirm-btn btn" @click="getMyDate1">确定</div>
-                                    <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                    <div class="items">
+                        <div class="left item font-gray">
+                            <div>拟开班期</div>
+                            <div>座位数</div>
+                            <div>客座率期望</div>
+                            <div>有效期</div>
+                        </div>
+                        <div class="right item">
+                            <div class="item-a">{{myData.days}}</div>
+                            <div class="item-b">{{myData.seating}}</div>
+                            <div class="item-c">{{myData.loadfactorsexpect}}%</div>
+                            <div class="item-d" style="display: flex;position: relative;">{{periodValidity0}}
+                                <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
+                                <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
+                                    <div class="selec-data">
+                                        <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
+                                        <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                        <div class="confirm-btn btn" @click="getMyDate1">确定</div>
+                                        <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                                    </div>
+                                    <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
+                                        <!-- 可传入初始值 -->
+                                    </calendar>
+                                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
+                                        <!-- 可传入初始值 -->
+                                    </calendar>
                                 </div>
-                                <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
-                                <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
-        </div>
-
-        <div class="second-show" v-show="secondShow">
-            <div class="fifth item-container">
-                <div class="left font-gray">其他说明</div>
-                <div class="right">{{myData.remark}}</div>
-            </div>
-            <div class="sixth item-container">
-                <h2>收到的意向</h2>
-                <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
-            </div>
-            <div class="seventh item-container" v-show="secondButtonShow">
-                <span class="danger">*您还未缴纳意向金，缴纳后可查看详细列表</span>
-            </div>
-        </div>
-
-        <div class="third-show" v-show="thirdShow">
-
-            <div class="eighth item-container">
-                <div class="left font-gray">
-                    收到时间
+            <div class="second-show" v-show="secondShow">
+                <div class="fifth item-container">
+                    <div class="left font-gray">其他说明</div>
+                    <div class="right">{{myData.remark}}</div>
                 </div>
-                <div class="up-down">
-                    <span class="icon-item icon-up active">&#xe605;</span>
-                    <span class="icon-item icon-down">&#xe605;</span>
+                <div class="sixth item-container">
+                    <h2>收到的意向</h2>
+                    <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
                 </div>
-                <div class="right font-gray">
-                    意向方
+                <div class="seventh item-container" v-show="secondButtonShow">
+                    <span class="danger">*您还未缴纳意向金，缴纳后可查看详细列表</span>
                 </div>
             </div>
-            <div class="ninth">
-                <div class="nine-item" v-for="(item,index) in listData">
-                    <div class="item-first">
-                        <div class="left">{{item.responsedate}}</div>
-                        <div class="center-left">{{item.intentionCompanyName}}</div>
-                        <div class="center-right">
-                            <span class="icon-item">&#xe602; <span class="reminder"></span></span>
-                        </div>
-                        <div v-if="checkDetailShow" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
-                        <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
+
+            <div class="third-show" v-show="thirdShow">
+
+                <div class="eighth item-container">
+                    <div class="left font-gray">
+                        收到时间
                     </div>
-                    <div v-show="checkDetailIndex === index">
-                        <div class="item-second">
-                            <div class="start item">
-                                <div class="item-a font-gray">始发<span v-show="item.dptState == 0">机场</span>
-                                    <span v-show="item.dptState == 1">区域</span></div>
-                                <div class="item-b"><h2>
-                                    <span v-show="item.dptState == 0">{{item.dptNm}}</span>
-                                    <span v-show="item.dptState == 1">{{item.dpt}}</span>
-                                </h2>
-                                </div>
-                                <div class="item-c font-gray">
-                                    <span v-if="item.dptAcceptnearairport === 0">接收</span>
-                                    <span v-else>不接收</span>临近机场</div>
-                                <div class="item-d font-gray">出港资源</div>
-                                <div class="item-e">
-                                    <span v-show="item.dptTimeresources == 0">{{item.dptTime}}</span>
-                                    <span v-show="item.dptTimeresources == 1">待协调</span>
-                                    <span v-show="item.dptTimeresources == 2">时刻充足</span>
-                                </div>
-
-                                <!--<div class="item-a">始发机场</div>
-                                <div class="item-b"><h2>成都双流</h2></div>
-                                <div class="item-c">接受临近机场</div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">08:00-12:00</div>-->
+                    <div class="up-down">
+                        <span class="icon-item icon-up active">&#xe605;</span>
+                        <span class="icon-item icon-down">&#xe605;</span>
+                    </div>
+                    <div class="right font-gray">
+                        意向方
+                    </div>
+                </div>
+                <div class="ninth">
+                    <div class="nine-item" v-for="(item,index) in listData">
+                        <div class="item-first">
+                            <div class="left">{{item.responsedate}}</div>
+                            <div class="center-left">{{item.intentionCompanyName}}</div>
+                            <div class="center-right">
+                                <span class="icon-item">&#xe602; <span class="reminder"></span></span>
                             </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="pass item">
-                                <div class="item-a font-gray">经停<span v-show="item.pstState == 0">机场</span>
-                                    <span v-show="item.pstState == 1">区域</span></div>
-                                <div class="item-b"><h2>
-                                    <span v-show="item.pstState == 0">{{item.pstNm}}</span>
-                                    <span v-show="item.pstState == 1">{{item.pst}}</span>
-                                </h2>
-                                </div>
-                                <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d font-gray">出港资源</div>
-                                <div class="item-e">
-                                    <span v-show="item.pstTimeresources == 0">{{item.pstTime}}</span>
-                                    <span v-show="item.pstTimeresources == 1">待协调</span>
-                                    <span v-show="item.pstTimeresources == 2">时刻充足</span>
-                                </div>
-                                <!--<div class="item-a">经停机场</div>
-                                <div class="item-b"><h2>北京南苑</h2></div>
-                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                <div class="item-d">出港资源</div>
-                                <div class="item-e">带协调</div>-->
-                            </div>
-                            <div class="item-icon">
-                                <span class="icon-item">&#xe672;</span>
-                            </div>
-                            <div class="arrive item">
-                                <div class="item-a font-gray">到达<span v-show="item.arrvState == 0">机场</span>
-                                    <span v-show="item.arrvState == 1">区域</span></div>
-                                <div class="item-b"><h2>
-                                    <span v-show="item.arrvState == 0">{{item.arrvNm}}</span>
-                                    <span v-show="item.arrvState == 1">{{item.arrv}}</span>
-                                </h2>
-                                </div>
-                                <!--下方有空格-->
-                                <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
-                                <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
-                                <div class="item-e">&nbsp;<!--此处有空格--></div>
-
-                                <!--<div class="item-a">到达区域</div>
-                                <div class="item-b"><h2>华北地区</h2></div>
-
-                                &lt;!&ndash;下方有空格&ndash;&gt;
-                                <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>-->
-                            </div>
+                            <div v-if="checkDetailShow" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
+                            <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
                         </div>
-                        <div class="item-third">
-                            <div class="items">
-                                <div class="left item font-gray">
-                                    <div>拟开时间</div>
-                                    <div>拟飞机型</div>
-                                    <div>客量期望</div>
-                                    <div>补贴政策</div>
-                                    <div>运力归属</div>
-                                    <div>是否调度</div>
-                                </div>
-                                <div class="right item">
-                                    <div class="item-a item-height">{{item.sailingtime}}</div>
-                                    <div class="item-b item-height">{{item.aircrfttyp}}</div>
-                                    <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 3">待议</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 4">无补贴</div>
-
-                                    <div class="item-height">{{item.capacitycompany}}</div>
-                                    <div class="item-height">
-                                        <span v-show="item.scheduling == 0">接受</span>
-                                        <span v-show="item.scheduling == 1">不接受</span>
+                        <div v-show="checkDetailIndex === index">
+                            <div class="item-second">
+                                <div class="start item">
+                                    <div class="item-a font-gray">始发<span v-show="item.dptState == 0">机场</span>
+                                        <span v-show="item.dptState == 1">区域</span></div>
+                                    <div class="item-b"><h2>
+                                        <span v-show="item.dptState == 0">{{item.dptNm}}</span>
+                                        <span v-show="item.dptState == 1">{{item.dpt}}</span>
+                                    </h2>
+                                    </div>
+                                    <div class="item-c font-gray">
+                                        <span v-if="item.dptAcceptnearairport === 0">接收</span>
+                                        <span v-else>不接收</span>临近机场</div>
+                                    <div class="item-d font-gray">出港资源</div>
+                                    <div class="item-e">
+                                        <span v-show="item.dptTimeresources == 0">{{item.dptTime}}</span>
+                                        <span v-show="item.dptTimeresources == 1">待协调</span>
+                                        <span v-show="item.dptTimeresources == 2">时刻充足</span>
                                     </div>
 
+                                    <!--<div class="item-a">始发机场</div>
+                                    <div class="item-b"><h2>成都双流</h2></div>
+                                    <div class="item-c">接受临近机场</div>
+                                    <div class="item-d">出港资源</div>
+                                    <div class="item-e">08:00-12:00</div>-->
+                                </div>
+                                <div class="item-icon">
+                                    <span class="icon-item">&#xe672;</span>
+                                </div>
+                                <div class="pass item">
+                                    <div class="item-a font-gray">经停<span v-show="item.pstState == 0">机场</span>
+                                        <span v-show="item.pstState == 1">区域</span></div>
+                                    <div class="item-b"><h2>
+                                        <span v-show="item.pstState == 0">{{item.pstNm}}</span>
+                                        <span v-show="item.pstState == 1">{{item.pst}}</span>
+                                    </h2>
+                                    </div>
+                                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                                    <div class="item-d font-gray">出港资源</div>
+                                    <div class="item-e">
+                                        <span v-show="item.pstTimeresources == 0">{{item.pstTime}}</span>
+                                        <span v-show="item.pstTimeresources == 1">待协调</span>
+                                        <span v-show="item.pstTimeresources == 2">时刻充足</span>
+                                    </div>
+                                    <!--<div class="item-a">经停机场</div>
+                                    <div class="item-b"><h2>北京南苑</h2></div>
+                                    <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                    <div class="item-d">出港资源</div>
+                                    <div class="item-e">带协调</div>-->
+                                </div>
+                                <div class="item-icon">
+                                    <span class="icon-item">&#xe672;</span>
+                                </div>
+                                <div class="arrive item">
+                                    <div class="item-a font-gray">到达<span v-show="item.arrvState == 0">机场</span>
+                                        <span v-show="item.arrvState == 1">区域</span></div>
+                                    <div class="item-b"><h2>
+                                        <span v-show="item.arrvState == 0">{{item.arrvNm}}</span>
+                                        <span v-show="item.arrvState == 1">{{item.arrv}}</span>
+                                    </h2>
+                                    </div>
+                                    <!--下方有空格-->
+                                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
+                                    <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
+                                    <div class="item-e">&nbsp;<!--此处有空格--></div>
 
-                                    <!--<div class="item-height">2017.11.11-2018.11.11</div>
-                                    <div class="item-height">AA2222</div>
-                                    <div class="item-height">80人/均班</div>
-                                    <div class="item-height">按人头</div>
-                                    <div class="item-height">东方航空</div>
-                                    <div class="item-height">华北地区</div>-->
+                                    <!--<div class="item-a">到达区域</div>
+                                    <div class="item-b"><h2>华北地区</h2></div>
+
+                                    &lt;!&ndash;下方有空格&ndash;&gt;
+                                    <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                    <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
+                                    <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>-->
                                 </div>
                             </div>
-                            <div class="items">
-                                <div class="left item font-gray">
-                                    <div>拟开班期</div>
-                                    <div>座位数</div>
-                                    <div>客座率期望</div>
-                                    <div>小时成本</div>
-                                    <div>运力基地</div>
-                                </div>
-                                <div class="right item">
-                                    <div class="item-height">{{item.days}}</div>
-                                    <div class="item-height">{{item.seating}}</div>
-                                    <div class="item-height">{{item.loadfactorsexpect}}%</div>
-                                    <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
-                                    <div class="item-height">{{item.dpt}}</div>
+                            <div class="item-third">
+                                <div class="items">
+                                    <div class="left item font-gray">
+                                        <div>拟开时间</div>
+                                        <div>拟飞机型</div>
+                                        <div>客量期望</div>
+                                        <div>补贴政策</div>
+                                        <div>运力归属</div>
+                                        <div>是否调度</div>
+                                    </div>
+                                    <div class="right item">
+                                        <div class="item-a item-height">{{item.sailingtime}}</div>
+                                        <div class="item-b item-height">{{item.aircrfttyp}}</div>
+                                        <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
+                                        <div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>
+                                        <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
+                                        <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
+                                        <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
+                                        <div class="item-d item-height" v-if="item.subsidypolicy == 3">待议</div>
+                                        <div class="item-d item-height" v-if="item.subsidypolicy == 4">无补贴</div>
+
+                                        <div class="item-height">{{item.capacitycompany}}</div>
+                                        <div class="item-height">
+                                            <span v-show="item.scheduling == 0">接受</span>
+                                            <span v-show="item.scheduling == 1">不接受</span>
+                                        </div>
 
 
-                                   <!-- <div class="item-height">待定</div>
-                                    <div class="item-height">180</div>
-                                    <div class="item-height">80%</div>
-                                    <div class="item-height">8万元/小时</div>
-                                    <div class="item-height">成都双流</div>-->
+                                        <!--<div class="item-height">2017.11.11-2018.11.11</div>
+                                        <div class="item-height">AA2222</div>
+                                        <div class="item-height">80人/均班</div>
+                                        <div class="item-height">按人头</div>
+                                        <div class="item-height">东方航空</div>
+                                        <div class="item-height">华北地区</div>-->
+                                    </div>
+                                </div>
+                                <div class="items">
+                                    <div class="left item font-gray">
+                                        <div>拟开班期</div>
+                                        <div>座位数</div>
+                                        <div>客座率期望</div>
+                                        <div>小时成本</div>
+                                        <div>运力基地</div>
+                                    </div>
+                                    <div class="right item">
+                                        <div class="item-height">{{item.days}}</div>
+                                        <div class="item-height">{{item.seating}}</div>
+                                        <div class="item-height">{{item.loadfactorsexpect}}%</div>
+                                        <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
+                                        <div class="item-height">{{item.dpt}}</div>
+
+
+                                       <!-- <div class="item-height">待定</div>
+                                        <div class="item-height">180</div>
+                                        <div class="item-height">80%</div>
+                                        <div class="item-height">8万元/小时</div>
+                                        <div class="item-height">成都双流</div>-->
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="item-fourth">
-                            <div class="left font-gray">其他说明</div>
-                            <div class="right">
-                                {{item.remark}}
+                            <div class="item-fourth">
+                                <div class="left font-gray">其他说明</div>
+                                <div class="right">
+                                    {{item.remark}}
+                                </div>
                             </div>
-                        </div>
-                        <div class="item-fifth" v-if="releaseselectedShow">
-                            <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
-                        </div>
-                        <div class="item-sixth" v-else>
-                            <button class="btn btn-w btn-change" @click="airlineAffirmFn(item,index)">已选定（点击此次可再次编译）</button>
-                            <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
+                            <div class="item-fifth" v-if="releaseselectedShow">
+                                <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
+                            </div>
+                            <div class="item-sixth" v-else>
+                                <button class="btn btn-w btn-change" @click="airlineAffirmFn(item,index)">已选定（点击此次可再次编译）</button>
+                                <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="first-button" v-show="firstButtonShow">
-            <span style="width: 560px;height: 2px;background: black;"></span>
-            <div class="buttons">
-                <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" @click="addCollectFn">收藏</button>
+            <div class="first-button" v-show="firstButtonShow">
+                <span style="width: 560px;height: 2px;background: black;"></span>
+                <div class="buttons">
+                    <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
+                    <button class="btn btn-w" @click="addCollectFn">收藏</button>
+                </div>
             </div>
-        </div>
-        <div class="second-button" v-show="secondButtonShow">
-            <div class="buttons">
-                <button class="btn btn-b" @click="airlinePayFn">点击此处缴纳意向金</button>
-                <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+            <div class="second-button" v-show="secondButtonShow">
+                <div class="buttons">
+                    <button class="btn btn-b" @click="airlinePayFn">点击此处缴纳意向金</button>
+                    <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+                </div>
             </div>
-        </div>
 
-        <div class="bottom" v-show="fifthButtonShow">
-            <div class="buttons">
-                <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
-                <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+            <div class="bottom" v-show="fifthButtonShow">
+                <div class="buttons">
+                    <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
+                    <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+                </div>
             </div>
+            <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
+                          :acceptData="myData"></airlineWrite>
+            <!--<airlinePay v-show="airlinePayShow" @close-this="closeAlPayFn" @change-showCode="changeShowCodeP"></airlinePay>-->
+            <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn"
+                           @change-showCode="changeShowCodeA"></airlineAffirm>
+            <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
+            <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
         </div>
-        <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
-                      :acceptData="myData"></airlineWrite>
-        <!--<airlinePay v-show="airlinePayShow" @close-this="closeAlPayFn" @change-showCode="changeShowCodeP"></airlinePay>-->
-        <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn"
-                       @change-showCode="changeShowCodeA"></airlineAffirm>
-        <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
-        <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
     </div>
 </template>
 <script>
@@ -394,6 +400,9 @@
                 calendarInitDay2: '',
                 calendarShow1: false,
                 myDate1: '',
+                /************/
+
+                demandStateText: false, //"审核未通过"是否显示
                 /**************参数对应的模板***********/
                 /*user: '', //联系人
                 phoneNum: '', //电话号码
@@ -1020,11 +1029,14 @@
 
     /*********/
     .wrapper {
-
-        /*min-height: 600px;*/
-        /*max-height: 700px;*/
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
     }
-
     .ald-container {
         position: absolute;
         top: 0px;
