@@ -28,8 +28,8 @@
 
 <script>
 import myNav from './myNav.vue';
-import myPublishList from './myPublishList.vue';
-import myPurposeList from './myPurposeList.vue';
+import myPublishList from './myRelease/myPublishList.vue';
+import myPurposeList from './myIntention/myPurposeList.vue';
 import myPic from './../../../static/img/haveline.png';
     export default {
         data(){

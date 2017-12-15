@@ -4,7 +4,7 @@
             <div class="my-msg">
                 <div class="my-info">
                     <div class="my-pic">
-                        <img :src='img' alt="">
+                        <img :src='img' alt="头像">
                         <span class="iconfont">&#xe645;</span>
                     </div>
                     <div class="name">张二狗</div>
@@ -21,6 +21,7 @@
                 </div>
             </div>
         </div>
+        <div class="mine-loading" v-show="false"><img :src="loader" alt="加载中..."></div>
         <router-view></router-view>
     </div>
 </template>
@@ -28,7 +29,8 @@
 <script>
 import reviewList from './reviewList/viewTable.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-import myPic from './../../../static/img/145.jpg';
+import myPic from '$src/static/img/145.jpg';
+import loader from "$src/static/img/svg/loading-oval.svg"
     export default {
         data() {
             return {
@@ -56,6 +58,7 @@ import myPic from './../../../static/img/145.jpg';
                 }
                 ],
                 activeIndex: 0,
+                loader,//加载动画
             }
         },
         methods: {
@@ -181,5 +184,16 @@ import myPic from './../../../static/img/145.jpg';
             border-bottom: 3px solid #3c78ff;
         }
     }
-
+    .mine-loading{
+        width: 60%;
+        height: 405px;
+        margin-left: 20%;
+        position: absolute;
+        bottom:0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #F8F8F8;
+        z-index: 2;
+    }
 </style>
