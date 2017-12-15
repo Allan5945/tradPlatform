@@ -5,6 +5,7 @@
                 <div class="top-til">{{detailData.demandtypeStr}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="contact" v-if="!isUser">联系用户</div>
+                 <div class="contact" v-else>联系客服</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
@@ -89,11 +90,11 @@
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
-            <!-- <sonNeedDetail :demandId = "demandId" v-if="!isUser"></sonNeedDetail> -->
+           <sonNeedDetail :demandId = "demandId" v-if="!isUser" v-show="sondetailShow"></sonNeedDetail>
             <footer v-if="isUser">
                 <div class="foot-tips"></div>
                 <div class="btn">
-                    <div class="test-btn" >取消委托</div>
+                    <div class="test-btn" @click="canceldele">取消委托</div>
                     <div class="can-btn"  @click="closeDetail">返回</div>
                 </div>
             </footer>
@@ -126,13 +127,36 @@ import * as vx from 'vuex';
             isUser:true,
             formShow:false,
             detailData:{},
-            CpyNm:''//委托方
+            CpyNm:'',//委托方
+            sondetailShow:false
          }
      },
       props:['demandId'],
      methods:{
         closeDetail(){
           this.$emit("close");
+        },
+        canceldele(){
+          /*this.$ajax({
+                method: 'post',
+                url: '/responseWeituoDaili',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    employeeId :this.role.id,
+                    id:""
+                  }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                      alert("取消委托成功")
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );*/
         },
         refuse(){
 
@@ -151,6 +175,7 @@ import * as vx from 'vuex';
         },
         closeForm(){
           this.formShow =false;
+          this.sondetailShow = true;
         }
      },
       computed: {

@@ -9,6 +9,7 @@
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent"></myintention>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
+        <transAdmin @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent" @formShow="formShow"></transAdmin>
     </div>
 </template>
 
@@ -20,6 +21,7 @@
     import transDialog from './transDialog.vue'
     import respondAirport from './respondAirport.vue'
     import paySuccess  from './paySuccess.vue'
+    import transAdmin  from './transAdmin.vue'
 
     export default {
         data() {
@@ -39,6 +41,8 @@
             },
             openIntent() {
                 this.intentShow = true;
+                this.detailShow = false;
+                this.respond = false;
                 this.$emit('closeAirline');
             },
             closeForm(){
@@ -50,6 +54,7 @@
             responShow(){
                 this.respond = true;
                 this.detailShow = false;
+                this.intentShow = false;
                 this.$emit('closeAirline');
             },
             responClose(){
@@ -66,6 +71,7 @@
             transShow(){
                 this.detailShow = true;
                 this.respond = false;
+                this.intentShow = false;
                 this.$emit('closeAirline');
             },
             closeDialog(){
@@ -90,6 +96,7 @@
             myIntention,
             paySuccess,
             respondAirport,
+            transAdmin
         }
     }
 </script>

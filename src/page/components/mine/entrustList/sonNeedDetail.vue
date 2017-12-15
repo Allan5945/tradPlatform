@@ -10,18 +10,19 @@
                     <div>发布标题</div>
                     <div>需求状态</div>
                 </div>
-                <div class="intent-box" v-for=" val in detailData">
+                <div class="intent-box" v-for="(val,index) in detailData">
                      <div class="intent-item">
-                        <div class="time">2012.12.13</div>
-                        <div class="person">{{val.intentionCompanyName}}<span class="iconfont">&#xe602;</span></div>
-                        <div class="detail" @click="closeDetail">{{text}}</div>
+                        <div class="time">{{val.releasetime}}</div>
+                        <div class="title">{{val.title}}</div>
+                        <div class="progress">{{val.demandprogressStr}}<span class="iconfont">&#xe602;</span></div>
+                        <div class="detail" @click="closeDetail(index)">{{text}}</div>
                     </div>
-                    <div class="intent-detail" v-show="detailShow">
+                    <div class="intent-detail" v-if="detailShowIndex == index">
                         <div class="airline">
                             <div class="airplace">
                                 <div>始发机场</div>
                                 <div>
-                                    <div>{{val.dpt}}</div>
+                                    <div>{{val.dptNm}}</div>
                                     <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">
@@ -33,7 +34,7 @@
                             <div class="airplace">
                                 <div>经停机场</div>
                                 <div>
-                                    <div>{{val.pst}}</div>
+                                    <div>{{val.pstNm}}</div>
                                     <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">
@@ -45,7 +46,7 @@
                             <div class="airplace">
                                 <div>到达区域</div>
                                 <div>
-                                    <div>{{val.arrv}}</div>
+                                    <div>{{val.arrvNm}}</div>
                                     <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">
@@ -114,7 +115,13 @@
     export default {
         data () {
             return{
-              detailData:{}
+              detailData:{},
+              detailShowIndex:null,
+              intentListShow:false,
+              selIndex:'',
+              myFormShow:false,
+              dialogShow:false,
+              text:"查看详情",
             }
         },
         props:['demandId'],
@@ -141,6 +148,15 @@
 
         },
         methods:{
+             closeDetail:function(i){
+                 this.detailShowIndex = i;
+                 console.log(this.detailShowIndex)
+                 if(this.detailShow){
+                    this.text = "收起详情";
+                 }else{
+                     this.text = "查看详情";
+                 }
+             },
              getNeed: function(i){
 
             },
@@ -313,7 +329,7 @@
                 >div{
                     display:inline-block;
                     width:80px;
-                    padding-right:40px;
+                    padding-right:50px;
                 }
                  .icon-up {
                     position: absolute;
@@ -336,13 +352,18 @@
                 height:60px;
                 line-height: 60px;
                 .time{
-                    margin:0 40px 0 20px;
-                    width:80px;
+                    padding-left:20px;
+                    width:140px;
                     overflow:hidden;
                 }
-                .person{
+                .title{
+                    width:140px;
+                    overflow:hidden;
+                }
+                .progress{
+                    padding-left:40px;
                     display:flex;
-                    width:120px;
+                    width:200px;
                     span{
                         font-size:25px;
                         margin-left:10px;
@@ -350,8 +371,7 @@
 
                 }
                 .detail{
-                    width:60px;
-                    margin-left:210px;
+                    width:140px;
                     color:#3C78FF;
                     cursor:pointer;
                 }

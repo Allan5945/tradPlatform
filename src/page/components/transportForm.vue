@@ -174,6 +174,8 @@
                 post:'0',
                 timeStart:'00:00',
                 timeEnd:'00:00',
+                timeStartIndex:0,
+                timeEndIndex:0,
                 tip: '',
                 searchData:["双流机场","武当山机场"],
                 searchData1:["双流机场","武当山机场"],
@@ -274,14 +276,21 @@
                 }
             },
             pickTime1: function(i) {
+                this.timeStartIndex = i;
                 this.timeStart = this.timeData[i];
                 this.boxShow1 = false;
                 this.pickStart = true;
+                if(i > this.timeEndIndex||i == this.timeEndIndex){
+                    this.timeEnd = " ";
+                }
             },
              pickTime2: function(i) {
-                this.timeEnd = this.timeData[i];
-                this.boxShow2 = false;
-                this.pickEnd = true;
+                this.timeEndIndex = i;
+                if(i > this.timeStartIndex){
+                    this.timeEnd = this.timeData[i];
+                    this.boxShow2 = false;
+                    this.pickEnd = true;
+                }
             },
             delItem:function(i){
                 this.searchData.splice(i,1);
@@ -365,7 +374,7 @@
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
-                    myCompany.push(item.icao);
+                    myCompany.push(item.iata);
                     myCompany.push(item.id);
                     this.airCompanyData.push(myCompany);
                 })
