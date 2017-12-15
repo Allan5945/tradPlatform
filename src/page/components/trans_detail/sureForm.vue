@@ -663,7 +663,7 @@
                     params: this.sendData
                 }).then((response) => {
                     if(response.data.opResult == "0"){
-                        alert("修改方案成功！")
+                        alert("修改意向成功！")
                          this.$emit('closeForm');
                   }
                 }).catch((error) => {

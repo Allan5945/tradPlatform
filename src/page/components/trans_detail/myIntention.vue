@@ -73,7 +73,7 @@
                         </div>
                         <div>意向方</div>
                     </div>
-                    <div class="intent-box" v-for=" val in planData" v-if="intentListShow">
+                    <div class="intent-box" v-for=" (val,index) in planData" v-if="intentListShow">
                          <div class="intent-item">
                             <div class="time">{{val.responsedate}}</div>
                             <div class="person">{{val.intentionCompanyName}}<span class="iconfont">&#xe602;</span></div>
@@ -167,7 +167,7 @@
                                     <div>{{val.remark}}</div>
                                 </div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val)" v-if="selShow">选定</div>
+                            <div class="sure-btn" @click="toSelect(val)" v-if="selIndex == index">选定</div>
                             <div class="btns" v-else>
                                 <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
                                 <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
@@ -197,7 +197,7 @@
          return{
              detailShow:false,
              intentListShow:false,
-             selShow:true,
+             selIndex:'',
              myFormShow:false,
              text:"查看详情",
              detailData:{},
@@ -219,8 +219,9 @@
          closeIntent:function(){
             this.$emit('closeIntent');
          },
-         toSelect:function(val){
+         toSelect:function(val,index){
             tabulationBoxTrigger.$emit('sendTable',val);
+            this.selIndex = index;
             this.myFormShow = true;
             this.selectData = val;
             this.responseId = val.id;
@@ -266,26 +267,27 @@
                 );
          },
          cancelSel:function(val){
-         /* this.$ajax({
-                method: 'post',
-                url: '/selectedResponse',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    employeeId:this.role.id,
-                    id:val.id,
-                    status:1
-                }
-                })
-                .then((response) => {
+              this.selectData = val;
+              this.selectData.releaseselected = '1';
+              this.$ajax({
+                    method: 'post',
+                    url: '/selectedResponse',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                      params:this.selectData
+                    })
+                    .then((response) => {
+                         if(response.data.opResult == "0"){
+                           this.selIndex = " ";
+                          alert("撤销选定成功!")
+                         }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
 
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );*/
-                this.selShow = true;
          },
          closeMyForm:function(){
               this.myFormShow = false;
