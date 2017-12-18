@@ -10,7 +10,7 @@
         </div>
         <div class="timely-content">
             <div class="timely-content-head">
-                <div class="timely-title">成都双流找运力意向<span>洽谈中</span></div>
+                <div class="timely-title">{{inData[this.setId].title}}<span>洽谈中</span></div>
                 <div class="timely-window">
                     <div class="btn-w timely-window-s" @click="initDis(false)">&#xe667;</div>
                     <div class="btn-w timely-window-d" @click="initDis(true)">&#xe62c;</div>
@@ -18,9 +18,9 @@
             </div>
             <div class="timely-content-body">
                 <div class="chat-function">
-                    <div class="chat-function-banner">
+                    <div class="chat-function-banner" id="chat-function-banner">
                         <div class="scroll">
-                            <div :class="{'modify-the-information':(val.textType == '1'),'others-news':(val.textType == '0' && val.fromNameId == role.id),'oneself-news':(val.textType == '0' && val.fromNameId != role.id)}"
+                            <div :class="{'modify-the-information':(val.textType == '1'),'oneself-news':(val.textType == '0' && val.fromNameId == role.id),'others-news':(val.textType == '0' && val.fromNameId != role.id)}"
                                  v-for="(val,index) in chatIng">
                                 <div class="head-portrait" v-if="(val.textType == '0')">
                                     <img src="./../../../static/img/test/145.png"/>
@@ -47,8 +47,8 @@
                                     <img src="./../../../static/img/test/145.png"/>
                                 </div>
                                 <div class="personal-panel-name">
-                                    <p>小二</p>
-                                    <div class="">南方航空<span>市场部</span></div>
+                                    <p>{{inData.company}}</p>
+                                    <div class="">{{kfIng.department}}<span>{{kfIng.name}}</span></div>
                                 </div>
                             </div>
                             <div class="demand-history">
@@ -57,19 +57,14 @@
                             </div>
                             <div class="demand-describe scroll">
                                 <div>
-                                    <div>
-                                        <div>始发机场</div>
-                                        <div>双流机场</div>
+                                    <div v-for="(key,i) in rightTableUp">
+                                        <div>{{key.key}}</div>
+                                        <div>{{key.val}}</div>
                                     </div>
-                                    <div>
-                                        <div>始发机场</div>
-                                        <div>双流机场</div>
+                                    <div v-for="(key,i) in rightTableDown">
+                                        <div>{{key.key}}</div>
+                                        <div>{{key.val}}</div>
                                     </div>
-                                    <div>
-                                        <div>始发机场</div>
-                                        <div>双流机场</div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -103,7 +98,7 @@
     export default {
         data(){
             return{
-                ishs:false,
+                ishs:true,
                 selectModifyHistory:null,
                 modifyHistory:[{
                     t:'2017.08.07',
@@ -125,7 +120,10 @@
             }
         },
         created:function () {
-            this.setId = this.inData[0].setId;
+            for(let v in this.inData){
+                this.setId = this.inData[v].setId;
+                break;
+            }
         },
         mounted:function () {
             this.$refs.textarea.focus();
@@ -150,10 +148,15 @@
                 };
             },
             inData:function () {
-                let a = [];
+                let b = {};
+                setTimeout(()=>{
+                    document.getElementById('chat-function-banner').scrollTop = document.getElementById('chat-function-banner').scrollHeight;
+                },10);
+                if(ln.chat.change);
+                console.log(ln.chat.chatData)
                 for(let k in ln.chat.chatData){
                     let chatObjectList ={};
-                    ln.chat.chatData[k].data.chatObjectList.forEach((v)=>{
+                    ln.chat.chatData[k].chatObjectList.forEach((v)=>{
                         switch (v.key){
                             case 'department' :
                                 chatObjectList['department'] = v.val;
@@ -166,26 +169,35 @@
                                 break;
                         }
                     });
-                    a.push({
+                    b[ln.chat.chatData[k].chatFlag] = {
                         chatObjectList,
-                        rightTable:ln.chat.chatData[k].data.rightTable,
-                        title:ln.chat.chatData[k].data.title,
-                        chatRcord:ln.chat.chatData[k].data.chatRcord,
-                        modifyRcord:ln.chat.chatData[k].data.modifyRcord,
+                        rightTable:ln.chat.chatData[k].rightTable,
+                        title:ln.chat.chatData[k].title,
+                        chatRcord:ln.chat.chatData[k].chatRcord,
+                        modifyRcord:ln.chat.chatData[k].modifyRcord,
                         setId:k,
-                    });
+                    };
                 };
-                console.log(a)
-                return a;
+                return b;
             },
             chatIng:function () {
-                return ln.chat.chatData[this.setId].data.chatRcord.list.reverse();
+                if(ln.chat.change);
+                return [...ln.chat.chatData[this.setId].chatRcord.list];
+            },
+            kfIng:function () {
+                return this.inData[this.setId].chatObjectList;
+            },
+            rightTableDown:function () {
+                return ln.chat.chatData[this.setId].rightTableDown;
+            },
+            rightTableUp:function () {
+                return ln.chat.chatData[this.setId].rightTableUp;
             }
 
         },
         methods:{
             sendData:function () {
-                let ids = this.setId.split('=');
+                let ids = this.setId.split('-');
                 this.$ajax({
                     method: 'post',
                     url: '/api/send',
@@ -200,7 +212,7 @@
                     },
                 })
                     .then((response) => {
-                        console.log(response)
+//                        console.log(response)
                     })
                     .catch((error) => {
                             console.log(error);
@@ -209,6 +221,9 @@
             },
             setChat:function (v) {
                 this.setId = v.setId;
+                setTimeout(()=>{
+                    document.getElementById('chat-function-banner').scrollTop = document.getElementById('chat-function-banner').scrollHeight;
+                },10);
             },
             initDis(t) {
                 if(t){
@@ -329,7 +344,7 @@
     .demand-describe{
         flex: 1;
         overflow-x: hidden;
-        height: 80px;
+        /*max-height: 80px;*/
         >div{
            >div{
                display:flex;
@@ -341,6 +356,10 @@
                }
                >div:last-of-type{
                    color: #605E7C ;
+                   width: 120px;
+                   white-space: nowrap;
+                   text-overflow: ellipsis;
+                   overflow: hidden;
                }
            }
         }

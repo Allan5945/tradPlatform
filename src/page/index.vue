@@ -127,7 +127,7 @@
         },
         mounted: function () {
             if(!('$chatSocket' in this)){
-                Vue.prototype.$chatSocket = new ChatSocket(`ws://localhost:8088/socket?name=${this.role.id}`);
+                Vue.prototype.$chatSocket = new ChatSocket(`ws://localhost:80/socket?name=${this.role.id}`);
             }
 
 //            this.$chatSocket.init(`ws://localhost/socket?name=${this.role.id}`);
