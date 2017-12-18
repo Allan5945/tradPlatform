@@ -79,7 +79,7 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['航线需求','运力投放'],
+                type: {},
                 progressState: {
                 },
                 demandId:null,
@@ -89,6 +89,12 @@
                 },
                 detailsData: null,
                 superUser:{
+                    typeList: {
+                        "0":'航线需求',
+                        "1":'运力投放',
+                        "3":'委托航线需求',
+                        "4":'委托运力投放',
+                    },
                     state: ['需求审核','需求发布','意向征集','订单确认','订单完成','佣金支付','交易完成','关闭'],
                     progressState: {
                         '3': '关闭',
@@ -99,7 +105,7 @@
                 },
                 getParams:{     //请求参数
                     page: 1,
-                    pageNo : 5,
+                    pageNo : 10,
                     demandType : '' ,
                     releaseTime: '',
                     demandProgress : ''
@@ -163,6 +169,9 @@
                         that.detailsData.list.map(item=>{
                             if(that.superUser.progressState[item.demandProgress]){
                                 that.progressState[item.demandProgress] = that.superUser.progressState[item.demandProgress];
+                            }
+                            if(that.superUser.typeList[item.demandType]){
+                                that.type[item.demandType] = that.superUser.typeList[item.demandType];
                             }
                         })
                     }else{
