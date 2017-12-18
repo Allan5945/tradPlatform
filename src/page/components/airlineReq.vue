@@ -346,14 +346,14 @@
                     <input type="radio" class="magic-radio" name="open-type" id="alRopenOnly" @change="publicwayFn3"/><label for="alRopenOnly" class="input-label">定向发布</label>
                 </div>
                 <div class="choose-input" v-show="directionPublicShow" style="position: relative;justify-content: flex-start;">
-                    <div class="little-label-wrapper">
+                    <div class="little-label-wrapper" @click="labelWrapperClick">
                         <span class="little-label" v-show="directionPublicCityShow" v-for="(item,index) in directionPublicCity">
                         {{item}}
-                        <span class="little-label-close" @click="littleLabelClose(index)">&#xe62c;</span>
+                        <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
                     </span>
                     </div>
                     <span class="hover-show">...</span>
-                    <input class="input-mes-a" type="text" v-model="fourthArea" @focus="airportFn4" >
+                    <input class="input-mes-a" type="text" @focus="airportFn4" >
                     <airportS class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airportS>
                 </div>
             </div>
@@ -781,7 +781,8 @@
                 this.isSearch4 = false;
                 this.fourthArea = data.name;
                 this.qyCode4 = data.code;
-
+                this.directionPublicCity.push(data.name);
+                this.directionPublicCityShow = true;
             },
             // 选择意向区域或意向机场 0为区域，1为机场
             space1Fn: function (item) {
@@ -877,6 +878,10 @@
             // 点击删除小标签
             littleLabelClose: function (index) {
                 this.directionPublicCity.splice(index,1);
+            },
+            labelWrapperClick: function () {
+                this.isSearch4 = true;
+                this.directionPublicCityShow = false;
             },
             // 日历
             getDate1: function(d){//获取组件返回的日期
@@ -1120,6 +1125,9 @@
         position: absolute;
         top: 0;
         display: flex;
+        max-width: 220px;
+        overflow: hidden;
+        z-index: 3;
     }
     .little-label{
         display: flex;
@@ -1151,7 +1159,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 30px;
+        width: 20px;
         height: 23px;
         border-radius: 20px;
         color: $icon-color;
