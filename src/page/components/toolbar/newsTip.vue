@@ -12,8 +12,7 @@
     export default {
         methods:{
             initDis(){
-                localCommunication.chat.shut = true;
-                localCommunication.chat.narrow = true;
+                localCommunication.$emit('initChat');
             }
         }
     }
