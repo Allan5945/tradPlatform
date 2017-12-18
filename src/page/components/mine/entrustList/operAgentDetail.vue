@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper" @click.self="closeDetail">
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
@@ -175,7 +175,6 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                       }else if(this.detailData.demandprogress == '8'){
                           this.isTest = !this.isTest;
                           this.isAccept =false;
-
                       }
                 })
                 .catch((error) => {
@@ -194,6 +193,15 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 </script>
 
 <style lang="scss" scoped>
+    .wrapper{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 11;
+    }
     .detail-wrapper{
         position:absolute;
         top:0;

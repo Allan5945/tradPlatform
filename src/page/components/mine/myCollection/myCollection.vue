@@ -54,7 +54,9 @@
                 </div>
             </div>
         </div>
-        <collectDetail v-if="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
+        <transition name="slidex-fade">
+            <collectDetail v-if="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
+        </transition>
     </div>
 </template>
 <script>

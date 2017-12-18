@@ -14,29 +14,29 @@
                     </div>
                 </div>
             </header>
-            <transForm @closeForm="closeForm" v-if="transShow"></transForm>
-            <!-- <airlineReq></airlineReq> -->
+            <transForm @closeForm="closeForm" v-show="showType == '0' "></transForm>
+            <AirlineForm @closeForm="closeForm" v-show="showType == '1'"></AirlineForm>
         </div>
     </div>
 </template>
 <script>
     import transForm from './sonTransForm.vue'
     /*import transForm from './../transportForm.vue'*/
-    import airlineReq from './../../airlineReq.vue'
+    import AirlineForm from './sonAirlineForm.vue'
     export default {
         data() {
             return {
                 showBox: false,
                 isSel: false,
-                transShow:true,
-                showType:'',
-                myShow:[1,2],
+                showType:'0',
+                myShow:[0,1],
                 msg:'选择需求类型',
-                needType:['航线需求','运力投放'],
+                needType:['运力投放','航线需求'],
             }
         },
         methods: {
             getNeed: function(i){
+                this.showType = this.myShow[i];
                 this.msg = this.needType[i];
                 this.isSel = true;
             },
@@ -46,7 +46,7 @@
         },
         components: {
             transForm,
-            airlineReq
+            AirlineForm
         }
     }
 </script>

@@ -392,12 +392,13 @@
                 },
                 params: this.demandData
             }) .then((response) => {
-                    //console.log(response.opResult);
+                    if(response.opResult == "0"){
+                         this.$emit("closeForm");
+                    }
             }) .catch((error) => {
                     console.log(error);
                 });
 
-                this.$emit("closeForm");
             }
         },
         computed:{

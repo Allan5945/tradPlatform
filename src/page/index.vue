@@ -12,6 +12,7 @@
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
         <newsTip></newsTip>
+        <!-- <timeQuery></timeQuery> -->
 
     </div>
 </template>
@@ -30,6 +31,7 @@
     import infPanel from './components/independenceComponents/infPanel.vue'
     import transIndex from './components/trans_detail/transIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
+    import timeQuery from './components/timeQuery/timeIndex.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
     import newsTip from './components/toolbar/newsTip.vue';
@@ -127,7 +129,7 @@
             if(!('$chatSocket' in this)){
                 Vue.prototype.$chatSocket = new ChatSocket(`ws://localhost:8088/socket?name=${this.role.id}`);
             }
-            
+
 //            this.$chatSocket.init(`ws://localhost/socket?name=${this.role.id}`);
             this.$ajax({
                 method: 'post',
@@ -237,7 +239,8 @@
             transIndex,
             infPanel,
             routeNetwork,
-            timelyCommunication
+            timelyCommunication,
+            timeQuery
         }
     }
 </script>

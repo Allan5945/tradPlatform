@@ -596,7 +596,7 @@
                     this.warn4Show = true;
                     return
                 }*/
-                //this.sendData = this.getIntentData;
+                this.sendData = this.getIntentData;
                 this.sendData.id=this.responseId;
                  console.log(this.sendData.responseId)
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
