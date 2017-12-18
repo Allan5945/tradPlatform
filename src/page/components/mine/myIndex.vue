@@ -54,7 +54,7 @@ import loader from "$src/static/img/svg/loading-oval.svg"
                     u: '/index/userCenter/myCollection'
                 }, {
                     n: "公司账户",
-                    u: '/index/userCenter'
+                    u: '/index/userCenter/CompanyAccount'
                 }
                 ],
                 activeIndex: 0,

@@ -1061,6 +1061,8 @@
         .close-icon {
             position: absolute;
             right: 12px;
+            top: 50%;
+            margin-top: -11px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1068,6 +1070,7 @@
             height: 22px;
             border: 1px solid gray;
             border-radius: 100%;
+            cursor: pointer;
         }
     }
 

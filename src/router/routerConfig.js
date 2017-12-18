@@ -22,7 +22,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         // 我的收藏
         const myCollection = resolve => require(['./../page/components/mine/myCollection/myCollection.vue'], resolve);
         // 公司账户
-        // const companyAccount = resolve => require(['...'], resolve);
+        const companyAccount = resolve => require(['./../page/components/mine/companyAccount/myCompanyAccountList.vue'], resolve);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -63,6 +63,10 @@ const router = new VueRouter({
                         {
                             path: 'myOrder',
                             component: myOrder
+                        },
+                        {
+                            path: 'companyAccount',
+                            component: companyAccount
                         }
                     ]
                 }

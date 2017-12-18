@@ -1,6 +1,6 @@
 <template>
-    <div class="container" id="airlineReq">
-        <div class="bg-color must">
+    <div class="container" id="airlineReq" @click.self="closeAll">
+        <div class="bg-color must" @click.self="closeAll">
             <div class="right item-child">
                 <div style="display: flex;">
                     <span>联系人<span class="warn"> *</span>　</span>
@@ -18,7 +18,7 @@
         </div>
         <div class="choose">
             <div class="items bg-color">
-                <div class="first">
+                <div class="first" @click.self="closeAll">
                     <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1" @li-click="getArea1"></airAreaSearch>
                     <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow2" @li-click="getArea2"></airAreaSearch>
                     <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow3" @li-click="getArea3"></airAreaSearch>
@@ -31,7 +31,7 @@
                             </ul>
                         </div>
                         <div class="bottom">
-                            <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @focus="airportFn1" @blur="airportBlurFn1">
+                            <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @focus="airportFn1">
                             <airportS class="aisx" v-on:resData="resData1" :searchText="firArea" v-show="isSearch1"></airportS>
                         </div>
                         <div class="warn" v-show="warn3Show">*始发地不能为空</div>
@@ -49,7 +49,7 @@
                             </ul>
                         </div>
                         <div class="bottom">
-                            <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @focus="airportFn2" @blur="airportBlurFn2">
+                            <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @focus="airportFn2" >
                             <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
                         </div>
                     </div>
@@ -66,12 +66,12 @@
                             </ul>
                         </div>
                         <div class="bottom">
-                            <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @focus="airportFn3" @blur="airportBlurFn3" >
+                            <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @focus="airportFn3" >
                             <airportS class="aisx" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
                         </div>
                     </div>
                 </div>
-                <div class="second" v-show="secondShow">
+                <div class="second" v-show="secondShow" @click.self="closeAll">
                     <div class="start item" v-show="second1Show">
                         <div class="sec-accept">
                             <div class="top">是否接受临近机场</div>
@@ -200,7 +200,7 @@
                     </div>
                 </div>
             </div>
-            <div class="third items bg-color">
+            <div class="third items bg-color" @click.self="closeAll">
                 <div class="third-a item">
                     <div class="right item-child">
                         <span class="margin-right">拟开时间</span>
@@ -303,7 +303,7 @@
                     </div>
                 </div>
             </div>
-            <div class="fourth items bg-color">
+            <div class="fourth items bg-color" @click.self="closeAll">
                 <div class="top item-child">
                     <span class="margin-right">其他说明</span>　
                     <div class="choose-input">
@@ -335,21 +335,29 @@
                     </div>
                 </div>
             </div>
-            <div class="fifth">
+            <div class="fifth" @click.self="closeAll">
                 <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="alRopenAll" checked @change="publicwayStrCode = 0;directionPublicShow = false;"/><label for="alRopenAll" class="input-label">对所有人公开</label>
+                    <input type="radio" class="magic-radio" name="open-type" id="alRopenAll" checked @change="publicwayFn0"/><label for="alRopenAll" class="input-label">对所有人公开</label>
                 </div>
                 <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="alRopenUser" @change="publicwayStrCode = 1;directionPublicShow = false;"/><label for="alRopenUser" class="input-label">对认证用户公开</label>
+                    <input type="radio" class="magic-radio" name="open-type" id="alRopenUser" @change="publicwayFn1"/><label for="alRopenUser" class="input-label">对认证用户公开</label>
                 </div>
                 <div class="vertical-center" style="margin-right: 0;">
-                    <input type="radio" class="magic-radio" name="open-type" id="alRopenOnly" @change="directionPublic"/><label for="alRopenOnly" class="input-label">定向发布</label>
+                    <input type="radio" class="magic-radio" name="open-type" id="alRopenOnly" @change="publicwayFn3"/><label for="alRopenOnly" class="input-label">定向发布</label>
                 </div>
-                <div class="choose-input" v-show="directionPublicShow" style="justify-content: flex-start;">
-                    <span class="little-label" v-for="(item,index) in directionPublicCity">{{item}} <span class="little-label-close" @click="littleLabelClose(index)">&#xe62c;</span></span>
+                <div class="choose-input" v-show="directionPublicShow" style="position: relative;justify-content: flex-start;">
+                    <div class="little-label-wrapper" @click="labelWrapperClick">
+                        <span class="little-label" v-show="directionPublicCityShow" v-for="(item,index) in directionPublicCity">
+                        {{item}}
+                        <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
+                    </span>
+                    </div>
+                    <span class="hover-show">...</span>
+                    <input class="input-mes-a" type="text" @focus="airportFn4" >
+                    <airportS class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airportS>
                 </div>
             </div>
-            <div class="sixth">
+            <div class="sixth" @click.self="closeAll">
                 <!--<button class="btn-a btn-blue">委托代理</button>-->
                 <button class="btn-b btn-blue" @click="submitData">确认发布</button>
                 <button class="btn-c btn-cancel" @click="closeThis">取消</button>
@@ -420,7 +428,9 @@
                 arrvAcceptnearairport: 1,//到达地是否接受临近机场（0：接受，1：不接受）
                 airTypeShow: false,
                 directionPublicShow: false,//点击定向发布显示
+                directionPublicCityShow: false, // 定向发布小标签那一行
                 directionPublicCity: ['北京','上海','杭州'],
+                fourthArea: '', //“定向发布”input输入的信息
                 /*机场查询*/
                 qyCode1: "", //始发点机场三字码
                 qyCode2: "", //经停地机场三字码
@@ -429,6 +439,7 @@
                 isSearch1: false,//机场搜索是否显示
                 isSearch2: false,
                 isSearch3: false,
+                isSearch4: false,
                 isSearchCode1: -1, //选择区域或机场 0为意向区域，1为意向机场
                 isSearchCode2: -1,
                 isSearchCode3: -1,
@@ -474,13 +485,13 @@
                 timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','按人头']
+                subsidyList: ['保底','定补','按人头'],
             }
         },
         components: {
             airAreaSearch,
             airportS,
-            calendar
+            calendar,
         },
         watch: {
             typeChoose: function () {
@@ -626,7 +637,16 @@
                 this.schedule = false;
                 this.airTypeShow = false; //拟飞机型下拉
                 this.subsidy = false;
-
+                this.airAreaSearchShow1 = false; // 区域搜索组件
+                this.airAreaSearchShow2 = false;
+                this.airAreaSearchShow3 = false;
+                this.isSearch1 = false;          // 机场搜索组件
+                this.isSearch2 = false;
+                this.isSearch3 = false;
+                this.isSearch4 = false;
+                this.directionPublicCityShow = true;  //定向发布小标签那一行
+                this.calendarShow1 = false;      //日历组件
+                this.calendarShow2 = false;
             },
             // 电话号码验证
             verifyPhon: function () {
@@ -712,25 +732,17 @@
 
                 }
             },
-            // 意向机场/意向区域，input失去焦点
-            airportBlurFn1: function () {
-                this.space1 = false;
-            },
             airportFn2: function () {
                 if(this.isSearchCode2 == 1){
                     this.isSearch1 = false;
                     this.isSearch2 = true;
                     this.isSearch3 = false;
-
                 }
                 if(this.isSearchCode2 == 0){
                     this.airAreaSearchShow1 = false;
                     this.airAreaSearchShow2 = true;
                     this.airAreaSearchShow3 = false;
                 }
-            },
-            airportBlurFn2: function () {
-                this.space2 = false;
             },
             airportFn3: function () {
                 if(this.isSearchCode3 == 1){
@@ -744,8 +756,9 @@
                     this.airAreaSearchShow3 = true;
                 }
             },
-            airportBlurFn3: function () {
-                this.space3 = false;
+            airportFn4: function () {
+                this.isSearch4 = true;
+                this.directionPublicCityShow = false;
             },
             // 选中意向机场
             resData1: function (data) {
@@ -763,6 +776,13 @@
                 this.isSearch3 = false;
                 this.thirdArea = data.name;
                 this.qyCode3 = data.code;
+            },
+            resData4: function (data) {
+                this.isSearch4 = false;
+                this.fourthArea = data.name;
+                this.qyCode4 = data.code;
+                this.directionPublicCity.push(data.name);
+                this.directionPublicCityShow = true;
             },
             // 选择意向区域或意向机场 0为区域，1为机场
             space1Fn: function (item) {
@@ -859,6 +879,10 @@
             littleLabelClose: function (index) {
                 this.directionPublicCity.splice(index,1);
             },
+            labelWrapperClick: function () {
+                this.isSearch4 = true;
+                this.directionPublicCityShow = false;
+            },
             // 日历
             getDate1: function(d){//获取组件返回的日期
                 this.calendarInitDay1 = d.split('-').join('.');
@@ -897,10 +921,19 @@
             kemiantan: function () {
                 console.info('label')
             },
-            //点击定向发布
-            directionPublic: function () {
+            //发布方式
+            publicwayFn0: function () {
+                this.publicwayStrCode = 0;
+                this.directionPublicShow = false;
+            },
+            publicwayFn1: function () {
+                this.publicwayStrCode = 1;
+                this.directionPublicShow = false;
+            },
+            publicwayFn3: function () {
                 this.directionPublicShow = true;
-                this.publicwayStrCode = 2;
+                this.publicwayStrCode = 3;
+                this.directionPublicCityShow = true;
             },
             // 起止时间显示到上方的框内
             startTime1Fn: function (item) {
@@ -1088,6 +1121,14 @@
         border-bottom: 1px solid $border-color;
     }
     /*横线上的小标签*/
+    .little-label-wrapper {
+        position: absolute;
+        top: 0;
+        display: flex;
+        max-width: 220px;
+        overflow: hidden;
+        z-index: 3;
+    }
     .little-label{
         display: flex;
         align-items: center;
@@ -1109,6 +1150,19 @@
         font-size: 10px;
         border-radius: 100%;
         background: white;
+        cursor: pointer;
+    }
+    .hover-show {
+        position: absolute;
+        top: -3px;
+        right: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 23px;
+        border-radius: 20px;
+        color: $icon-color;
         cursor: pointer;
     }
     /***********/

@@ -55,10 +55,10 @@
             </div>
         </div>
         <transition-group name="slidex-fade">
-            <myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>
+            <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
             <myPublish0 v-show="myPublishShow0" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
             <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1" :key="3"></myPublishNeed1>
-            <myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>
+            <!--<myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>-->
             <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
             <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
         </transition-group>
@@ -68,11 +68,11 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
-    import myPublish from './myPublishNeed.vue' // 运力需求详情
+//    import myPublish from './myPublishNeed.vue' // 运力需求详情
     import myPublish0 from './myPublishNeed0.vue' // 航线需求详情
     import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
 
-    import myPublishAirline from './myPublishAirline.vue' //航线需求详情
+//    import myPublishAirline from './myPublishAirline.vue' //航线需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
 
@@ -284,7 +284,7 @@
                     // 运营托管详情
                     this.myPublishTransportEntrustShow = true;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = false; // 此组件不要了
+//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
 //                    this.myPublishAirlineShow = false;
@@ -292,7 +292,7 @@
                     // 航线委托详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = true;
-                    this.myPublishShow = false; // 此组件不要了
+//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
 //                    this.myPublishAirlineShow = false;
@@ -300,7 +300,7 @@
                     //  运力需求详情（航司发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = false; // 此组件不要了
+//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = true;
 //                    this.myPublishAirlineShow = false;
@@ -308,19 +308,19 @@
                     //  航线需求详情（机场发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-                    this.myPublishShow = false; // 此组件不要了
+//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = true;
                     this.myPublishShow1 = false;
 //                    this.myPublishAirlineShow = true;
                 }
 
             },
-            // 点击关闭:我的发布-运力需求详情
+           /* // 点击关闭:我的发布-运力需求详情
             closeMyPublishShowFn: function () {
                 this.myPublishShow = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
-            },
+            },*/
             // 点击关闭:我的发布-航线详情
             closeMyPublishShowFn0: function () {
                 this.myPublishShow0 = false;
@@ -333,12 +333,12 @@
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
             },
-            // 点击关闭:我的发布-行线需求详情
+            /*// 点击关闭:我的发布-行线需求详情
             closeMyPublishAirlineFn: function () {
-                this.myPublishAirlineShow = false;
+//                this.myPublishAirlineShow = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
-            },
+            },*/
             // 点击关闭:我的发布-发布的运力托管
             closeMyPublishTransportEntrustFn: function () {
                 this.myPublishTransportEntrustShow = false;
@@ -354,10 +354,10 @@
         },
         components: {
             stateList,
-            myPublish,
+//            myPublish,
             myPublish0,
             myPublishNeed1,
-            myPublishAirline,
+//            myPublishAirline,
             myPublishTransportEntrust,
             myPublishAirLineEntrust
         }

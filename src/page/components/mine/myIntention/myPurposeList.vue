@@ -153,6 +153,7 @@
                     params: this.sendData
                 }) .then((response) => {
                     if(response.data.opResult === '0') {
+                        console.info('ajax')
                         response.data.list.list.forEach((val) => {
                             if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
                                 this.myData0.push(val);
@@ -161,7 +162,7 @@
                                 this.myData1.push(val);
                             }
                         });
-                        this.judgeRole();
+//                        this.judgeRole();
                     }else {
                         alert('无法请求到数据，错误代码：' + response.data.opResult)
                     }
