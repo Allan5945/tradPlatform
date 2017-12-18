@@ -258,7 +258,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.detailData.id,
+                    id:this.detailData.id
                 }
                 })
                 .then((response) => {

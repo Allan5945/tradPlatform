@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-need" v-show="orderShow">
+            <div class="sub-need" v-show="orderShow" v-if="!isUser">
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
@@ -156,15 +156,14 @@ import * as vx from 'vuex';
           this.$emit("close");
         },
         canceldele(){
-          /*this.$ajax({
+          this.$ajax({
                 method: 'post',
-                url: '/responseWeituoDaili',
+                url: '/closeDemandById',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    employeeId :this.role.id,
-                    id:""
+                    id:this.demandId
                   }
                 })
                 .then((response) => {
@@ -175,7 +174,7 @@ import * as vx from 'vuex';
                 .catch((error) => {
                         console.log(error);
                     }
-                );*/
+                );
         },
         refuse(){
 
