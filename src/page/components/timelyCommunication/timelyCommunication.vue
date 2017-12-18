@@ -2,17 +2,10 @@
     <div class="timely-box popup" :style="renTimelyBoxXY" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
     @mousemove="transitionDrop">
         <div class="timely-nav">
-            <div class="timely-nav-checked information">
-                <p>成都双流运力</p>
-                <span>张三</span>
-            </div>
-            <div>
-                <p>成都双流运力</p>
-                <span>张三</span>
-            </div>
-            <div>
-                <p>成都双流运力</p>
-                <span>张三</span>
+            <div class="information" :class="{'timely-nav-checked':(setId == key.setId)}" v-for="(key,i) in inData"
+            @click="setChat(key)">
+                <p>{{key.title}}</p>
+                <span>{{key.chatObjectList.name}}</span>
             </div>
         </div>
         <div class="timely-content">
@@ -27,75 +20,23 @@
                 <div class="chat-function">
                     <div class="chat-function-banner">
                         <div class="scroll">
-                            <div class="others-news">
-                                <div class="head-portrait">
+                            <div :class="{'modify-the-information':(val.textType == '1'),'others-news':(val.textType == '0' && val.fromNameId == role.id),'oneself-news':(val.textType == '0' && val.fromNameId != role.id)}"
+                                 v-for="(val,index) in chatIng">
+                                <div class="head-portrait" v-if="(val.textType == '0')">
                                     <img src="./../../../static/img/test/145.png"/>
                                 </div>
-                                <div class="say-words">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
+                                <div class="say-words" v-if="(val.textType == '0')">
+                                    <p>{{val.date}}</p>
+                                    <!--<p>{{val.date.split(' ')[0]}}<span>{{val.date.split(' ')[1]}}</span></p>-->
+                                    <div class="popup">{{val.text}}</div>
                                 </div>
+                               <span v-if="!(val.textType == '0')">{{val.date}}<span></span>{{val.text}}</span>
                             </div>
-                            <div class="oneself-news">
-                                <div class="head-portrait">
-                                    <img src="./../../../static/img/test/145.png"/>
-                                </div>
-                                <div class="say-words say-words-oneself">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
-                                </div>
-                            </div>
-                            <div class="oneself-news">
-                                <div class="head-portrait">
-                                    <img src="./../../../static/img/test/145.png"/>
-                                </div>
-                                <div class="say-words say-words-oneself">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
-                                </div>
-                            </div>
-                            <div class="oneself-news">
-                                <div class="head-portrait">
-                                    <img src="./../../../static/img/test/145.png"/>
-                                </div>
-                                <div class="say-words say-words-oneself">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
-                                </div>
-                            </div>
-                            <div class="oneself-news">
-                                <div class="head-portrait">
-                                    <img src="./../../../static/img/test/145.png"/>
-                                </div>
-                                <div class="say-words say-words-oneself">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
-                                </div>
-                            </div>
-                            <div class="oneself-news">
-                                <div class="head-portrait">
-                                    <img src="./../../../static/img/test/145.png"/>
-                                </div>
-                                <div class="say-words say-words-oneself">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
-                                </div>
-                            </div>
-                            <div class="oneself-news">
-                                <div class="head-portrait">
-                                    <img src="./../../../static/img/test/145.png"/>
-                                </div>
-                                <div class="say-words say-words-oneself">
-                                    <p>2017.08.21<span>12:07</span></p>
-                                    <div class="popup">您好，汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪汪</div>
-                                </div>
-                            </div>
-                            <div class="modify-the-information">2017.08.21<span>12:07</span>xxxx 修改了信息</div>
                         </div>
                     </div>
                     <div class="chat-function-input">
-                        <textarea name="a" class="scroll" ref="textarea"></textarea>
-                        <div class="btn btn-b user-select" id="req-bth">发送</div>
+                        <textarea name="a" class="scroll" ref="textarea" v-model="textData"></textarea>
+                        <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
                     </div>
                 </div>
                 <div class="personal">
@@ -156,7 +97,9 @@
     </div>
 </template>
 <script>
-    import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
+    import * as vx from 'vuex';
+    import ln from '$src/public/js/tabulationBoxTrigger.js';
+
     export default {
         data(){
             return{
@@ -171,13 +114,18 @@
                     x:10,
                     y:10
                 },
+                textData:"",
                 dropData:{
                     mouseCoordinate:{
                         x:0,
                         y:0
                     }
-                }
+                },
+                setId:null
             }
+        },
+        created:function () {
+            this.setId = this.inData[0].setId;
         },
         mounted:function () {
             this.$refs.textarea.focus();
@@ -189,23 +137,85 @@
             this.timelyBoxXY.y = top;
         },
         computed:{
+            ...vx.mapGetters([
+                'role'
+            ]),
             renTimelyBoxXY:function () {
                 return `left:${this.timelyBoxXY.x}px;top:${this.timelyBoxXY.y}px`;
             },
             dis:function () {  // 计算聊天框是显示还是关闭
                 return {
-                    shut:localCommunication.chat.shut,
-                    narrow:localCommunication.chat.narrow
+                    shut:ln.chat.shut,
+                    narrow:ln.chat.narrow
                 };
+            },
+            inData:function () {
+                let a = [];
+                for(let k in ln.chat.chatData){
+                    let chatObjectList ={};
+                    ln.chat.chatData[k].data.chatObjectList.forEach((v)=>{
+                        switch (v.key){
+                            case 'department' :
+                                chatObjectList['department'] = v.val;
+                                break;
+                            case 'company' :
+                                chatObjectList['company'] = v.val;
+                                break;
+                            case 'name' :
+                                chatObjectList['name'] = v.val;
+                                break;
+                        }
+                    });
+                    a.push({
+                        chatObjectList,
+                        rightTable:ln.chat.chatData[k].data.rightTable,
+                        title:ln.chat.chatData[k].data.title,
+                        chatRcord:ln.chat.chatData[k].data.chatRcord,
+                        modifyRcord:ln.chat.chatData[k].data.modifyRcord,
+                        setId:k,
+                    });
+                };
+                console.log(a)
+                return a;
+            },
+            chatIng:function () {
+                return ln.chat.chatData[this.setId].data.chatRcord.list.reverse();
             }
+
         },
         methods:{
+            sendData:function () {
+                let ids = this.setId.split('=');
+                this.$ajax({
+                    method: 'post',
+                    url: '/api/send',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params:{
+                        fromNameId:ids[0],
+                        toNameId:ids[1],
+                        demandId:ids[2],
+                        text:this.textData
+                    },
+                })
+                    .then((response) => {
+                        console.log(response)
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
+            },
+            setChat:function (v) {
+                this.setId = v.setId;
+            },
             initDis(t) {
                 if(t){
-                    localCommunication.chat.shut = false;
-                    localCommunication.chat.narrow = true;
+                    ln.chat.shut = false;
+                    ln.chat.narrow = true;
                 }else{
-                    localCommunication.chat.narrow = false;
+                    ln.chat.narrow = false;
                 }
             },
             viewHsy:function (t,i) {
@@ -317,10 +327,8 @@
 
 
     .demand-describe{
-        /*padding: 15px 0 15px 15px;*/
         flex: 1;
         overflow-x: hidden;
-        /*overflow-y: scroll;*/
         height: 80px;
         >div{
            >div{
@@ -436,21 +444,23 @@
         }
     }
     .modify-the-information{
-        height: 30px;
-        display: inline-flex;
-        flex-flow: row nowrap;
-        justify-content: center;
-        align-items: center;
-        color: rgba(96, 94, 124, 0.7);
-        font-size: 1.3rem;
-        background-color: #ececec;
-        margin-top: 30px;
-        padding: 0 10px;
-        width: auto;
-        border-radius: 5px;
-        padding-top: 0px !important;
         >span{
-            margin:0 10px;
+            height: 30px;
+            display: inline-flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            color: rgba(96, 94, 124, 0.7);
+            font-size: 1.3rem;
+            background-color: #ececec;
+            margin-top: 30px;
+            padding: 0 10px;
+            width: auto;
+            border-radius: 5px;
+            padding-top: 0px !important;
+            >span{
+                margin:0 10px;
+            }
         }
     }
     .head-portrait {
@@ -498,11 +508,13 @@
     }
     .others-news {
         display: flex;
+        align-self:flex-start;
     }
 
     .oneself-news {
         display: flex;
         flex-flow: row-reverse nowrap;
+        align-self:flex-end;
     }
     .chat-function-banner {
         height: 430px;
@@ -550,6 +562,10 @@
     .timely-nav {
         width: 160px;
         background-color: #3c78ff;
+        cursor: pointer;
+        &:hover{
+            background-color: #3c78ff;
+        }
         > div {
             height: 40px;
             display: flex;

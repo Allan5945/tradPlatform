@@ -361,7 +361,7 @@
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
-                    myCompany.push(item.icao);
+                    myCompany.push(item.iata);
                     myCompany.push(item.id);
                     this.airCompanyData.push(myCompany);
                 })

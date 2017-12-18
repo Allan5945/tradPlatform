@@ -2,7 +2,7 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
+                <div class="top-til">需求详情<span class="iconfont" @click="closeAdmin">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime}}</span>
@@ -65,7 +65,7 @@
                     <div>收到的意向</div>
                     <div>已有<span>{{this.intentionCount }}</span>位用户发起意向</div>
                 </div>
-                <div class="intent-form" v-if="this.isSign">
+                <div class="intent-form">
                     <div>
                         <div>收到时间
                           <span class="iconfont icon-up active">&#xe605;</span>
@@ -179,10 +179,11 @@
 
             </div>
             <footer>
-                <div class="foot-tips" v-if="!this.isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
-                    <div class="deal-btn" v-if="!this.isSign" @click="toDeal">申请签约</div>
-                    <div class="col-btn" @click="closeNeed">结束需求</div>
+                    <!-- <div class="col-btn" @click="closeNeed">结束需求</div> -->
+                     <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
+                    <div class="col-btn"  v-else>已收藏</div>
                 </div>
             </footer>
         </div>
@@ -209,8 +210,9 @@
              planData:{},
              selectData:{},
              intentionCount:0,
+             demandId:'',
              responseId:'',
-             isSign:false
+             isCollect:true
          }
      },
      methods:{
@@ -222,8 +224,8 @@
                  this.text = "查看详情";
              }
          },
-         closeIntent:function(){
-            this.$emit('closeIntent');
+         closeAdmin:function(){
+            this.$emit('closeAdmin');
          },
          toSelect:function(val,index){
             tabulationBoxTrigger.$emit('sendTable',val);
@@ -250,7 +252,31 @@
                     }
                 );
          },
-         closeNeed:function(){
+         collect:function(){
+             this.$ajax({
+                method: 'post',
+                url: '/addCollect',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandIds: this.demandId
+                }
+                })
+                .then((response) => {
+                  if(response.data.opResult == "0"){
+                      this.isCollect = false;
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+         },
+         haveInvent:function(){
+             this.$emit("formShow");
+         },
+        /* closeNeed:function(){
                this.$ajax({
                 method: 'post',
                 url: '/closeDemandById',
@@ -271,7 +297,7 @@
                         console.log(error);
                     }
                 );
-         },
+         },*/
          cancelSel:function(val){
               this.selectData = val;
               this.selectData.releaseselected = '1';
@@ -302,8 +328,8 @@
             this.dialogShow =true;
          }
 
-
      },
+
       computed: {
             ...vx.mapGetters([
                 'role'
@@ -311,9 +337,9 @@
         },
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-
+            this.demandId = val.data.id;
             console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && (this.role.role == 0)){
+            if(val.data.demandtype == 1 && (this.role.role == 2)){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -321,7 +347,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: this.demandId
                 }
                 })
                 .then((response) => {
@@ -332,14 +358,21 @@
                     if(this.planData){
                       this.intentListShow = true;
                     }
-                    //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    //是否收藏
+                     if(response.data.isAlreadyCollect == true){
+                        this.isCollect = false;
+                    }else if(response.data.isAlreadyCollect == false){
+                       this.isCollect = true;
+                    }
+
+                        if(response.data.opResult == "0"){
+                           this.$emit("openAdmin");
+                         }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-             this.$emit("openIntent");
             };
         });
 
@@ -629,19 +662,37 @@
             }
 
         }
-    footer{
-        border-top: 1px solid #ccc;
-        position:relative;
-          .foot-tips{
-            color:red;
-            position:absolute;
-            top:-30px;
-            left:40px;
+     footer{
+      border-top: 1px solid #ccc;
+        >div:nth-of-type(1){
+              margin: 0 20px;
+              padding-left:20px;
+              height:40px;
+              color:rgba(96, 94, 124, 0.7);
+              box-sizing:border-box;
           }
           .btn{
               height:40px;
-              margin:20px 0 40px 0;
-              >div{
+              padding-top:50px;
+              >.intent-btn{
+                  width:230px;
+                  height:40px;
+                  line-height:40px;
+                  font-size:1.5rem;
+                  color:#fff;
+                  background-color:#3c78ff;
+                  text-align:center;
+                  border-radius:100px;
+                  margin-right:10px;
+                  cursor:pointer;
+                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  span{
+                    font-size:1.8rem;
+                    margin-right:15px;
+                  }
+              }
+               >.col-btn{
+                  width:80px;
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
@@ -651,19 +702,6 @@
                   border-radius:100px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
-              }
-               .col-btn{
-                  width:120px;
-                  &:hover{
-                    color:#fff;
-                    background-color: #3C78FF;
-                  }
-                }
-              .deal-btn{
-                  width:180px;
-                    color:#fff;
-                    background-color: #3C78FF;
-                    margin-right:10px;
               }
           }
     }

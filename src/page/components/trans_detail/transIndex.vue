@@ -9,6 +9,7 @@
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent"></myintention>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
+       <transAdmin @closeAdmin="adminShow = false" v-show="adminShow" @openAdmin="openAdmin" @formShow="formShow"></transAdmin>
     </div>
 </template>
 
@@ -20,6 +21,7 @@
     import transDialog from './transDialog.vue'
     import respondAirport from './respondAirport.vue'
     import paySuccess  from './paySuccess.vue'
+    import transAdmin  from './transAdmin.vue'
 
     export default {
         data() {
@@ -28,6 +30,7 @@
                 payDialog:false,
                 intentFormShow:false,
                 planShow:false,
+                adminShow:false,
                 respond:false,
                 intentShow:false,
                 detailShow:false,
@@ -39,6 +42,12 @@
             },
             openIntent() {
                 this.intentShow = true;
+                this.detailShow = false;
+                this.respond = false;
+                this.$emit('closeAirline');
+            },
+            openAdmin() {
+                this.adminShow = true;
                 this.$emit('closeAirline');
             },
             closeForm(){
@@ -50,6 +59,7 @@
             responShow(){
                 this.respond = true;
                 this.detailShow = false;
+                this.intentShow = false;
                 this.$emit('closeAirline');
             },
             responClose(){
@@ -66,6 +76,7 @@
             transShow(){
                 this.detailShow = true;
                 this.respond = false;
+                this.intentShow = false;
                 this.$emit('closeAirline');
             },
             closeDialog(){
@@ -90,6 +101,7 @@
             myIntention,
             paySuccess,
             respondAirport,
+            transAdmin
         }
     }
 </script>

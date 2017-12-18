@@ -5,7 +5,7 @@
                 <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
             </div>
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20">
             </div>
             <div class="form-box" style="position:relative;">
                 <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
@@ -78,6 +78,9 @@
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
                     this.isError = true;
                 }else{
+                    this.isError = false;
+                }
+                if(this.phoneNum == ''){
                     this.isError = false;
                 }
             },

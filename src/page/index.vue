@@ -17,6 +17,7 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import * as vx from 'vuex'
     import index from './../page/index.vue'
     import bmap from './components/bmap/bmap.vue'
@@ -34,6 +35,7 @@
     import newsTip from './components/toolbar/newsTip.vue';
 
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
+    import ChatSocket from '$src/page/components/timelyCommunication/communicationConstructor.js';
 
     export default {
         data() {
@@ -64,6 +66,27 @@
                 'close',
                 'initialize'
             ]),
+            initSocket(){
+
+
+
+//                let socket=io.connect(`ws://192.168.10.194:8081/socket?name=${this.role.id}`);
+
+//                socket.emit('login',"898555");
+//                socket.emit('message',"nijiushi");
+
+//                ws.onopen = (e)=> {
+//                    console.log('连接成功');
+////                    this.$chatSocket.init(ws);
+//                };
+//                ws.onmessage = (data)=>{
+//                    console.log(data)
+//                };
+//                ws.onclose = ()=>{
+//                    console.log('关闭连接');
+//                }
+////                ws.close();
+            },
             contactClient(){  // 联系客户
 
             },
@@ -101,46 +124,11 @@
 
         },
         mounted: function () {
-//            let ass = new WebSocket(`ws://localhost/socket?name=${this.role.id}`);
-//            let ws = new WebSocket(`ws://localhost/socket?name=${this.role.id}`);
-//            this.$chatSocket.init(ws);
-//            this.$chatSocket.sss = ass;
-//            console.log(this.$chatSocket)
-//            if('WebSocket' in window){
-//                this.$chatSocket.ws = new WebSocket(`ws://localhost/socket?name=${this.role.id}`);
-//            }else if('MozWebSocket' in window){
-//                this.$chatSocket.ws = new MozWebSocket(`ws://localhost/socket?name=${this.role.id}`);
-//            }else{
-//                alert("not support");
-//            }
-//            this.$chatSocket.ws.onopen = ()=>{
-//                console.log(666666666)
-//            };
-
-
-//            var ws = new WebSocket('ws://192.168.10.194:8081/socket?name=1');
-//            ws.onopen = function(evt) {
-//                console.log("打开连接");
-//            };
-//            ws.onmessage = function(evt) {
-//                console.log( "收到消息: " + evt.data);
-//            };
-//            ws.onclose = function(evt) {
-//                console.log("关闭连接");
-//            };
-
-            var wss = new WebSocket('ws://localhost:8088/socket?name=1');
-            wss.onopen = function(evt) {
-                console.log("打开连接");
-            };
-            wss.onmessage = function(evt) {
-                console.log( "收到消息: " + evt.data);
-            };
-            wss.onclose = function(evt) {
-                console.log("关闭连接");
-            };
-
-
+            if(!('$chatSocket' in this)){
+                Vue.prototype.$chatSocket = new ChatSocket(`ws://localhost:8088/socket?name=${this.role.id}`);
+            }
+            
+//            this.$chatSocket.init(`ws://localhost/socket?name=${this.role.id}`);
             this.$ajax({
                 method: 'post',
                 url: '/airList',

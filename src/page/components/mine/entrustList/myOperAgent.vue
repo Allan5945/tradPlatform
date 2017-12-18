@@ -46,7 +46,7 @@
                         <div class="list-d item">
                           {{getProgress(val.demandProgress)}}
                         </div>
-                        <div class="list-e item">
+                        <div class="list-e item" @click="chat(val)">
                             <span class="icon-item talk-icon">&#xe602;
                                 <span>1</span>
                             </span>
@@ -66,6 +66,8 @@
     import stateList from './../stateList.vue'
     import agentDetail from './operAgentDetail.vue';
     import deleDetail from './operDeleDetail.vue';
+    import ln from './../../../../public/js/tabulationBoxTrigger';
+
     import * as vx from 'vuex';
     export default {
         data() {
@@ -123,6 +125,9 @@
             },
         },
         methods: {
+            chat:function (v) {
+                ln.$emit('addChat',v);
+            },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
