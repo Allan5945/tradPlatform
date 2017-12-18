@@ -114,9 +114,9 @@
             let id = this.detailData.id;
             this.$ajax({
                 method: 'GET',
-                url: '/demandFind',
+                url: '/seeMyOrderDetail',
                 params: {
-                    demandId : id
+                    id : id
                 }
             }).then(res=>{
                 that.metaData = res.data.data;
