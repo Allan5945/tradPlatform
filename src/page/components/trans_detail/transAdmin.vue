@@ -2,7 +2,7 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
+                <div class="top-til">需求详情<span class="iconfont" @click="closeAdmin">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime}}</span>
@@ -224,8 +224,8 @@
                  this.text = "查看详情";
              }
          },
-         closeIntent:function(){
-            this.$emit('closeIntent');
+         closeAdmin:function(){
+            this.$emit('closeAdmin');
          },
          toSelect:function(val,index){
             tabulationBoxTrigger.$emit('sendTable',val);
@@ -364,12 +364,15 @@
                     }else if(response.data.isAlreadyCollect == false){
                        this.isCollect = true;
                     }
+
+                        if(response.data.opResult == "0"){
+                           this.$emit("openAdmin");
+                         }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-             this.$emit("openIntent");
             };
         });
 

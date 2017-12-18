@@ -9,7 +9,7 @@
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent"></myintention>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
-        <transAdmin @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent" @formShow="formShow"></transAdmin>
+       <transAdmin @closeAdmin="adminShow = false" v-show="adminShow" @openAdmin="openAdmin" @formShow="formShow"></transAdmin>
     </div>
 </template>
 
@@ -30,6 +30,7 @@
                 payDialog:false,
                 intentFormShow:false,
                 planShow:false,
+                adminShow:false,
                 respond:false,
                 intentShow:false,
                 detailShow:false,
@@ -43,6 +44,10 @@
                 this.intentShow = true;
                 this.detailShow = false;
                 this.respond = false;
+                this.$emit('closeAirline');
+            },
+            openAdmin() {
+                this.adminShow = true;
                 this.$emit('closeAirline');
             },
             closeForm(){
