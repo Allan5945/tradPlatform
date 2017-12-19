@@ -115,7 +115,7 @@
                     <div class="cancel-btn" @click="canceldele">撤回该托管</div>
                 </div>
             </footer>
-             <footer v-if="!isUser">
+             <footer v-if="!isUser" v-show="isClose">
                 <div class="foot-tips"></div>
                 <div class="btn" v-if="orderShow">
                     <div class="test-btn" @click="order" >订单完成</div>
@@ -144,6 +144,7 @@ import * as vx from 'vuex';
             isUser:true,
             formShow:false,
             showBtn:false,
+            isClose:true,
             detailData:{},
             CpyNm:'',//委托方
             sondetailShow:false,
@@ -221,10 +222,13 @@ import * as vx from 'vuex';
                      //状态处理
                       if(this.detailData.demandprogress == '7'){
                           this.showBtn = true;
-                      }else if(this.detailData.demandprogress == '8'){
-
+                      }else if(this.detailData.demandprogress == '6' ){
+                          this.orderShow = true;
+                          this.sondetailShow = true;
                       }else if(this.detailData.demandprogress == '9'){
                           this.orderShow = true;
+                      }else if(this.detailData.demandprogress == '3'){
+                          this.isClose = false;
                       }
                 })
                 .catch((error) => {

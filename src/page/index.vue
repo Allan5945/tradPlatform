@@ -13,7 +13,6 @@
         <router-view></router-view>
         <newsTip></newsTip>
         <!-- <timeQuery></timeQuery> -->
-
     </div>
 </template>
 

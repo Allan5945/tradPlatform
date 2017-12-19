@@ -2,13 +2,14 @@
     <div class="t-form scroll popup">
         <div class="t-must">
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact">
+                <div class="error" v-show="isError1" style="left:58px;">*请填写联系人</div>
             </div>
             <div class="form-box">
                 <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
+                <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
             </div>
-            <div style="height:20px;width:100%;" v-if="isError"></div>
+            <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
         </div>
         <div class="t-optional">
             <div class="form-box">
@@ -68,11 +69,11 @@
             </div>
             <div class="form-box se-place" >
                 <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" v-on:keyup="openSearch">
-              <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
+              <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
             </div>
             <div class="form-box reset">
                 <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany">
-                <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
+                <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:45px;width:223px;">
                     <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
                     <span>{{item[0]}}</span>
                     <span>{{item[1]}}</span>
@@ -91,7 +92,7 @@
                     <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
                 </div>
                 <input type="text" v-show="dispatch" v-model="dispatchText" v-on:keyup="openSearch1" placeholder=" ">
-                <airportS class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS>
+                <airportS1 class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS1>
                 <div class="history" v-show="dispatch">
                     <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
                 </div>
@@ -152,7 +153,8 @@
                 boxShow1: false,
                 boxShow2: false,
                 isSel: false,
-                isError: false,
+                isError1: false,
+                isError2: false,
                 phoneNum: '',
                 getFlight: 'true',
                 getTime: 'true',
@@ -265,14 +267,20 @@
                 }
                 this.isError = true;
             },*/
+            verifyContact:function(){
+                 if(this.contact){
+                     this.isError1 = false;
+                }
+                this.contact = this.contact.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
+            },
             verifyPhon: function () {
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
-                    this.isError = true;
+                    this.isError2 = true;
                 }else{
-                    this.isError = false;
+                    this.isError2 = false;
                 }
                 if(this.phoneNum == ''){
-                    this.isError = false;
+                    this.isError2 = false;
                 }
             },
             pickTime1: function(i) {
@@ -385,6 +393,13 @@
                 this.airCompanyShow = true;
             },
             confirm:function(){
+                //必填信息验证
+                if(!this.contact){
+                     this.isError1 = true;
+                }
+                if(this.phoneNum == ''){
+                    this.isError2 = true;
+                }
                 let demandData = {};
                     demandData.demandtype = "1";
                     demandData.contact = this.contact;
@@ -418,12 +433,12 @@
                 },
                 params: demandData
             }) .then((response) => {
-
+                if(response.data.opResult == "0"){
+                   this.$emit("closeForm");
+                  }
             }) .catch((error) => {
                     console.log(error);
                 });
-
-                this.$emit("closeForm");
             }
         },
         computed:{

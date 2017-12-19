@@ -5,13 +5,14 @@
                 <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
             </div>
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact">
+                <div class="error" v-show="isError1" style="left:100px;top:158px;">*请填写联系人</div>
             </div>
             <div class="form-box" style="position:relative;">
                 <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
+                <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
             </div>
-            <div style="height:20px;width:100%;" v-if="isError"></div>
+            <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
         </div>
         <div class="t-optional">
            <!--  <div class="form-box">
@@ -57,7 +58,8 @@
             return{
                 //showBox: false,
                 isSel: false,
-                isError: false,
+                isError1: false,
+                isError2: false,
                 flightListShow:false,
                 contact:'',
                 hourcost:'',
@@ -74,14 +76,20 @@
                 this.msg = this.needType[i];
                 this.isSel = true;
             },*/
+            verifyContact:function(){
+                 if(this.contact){
+                     this.isError1 = false;
+                }
+                this.contact = this.contact.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
+            },
             verifyPhon: function () {
                 if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
-                    this.isError = true;
+                    this.isError2 = true;
                 }else{
-                    this.isError = false;
+                    this.isError2 = false;
                 }
                 if(this.phoneNum == ''){
-                    this.isError = false;
+                    this.isError2 = false;
                 }
             },
             submit:function(){
@@ -92,20 +100,30 @@
                 demandData.fltNbr  = this.flightNum;
                 demandData.hourscost = this.hourcost;
                 demandData.remark = this.tip;
-                this.$ajax({
-                url:"/demandAdd",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: demandData
-                }) .then((response) => {
-                        //console.log(response.opResult);
-                }) .catch((error) => {
-                        console.log(error);
-                    });
+                //必填信息验证
+                if(!this.contact){
+                    this.isError1 = true;
+                }else if(this.phoneNum == ''){
+                    this.isError2 = true;
+                }else{
+                    if(!this.isError1 && !this.isError2){
+                            this.$ajax({
+                        url:"/demandAdd",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: demandData
+                        }) .then((response) => {
+                            if(response.data.opResult == "0"){
+                                this.$emit("closeForm");
+                            }
+                        }) .catch((error) => {
+                                console.log(error);
+                            });
 
-                 this.$emit("closeForm");
+                    }
+                }
             },
             cancel: function(){
                 this.$emit("closeForm");
