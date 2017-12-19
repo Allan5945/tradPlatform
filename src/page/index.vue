@@ -12,8 +12,7 @@
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
         <newsTip></newsTip>
-        <!-- <timeQuery></timeQuery> -->
-
+        <timeQuery></timeQuery>
     </div>
 </template>
 

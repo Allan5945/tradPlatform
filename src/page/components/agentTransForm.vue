@@ -72,7 +72,7 @@
             </div>
             <div class="form-box reset">
                 <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
-                <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
+                <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:45px;width:223px;">
                     <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
                     <span>{{item[0]}}</span>
                     <span>{{item[1]}}</span>
