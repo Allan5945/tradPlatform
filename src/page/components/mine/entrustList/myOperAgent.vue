@@ -58,8 +58,12 @@
                 </div>
             </div>
         </div>
-        <agentDetail @close="closeAgentDetail" v-if="agentShow" :demandId="demandId"></agentDetail>
-        <deleDetail @close="closeDeleDetail" v-if="deleShow" :demandId="demandId"></deleDetail>
+        <transition name="slidex-fade">
+            <agentDetail @close="closeAgentDetail" v-if="agentShow" :demandId="demandId"></agentDetail>
+        </transition>
+        <transition name="slidex-fade">
+            <deleDetail @close="closeDeleDetail" v-if="deleShow" :demandId="demandId"></deleDetail>
+        </transition>
     </div>
 </template>
 <script>

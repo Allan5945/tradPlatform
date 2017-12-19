@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper" @click.self="closeDetail">
         <div class="detail-wrapper scroll" >
             <header>
                 <div class="top-til">{{detailData.demandtypeStr}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
@@ -9,7 +9,7 @@
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
-                    <div v-show="orderShow"><span>委托响应中</span></div>
+                    <div><span>{{detailData.demandprogressStr}}</span></div>
                 </div>
             </header>
             <div class="content">
@@ -86,16 +86,33 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-need" v-show="orderShow">
+            <div class="sub-need" v-show="orderShow" v-if="!isUser">
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
+            <div class="sub-need" v-if="isUser" v-show="!showBtn">
+                <div class="need-til">关联的子需求</div>
+            </div>
+            <div v-if="isUser" v-show="!showBtn">
+                <div class="user-need">
+                    <div>发布时间
+                      <span class="iconfont icon-up active">&#xe605;</span>
+                      <span class="iconfont icon-down">&#xe605;</span>
+                    </div>
+                    <div>发布标题</div>
+                    <div>需求状态</div>
+                </div>
+                <div class="user-need-content" v-for ="val in sonList">
+                    <div class="time">{{val.releasetime}}</div>
+                    <div class="title">{{val.title}}</div>
+                    <div class="progress">{{val.demandprogressStr}}</div>
+                </div>
+            </div>
            <sonNeedDetail :demandId = "demandId" v-if="!isUser" v-show="sondetailShow"></sonNeedDetail>
-            <footer v-if="isUser">
+            <footer v-if="isUser" v-show="showBtn">
                 <div class="foot-tips"></div>
                 <div class="btn">
-                    <div class="test-btn" @click="canceldele">取消委托</div>
-                    <div class="can-btn"  @click="closeDetail">返回</div>
+                    <div class="cancel-btn" @click="canceldele">撤回该托管</div>
                 </div>
             </footer>
              <footer v-if="!isUser">
@@ -126,9 +143,11 @@ import * as vx from 'vuex';
             orderShow:false,
             isUser:true,
             formShow:false,
+            showBtn:false,
             detailData:{},
             CpyNm:'',//委托方
-            sondetailShow:false
+            sondetailShow:false,
+            sonList:[]
          }
      },
       props:['demandId'],
@@ -137,15 +156,14 @@ import * as vx from 'vuex';
           this.$emit("close");
         },
         canceldele(){
-          /*this.$ajax({
+          this.$ajax({
                 method: 'post',
-                url: '/responseWeituoDaili',
+                url: '/closeDemandById',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    employeeId :this.role.id,
-                    id:""
+                    id:this.demandId
                   }
                 })
                 .then((response) => {
@@ -156,7 +174,7 @@ import * as vx from 'vuex';
                 .catch((error) => {
                         console.log(error);
                     }
-                );*/
+                );
         },
         refuse(){
 
@@ -199,7 +217,15 @@ import * as vx from 'vuex';
                 .then((response) => {
                     this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
-                    console.log( this.detailData)
+                    this.sonList = response.data.listSonDemands;
+                     //状态处理
+                      if(this.detailData.demandprogress == '7'){
+                          this.showBtn = true;
+                      }else if(this.detailData.demandprogress == '8'){
+
+                      }else if(this.detailData.demandprogress == '9'){
+                          this.orderShow = true;
+                      }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -222,6 +248,18 @@ import * as vx from 'vuex';
 </script>
 
 <style lang="scss" scoped>
+     /* .shadow{
+         box-shadow: 0px 0px 15px #888;
+     } */
+    .wrapper{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 11;
+    }
     .detail-wrapper{
         position:absolute;
         top:0;
@@ -318,6 +356,7 @@ import * as vx from 'vuex';
           }
         }
     }
+
     .airline{
       display:flex;
       margin-bottom:20px;
@@ -404,6 +443,43 @@ import * as vx from 'vuex';
 
       }
     }
+    .user-need{
+        position:relative;
+        height:75px;
+        width:100%;
+        color:rgba(96, 94, 124, 0.7);
+        box-sizing:border-box;
+        display:flex;
+        padding: 30px 0 25px 40px;
+        >div{
+            flex:1;
+            padding-right:50px;
+        }
+        .icon-up {
+            position: absolute;
+            bottom: 33px;
+            transform: rotate(180deg);
+        }
+        .icon-down {
+            position: absolute;
+            top: 33px;
+        }
+    }
+    .user-need-content{
+        height:50px;
+        width:100%;
+        box-sizing:border-box;
+        padding-left: 40px;
+        margin-bottom:10px;
+        display:flex;
+        background-color:rgba(216,216,216,.17);
+        >div{
+            flex:1;
+            overflow:hidden;
+            padding-right:50px;
+            line-height:50px;
+        }
+    }
     footer{
           .foot-tips{
             height:40px;
@@ -442,6 +518,19 @@ import * as vx from 'vuex';
                   border-radius:100px;
                   cursor:pointer;
                   border:1px solid rgba(96,94,124,.6);
+              }
+              .cancel-btn{
+                  width:180px;
+                  height:40px;
+                  line-height:40px;
+                  font-size:1.5rem;
+                  color:rgba(96,94,124,.6);
+                  background-color:#fff;
+                  text-align:center;
+                  border-radius:100px;
+                  cursor:pointer;
+                  border:1px solid rgba(96,94,124,.6);
+                  box-shadow: 0px 0px 8px rgba(60, 120, 255,0.5);
               }
           }
     }

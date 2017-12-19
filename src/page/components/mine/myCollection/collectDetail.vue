@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper" @click.self="closeDetail">
         <div class="detail-wrapper"  v-if="detailData">
             <header>
                 <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
@@ -225,6 +225,15 @@
 </script>
 
 <style lang="scss" scoped>
+     .wrapper{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 11;
+    }
     .detail-wrapper{
         position:absolute;
         top:0;

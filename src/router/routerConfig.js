@@ -34,9 +34,6 @@ const router = new VueRouter({
         {
             path: '/index',
             component: index,
-            meta:{
-                requireAuth: true
-            },
             children: [
                 {
                     path: 'userCenter',
@@ -81,12 +78,12 @@ const router = new VueRouter({
         }
     ],
     model: 'history'
-})
+});
 let token = false,
      ucPath = '/index/userCenter';
 router.beforeEach((to, from, next) => {
     token = token || (window.sessionStorage.getItem('isLogin') === 'ok');
-    if (to.meta.requireAuth) {//需要登录
+    if (to.path.indexOf('/index') != -1) {//需要登录
         if (token) next();
         else {
             next({

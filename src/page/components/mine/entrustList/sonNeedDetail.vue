@@ -22,7 +22,7 @@
                             <div class="airplace">
                                 <div>始发机场</div>
                                 <div>
-                                    <div>{{val.dptNm}}</div>
+                                    <div>{{val.dpt}}</div>
                                     <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">
@@ -34,7 +34,7 @@
                             <div class="airplace">
                                 <div>经停机场</div>
                                 <div>
-                                    <div>{{val.pstNm}}</div>
+                                    <div>{{val.pst}}</div>
                                     <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">
@@ -46,7 +46,7 @@
                             <div class="airplace">
                                 <div>到达区域</div>
                                 <div>
-                                    <div>{{val.arrvNm}}</div>
+                                    <div>{{val.arrv}}</div>
                                     <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
                                 </div>
                                 <div class="resouse">

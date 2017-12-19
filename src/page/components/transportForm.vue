@@ -385,7 +385,7 @@
                 this.airCompanyShow = true;
             },
             confirm:function(){
-                let demandData = { };
+                let demandData = {};
                     demandData.demandtype = "1";
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
@@ -411,7 +411,7 @@
                     //demandData.directionalgoal = this.directText;
                     //demandData.demandprogress = '0';
                  this.$ajax({
-                url:"/airCompenyList",
+                url:"/demandAdd",
                 method: 'post',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'

@@ -258,7 +258,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.detailData.id,
+                    id:this.detailData.id
                 }
                 })
                 .then((response) => {
@@ -309,6 +309,9 @@
                 'role'
             ])
         },
+      watch: {
+
+      },
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
 
@@ -343,9 +346,10 @@
             };
         });
 
-          tabulationBoxTrigger.$on('getTable',val=>{
-              this.selShow = false;
-            });
+          /*tabulationBoxTrigger.$on('getTable',val=>{
+                this.planData[this.selIndex] = val;
+                console.log(this.planData[this.selIndex])
+            });*/
      },
      components: {
             myIntentForm,

@@ -7,7 +7,8 @@ export default new Vue({
            chat:{
                shut:false,   // 关闭聊天框
                narrow:true,  // 缩小聊天框
-               chatData:{}
+               chatData:{},
+               change:false
            }
        }
     }
