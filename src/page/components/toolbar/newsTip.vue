@@ -1,8 +1,8 @@
 <template>
     <div class="news-tip" @click="initDis">
         <span class="news-tip-icon">&#xe602;</span>
-        <span class="news-tip-num">
-            <span>7</span>
+        <span class="news-tip-num" v-if="tipL != 0">
+            <span>{{tipL}}</span>
         </span>
     </div>
 </template>
@@ -10,10 +10,45 @@
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
+        data(){
+            return {
+                tipL:0
+            }
+        },
         methods:{
             initDis(){
-                localCommunication.$emit('initChat');
+                localCommunication.chat.shut = true;
+                localCommunication.chat.narrow = true;
+                this.tipL = 0;
             }
+        },
+        mounted:function () {
+            let _this = this;
+            this.$ajax({
+                method: 'post',
+                url: '/openChat',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params:{
+                    fromNameId:this.$store.getters.role.id,
+                },
+            })
+                .then((response) => {
+                    _this.tipL = response.data.data.length;
+                    let chatFlag = null;
+                    response.data.data.forEach((v)=>{
+                        if(chatFlag == null)chatFlag = v.chatFlag;
+                        if(!localCommunication.chat.chatData.hasOwnProperty(v.chatFlag)){
+                            localCommunication.chat.chatData[v.chatFlag] = v;
+                        };
+                    });
+                    localCommunication.chat.setChat = chatFlag;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         }
     }
 </script>
