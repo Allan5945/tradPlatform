@@ -2,35 +2,94 @@
     <div>
         <div class="miList-wrapper">
             <div class="miList-container">
-
+                <div class="account-mes">
+                    <div class="left">
+                        <div style="margin-bottom: 22px;">当前账户金额（元）</div>
+                        <div style="margin-bottom: 26px;height: 20px;">
+                            <span style="font-size: 18px;font-weight: bold;">1000000</span>
+                            <span>（含冻结金额2000元）</span>
+                        </div>
+                        <div class="buttons">
+                            <button class="btn btn-w" style="margin-right: 10px;width: 96px;" @click="rechargeFn">充值</button>
+                            <button class="btn btn-w" style="width: 96px;" @click="WithdrawFn">申请提现</button>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="title">交通银行</div>
+                        <div class="num">6227 0038 1902 0911 231</div>
+                    </div>
+                </div>
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
-                    <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
-                        <div class="list-a item">
-                            {{item.releasetime}}
+                    <!--<div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">-->
+                    <div class="list items" @click="listClickFn">
+                        <div class="item-a item">
+                            11.04.2017
                         </div>
-                        <div class="list-b item">
-                            {{item.demandtypeStr}}
+                        <div class="item-b item">
+                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
+                            <span>申请提现20000</span>
                         </div>
-                        <div class="list-c item color">
-                            <span>{{item.title}}</span>
+                        <div class="item-c item">冻结50000</div>
+                    </div>
+                    <div class="list items">
+                        <div class="item-a item">
+                            11.04.2017
                         </div>
-                        <div class="list-d item">
-                            {{item.demandprogress}}
+                        <div class="item-b item">
+                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
+                            <span>申请提现20000</span>
                         </div>
-                        <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span v-show="talkNumShow">1</span>
-                        </span>
+                        <div class="item-c item">冻结50000</div>
+                    </div>
+                    <div class="list items">
+                        <div class="item-a item">
+                            11.04.2017
                         </div>
-                        <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="item-b item">
+                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
+                            <span>申请提现20000</span>
                         </div>
+                        <div class="item-c item">冻结50000</div>
+                    </div>
+                    <div class="list items">
+                        <div class="item-a item">
+                            11.04.2017
+                        </div>
+                        <div class="item-b item">
+                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
+                            <span>申请提现20000</span>
+                        </div>
+                        <div class="item-c item">冻结50000</div>
+                    </div>
+                    <div class="list items">
+                        <div class="item-a item">
+                            11.04.2017
+                        </div>
+                        <div class="item-b item">
+                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
+                            <span>申请提现20000</span>
+                        </div>
+                        <div class="item-c item">冻结50000</div>
+                    </div>
+                    <div class="list items">
+                        <div class="item-a item">
+                            11.04.2017
+                        </div>
+                        <div class="item-b item">
+                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
+                            <span>申请提现20000</span>
+                        </div>
+                        <div class="item-c item">冻结50000</div>
                     </div>
                 </div>
             </div>
         </div>
-        <myCompanyAccountRecharge @closeThis="closeThisFn" v-show="myCompanyAccountRechargeShow"></myCompanyAccountRecharge>
+        <myCompanyAccountRecharge @closeThis="closeRechargeFn" v-show="myCompanyAccountRechargeShow"></myCompanyAccountRecharge>
+        <myCompanyAccountWithdraw @closeThis="closeWithdrawFn" v-show="myCompanyAccountWithdrawShow"></myCompanyAccountWithdraw>
         <transition-group name="slidex-fade">
+            <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
+            <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1" ></AccountWithdrawDetail>
             <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
         </transition-group>
     </div>
@@ -39,10 +98,16 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import myCompanyAccountRecharge from './myCompanyAccountRecharge.vue'
+    import myCompanyAccountWithdraw from './myCompanyAccountWithdraw.vue'
+    import AccountRechargeDetail from './AccountRechargeDetail.vue'
+    import AccountWithdrawDetail from './AccountWithdrawDetail.vue'
     export default {
         data() {
             return {
-                myCompanyAccountRechargeShow: true, // “充值账户”弹出框
+                myCompanyAccountRechargeShow: false, // “充值账户”弹出框
+                myCompanyAccountWithdrawShow: false, // "申请提现" 弹出框
+                AccountRechargeDetailShow: false,    // 机场、航司充值详情
+                AccountWithdrawDetailShow: false,    // 提现详情
                 myData: [], // 获取的数据
                 sendData: {}, // ajax传递的参数
             }
@@ -77,17 +142,45 @@
                     console.log(error);
                 });*/
             },
+            // 点击“充值账户”
+            rechargeFn: function () {
+                this.myCompanyAccountRechargeShow = true;
+                tabulationBoxTrigger.hierarchy = true;
+            },
             // 关闭“充值账户”
-            closeThisFn: function () {
+            closeRechargeFn: function () {
                 this.myCompanyAccountRechargeShow = false;
             },
-            // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
+            // 点击“申请提现”
+            WithdrawFn: function () {
+                this.myCompanyAccountWithdrawShow = true;
+                tabulationBoxTrigger.hierarchy = true;
+            },
+            // 关闭“申请提现”
+            closeWithdrawFn: function () {
+                this.myCompanyAccountWithdrawShow = false;
+            },
+            // 点击列表(list)，变成active状态, 确定哪个显示;
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
+//                this.AccountRechargeDetailShow = true; // 充值详情显示
+                this.AccountWithdrawDetailShow = true; // 提现详情显示
+                tabulationBoxTrigger.hierarchy = true;
+            },
+            // 关闭“充值详情”
+            closeAccountRechargeDetailFn: function () {
+                this.AccountRechargeDetailShow = false;
+            },
+            // 关闭“提现详情”
+            closeAccountWithdrawDetailFn: function () {
+                this.AccountWithdrawDetailShow = false;
             },
         },
         components: {
-            myCompanyAccountRecharge
+            myCompanyAccountRecharge,
+            myCompanyAccountWithdraw,
+            AccountRechargeDetail,
+            AccountWithdrawDetail
         }
     }
 </script>
@@ -112,6 +205,11 @@
             cursor: pointer;
         }
     }
+    .btn-w {
+        height: 30px;
+        border-radius: 20px;
+        outline: none;
+    }
 
     .icon-item {
         font-size: 1.6rem;
@@ -129,6 +227,7 @@
     }
     .miList-wrapper {
         width: 100%;
+        height: 500px;
         font-size: 1.2rem;
         background: #F8F8F8;
     }
@@ -138,7 +237,7 @@
         width: 1000px;
         height: 340px;
         .lists-containt {
-            height: 280px;
+            height: 200px;
             overflow-y: scroll;
         }
         .lists-containt::-webkit-scrollbar {
@@ -150,6 +249,37 @@
             border-radius: 4px;
         }
     }
+    .account-mes {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 44px;
+        padding: 0 15px;
+        .left {
+            .buttons {
+                display: flex;
+            }
+        }
+        .right {
+            padding: 22px 5px 0 10px;
+            min-width: 225px;
+            height: 78px;
+            color: white;
+            background: #3C78FF;
+            background: -webkit-linear-gradient(left bottom, #3C78FF, #3D92F5, #3DAAEB); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(top right, #3C78FF, #3D92F5, #3DAAEB); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(top right, #3C78FF, #3D92F5, #3DAAEB); /* Firefox 3.6 - 15 */
+            background: linear-gradient(to top right, #3C78FF, #3D92F5, #3DAAEB); /* 标准的语法 */
+            border-radius: 10px;
+            .title {
+                margin-bottom: 20px;
+                height: 15px;
+            }
+            .num {
+                height: 20px;
+                font-size: 1.8rem;
+            }
+        }
+    }
     .items {
         display: flex;
         margin-bottom: 10px;
@@ -159,87 +289,16 @@
             align-items: center;
             flex-shrink: 0;
         }
-        .list-a {
-            width: 100px;
-            .up-down {
-                position: relative;
-                width: 20px;
-                cursor: pointer;
-                .active {
-                    color: $icon-color;
-                }
-                .icon-up {
-                    position: absolute;
-                    bottom: -4px;
-                    transform: rotate(180deg);
-                }
-                .icon-down {
-                    position: absolute;
-                    top: -4px;
-                }
-            }
+        .item-a{
+            width: 163px;
         }
-        .list-b {
-            position: relative;
-            margin-right: 40px;
-            width: 100px;
-            .type-list {
-                top: 40px;
-                left: 0;
-                li {
-                    display: flex;
-                    align-items: center;
-                    width: 103px;
-                }
-            }
+        .item-b{
+            width: 600px;
         }
-        .list-c {
-            margin-right: 40px;
-            width: 320px;
-            >span {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+        .item-c{
+            flex-grow: 1;
+            justify-content: flex-end;
         }
-        .list-d {
-            position: relative;
-            width: 80px;
-            >span {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-        .list-e {
-            margin-right: 160px;
-            width: 20px;
-            .talk-icon {
-                position: relative;
-                font-size: 2.5rem;
-                >span {
-                    position: absolute;
-                    top: -1px;
-                    right: -1px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-width: 12px;
-                    height: 12px;
-                    font-size: 1.0rem;
-                    color: white;
-                    background: red;
-                    border-radius: 20px;
-                }
-            }
-        }
-        .list-f {
-            width: 60px;
-            white-space: nowrap;
-        }
-    }
-    .title {
-        height: 40px;
     }
     .list {
         height: 58px;

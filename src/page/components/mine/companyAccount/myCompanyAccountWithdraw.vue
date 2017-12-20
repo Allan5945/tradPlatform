@@ -3,10 +3,10 @@
         <div class="myCompanyAccountRecharge">
             <div class="top items">
                 <div class="left">
-                    充值账户
+                    申请提现
                 </div>
-                <div class="right">
-                    <div class="title font-gray">如有疑问，请联系客服</div>
+                <div class="right warn">
+                    <div class="title ">*提现金额将在财务审核通过后，转入您的账户，如有疑问，请联系客服</div>
                     <div class="anew-publish">
                         联系客服<span class="icon-item">&#xe720;</span>
                     </div>
@@ -14,21 +14,24 @@
             </div>
             <div class="line"></div>
             <div class="bottom items">
-                <div class="title font-gray">请转账至以下账户，我们的工作人员会为您处理</div>
                 <div class="account-mes">
-                    <div class="left items">
-                        <div class="item-height font-gray">开户名</div>
-                        <div class="item-height font-gray">开户账户</div>
-                        <div class="item-height font-gray">开户银行</div>
+                    <div class="account-top account-item">
+                        <div class="left font-gray" style="margin-top: 7px;">请填写提现金额</div>
+                        <div class="right">
+                            <div>
+                                <input class="input-num" type="text" v-model="inputNum" placeholder="最低提现金额 10000">元
+                            </div>
+                            <div class="font-gray" v-if="noticeMsg" style="height: 25px;line-height: 25px;">*当前可提现金额： 500000元</div>
+                            <div class="warn" v-else="noticeMsg" style="height: 25px;line-height: 25px;">*最低提现金额：10000</div>
+                        </div>
                     </div>
-                    <div class="right items">
-                        <div class="item-height">太美航空</div>
-                        <div class="item-height">0000000000000000000</div>
-                        <div class="item-height">交通银行 成都分行 新华支行</div>
+                    <div class="account-bottom account-item">
+                        <div class="left font-gray">到帐账户</div>
+                        <div class="right" style="height: 15px;">交通银行（6227 0038 1902 0199 231）</div>
                     </div>
                 </div>
                 <div class="button">
-                    <button class="btn btn-b">确认</button>
+                    <button class="btn btn-b" @click="sendData">确认</button>
                     <button class="btn btn-cancel" @click="closeThisFn">取消</button>
                 </div>
             </div>
@@ -39,12 +42,29 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
         data() {
-            return {}
+            return {
+                inputNum: '',    // 输入的金额
+                noticeMsg: true, // 提示信息
+            }
+        },
+        mounted() {
+
         },
         methods: {
+            // 点击“取消”按钮
             closeThisFn: function () {
                 this.$emit('closeThis');
                 tabulationBoxTrigger.hierarchy = false;
+            },
+            // 点击“确定”按钮
+            sendData: function () {
+                // 判断输入的金额是否小于10000
+                if(this.inputNum < 10000) {
+                    this.noticeMsg = false;
+                    return
+                }else {
+                    this.noticeMsg = true;
+                }
             },
         },
         components: {}
@@ -54,6 +74,9 @@
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
+    }
+    .warn {
+        color: #FF9393;
     }
     /*按钮*/
     .btn-cancel {
@@ -104,17 +127,16 @@
         }
     }
     .top {
+        flex-direction: column;
         justify-content: space-between;
         .left {
-            margin-top: 4px;
             font-size: 1.6rem;
         }
         .right {
             display: flex;
-            flex-direction: column;
             align-items: flex-end;
             .title {
-                margin-bottom: 10px;
+                margin-right: 8px;
             }
             .anew-publish {
                 display: flex;
@@ -135,29 +157,6 @@
     }
     .bottom {
         flex-direction: column;
-        .title {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .account-mes {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 50px;
-            .items {
-                flex-direction: column;
-                .item-height {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    height: 35px;
-                }
-            }
-            .left {
-                width: 65px;
-            }
-            .right {}
-        }
         .button {
             display: flex;
             justify-content: center;
@@ -174,5 +173,33 @@
                 cursor: pointer;
             }
         }
+    }
+    .account-mes {
+        display: flex;
+        flex-direction: column;
+    }
+    .account-item {
+        display: flex;
+        .left {
+            width: 106px;
+        }
+        .right {
+            width: 380px;
+            .input-num {
+                margin-right: 10px;
+                padding: 7px 15px;
+                width: 286px;
+                font-size: 1.2rem;
+                border: 1px solid rgba(151, 151, 151, 0.3);
+                border-radius: 4px;
+                outline: none;
+            }
+        }
+    }
+    .account-top {
+        margin-bottom: 35px;
+    }
+    .account-bottom {
+        margin-bottom: 68px;
     }
 </style>

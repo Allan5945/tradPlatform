@@ -2,7 +2,7 @@
     <div class="timely-box popup" :style="renTimelyBoxXY" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
     @mousemove="transitionDrop">
         <div class="timely-nav">
-            <div class="information" :class="{'timely-nav-checked':(setId == key.setId)}" v-for="(key,i) in inData"
+            <div class="" :class="{'timely-nav-checked':(setId == key.setId),'information':true}" v-for="(key,i) in inData"
             @click="setChat(key)">
                 <p>{{key.title}}</p>
                 <span>{{key.chatObjectList.name}}</span>
@@ -115,15 +115,14 @@
                         x:0,
                         y:0
                     }
-                },
-                setId:null
+                }
             }
         },
         created:function () {
-            for(let v in this.inData){
-                this.setId = this.inData[v].setId;
-                break;
-            }
+//            for(let v in this.inData){
+//                this.setId = this.inData[v].setId;
+//                break;
+//            }
         },
         mounted:function () {
             this.$refs.textarea.focus();
@@ -134,10 +133,16 @@
             this.timelyBoxXY.x = left;
             this.timelyBoxXY.y = top;
         },
+        watch:{
+
+        },
         computed:{
             ...vx.mapGetters([
                 'role'
             ]),
+            setId:function () {
+                return ln.chat.setChat;
+            },
             renTimelyBoxXY:function () {
                 return `left:${this.timelyBoxXY.x}px;top:${this.timelyBoxXY.y}px`;
             },
@@ -153,7 +158,6 @@
                     document.getElementById('chat-function-banner').scrollTop = document.getElementById('chat-function-banner').scrollHeight;
                 },10);
                 if(ln.chat.change);
-                console.log(ln.chat.chatData)
                 for(let k in ln.chat.chatData){
                     let chatObjectList ={};
                     ln.chat.chatData[k].chatObjectList.forEach((v)=>{
@@ -197,22 +201,27 @@
         },
         methods:{
             sendData:function () {
+                if(this.textData == '')return;
                 let ids = this.setId.split('-');
+                let len = ids.indexOf(String(this.$store.getters.role.id)) == 0 ? true : false;
+                let p = {
+                    fromNameId:len ? ids[0] : ids[1],
+                    toNameId:len ? ids[1] : ids[0],
+                    demandId:ids[2],
+                    text:this.textData
+                };
+                let _this = this;
                 this.$ajax({
                     method: 'post',
                     url: '/api/send',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params:{
-                        fromNameId:ids[0],
-                        toNameId:ids[1],
-                        demandId:ids[2],
-                        text:this.textData
-                    },
+                    params:p,
                 })
                     .then((response) => {
 //                        console.log(response)
+                        _this.textData = '';
                     })
                     .catch((error) => {
                             console.log(error);
@@ -220,7 +229,7 @@
                     );
             },
             setChat:function (v) {
-                this.setId = v.setId;
+                ln.chat.setChat = v.setId;
                 setTimeout(()=>{
                     document.getElementById('chat-function-banner').scrollTop = document.getElementById('chat-function-banner').scrollHeight;
                 },10);

@@ -110,7 +110,7 @@
                     page:1,                  // 页码，必传
 //                    pageNo:4,
                     demandType: '',         // 查询需求类型 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
-                    demandProgress:'',      // 状态类型 0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、
+                    demandprogress:'',      // 状态类型 0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、
                                                 // 4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝
                     orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
@@ -130,7 +130,7 @@
                 this.getListData();
 //                this.judgeRole();
             },
-            'sendData.demandProgress': function () {
+            'sendData.demandprogress': function () {
                 console.info('1')
                 this.getListData();
 //                this.judgeRole();
@@ -202,7 +202,7 @@
                 this.myData0 = [];
                 this.myData1 = [];
                 this.typeWriting = item;
-                this.sendData.demandProgress = '';
+                this.sendData.demandprogress = '';
                 this.stateWriting = '状态';
                 if(item == '航线需求') {
                     this.state = this.state1;
@@ -229,28 +229,28 @@
                 this.myData1 = [];
                 this.stateWriting = item;
                 if(item == '需求发布') {
-                    this.sendData.demandProgress = 0;
+                    this.sendData.demandprogress = 0;
                 }if(item == '意向征集') {
                     console.info(0)
-                    this.sendData.demandProgress = 1;
+                    this.sendData.demandprogress = 1;
                 }if(item == '订单确认') {
-                    this.sendData.demandProgress = 2;
+                    this.sendData.demandprogress = 2;
                 }if(item == '关闭(审核不通过、下架、过期)' || item == '已关闭') {
-                    this.sendData.demandProgress = 3;
+                    this.sendData.demandprogress = 3;
                 }if(item == '订单完成') {
-                    this.sendData.demandProgress = 4;
+                    this.sendData.demandprogress = 4;
                 }if(item == '佣金支付') {
-                    this.sendData.demandProgress = 5;
+                    this.sendData.demandprogress = 5;
                 }if(item == '交易完成' || item == '已完成') {
-                    this.sendData.demandProgress = 6;
+                    this.sendData.demandprogress = 6;
                 }if(item == '待处理') {
-                    this.sendData.demandProgress = 7;
+                    this.sendData.demandprogress = 7;
                 }if(item == '已接受') {
-                    this.sendData.demandProgress = 8;
+                    this.sendData.demandprogress = 8;
                 }if(item == '处理中' || item == '测评中') {
-                    this.sendData.demandProgress = 9;
+                    this.sendData.demandprogress = 9;
                 }if(item == '已拒绝') {
-                    this.sendData.demandProgress = 10;
+                    this.sendData.demandprogress = 10;
                 }
             },
 
@@ -407,6 +407,7 @@
         bottom: 0;
         left: 0;*/
         width: 100%;
+        height: 500px;
         /*height: 434px;*/
         font-size: 1.2rem;
         background: #F8F8F8;
