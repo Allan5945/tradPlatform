@@ -1,8 +1,8 @@
 <template>
     <div class="news-tip" @click="initDis">
         <span class="news-tip-icon">&#xe602;</span>
-        <span class="news-tip-num" v-if="tipL != 0">
-            <span>{{tipL}}</span>
+        <span class="news-tip-num" v-if="tpl != 0">
+            <span>{{tpl}}</span>
         </span>
     </div>
 </template>
@@ -12,14 +12,24 @@
     export default {
         data(){
             return {
-                tipL:0
             }
         },
         methods:{
             initDis(){
                 localCommunication.chat.shut = true;
                 localCommunication.chat.narrow = true;
-                this.tipL = 0;
+            }
+        },
+        computed:{
+            tpl:function () {
+                if(localCommunication.chat.setChat);
+                let l = 0;
+                for(let key in localCommunication.chat.chatData){
+                    if(localCommunication.chat.chatData[key].noReadCount > 0){
+                        l = l + 1;
+                    }
+                }
+                return l;
             }
         },
         mounted:function () {
@@ -35,7 +45,6 @@
                 },
             })
                 .then((response) => {
-                    _this.tipL = response.data.data.length;
                     let chatFlag = null;
                     response.data.data.forEach((v)=>{
                         if(chatFlag == null)chatFlag = v.chatFlag;

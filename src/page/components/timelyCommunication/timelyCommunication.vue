@@ -2,7 +2,7 @@
     <div class="timely-box popup" :style="renTimelyBoxXY" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
     @mousemove="transitionDrop">
         <div class="timely-nav">
-            <div class="" :class="{'timely-nav-checked':(setId == key.setId),'information':true}" v-for="(key,i) in inData"
+            <div class="" :class="{'timely-nav-checked':(setId == key.setId),'information':(key.noReadCount > 0)}" v-for="(key,i) in inData"
             @click="setChat(key)">
                 <p>{{key.title}}</p>
                 <span>{{key.chatObjectList.name}}</span>
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="chat-function-input">
-                        <textarea name="a" class="scroll" ref="textarea" v-model="textData"></textarea>
+                        <textarea name="a" @keydown="handling({t:true})" @keyup="handling({t:false})" class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="demand-history">
-                                <div>成都双流找运力</div>
+                                <div>{{inData[this.setId].title}}</div>
                                 <span @click="openhs" title="历史记录">&#xe63b;</span>
                             </div>
                             <div class="demand-describe scroll">
@@ -73,15 +73,16 @@
                     <div class="view-btn btn-w" v-if="ishs">查看订单详情</div>
                     <transition name="slidehs-fade">
                         <div class="personal-hy" v-if="!ishs">
-                            <div class="personal-hy-t">
-                                运力修改记录(5条)
+                            <div class="none-personal-hy" v-if="inData[setId].modifyRcord.list.length == 0">无修改记录</div>
+                            <div class="personal-hy-t" v-if="inData[setId].modifyRcord.list.length != 0">
+                                修改记录({{inData[setId].modifyRcord.list.length}}条)
                             </div>
-                            <div class="personal-hy-i"
+                            <div v-if="inData[setId].modifyRcord.list.length != 0" class="personal-hy-i"
                                  @mouseover="viewHsy(true,i)"
                                  @mouseout="viewHsy(false,i)"
-                                 v-for="(key,i) in modifyHistory">
-                                <div>{{key.t}}</div>
-                                <div>{{key.c}}</div>
+                                 v-for="(key,i) in inData[setId].modifyRcord.list">
+                                <div>{{key.text}}</div>
+                                <!--<div>{{key.c}}</div>-->
                                 <span v-if="(i == selectModifyHistory)">&#xe686;</span>
                             </div>
                         </div>
@@ -98,12 +99,12 @@
     export default {
         data(){
             return{
+                newline:{
+                    enter:false,
+                    ctrl:false,
+                },
                 ishs:true,
                 selectModifyHistory:null,
-                modifyHistory:[{
-                    t:'2017.08.07',
-                    c:"xx修改了方案"
-                }],
                 timelyBox:'',
                 timelyBoxXY:{   // 最后设置的聊天框位置
                     x:10,
@@ -117,12 +118,6 @@
                     }
                 }
             }
-        },
-        created:function () {
-//            for(let v in this.inData){
-//                this.setId = this.inData[v].setId;
-//                break;
-//            }
         },
         mounted:function () {
             this.$refs.textarea.focus();
@@ -141,6 +136,26 @@
                 'role'
             ]),
             setId:function () {
+                let id = ln.chat.setChat.split('-');
+                this.$ajax({
+                    method: 'post',
+                    url: '/updateState',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params:{
+                        setFromNameId:id[0] == this.role.id ? id[0] : id[1] ,
+                        setToNameId:id[0] == this.role.id ? id[1] : id[0],
+                        setDemandId:id[2],
+                    },
+                })
+                    .then((response) => {
+                        if(response.data.opResult == '0') ln.chat.chatData[ln.chat.setChat].noReadCount = 0;ln.chat.change = ! ln.chat.change;;
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
                 return ln.chat.setChat;
             },
             renTimelyBoxXY:function () {
@@ -178,15 +193,16 @@
                         rightTable:ln.chat.chatData[k].rightTable,
                         title:ln.chat.chatData[k].title,
                         chatRcord:ln.chat.chatData[k].chatRcord,
-                        modifyRcord:ln.chat.chatData[k].modifyRcord,
+                        modifyRcord:ln.chat.chatData[k].modifyRcord == null ? {list:[]} : ln.chat.chatData[k].modifyRcord,
                         setId:k,
+                        noReadCount:ln.chat.chatData[k].noReadCount
                     };
                 };
                 return b;
             },
             chatIng:function () {
                 if(ln.chat.change);
-                return [...ln.chat.chatData[this.setId].chatRcord.list];
+                return [...ln.chat.chatData[this.setId].chatRcord.list].reverse();
             },
             kfIng:function () {
                 return this.inData[this.setId].chatObjectList;
@@ -200,6 +216,24 @@
 
         },
         methods:{
+            handling:function (v) {
+                let e = event;
+                if(e.keyCode == 17){
+                    this.newline.ctrl = v.t;
+                };
+                if (e.keyCode == 13){
+                    if(v.t){
+                        if(this.newline.ctrl){
+                            this.newline.enter = v.t;
+                        }
+                    }else{
+                        this.newline.enter = v.t;
+                    }
+                }
+                if (this.newline.enter && this.newline.ctrl){
+                    this.sendData();
+                }
+            },
             sendData:function () {
                 if(this.textData == '')return;
                 let ids = this.setId.split('-');
@@ -220,7 +254,6 @@
                     params:p,
                 })
                     .then((response) => {
-//                        console.log(response)
                         _this.textData = '';
                     })
                     .catch((error) => {
@@ -250,7 +283,6 @@
                 this.ishs = !this.ishs;
             },
             transitionDrop:function (e) {
-//                console.log(66)
             },
             clearAndBindDrop:function () {  // 绑定拖拽事件
                 this.dropData.mouseCoordinate.x = this.timelyBox.offsetLeft;
@@ -396,6 +428,10 @@
         /*padding: 0 15px;*/
         >div{
             font-weight: bold;
+            width: 160px;
+            white-space:nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
         >span{
             font-family: iconfont;
@@ -501,12 +537,13 @@
             overflow: hidden;
         }
     }
-
     .say-words {
         flex: 1;
         display: flex;
         flex-flow: column nowrap;
         padding-left: 10px;
+        padding-right: 10px;
+        max-width: 485px;
         > p {
             padding: 0;
             margin: 0;
@@ -523,8 +560,9 @@
             color: #605E7C;
             letter-spacing: 2px;
             font-size: 1.3rem;
-            line-height: 16px;
             background-color: white;
+            align-self:stretch ;
+            word-break:break-all;
         }
     }
     .say-words-oneself{
@@ -685,5 +723,9 @@
 
     .timely-window-s {
         color: #5bb53c;
+    }
+    .none-personal-hy{
+        color: red;
+        padding-top: 50px;
     }
 </style>

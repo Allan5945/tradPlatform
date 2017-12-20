@@ -9,18 +9,17 @@ function letterConversions(l1) {
         var name = arraySearch(val,PinYin);
         if(name){
             letter += name.substring(0,1);
-        }
+        };
         if(reg.test(val)) {
             I1 += val;
         } else if (name!==false) {
             I1 += name;
-        }
-
+        };
     }
     I1 = I1.replace(/ /g,'-');
     while (I1.indexOf('--')>0) {
         I1 = I1.replace('--','-');
-    }
+    };
     return {
         allLetter:I1,
         fllLetter:letter
