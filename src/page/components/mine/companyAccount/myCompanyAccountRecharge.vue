@@ -1,5 +1,5 @@
 <template>
-    <div class="mcar-wrapper">
+    <div class="mcar-wrapper" @click.self="closeThisFn">
         <div class="myCompanyAccountRecharge">
             <div class="top items">
                 <div class="left">
@@ -22,13 +22,13 @@
                         <div class="item-height font-gray">开户银行</div>
                     </div>
                     <div class="right items">
-                        <div class="item-height">太美航空</div>
-                        <div class="item-height">0000000000000000000</div>
-                        <div class="item-height">交通银行 成都分行 新华支行</div>
+                        <div class="item-height item-with">{{myCardData.cardPerson}}</div>
+                        <div class="item-height item-with">{{myCardData.cardNumber}}</div>
+                        <div class="item-height item-with">{{myCardData.cardName}}</div>
                     </div>
                 </div>
                 <div class="button">
-                    <button class="btn btn-b">确认</button>
+                    <button class="btn btn-b" @click="closeThisFn">确认</button>
                     <button class="btn btn-cancel" @click="closeThisFn">取消</button>
                 </div>
             </div>
@@ -39,7 +39,18 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
         data() {
-            return {}
+            return {
+                myCardData: {},
+                id: '',
+                employeeId: '',
+            }
+        },
+        created() {
+            tabulationBoxTrigger.$on('sendToMyCompanyAccountRecharge',(val) => { //从myCompanyAccountList.vue接受数据
+                this.myCardData = val;
+                this.id = val.id;
+                this.employeeId = val.employeeId;
+            })
         },
         methods: {
             closeThisFn: function () {
@@ -152,6 +163,9 @@
                     align-items: center;
                     height: 35px;
                 }
+                .item-with {
+                    width: 180px;
+                }
             }
             .left {
                 width: 65px;
@@ -162,13 +176,14 @@
             display: flex;
             justify-content: center;
             margin-bottom: 33px;
-            height: 40px;
             .btn-b {
                 margin-right: 10px;
                 width: 215px;
+                height: 40px;
             }
             .btn-cancel {
                 width: 80px;
+                height: 40px;
                 background: white;
                 color: rgba(96, 94, 124, 0.7);
                 cursor: pointer;

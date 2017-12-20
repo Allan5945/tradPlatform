@@ -102,9 +102,9 @@
             'sendData.orderType': function () {
                 this.getListData();
             },
-            'sendData.demandType': function () {
+           /* 'sendData.demandType': function () {
                 this.getListData();
-            },
+            },*/
             'sendData.responseProgress': function () {
                 this.getListData();
             },
@@ -132,11 +132,13 @@
                     this.myData = this.myData0;
                     this.typeWriting = '运力需求';
                     this.state = this.state2;
+                    this.sendData.demandType = 1;
                 }if(this.role.role == 0) {  // 航司
                     this.type = this.type1;
                     this.myData = this.myData1;
                     this.typeWriting = '航线需求';
                     this.state = this.state1;
+                    this.sendData.demandType = 0;
                 }if(this.role.role == 2) {
                     this.type = this.type2;
                     this.myData = this.myData2;

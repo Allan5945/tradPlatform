@@ -1,5 +1,5 @@
 <template>
-    <div class="mcar-wrapper">
+    <div class="mcar-wrapper" @click.self="closeThisFn">
         <div class="myCompanyAccountRecharge">
             <div class="top items">
                 <div class="left">
@@ -21,13 +21,13 @@
                             <div>
                                 <input class="input-num" type="text" v-model="inputNum" placeholder="最低提现金额 10000">元
                             </div>
-                            <div class="font-gray" v-if="noticeMsg" style="height: 25px;line-height: 25px;">*当前可提现金额： 500000元</div>
+                            <div class="font-gray" v-if="noticeMsg" style="height: 25px;line-height: 25px;">*当前可提现金额： {{myAccountData.number}}元</div>
                             <div class="warn" v-else="noticeMsg" style="height: 25px;line-height: 25px;">*最低提现金额：10000</div>
                         </div>
                     </div>
                     <div class="account-bottom account-item">
                         <div class="left font-gray">到帐账户</div>
-                        <div class="right" style="height: 15px;">交通银行（6227 0038 1902 0199 231）</div>
+                        <div class="right" style="height: 15px;">{{myCardData.cardName}}（{{myCardData.cardNumber}}）</div>
                     </div>
                 </div>
                 <div class="button">
@@ -45,10 +45,17 @@
             return {
                 inputNum: '',    // 输入的金额
                 noticeMsg: true, // 提示信息
+                myData: {},     //获取的数据
+                myAccountData: {},
+                myCardData: {},
             }
         },
-        mounted() {
-
+        created() {
+            tabulationBoxTrigger.$on('myCompanyAccountWithdraw',(val) => { //从myCompanyAccountList.vue接受数据
+                this.myData = val;
+                this.myAccountData = val.account;
+                this.myCardData = val.card;
+            })
         },
         methods: {
             // 点击“取消”按钮
@@ -58,6 +65,7 @@
             },
             // 点击“确定”按钮
             sendData: function () {
+                this.myAccountData.withdrawNumber = this.inputNum;
                 // 判断输入的金额是否小于10000
                 if(this.inputNum < 10000) {
                     this.noticeMsg = false;
@@ -65,6 +73,24 @@
                 }else {
                     this.noticeMsg = true;
                 }
+                this.$ajax({
+                    url:"/accountWithdraw",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.myAccountData
+                }) .then((response) => {
+                    console.info(response)
+                    if(response.data.opResult == '0') {
+                        alert('成功发送提现请求！')
+                        this.$emit('closeThis');
+                    }else {
+                        alert('无法请求到数据')
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
             },
         },
         components: {}
@@ -161,13 +187,14 @@
             display: flex;
             justify-content: center;
             margin-bottom: 33px;
-            height: 40px;
             .btn-b {
                 margin-right: 10px;
                 width: 215px;
+                height: 40px;
             }
             .btn-cancel {
                 width: 80px;
+                height: 40px;
                 background: white;
                 color: rgba(96, 94, 124, 0.7);
                 cursor: pointer;

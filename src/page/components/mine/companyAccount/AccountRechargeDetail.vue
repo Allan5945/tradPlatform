@@ -3,23 +3,25 @@
         <div class="plan-wrapper scroll">
             <header>
                 <div class="top-til font-gray">流水详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-                <div class="head-til">意向金充值</div>
+                <div class="head-til">{{myData.discription2}}</div>
                 <div class="header-num">
                     <div class="top">意向金</div>
-                    <div class="bottom">+50000</div>
+                    <div class="bottom">
+                        <span>{{addOrSub}}</span><span>{{myData.number}}</span>
+                    </div>
                 </div>
             </header>
             <div class="ard-container">
                 <div class="ard-item">
                     <div class="left font-gray">创建时间</div>
-                    <div class="right">2017.12.23 17:59</div>
+                    <div class="right">{{myData.dateComplete}}</div>
                 </div>
                 <div class="ard-item">
                     <div class="left font-gray">交易流水号</div>
-                    <div class="right">00000000000000000000000</div>
+                    <div class="right">{{myData.serialNumber}}</div>
                 </div>
             </div>
-            <div style="padding: 0 40px;">
+            <div style="padding: 0 40px;" v-show="warnShow">
                 <span class="warn">*意向金将在双方互选方案后支付，或在需求/意向撤回后退回</span>
             </div>
         </div>
@@ -33,12 +35,50 @@
     export default {
         data() {
             return {
-
+                showCode: '',
+                addOrSub: '', // +、-，''
+                warnShow: false, //警告显示
+                myData: {},       // 获取的数据
             }
         },
-        mounted() {
+        created() {
+            tabulationBoxTrigger.$on('sendToAccountWithdrawDetail',(val) => { //从myCompanyAccountList接受数据
+                this.myData = val;
+                //type 交易类型:01-充值、0301-冻结(查看意向)、0302-冻结(响应需求)、
+                //              0401-解冻(撤回意向)、0402-解冻(需求下架)、05-转入、06-支付
+                if(val.type == '01') {
+                    this.showCode = 1;
+                }if(val.type == '0301' || val.type == '0302') {
+                    this.showCode = 2;
+                }if(val.type == '0401' || val.type == '0402') {
+                    this.showCode = 3;
+                }if(val.type == '06') {
+                    this.showCode = 4;
+                }if(val.type == '05') {
+                    this.showCode = 5;
+                }
+                this.show();
+            })
         },
         methods: {
+            show: function () {
+                if(this.showCode == 1) { // 充值完成
+                    this.addOrSub = '+';
+                    this.warnShow = false;
+                }if(this.showCode == 2) { // 机场冻结意向金
+                    this.addOrSub = '';
+                    this.warnShow = true;
+                }if(this.showCode == 3) { // 机场解冻意向金
+                    this.addOrSub = '';
+                    this.warnShow = false;
+                }if(this.showCode == 4) { // 机场支付意向金
+                    this.addOrSub = '-';
+                    this.warnShow = false;
+                }if(this.showCode == 5) { // 航司收入意向金
+                    this.addOrSub = '+';
+                    this.warnShow = false;
+                }
+            },
             closeIntent: function () {
                 this.$emit('closeThis');
                 tabulationBoxTrigger.hierarchy = false;
