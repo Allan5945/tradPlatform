@@ -3,11 +3,11 @@
         <div class="t-must">
             <div class="form-box">
                 <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact">
-                <div class="error" v-show="isError1" style="left:58px;">*请填写联系人</div>
+                <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
             </div>
             <div class="form-box">
                 <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
+                <div class="error" v-show="isError2" style="top:58px;right:36px;">*电话格式有误，请重新输入</div>
             </div>
             <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
         </div>
@@ -54,25 +54,26 @@
             </div>
             <div class="form-box air-route">
                 <div class="t-title">意向航线</div>
-                <input type="text" placeholder="起飞机场" v-model="intendedDpt" v-on:keyup="openSearch3"><span class="icon-item ">&#xe672;</span>
+                <input type="text" placeholder="起飞机场" v-model="intendedDpt" @focus="openSearch3" @blur="closeDialog1"><span class="icon-item ">&#xe672;</span>
                 <airportS1 class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS1>
-                <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" v-on:keyup="openSearch4"><span class="icon-item ">&#xe672;</span>
+                <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" @focus="openSearch4" @blur="closeDialog2"><span class="icon-item ">&#xe672;</span>
                 <airportS1 class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS1>
-                <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" v-on:keyup="openSearch5">
+                <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" @focus="openSearch5" @blur="closeDialog3">
                 <airportS1 class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS1>
+                <div class="error" v-show="isError3" style="left:58px;top:53px;">*请输入起飞机场</div>
             </div>
             <div class="form-box">
-                <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
+                <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
                 <div class="airpl-typ popup scroll" v-show="airplTypShow">
                     <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                 </div>
             </div>
             <div class="form-box se-place" >
-                <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" v-on:keyup="openSearch">
+                <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
               <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
             </div>
             <div class="form-box reset">
-                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany">
+                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany"  @blur="closeDialog6">
                 <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:45px;width:223px;">
                     <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
                     <span>{{item[0]}}</span>
@@ -91,7 +92,7 @@
                 <div class="t-checkbox">
                     <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
                 </div>
-                <input type="text" v-show="dispatch" v-model="dispatchText" v-on:keyup="openSearch1" placeholder=" ">
+                <input type="text" v-show="dispatch" v-model="dispatchText" @focus="openSearch1" @blur="closeDialog7" placeholder=" ">
                 <airportS1 class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS1>
                 <div class="history" v-show="dispatch">
                     <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
@@ -129,11 +130,11 @@
                 <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
             </div>
             <div class="direction t-radio" style="position:relative;">
-                <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
+                <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" @focus="openSearch2" @blur="closeDialog8">
                 <div class="history" v-show="this.post == '3'" style="top:-5px;left:2px;line-height:26px;">
                     <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
                 </div>
-                <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
+                <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS1>
             </div>
         </div>
         <div class="t-btn">
@@ -155,6 +156,7 @@
                 isSel: false,
                 isError1: false,
                 isError2: false,
+                isError3:false,
                 phoneNum: '',
                 getFlight: 'true',
                 getTime: 'true',
@@ -253,12 +255,64 @@
             },
              openSearch3: function(){
                 this.dptSearch =true;
+                 if(this.qyCode3){
+                     this.isError3 = false;
+                }
             },
+
              openSearch4: function(){
                 this.pstSearch =true;
             },
              openSearch5: function(){
                 this.arrvSearch =true;
+            },
+             closeDialog1(){
+                let that =this;
+               setTimeout(function(){
+                that.dptSearch =false;
+                },200);
+            },
+             closeDialog2(){
+                let that =this;
+               setTimeout(function(){
+                that.pstSearch =false;
+                },200);
+            },
+             closeDialog3(){
+                let that =this;
+               setTimeout(function(){
+                that.arrvSearch =false;
+                },200);
+            },
+             closeDialog4(){
+                let that =this;
+               setTimeout(function(){
+                that.airplTypShow =false;
+                },200);
+            },
+             closeDialog5(){
+                let that =this;
+               setTimeout(function(){
+                that.isSearch =false;
+                },200);
+            },
+             closeDialog6(){
+                let that =this;
+               setTimeout(function(){
+                that.airCompanyShow =false;
+                },200);
+            },
+             closeDialog7(){
+                let that =this;
+               setTimeout(function(){
+                that.dispatchSearch =false;
+                },200);
+            },
+             closeDialog8(){
+                let that =this;
+               setTimeout(function(){
+                that.directSearch =false;
+                },200);
             },
           /*  verifyPhon:function(){
                 let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
@@ -315,29 +369,29 @@
                 this.qyCode = data.code;
             },
             disData: function(data){
-                this.dispatchSearch = false;
                 this.dispatchText = data.name;
                 this.qyCode1 = data.code;
+                this.dispatchSearch = false;
             },
             directData: function(data){
-                this.directSearch = false;
                 this.directText = data.name;
                 this.qyCode2 = data.code;
+                this.directSearch = false;
             },
             dptData: function (data) {
-                this.dptSearch = false;
                 this.intendedDpt = data.name;
                 this.qyCode3 = data.code;
+                this.dptSearch = false;
             },
             pstData: function (data) {
-                this.pstSearch = false;
                 this.intendedPst = data.name;
                 this.qyCode4 = data.code;
+                this.pstSearch = false;
             },
             arrvData: function (data) {
-                this.arrvSearch = false;
                 this.intendedArrv = data.name;
                 this.qyCode5 = data.code;
+                this.arrvSearch = false;
             },
             getAirType: function(i){
                 this.airplaneTyp = this.airTypData[i];
@@ -374,11 +428,7 @@
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
-                params: {
-                    page:2
-                }
             }) .then((response) => {
-                    console.info(response)
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
@@ -399,6 +449,9 @@
                 }
                 if(this.phoneNum == ''){
                     this.isError2 = true;
+                }
+                if(this.qyCode3 == ''){
+                    this.isError3 = true;
                 }
                 let demandData = {};
                     demandData.demandtype = "1";
@@ -722,8 +775,6 @@
     }
     .error{
         position:absolute;
-        top:58px;
-        right:36px;
         color:red;
     }
     .aisx {

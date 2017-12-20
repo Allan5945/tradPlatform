@@ -1,8 +1,8 @@
 <template>
     <div class="news-tip" @click="initDis">
         <span class="news-tip-icon">&#xe602;</span>
-        <span class="news-tip-num">
-            <span>7</span>
+        <span class="news-tip-num" v-if="tpl != 0">
+            <span>{{tpl}}</span>
         </span>
     </div>
 </template>
@@ -10,10 +10,55 @@
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
+        data(){
+            return {
+            }
+        },
         methods:{
             initDis(){
-                localCommunication.$emit('initChat');
+                localCommunication.chat.shut = true;
+                localCommunication.chat.narrow = true;
             }
+        },
+        computed:{
+            tpl:function () {
+                if(localCommunication.chat.change);
+                let l = 0;
+                for(let key in localCommunication.chat.chatData){
+                    if(localCommunication.chat.chatData[key].noReadCount > 0){
+                        l = l + 1;
+                    }
+                }
+                return l;
+            }
+        },
+        mounted:function () {
+            let _this = this;
+            this.$ajax({
+                method: 'post',
+                url: '/openChat',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params:{
+                    fromNameId:this.$store.getters.role.id,
+                },
+            })
+                .then((response) => {
+                    let chatFlag = null;
+                    response.data.data.forEach((v)=>{
+                        if(chatFlag == null)chatFlag = v.chatFlag;
+                        if(!localCommunication.chat.chatData.hasOwnProperty(v.chatFlag)){
+                            localCommunication.chat.chatData[v.chatFlag] = v;
+                        };
+                    });
+                    localCommunication.chat.setChat = chatFlag;
+                    localCommunication.chat.change =  !localCommunication.chat.change;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         }
     }
 </script>
