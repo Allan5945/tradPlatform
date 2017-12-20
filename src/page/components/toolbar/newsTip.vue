@@ -22,7 +22,7 @@
         },
         computed:{
             tpl:function () {
-                if(localCommunication.chat.setChat);
+                if(localCommunication.chat.change);
                 let l = 0;
                 for(let key in localCommunication.chat.chatData){
                     if(localCommunication.chat.chatData[key].noReadCount > 0){
@@ -53,6 +53,7 @@
                         };
                     });
                     localCommunication.chat.setChat = chatFlag;
+                    localCommunication.chat.change =  !localCommunication.chat.change;
                 })
                 .catch((error) => {
                         console.log(error);

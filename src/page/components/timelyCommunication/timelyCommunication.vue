@@ -144,9 +144,9 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params:{
-                        setFromNameId:id[0] == this.role.id ? id[0] : id[1] ,
-                        setToNameId:id[0] == this.role.id ? id[1] : id[0],
-                        setDemandId:id[2],
+                        fromNameId:id[0] == this.role.id ? id[0] : id[1] ,
+                        toNameId:id[0] == this.role.id ? id[1] : id[0],
+                        demandId:id[2],
                     },
                 })
                     .then((response) => {
