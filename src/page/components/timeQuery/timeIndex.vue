@@ -10,9 +10,9 @@
             <div class="time-table">
                 <div class="table-til">
                     <div class="t-til"><span class="iconfont">&#xe621;</span>时刻表</div>
-                    <div class="t-update">
+                    <div class="t-update" >
                         <span>数据更新时间</span>
-                        <input type="text" v-model="inputData" @click="showSelcList=!showSelcList">
+                        <input type="text" v-model="inputData" readonly>
                         <span class="iconfont update-icon" @click="showSelcList=!showSelcList">&#xe605;</span>
                         <div class="selc-list dropDown popup" v-show="showSelcList">
                             <div @click="getTime(index)" v-for="(value,index) in timeList">{{value}}</div>
@@ -41,7 +41,7 @@
                                 <li>{{item.dptAirptCd}}</li>
                                 <li>{{item.arrvAirptCd}}</li>
                                 <li>{{item.fltNbr}}</li>
-                                <li class="air-type">{{item.aircrftTyp}}</li>
+                                <li >{{item.aircrftTyp}}</li>
                                 <li>{{item.lclDptTm}}</li>
                                 <li>{{item.dptAirptPot}}</li>
                                 <li>{{item.lclArrvTm}}</li>
@@ -52,6 +52,55 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="time-table">
+                  <div class="table-til">
+                      <div class="t-til"><span class="iconfont">&#xe628;</span>时刻分布</div>
+                  </div>
+                  <div class="table-box">
+                      <div class="box-head">
+                          <div class="name">武当山时刻表</div>
+                      </div>
+                      <div class="distr-content">
+                          <div class="distr-header">
+                              <div></div>
+                              <div><span>06:00</span><span>07:00</span></div>
+                              <div><span>08:00</span><span>09:00</span></div>
+                              <div><span>10:00</span><span>11:00</span></div>
+                              <div><span>12:00</span><span>13:00</span></div>
+                              <div><span>14:00</span><span>15:00</span></div>
+                              <div><span>16:00</span><span>17:00</span></div>
+                              <div><span>18:00</span><span>19:00</span></div>
+                              <div><span>20:00</span><span>21:00</span></div>
+                              <div><span>22:00</span><span>23:00</span></div>
+                              <div><span>24:00</span></div>
+                          </div>
+                          <div class="distr-content">
+                              <div class="content-sidebar">
+                                  <div>周一</div>
+                                  <div>周二</div>
+                                  <div>周三</div>
+                                  <div>周四</div>
+                                  <div>周五</div>
+                                  <div>周六</div>
+                                  <div>周日</div>
+                              </div>
+                              <div class="content-box">
+                                  <ul class=" " v-for="item in timeTableList">
+                                      <li>{{item.dptAirptCd}}</li>
+                                      <li>{{item.arrvAirptCd}}</li>
+                                      <li>{{item.fltNbr}}</li>
+                                      <li class="air-type">{{item.aircrftTyp}}</li>
+                                      <li>{{item.lclDptTm}}</li>
+                                      <li>{{item.dptAirptPot}}</li>
+                                      <li>{{item.lclArrvTm}}</li>
+                                      <li>{{item.arrvAirptPot}}</li>
+                                      <li>{{item.days}}</li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
             </div>
 
         </div>
@@ -99,10 +148,31 @@
                         console.log(error);
                     }
                 );
+            },
+            getClock(){
+                this.$ajax({
+                method: 'post',
+                url: '/getAirportTimeDistribution',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                     itia:'CTU',
+                     getTime: '2017.12.10'
+                    }
+                })
+                .then((response) => {
+                    this.timeTableList = response.data.list;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
             }
         },
         mounted() {
-            this.getData()
+            this.getData();
+            this.getClock();
         }
     }
 </script>
@@ -118,15 +188,18 @@
         margin:0;
     }
     .wrapper{
-        position: fixed;
+        position: absolute;
         width: 100%;
-        height: 100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;
         z-index: 11;
         color:#605e7c;
         header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index:1;
             height:120px;
             width:100%;
             overflow:hidden;
@@ -162,6 +235,7 @@
     .content{
         width:1100px;
         margin-left:250px;
+        margin-top:120px;
         background-color: #fff;
     }
     .table-til{
