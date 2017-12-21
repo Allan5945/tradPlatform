@@ -148,7 +148,7 @@
                     <div class="btn btn-w col-btn2" @click="cancelPurposeFn(),closeThisFn()">拒绝并撤回</div>
                 </div>
             </footer>
-            <myPurposeEdit v-show="myPurposeEditShow" @close-this="closeThis"></myPurposeEdit>
+            <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="planData" @refresh="refreshFn" @close-this="closeThis"></myPurposeEdit>
         </div>
     </div>
 </template>
@@ -186,17 +186,59 @@
              console.info('sendDataToMyPurposeData:')
              console.info(val)
          });
-         tabulationBoxTrigger.$emit('editSendToMyPurpose',val => { //接受myPurposeEdit.vue传来的参数（此处为响应者点击的按钮）
+//         this.getData();
+
+        /* tabulationBoxTrigger.$emit('editSendToMyPurpose',val => { //接受myPurposeEdit.vue传来的参数（此处为响应者点击的按钮）
              this.detailData = val;
-         })
+         })*/
+     },
+     watch: {
+         id: function () {
+             this.getData();
+         }
      },
      methods:{
+         // 刷新页面
+         refreshFn: function () {
+             this.getData();
+         },
+         // ajax获取数据
+         getData: function () {
+             this.$ajax({
+                 url:"/getResponseDetails",
+                 method: 'post',
+                 headers: {
+                     'Content-type': 'application/x-www-form-urlencoded'
+                 },
+                 params: {
+                     responseId: this.id //发布时间排序类型 0-倒序 1-正序
+                 }
+             }) .then((response) => {
+                 console.info(response)
+                 if(response.data.opResult == 0){
+                     this.detailData = response.data.obj.demand;
+                     this.planData = response.data.obj;
+//                     this.id = response.data.obj.id;
+                     this.demandId = response.data.obj.demandId;
+                     if(this.planData.releaseselected != 0){ //releaseselected=0:发布者已选定，1：发布者取消选定
+                         this.btnShow = true;
+                     }else {
+                         this.btnShow = false;
+                     }
+                 }else {
+                     alert('错误代码response.data.opResult：' + response.data.opResult)
+                 }
+
+             }).catch((error) => {
+                 console.log(error);
+             });
+         },
          closeThisFn: function () {
              this.$emit('close-this');
          },
          EditFn: function () {
              this.myPurposeEditShow = true;
-             tabulationBoxTrigger.$emit('sendToMyPurposeEdit',this.planData); // 向myPurposeEdit.vue传递数据
+//             tabulationBoxTrigger.$emit('sendToMyPurposeEdit',this.planData); // 向myPurposeEdit.vue传递数据
          },
          closeThis: function () {
              this.myPurposeEditShow = false;
@@ -458,7 +500,6 @@
                 height:160px;
                 width:50px;
             }
-
         }
         .table-form{
             padding:40px 0 0 40px;
@@ -470,9 +511,9 @@
             }
         }
     }
-      .airplace{
-            margin-top:20px;
-             >div:nth-of-type(2){
+    .airplace{
+          margin-top:20px;
+          >div:nth-of-type(2){
                height:45px;
                font-size:2rem;
                font-weight:bold;
@@ -481,11 +522,11 @@
                    font-size:1rem;
                    font-weight:normal;
                }
-            }
-              .resouse{
-              margin:20px 0;
-            }
-        }
+          }
+          .resouse{
+               margin:20px 0;
+          }
+    }
     footer{
         border-top: 1px solid #ccc;
           .buttons{
@@ -501,6 +542,7 @@
                   background-color:#fff;
                   text-align:center;
                   border-radius:100px;
+                  border: 0;
                   cursor:pointer;
               }
               .cancel-btn{
