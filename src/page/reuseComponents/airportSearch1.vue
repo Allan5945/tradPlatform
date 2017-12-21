@@ -116,8 +116,7 @@
         },
         computed:{
             ...vx.mapGetters([
-                'airList',
-                'cityList'
+                'airList'
             ]),
         }
     }
