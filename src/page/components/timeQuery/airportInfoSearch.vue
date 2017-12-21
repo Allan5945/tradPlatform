@@ -55,6 +55,30 @@
                     <div id="myChart"></div>
                     <div id="myChart"></div>
                 </div>
+                <div class="airport-track">
+                    <div class="track-til">
+                        <div>机场跑道数据</div>
+                        <div>共2条</div>
+                    </div>
+                    <div class="track-content" v-for="(item,index) in infoData.runwayList">
+                        <div>跑道{{index+1}}</div>
+                        <div><span>编号</span>{{item.runwaynumber}}</div>
+                        <div><span>等级</span>{{item.runwaylvl || "-"}}</div>
+                        <div><span>长度</span>{{item.runwaywidth}}</div>
+                        <div><span>宽度</span>{{item.runwaylength}}</div>
+
+                    </div>
+                </div>
+                <div class="airport-policy" >
+                    <div class="policy-til">
+                        <div>相关政策</div>
+                        <div>共2条</div>
+                    </div>
+                    <div class="policy-content">
+                        <div class="time">跑道1</div>
+                        <div class="text">跑道1</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -225,9 +249,63 @@
     }
     .i-echart{
         height:370px;
+        background-color:pink;
     }
     #myChart{
         width: 200px;
         height: 200px;
+    }
+    .airport-track{
+        margin:0 25px;
+        border:1px solid #ccc;
+        .track-til{
+            height:50px;
+            line-height:50px;
+            font-size:1.5rem;
+            display:flex;
+            justify-content: space-between;
+            padding:0 20px 0 26px;
+            border-bottom:1px solid #ccc;
+        }
+        .track-content{
+            margin-top:20px;
+            height:60px;
+            line-height:60px;
+            font-size:1.4rem;
+             border-top:1px solid #ccc;
+             display:flex;
+             >div{
+                flex:1;
+                padding-left:20px;
+                span{
+                    margin-right:10px;
+                }
+             }
+        }
+    }
+    .airport-policy{
+        margin:20px 25px 0 25px;
+        border:1px solid #ccc;
+        .policy-til{
+            height:50px;
+            line-height:50px;
+            font-size:1.5rem;
+            display:flex;
+            justify-content: space-between;
+            padding:0 20px 0 26px;
+            border-bottom:1px solid #ccc;
+        }
+        .policy-content{
+            margin-top:20px;
+            height:60px;
+            line-height:60px;
+            font-size:1.4rem;
+             border-top:1px solid #ccc;
+             display:flex;
+             >div{
+                flex:1;
+                padding-left:20px;
+             }
+        }
     }
 </style>

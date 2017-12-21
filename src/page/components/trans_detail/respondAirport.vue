@@ -204,7 +204,8 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id: this.planData.id
+                    id: this.planData.id,
+                    demandId: this.planData.demandId
                 }
                 })
                 .then((response) => {
