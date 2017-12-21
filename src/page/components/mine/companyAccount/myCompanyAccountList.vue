@@ -6,8 +6,8 @@
                     <div class="left">
                         <div style="margin-bottom: 22px;">当前账户金额（元）</div>
                         <div style="margin-bottom: 26px;height: 20px;">
-                            <span style="font-size: 18px;font-weight: bold;">1000000</span>
-                            <span>（含冻结金额2000元）</span>
+                            <span style="font-size: 18px;font-weight: bold;">{{myAccountData.totalNumber || "0"}}</span>
+                            <span>（含冻结金额{{myAccountData.freezeNumber || "0"}}元）</span>
                         </div>
                         <div class="buttons">
                             <button class="btn btn-w" style="margin-right: 10px;width: 96px;" @click="rechargeFn">充值</button>
@@ -15,82 +15,34 @@
                         </div>
                     </div>
                     <div class="right">
-                        <div class="title">交通银行</div>
-                        <div class="num">6227 0038 1902 0911 231</div>
+                        <div class="title">{{myCardData.cardName}}</div>
+                        <div class="num">{{myCardData.cardNumber}}</div>
                     </div>
                 </div>
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
-                    <!--<div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">-->
-                    <div class="list items" @click="listClickFn">
+                    <div class="list items" v-for="(item,index) in myListData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
                         <div class="item-a item">
-                            11.04.2017
+                            {{item.date}}
                         </div>
                         <div class="item-b item">
-                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
-                            <span>申请提现20000</span>
+                            <span v-if="item.demandId === '' || item.demandId === null">{{item.discription1}}</span>
+                            <span v-else>{{item.discription1}} <span style="color: #3c78ff; cursor:pointer;" @click.stop="needDetailClickFn(item)">{{item.demandTitle}}{{item.demandType}}</span></span>
                         </div>
-                        <div class="item-c item">冻结50000</div>
-                    </div>
-                    <div class="list items">
-                        <div class="item-a item">
-                            11.04.2017
-                        </div>
-                        <div class="item-b item">
-                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
-                            <span>申请提现20000</span>
-                        </div>
-                        <div class="item-c item">冻结50000</div>
-                    </div>
-                    <div class="list items">
-                        <div class="item-a item">
-                            11.04.2017
-                        </div>
-                        <div class="item-b item">
-                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
-                            <span>申请提现20000</span>
-                        </div>
-                        <div class="item-c item">冻结50000</div>
-                    </div>
-                    <div class="list items">
-                        <div class="item-a item">
-                            11.04.2017
-                        </div>
-                        <div class="item-b item">
-                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
-                            <span>申请提现20000</span>
-                        </div>
-                        <div class="item-c item">冻结50000</div>
-                    </div>
-                    <div class="list items">
-                        <div class="item-a item">
-                            11.04.2017
-                        </div>
-                        <div class="item-b item">
-                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
-                            <span>申请提现20000</span>
-                        </div>
-                        <div class="item-c item">冻结50000</div>
-                    </div>
-                    <div class="list items">
-                        <div class="item-a item">
-                            11.04.2017
-                        </div>
-                        <div class="item-b item">
-                            <span v-show="false">响应 <span>成都-北京航线需求</span></span>
-                            <span>申请提现20000</span>
-                        </div>
-                        <div class="item-c item">冻结50000</div>
+                        <div class="item-c item">{{item.discription2}}</div>
                     </div>
                 </div>
             </div>
         </div>
-        <myCompanyAccountRecharge @closeThis="closeRechargeFn" v-show="myCompanyAccountRechargeShow"></myCompanyAccountRecharge>
-        <myCompanyAccountWithdraw @closeThis="closeWithdrawFn" v-show="myCompanyAccountWithdrawShow"></myCompanyAccountWithdraw>
+        <transition-group name="fade">
+            <myCompanyAccountRecharge @closeThis="closeRechargeFn" v-show="myCompanyAccountRechargeShow" :key="0"></myCompanyAccountRecharge>
+            <myCompanyAccountWithdraw @closeThis="closeWithdrawFn" v-show="myCompanyAccountWithdrawShow" :key="1"></myCompanyAccountWithdraw>
+        </transition-group>
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
-            <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1" ></AccountWithdrawDetail>
-            <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
+            <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1"></AccountWithdrawDetail>
+            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" @closeThis="closeCompanyAirlineDetailPayAfterFn" :key="2"></companyAirlineDetailPayAfter>
+            <companyMyIntention v-show="companyMyIntentionShow"@closeThis="closeCompanyMyIntentionFn" :key="3"></companyMyIntention>
         </transition-group>
     </div>
 </template>
@@ -101,6 +53,9 @@
     import myCompanyAccountWithdraw from './myCompanyAccountWithdraw.vue'
     import AccountRechargeDetail from './AccountRechargeDetail.vue'
     import AccountWithdrawDetail from './AccountWithdrawDetail.vue'
+    import companyAirlineDetailPayAfter from './companyAirlineDetailPayAfter.vue'
+    import companyMyIntention from './companyMyIntention.vue'
+
     export default {
         data() {
             return {
@@ -108,12 +63,22 @@
                 myCompanyAccountWithdrawShow: false, // "申请提现" 弹出框
                 AccountRechargeDetailShow: false,    // 机场、航司充值详情
                 AccountWithdrawDetailShow: false,    // 提现详情
-                myData: [], // 获取的数据
+                companyAirlineDetailPayAfterShow: false, // 航线详情是否显示
+                companyMyIntentionShow: false,           // 运力详情是否显示
+                myData: {},     //获取的数据
+                myListData: [], // 获取的列表数据
+                myAccountData: {},
+                myCardData: {},
                 sendData: {}, // ajax传递的参数
+                listItemIndex: '',
+                demandIdShow: false, // 列表数据中没有demandId时，不显示
             }
         },
-        mounted() {
+        created() {
             this.getListData();
+        },
+        mounted() {
+
         },
         computed: {
             ...vx.mapGetters([
@@ -123,29 +88,48 @@
         methods: {
             // ajax获取列表数据
             getListData: function () {
-               /* this.$ajax({
-                    url:"/",
+                this.$ajax({
+                    url:"/perSonNalCompanyAccountList",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: this.sendData
+                    params: ''
                 }) .then((response) => {
                     console.info('myCompanyAccountList获取的数据:')
                     console.info(response)
-                    if(response.data.opResult === '0') {
-                        alert('公司账号')
+                    if(response.status === 200) {
+                        this.myData = response.data;
+                        this.myListData = response.data.transactionRecords;
+                        this.myAccountData = response.data.account;
+                        this.myCardData = response.data.card;
                     }else {
-                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+                        alert('无法请求到数据')
                     }
                 }).catch((error) => {
                     console.log(error);
-                });*/
+                });
             },
-            // 点击“充值账户”
+            // 点击“充值”
             rechargeFn: function () {
-                this.myCompanyAccountRechargeShow = true;
-                tabulationBoxTrigger.hierarchy = true;
+                this.$ajax({
+                    url:"/accountRecharge",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: ''
+                }) .then((response) => {
+                    if(response.status === 200) {
+                        this.myCompanyAccountRechargeShow = true;
+                        tabulationBoxTrigger.hierarchy = true;
+                        tabulationBoxTrigger.$emit('sendToMyCompanyAccountRecharge',response.data.card) //向myCompanyAccountRecharge.vue传数据
+                    }else {
+                        alert('无法请求到数据')
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
             },
             // 关闭“充值账户”
             closeRechargeFn: function () {
@@ -155,6 +139,7 @@
             WithdrawFn: function () {
                 this.myCompanyAccountWithdrawShow = true;
                 tabulationBoxTrigger.hierarchy = true;
+                tabulationBoxTrigger.$emit('myCompanyAccountWithdraw',this.myData) //向myCompanyAccountWithdraw.vue传数据
             },
             // 关闭“申请提现”
             closeWithdrawFn: function () {
@@ -163,24 +148,59 @@
             // 点击列表(list)，变成active状态, 确定哪个显示;
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
-//                this.AccountRechargeDetailShow = true; // 充值详情显示
-                this.AccountWithdrawDetailShow = true; // 提现详情显示
+                if(item.type !== '' || item.type !== null) {
+                    if(item.type == '02'){
+                        this.AccountWithdrawDetailShow = true; // 提现详情显示
+                    }else{
+                        this.AccountRechargeDetailShow = true; // 充值详情显示
+                    }
+                    tabulationBoxTrigger.$emit('sendToAccountWithdrawDetail',item) //向AccountWithdrawDetail、AccountRechargeDetail传数据
+                }else {
+                    return
+                }
                 tabulationBoxTrigger.hierarchy = true;
             },
             // 关闭“充值详情”
             closeAccountRechargeDetailFn: function () {
                 this.AccountRechargeDetailShow = false;
+                this.listItemIndex = '';
             },
             // 关闭“提现详情”
             closeAccountWithdrawDetailFn: function () {
                 this.AccountWithdrawDetailShow = false;
+                this.listItemIndex = '';
+            },
+            // 点击展示（航线、运力）详情
+            needDetailClickFn: function (item) {
+                //0：航司、 1：机场、 2：太美
+                tabulationBoxTrigger.$emit('sendToCompany',item) // 向companyAirlineDetailPayAfter、companyMyIntention传数据
+                tabulationBoxTrigger.hierarchy = true;
+                if(this.role.role == 0) {
+                    this.companyMyIntentionShow = true;
+                    this.companyAirlineDetailPayAfterShow = false;
+                }if(this.role.role == 1) {
+                    this.companyMyIntentionShow = false;
+                    this.companyAirlineDetailPayAfterShow = true;
+                }if(this.role.role == 2) {
+
+                }
+            },
+            // 关闭“航线详情”
+            closeCompanyAirlineDetailPayAfterFn: function () {
+                this.companyAirlineDetailPayAfterShow = false;
+            },
+            // 关闭“运力详情”
+            closeCompanyMyIntentionFn: function () {
+                this.companyMyIntentionShow = false;
             },
         },
         components: {
             myCompanyAccountRecharge,
             myCompanyAccountWithdraw,
             AccountRechargeDetail,
-            AccountWithdrawDetail
+            AccountWithdrawDetail,
+            companyAirlineDetailPayAfter,
+            companyMyIntention,
         }
     }
 </script>
@@ -262,6 +282,7 @@
         .right {
             padding: 22px 5px 0 10px;
             min-width: 225px;
+            max-width: 325px;
             height: 78px;
             color: white;
             background: #3C78FF;

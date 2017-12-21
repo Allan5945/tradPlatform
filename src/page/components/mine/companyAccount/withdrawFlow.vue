@@ -2,14 +2,14 @@
     <div class="wf-container">
         <div class="wf-top">
             <div class="color">
-                <div class="sure sure-a iconfont">&#xe6cc;</div>
-                <div class="sure sure-b iconfont">&#xe6cc;</div>
-                <div class="sure sure-c iconfont">&#xe6cc;</div>
-                <div class="unsure unsure-a"></div>
-                <div class="unsure unsure-b"></div>
-                <div class="unsure unsure-c"></div>
-                <div class="unclor unclor-a"></div>
-                <div class="unclor unclor-b"></div>
+                <div class="sure sure-a iconfont" v-show="sureAShow">&#xe6cc;</div>
+                <div class="sure sure-b iconfont" v-show="sureBShow">&#xe6cc;</div>
+                <div class="sure sure-c iconfont" v-show="sureCShow">&#xe6cc;</div>
+                <div class="unsure unsure-a" v-show="unsureAShow"></div>
+                <div class="unsure unsure-b" v-show="unsureBShow"></div>
+                <div class="unsure unsure-c" v-show="unsureCShow"></div>
+                <div class="unclor unclor-a" v-show="unclorAShow"></div>
+                <div class="unclor unclor-b" v-show="unclorBShow"></div>
             </div>
         </div>
         <div class="wf-bottom">
@@ -26,9 +26,14 @@
         props: ['withdrawFlowCode'],
         data() {
             return {
-                showCode1Show: false,
-                showCode2Show: false,
-                showCode3Show: false,
+                sureAShow: false,
+                sureBShow: false,
+                sureCShow: false,
+                unsureAShow: false,
+                unsureBShow: false,
+                unsureCShow: false,
+                unclorAShow: false,
+                unclorBShow: false,
             }
         },
         mounted() {
@@ -37,16 +42,34 @@
         methods: {
             show: function () {
                 // 代码1、2、3对应的情况
-                if(this.withdrawFlowCode == 1) {
-                    this.showCode1Show = true;
-                    this.showCode2Show = false;
-                    this.showCode3Show = false;
+                if(this.withdrawFlowCode == 0) {
+                    console.info('1')
+                    this.sureAShow = true;
+                    this.sureBShow = false;
+                    this.sureCShow = false;
+                    this.unsureAShow = false;
+                    this.unsureBShow = true;
+                    this.unsureCShow = true;
+                    this.unclorAShow = true;
+                    this.unclorBShow = true;
+                }if(this.withdrawFlowCode == 1) {
+                    this.sureAShow = true;
+                    this.sureBShow = true;
+                    this.sureCShow = false;
+                    this.unsureAShow = false;
+                    this.unsureBShow = false;
+                    this.unsureCShow = true;
+                    this.unclorAShow = false;
+                    this.unclorBShow = true;
                 }if(this.withdrawFlowCode == 2) {
-                    this.showCode1Show = false;
-                    this.showCode2Show = true;
-                    this.showCode3Show = false;
-                }if(this.withdrawFlowCode == 3) {
-                    this.showCode3Show = true;
+                    this.sureAShow = true;
+                    this.sureBShow = true;
+                    this.sureCShow = true;
+                    this.unsureAShow = false;
+                    this.unsureBShow = false;
+                    this.unsureCShow = false;
+                    this.unclorAShow = false;
+                    this.unclorBShow = false;
                 }
             }
         },
