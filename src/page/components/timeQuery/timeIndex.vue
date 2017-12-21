@@ -9,7 +9,7 @@
             <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
         </header>
         <timeSearch :qyCode="qyCode" :airportText="airportText" v-if="timeShow"></timeSearch>
-        <infoSearch></infoSearch>
+        <infoSearch v-if="airportShow"></infoSearch>
     </div>
 </template>
 
@@ -23,7 +23,8 @@ import infoSearch from './airportInfoSearch.vue'
                 airportText:'',
                 qyCode:'',
                 airportSearch:false,
-                timeShow:false
+                timeShow:false,
+                airportShow:false
             }
         },
         methods: {
@@ -42,7 +43,7 @@ import infoSearch from './airportInfoSearch.vue'
                 this.airportSearch = true;
             },
             getInfo(){
-                this.timeShow=true;
+                this.airportShow=true;
             }
 
         },
