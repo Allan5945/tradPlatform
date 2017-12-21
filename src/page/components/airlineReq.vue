@@ -358,7 +358,7 @@
                 </div>
             </div>
             <div class="sixth" @click.self="closeAll">
-                <!--<button class="btn-a btn-blue">委托代理</button>-->
+                <button class="btn-a btn-blue" @click="submitData2">委托代理</button>
                 <button class="btn-b btn-blue" @click="submitData">确认发布</button>
                 <button class="btn-c btn-cancel" @click="closeThis">取消</button>
             </div>
@@ -486,6 +486,7 @@
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
                 subsidyList: ['保底','定补','按人头'],
+                sendData: {},
             }
         },
         components: {
@@ -510,6 +511,58 @@
             warn4Fn: function () {
                 console.info(4)
                 this.warn4Show = true;
+            },
+            // 传送的数据
+            sendDataFn: function () {
+                this.sendData.contact = this.user;  //必填 联系人
+                this.sendData.iHome = this.phoneNum;//必填 联系方式
+                if(this.dptState == 0) {
+                    this.sendData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
+                }if(this.dptState == 1) {
+                    this.sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
+                }
+//                sendData.dpt = this.firAreaCode;
+                this.sendData.dptState = this.dptState;         //始发地类型（0：机场，1：区域）
+//                sendData.dptCt = this.firAreaCode; //不传
+                this.sendData.dptAcceptnearairport = this.dptAcceptnearairport; //必填 始发地是否接收临近机场(0:接收,1:不接收)
+                this.sendData.dptTimeresources = this.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.sendData.pstTimeresources = this.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.sendData.arrvTimeresources = this.arrvTimeresources;        //选填 到达地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.dptTime = this.startTime1Show + ',' + this.endTime1Show;
+                this.pstTime = this.startTime2Show + ',' + this.endTime2Show;
+                this.arrvTime = this.startTime3Show + ',' + this.endTime3Show;
+                this.sendData.dptTime = this.dptTime;
+                this.sendData.pstTime = this.pstTime;
+                this.sendData.arrvTime = this.arrvTime;
+                this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
+                this.sendData.days = this.scheduleShow;      //必填 班期
+                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
+                this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
+                this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
+                this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
+//                sendData.pst = this.secAreaCode;   //选填 经停地
+                this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
+                if(this.pstState == 0) {
+                    this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
+                }if(this.pstState == 1) {
+                    this.sendData.pst = this.secArea;//选填 经停地
+                }
+//                sendData.pstCt = this.secAreaCode; //不传
+                this.sendData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
+//                sendData.arrv = this.thirdAreaCode;//选填 到达地
+                this.sendData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
+                if(this.arrvState == 0) {
+                    this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
+                }if(this.arrvState == 1) {
+                    this.sendData.arrv = this.thirdArea//选填 到达地
+                }
+//                sendData.arrvCt = this.thirdAreaCode; //不传
+                this.sendData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
+                this.sendData.blockbidprice = this.blockbidPrice; //选填 拦标价格
+                this.sendData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
+                this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
+                this.sendData.seating = this.seatingNum;            // 选填 座位数
+                this.sendData.remark = this.remarkMsg;              // 选填 备注说明
             },
             //发送数据
             submitData: function () {
@@ -544,81 +597,82 @@
                     req.scrollTop = 250;
                     return
                 }
+                this.sendDataFn();
+                this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-                let sendData = {};
-                sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
-                sendData.contact = this.user;  //必填 联系人
-                sendData.iHome = this.phoneNum;//必填 联系方式
-                if(this.dptState == 0) {
-                    sendData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
-                }if(this.dptState == 1) {
-                    sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
-                }
-//                sendData.dpt = this.firAreaCode;
-                sendData.dptState = this.dptState;         //始发地类型（0：机场，1：区域）
-//                sendData.dptCt = this.firAreaCode; //不传
-                sendData.dptAcceptnearairport = this.dptAcceptnearairport; //必填 始发地是否接收临近机场(0:接收,1:不接收)
-                sendData.dptTimeresources = this.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
-                sendData.pstTimeresources = this.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
-                sendData.arrvTimeresources = this.arrvTimeresources;        //选填 到达地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
-                this.dptTime = this.startTime1Show + ',' + this.endTime1Show;
-                this.pstTime = this.startTime2Show + ',' + this.endTime2Show;
-                this.arrvTime = this.startTime3Show + ',' + this.endTime3Show;
-                sendData.dptTime = this.dptTime;
-                sendData.pstTime = this.pstTime;
-                sendData.arrvTime = this.arrvTime;
-                sendData.aircrfttyp = this.typeChoose;  //必填 机型
-                sendData.days = this.scheduleShow;      //必填 班期
-                sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
-                sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
-                sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
-                sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
-//                sendData.pst = this.secAreaCode;   //选填 经停地
-                sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
-                if(this.pstState == 0) {
-                    sendData.pst = this.qyCode2;//选填 经停地，机场三字码
-                }if(this.pstState == 1) {
-                    sendData.pst = this.secArea;//选填 经停地
-                }
-//                sendData.pstCt = this.secAreaCode; //不传
-                sendData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
-//                sendData.arrv = this.thirdAreaCode;//选填 到达地
-                sendData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
-                if(this.arrvState == 0) {
-                    sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
-                }if(this.arrvState == 1) {
-                    sendData.arrv = this.thirdArea//选填 到达地
-                }
-//                sendData.arrvCt = this.thirdAreaCode; //不传
-                sendData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
-                sendData.blockbidprice = this.blockbidPrice; //选填 拦标价格
-                sendData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
-                sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
-                sendData.seating = this.seatingNum;            // 选填 座位数
-                sendData.remark = this.remarkMsg;              // 选填 备注说明
-
-                console.info(sendData);
+                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: sendData
+                    params: this.sendData
                 }) .then((response) => {
-                    console.info('1response:')
-                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功发布！')
                         this.$emit("closeForm");
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
                 });
-//                this.thisShow = false;
+            },
+            // 委托发布
+            submitData2: function () {
+                let req = document.getElementById('airlineReq'); //控制滚动条的位置
+                //表单验证（部分）
+                if(this.user == '') {
+                    this.warn1Show = true;
+                    req.scrollTop = 0;
+                    return
+                }if(this.phoneNum == '' || this.warn2Show == true) {
+                    this.warn2Show = true;
+                    req.scrollTop = 0;
+                    return
+                }if(this.firArea == '') {
+                    this.warn3Show = true;
+                    req.scrollTop = 0;
+                    return
+                }if(this.myDate1 == '选择起止时间') {
+                    this.warn6Show = true;
+                    req.scrollTop = 0;
+                    return
+                }if(this.scheduleShow == '选择班期类型') {
+                    this.warn5Show = true;
+                    req.scrollTop = 0;
+                    return
+                }if(this.typeChoose == '') {
+                    this.warn4Show = true;
+                    req.scrollTop = 0;
+                    return
+                }if(this.myDate2 == '选择起止时间') {
+                    this.warn7Show = true;
+                    req.scrollTop = 250;
+                    return
+                }
+                this.sendDataFn();
+                this.sendData.demandtype = '2';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+
+                console.info(this.sendData);
+                this.$ajax({
+                    url:"/demandAdd",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.sendData
+                }) .then((response) => {
+                    if(response.data.opResult === '0'){
+                        alert('成功委托！')
+                        this.$emit("closeForm");
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
+                }) .catch((error) => {
+                    console.log(error);
+                });
             },
             closeThis: function () {
                 this.$emit("closeForm");

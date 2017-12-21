@@ -392,7 +392,7 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="hourConst"
+                                <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                         </div>
@@ -422,11 +422,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
-        /*props: {
-            acceptData: {
-                type: Object
-            }
-        },*/
+        props: ['planDataToForm'],
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -562,51 +558,18 @@
         watch: {
             typeChoose: function () {
                 this.warn4Show = false;
-            }
+            },
         },
         created() {
-            /*tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.sendData.demandId = val.data.id;
-                this.sendData.employeeId = val.data.employeeId;
-            })
-            tabulationBoxTrigger.$on('supProperty', val => {
-                this.sendData.title = val.title;
-                this.sendData.periodValidity = val.periodValidity;
-                this.sendData.releasetime = val.releasetime;
-            })*/
-            tabulationBoxTrigger.$on('sendToMyPurposeEdit',val => { //从myPurpose接受来的数据
+           /* tabulationBoxTrigger.$on('sendToMyPurposeEdit',val => { //从myPurpose接受来的数据
                 console.info('sendToMyPurposeEdit:')
                 console.info(val)
                 this.sendData = val;
-            })
-        },
-        mounted() {
-//            console.info(this.acceptData)
-            /*let acceptData = this.acceptData;
-            if (acceptData.dptState == 0) {
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }
-            if (acceptData.dptState == 1) {
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if (acceptData.pstState == 0) {
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }
-            if (acceptData.pstState == 1) {
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if (acceptData.arrvState == 0) {
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }
-            if (acceptData.arrvState == 1) {
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }*/
+//                this.initializeFn();
+            })*/
+            this.sendData = this.planDataToForm; // 通过props方式取代tabulationBoxTrigger获取数据
+            console.info('11111111111')
+            console.info(this.sendData)
         },
         computed: {
             sailingtime: function () {
@@ -734,7 +697,8 @@
                     console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功添加该意向！')
-                        tabulationBoxTrigger.$emit('editSendToMyPurpose', this.sendData);  //向myPurpose.vue传对象
+                        this.$emit('refresh');
+//                        tabulationBoxTrigger.$emit('editSendToMyPurpose', this.sendData);  //向myPurpose.vue传对象
                         this.$emit('close-this');
                     }else{
                         alert('错误代码：' + response.data.opResult)
@@ -742,7 +706,6 @@
                 }).catch((error) => {
                     console.log(error);
                 });
-                this.$emit('change-showCode');
 //                console.info('000')
             },
             closeThis: function () {
