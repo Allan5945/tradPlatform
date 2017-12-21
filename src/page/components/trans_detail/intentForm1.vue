@@ -649,7 +649,7 @@
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
-//                this.sendData.dpt = this.qyCode4;   //运力基地
+                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
                 console.info('sendData:');
                 console.info(this.sendData);

@@ -107,15 +107,15 @@
                       </div>
                       <div>
                           <div>座位数</div>
-                          <div>{{planData.seating}}</div>
+                          <div>{{planData.seating}}人</div>
                       </div>
                       <div>
                           <div>客量预期</div>
-                          <div>{{planData.avgguestexpect}}</div>
+                          <div>{{planData.avgguestexpect}}人</div>
                       </div>
                       <div>
                           <div>客座率预期</div>
-                          <div>{{planData.loadfactorsexpect}}</div>
+                          <div>{{planData.loadfactorsexpect}}%</div>
                       </div>
                       <div>
                           <div>补贴政策</div>
@@ -123,7 +123,7 @@
                       </div>
                       <div>
                           <div>小时成本</div>
-                          <div>{{planData.hourscost}}</div>
+                          <div>{{planData.hourscost}}万元/小时</div>
                       </div>
                        <div>
                           <div>运力归属</div>

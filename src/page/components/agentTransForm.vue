@@ -390,7 +390,7 @@
                     demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
                     demandData.scheduling = this.dispatch == false? '1':'0';
                     if(this.dispatch){
-                        demandData.schedulinePort  = qyCode1;
+                        demandData.schedulinePort  = this.qyCode1;
                     }
                     demandData.remark = this.tip;
                     demandData.periodValidity = this.myDate;

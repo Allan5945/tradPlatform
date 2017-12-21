@@ -85,7 +85,7 @@
                 <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
             </div>
             <div class="form-box pad1 taken">
-                <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost">
+                <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
                 <span>w/h</span>
             </div>
             <div class="form-box  pad1 dispatch">
@@ -138,7 +138,8 @@
             </div>
         </div>
         <div class="t-btn">
-            <div class="confirm-btn " @click="confirm">确认发布</div>
+            <div class="agent-btn " @click="confirm(4)">委托代理</div>
+            <div class="confirm-btn " @click="confirm(1)">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
         </div>
     </div>
@@ -337,6 +338,12 @@
                     this.isError2 = false;
                 }
             },
+            verifyHourcost:function(){
+                this.hourcost =  this.hourcost.replace(/[^0-9.]/g,'');
+                if(this.hourcost>100){
+                    this.hourcost = '';
+                }
+            },
             pickTime1: function(i) {
                 this.timeStartIndex = i;
                 this.timeStart = this.timeData[i];
@@ -442,7 +449,7 @@
                 //console.log(this.airCompanyData)
                 this.airCompanyShow = true;
             },
-            confirm:function(){
+            confirm:function(type){
                 //必填信息验证
                 if(!this.contact){
                      this.isError1 = true;
@@ -454,7 +461,7 @@
                     this.isError3 = true;
                 }
                 let demandData = {};
-                    demandData.demandtype = "1";
+                    demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
@@ -476,8 +483,7 @@
                     demandData.remark = this.tip;
                     demandData.periodValidity = this.myDate;
                     demandData.publicway = this.post;
-                    //demandData.directionalgoal = this.directText;
-                    //demandData.demandprogress = '0';
+                    //demandData.directionalgoal = this.qyCode2;
                  this.$ajax({
                 url:"/demandAdd",
                 method: 'post',
@@ -647,9 +653,13 @@
           cursor:pointer;
 
         }
+        .agent-btn{
+             width:100px;
+             box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
+        }
         .confirm-btn{
           width:190px;
-          margin:0 10px;
+          margin:0 10px 0 30px;
           box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .cancel-btn{
@@ -661,9 +671,15 @@
           border: 1px solid rgba(96,94,124,.6);
         }
     }
+    .agent-btn:hover{
+          background-color: rgba(80, 139, 255,1);
+          color: white;
+          cursor: pointer;
+          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+    }
     .confirm-btn:hover{
-           background-color: rgba(80, 139, 255,1);
-          color: white !important;
+          background-color: rgba(80, 139, 255,1);
+          color: white;
           cursor: pointer;
           box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
     }
