@@ -60,6 +60,7 @@ export default class ChatSocket{
             console.log(`收到信息`,chat);
         };
         this.ws.onclose  = ()=>{
+            window.sessionStorage.setItem("isLogin",null);
             console.log('关闭连接');
         };
         this.ws.onerror  = ()=>{

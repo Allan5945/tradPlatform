@@ -1,6 +1,6 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div :class="{'tagRed':(key.data.renew == 0)}" @click="getDetail(key)" v-for="(key,index) in renderData" @mouseover="drawLine(key,true,key.type)" @mouseout="drawLine('',false,key.type)">
+        <div :class="{'tagRed':(key.data.renew == 0),'tabulation-box-set':seted == index}" @click="getDetail(key,index)" v-for="(key,index) in renderData" @mouseover="drawLine(key,true,key.type)" @mouseout="drawLine('',false,key.type)">
             <div class="tabulation-item">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
@@ -39,7 +39,8 @@
         data() {
             return {
                 hidden: false,
-                set: ''
+                set: '',
+                seted:null
             }
         },
         mounted: function () {
@@ -136,7 +137,8 @@
                 }
                 this.$bExample.setLinesList(pots, t);
             },
-            getDetail: function (val) {
+            getDetail: function (val,i) {
+                this.seted = i;
                 if(val.data.renew == 0){
                     this.$ajax({
                         method: 'post',
@@ -398,10 +400,13 @@
             border-bottom: 1px solid #f3f3f3;
             &:hover {
                 cursor: pointer;
-                background-color: rgba(229, 229, 229, .2);
+                background-color: rgba(229, 229, 229, .35);
                 border-radius: 7px;
             }
         }
+    }
+    .tabulation-box-set{
+        background-color: rgba(229, 229, 229, .2);
     }
     .colored{
         color:rgba(96,94,124,.6) !important;

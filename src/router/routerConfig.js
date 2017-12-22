@@ -23,6 +23,9 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         const myCollection = resolve => require(['./../page/components/mine/myCollection/myCollection.vue'], resolve);
         // 公司账户
         const companyAccount = resolve => require(['./../page/components/mine/companyAccount/myCompanyAccountList.vue'], resolve);
+// 新闻舆情
+const opinion = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -66,6 +69,10 @@ const router = new VueRouter({
                             component: companyAccount
                         }
                     ]
+                },
+                {
+                    path:'opinion',
+                    component: opinion,
                 }
             ]
         },
@@ -79,8 +86,7 @@ const router = new VueRouter({
     ],
     model: 'history'
 });
-let token = false,
-     ucPath = '/index/userCenter';
+let token = false;
 router.beforeEach((to, from, next) => {
     token = token || (window.sessionStorage.getItem('isLogin') === 'ok');
     if (to.path.indexOf('/index') != -1) {//需要登录

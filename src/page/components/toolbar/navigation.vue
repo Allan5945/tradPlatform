@@ -4,7 +4,7 @@
             <router-link to="/index" class="a-click">首页</router-link>
         </div>
         <div class="font-bold-x nav1">
-            <router-link to="/index" class="a-click">新闻资讯</router-link>
+            <router-link to="/index/opinion" class="a-click">新闻舆情</router-link>
         </div>
         <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
             <div class="nav-title">
@@ -92,7 +92,7 @@
         padding-left: 14px;
     }
     .nav-box {
-        position: absolute;
+        position: fixed;
         right: 60px;
         top:40px;
         z-index: 15;
