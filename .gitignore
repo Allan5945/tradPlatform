@@ -4,6 +4,8 @@ dist/
 npm-debug.log
 yarn-error.log
 buildConfig.js
+test/
+testEach/
 # Editor directories and files
 .idea
 *.suo
