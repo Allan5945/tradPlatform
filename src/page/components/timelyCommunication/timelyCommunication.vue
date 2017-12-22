@@ -137,6 +137,7 @@
             ]),
             setId:function () {
                 let id = ln.chat.setChat.split('-');
+    
                 this.$ajax({
                     method: 'post',
                     url: '/updateState',
@@ -146,7 +147,7 @@
                     params:{
                         fromNameId:id[0] == this.role.id ? id[0] : id[1] ,
                         toNameId:id[0] == this.role.id ? id[1] : id[0],
-                        demandId:id[2],
+                        demandId:id[2] == 'null' ? '' : id[2],
                     },
                 })
                     .then((response) => {
