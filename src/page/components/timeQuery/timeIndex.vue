@@ -4,12 +4,18 @@
             <div class="search-box">
                 <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
                 <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-show="airportSearch"></airportS1>
-                <div class="s-type"><span>时刻</span><span class="iconfont">&#xe605;</span></div>
+                <div class="s-type" @click="showType = !showType">
+                    <span>{{selcType}}</span>
+                    <span class="iconfont">&#xe605;</span>
+                </div>
+                <div class="selc-list dropDown popup" v-show="showType">
+                    <div @click="getType(index)" v-for="(value,index) in typeList">{{value}}</div>
+                </div>
             </div>
             <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
         </header>
         <timeSearch :qyCode="qyCode" :airportText="airportText" v-if="timeShow"></timeSearch>
-        <infoSearch v-if="airportShow"></infoSearch>
+        <infoSearch :qyCode="qyCode" v-if="airportShow"></infoSearch>
     </div>
 </template>
 
@@ -22,12 +28,19 @@ import infoSearch from './airportInfoSearch.vue'
             return {
                 airportText:'',
                 qyCode:'',
+                selcType:'时刻',
+                typeList:['时刻','机场'],
                 airportSearch:false,
                 timeShow:false,
-                airportShow:false
+                airportShow:false,
+                showType:false
             }
         },
         methods: {
+            getType(i){
+                this.selcType = this.typeList[i];
+                this.showType = false;
+            },
             closeDialog(){
                  let that =this;
                setTimeout(function(){
@@ -43,7 +56,13 @@ import infoSearch from './airportInfoSearch.vue'
                 this.airportSearch = true;
             },
             getInfo(){
-                this.airportShow=true;
+                if(this.selcType == '时刻'){
+                   this.timeShow = true;
+                    this.airportShow = false;
+                }else if(this.selcType == '机场'){
+                    this.airportShow = true;
+                    this.timeShow = false;
+                }
             }
 
         },
@@ -106,6 +125,7 @@ import infoSearch from './airportInfoSearch.vue'
                border-right:1px solid #ccc;
             }
             .s-type{
+                position:relative;
                 width:160px;
                 height:40px;
                 line-height:40px;
@@ -113,6 +133,7 @@ import infoSearch from './airportInfoSearch.vue'
                 padding:0 20px;
                 display:flex;
                 justify-content: space-between;
+                cursor:pointer;
                 .iconfont{
                     color:#3c78ff;
                 }
@@ -121,7 +142,7 @@ import infoSearch from './airportInfoSearch.vue'
                 position:absolute;
                 top:42px;
                 left:0;
-                width:400px;
+                width:520px;
                 max-height:175px;
                 overflow-y: scroll;
                 overflow:hidden;
@@ -142,5 +163,27 @@ import infoSearch from './airportInfoSearch.vue'
                 color:#3c78ff;
             }
         }
+    }
+    .dropDown {
+          position:absolute;
+          top:41px;
+          right:0;
+          width:160px;
+          background-color: #fff;
+          border-radius: 4px;
+          z-index:999;
+           >div {
+            width: 100%;
+            height:35px;
+            box-sizing: border-box;
+            line-height:35px;
+            padding-left: 14px;
+            color: #605E7C;
+            font-size: 1.2rem;
+            cursor:pointer;
+            &:hover{
+                background-color:rgba(235,235,235,.5);
+            }
+          }
     }
 </style>

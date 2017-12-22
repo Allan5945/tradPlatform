@@ -51,32 +51,80 @@
                     </div>
                 </div>
                 <div class="i-echart">
-                    <div id="myChart"></div>
-                    <div id="myChart"></div>
-                    <div id="myChart"></div>
+                   <div id="myChart1"></div>
+                    <div id="myChart2"></div>
+                    <div id="myChart3"></div>
                 </div>
                 <div class="airport-track">
                     <div class="track-til">
                         <div>机场跑道数据</div>
-                        <div>共2条</div>
+                        <div v-if="infoData.runwayList" style="color:#3c78ff;">共{{infoData.runwayList.length}}条</div>
                     </div>
                     <div class="track-content" v-for="(item,index) in infoData.runwayList">
                         <div>跑道{{index+1}}</div>
-                        <div><span>编号</span>{{item.runwaynumber}}</div>
+                        <div><span>编号</span>{{item.runwaynumber|| "-"}}</div>
                         <div><span>等级</span>{{item.runwaylvl || "-"}}</div>
-                        <div><span>长度</span>{{item.runwaywidth}}</div>
-                        <div><span>宽度</span>{{item.runwaylength}}</div>
+                        <div><span>长度</span>{{item.runwaywidth|| "-"}}</div>
+                        <div><span>宽度</span>{{item.runwaylength|| "-"}}</div>
 
                     </div>
                 </div>
                 <div class="airport-policy" >
                     <div class="policy-til">
                         <div>相关政策</div>
-                        <div>共2条</div>
+                        <div style="color:#3c78ff;">共2条</div>
                     </div>
                     <div class="policy-content">
-                        <div class="time">跑道1</div>
-                        <div class="text">跑道1</div>
+                        <div class="time">2014.12.12</div>
+                        <div class="text">
+                            <div class="text-til">内容</div>
+                            <div class="text-tent">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容
+                            我是内容我是内容我是内容我是内容我是内容我是内容</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="news">
+                    <div class="n-til">
+                        <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
+                        <div class="more">查看更多></div>
+                    </div>
+                    <div class="news-box">
+                        <div class="box-pic">
+                            <img :src="img" alt="">
+                        </div>
+                        <div class="box-content">
+                            <div class="box-til">
+                                <div class="name"><a href="javascript:;">成都-北京航线舆情</a></div>
+                                <div class="type">
+                                    <div>舆情类型</div>
+                                    <div>舆情类型</div>
+                                </div>
+                            </div>
+                            <div class="box-text">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</div>
+                            <div class="box-foot">
+                                <div class="box-net">民航资源网</div>
+                                <div class="box-time">2012.12.12</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="news-box">
+                        <div class="box-pic">
+                            <img :src="img" alt="">
+                        </div>
+                        <div class="box-content">
+                            <div class="box-til">
+                                <div class="name"><a href="javascript:;">成都-北京航线舆情</a></div>
+                                <div class="type">
+                                    <div>舆情类型</div>
+                                    <div>舆情类型</div>
+                                </div>
+                            </div>
+                            <div class="box-text">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容内容我是内容我是内容我是内容我是内容我是内容我是内容</div>
+                            <div class="box-foot">
+                                <div class="box-net">民航资源网</div>
+                                <div class="box-time">2012.12.12</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,6 +134,7 @@
 
 <script>
     import echarts from 'echarts';
+    import myPic from '$src/static/img/145.jpg';
     export default {
         data() {
             return {
@@ -94,10 +143,19 @@
         },
         props:['qyCode'],
         watch: {
-
+            'qyCode':function(){
+                this.getData();
+            }
         },
        computed:{
-
+            img:function(){
+                return myPic;
+            },
+            years:function(){
+                if(this.infoData){
+                    return this.infoData.years.reverse()
+                }
+            }
         },
         methods: {
             getData(){
@@ -108,13 +166,13 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                     itia:"CTU"
+                     itia:this.qyCode
                     }
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
                         this.infoData = response.data.obj;
-
+                        this.drawLine(this.infoData);
                     }
                 })
                 .catch((error) => {
@@ -122,26 +180,70 @@
                     }
                 );
             },
-            drawLine(){
-                let myChart = this.$echarts.init(document.getElementById('myChart'))
-                myChart.setOption({
+            drawLine(data){
+                console.log(this.turnData(data.passengerThroughputs))
+                let myChart1 = this.$echarts.init(document.getElementById('myChart1'))
+                let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
+                let myChart3 = this.$echarts.init(document.getElementById('myChart3'))
+                myChart1.setOption({
                     title: { text: '旅客吞吐量' },
                     tooltip: {},
                     xAxis: {
-                        data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                        data: this.years
                     },
-                    yAxis: {},
+                    yAxis: {
+                        name:'单位：1000万',
+                        data: ["0","1","2","3","4","5","6"]
+                    },
                     series: [{
-                        name: '销量',
-                        type: 'bar',
-                        data: [5, 20, 36, 10, 10, 20]
+                        name: '旅客吞吐量',
+                        type: 'line',
+                        data:this.turnData(data.passengerThroughputs,7)
                     }]
                 });
+                 myChart2.setOption({
+                    title: { text: '货物吞吐量' },
+                    tooltip: {},
+                    xAxis: {
+                        data: this.years
+                    },
+                    yAxis: {
+                        name:'单位：10万',
+                        data:["0","1","2","3","4","5","6"]
+                    },
+                    series: [{
+                        name: '货物吞吐量',
+                        type: 'line',
+                        data:this.turnData(data.goodsThroughputs,5)
+                    }]
+                });
+                  myChart3.setOption({
+                    title: { text: '起降架次' },
+                    tooltip: {},
+                    xAxis: {
+                        data: this.years
+                    },
+                    yAxis: {
+                        name:'单位：10万',
+                        data: ["0","1","2","3","4","5","6"]
+                    },
+                    series: [{
+                        name: '起降架次',
+                        type: 'line',
+                        data:this.turnData(data.takeOffAndLandingFlights,5)
+                    }]
+                });
+            },
+            turnData(num,n){
+                let newNum = [];
+                num.forEach(item =>{
+                    newNum.push(item*100000 /(Math.pow(10,n+5)));
+                })
+                return newNum.reverse();
             }
         },
         mounted() {
             this.getData();
-            this.drawLine();
         },
         components:{
 
@@ -161,9 +263,8 @@
     }
     .content{
         width:1100px;
-        height:1000px;
-        margin-left:250px;
-        margin-top:160px;
+        margin:160px 0 10px 250px;
+        padding-bottom:50px;
         background-color: #fff;
     }
     .banner{
@@ -204,9 +305,9 @@
     }
     .info{
          .i-til{
-             height:86px;
+            height:86px;
             line-height:86px;
-            margin: 0 17px;
+            margin: 0 20px;
             border-bottom:1px solid #ccc;
             font-size:1.6rem;
             display:flex;
@@ -216,7 +317,7 @@
         }
         .i-content{
             display:flex;
-            padding-top:58px;
+            padding:58px 0;
         }
     }
     .info-box{
@@ -248,15 +349,19 @@
 
     }
     .i-echart{
+
         height:370px;
-        background-color:pink;
+        margin:0 20px 20px 10px;
+        display:flex;
     }
-    #myChart{
-        width: 200px;
-        height: 200px;
+    #myChart1,#myChart2,#myChart3{
+        flex:1;
+        height: 370px;
+        margin-left:10px;
+        border:1px solid #ccc;
     }
     .airport-track{
-        margin:0 25px;
+        margin:0 20px;
         border:1px solid #ccc;
         .track-til{
             height:50px;
@@ -284,7 +389,7 @@
         }
     }
     .airport-policy{
-        margin:20px 25px 0 25px;
+        margin:20px 20px 0 20px;
         border:1px solid #ccc;
         .policy-til{
             height:50px;
@@ -300,12 +405,121 @@
             height:60px;
             line-height:60px;
             font-size:1.4rem;
-             border-top:1px solid #ccc;
-             display:flex;
-             >div{
-                flex:1;
+            border-top:1px solid #ccc;
+            display:flex;
+             .time{
+                width:230px;
                 padding-left:20px;
              }
+             .text{
+                display:flex;
+                padding:0 30px 0 15px;
+             }
+             .text-til{
+                width:50px;
+             }
+             .text-tent{
+                width:700px;
+                overflow:hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+             }
+        }
+    }
+    .news{
+        .n-til{
+            height:86px;
+            line-height:86px;
+            margin: 0 20px 16px 20px;
+            padding: 0 10px;
+            border-bottom:1px solid #ccc;
+            font-size:1.6rem;
+            display:flex;
+            justify-content: space-between;
+            .iconfont{
+                font-size:2rem;
+                margin-right:6px;
+            }
+            .n-name{
+                 display:flex;
+            }
+            .more{
+
+            }
+        }
+    }
+    .news-box{
+        margin:0 20px 10px 20px;
+        height:110px;
+        border:1px solid #ccc;
+        padding:10px 8px 10px 12px;
+        display:flex;
+        .box-pic{
+            width:170px;
+            height:110px;
+            background-color:pink;
+            img{
+                width:100%;
+                height:100%;
+            }
+        }
+        .box-content{
+            width:850px;
+            margin-left:20px;
+        }
+        .box-til{
+             height:42px;
+             font-size:1.4rem;
+             font-weight:bold;
+             display:flex;
+             justify-content: space-between;
+            .name{
+                height:16px;
+                line-height:16px;
+                border-bottom:1px solid #000;
+                margin:11px 0 15px 0;
+            }
+        }
+        .type{
+            display:flex;
+            div{
+                height:24px;
+                line-height:24px;
+                width:79px;
+                margin-left:5px;
+                color:#fff;
+                text-align:center;
+                border-radius:5px;
+            }
+            div:nth-of-type(odd){
+                background-color:#97c889;
+            }
+            div:nth-of-type(even){
+                background-color:#c8a289;
+            }
+        }
+        .box-text{
+            text-indent:20px;
+            font-size:1.2rem;
+            padding-right:20px;
+            height:46px;
+            line-height:23px;
+            overflow:hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .box-foot{
+            margin-top:10px;
+            display:flex;
+            div{
+                height:12px;
+                line-height:12px;
+                margin-right:10px;
+            }
         }
     }
 </style>
