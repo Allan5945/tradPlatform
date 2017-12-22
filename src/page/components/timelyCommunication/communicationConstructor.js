@@ -5,7 +5,6 @@ ln.$on('addChat', function (d)  {
     if(_this.$store.getters.role.id == 1)employeeId = d.demandEmployeeId;
     let roleId = Number(_this.$store.getters.role.id);
     let keys = (roleId < employeeId ? roleId : employeeId)  + '-' + (roleId < employeeId ? employeeId : roleId) + "-" +d.id;
-
     this.chat.setChat = keys;
     if(!this.chat.chatData.hasOwnProperty(keys)){
         let __this = this;
