@@ -335,7 +335,7 @@
                                     <div class="item-a item-height">{{item.sailingtime}}</div>
                                     <div class="item-b item-height">{{item.aircrfttyp}}</div>
                                     <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>
+                                    <!--<div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>-->
                                     <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
                                     <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
                                     <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
@@ -561,7 +561,8 @@
                     }if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
                         this.showCode = 3;
-                        // 获取意向列表数据
+                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+                       /* // 获取意向列表数据
                         let toAcceptrResponseList = {};
                         toAcceptrResponseList.demandId = this.id;
                         toAcceptrResponseList.intentionStatu = 0;
@@ -575,11 +576,11 @@
                         }).then((response) => {
 //                                    console.info('responseList:')
 //                                    console.info(response.data.responseList)
-                            tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+
                         }).catch((error) => {
                             console.log(error);
                         });
-
+                     */
                     }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
                         console.info('000000')
                         this.showCode = 0;
