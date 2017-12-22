@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import echarts from 'echarts'
+import {Radio,Pagination} from 'element-ui'
 
 import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
@@ -19,6 +20,9 @@ Vue.prototype.$cityMes = cityMes;  // 扩展城市转换方法
 Vue.prototype.$jsonp = jsonp;    // 扩展jsonp请求方法
 Vue.prototype.$bExample = new BmapExamples();    // 挂载
 Vue.prototype.$echarts = echarts;
+
+Vue.use(Radio);
+Vue.use(Pagination);
 
 axios.interceptors.response.use(data => {
     return data
