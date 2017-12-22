@@ -405,7 +405,7 @@
         },
         created() {
 //            this.initData();
-            tabulationBoxTrigger.$on('sendToCompany', val => {
+            tabulationBoxTrigger.$on('sendToCompany', val => { // 从myCompanyAccountList.vue接受数据
                 console.info('000000sendDataToMyPublish:')
                 console.info(val)
                 this.id = val.demandId;

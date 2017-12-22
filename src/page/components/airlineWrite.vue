@@ -325,8 +325,15 @@
                         </div>
                         <div class="left item-child">
                             <div class="vertical-center">
-                                <input type="radio" class="magic-radio" id="alWacceptDispatch"/><label for="alWacceptDispatch" class="input-label">接受调度</label>
+                                <input type="radio" class="magic-radio" id="alWacceptDispatch" @click="schedulingShowFn"/><label for="alWacceptDispatch" class="input-label" style="white-space: nowrap;">接受调度</label>
                             </div>
+                            <div class="choose-input" v-show="schedulingShow" style="position: relative;">
+                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fifthArea"
+                                       @focus="fifthAreaFn" style="border: 0;">
+                                <airportS class="aisx" v-on:resData="resData5" :searchText="fifthArea" v-show="isSearch5"
+                                          style="left: -73px;"></airportS>
+                            </div>
+
                             <!--<span class="margin-right">拦标价格</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
@@ -362,7 +369,7 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="hourConst"
+                                <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                         </div>
@@ -392,11 +399,7 @@
     import calendar from './calendar'
 
     export default {
-        /*props: {
-            acceptData: {
-                type: Object
-            }
-        },*/
+        props: ['acceptData'],
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -438,6 +441,9 @@
                 thirdArea: '', //到达地 3的意向区域
                 thirdAreaCode: '', //三字码（只有城市有）
                 fourArea: '', // 运力基地
+                fifthArea: '', //接受调度
+                fifthAreaCode: '', //三字码（只有城市有）
+
                 fourAreaCode: '', //三字码（只有城市有）
 
                 dptState: '',  //始发地类型（0：机场，1：区域）
@@ -465,11 +471,13 @@
                 qyCode2: "", //经停地机场三字码
                 qyCode3: "", //到达地机场三字码
                 qyCode4: "", //运力基地三字码
+                qyCode5: '', //接受调度三字码
                 searchText: '',
                 isSearch1: false,//机场搜索是否显示
                 isSearch2: false,
                 isSearch3: false,
                 isSearch4: false,
+                isSearch5: false,
                 isSearchCode1: -1, //选择区域或机场 0为意向区域，1为意向机场
                 isSearchCode2: -1,
                 isSearchCode3: -1,
@@ -522,6 +530,8 @@
                 airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
+                scheduling: 1,     // 是否接受调度 0:接收,1:不接收
+                schedulingShow: false,
             }
         },
         components: {
@@ -535,43 +545,19 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+            /*tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
                 this.sendData.demandId = val.data.id;
                 this.sendData.employeeId = val.data.employeeId;
-            })
-            tabulationBoxTrigger.$on('supProperty', val => {
+            })*/
+           /* tabulationBoxTrigger.$on('supProperty', val => {
                 this.sendData.title = val.title;
                 this.sendData.periodValidity = val.periodValidity;
                 this.sendData.releasetime = val.releasetime;
-            })
+            })*/
         },
         mounted() {
-//            console.info(this.acceptData)
-           /* let acceptData = this.acceptData;
-            if (acceptData.dptState == 0) {
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }
-            if (acceptData.dptState == 1) {
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if (acceptData.pstState == 0) {
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }
-            if (acceptData.pstState == 1) {
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if (acceptData.arrvState == 0) {
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }
-            if (acceptData.arrvState == 1) {
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }*/
+            console.info('acceptData:')
+            console.info(this.acceptData);
         },
         computed: {
             sailingtime: function () {
@@ -624,6 +610,13 @@
                     return
                 }
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+                this.sendData.demandId = this.acceptData.id;
+                this.sendData.employeeId = this.acceptData.employeeId;
+                this.sendData.title = this.acceptData.title;
+                this.sendData.periodValidity = this.acceptData.periodValidity;
+                this.sendData.releasetime = this.acceptData.releasetime;
+
+
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.Ihome = this.phoneNum;//必填 联系方式
                 if (this.dptState == 0) {
@@ -676,8 +669,10 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-                this.sendData.capacitycompany = this.airCompanyId;   //运力归属
-//                this.sendData.dpt = this.qyCode4;   //运力基地
+                this.sendData.capacityCompany = this.airCompanyId;   //运力归属
+                this.sendData.dpt = this.qyCode4;   //运力基地
+                this.sendData.scheduling = this.scheduling;    // 接受调度（0:接收,1:不接收）
+                this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
                 console.info('sendData:');
                 console.info(this.sendData);
@@ -705,8 +700,7 @@
                     console.info("responseIDMes:");
                     console.info(responseIDMes);
 
-//                    tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
-                    tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
+//                    tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
                     console.info('responseId:' + this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {
@@ -760,6 +754,8 @@
                         myCompany.push(item.capacitycompany);
                         this.airCompanyData.push(myCompany);
                     })
+                    console.info('airCompanyData:')
+                    console.info(this.airCompanyData)
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -768,7 +764,7 @@
             getCompanyList: function (i) {
                 this.airCompany = this.airCompanyData[i][0];
                 this.airCompanyShow = false;
-                this.airCompanyId = this.airCompanyData[i][2];
+                this.airCompanyId = this.airCompanyData[i][1];
                 this.warn8Show = false;
             },
             //区域选择，获取点击的区域
@@ -851,6 +847,15 @@
             fourAreaFn: function () {
                 this.isSearch4 = true;
             },
+            // 接受调度单选按钮点击
+            schedulingShowFn: function () {
+                this.scheduling = 0;
+                this.schedulingShow = true;
+            },
+            // 接受调度获取焦点事件
+            fifthAreaFn: function () {
+                this.isSearch5 = true;
+            },
             /*//运力基地失去焦点事件
             fourAreaBlurFn: function () {
                 this.isSearch4 = false;
@@ -911,6 +916,11 @@
                 this.isSearch4 = false;
                 this.fourArea = data.name;
                 this.qyCode4 = data.code;
+            },
+            resData5: function (data) {
+                this.isSearch5 = false;
+                this.fifthArea = data.name;
+                this.qyCode5 = data.code;
             },
             // 选择意向区域或意向机场 0为区域，1为机场
             space1Fn: function (item) {

@@ -56,7 +56,7 @@
         </div>
         <transition-group name="slidex-fade">
             <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
-            <myPublish0 v-show="myPublishShow0" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
+            <myPublish0 v-show="myPublishShow0" @refresh="refreshFn" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
             <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1" :key="3"></myPublishNeed1>
             <!--<myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>-->
             <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
@@ -183,6 +183,11 @@
                 }).catch((error) => {
                     console.log(error);
                 });
+            },
+            // 刷新页面数据
+            refreshFn: function () {
+                console.info('refreshFn');
+                this.getListData();
             },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;

@@ -84,7 +84,8 @@
                     console.info(response)
                     if(response.data.opResult == '0') {
                         alert('成功发送提现请求！')
-                        this.$emit('closeThis');
+                        this.$emit('refresh');
+                        this.closeThisFn();
                     }else {
                         alert('无法请求到数据')
                     }

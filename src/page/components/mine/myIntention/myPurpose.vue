@@ -120,7 +120,7 @@
                         </div>
                          <div>
                             <div>运力归属</div>
-                            <div>{{planData.capacitycompany}}</div>
+                            <div>{{planData.capacitycompanyStr}}</div>
                         </div>
                          <div>
                             <div>运力基地</div>
@@ -128,7 +128,7 @@
                         </div>
                          <div>
                             <div>是否调度</div>
-                            <div>{{planData.scheduling}}</div>
+                            <div>{{planData.schedulineport || '-'}}</div>
                         </div>
                         <div class="tips">
                             <div>其他说明</div>

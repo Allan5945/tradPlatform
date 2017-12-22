@@ -39,11 +39,15 @@
         mounted() {
             this.show();
         },
+        watch:{
+            withdrawFlowCode: function () {
+                this.show();
+            }
+        },
         methods: {
             show: function () {
-                // 代码1、2、3对应的情况
+                // 代码0、1、2对应的情况
                 if(this.withdrawFlowCode == 0) {
-                    console.info('1')
                     this.sureAShow = true;
                     this.sureBShow = false;
                     this.sureCShow = false;

@@ -36,7 +36,7 @@
         </div>
         <transition-group name="fade">
             <myCompanyAccountRecharge @closeThis="closeRechargeFn" v-show="myCompanyAccountRechargeShow" :key="0"></myCompanyAccountRecharge>
-            <myCompanyAccountWithdraw @closeThis="closeWithdrawFn" v-show="myCompanyAccountWithdrawShow" :key="1"></myCompanyAccountWithdraw>
+            <myCompanyAccountWithdraw @closeThis="closeWithdrawFn" @refresh="refreshFn" v-show="myCompanyAccountWithdrawShow" :key="1"></myCompanyAccountWithdraw>
         </transition-group>
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
@@ -86,7 +86,7 @@
             ]),
         },
         methods: {
-            // ajax获取列表数据
+            // ajax获取数据
             getListData: function () {
                 this.$ajax({
                     url:"/perSonNalCompanyAccountList",
@@ -96,8 +96,6 @@
                     },
                     params: ''
                 }) .then((response) => {
-                    console.info('myCompanyAccountList获取的数据:')
-                    console.info(response)
                     if(response.status === 200) {
                         this.myData = response.data;
                         this.myListData = response.data.transactionRecords;
@@ -145,6 +143,10 @@
             closeWithdrawFn: function () {
                 this.myCompanyAccountWithdrawShow = false;
             },
+            // 刷新数据
+            refreshFn: function () {
+                this.getListData();
+            },
             // 点击列表(list)，变成active状态, 确定哪个显示;
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
@@ -175,14 +177,12 @@
                 //0：航司、 1：机场、 2：太美
                 tabulationBoxTrigger.$emit('sendToCompany',item) // 向companyAirlineDetailPayAfter、companyMyIntention传数据
                 tabulationBoxTrigger.hierarchy = true;
-                if(this.role.role == 0) {
-                    this.companyMyIntentionShow = true;
-                    this.companyAirlineDetailPayAfterShow = false;
-                }if(this.role.role == 1) {
+                if(item.demandType == '航线需求'){
                     this.companyMyIntentionShow = false;
                     this.companyAirlineDetailPayAfterShow = true;
-                }if(this.role.role == 2) {
-
+                }if(item.demandType == '运力需求'){
+                    this.companyMyIntentionShow = true;
+                    this.companyAirlineDetailPayAfterShow = false;
                 }
             },
             // 关闭“航线详情”
