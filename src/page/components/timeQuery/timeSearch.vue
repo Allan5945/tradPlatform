@@ -15,7 +15,7 @@
                         <span>数据更新时间</span>
                         <input type="text" v-model="inputData" readonly @click="showSelcList=!showSelcList">
                         <span class="iconfont update-icon" @click="showSelcList=!showSelcList">&#xe605;</span>
-                        <div class="selc-list dropDown popup" v-show="showSelcList">
+                        <div class="dropDown popup" v-show="showSelcList">
                             <div @click="getTime(index)" v-for="(value,index) in timeList">{{value}}</div>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                 <div class="table-box">
                     <div class="box-head">
                         <div class="name">{{this.airportText}}班期时刻表</div>
-                        <div class="export"><span class="iconfont">&#xe654;</span>&nbsp;导出</div>
+                        <div class="export" @click="exportData"><span class="iconfont">&#xe654;</span>&nbsp;导出</div>
                     </div>
                     <div class="box-content">
                         <div class="table-header">
@@ -123,7 +123,7 @@
             "inputData": function(){
                 this.updateData();
             },
-            'airportText':function(){
+            'qyCode':function(){
                 this.updateData();
             }
         },
@@ -206,6 +206,23 @@
 
                 this.getClock(this.inputData,this.qyCode);
             },
+            exportData(){
+                this.$ajax({
+                method: 'get',
+                url: '/jxlExcel',
+                  params: {
+                     itia:this.qyCode,
+                     getTime: this.inputData
+                    }
+                })
+                .then((response) => {
+                    this.timeTableList = response.data.list;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            },
             showPoint(num){
                 let point = {};
                  point.rate = num/100,
@@ -237,6 +254,7 @@
         width:1100px;
         margin-left:250px;
         margin-top:160px;
+        padding-bottom:50px;
         background-color: #fff;
     }
     .banner{
