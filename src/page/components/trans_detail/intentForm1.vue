@@ -103,7 +103,7 @@
                                 <div class="resource-time">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-a-res" id="if1airAResYes"
-                                               checked @click="dptTimeresourcesFn0"><label for="airAResYes"
+                                               checked @click="dptTimeresourcesFn0"><label for="if1airAResYes"
                                                                                            class="input-label">有</label>
                                     </div>
                                     <div class="time-frame" @click="startTime1 = !startTime1">
@@ -123,11 +123,11 @@
                                 <div class="resource-others">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-a-res" id="if1airAWait"
-                                               @click="dptTimeresourcesFn1"><label for="airAWait" class="input-label">带协调</label>
+                                               @click="dptTimeresourcesFn1"><label for="if1airAWait" class="input-label">带协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-a-res" id="if1airAEnough"
-                                               @click="dptTimeresourcesFn2"><label for="airAEnough" class="input-label">时刻充足</label>
+                                               @click="dptTimeresourcesFn2"><label for="if1airAEnough" class="input-label">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -138,12 +138,12 @@
                                 <div class="bottom">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b" id="if1airBYes"
-                                               @change="pstAcceptnearairport = 0"><label for="airBYes"
+                                               @change="pstAcceptnearairport = 0"><label for="if1airBYes"
                                                                                          class="input-label">是</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b" id="if1airBNo" checked
-                                               @change="pstAcceptnearairport = 1"><label for="airBNo"
+                                               @change="pstAcceptnearairport = 1"><label for="if1airBNo"
                                                                                          class="input-label">否</label>
                                     </div>
                                 </div>
@@ -153,7 +153,7 @@
                                 <div class="resource-time">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b-res" id="if1airBResYes"
-                                               checked @click="pstTimeresourcesFn0"><label for="airBResYes"
+                                               checked @click="pstTimeresourcesFn0"><label for="if1airBResYes"
                                                                                            class="input-label">有</label>
                                     </div>
                                     <div class="time-frame" @click="startTime2 = !startTime2">
@@ -173,11 +173,11 @@
                                 <div class="resource-others">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b-res" id="if1airBWait"
-                                               @click="pstTimeresourcesFn1"><label for="airBWait" class="input-label">带协调</label>
+                                               @click="pstTimeresourcesFn1"><label for="if1airBWait" class="input-label">带协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b-res" id="if1airBEnough"
-                                               @click="pstTimeresourcesFn2"><label for="airBEnough" class="input-label">时刻充足</label>
+                                               @click="pstTimeresourcesFn2"><label for="if1airBEnough" class="input-label">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -188,12 +188,12 @@
                                 <div class="bottom">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c" id="if1airCYes"
-                                               @change="arrvAcceptnearairport = 0"><label for="airCYes"
+                                               @change="arrvAcceptnearairport = 0"><label for="if1airCYes"
                                                                                           class="input-label">是</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c" id="if1airCNo" checked
-                                               @change="arrvAcceptnearairport = 1"><label for="airCNo"
+                                               @change="arrvAcceptnearairport = 1"><label for="if1airCNo"
                                                                                           class="input-label">否</label>
                                     </div>
                                 </div>
@@ -203,7 +203,7 @@
                                 <div class="resource-time">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="if1airCResYes"
-                                               checked @click="arrvTimeresourcesFn0"><label for="airCResYes"
+                                               checked @click="arrvTimeresourcesFn0"><label for="if1airCResYes"
                                                                                             class="input-label">有</label>
                                     </div>
                                     <div class="time-frame" @click="startTime3 = !startTime3">
@@ -223,11 +223,11 @@
                                 <div class="resource-others">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="if1airCWait"
-                                               @click="arrvTimeresourcesFn1"><label for="airCWait" class="input-label">带协调</label>
+                                               @click="arrvTimeresourcesFn1"><label for="if1airCWait" class="input-label">带协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="if1airCEnough"
-                                               @click="arrvTimeresourcesFn2"><label for="airCEnough">时刻充足</label>
+                                               @click="arrvTimeresourcesFn2"><label for="if1airCEnough">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -320,7 +320,7 @@
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
                                     <input type="radio" class="magic-radio" name="subsidy" id="if1subsidyYes" checked/>
-                                    <label for="subsidyYes" class="input-label">有补贴</label>
+                                    <label for="if1subsidyYes" class="input-label">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px;"
                                          @click="subsidy = !subsidy">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
@@ -335,20 +335,20 @@
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="subsidy" id="if1subsidyNo"
                                                @click="subsidyClick1"/>
-                                        <label for="subsidyNo" class="input-label">无补贴</label>
+                                        <label for="if1subsidyNo" class="input-label">无补贴</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="subsidy" id="if1subsidyTalk"
                                                @click="subsidyClick2"/>
-                                        <label for="subsidyTalk" class="input-label">可面谈</label>
+                                        <label for="if1subsidyTalk" class="input-label">可面谈</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="left item-child">
                             <div class="vertical-center">
-                                <input type="radio" class="magic-radio" id="if1acceptDispatch"/>
-                                <label for="acceptDispatch" class="input-label">接受调度</label>
+                                <input type="checkbox" class="magic-radio" id="if1acceptDispatch" v-model="isDispatch"/>
+                                <label for="if1acceptDispatch" class="input-label">接受调度</label>
                             </div>
                             <!--<span class="margin-right">拦标价格</span>　
                             <div class="choose-input">
@@ -444,6 +444,7 @@
                 airAreaSearchShow1: false,
                 airAreaSearchShow2: false,
                 airAreaSearchShow3: false,
+                isDispatch:false,
                 user: '', //联系人
                 phoneNum: '', //电话号码
 
@@ -620,6 +621,8 @@
                 this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
                 this.sendData.days = this.scheduleShow;      //必填 班期
                 this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
+                this.sendData.schedulingStr = this.dispatch == false? '不接受':'接受';//接受调度
+                this.sendData.scheduling = this.dispatch == false? '1':'0';
                 this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
 //               this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期

@@ -13,6 +13,7 @@
         <router-view></router-view>
         <newsTip></newsTip>
         <!-- <timeQuery></timeQuery> -->
+        <!-- <infoSearch></infoSearch> -->
     </div>
 </template>
 
@@ -31,6 +32,7 @@
     import transIndex from './components/trans_detail/transIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
     import timeQuery from './components/timeQuery/timeIndex.vue'
+    import infoSearch from './components/timeQuery/infoSearchIndex.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
     import newsTip from './components/toolbar/newsTip.vue';
@@ -240,7 +242,8 @@
             infPanel,
             routeNetwork,
             timelyCommunication,
-            timeQuery
+            timeQuery,
+            infoSearch
         }
     }
 </script>

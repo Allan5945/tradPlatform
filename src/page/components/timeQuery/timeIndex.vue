@@ -15,24 +15,27 @@
             <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
         </header>
         <timeSearch :qyCode="qyCode" :airportText="airportText" v-if="timeShow"></timeSearch>
-        <infoSearch :qyCode="qyCode" v-if="airportShow"></infoSearch>
+        <airportInfo :qyCode="qyCode" v-if="airportShow"></airportInfo>
+        <airlineInfo  v-if="airlineShow"></airlineInfo>
     </div>
 </template>
 
 <script>
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import timeSearch from './timeSearch.vue'
-import infoSearch from './airportInfoSearch.vue'
+import airportInfo from './airportInfoSearch.vue'
+import airlineInfo from './airlineInfoSearch.vue'
     export default {
         data() {
             return {
                 airportText:'',
                 qyCode:'',
                 selcType:'时刻',
-                typeList:['时刻','机场'],
+                typeList:['时刻','机场','航司'],
                 airportSearch:false,
                 timeShow:false,
                 airportShow:false,
+                airlineShow:false,
                 showType:false
             }
         },
@@ -58,9 +61,15 @@ import infoSearch from './airportInfoSearch.vue'
             getInfo(){
                 if(this.selcType == '时刻'){
                    this.timeShow = true;
-                    this.airportShow = false;
+                   this.airportShow = false;
+                   this.airlineShow = false;
                 }else if(this.selcType == '机场'){
                     this.airportShow = true;
+                    this.timeShow = false;
+                    this.airlineShow = false;
+                }else if(this.selcType == '航司'){
+                    this.airlineShow = true;
+                    this.airportShow = false;
                     this.timeShow = false;
                 }
             }
@@ -71,7 +80,8 @@ import infoSearch from './airportInfoSearch.vue'
         components:{
             airportS1,
             timeSearch,
-            infoSearch
+            airportInfo,
+            airlineInfo
         }
     }
 </script>
