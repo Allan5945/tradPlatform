@@ -177,6 +177,11 @@
                             }
                         })
                         this.judgeRole();
+                    }else if(response.data.opResult === '1') {
+                        console.info('ajax1')
+                        this.myData0 = [];
+                        this.myData1 = [];
+                        this.judgeRole();
                     }else {
                         alert('无法请求到数据，错误代码：' + response.data.opResult)
                     }
@@ -207,7 +212,7 @@
                 this.myData0 = [];
                 this.myData1 = [];
                 this.typeWriting = item;
-                this.sendData.demandprogress = '';
+                this.sendData.demandprogress = ''; // 状态类型
                 this.stateWriting = '状态';
                 if(item == '航线需求') {
                     this.state = this.state1;
