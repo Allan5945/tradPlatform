@@ -41,6 +41,7 @@
                     })
             },
             initDis(){
+                localCommunication.$emit('addChat',{id:null});
                 localCommunication.chat.shut = true;
                 localCommunication.chat.narrow = true;
             }

@@ -3,7 +3,7 @@
         <router-link to="">
             <span>&#xe671;</span>航路测算
         </router-link>
-        <router-link to="">
+        <router-link to="/index/information">
             <span>&#xe6fb;</span>信息查询
         </router-link>
         <router-link to="">
