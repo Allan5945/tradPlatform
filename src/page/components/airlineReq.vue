@@ -509,7 +509,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             // 传送的数据
@@ -604,7 +604,7 @@
                 this.sendDataFn();
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-                console.info(this.sendData);
+//                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -659,7 +659,7 @@
                 this.sendDataFn();
                 this.sendData.demandtype = '2';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-                console.info(this.sendData);
+//                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -1087,10 +1087,10 @@
             },
             subsidyClick2: function () {
                 this.subsidyCode = 3;
-                console.info('radio')
+//                console.info('radio')
             },
             kemiantan: function () {
-                console.info('label')
+//                console.info('label')
             },
             //发布方式
             publicwayFn0: function () {

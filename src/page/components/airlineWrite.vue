@@ -556,8 +556,8 @@
             })*/
         },
         mounted() {
-            console.info('acceptData:')
-            console.info(this.acceptData);
+//            console.info('acceptData:')
+//            console.info(this.acceptData);
         },
         computed: {
             sailingtime: function () {
@@ -569,7 +569,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             //发送数据
@@ -674,8 +674,8 @@
                 this.sendData.scheduling = this.scheduling;    // 接受调度（0:接收,1:不接收）
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('sendData:');
-                console.info(this.sendData);
+//                console.info('sendData:');
+//                console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
                     url: "/responseAdd",
@@ -685,8 +685,8 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('response:')
+//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功添加该意向！')
                         this.$emit('change-showCode');
@@ -697,11 +697,11 @@
                     let responseIDMes = {};           //响应ID，响应者ID
                     responseIDMes.responseId = response.data.response.id; //响应ID
                     responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
-                    console.info("responseIDMes:");
-                    console.info(responseIDMes);
+//                    console.info("responseIDMes:");
+//                    console.info(responseIDMes);
 
 //                    tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
-                    console.info('responseId:' + this.responseId);
+//                    console.info('responseId:' + this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {
                     console.log(error);
@@ -754,8 +754,8 @@
                         myCompany.push(item.capacitycompany);
                         this.airCompanyData.push(myCompany);
                     })
-                    console.info('airCompanyData:')
-                    console.info(this.airCompanyData)
+//                    console.info('airCompanyData:')
+//                    console.info(this.airCompanyData)
                 }).catch((error) => {
                     console.log(error);
                 });

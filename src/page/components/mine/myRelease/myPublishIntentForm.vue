@@ -507,7 +507,7 @@
      },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             cancel:function(){
@@ -569,7 +569,7 @@
                 sendData.seating = this.seatingNum;            // 选填 座位数
                 sendData.remark = this.remarkMsg;              // 选填 备注说明
 
-                console.info(sendData);
+//                console.info(sendData);
                 this.$ajax({
                     url:"/selectedResponse",
                     method: 'post',

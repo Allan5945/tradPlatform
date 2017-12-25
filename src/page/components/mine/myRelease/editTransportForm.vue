@@ -364,7 +364,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
                     page:2
                 }
             }) .then((response) => {
-                    console.info(response)
+//                    console.info(response)
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);
@@ -408,7 +408,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
                     },
                     params: demandData
                 }) .then((response) => {
-                        console.log(response);
+//                        console.log(response);
                 }) .catch((error) => {
                         console.log(error);
                     });

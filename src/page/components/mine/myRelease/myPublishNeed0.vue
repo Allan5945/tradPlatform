@@ -405,8 +405,8 @@
         created() {
 //            this.initData();
             tabulationBoxTrigger.$on('sendDataToMyPublish', val => { // 从myPublishList获取数据
-                console.info('000000sendDataToMyPublish:')
-                console.info(val)
+//                console.info('000000sendDataToMyPublish:')
+//                console.info(val)
 //                this.id = val.data.id;
                 this.id = val.id;
 //                console.info(this.id)
@@ -418,8 +418,8 @@
             });
 
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
-                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
-                console.info(val)
+//                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
+//                console.info(val)
                 this.listData = val;   //获取意向列表
             }) //向payAfter的意向列表传参数
 
@@ -428,7 +428,7 @@
 //            this.initData();
             //模拟状态码0
 //            this.showCode = 0;
-            console.info(this.role)
+//            console.info(this.role)
 //            console.info('min-tabulationBoxTrigger')
 
         },
@@ -451,8 +451,8 @@
                     }
                 })
                 .then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('response:')
+//                    console.info(response)
 //                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
@@ -492,14 +492,14 @@
                     }
                     // 修改this.showCode
                     if (this.isSelf == true && this.isIntentionMoney == false) {
-                        console.info('payAfter:' + 1)
+//                        console.info('payAfter:' + 1)
                         this.showCode = 1;
                     }if (this.isSelf == true && this.isIntentionMoney == true) { //是自己发布的，并且已经缴纳意向金
-                        console.info('payAfter:' + 3)
+//                        console.info('payAfter:' + 3)
                         this.showCode = 3;
                         tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
                     }if (this.isSelf == false) {
-                        console.info('payAfter:' + 0)
+//                        console.info('payAfter:' + 0)
                         this.showCode = 0;
                     }
                     this.show();
@@ -525,7 +525,7 @@
                         id: this.id
                     }
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
                     if(response.data.opResult === '0'){
                         alert('成功关闭该需求！');
                         this.$emit('refresh');
@@ -642,8 +642,8 @@
                         },
                         params: editDate
                     }) .then((response) => {
-                        console.info('1response:')
-                        console.info(response)
+//                        console.info('1response:')
+//                        console.info(response)
                         if(response.data.opResult === '0'){
                             alert('有效期修改成功！')
                         }else{
@@ -694,7 +694,7 @@
 //                this.showCode = 1;
                 //接收airWrite.vue传来的对象
                 tabulationBoxTrigger.$on('responseObject', (val) => {
-                    console.info(val);
+//                    console.info(val);
                 })
                 this.show();
             },
@@ -714,8 +714,8 @@
             airlineAffirmFn: function (item,index) {
                 this.airlineAffirmShow = true;
                 item.index = index;
-                console.info('item:')
-                console.info(item)
+//                console.info('item:')
+//                console.info(item)
                 tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
@@ -746,7 +746,7 @@
                     },
                     params:  this.airlineAffirmUnchooseData
                 }) .then((response) => {
-                    console.info(response)
+//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功撤销选定!');
                         this.releaseselectedShow = true;
@@ -765,8 +765,8 @@
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
                 this.checkDetailShow = false;
-                console.info('item:')
-                console.info(item)
+//                console.info('item:')
+//                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 if(item.releaseselected == 0){
                     this.releaseselectedShow = false;

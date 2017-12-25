@@ -8,10 +8,19 @@
                 <div class="tips">
                     <span>创建于{{detailData.releasetime}}</span>
                     <span>已有{{intentionCount}}位用户发起意向</span>
+                    <span>需求进度：{{detailData.demandprogressStr}}</span>
                 </div>
             </header>
             <div class="content">
                 <div class="table-form">
+                    <div >
+                        <div>联系人</div>
+                        <div>{{detailData.contact}}</div>
+                    </div>
+                    <div >
+                        <div>联系方式</div>
+                        <div>{{detailData.iHome}}</div>
+                    </div>
                     <div >
                         <div>出港时刻</div>
                         <div>{{detailData.dptTime}}</div>
@@ -183,8 +192,8 @@
              }else {
                  this.btnShow = false;
              }
-             console.info('sendDataToMyPurposeData:')
-             console.info(val)
+//             console.info('sendDataToMyPurposeData:')
+//             console.info(val)
          });
 //         this.getData();
 
@@ -214,7 +223,7 @@
                      responseId: this.id //发布时间排序类型 0-倒序 1-正序
                  }
              }) .then((response) => {
-                 console.info(response)
+//                 console.info(response)
                  if(response.data.opResult == 0){
                      this.detailData = response.data.obj.demand;
                      this.planData = response.data.obj;
@@ -243,7 +252,7 @@
          },
          // 点击“取消意向”
          deleteClickFn: function () {
-             console.info(this.id)
+//             console.info(this.id)
              this.$ajax({
                  url:"/ResponseDel",
                  method: 'post',
@@ -255,7 +264,7 @@
                      demandId: this.demandId
                  }
              }) .then((response) => {
-                 console.info(response)
+//                 console.info(response)
                  if(response.data.opResult === '0'){
                      alert('成功删除该意向!');
                      this.$emit('refresh');
@@ -279,8 +288,8 @@
                      demandIds: this.id
                  }
              }) .then((response) => {
-                 console.info('collect:')
-                 console.info(response)
+//                 console.info('collect:')
+//                 console.info(response)
                  if(response.data.opResult === '0'){
                      alert('收藏成功！')
                      this.$emit('refresh');
@@ -307,7 +316,7 @@
                  },
                  params: this.cancelPurposeData
              }) .then((response) => {
-                 console.info(response)
+//                 console.info(response)
                  if(response.data.opResult === '0'){
                      alert('成功确认方案!');
                      this.$emit('refresh');
@@ -333,7 +342,7 @@
                  },
                  params: this.cancelPurposeData
              }) .then((response) => {
-                 console.info(response);
+//                 console.info(response);
                  if(response.data.opResult === '0'){
                      alert('成功取消该意向!');
                      this.$emit('refresh');

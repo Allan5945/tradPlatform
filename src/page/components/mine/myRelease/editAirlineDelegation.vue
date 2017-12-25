@@ -478,7 +478,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             closeThis: function () {
@@ -553,7 +553,7 @@
                 sendData.seating = this.seatingNum;            // 选填 座位数
                 sendData.remark = this.remarkMsg;              // 选填 备注说明
 
-                console.info(sendData);
+//                console.info(sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -562,7 +562,7 @@
                     },
                     params: sendData
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);

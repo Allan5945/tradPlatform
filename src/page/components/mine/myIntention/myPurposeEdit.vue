@@ -580,8 +580,8 @@
 //                this.initializeFn();
             })*/
             this.sendData = this.planDataToForm; // 通过props方式取代tabulationBoxTrigger获取数据
-            console.info('11111111111')
-            console.info(this.sendData)
+//            console.info('11111111111')
+//            console.info(this.sendData)
         },
         computed: {
             sailingtime: function () {
@@ -593,7 +593,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             //发送数据
@@ -697,8 +697,8 @@
                 this.sendData.scheduling = this.scheduling;    // 接受调度（0:接收,1:不接收）
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('000sendData:')
-                console.info(this.sendData);
+//                console.info('000sendData:')
+//                console.info(this.sendData);
                 this.$ajax({
                     url: "/updateResponseSelective",
                     method: 'POST',
@@ -707,8 +707,8 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('response:')
+//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功添加该意向！')
                         this.$emit('refresh');
@@ -1051,15 +1051,15 @@
             },
             //补贴点击，改变补贴码
             subsidyClick0: function () {
-                console.info('有补贴')
+//                console.info('有补贴')
             },
             subsidyClick1: function () {
                 this.subsidyCode = 4;
-                console.info('无补贴')
+//                console.info('无补贴')
             },
             subsidyClick2: function () {
                 this.subsidyCode = 3;
-                console.info('可面谈')
+//                console.info('可面谈')
             },
             // 接受调度单选按钮点击
             schedulingShowFn: function () {

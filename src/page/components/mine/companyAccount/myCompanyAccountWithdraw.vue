@@ -81,7 +81,7 @@
                     },
                     params: this.myAccountData
                 }) .then((response) => {
-                    console.info(response)
+//                    console.info(response)
                     if(response.data.opResult == '0') {
                         alert('成功发送提现请求！')
                         this.$emit('refresh');

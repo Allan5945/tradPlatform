@@ -151,12 +151,12 @@
             }
         },
         mounted() {
-            console.info('vuex:role:')
-            console.info(this.role);
+//            console.info('vuex:role:')
+//            console.info(this.role);
             // 从myPublishList获取参数，并渲染到页面上
             tabulationBoxTrigger.$on('sendDataToMyPublish',val => {
-                console.info('从myPublishList获取的数据:');
-                console.info(val);
+//                console.info('从myPublishList获取的数据:');
+//                console.info(val);
                 this.myData = val;
                 this.id = this.myData.id;
                 // 状态有误时显示的内容
@@ -225,11 +225,11 @@
             editPublishClickFn: function () {
                 if(this.myData.demandtype == 3) {
                     this.editAirlineDelegationShow = true;
-                    console.info('editAirlineDelegationShow')
+//                    console.info('editAirlineDelegationShow')
                 }if(this.myData.demandtype == 4) {
                     this.editAgentTransFormShow = true;
 //                    this.editAirlineDelegationShow = true;
-                    console.info('editAgentTransFormShow')
+//                    console.info('editAgentTransFormShow')
                 }
                 /*if(this.myData.demandtype == 0) {
                     this.editAirlineDelegationShow = true;
@@ -274,7 +274,7 @@
                     },
                     params: this.myData
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
@@ -297,7 +297,7 @@
                         id: this.myData.id
                     }
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);

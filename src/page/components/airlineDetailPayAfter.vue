@@ -486,8 +486,8 @@
         },
         created() {
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                console.info('tabulationBoxTrigger:')
-                console.info(val.data)
+//                console.info('tabulationBoxTrigger:')
+//                console.info(val.data)
                 this.id = val.data.id;
                 if (val.data.demandtype == 0) {
                     this.getData();
@@ -517,8 +517,8 @@
                     }
                 })
                 .then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('response:')
+//                    console.info(response)
 //                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
                     this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据
@@ -582,10 +582,10 @@
                         });
                      */
                     }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
-                        console.info('000000')
+//                        console.info('000000')
                         this.showCode = 0;
                     }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
-                        console.info('payAfter:' + 4)
+//                        console.info('payAfter:' + 4)
                         this.showCode = 4;
                     }
                     this.show();
@@ -628,7 +628,7 @@
                         id: this.id
                     }
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
                     if(response.data.opResult === '0'){
                         alert('成功结束该需求！')
                     }else{
@@ -727,8 +727,8 @@
                         },
                         params: editDate
                     }) .then((response) => {
-                        console.info('1response:')
-                        console.info(response)
+//                        console.info('1response:')
+//                        console.info(response)
                         if(response.data.opResult === '0'){
                             alert('有效期修改成功！')
                         }else{
@@ -799,8 +799,8 @@
             airlineAffirmFn: function (item,index) {
                 this.airlineAffirmShow = true;
                 item.index = index;
-                console.info('item:')
-                console.info(item)
+//                console.info('item:')
+//                console.info(item)
                 tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
@@ -831,7 +831,7 @@
                     },
                     params:  this.airlineAffirmUnchooseData
                 }) .then((response) => {
-                    console.info(response)
+//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功撤销选定!');
                         this.releaseselectedShow = true;
@@ -849,8 +849,8 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
-                console.info('item:')
-                console.info(item)
+//                console.info('item:')
+//                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 if(item.releaseselected == 0){
                     this.releaseselectedShow = false;

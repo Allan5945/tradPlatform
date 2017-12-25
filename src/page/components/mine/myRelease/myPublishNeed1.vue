@@ -304,7 +304,7 @@
         },
         mounted() {
             tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
-                console.log("demandtype" + val.demandtype);
+//                console.log("demandtype" + val.demandtype);
                 if (val.demandtype == 1 && (this.role.role == 0 || this.role.role == 2)) {
                     this.$ajax({
                         method: 'post',
