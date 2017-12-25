@@ -69,27 +69,6 @@
                 'close',
                 'initialize'
             ]),
-            initSocket(){
-
-
-
-//                let socket=io.connect(`ws://192.168.10.194:8081/socket?name=${this.role.id}`);
-
-//                socket.emit('login',"898555");
-//                socket.emit('message',"nijiushi");
-
-//                ws.onopen = (e)=> {
-//                    console.log('连接成功');
-////                    this.$chatSocket.init(ws);
-//                };
-//                ws.onmessage = (data)=>{
-//                    console.log(data)
-//                };
-//                ws.onclose = ()=>{
-//                    console.log('关闭连接');
-//                }
-////                ws.close();
-            },
             contactClient(){  // 联系客户
 
             },
@@ -129,8 +108,6 @@
         mounted: function () {
 
             if(!('$chatSocket' in this)){
-//                Vue.prototype.$chatSocket = new ChatSocket(`ws://localhost:8029/socket?name=${this.role.id}`);
-//                Vue.prototype.$chatSocket = new ChatSocket(socketIp);
                 Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
             }
             this.$ajax({

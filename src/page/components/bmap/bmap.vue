@@ -291,15 +291,15 @@
                         type = 1;
                     } else {
                         type = null;
-                    }
+                    };
                     setTimeout(() => {
+                        tabulationBoxTrigger.$emit('tipBox','CTU');   
                         let infMesBox = document.getElementById('inf-mes-box');
                         infMesBox.style.left = `${a.event.offsetX + 30}px`;
                         infMesBox.style.top = `${a.event.offsetY}px`;
                         infMesBox.style.display = 'block';
                     }, 50);
-                }
-                ;
+                };
                 if (type != null) {
                     this.$ajax({
                         url: "/getDemandsForCurrentCheckedCity",

@@ -47,7 +47,7 @@
                         <div>小时成本</div>
                         <div>{{detailData.hourscost}}万/小时</div>
                     </div>
-                    <div style="margin:0 0 0 40px;">
+                    <div style="margin:0 40px 0 0;">
                         <div>接受调度</div>
                         <div>{{detailData.schedulingStr}}</div>
                     </div>
@@ -304,35 +304,32 @@
             ])
         },
         mounted() {
-            tabulationBoxTrigger.$on('sendToCompany', val => {
-                console.log("demandtype" + val.demandtype);
-                if (val.demandtype == 1 && (this.role.role == 0 || this.role.role == 2)) {
-                    this.$ajax({
-                        method: 'post',
-                        url: '/capacityRoutesDemandDetailFindById',
-                        headers: {
-                            'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        params: {
-                            demandId: val.id
-                        }
-                    })
-                        .then((response) => {
-                            this.intentionCount = response.data.intentionCount;
-                            this.detailData = response.data.data;
-                            this.planData = response.data.responseList;
-                            if (this.planData) {
-                                this.intentListShow = true;
-                            }
-                        })
-                        .catch((error) => {
-                                console.log(error);
-                            }
-                        );
-                    this.$emit("openIntent");
-                }
-                ;
-            }); // 接受myCompanyAccountList.vue传来的数据
+            tabulationBoxTrigger.$on('sendToCompany', val => { // 接受从myCompanyAccountList.vue传来的数据
+                console.log(val);
+                this.$ajax({
+                    method: 'post',
+                    url: '/capacityRoutesDemandDetailFindById',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId: val.demandId
+                    }
+                })
+                .then((response) => {
+                    this.intentionCount = response.data.intentionCount;
+                    this.detailData = response.data.data;
+                    this.planData = response.data.responseList;
+                    if (this.planData) {
+                        this.intentListShow = true;
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+                this.$emit("openIntent");
+            });
 
             tabulationBoxTrigger.$on('getTable', val => {
                 this.selShow = false;

@@ -17,11 +17,11 @@
             <div class="ard-container">
                 <div class="ard-item">
                     <div class="left font-gray">创建时间</div>
-                    <div class="right">2017.12.23 17:59</div>
+                    <div class="right">{{myData.dateComplete}}</div>
                 </div>
                 <div class="ard-item">
                     <div class="left font-gray">交易流水号</div>
-                    <div class="right">00000000000000000000000</div>
+                    <div class="right">{{myData.serialNumber}}</div>
                 </div>
             </div>
             <!--<div style="padding: 0 40px;">
@@ -66,9 +66,9 @@
         },
         created() {
             tabulationBoxTrigger.$on('sendToAccountWithdrawDetail',(val) => { //从myCompanyAccountList接受数据
-                this.withdrawFlowCode = val.phase; // 传给流水详情的参数(1、2、3)
+                this.withdrawFlowCode = val.phase; // 传给流水详情的参数(0、1、2)
                 this.myData = val;
-                if(val.phase == 2){
+                if(val.phase == 2){ // 判断页面显示的内容
                     this.showCode = 1;
                 }else {
                     this.showCode = 0;

@@ -25,6 +25,8 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
         const companyAccount = resolve => require(['./../page/components/mine/companyAccount/myCompanyAccountList.vue'], resolve);
 // 新闻舆情
 const opinion = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
+// 信息查询
+const information = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
 
 Vue.use(VueRouter);
 
@@ -73,6 +75,10 @@ const router = new VueRouter({
                 {
                     path:'opinion',
                     component: opinion,
+                },
+                {
+                    path:'information',
+                    component: information,
                 }
             ]
         },

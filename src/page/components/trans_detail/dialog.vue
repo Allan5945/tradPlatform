@@ -45,10 +45,6 @@
                 console.info("dialog的sendData:");
                 console.info(this.sendData)
                 let that = this;
-                setTimeout(function(){
-                    that.$emit('cancel');
-                    that.$emit('sure');
-                },1000)
                 this.$ajax({
                     url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
                     method: 'post',
@@ -60,6 +56,10 @@
                     console.info('dialog:')
                     console.info(response)
                     if(response.data.opResult === '0'){
+                        setTimeout(function(){
+                            that.$emit('cancel');
+                            that.$emit('sure');
+                        },1000)
                         alert('成功提交意向金！')
                         tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向payAfter的意向列表传参数
                     }else{

@@ -43,7 +43,45 @@
     </div>
 </template>
 <script>
-    export default {}
+
+    import * as vx from 'vuex';
+    import tabulationBoxTrigger from "./../../../public/js/tabulationBoxTrigger.js";
+    
+    
+    export default {
+        data(){
+            return{
+                // basicMes:{
+                //     airName:"",
+                //     airCode:"",
+                //     airType:"",
+                //     flyL:"",
+                //     isgj:false,
+                //     fxzdl:50,l
+                //     xfdj:""
+                // }
+            }
+        },
+        computed:{
+            ...vx.mapGetters([
+                'airList'
+            ])
+        },
+        mounted:function(){
+            tabulationBoxTrigger.$on("tipBox",d => {
+                let mes = this.$airMes(this.airList,d).allData;
+                let obj = {
+                    airName:mes.airlnCdName,
+                    airCode:`${mes.iata}/${mes.icaod}`,
+                    airType:"",
+                    flyL:"",
+                    isgj:false,
+                    fxzdl:50,
+                    xfdj:""
+                }                
+            });
+        }
+    }
 </script>
 <style lang="scss" scoped>
     .inf-box {

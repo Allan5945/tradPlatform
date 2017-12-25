@@ -325,14 +325,14 @@
             <div class="second-button" v-show="secondButtonShow">
                 <div class="buttons">
                     <button class="btn btn-b" @click="airlinePayFn">点击此处缴纳意向金</button>
-                    <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+                    <button class="btn btn-w" @click="endNeed">结束需求</button>
                 </div>
             </div>
 
             <div class="bottom" v-show="fifthButtonShow">
                 <div class="buttons">
                     <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
-                    <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+                    <button class="btn btn-w" @click="endNeed">结束需求</button>
                 </div>
             </div>
             <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
@@ -401,63 +401,12 @@
                 calendarShow1: false,
                 myDate1: '',
                 /************/
-
                 demandStateText: false, //"审核未通过"是否显示
-                /**************参数对应的模板***********/
-                /*user: '', //联系人
-                phoneNum: '', //电话号码
-                firArea: '', //始发地 1的意向区域
-                secArea: '', //经停地 2的意向区域
-                thirdArea: '', //到达地 3的意向区域
-                areaInput1: '', //输入的机场或区域
-                areaInput2: '', //输入的机场或区域
-                areaInput3: '',
-                typeChoose: '', //选中的机型
-                airType: [], //机型
-                seatingNum: '',//座位数
-                avgguestExpect: '',//均班客量期望
-                loadfactorsExpect: '',//客座率期望
-                blockbidPrice: '',//拦标价格
-                remarkMsg: '',//其他说明
-                dptAcceptnearairport: 1,//始发地是否接受临近机场（0：接受，1：不接受）
-                pstAcceptnearairport: 1,//经停地是否接受临近机场（0：接受，1：不接受）
-                arrvAcceptnearairport: 1,//到达地是否接受临近机场（0：接受，1：不接受）
-                airTypeShow: false,
-                directionPublicShow: false,//点击定向发布显示
-                directionPublicCity: ['北京','上海','杭州'],
-                inputRadio: '&#xe622;',
-                startTime1Show: '00:00',
-                endTime1Show: '00:00',
-                startTime2Show: '00:00',
-                endTime2Show: '00:00',
-                startTime3Show: '00:00',
-                endTime3Show: '00:00',
-                space1Show: '请先选择始发点类型',
-                space2Show: '请先选择经停点类型（选填）',
-                space3Show: '请先选择到达点类型',
-                publicwayStrCode: 0,//公开方式
-                calendarInitDay1: '', //日历
-                calendarInitDay2: '',
-                calendarInitDay3: '',
-                calendarInitDay4: '',
-                calendarShow1: false,
-                calendarShow2: false,
-                space1ShowTitle: '始发点类型',
-                space2ShowTitle: '经停点类型',
-                space3ShowTitle: '到达点类型',
-//                sailingtime: '选择起止时间',//开航时间
-//                periodValidity: '选择起止时间',//发布有效期
-                scheduleShow: '选择班期类型',
-                subsidyShow: '选择补贴类型',
-                timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
-                spaceList: ['意向区域','意向机场'],
-                scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','按人头']*/
             }
         },
         created() {
 //            this.initData();
-            tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
+            tabulationBoxTrigger.$on('sendDataToMyPublish', val => { // 从myPublishList获取数据
                 console.info('000000sendDataToMyPublish:')
                 console.info(val)
 //                this.id = val.data.id;
@@ -465,95 +414,7 @@
 //                console.info(this.id)
 //                this.showCode = 0;
                 if (val.demandtype == 0) {
-                    this.$ajax({
-                        method: 'post',
-                        url: '/capacityRoutesDemandDetailFindById',
-                        headers: {
-                            'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        params: {
-                            demandId: this.id
-                        }
-                    })
-                        .then((response) => {
-                            console.info('response:')
-                            console.info(response)
-//                            console.info(response.data.responseList)
-                            this.isSelf = response.data.isSelf;
-                            this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
-
-//                            this.intentionCount = response.data.intentionCount;
-//                            this.detailData = response.data.data;
-
-//                            this.listData = response.data.responseList;   //获取意向列表
-                            this.userNum = response.data.intentionCount;
-                            this.myData = response.data.data;
-                            this.releaseTime = this.myData.releasetime.split(" ")[0];
-//                            this.dptTime0 = this.myData.dptTime.split(',')[0];
-//                            this.dptTime1 = this.myData.dptTime.split(',')[1];
-                            this.dptTime0 = this.myData.dptTime;
-                            this.pstTime0 = this.myData.pstTime.split(',')[0];
-                            this.pstTime1 = this.myData.pstTime.split(',')[1];
-                            this.sailingtime0 = this.myData.sailingtime.split(',')[0];
-                            this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-                            this.periodValidity0 = this.myData.periodValidity;
-//                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
-//                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
-                            if (this.myData.subsidypolicy == 0) {
-                                this.subsidypolicy = '定补'
-                            }
-                            if (this.myData.subsidypolicy == 1) {
-                                this.subsidypolicy = '保底'
-                            }
-                            if (this.myData.subsidypolicy == 2) {
-                                this.subsidypolicy = '人头补'
-                            }
-                            if (this.myData.subsidypolicy == 3) {
-                                this.subsidypolicy = '其他'
-                            }
-                            if (this.myData.subsidypolicy == 4) {
-                                this.subsidypolicy = '待议'
-                            }
-                            if (this.myData.subsidypolicy == 5) {
-                                this.subsidypolicy = '无补贴'
-                            }
-                            // 修改this.showCode
-                            if (this.isSelf == true && this.isIntentionMoney == false) {
-                                console.info('payAfter:' + 1)
-                                this.showCode = 1;
-                            }if (this.isSelf == true && this.isIntentionMoney == true) { //是自己发布的，并且已经缴纳意向金
-                                console.info('payAfter:' + 3)
-                                this.showCode = 3;
-                                // 获取意向列表数据
-                                let toAcceptrResponseList = {};
-                                toAcceptrResponseList.demandId = this.id;
-                                toAcceptrResponseList.intentionStatu = 0;
-                                this.$ajax({
-                                    url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
-                                    method: 'post',
-                                    headers: {
-                                        'Content-type': 'application/x-www-form-urlencoded'
-                                    },
-                                    params: toAcceptrResponseList
-                                }).then((response) => {
-//                                    console.info('responseList:')
-//                                    console.info(response.data.responseList)
-                                    tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
-                                }).catch((error) => {
-                                    console.log(error);
-                                });
-
-                            }if (this.isSelf == false) {
-                                console.info('payAfter:' + 0)
-                                this.showCode = 0;
-                            }
-                            this.show();
-
-                        })
-                        .catch((error) => {
-                                console.log(error);
-                            }
-                        );
+                    this.getData();
                     this.$emit('transShow');
                 }
             });
@@ -579,6 +440,77 @@
             ])
         },
         methods: {
+            // Ajax获取初始数据,并渲染
+            getData: function () {
+                this.$ajax({
+                    method: 'post',
+                    url: '/capacityRoutesDemandDetailFindById',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId: this.id
+                    }
+                })
+                .then((response) => {
+                    console.info('response:')
+                    console.info(response)
+//                            console.info(response.data.responseList)
+                    this.isSelf = response.data.isSelf;
+                    this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
+//                            this.intentionCount = response.data.intentionCount;
+//                            this.detailData = response.data.data;
+//                            this.listData = response.data.responseList;   //获取意向列表
+                    this.userNum = response.data.intentionCount;
+                    this.myData = response.data.data;
+                    this.releaseTime = this.myData.releasetime.split(" ")[0];
+//                            this.dptTime0 = this.myData.dptTime.split(',')[0];
+//                            this.dptTime1 = this.myData.dptTime.split(',')[1];
+                    this.dptTime0 = this.myData.dptTime;
+                    this.pstTime0 = this.myData.pstTime.split(',')[0];
+                    this.pstTime1 = this.myData.pstTime.split(',')[1];
+                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
+                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
+                    this.periodValidity0 = this.myData.periodValidity;
+//                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
+//                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
+                    if (this.myData.subsidypolicy == 0) {
+                        this.subsidypolicy = '定补'
+                    }
+                    if (this.myData.subsidypolicy == 1) {
+                        this.subsidypolicy = '保底'
+                    }
+                    if (this.myData.subsidypolicy == 2) {
+                        this.subsidypolicy = '人头补'
+                    }
+                    if (this.myData.subsidypolicy == 3) {
+                        this.subsidypolicy = '其他'
+                    }
+                    if (this.myData.subsidypolicy == 4) {
+                        this.subsidypolicy = '待议'
+                    }
+                    if (this.myData.subsidypolicy == 5) {
+                        this.subsidypolicy = '无补贴'
+                    }
+                    // 修改this.showCode
+                    if (this.isSelf == true && this.isIntentionMoney == false) {
+                        console.info('payAfter:' + 1)
+                        this.showCode = 1;
+                    }if (this.isSelf == true && this.isIntentionMoney == true) { //是自己发布的，并且已经缴纳意向金
+                        console.info('payAfter:' + 3)
+                        this.showCode = 3;
+                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+                    }if (this.isSelf == false) {
+                        console.info('payAfter:' + 0)
+                        this.showCode = 0;
+                    }
+                    this.show();
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            },
             closeThisFn: function () {
                 this.$emit('close-this')
             },
@@ -591,14 +523,15 @@
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-//                    params: this.recallData
                     params: {
                         id: this.id
                     }
                 }) .then((response) => {
                     console.info(response.data)
                     if(response.data.opResult === '0'){
-                        alert('成功结束该需求！')
+                        alert('成功关闭该需求！');
+                        this.$emit('refresh');
+                        this.closeThisFn();
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }
@@ -776,6 +709,7 @@
             changeShowCodeP: function () {
                 this.paySuccessShow = true; //“缴纳完成”组件显示
                 this.showCode = 2;
+                this.getData();
                 this.show();
             },
             //点击“选定”，组件“请确认以下方案”显示
