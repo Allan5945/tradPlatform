@@ -1,5 +1,5 @@
 <template>
-    <div class="timely-box popup" :style="renTimelyBoxXY" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
+    <div class="timely-box popup" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
     @mousemove="transitionDrop">
         <div class="timely-nav">
             <div :class="{'timely-nav-checked':(setId == key.setId),'information':(key.noReadCount > 0)}" v-for="(key,i) in inData"
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="timely-content-body"> 
-                <div class="chat-function" v-if="setId != 'x-t-null'">
+                <div class="chat-function" v-if="setId != 'x-t-null'" @mousedown.stop  @mouseup.stop>
                     <div class="chat-function-banner" id="chat-function-banner">
                         <div class="scroll">
                             <div :class="{'modify-the-information':(val.textType == '1'),'oneself-news':(val.textType == '0' && val.fromNameId == role.id),'others-news':(val.textType == '0' && val.fromNameId != role.id)}"
@@ -46,7 +46,7 @@
                     <div class="chat-detailed-btn btn btn-b">查看详情</div>
                   </div>
                 </div>
-                <div class="personal" v-if="setId != 'x-t-null'">
+                <div class="personal" v-if="!inData[setId].iskf">
                    <div class="personal-c" v-if="ishs">
                             <div class="personal-panel">
                                 <div class="personal-panel-portrait">
@@ -140,15 +140,15 @@
                     </div>
                     <div class="personal-x-title">
                       <span>如有任何需求请联系</span>
-                      <h4>太美航空</h4>
+                      <h4>{{inData[setId].rightTableUp[2].val}}</h4>
                     </div>
                     <div class="personal-x-item">
-                      <span>如有任何需求请联系</span>
-                      <p>太美航空</p>
+                      <span>热线</span>
+                      <p>{{inData[setId].rightTableUp[3].val}}</p>
                     </div>
                     <div class="personal-x-item">
-                      <span>如有任何需求请联系</span>
-                      <h6>太美航空</h6>
+                      <span>地址</span>
+                      <h6>{{inData[setId].rightTableUp[0].val}}</h6>
                     </div>
                     <img src="./../../../static/img/blbj.png" alt="">
                 </div>
@@ -180,44 +180,57 @@ export default {
         mouseCoordinate: {
           x: 0,
           y: 0
-        }
+        },
+        switch:false
       }
     };
   },
   mounted: function() {
-    this.$refs.textarea.focus();
-    this.timelyBox = this.$refs["timely-box"];
-    let app = document.getElementById("app");
-    let left = (app.offsetWidth - this.timelyBox.offsetWidth) / 2;
-    let top = (app.offsetHeight - this.timelyBox.offsetHeight) / 2;
-    this.timelyBoxXY.x = left;
-    this.timelyBoxXY.y = top;
+    document.addEventListener("mousemove",e => {
+      if(this.dropData.switch){
+        this.timelyBox.style.left = this.timelyBoxXY.x + (e.screenX - this.dropData.mouseCoordinate.x) + 'px';
+        this.timelyBox.style.top = this.timelyBoxXY.y + (e.screenY - this.dropData.mouseCoordinate.y) + 'px';
+      }
+    });
+    this.initBox();
   },
   watch: {},
   computed: {
     ...vx.mapGetters(["role"]),
     setId: function() {
-      let id = ln.chat.setChat.split("-");
-      this.$ajax({
-        method: "post",
-        url: "/updateState",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          fromNameId: id[0] == this.role.id ? id[0] : id[1],
-          toNameId: id[0] == this.role.id ? id[1] : id[0],
-          demandId: id[2] == "null" ? "" : id[2]
-        }
-      })
-        .then(response => {
-          if (response.data.opResult == "0")
-            ln.chat.chatData[ln.chat.setChat].noReadCount = 0;
-          ln.chat.change = !ln.chat.change;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      let url = "/updateState",
+      params = {},
+      id = ln.chat.setChat.split("-")
+      ;
+      if(ln.chat.setChat == 'x-t-null'){
+        url = '/updateSystemState';
+        params = {fromNameId:0}
+      }else{
+        params = {
+            fromNameId: id[0] == this.role.id ? id[0] : id[1],
+            toNameId: id[0] == this.role.id ? id[1] : id[0],
+            demandId: id[2] == "null" ? "" : id[2]
+          };
+      };
+
+      if(ln.chat.chatData[ln.chat.setChat].noReadCount != 0){
+        this.$ajax({
+                method: "post",
+                url,
+                headers: {
+                  "Content-type": "application/x-www-form-urlencoded"
+                },
+                params
+              })
+                .then(response => {
+                  if (response.data.opResult == "0")
+                    ln.chat.chatData[ln.chat.setChat].noReadCount = 0;
+                    ln.chat.change = !ln.chat.change;
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+      };
       return ln.chat.setChat;
     },
     renTimelyBoxXY: function() {
@@ -232,13 +245,15 @@ export default {
     },
     inData: function() {
       let b = {};
-      setTimeout(() => {
+      if(this.setId != 'x-t-null'){
+         setTimeout(() => {
         document.getElementById(
           "chat-function-banner"
         ).scrollTop = document.getElementById(
           "chat-function-banner"
         ).scrollHeight;
-      }, 10);
+        }, 10);
+      }
       if (ln.chat.change);
       for (let k in ln.chat.chatData) {
         let chatObjectList = {};
@@ -255,9 +270,15 @@ export default {
               break;
           }
         });
+        let iskf = true;
+        if(ln.chat.chatData[k].chatFlag.split('-').indexOf('null') == -1){
+          iskf = false;
+        };
         b[ln.chat.chatData[k].chatFlag] = {
           chatObjectList,
-          rightTable: ln.chat.chatData[k].rightTable,
+          iskf,
+          rightTableDown: ln.chat.chatData[k].rightTableDown,
+          rightTableUp: ln.chat.chatData[k].rightTableUp,
           title: ln.chat.chatData[k].title,
           chatRcord: ln.chat.chatData[k].chatRcord,
           modifyRcord:
@@ -265,7 +286,7 @@ export default {
               ? { list: [] }
               : ln.chat.chatData[k].modifyRcord,
           setId: k,
-          noReadCount: ln.chat.chatData[k].noReadCount
+          noReadCount: ln.chat.chatData[k].noReadCount,
         };
       }
       return b;
@@ -285,6 +306,17 @@ export default {
     }
   },
   methods: {
+    initBox:function(){
+        this.$refs.textarea.focus();
+        this.timelyBox = this.$refs["timely-box"];
+        let app = document.getElementById("app");
+        let left = (app.offsetWidth - this.timelyBox.offsetWidth) / 2;
+        let top = (app.offsetHeight - this.timelyBox.offsetHeight) / 2;
+        this.timelyBoxXY.x = left;
+        this.timelyBoxXY.y = top;
+        this.timelyBox.style.left = left + 'px';
+        this.timelyBox.style.top = top + 'px';
+    },
     handling: function(v) {
       let e = event;
       if (e.keyCode == 17) {
@@ -311,7 +343,7 @@ export default {
       let p = {
         fromNameId: len ? ids[0] : ids[1],
         toNameId: len ? ids[1] : ids[0],
-        demandId: ids[2],
+        demandId: ids[2] == 'null' ? '' : ids[2],
         text: this.textData
       };
       let _this = this;
@@ -342,12 +374,10 @@ export default {
       }, 10);
     },
     initDis(t) {
+      ln.chat.narrow = false;
       if (t) {
-        ln.chat.shut = false;
-        ln.chat.narrow = true;
-      } else {
-        ln.chat.narrow = false;
-      }
+         this.initBox();
+      };
     },
     viewHsy: function(t, i) {
       if (t) this.selectModifyHistory = i;
@@ -357,10 +387,23 @@ export default {
       this.ishs = !this.ishs;
     },
     transitionDrop: function(e) {},
-    clearAndBindDrop: function() {
+    clearAndBindDrop: function(t) {
+      this.dropData.mouseCoordinate.x = event.screenX;
+      this.dropData.mouseCoordinate.y = event.screenY;
+
+      this.timelyBoxXY.x = this.timelyBox.offsetLeft;
+      this.timelyBoxXY.y = this.timelyBox.offsetTop;
+
       // 绑定拖拽事件
-      this.dropData.mouseCoordinate.x = this.timelyBox.offsetLeft;
-      this.dropData.mouseCoordinate.y = this.timelyBox.offsetTop;
+      if(t){
+        this.dropData.switch = true;
+      }else{
+        this.dropData.switch = false;
+        // this.timelyBoxXY.x =200;
+        // this.timelyBoxXY.x = 0;
+       
+      };
+     
     }
   }
 };

@@ -14,6 +14,7 @@ function conversions(data) {
             iaco:val.icao,
             cityCoordinateJ:val.cityCoordinateJ,
             cityCoordinateW:val.cityCoordinateW,
+            allData:val
         })
     });
     return mes;
