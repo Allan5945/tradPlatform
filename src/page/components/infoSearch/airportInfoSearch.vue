@@ -181,7 +181,6 @@
                 );
             },
             drawLine(data){
-                console.log(this.turnData(data.passengerThroughputs))
                 let myChart1 = this.$echarts.init(document.getElementById('myChart1'))
                 let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
                 let myChart3 = this.$echarts.init(document.getElementById('myChart3'))

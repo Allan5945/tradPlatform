@@ -2,7 +2,7 @@
     <div >
         <div class="content">
             <div class="banner">
-                <div class="b-til">{{this.airportText}}机场</div>
+                <div class="b-til">{{this.airportText}}</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe621;</span>时刻表</div>
                      <div><span class="iconfont">&#xe628;</span>时刻分布</div>
@@ -29,11 +29,26 @@
                         <div class="table-header">
                             <div>出发地</div>
                             <div>到达地</div>
-                            <div>航班号<span>--</span></div>
+                            <div class="flight">航班号
+                                <div class="up-down" @click="flightSort">
+                                    <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
+                                    <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                                </div>
+                            </div>
                             <div>机型</div>
-                            <div>出发时间<span>--</span></div>
+                            <div class="start-time">出发时间
+                                <div class="up-down" @click="startTimeSort">
+                                    <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
+                                    <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                                </div>
+                            </div>
                             <div>出发机场</div>
-                            <div>到达时间<span>--</span></div>
+                            <div class="end-time">到达时间
+                                <div class="up-down" @click="endTimeSort">
+                                    <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
+                                    <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                                </div>
+                            </div>
                             <div>到达机场</div>
                             <div>班期</div>
                         </div>
@@ -116,6 +131,7 @@
                 distrList:null,
                 inputData:'',
                 showSelcList:false,
+                sorted:false
             }
         },
         props:['qyCode','airportText'],
@@ -222,6 +238,15 @@
                         console.log(error);
                     }
                 );
+            },
+            flightSort(){
+
+            },
+            startTimeSort(){
+
+            },
+            endTimeSort(){
+
             },
             showPoint(num){
                 let point = {};
@@ -365,6 +390,29 @@
                 text-align:center;
                 height:30px;
                 line-height:30px;
+            }
+        }
+        .flight,.start-time,.end-time{
+             display:flex;
+             justify-content: center;
+             .up-down {
+                position: relative;
+                width: 20px;
+                cursor:pointer;
+                .active {
+                    color: #3c78ff;
+                }
+                .icon-down {
+                    position: absolute;
+                    bottom: 4px;
+                    left:5px;
+                    transform: rotate(180deg);
+                }
+                .icon-up {
+                    position: absolute;
+                    top: 4px;
+                    left:5px;
+                }
             }
         }
         .table-content{
