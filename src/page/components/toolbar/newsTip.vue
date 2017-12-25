@@ -61,7 +61,7 @@
                         rightTableDown:[],
                         rightTableUp:response.data.systemMessage.rightTableUp,
                         title:response.data.systemMessage.title
-                    }
+                    };
                     localCommunication.chat.chatData[obj.chatFlag] = obj;
                     localCommunication.chat.setChat = chatFlag;
                     localCommunication.chat.change =  !localCommunication.chat.change;

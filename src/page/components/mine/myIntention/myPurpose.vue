@@ -178,7 +178,7 @@
              this.planData = val;
              this.id = val.id;
              this.demandId = val.demandId;
-             if(this.planData.releaseselected != 0){ //releaseselected=0:发布者已选定，1：发布者取消选定
+             if(this.planData.releaseselected != 0){ //releaseselected= 0:发布者已选定，1：发布者取消选定
                  this.btnShow = true;
              }else {
                  this.btnShow = false;
@@ -218,8 +218,6 @@
                  if(response.data.opResult == 0){
                      this.detailData = response.data.obj.demand;
                      this.planData = response.data.obj;
-//                     this.id = response.data.obj.id;
-                     this.demandId = response.data.obj.demandId;
                      if(this.planData.releaseselected != 0){ //releaseselected=0:发布者已选定，1：发布者取消选定
                          this.btnShow = true;
                      }else {
@@ -253,12 +251,14 @@
                      'Content-type': 'application/x-www-form-urlencoded'
                  },
                  params: {
-                     id: this.id
+                     id: this.id,
+                     demandId: this.demandId
                  }
              }) .then((response) => {
                  console.info(response)
                  if(response.data.opResult === '0'){
                      alert('成功删除该意向!');
+                     this.$emit('refresh');
                  }else{
                      alert('错误代码：' + response.data.opResult);
                  }
@@ -283,6 +283,7 @@
                  console.info(response)
                  if(response.data.opResult === '0'){
                      alert('收藏成功！')
+                     this.$emit('refresh');
                  }else{
                      alert('错误代码：'+ response.data.opResult)
                  }
@@ -309,6 +310,7 @@
                  console.info(response)
                  if(response.data.opResult === '0'){
                      alert('成功确认方案!');
+                     this.$emit('refresh');
                  }else{
                      alert('错误代码：' + response.data.opResult);
                  }
@@ -334,6 +336,7 @@
                  console.info(response);
                  if(response.data.opResult === '0'){
                      alert('成功取消该意向!');
+                     this.$emit('refresh');
                  }else{
                      alert('错误代码：' + response.data.opResult);
                  }

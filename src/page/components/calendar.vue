@@ -1,5 +1,5 @@
 <template>
-  <div id="calendar" onselectstart="return false;">
+  <div id="calendar" onselectstart="return false;" @click.stop>
     <div class="chead">
     <div class="pre-mbtn mbtn">
         <span @click="preMonth()"><i class="icon-item">&#xe60a;</i></span>

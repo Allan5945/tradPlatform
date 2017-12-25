@@ -56,7 +56,7 @@
             </div>
         </div>
         <transition name="slidex-fade">
-            <myPurpose v-show="myPurposeShow" @close-this="closeThisFn"></myPurpose>
+            <myPurpose v-show="myPurposeShow" @close-this="closeThisFn" @refresh="refreshFn"></myPurpose>
         </transition>
     </div>
 </template>
@@ -154,8 +154,9 @@
                     },
                     params: this.sendData
                 }) .then((response) => {
+                    this.myData0 = [];
+                    this.myData1 = [];
                     if(response.data.opResult === '0') {
-                        console.info('ajax')
                         response.data.list.list.forEach((val) => {
                             if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
                                 this.myData0.push(val);
@@ -164,7 +165,12 @@
                                 this.myData1.push(val);
                             }
                         });
-//                        this.judgeRole();
+                        this.judgeRole();
+                    }else if(response.data.opResult === '1') {
+//                        console.info('ajax1')
+//                        this.myData0 = [];
+//                        this.myData1 = [];
+                        this.judgeRole();
                     }else {
                         alert('无法请求到数据，错误代码：' + response.data.opResult)
                     }
@@ -172,11 +178,15 @@
                     console.log(error);
                 });
             },
+            // 刷新页面
+            refreshFn: function () {
+                console.info('refreshFn');
+                this.getListData();
+            },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
             stateShowFn: function () {
-                console.info(0)
                 this.stateShow = !this.stateShow;
             },
             // 通过“发布时间”选择展示内容
@@ -226,8 +236,8 @@
             },
             // 点击列表(list)，展示详情
             listClickFn: function (item,index) {
-                console.info('purposeItem:')
-                console.info(item)
+//                console.info('purposeItem:')
+//                console.info(item)
                 this.$ajax({
                     url:"/getResponseDetails",
                     method: 'post',
@@ -238,8 +248,8 @@
                         responseId: item.id //发布时间排序类型 0-倒序 1-正序
                     }
                 }) .then((response) => {
-                    console.info('我的意向详情:')
-                    console.info(response.data.obj)
+//                    console.info('我的意向详情:')
+//                    console.info(response.data.obj)
                     if(response.data.opResult == 0){
                         this.listItemIndex = index; //变成active状态
                         this.myPurposeShow = true;

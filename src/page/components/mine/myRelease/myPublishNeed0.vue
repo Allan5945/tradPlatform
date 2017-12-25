@@ -252,13 +252,11 @@
                                         <div class="item-a item-height">{{item.sailingtime}}</div>
                                         <div class="item-b item-height">{{item.aircrfttyp}}</div>
                                         <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
-                                        <div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 3">待议</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 4">无补贴</div>
-
                                         <div class="item-height">{{item.capacitycompany}}</div>
                                         <div class="item-height">
                                             <span v-show="item.scheduling == 0">接受</span>

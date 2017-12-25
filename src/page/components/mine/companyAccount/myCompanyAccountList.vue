@@ -272,7 +272,7 @@
     .account-mes {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 44px;
+        margin-bottom: 30px;
         padding: 0 15px;
         .left {
             .buttons {
