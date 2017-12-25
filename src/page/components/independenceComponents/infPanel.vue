@@ -1,30 +1,30 @@
 <template>
     <div class="inf-box popup user-select" id="inf-mes-box" @click.stop>
         <div class="inf-head">
-            <span>上海虹桥机场</span>
-            <span>SHA/ZSSS</span>
-            <span class="btn-w">&#xe62c;</span>
+            <span>{{basicMes.airName}}</span>
+            <span>{{basicMes.airCode}}</span>
+            <span class="btn-w" @click="clek">&#xe62c;</span>
         </div>
         <div class="inf-mes">
             <div>
                 <div>机场类型</div>
-                <div>普通机场</div>
+                <div>{{basicMes.airType}}</div>
             </div>
             <div>
                 <div>飞行区等级</div>
-                <div>4F</div>
+                <div>{{basicMes.flyL}}</div>
             </div>
             <div>
                 <div>是否国际</div>
-                <div>是</div>
+                <div>{{basicMes.isgj}}</div>
             </div>
             <div>
                 <div>放行准点率</div>
-                <div>86%</div>
+                <div>{{basicMes.fxzdl}}%</div>
             </div>
             <div>
                 <div>消防等级</div>
-                <div>-</div>
+                <div>{{basicMes.xfdj}}</div>
             </div>
             <div>更多详情</div>
         </div>
@@ -51,15 +51,15 @@
     export default {
         data(){
             return{
-                // basicMes:{
-                //     airName:"",
-                //     airCode:"",
-                //     airType:"",
-                //     flyL:"",
-                //     isgj:false,
-                //     fxzdl:50,l
-                //     xfdj:""
-                // }
+                basicMes:{
+                    airName:"",
+                    airCode:"",
+                    airType:"",
+                    flyL:"",
+                    isgj:false,
+                    fxzdl:50,
+                    xfdj:''
+                }
             }
         },
         computed:{
@@ -67,18 +67,24 @@
                 'airList'
             ])
         },
+        methods:{
+            clek:function(){
+                document.getElementById("inf-mes-box").style.display = "none";
+            }
+        },
         mounted:function(){
             tabulationBoxTrigger.$on("tipBox",d => {
                 let mes = this.$airMes(this.airList,d).allData;
                 let obj = {
                     airName:mes.airlnCdName,
-                    airCode:`${mes.iata}/${mes.icaod}`,
-                    airType:"",
-                    flyL:"",
-                    isgj:false,
-                    fxzdl:50,
-                    xfdj:""
-                }                
+                    airCode:`${mes.iata}/${mes.icao}`,
+                    airType:mes.airpottype == '' ? "-" : mes.airpottype,
+                    flyL:mes.airfieldLvl == '' ? '-' : mes.airfieldLvl,
+                    isgj:mes.international == '0' ? "否" : "是",
+                    fxzdl:mes.releasePunctuality == undefined ? "-" : mes.releasePunctuality,
+                    xfdj:mes.firelvl == '' ? "-" : mes.firelvl
+                };
+                this.basicMes = obj;       
             });
         }
     }

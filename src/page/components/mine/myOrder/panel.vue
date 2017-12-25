@@ -146,7 +146,6 @@
     /*通用設定*/
     *{
         box-sizing: border-box;
-        letter-spacing: 2px;
     }
     h1,h2,h3,h4,h5,h6{
         color: $bt-c;
