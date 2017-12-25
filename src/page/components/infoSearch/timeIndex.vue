@@ -39,6 +39,7 @@ import airlineInfo from './airlineInfoSearch.vue'
                 showType:false
             }
         },
+        props:['selcIndex'],
         methods: {
             getType(i){
                 this.selcType = this.typeList[i];
@@ -76,6 +77,15 @@ import airlineInfo from './airlineInfoSearch.vue'
 
         },
         mounted() {
+            if(this.selcIndex =="0"){
+
+            }else if(this.selcIndex =="1"){
+                this.airlineShow = true;
+            }else if(this.selcIndex =="2"){
+                this.airportShow = true;
+            }else if(this.selcIndex =="3"){
+                this.timeShow = true;
+            }
         },
         components:{
             airportS1,

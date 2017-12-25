@@ -2,7 +2,7 @@
     <div >
         <div class="content">
             <div class="banner">
-                <div class="b-til">{{this.airportText}}机场</div>
+                <div class="b-til">{{this.airportText}}</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe621;</span>时刻表</div>
                      <div><span class="iconfont">&#xe628;</span>时刻分布</div>

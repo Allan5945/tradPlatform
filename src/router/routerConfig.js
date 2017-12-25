@@ -26,7 +26,7 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
 // 新闻舆情
 const opinion = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
 // 信息查询
-const information = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
+const information = resolve => require(['./../page/components/infoSearch/infoSearchIndex.vue'], resolve);
 
 Vue.use(VueRouter);
 

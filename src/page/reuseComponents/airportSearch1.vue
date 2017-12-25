@@ -26,7 +26,7 @@
                 this.airList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
                     if(st != ''){
-                        let airportName = val.airportName;  // 机场名字
+                        let airportName = val.cityName;  // 机场名字
                         let code = val.code;  // 三字码
                         let pinyin = val.pinyin; // 拼音
                         let py = val.py; // 拼音首字母
@@ -44,50 +44,51 @@
                                 testName:aName,
                                 testCode:val.code,
                                 code:val.code,
-                                name:val.airportName,
+                                name:val.cityName,
                                 type:0
                             });
                         }else if(code.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
                             ar.push({
-                                testName:val.airportName,
+                                testName:val.cityName,
                                 testCode:aName,
                                 code:val.code,
-                                name:val.airportName,
+                                name:val.cityName,
                                 type:0
                             });
                         }else if(py.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                             ar.push({
-                                testName:val.airportName,
+                                testName:val.cityName,
                                 testCode:aName,
                                 code:val.code,
-                                name:val.airportName,
+                                name:val.cityName,
                                 type:0
                             });
                         }else if(pinyin.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                             ar.push({
-                                testName:val.airportName,
+                                testName:val.cityName,
                                 testCode:aName,
                                 code:val.code,
-                                name:val.airportName,
+                                name:val.cityName,
                                 type:0
                             });
                         };
                     }else{
                         ar.push({
-                            testName:val.airportName,
+                            testName:val.cityName,
                             testCode:val.code,
                             code:val.code,
-                            name:val.airportName,
+                            name:val.cityName,
                             type:0
                         });
                     }
                 });
+
                 this.list = ar;
             },
             reqD:function (key,index) {
@@ -116,7 +117,8 @@
         },
         computed:{
             ...vx.mapGetters([
-                'airList'
+                'airList',
+                'cityList'
             ]),
         }
     }

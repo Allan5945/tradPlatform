@@ -57,6 +57,7 @@
                 </div>
             </div>
         </div>
+        <timeIndex v-if="detailShow" :selcIndex ="this.selcIndex"></timeIndex>
     </div>
 </template>
 
@@ -73,7 +74,8 @@ import timeIndex from './timeIndex.vue'
                 selcType:'时刻',
                 typeList:['城市','航司','机场','时刻'],
                 airportSearch:false,
-                showType:false
+                showType:false,
+                detailShow:false
             }
         },
          computed:{
@@ -101,7 +103,7 @@ import timeIndex from './timeIndex.vue'
                 this.airportSearch = true;
             },
             getInfo(){
-
+                this.detailShow = true;
             }
 
         },
