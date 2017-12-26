@@ -23,7 +23,7 @@
                     <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
                     <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
                     <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
-                        <span v-else>{{myData.demandprogressStr}}</span>
+                        <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
                 </div>
             </div>

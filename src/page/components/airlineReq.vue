@@ -67,7 +67,7 @@
                         </div>
                         <div class="bottom">
                             <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" >
-                            <airportS class="aisx" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
+                            <airportS class="aisx" style="left: -60px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
                         </div>
                     </div>
                 </div>
@@ -473,9 +473,13 @@
                 calendarShow1: false,
                 calendarShow2: false,
 
-                space1ShowTitle: '始发点类型',
-                space2ShowTitle: '经停点类型',
-                space3ShowTitle: '到达点类型',
+                /*始发经停到达均默认选择意向机场*/
+//                space1ShowTitle: '始发点类型',
+//                space2ShowTitle: '经停点类型',
+//                space3ShowTitle: '到达点类型',
+                space1ShowTitle: '意向机场',
+                space2ShowTitle: '意向机场',
+                space3ShowTitle: '意向机场',
 
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
@@ -498,6 +502,11 @@
             typeChoose: function () {
                 this.warn4Show = false;
             }
+        },
+        mounted() {
+            this.space1Fn();
+            this.space2Fn();
+            this.space3Fn();
         },
         computed: {
             sailingtime: function () {
@@ -955,8 +964,8 @@
                 this.directionPublicCity.push(data.name);
                 this.directionPublicCityShow = true;
             },
-            // 选择意向区域或意向机场 0为区域，1为机场
-            space1Fn: function (item) {
+            // 选择意向区域或意向机场 0为区域，1为机场(始发经停到达均默认选择意向机场)
+            space1Fn: function (item = '意向机场') {
                 this.space1ShowTitle = item;
                 this.firArea = '';
                 if(item == '意向区域') {
@@ -982,7 +991,7 @@
 //                    this.dptState = '';
                 }
             },
-            space2Fn: function (item) {
+            space2Fn: function (item = '意向机场') {
                 this.space2ShowTitle = item;
                 this.secArea = '';
                 if(item == '意向区域') {
@@ -1007,7 +1016,7 @@
 //                    this.pstState = '';
                 }
             },
-            space3Fn: function (item) {
+            space3Fn: function (item = '意向机场') {
                 this.space3ShowTitle = item;
                 this.thirdArea = '';
                 if(item == '意向区域') {

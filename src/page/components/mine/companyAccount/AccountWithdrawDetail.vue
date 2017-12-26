@@ -54,7 +54,7 @@
     export default {
         data() {
             return {
-                withdrawFlowCode: '', // 传给流水详情的参数
+                withdrawFlowCode: '', // 传给流水详情的参数(0、1、2、00)
                 ardButtonShow: false,    // "申请电子凭证"按钮是否显示
                 applySuccessShow: false, // “申请成功”是否显示
                 certificateShow: false,  // “电子凭证”图片是否显示
@@ -62,25 +62,47 @@
                 certificateImgShow: false,    // “电子凭证”双击放大是否展示
                 showCode: '',                  // 1、2、3：未完成,申请电子凭证，申请电子凭证完成
                 myData: {},                 //
+                wetherJpg: false,           // 是否有电子凭证
+                id: '',                      // 交易记录id
+                type: '',                    // 交易类型
             }
         },
         created() {
             tabulationBoxTrigger.$on('sendToAccountWithdrawDetail',(val) => { //从myCompanyAccountList接受数据
-                this.withdrawFlowCode = val.phase; // 传给流水详情的参数(0、1、2)
+//                this.withdrawFlowCode = val.phase; // 传给流水详情的参数(0、1、2、00)
+                this.wetherJpg = val.wetherJpg;    // 电子凭证图片
+                this.id = val.id;
+                this.type = val.type;
                 this.myData = val;
+                console.info('phase:');
+                console.info(val.phase);
                 if(val.phase == 2){ // 判断页面显示的内容
                     this.showCode = 1;
+                    this.withdrawFlowCode = 2;
+                }else if(val.phase == '00'){
+                    this.showCode = 1;
+                    this.withdrawFlowCode = 2;
+                }else if(val.phase == 1){
+                    this.showCode = 0;
+                    this.withdrawFlowCode = 1;
                 }else {
                     this.showCode = 0;
+                    this.withdrawFlowCode = 0;
+                }
+                if(this.wetherJpg == true) { // 判断是否有电子凭证
+                    this.showCode = 2;
+                    this.getWetherJpg();
                 }
                 this.show();
             })
         },
-        mounted() {
-            this.src = 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1930822017,3565726415&fm=27&gp=0.jpg';
-        },
         methods: {
+            getWetherJpg: function () { // 获取电子凭证
+                this.src = `/seeTransactionRecordJpg?id=${this.id}&type=${this.type}`;
+            },
             show: function () {
+                console.info('showCode:');
+                console.info(this.showCode);
                 if(this.showCode == 0) {
                     this.ardButtonShow = false;
                     this.certificateShow = false;
@@ -98,7 +120,26 @@
             },
             // 点击“申请电子凭证”
             applyClickFn: function () {
-                this.applySuccessShow = true;
+                this.$ajax({
+                    url: "/userApplicationForElectronicVoucher",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        id: this.id,
+                    }
+                }).then((response) => {
+                    console.info('response:')
+                    console.info(response);
+                    if(response.data.opResult == 0) {
+                        alert(`申请电子凭证成功！${response.data.opResult}`);
+                    }else {
+                        alert(`申请电子凭证失败，错误代码： ${response.data.opResult}`);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
             },
             // 关闭“申请成功”弹出框
             closeApplySuccessFn: function () {

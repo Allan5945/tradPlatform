@@ -8,7 +8,7 @@
                 <div class="tips">
                     <span>创建于{{detailData.releasetime}}</span>
                     <span>已有{{intentionCount}}位用户发起意向</span>
-                    <span>需求进度：{{detailData.demandprogressStr}}</span>
+                    <span>状态：<span style="color: #3F7AFF;font-weight: bold;">{{detailData.demandprogressStr}}</span></span>
                 </div>
             </header>
             <div class="content">

@@ -6,7 +6,7 @@
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime}}</span>
-                    <span>状态：<span style="color:#3C78FF;">洽谈中</span></span>
+                    <span>状态：<span style="color: #3F7AFF;font-weight: bold;">洽谈中</span></span>
                 </div>
             </header>
             <div class="content">
