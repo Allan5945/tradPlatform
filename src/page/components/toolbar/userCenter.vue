@@ -10,7 +10,7 @@
         </router-link>
         <a>
             <div class="contact-client btn btn-b" @click="initDis">
-                联系客户
+                联系客服
                 <span>&#xe60f;</span>
             </div>
         </a>
