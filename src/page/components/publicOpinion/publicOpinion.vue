@@ -420,6 +420,7 @@
         left: 0;
         z-index: 12;
         background-color: #f8f8f8;
+        overflow-y: scroll;
         >div{
             background-color: #f8f8f8;
             overflow: hidden;

@@ -229,6 +229,7 @@
                   params: {
                     id: this.planData.id,
                     demandId: this.planData.demandId,
+                    employeeId:this.planData.employeeId,
                     responseselected: '0',
                     releaseselected: '0'
                 }
@@ -300,7 +301,7 @@
       },
        mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && (this.role.role == 1||this.role.role == 2)){
+            if(val.data.demandtype == 1 && this.role.role == 1){
                console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',

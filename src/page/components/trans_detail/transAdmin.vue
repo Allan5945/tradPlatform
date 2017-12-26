@@ -339,7 +339,7 @@
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             this.demandId = val.data.id;
             console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && (this.role.role == 2)){
+            if(val.data.demandtype == 1 && this.role.role == 2){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',

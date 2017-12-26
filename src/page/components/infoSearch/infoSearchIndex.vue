@@ -8,7 +8,13 @@
                 </div>
                 <div class="search-box">
                     <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
-                    <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-show="airportSearch"></airportS1>
+                   <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-show="airportSearch" v-if="selcIndex == '2'||selcIndex == '3'"></airportS1>
+                    <div class="airline popup scroll" v-show="airlineShow" v-else-if="selcIndex == '1' ">
+                        <div v-for="(item,index) in airlineData" @click="getCompanyList(index)">
+                        <span>{{item[0]}}</span>
+                        <span>{{item[1]}}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
             </div>
@@ -56,15 +62,36 @@
                     </div>
                 </div>
             </div>
+            <div class="airport">
+                <div class="a-til">热门城市</div>
+                <div class="a-content">
+                    <div class="a-box">
+                        <div class="img"><img :src="img" alt=""></div>
+                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                    </div>
+                    <div class="a-box">
+                        <div class="img"><img :src="img" alt=""></div>
+                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                    </div>
+                    <div class="a-box">
+                        <div class="img"><img :src="img" alt=""></div>
+                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                    </div>
+                    <div class="a-box">
+                        <div class="img"><img :src="img" alt=""></div>
+                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <timeIndex v-if="detailShow" :selcIndex ="this.selcIndex"></timeIndex>
+        <timeIndex v-if="detailShow" :selcIndex ="selcIndex" :qyCode1="qyCode" :searchtText="airportText"></timeIndex>
     </div>
 </template>
 
 <script>
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import timeIndex from './timeIndex.vue'
- import myPic from '$src/static/img/145.jpg';
+ import myPic from '$src/static/img/airport1.png';
     export default {
         data() {
             return {
@@ -73,6 +100,8 @@ import timeIndex from './timeIndex.vue'
                 selcIndex:'',
                 selcType:'时刻',
                 typeList:['城市','航司','机场','时刻'],
+                airlineData:[],
+                airlineShow:false,
                 airportSearch:false,
                 showType:false,
                 detailShow:false
@@ -92,6 +121,7 @@ import timeIndex from './timeIndex.vue'
                  let that =this;
                setTimeout(function(){
                 that.airportSearch =false;
+                that.airlineShow =false;
                 },200);
             },
             airportData(data){
@@ -101,10 +131,37 @@ import timeIndex from './timeIndex.vue'
             },
             searchAirport(){
                 this.airportSearch = true;
+                this.getAirCompany();
             },
             getInfo(){
                 this.detailShow = true;
-            }
+                /*window.open('http://localhost:8088/#/index/information')*/
+            },
+            getAirCompany: function(){
+                this.$ajax({
+                url:"/airCompenyList",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+            }) .then((response) => {
+                response.data.list.forEach(item =>{
+                    let airline = [];
+                    airline.push(item.airlnCd);
+                    airline.push(item.icao);
+                    //airline.push(item.id);
+                    this.airlineData.push(airline);
+                })
+            }).catch((error) => {
+                    console.log(error);
+                });
+                this.airlineShow = true;
+            },
+            getCompanyList: function(i){
+                this.airportText = this.airlineData[i][0];
+                this.qyCode = this.airlineData[i][1];
+                this.airlineShow = false;
+            },
 
         },
         mounted() {
@@ -129,7 +186,6 @@ import timeIndex from './timeIndex.vue'
     .wrapper{
         position: absolute;
         width: 100%;
-        height:100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;
@@ -288,5 +344,28 @@ import timeIndex from './timeIndex.vue'
                 background-color:rgba(235,235,235,.5);
             }
           }
+    }
+    .airline{
+        position:absolute;
+        left:0px;
+        top:41px;
+        width:680px;
+        max-height:210px;
+        cursor:pointer;
+        z-index:10;
+        overflow:hidden;
+        overflow-y:scroll;
+        div{
+            justify-content: space-between;
+            display: flex;
+            padding: 0 14px;
+            height:35px;
+            line-height:35px;
+            text-align:left;
+            &:hover{
+                background-color:rgba(235,235,235,.5);
+            }
+        }
+
     }
 </style>

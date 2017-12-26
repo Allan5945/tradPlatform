@@ -2,7 +2,8 @@
     <div >
         <div class="content">
             <div class="banner">
-                <div class="b-til">{{this.airportText}}</div>
+                <div class="airport-img"><img :src="img" alt=""></div>
+                <div class="b-til">{{airportText}}</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe621;</span>时刻表</div>
                      <div><span class="iconfont">&#xe628;</span>时刻分布</div>
@@ -76,7 +77,7 @@
                   <div class="table-box">
                       <div class="box-head">
                           <div class="name">{{this.airportText}}班期时刻表</div>
-                          <div class="pointer"></div>
+                          <!-- <div class="pointer"></div> -->
                       </div>
                       <div class="distr-content">
                            <div class="distr-sidebar">
@@ -123,11 +124,13 @@
 </template>
 
 <script>
+ import myPic from '$src/static/img/Slice.png';
     export default {
         data() {
             return {
                 timeTableList:[],
                 timeList:[],
+                timeIndex:'',
                 distrList:null,
                 inputData:'',
                 showSelcList:false,
@@ -150,12 +153,16 @@
                     this.distrList.push(data[0]);
                 }
                 return this.distrList;
+            },
+             img:function(){
+                return myPic;
             }
         },
         methods: {
             getTime(i){
                 this.inputData = this.timeList[i];
                 this.showSelcList = false;
+                this.timeIndex = i;
             },
             getData(){
                 this.$ajax({
@@ -223,21 +230,8 @@
                 this.getClock(this.inputData,this.qyCode);
             },
             exportData(){
-                this.$ajax({
-                method: 'get',
-                url: '/jxlExcel',
-                  params: {
-                     itia:this.qyCode,
-                     getTime: this.inputData
-                    }
-                })
-                .then((response) => {
-                    this.timeTableList = response.data.list;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+                let url = "/jxlExcel?itia=" + this.qyCode + "&getTime=" + this.timeList[this.timeIndex];
+                window.location.href= url;
             },
             flightSort(){
 
@@ -286,13 +280,25 @@
         width:100%;
         height:100px;
         position:relative;
-        background-color:pink;
+        .airport-img{
+            width:100%;
+            height:100%;
+            img{
+                width:100%;
+                height:100%;
+            }
+        }
         .b-til{
+            position:absolute;
+            left:0;
+            top:0;
             width:210px;
             height:100px;
+            color:#fff;
             text-align:center;
             line-height:100px;
-            font-size:2.5rem;
+            font-size:2.0rem;
+            background-color:rgba(0,0,0,.3);
         }
     }
     .sidebar{

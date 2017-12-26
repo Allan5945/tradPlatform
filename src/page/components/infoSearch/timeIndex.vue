@@ -15,8 +15,8 @@
             <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
         </header>
         <timeSearch :qyCode="qyCode" :airportText="airportText" v-if="timeShow"></timeSearch>
-        <airportInfo :qyCode="qyCode" v-if="airportShow"></airportInfo>
-        <airlineInfo  v-if="airlineShow"></airlineInfo>
+        <airportInfo :qyCode="qyCode" :airportText="airportText" v-if="airportShow"></airportInfo>
+        <airlineInfo  :qyCode="qyCode" :airportText="airportText" v-if="airlineShow"></airlineInfo>
     </div>
 </template>
 
@@ -30,7 +30,7 @@ import airlineInfo from './airlineInfoSearch.vue'
             return {
                 airportText:'',
                 qyCode:'',
-                selcType:'时刻',
+                selcType:'',
                 typeList:['时刻','机场','航司'],
                 airportSearch:false,
                 timeShow:false,
@@ -39,7 +39,7 @@ import airlineInfo from './airlineInfoSearch.vue'
                 showType:false
             }
         },
-        props:['selcIndex'],
+        props:['selcIndex','qyCode1','searchtText'],
         methods: {
             getType(i){
                 this.selcType = this.typeList[i];
@@ -77,6 +77,8 @@ import airlineInfo from './airlineInfoSearch.vue'
 
         },
         mounted() {
+            this.qyCode =this.qyCode1;
+            this.airportText = this.searchtText;
             if(this.selcIndex =="0"){
 
             }else if(this.selcIndex =="1"){
