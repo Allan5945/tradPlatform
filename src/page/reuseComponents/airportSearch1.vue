@@ -118,7 +118,6 @@
         computed:{
             ...vx.mapGetters([
                 'airList',
-                'cityList'
             ]),
         }
     }

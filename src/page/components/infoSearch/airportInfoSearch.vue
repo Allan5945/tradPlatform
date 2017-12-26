@@ -2,7 +2,8 @@
     <div >
         <div class="content">
             <div class="banner">
-                <div class="b-til">机场</div>
+                <div class="airport-img"><img :src="img" alt=""></div>
+                <div class="b-til">{{airportText}}</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe603;</span>基本信息</div>
                      <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
@@ -88,41 +89,21 @@
                         <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
                         <div class="more">查看更多></div>
                     </div>
-                    <div class="news-box">
+                    <div class="news-box" v-for="item in infoData.opinions">
                         <div class="box-pic">
                             <img :src="img" alt="">
                         </div>
                         <div class="box-content">
                             <div class="box-til">
-                                <div class="name"><a href="javascript:;">成都-北京航线舆情</a></div>
+                                <div class="name"><a :href="item.articleUrl">{{item.articleTitle}}</a></div>
                                 <div class="type">
-                                    <div>舆情类型</div>
-                                    <div>舆情类型</div>
+                                    <div>{{item.articleType}}</div>
                                 </div>
                             </div>
-                            <div class="box-text">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</div>
+                            <div class="box-text">{{item.articleContent}}</div>
                             <div class="box-foot">
-                                <div class="box-net">民航资源网</div>
-                                <div class="box-time">2012.12.12</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="news-box">
-                        <div class="box-pic">
-                            <img :src="img" alt="">
-                        </div>
-                        <div class="box-content">
-                            <div class="box-til">
-                                <div class="name"><a href="javascript:;">成都-北京航线舆情</a></div>
-                                <div class="type">
-                                    <div>舆情类型</div>
-                                    <div>舆情类型</div>
-                                </div>
-                            </div>
-                            <div class="box-text">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容内容我是内容我是内容我是内容我是内容我是内容我是内容</div>
-                            <div class="box-foot">
-                                <div class="box-net">民航资源网</div>
-                                <div class="box-time">2012.12.12</div>
+                                <div class="box-net">{{item.articleFrom}}</div>
+                                <div class="box-time">{{item.articleTime}}</div>
                             </div>
                         </div>
                     </div>
@@ -134,14 +115,14 @@
 
 <script>
     import echarts from 'echarts';
-    import myPic from '$src/static/img/145.jpg';
+    import myPic from '$src/static/img/Slice.png';
     export default {
         data() {
             return {
                 infoData:{}
             }
         },
-        props:['qyCode'],
+        props:['qyCode','airportText'],
         watch: {
             'qyCode':function(){
                 this.getData();
@@ -270,13 +251,25 @@
         width:100%;
         height:100px;
         position:relative;
-        background-color:pink;
+        .airport-img{
+            width:100%;
+            height:100%;
+            img{
+                width:100%;
+                height:100%;
+            }
+        }
         .b-til{
+            position:absolute;
+            left:0;
+            top:0;
             width:210px;
             height:100px;
+            color:#fff;
             text-align:center;
             line-height:100px;
-            font-size:2.5rem;
+            font-size:2.0rem;
+            background-color:rgba(0,0,0,.3);
         }
     }
     .sidebar{
