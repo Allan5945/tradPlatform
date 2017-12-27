@@ -2,7 +2,7 @@
     <div >
         <div class="content">
             <div class="banner">
-                <div class="airport-img"><img :src="img" alt=""></div>
+                <div class="airport-img"><img :src="img2" alt=""></div>
                 <div class="b-til">{{airportText}}</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe621;</span>时刻表</div>
@@ -32,22 +32,22 @@
                             <div>到达地</div>
                             <div class="flight">航班号
                                 <div class="up-down" @click="flightSort">
-                                    <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
-                                    <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                                    <span class="iconfont icon-up" :class="{active:sorted1}">&#xe605;</span>
+                                    <span class="iconfont icon-down" :class="{active:!sorted1}">&#xe605;</span>
                                 </div>
                             </div>
                             <div>机型</div>
                             <div class="start-time">出发时间
                                 <div class="up-down" @click="startTimeSort">
-                                    <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
-                                    <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                                    <span class="iconfont icon-up" :class="{active:sorted2}">&#xe605;</span>
+                                    <span class="iconfont icon-down" :class="{active:!sorted2}">&#xe605;</span>
                                 </div>
                             </div>
                             <div>出发机场</div>
                             <div class="end-time">到达时间
                                 <div class="up-down" @click="endTimeSort">
-                                    <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
-                                    <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                                    <span class="iconfont icon-up" :class="{active:sorted3}">&#xe605;</span>
+                                    <span class="iconfont icon-down" :class="{active:!sorted3}">&#xe605;</span>
                                 </div>
                             </div>
                             <div>到达机场</div>
@@ -124,7 +124,8 @@
 </template>
 
 <script>
- import myPic from '$src/static/img/Slice.png';
+ import myPic1 from '$src/static/img/Slice.png';
+ import myPic2 from '$src/static/img/infobg.png';
     export default {
         data() {
             return {
@@ -134,7 +135,9 @@
                 distrList:null,
                 inputData:'',
                 showSelcList:false,
-                sorted:false
+                sorted1:false,
+                sorted2:false,
+                sorted3:false
             }
         },
         props:['qyCode','airportText'],
@@ -154,8 +157,11 @@
                 }
                 return this.distrList;
             },
-             img:function(){
-                return myPic;
+             img1:function(){
+                return myPic1;
+            },
+             img2:function(){
+                return myPic2;
             }
         },
         methods: {
@@ -229,18 +235,46 @@
 
                 this.getClock(this.inputData,this.qyCode);
             },
+            sortData(name,type){
+                this.$ajax({
+                method: 'post',
+                url: '/getAirportTimeInfo',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                     itia:this.qyCode,
+                     getTime: this.inputData,
+                     orderField:name,
+                     orderType:type
+                    }
+                })
+                .then((response) => {
+                    this.timeTableList = response.data.list;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            },
             exportData(){
                 let url = "/jxlExcel?itia=" + this.qyCode + "&getTime=" + this.timeList[this.timeIndex];
                 window.location.href= url;
             },
             flightSort(){
-
+                this.sorted1 = !this.sorted1;
+                let ordertype = this.sorted1? 0:1;
+                this.sortData('fltNbr',ordertype);
             },
             startTimeSort(){
-
+                this.sorted2 = !this.sorted2;
+                let ordertype = this.sorted2? 0:1;
+                this.sortData('lclDptTm',ordertype);
             },
             endTimeSort(){
-
+                this.sorted3 = !this.sorted3;
+                let ordertype = this.sorted3? 0:1;
+                this.sortData('lclArrvTm',ordertype);
             },
             showPoint(num){
                 let point = {};
