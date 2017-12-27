@@ -24,13 +24,13 @@
                         <ul>
                             <li><div>二字码</div><div>{{infoData.iata || "-"}}</div></li>
                             <li><div>总部地点</div><div>{{infoData.headquarterslocation || "-"}}</div></li>
-                            <li><div>通航国家数量</div><div>{{infoData.departuretime || "-"}}</div></li>
+                            <li><div>通航国家数量</div><div>{{infoData.shippingcountry || "-"}}</div></li>
                         </ul>
                     </div>
                     <div class="info-box">
                         <ul>
-                            <li><div>四字码</div><div>{{infoData.icao || "-"}}</div></li>
-                            <li><div>所属航系</div><div>{{infoData.warzone || "-"}}</div></li>
+                            <li><div>三字码</div><div>{{infoData.icao || "-"}}</div></li>
+                            <li><div>所属航系</div><div>{{infoData.systemairpot || "-"}}</div></li>
                             <li><div>通航机场数量</div><div>{{infoData.navigationairport || "-"}}</div></li>
                         </ul>
                     </div>

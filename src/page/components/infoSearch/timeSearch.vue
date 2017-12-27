@@ -130,7 +130,7 @@
             return {
                 timeTableList:[],
                 timeList:[],
-                timeIndex:'',
+                timeIndex:'0',
                 distrList:null,
                 inputData:'',
                 showSelcList:false,
