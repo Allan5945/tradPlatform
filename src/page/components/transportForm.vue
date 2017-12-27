@@ -138,7 +138,7 @@
             </div>
         </div>
         <div class="t-btn">
-            <div class="agent-btn " @click="confirm(4)">委托代理</div>
+            <div class="agent-btn " @click="confirm(4)" >委托代理</div>
             <div class="confirm-btn " @click="confirm(1)">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
         </div>
@@ -146,6 +146,7 @@
 </template>
 <script>
  import calendar from './calendar'
+ import * as vx from 'vuex'
  import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
     export default {
@@ -216,6 +217,11 @@
             calendar,
             airportS,
             airportS1
+        },
+        computed:{
+         ...vx.mapGetters([
+                'role'
+            ])
         },
         methods:{
              getNeed: function(i) {

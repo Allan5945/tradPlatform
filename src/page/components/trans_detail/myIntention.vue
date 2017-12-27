@@ -2,11 +2,11 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">需求详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
+                <div class="top-til">{{detailData.demandtypeStr}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime}}</span>
-                    <span>状态：<span style="color:#3C78FF;">洽谈中</span></span>
+                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr}}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -76,7 +76,10 @@
                     <div class="intent-box" v-for=" (val,index) in planData" v-if="intentListShow">
                          <div class="intent-item">
                             <div class="time">{{val.responsedate}}</div>
-                            <div class="person">{{val.intentionCompanyName}}<span class="iconfont">&#xe602;</span></div>
+                            <div class="person">
+                              {{val.intentionCompanyName}}
+                              <span class="iconfont" @click="chat(val)">&#xe602;</span>
+                            </div>
                             <div class="detail" @click="closeDetail">{{text}}</div>
                         </div>
                         <div class="intent-detail" v-show="detailShow">
@@ -192,7 +195,8 @@
 </template>
 
 <script>
-  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+  import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
   import myIntentForm from './myIntentForm1.vue'
   import  signDialog from './signDialog.vue'
@@ -214,6 +218,13 @@
          }
      },
      methods:{
+          chat:function (v) {
+              let chatData = {};
+              chatData.id = this.detailData.id;
+              chatData.employeeId = this.detailData.employeeId;
+              chatData.demandEmployeeId = v.employeeId;
+              ln.$emit('addChat',chatData);
+            },
          closeDetail:function(){
              this.detailShow = !this.detailShow;
              if(this.detailShow){
@@ -621,6 +632,7 @@
                     span{
                         font-size:25px;
                         margin-left:10px;
+                        cursor:pointer;
                     }
 
                 }

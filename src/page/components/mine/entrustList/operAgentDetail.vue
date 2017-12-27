@@ -4,7 +4,7 @@
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
-                <div class="contact">联系用户</div>
+                <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
@@ -58,6 +58,7 @@
 <script>
 import refuseDialog from './refuseDialog.vue';
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+import ln from './../../../../public/js/tabulationBoxTrigger';
 
  export default {
      data(){
@@ -71,8 +72,11 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
             CpyNm:'',
          }
      },
-      props:['demandId'],
+      props:['chatData'],
      methods:{
+        chat:function () {
+                ln.$emit('addChat',this.chatData);
+            },
         closeDetail:function(){
           this.$emit("close");
         },
@@ -88,7 +92,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.demandId,
+                    id:this.chatData.id,
                     demandprogress:'9'
                   }
                 })
@@ -111,7 +115,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.demandId,
+                    id:this.chatData.id,
                     demandprogress:'10',
                     rek: text
                   }
@@ -132,7 +136,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.demandId,
+                    id:this.chatData.id,
                     demandprogress:'8',
                   }
                 })
@@ -159,7 +163,7 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.demandId
+                    id:this.chatData.id
                   }
                 })
                 .then((response) => {

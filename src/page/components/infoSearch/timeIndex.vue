@@ -31,7 +31,7 @@ import airlineInfo from './airlineInfoSearch.vue'
                 airportText:'',
                 qyCode:'',
                 selcType:'',
-                typeList:['时刻','机场','航司'],
+                typeList:['时刻','机场'],
                 airportSearch:false,
                 timeShow:false,
                 airportShow:false,
@@ -85,8 +85,10 @@ import airlineInfo from './airlineInfoSearch.vue'
                 this.airlineShow = true;
             }else if(this.selcIndex =="2"){
                 this.airportShow = true;
+                this.selcType = "机场";
             }else if(this.selcIndex =="3"){
                 this.timeShow = true;
+                this.selcType = "时刻";
             }
         },
         components:{
