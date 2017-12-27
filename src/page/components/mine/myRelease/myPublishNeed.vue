@@ -118,8 +118,8 @@
         mounted() {
             // 从myPublishList获取参数，并渲染到页面上
             tabulationBoxTrigger.$on('sendDataToMyPublish',val => {
-                console.info('从myPublishList获取的数据:');
-                console.info(val);
+//                console.info('从myPublishList获取的数据:');
+//                console.info(val);
                 this.myData = val;
                 this.id = this.myData.id;
                 // 状态有误时显示的内容
@@ -185,10 +185,10 @@
             editPublishClickFn: function () {
                 if(this.myData.demandtype == 0) {
                     this.editAirlineReqShow = true;
-                    console.info('editAirlineReqShow')
+//                    console.info('editAirlineReqShow')
                 }if(this.myData.demandtype == 1) {
                     this.editTransportFormShow = true;
-                    console.info('editTransportFormShow')
+//                    console.info('editTransportFormShow')
                 }
             },
             // 点击表单的“确认”后
@@ -197,8 +197,8 @@
                 this.anewPublishShow = false;
                 this.wrongTextShow = false;
                 tabulationBoxTrigger.$on('sendToMyPublish',(val) => {
-                    console.info('sendToMyPublish:')
-                    console.info(val)
+//                    console.info('sendToMyPublish:')
+//                    console.info(val)
                     this.myData = val;
                     this.myData.id = this.id
 //                    console.info(this.id)
@@ -220,7 +220,7 @@
             },
             //点击下方“重新发布”
             anewPublishClickFn2: function () {
-                console.info(this.myData);
+//                console.info(this.myData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -229,7 +229,7 @@
                     },
                     params: this.myData
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
@@ -239,7 +239,7 @@
             recallFn: function () {
                 this.recallData.id = this.myData.id;
                 this.recallData.demandprogress = 3;
-                console.info(this.recallData);
+//                console.info(this.recallData);
                 this.$ajax({
 //                    url:"/demandUpdate",
                     url: "closeDemandById",
@@ -252,7 +252,7 @@
                         id: this.myData.id
                     }
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);

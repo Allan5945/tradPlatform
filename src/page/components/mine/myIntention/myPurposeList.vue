@@ -180,7 +180,7 @@
             },
             // 刷新页面
             refreshFn: function () {
-                console.info('refreshFn');
+//                console.info('refreshFn');
                 this.getListData();
             },
             typeShowFn: function () {

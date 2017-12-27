@@ -67,7 +67,7 @@
                         </div>
                         <div class="bottom">
                             <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" >
-                            <airportS class="aisx" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
+                            <airportS class="aisx" style="left: -60px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
                         </div>
                     </div>
                 </div>
@@ -473,9 +473,13 @@
                 calendarShow1: false,
                 calendarShow2: false,
 
-                space1ShowTitle: '始发点类型',
-                space2ShowTitle: '经停点类型',
-                space3ShowTitle: '到达点类型',
+                /*始发经停到达均默认选择意向机场*/
+//                space1ShowTitle: '始发点类型',
+//                space2ShowTitle: '经停点类型',
+//                space3ShowTitle: '到达点类型',
+                space1ShowTitle: '意向机场',
+                space2ShowTitle: '意向机场',
+                space3ShowTitle: '意向机场',
 
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
@@ -499,6 +503,11 @@
                 this.warn4Show = false;
             }
         },
+        mounted() {
+            this.space1Fn();
+            this.space2Fn();
+            this.space3Fn();
+        },
         computed: {
             sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
@@ -509,7 +518,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             // 传送的数据
@@ -604,7 +613,7 @@
                 this.sendDataFn();
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-                console.info(this.sendData);
+//                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -659,7 +668,7 @@
                 this.sendDataFn();
                 this.sendData.demandtype = '2';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-                console.info(this.sendData);
+//                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -955,8 +964,8 @@
                 this.directionPublicCity.push(data.name);
                 this.directionPublicCityShow = true;
             },
-            // 选择意向区域或意向机场 0为区域，1为机场
-            space1Fn: function (item) {
+            // 选择意向区域或意向机场 0为区域，1为机场(始发经停到达均默认选择意向机场)
+            space1Fn: function (item = '意向机场') {
                 this.space1ShowTitle = item;
                 this.firArea = '';
                 if(item == '意向区域') {
@@ -982,7 +991,7 @@
 //                    this.dptState = '';
                 }
             },
-            space2Fn: function (item) {
+            space2Fn: function (item = '意向机场') {
                 this.space2ShowTitle = item;
                 this.secArea = '';
                 if(item == '意向区域') {
@@ -1007,7 +1016,7 @@
 //                    this.pstState = '';
                 }
             },
-            space3Fn: function (item) {
+            space3Fn: function (item = '意向机场') {
                 this.space3ShowTitle = item;
                 this.thirdArea = '';
                 if(item == '意向区域') {
@@ -1087,10 +1096,10 @@
             },
             subsidyClick2: function () {
                 this.subsidyCode = 3;
-                console.info('radio')
+//                console.info('radio')
             },
             kemiantan: function () {
-                console.info('label')
+//                console.info('label')
             },
             //发布方式
             publicwayFn0: function () {

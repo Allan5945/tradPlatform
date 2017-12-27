@@ -6,7 +6,7 @@
                 <div class="head-til">{{detailData.title}}</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime}}</span>
-                    <span>状态：<span style="color:#3C78FF;">洽谈中</span></span>
+                    <span>状态：<span style="color: #3F7AFF;font-weight: bold;">洽谈中</span></span>
                 </div>
             </header>
             <div class="content">
@@ -304,7 +304,7 @@
         },
         mounted() {
             tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
-                console.log("demandtype" + val.demandtype);
+//                console.log("demandtype" + val.demandtype);
                 if (val.demandtype == 1 && (this.role.role == 0 || this.role.role == 2)) {
                     this.$ajax({
                         method: 'post',

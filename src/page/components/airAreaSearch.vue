@@ -1,5 +1,5 @@
 <template>
-    <div class="area-container">
+    <div class="area-container" @click.stop>
         <ul class="area-classify">
             <li v-for="(item,index) in areaClassify" :class="{'tab-active':areaTab == item}" @click="showData(item)">{{item}}</li>
         </ul>
@@ -13,7 +13,8 @@
         data() {
             return {
                 active: false,
-                areaClassify: ['省份', '大区', '管辖区域', '国际热门'],
+//                areaClassify: ['省份', '大区', '管辖区域', '国际热门'],
+                areaClassify: ['省份', '大区', '管辖区域'], // 去掉国际热门
                 areaTab: '',
                 areaList: {},
                 areaDetail: [],

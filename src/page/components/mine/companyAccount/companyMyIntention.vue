@@ -305,7 +305,7 @@
         },
         mounted() {
             tabulationBoxTrigger.$on('sendToCompany', val => { // 接受从myCompanyAccountList.vue传来的数据
-                console.log(val);
+//                console.log(val);
                 this.$ajax({
                     method: 'post',
                     url: '/capacityRoutesDemandDetailFindById',

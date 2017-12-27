@@ -13,7 +13,7 @@
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
                     <span style="margin-right: 30px;">已有{{userNum}}位用户发起意向</span>
                     <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
-                        <span v-else>{{myData.demandprogressStr}}</span>
+                        <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
                 </div>
             </div>
@@ -396,10 +396,22 @@
             </div>
         </div>
         <div class="myplan-buttons" v-if="myplanBtnShow">
-            <div class="buttons">
-                <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
-                <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+            <div v-if="receiveIntention.responseselected == '0'">
+                <div class="buttons">
+                    <div class="btn btn-w cancel-btn">已生成订单，无法更改</div>
+                </div>
             </div>
+            <div v-else>
+                <div class="buttons" v-if="receiveIntention.releaseselected == '0'">
+                    <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
+                    <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
+                </div>
+                <div class="buttons" v-else>
+                    <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
+                    <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+                </div>
+            </div>
+
         </div>
         <div class="bottom" v-show="fifthButtonShow">
             <div class="buttons">
@@ -486,8 +498,8 @@
         },
         created() {
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                console.info('tabulationBoxTrigger:')
-                console.info(val.data)
+//                console.info('tabulationBoxTrigger:')
+//                console.info(val.data)
                 this.id = val.data.id;
                 if (val.data.demandtype == 0) {
                     this.getData();
@@ -517,8 +529,8 @@
                     }
                 })
                 .then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('response:')
+//                    console.info(response)
 //                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
                     this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据
@@ -582,10 +594,10 @@
                         });
                      */
                     }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
-                        console.info('000000')
+//                        console.info('000000')
                         this.showCode = 0;
                     }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
-                        console.info('payAfter:' + 4)
+//                        console.info('payAfter:' + 4)
                         this.showCode = 4;
                     }
                     this.show();
@@ -628,7 +640,7 @@
                         id: this.id
                     }
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
                     if(response.data.opResult === '0'){
                         alert('成功结束该需求！')
                     }else{
@@ -727,8 +739,8 @@
                         },
                         params: editDate
                     }) .then((response) => {
-                        console.info('1response:')
-                        console.info(response)
+//                        console.info('1response:')
+//                        console.info(response)
                         if(response.data.opResult === '0'){
                             alert('有效期修改成功！')
                         }else{
@@ -740,6 +752,58 @@
                     });
                 } else {
                 }
+            },
+            // 点击“确认方案”
+            queRenClickFn: function () {
+                this.$ajax({
+                    method: 'post',
+                    url: '/selectedResponse',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        id: this.receiveIntention.id,
+                        demandId: this.receiveIntention.demandId,
+                        responseselected: '0',
+                        releaseselected: '0'
+                    }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                        alert("确认方案成功！");
+                        this.closeThisFn();
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            },
+            // 点击“拒绝并撤回”
+            juJueFn: function () {
+                this.$ajax({
+                    method: 'post',
+                    url: '/selectedResponse',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        id: this.receiveIntention.id,
+                        demandId: this.receiveIntention.demandId,
+                        responseselected: '1',
+                        releaseselected: '0'
+                    }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                        alert("撤回方案成功！");
+                        this.closeThisFn();
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
             },
             //点击“我有意向”，组件“请填写完整方案”显示
             airlineWriteFn: function () {
@@ -799,8 +863,8 @@
             airlineAffirmFn: function (item,index) {
                 this.airlineAffirmShow = true;
                 item.index = index;
-                console.info('item:')
-                console.info(item)
+//                console.info('item:')
+//                console.info(item)
                 tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
@@ -831,7 +895,7 @@
                     },
                     params:  this.airlineAffirmUnchooseData
                 }) .then((response) => {
-                    console.info(response)
+//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功撤销选定!');
                         this.releaseselectedShow = true;
@@ -849,8 +913,8 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
-                console.info('item:')
-                console.info(item)
+//                console.info('item:')
+//                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 if(item.releaseselected == 0){
                     this.releaseselectedShow = false;
@@ -1036,6 +1100,7 @@
         overflow-y: scroll;
         background: white;
         color: $font-color;
+        font-size: 1.2rem;
         /*transform:translate(0,0);*/
         z-index: 100;
     }
@@ -1281,13 +1346,13 @@
             }
             .cancel-btn{
                 width:100px;
-                margin-right:10px;
+                margin-right:14px;
             }
             .col-btn{
                 width:80px;
             }
             .btn-b {
-                margin-right: 20px;
+                margin-right: 14px;
                 width: 150px;
                 border-radius: 20px;
                 color: white;
@@ -1526,7 +1591,7 @@
             margin-top: 18px;
             height: 40px;
             > .btn-b {
-                margin-right: 10px;
+                margin-right: 14px;
                 width: 230px;
                 color: white;
                 border-radius: 20px;

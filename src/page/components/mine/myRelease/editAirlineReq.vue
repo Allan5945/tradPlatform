@@ -602,7 +602,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             //发送数据
@@ -680,8 +680,8 @@
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
 //                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('sendData:');
-                console.info(this.sendData);
+//                console.info('sendData:');
+//                console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
                     url: "/responseAdd",
@@ -691,16 +691,16 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('response:')
+//                    console.info(response)
                     let responseIDMes = {};           //响应ID，响应者ID
                     responseIDMes.responseId = response.data.response.id; //响应ID
                     responseIDMes.employeeId = response.data.response.employeeId; //响应者ID
-                    console.info("responseIDMes:")
+//                    console.info("responseIDMes:")
 
                     tabulationBoxTrigger.$emit('responseText', responseIDMes); //向dialog.vue传入响应Id
                     tabulationBoxTrigger.$emit('responseObject', response.data);  //向airlineDetailPayAfter.vue传对象
-                    console.info('responseId:' + this.responseId);
+//                    console.info('responseId:' + this.responseId);
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }).catch((error) => {
                     console.log(error);

@@ -131,7 +131,7 @@
 //                this.judgeRole();
             },
             'sendData.demandprogress': function () {
-                console.info('1')
+//                console.info('1')
                 this.getListData();
 //                this.judgeRole();
             },
@@ -145,8 +145,8 @@
             // 根据登陆角色不同，展示的数据不同
             judgeRole: function () {
                 // 判断是机场(1)还是航司(0)登录
-                console.info('this.role.role:'+ this.role.role)
-                console.info(this.myData)
+//                console.info('this.role.role:'+ this.role.role)
+//                console.info(this.myData)
                 if(this.role.role == 0) {
                     this.type = this.type0;
                     this.myData = this.myData0;
@@ -165,8 +165,8 @@
                     },
                     params: this.sendData
                 }) .then((response) => {
-                    console.info('myPublishList获取的数据:')
-                    console.info(response)
+//                    console.info('myPublishList获取的数据:')
+//                    console.info(response)
                     if(response.data.opResult === '0') {
 //                        alert('我的发布列表')
                         response.data.list.list.forEach((val) => {
@@ -178,7 +178,7 @@
                         })
                         this.judgeRole();
                     }else if(response.data.opResult === '1') {
-                        console.info('ajax1')
+//                        console.info('ajax1')
                         this.myData0 = [];
                         this.myData1 = [];
                         this.judgeRole();
@@ -191,7 +191,7 @@
             },
             // 刷新页面数据
             refreshFn: function () {
-                console.info('refreshFn');
+//                console.info('refreshFn');
                 this.getListData();
             },
             typeShowFn: function () {
@@ -241,7 +241,7 @@
                 if(item == '需求发布') {
                     this.sendData.demandprogress = 0;
                 }if(item == '意向征集') {
-                    console.info(0)
+//                    console.info(0)
                     this.sendData.demandprogress = 1;
                 }if(item == '订单确认') {
                     this.sendData.demandprogress = 2;
@@ -267,8 +267,8 @@
             // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
-                console.info('listItem:')
-                console.info(item)
+//                console.info('listItem:')
+//                console.info(item)
                 this.$ajax({
                     url:"/demandFind",
                     method: 'post',
@@ -279,8 +279,8 @@
                         demandId: item.id //发布时间排序类型 0-倒序 1-正序
                     }
                 }) .then((response) => {
-                    console.info('我的发布详情:')
-                    console.info(response.data.data)
+//                    console.info('我的发布详情:')
+//                    console.info(response.data.data)
                     tabulationBoxTrigger.$emit('sendDataToMyPublish',response.data.data); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue
                     tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
                 }).catch((error) => {

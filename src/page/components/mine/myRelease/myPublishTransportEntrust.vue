@@ -23,7 +23,7 @@
                     <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
                     <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
                     <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
-                        <span v-else>{{myData.demandprogressStr}}</span>
+                        <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
                 </div>
             </div>
@@ -119,8 +119,8 @@
         mounted() {
             // 从myPublishList获取参数，并渲染到页面上
             tabulationBoxTrigger.$on('sendDataToMyPublish',val => {
-                console.info('从myPublishList获取的数据:');
-                console.info(val);
+//                console.info('从myPublishList获取的数据:');
+//                console.info(val);
                 this.myData = val;
                 this.id = this.myData.id;
                 // 状态有误时显示的内容
@@ -209,7 +209,7 @@
 
             //点击下方“重新发布”
             anewPublishClickFn2: function () {
-                console.info(this.myData);
+//                console.info(this.myData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -218,7 +218,7 @@
                     },
                     params: this.myData
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
@@ -228,7 +228,7 @@
             recallFn: function () {
                 this.recallData.id = this.myData.id;
                 this.recallData.demandprogress = 3;
-                console.info(this.recallData);
+//                console.info(this.recallData);
                 this.$ajax({
 //                    url:"/demandUpdate",
                     url: "closeDemandById",
@@ -241,7 +241,7 @@
                         id: this.myData.id
                     }
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
