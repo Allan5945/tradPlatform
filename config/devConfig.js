@@ -68,8 +68,7 @@ module.exports = {
                     var urls = req.url;
                     if (urls == '/' || urls.indexOf("html") != -1 || urls.indexOf("png") != -1 || urls.indexOf("jpg") != -1) {
                         return "/index.html"
-                    }
-                    ;
+                    };
                 }
             }
         }
