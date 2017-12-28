@@ -49,7 +49,24 @@
 
 /**
 * 字体间距
-* cetn-color-default 是全局默认的字体颜色
-* note：以下为常用颜色，尽量使用以下类名字，来定义颜色，如果为找到的颜色由自己声明
+* 默认是默认字体间距
+* note：*
 */
-.cetn-fs-default
+
+.cetn-ls-03{
+  letter-spacing:0.5px;
+}
+.cetn-ls-05{
+  letter-spacing:0.5px;
+}
+.cetn-ls-06{
+  letter-spacing:0.5px;
+}
+
+/**
+* 通用小按钮
+* note：*
+*/
+.cetn-btn{
+
+}

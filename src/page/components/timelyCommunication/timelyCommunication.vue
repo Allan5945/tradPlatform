@@ -1,5 +1,5 @@
 <template>
-    <div class="timely-box popup" ref="timely-box" @mousedown="clearAndBindDrop(true)"  @mouseup="clearAndBindDrop(false)"
+    <div class="timely-box popup" ref="timely-box" @mousedown="clearAndBindDrop(true,$event)"  @mouseup="clearAndBindDrop(false,$event)"
     @mousemove="transitionDrop">
         <div class="timely-nav">
             <div :class="{'timely-nav-checked':(setId == key.setId),'information':(key.noReadCount > 0)}" v-for="(key,i) in inData"
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="chat-function-input">
-                        <textarea name="a" @keydown="handling({t:true})" @keyup="handling({t:false})" class="scroll" ref="textarea" v-model="textData"></textarea>
+                        <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)" class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
                     </div>
                 </div>
@@ -317,8 +317,7 @@ export default {
         this.timelyBox.style.left = left + 'px';
         this.timelyBox.style.top = top + 'px';
     },
-    handling: function(v) {
-      let e = event;
+    handling: function(v,e) {
       if (e.keyCode == 17) {
         this.newline.ctrl = v.t;
       }
@@ -387,7 +386,7 @@ export default {
       this.ishs = !this.ishs;
     },
     transitionDrop: function(e) {},
-    clearAndBindDrop: function(t) {
+    clearAndBindDrop: function(t,event) {
       this.dropData.mouseCoordinate.x = event.screenX;
       this.dropData.mouseCoordinate.y = event.screenY;
 

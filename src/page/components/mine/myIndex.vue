@@ -9,7 +9,7 @@
                     </div>
                     <div class="name">张二狗</div>
                     <div class="work-info">
-                        <div class="position">太美航空&nbsp;市场部</div>
+                        <div class="position">{{role.roleStr}}&nbsp;{{role.nickName}}</div>
                         <div>成单量：<span>10</span></div>
                         <div>成单率：<span>50%</span></div>
                     </div>
