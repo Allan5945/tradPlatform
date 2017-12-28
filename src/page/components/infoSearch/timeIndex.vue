@@ -117,6 +117,7 @@ import cityInfo from './cityInfoSearch.vue'
     .wrapper{
         position: absolute;
         width: 100%;
+        min-height:100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;

@@ -139,13 +139,79 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           this.formShow = true;
         },
         accept(){
-            this.orderShow = true;
+             this.$ajax({
+                method: 'post',
+                url: '/checkCommissionedAndCustody',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandState:'0',
+                    demandId:this.chatData.id,
+                    demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,
+                    demandType:this.chatData.demandType
+                  }
+                })
+                .then((response) => {
+                  if(response.data.opResult == '0'){
+                   this.orderShow = true;
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         order(){
-
+             this.$ajax({
+                method: 'post',
+                url: '/finishCommissionedAndCustody',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandState:'0',
+                    demandId:this.chatData.id,
+                    demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,
+                    demandType:this.chatData.demandType
+                  }
+                })
+                .then((response) => {
+                  if(response.data.opResult == '0'){
+                    this.$emit("close");
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         cancel(){
-
+             this.$ajax({
+                method: 'post',
+                url: '/finishCommissionedAndCustody',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandState:'1',
+                    demandId:this.chatData.id,
+                    demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,
+                    demandType:this.chatData.demandType
+                  }
+                })
+                .then((response) => {
+                  if(response.data.opResult == '0'){
+                   this.$emit("close");
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         closeForm(){
           this.formShow =false;

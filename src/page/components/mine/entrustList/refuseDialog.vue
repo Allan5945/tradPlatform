@@ -1,9 +1,9 @@
 <template>
     <div class="dialog popup">
         <div class="dialog-wrapper">
-            <div class="til">请填写拒绝原因</div>
+            <div class="til">请填写{{msg}}原因</div>
             <div class="content">
-                <div class="reson">拒绝原因</div>
+                <div class="reson">{{msg}}原因</div>
                 <div class="r-input"><input type="text" placeholder="可选填" v-model="refuseText"></div>
             </div>
             <div class="btns">
@@ -21,6 +21,7 @@
                 refuseText:''
             }
         },
+        props:['msg'],
         methods: {
             sure(){
                 this.$emit('sure', this.refuseText);

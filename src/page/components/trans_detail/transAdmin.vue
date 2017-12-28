@@ -122,6 +122,14 @@
                             </div>
                             <div class="table-form">
                                 <div>
+                                    <div>联系人</div>
+                                    <div>{{val.contact}}</div>
+                                </div>
+                                <div>
+                                    <div>联系方式</div>
+                                    <div>{{val.ihome}}</div>
+                                </div>
+                                <div>
                                     <div>拟开时间</div>
                                     <div>{{val.sailingtime}}</div>
                                 </div>
