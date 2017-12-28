@@ -12,8 +12,7 @@
                     <span>&#xe624;</span>新闻舆情
                 </div>
                 <div class="box">
-                    <div class="item" v-for="(key,i) in list"
-                         v-if="i >= ((indexPage * pageSize) - pageSize) && i < (indexPage * pageSize)">
+                    <div class="item" v-for="(key,i) in list">
                         <div class="item-img"><img :src="key.img" alt=""></div>
                         <div class="item-nr">
                             <div class="item-title">
@@ -30,16 +29,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="no-item" v-if="list.length == 0">没有匹配到舆情</div>
+                <!--<div class="no-item" v-if="list.length == 0">没有匹配到舆情</div>-->
                 <el-pagination
                         v-if="list.length > 0"
                         class="pagination"
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="currentPage4"
-                        :page-sizes="[10, 20]"
-                        :page-size="10"
-                        layout="total, sizes, prev, pager, next, jumper"
                         :total="totalLength">
                 </el-pagination>
             </div>
@@ -108,11 +104,12 @@
                                 src: val.articleUrl
                             })
                         });
-                        if (this.list.length == 0) {
-                            this.list = arr;
-                        } else {
-                            this.list = this.list.concat(arr);
-                        }
+                        this.list = arr;
+//                        if (this.list.length == 0) {
+//                            this.list = arr;
+//                        } else {
+//                            this.list = this.list.concat(arr);
+//                        }
                     }
                 }else if(data.opResult == "1"){
                     this.list = [];
@@ -125,7 +122,6 @@
                     codeType: 2,
                     page: this.indexPage
                 };
-
                 this.$ajax({
                     method: 'post',
                     url: '/getPublicOpinionList',
