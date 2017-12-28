@@ -59,10 +59,10 @@
             </div>
         </div>
         <transition name="slidex-fade">
-            <agentDetail @close="closeAgentDetail" v-if="agentShow" :demandId="demandId"></agentDetail>
+            <agentDetail @close="closeAgentDetail" v-if="agentShow" :chatData="chatData"></agentDetail>
         </transition>
         <transition name="slidex-fade">
-            <deleDetail @close="closeDeleDetail" v-if="deleShow" :demandId="demandId"></deleDetail>
+            <deleDetail @close="closeDeleDetail" v-if="deleShow" :chatData="chatData"></deleDetail>
         </transition>
     </div>
 </template>
@@ -98,7 +98,8 @@
                     demandType: null,
                     demandProgress:null,
                     releaseTime:"Desc"
-                }
+                },
+                chatData:{}
             }
         },
         mounted() {
@@ -169,7 +170,7 @@
 
             },
             getDetail:function(val){
-                 this.demandId = val.id;
+                 this.chatData = val;
                 if(val.demandType == '2'){//托管详情
                     this.agentShow = true;
                 }else{//委托详情
@@ -396,6 +397,7 @@
             width: 20px;
             .talk-icon {
                 position: relative;
+                cursor:pointer;
                 font-size: 2.5rem;
                 >span {
                     position: absolute;

@@ -43,11 +43,12 @@
                         <div class="list-d item">
                             {{progress(val.demandProgress)}}
                         </div>
-                        <div class="list-e item">
+                        <div class="list-e item"  @click="chat(val)" v-if="val.wetherResponse">
                         <span class="icon-item talk-icon">&#xe602;
                             <span>1</span>
                         </span>
                         </div>
+                        <div class="list-e item" v-else></div>
                         <div class="list-f item color" @click="openDetail(val)">查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
@@ -62,6 +63,7 @@
 <script>
     import stateList from './../stateList.vue'
     import collectDetail from './collectDetail.vue';
+    import ln from './../../../../public/js/tabulationBoxTrigger';
 
     export default {
         data() {
@@ -87,6 +89,9 @@
             }
         },
         methods: {
+            chat:function (v) {
+                ln.$emit('addChat',v);
+            },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
@@ -348,6 +353,7 @@
             width: 20px;
             .talk-icon {
                 position: relative;
+                cursor:pointer;
                 font-size: 2.5rem;
                 >span {
                     position: absolute;

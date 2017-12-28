@@ -114,7 +114,7 @@
             &:hover{
                 color: #446cea;
                 cursor: pointer;
-                background-color: rgba(229, 229, 229, .2);
+                /*background-color: rgba(229, 229, 229, .2);*/
             }
             >a:hover {
                 color: #446cea;
@@ -143,8 +143,10 @@
         border-radius: 15px;
         height: 30px;
         color: white;
+        box-shadow: 0px 2px 16px rgba(4, 7, 156,.4) !important;
+        padding-left: 40px;
+        justify-content: flex-start;
     }
-
     .icon-cl {
         color: white;
         display: inline-block;

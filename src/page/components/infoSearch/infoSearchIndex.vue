@@ -8,7 +8,8 @@
                 </div>
                 <div class="search-box">
                     <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
-                   <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-show="airportSearch" v-if="selcIndex == '2'||selcIndex == '3'"></airportS1>
+                   <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportSearch"></airportS1>
+                   <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcIndex == '0' " v-show="citySearch"></cityS>
                     <div class="airline popup scroll" v-show="airlineShow" v-else-if="selcIndex == '1' ">
                         <div v-for="(item,index) in airlineData" @click="getCompanyList(index)">
                         <span>{{item[0]}}</span>
@@ -90,6 +91,7 @@
 
 <script>
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
+import cityS from '../../reuseComponents/citySearch.vue'
 import timeIndex from './timeIndex.vue'
  import myPic from '$src/static/img/airport1.png';
     export default {
@@ -97,12 +99,13 @@ import timeIndex from './timeIndex.vue'
             return {
                 airportText:'',
                 qyCode:'',
-                selcIndex:'',
+                selcIndex:'0',
                 selcType:'时刻',
                 typeList:['城市','航司','机场','时刻'],
                 airlineData:[],
                 airlineShow:false,
                 airportSearch:false,
+                citySearch:false,
                 showType:false,
                 detailShow:false
             }
@@ -122,6 +125,7 @@ import timeIndex from './timeIndex.vue'
                setTimeout(function(){
                 that.airportSearch =false;
                 that.airlineShow =false;
+                that.citySearch =false;
                 },200);
             },
             airportData(data){
@@ -129,13 +133,18 @@ import timeIndex from './timeIndex.vue'
                 this.qyCode = data.code;
                 this.airportSearch = false;
             },
+            cityData(data){
+                this.airportText = data.name;
+                this.qyCode = data.code;
+                this.citySearch = false;
+            },
             searchAirport(){
                 this.airportSearch = true;
+                this.citySearch = true;
                 this.getAirCompany();
             },
             getInfo(){
                 this.detailShow = true;
-                /*window.open('http://localhost:8088/#/index/information')*/
             },
             getAirCompany: function(){
                 this.$ajax({
@@ -168,7 +177,8 @@ import timeIndex from './timeIndex.vue'
         },
         components:{
             airportS1,
-            timeIndex
+            timeIndex,
+            cityS
         }
     }
 </script>
@@ -251,10 +261,14 @@ import timeIndex from './timeIndex.vue'
                top:42px;
                left:0;
                width:680px;
-               max-height:140px;
-               overflow-y: scroll;
+               max-height:220px;
                overflow:hidden;
-               z-index:1;
+               overflow-y: scroll;
+               z-index:10;
+               font-size:1.3rem;
+               >div{
+                    height:40px !important;
+               }
            }
         }
         .search-btn{
@@ -350,7 +364,7 @@ import timeIndex from './timeIndex.vue'
         left:0px;
         top:41px;
         width:680px;
-        max-height:210px;
+        max-height:220px;
         cursor:pointer;
         z-index:10;
         overflow:hidden;
@@ -359,8 +373,9 @@ import timeIndex from './timeIndex.vue'
             justify-content: space-between;
             display: flex;
             padding: 0 14px;
-            height:35px;
-            line-height:35px;
+            font-size:1.3rem;
+            height:40px;
+            line-height:40px;
             text-align:left;
             &:hover{
                 background-color:rgba(235,235,235,.5);

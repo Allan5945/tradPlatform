@@ -1,282 +1,77 @@
 <template>
     <div class="opinion">
-       <div>
-           <div class="opinion-head">
-               <div class="opinion-input">
-                   <input type="text">
-                   <button class="">&#xe6c3;</button>
-               </div>
-           </div>
-           <div class="opinion-box">
-               <div class="box-head">
-                   <span>&#xe624;</span>新闻舆情
-               </div>
-               <div class="box">
-                   <div class="item" v-for="(key,i) in list" v-if="i >= ((indexPage * pageSize) - pageSize) && i < (indexPage * pageSize)">
-                       <div class="item-img"><img src="./../../../static/img/145.jpg" alt=""></div>
-                       <div class="item-nr">
-                           <div class="item-title">
-                               <h5><a>{{key.title}}</a></h5>
-                               <div class="item-class">
-                                   <span>舆情类型</span>
-                                   <span>舆情类型</span>
-                                   <span>舆情类型</span>
-                               </div>
-                           </div>
-                           <p>{{key.text}}</p>
-                           <div class="item-time">
-                               <span>{{key.from}}</span>
-                               {{key.time}}
-                           </div>
-                       </div>
-                   </div>
-               </div>
-               <el-pagination
-                       class="pagination"
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage4"
-                       :page-sizes="[10, 20]"
-                       :page-size="10"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="list.length">
-               </el-pagination>
-           </div>
-       </div>
+        <div>
+            <div class="opinion-head">
+                <div class="opinion-input">
+                    <input type="text" v-model="inputText">
+                    <button @click="quResData()">&#xe6c3;</button>
+                </div>
+            </div>
+            <div class="opinion-box">
+                <div class="box-head">
+                    <span>&#xe624;</span>新闻舆情
+                </div>
+                <div class="box">
+                    <div class="item" v-for="(key,i) in list"
+                         v-if="i >= ((indexPage * pageSize) - pageSize) && i < (indexPage * pageSize)">
+                        <div class="item-img"><img :src="key.img" alt=""></div>
+                        <div class="item-nr">
+                            <div class="item-title">
+                                <h5><a @click="openWindow(key.src)">{{key.title}}</a></h5>
+                                <div class="item-class">
+                                    <span>舆情类型</span>
+                                </div>
+                            </div>
+                            <p>{{key.text}}</p>
+                            <div class="item-time">
+                                <span>{{key.from}}</span>
+                                {{key.time}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-item" v-if="list.length == 0">没有匹配到舆情</div>
+                <el-pagination
+                        v-if="list.length > 0"
+                        class="pagination"
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="currentPage4"
+                        :page-sizes="[10, 20]"
+                        :page-size="10"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="totalLength">
+                </el-pagination>
+            </div>
+        </div>
     </div>
 </template>
 <script>
+    import * as vx from 'vuex';
+    import noimg from './../../../static/img/pubo/noimg.png';
+
     export default {
-        data(){
-            return{
-                currentPage4: 1,
-                pageSize:10,
-                indexPage:1,
-                list:[
-                    {
-                        img:"",
-                        title:"成都-北京..........1",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........2",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........3",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........10",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........11",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........20",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........21",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........30",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    },
-                    {
-                        img:"",
-                        title:"成都-北京..........31",
-                        text:'型舆情类型',
-                        from:"北京民航网",
-                        time:"2015.12.23"
-                    }
-                ]
+        data() {
+            return {
+                initText: false,
+                inputText: '',      // 模糊查询的文字
+                totalLength: 0,   // 总条数
+                currentPage4: 1, // 下标的页数
+                pageSize: 10,    // 每页的条数
+                indexPage: 1,    // 最开始的页数
+                list: []
             }
         },
-        computed:{
-            setList:function () {
+        mounted: function () {
+            this.resData();
+        },
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ]),
+            setList: function () {
                 let a = [];
-                this.list.forEach((v)=>{
+                this.list.forEach((v) => {
 
                 });
                 return a;
@@ -288,18 +83,79 @@
             },
             handleCurrentChange(val) {
                 this.indexPage = val;
+                this.resData();
+            },
+            openWindow(src) {
+                window.open(src);
+            },
+            quResData: function () {
+                this.indexPage = 1;
+                this.list = [];
+                this.resData();
+            },
+            custrol(data) {
+                if (data.opResult == "0") {
+                    if (data.obj != undefined && data.obj != null && data.obj[0].length != 0) {
+                        this.totalLength = Number(data.obj[0].articleCount);
+                        let arr = [];
+                        data.obj.forEach((val) => {
+                            arr.push({
+                                img: val.articleImage == "" ? noimg : val.articleImage,
+                                title: val.articleTitle,
+                                text: val.articleContent,
+                                from: val.articleFrom,
+                                time: val.articleTime,
+                                src: val.articleUrl
+                            })
+                        });
+                        if (this.list.length == 0) {
+                            this.list = arr;
+                        } else {
+                            this.list = this.list.concat(arr);
+                        }
+                    }
+                }else if(data.opResult == "1"){
+                    this.list = [];
+                }
+            },
+            resData: function () {
+                let text = {
+                    code: this.inputText,
+                    type: this.inputText == "" ? 1 : 0,
+                    codeType: 2,
+                    page: this.indexPage
+                };
+
+                this.$ajax({
+                    method: 'post',
+                    url: '/getPublicOpinionList',
+                    params: text,
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then((response) => {
+                        this.custrol(response.data);
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
             }
         },
     }
 </script>
 <style lang="scss" scoped>
-    .opinion-input{
+    .no-item{
+        color: red;
+    }
+    .opinion-input {
         position: absolute;
-        top:42px;
+        top: 42px;
         right: 710px;
         height: 38px;
         width: 383px;
-        >input{
+        > input {
             width: 290px;
             height: 100%;
             border: none;
@@ -309,38 +165,39 @@
             color: #605E7C;
             border-radius: 8px;
         }
-        >button{
+        > button {
             background-color: white;
             outline: none;
             color: rgba(96, 94, 124, 0.6);
-            box-shadow: none;
             border: none;
             width: 60px;
             margin: 0;
             padding: 0;
             height: 100%;
-            border-radius:8px;
+            border-radius: 8px;
             font-family: iconfont;
             font-size: 4rem;
             line-height: 38px;
             color: #3c78ff;
             vertical-align: top;
             cursor: pointer;
-            box-shadow: 1px 1px 6px rgba(60, 120, 255, 0.6);
-            &:hover{
-                background-color: #71c8ff;
-                color: white;
+            box-shadow: 0px 2px 16px rgba(4, 7, 156, 0.4) !important;
+            &:hover {
+                /*background-color: rgba(225,225,225,.6);*/
+                /*color: white;*/
             }
-            &:active{
-                background-color: #6abbff;
+            &:active {
+                background-color: rgba(60,120,225,.9);
                 color: white;
             }
         }
     }
-    .pagination{
+
+    .pagination {
         float: right;
         margin-bottom: 83px;
     }
+
     .item-class {
         > span {
             padding: 3px 12px;
@@ -399,11 +256,15 @@
     .item-img {
         width: 170px;
         height: 110px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
         > img {
             /*width: 100%;*/
             height: 100%;
         }
     }
+
     .item {
         padding: 10px;
         height: 128px;
@@ -421,7 +282,7 @@
         z-index: 12;
         background-color: #f8f8f8;
         overflow-y: scroll;
-        >div{
+        > div {
             background-color: #f8f8f8;
             overflow: hidden;
         }

@@ -1,7 +1,7 @@
 <template>
     <div class="detail-wrapper">
         <header>
-            <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
+            <div class="top-til">{{detailData.demandtypeStr}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
             <div class="head-til">{{detailData.title}}</div>
             <div class="tips">
                 <span>创建于{{detailData.releasetime}}</span>

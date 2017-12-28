@@ -17,6 +17,7 @@
         <timeSearch :qyCode="qyCode" :airportText="airportText" v-if="timeShow"></timeSearch>
         <airportInfo :qyCode="qyCode" :airportText="airportText" v-if="airportShow"></airportInfo>
         <airlineInfo  :qyCode="qyCode" :airportText="airportText" v-if="airlineShow"></airlineInfo>
+        <cityInfo  :qyCode="qyCode" :airportText="airportText" v-if="cityShow"></cityInfo>
     </div>
 </template>
 
@@ -25,17 +26,19 @@ import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import timeSearch from './timeSearch.vue'
 import airportInfo from './airportInfoSearch.vue'
 import airlineInfo from './airlineInfoSearch.vue'
+import cityInfo from './cityInfoSearch.vue'
     export default {
         data() {
             return {
                 airportText:'',
                 qyCode:'',
                 selcType:'',
-                typeList:['时刻','机场','航司'],
+                typeList:['时刻','机场'],
                 airportSearch:false,
                 timeShow:false,
                 airportShow:false,
                 airlineShow:false,
+                cityShow:false,
                 showType:false
             }
         },
@@ -80,20 +83,23 @@ import airlineInfo from './airlineInfoSearch.vue'
             this.qyCode =this.qyCode1;
             this.airportText = this.searchtText;
             if(this.selcIndex =="0"){
-
+                this.cityShow = true;
             }else if(this.selcIndex =="1"){
                 this.airlineShow = true;
             }else if(this.selcIndex =="2"){
                 this.airportShow = true;
+                this.selcType = "机场";
             }else if(this.selcIndex =="3"){
                 this.timeShow = true;
+                this.selcType = "时刻";
             }
         },
         components:{
             airportS1,
             timeSearch,
             airportInfo,
-            airlineInfo
+            airlineInfo,
+            cityInfo
         }
     }
 </script>

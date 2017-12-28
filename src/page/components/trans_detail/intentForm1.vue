@@ -123,7 +123,7 @@
                                 <div class="resource-others">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-a-res" id="if1airAWait"
-                                               @click="dptTimeresourcesFn1"><label for="if1airAWait" class="input-label">带协调</label>
+                                               @click="dptTimeresourcesFn1"><label for="if1airAWait" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-a-res" id="if1airAEnough"

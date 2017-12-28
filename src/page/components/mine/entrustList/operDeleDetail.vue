@@ -4,8 +4,7 @@
             <header>
                 <div class="top-til">{{detailData.demandtypeStr}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
-                <div class="contact" v-if="!isUser">联系用户</div>
-                 <div class="contact" v-else>联系客服</div>
+                <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
@@ -86,36 +85,12 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-need" v-show="orderShow" v-if="!isUser">
+            <div class="sub-need" v-show="orderShow">
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
-            <div class="sub-need" v-if="isUser" v-show="!showBtn">
-                <div class="need-til">关联的子需求</div>
-            </div>
-            <div v-if="isUser" v-show="!showBtn">
-                <div class="user-need">
-                    <div>发布时间
-                      <span class="iconfont icon-up active">&#xe605;</span>
-                      <span class="iconfont icon-down">&#xe605;</span>
-                    </div>
-                    <div>发布标题</div>
-                    <div>需求状态</div>
-                </div>
-                <div class="user-need-content" v-for ="val in sonList">
-                    <div class="time">{{val.releasetime}}</div>
-                    <div class="title">{{val.title}}</div>
-                    <div class="progress">{{val.demandprogressStr}}</div>
-                </div>
-            </div>
-           <sonNeedDetail :demandId = "demandId" v-if="!isUser" v-show="sondetailShow"></sonNeedDetail>
-            <footer v-if="isUser" v-show="showBtn">
-                <div class="foot-tips"></div>
-                <div class="btn">
-                    <div class="cancel-btn" @click="canceldele">撤回该托管</div>
-                </div>
-            </footer>
-             <footer v-if="!isUser" v-show="isClose">
+           <sonNeedDetail :demandId = "chatData.id" v-show="sondetailShow"></sonNeedDetail>
+             <footer v-show="isClose">
                 <div class="foot-tips"></div>
                 <div class="btn" v-if="orderShow">
                     <div class="test-btn" @click="order" >订单完成</div>
@@ -135,47 +110,27 @@
 import operDeleForm from './operDeleForm.vue'
 import sonNeedDetail from './sonNeedDetail.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-import * as vx from 'vuex';
+import ln from './../../../../public/js/tabulationBoxTrigger';
+
  export default {
      data(){
          return{
             dialogShow:false,
             orderShow:false,
-            isUser:true,
             formShow:false,
-            showBtn:false,
             isClose:true,
             detailData:{},
             CpyNm:'',//委托方
             sondetailShow:false,
-            sonList:[]
          }
      },
-      props:['demandId'],
+      props:['chatData'],
      methods:{
+        chat:function () {
+            ln.$emit('addChat',this.chatData);
+        },
         closeDetail(){
           this.$emit("close");
-        },
-        canceldele(){
-          this.$ajax({
-                method: 'post',
-                url: '/closeDemandById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    id:this.demandId
-                  }
-                })
-                .then((response) => {
-                    if(response.data.opResult == "0"){
-                      alert("取消委托成功")
-                    }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
         },
         refuse(){
 
@@ -197,13 +152,8 @@ import * as vx from 'vuex';
           this.sondetailShow = true;
         }
      },
-      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },
       mounted() {
-          tabulationBoxTrigger.$emit('getSonId', this.demandId);
+          tabulationBoxTrigger.$emit('getSonId', this.chatData.id);
           tabulationBoxTrigger.hierarchy = true;
           this.$ajax({
                 method: 'post',
@@ -212,16 +162,15 @@ import * as vx from 'vuex';
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.demandId
+                    id:this.chatData.id
                   }
                 })
                 .then((response) => {
                     this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
-                    this.sonList = response.data.listSonDemands;
                      //状态处理
                       if(this.detailData.demandprogress == '7'){
-                          this.showBtn = true;
+
                       }else if(this.detailData.demandprogress == '6' ){
                           this.orderShow = true;
                           this.sondetailShow = true;
@@ -235,10 +184,6 @@ import * as vx from 'vuex';
                         console.log(error);
                     }
                 );
-
-          if(this.role.role == "2"){
-              this.isUser = false;
-          }
 
      },
     destroyed: function () {
@@ -446,43 +391,6 @@ import * as vx from 'vuex';
         box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
 
       }
-    }
-    .user-need{
-        position:relative;
-        height:75px;
-        width:100%;
-        color:rgba(96, 94, 124, 0.7);
-        box-sizing:border-box;
-        display:flex;
-        padding: 30px 0 25px 40px;
-        >div{
-            flex:1;
-            padding-right:50px;
-        }
-        .icon-up {
-            position: absolute;
-            bottom: 33px;
-            transform: rotate(180deg);
-        }
-        .icon-down {
-            position: absolute;
-            top: 33px;
-        }
-    }
-    .user-need-content{
-        height:50px;
-        width:100%;
-        box-sizing:border-box;
-        padding-left: 40px;
-        margin-bottom:10px;
-        display:flex;
-        background-color:rgba(216,216,216,.17);
-        >div{
-            flex:1;
-            overflow:hidden;
-            padding-right:50px;
-            line-height:50px;
-        }
     }
     footer{
           .foot-tips{
