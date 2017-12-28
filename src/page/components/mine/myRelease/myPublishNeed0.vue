@@ -160,7 +160,7 @@
                             <div class="center-right">
                                 <span class="icon-item">&#xe602; <span class="reminder"></span></span>
                             </div>
-                            <div v-if="checkDetailShow" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
+                            <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
                             <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
                         </div>
                         <div v-show="checkDetailIndex === index">
@@ -335,7 +335,6 @@
             </div>
             <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
                           :acceptData="myData"></airlineWrite>
-            <!--<airlinePay v-show="airlinePayShow" @close-this="closeAlPayFn" @change-showCode="changeShowCodeP"></airlinePay>-->
             <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn"
                            @change-showCode="changeShowCodeA"></airlineAffirm>
             <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
@@ -347,7 +346,6 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import airlineWrite from '$src/page/components/airlineWrite.vue'
-    //    import airlinePay from './airlinePay.vue'
     import airlineAffirm from '$src/page/components/airlineAffirm.vue'
     import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
     import airlinePay from '$src/page/components/trans_detail/dialog.vue'
@@ -405,12 +403,7 @@
         created() {
 //            this.initData();
             tabulationBoxTrigger.$on('sendDataToMyPublish', val => { // 从myPublishList获取数据
-//                console.info('000000sendDataToMyPublish:')
-//                console.info(val)
-//                this.id = val.data.id;
                 this.id = val.id;
-//                console.info(this.id)
-//                this.showCode = 0;
                 if (val.demandtype == 0) {
                     this.getData();
                     this.$emit('transShow');
@@ -422,14 +415,6 @@
 //                console.info(val)
                 this.listData = val;   //获取意向列表
             }) //向payAfter的意向列表传参数
-
-        },
-        mounted() {
-//            this.initData();
-            //模拟状态码0
-//            this.showCode = 0;
-//            console.info(this.role)
-//            console.info('min-tabulationBoxTrigger')
 
         },
         computed: {
@@ -453,12 +438,8 @@
                 .then((response) => {
 //                    console.info('response:')
 //                    console.info(response)
-//                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
-//                            this.intentionCount = response.data.intentionCount;
-//                            this.detailData = response.data.data;
-//                            this.listData = response.data.responseList;   //获取意向列表
                     this.userNum = response.data.intentionCount;
                     this.myData = response.data.data;
                     this.releaseTime = this.myData.releasetime.split(" ")[0];
@@ -577,7 +558,7 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
-                    this.checkDetailShow = true;
+//                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
                 if (this.showCode === 1) {
@@ -589,7 +570,7 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
-                    this.checkDetailShow = true;
+//                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
                 if (this.showCode === 2) {
@@ -601,7 +582,7 @@
 //                    this.thirdButtonShow = true;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = true;
-                    this.checkDetailShow = true;
+//                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
                 if (this.showCode === 3) {
@@ -613,7 +594,7 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = true;
                     this.fifthButtonShow = true;
-                    this.checkDetailShow = true;
+//                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
                 }
             },
@@ -726,7 +707,7 @@
 //                    console.info(val)
                     let index = val.index;
                     this.listData.splice(index,1,val)
-                })
+                });
                 this.show();
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 this.releaseselectedShow = false; //显示两个按钮
@@ -753,7 +734,6 @@
                     }else{
                         alert('错误代码：' + response.data.opResult);
                     }
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
                 });
@@ -764,7 +744,7 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
-                this.checkDetailShow = false;
+//                this.checkDetailShow = false;
 //                console.info('item:')
 //                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
@@ -779,7 +759,7 @@
             //点击“收起详情”
             checkDetailUp: function (item,index) {
                 this.checkDetailIndex = '';
-                this.checkDetailShow = true;
+//                this.checkDetailShow = true;
             },
             //父子组件间信息的传递，点击x号关闭组件
             closeAlWriteFn: function () {
@@ -795,33 +775,9 @@
             closePaySucssFn: function () {
                 this.paySuccessShow = false;
             },
-            //此方法只是参考参数的名字，无其他用处
-            submitData: function () {
-                /*let sendData = {};
-                sendData.contact = this.user;
-                sendData.iHome = this.phoneNum;
-                sendData.dpt = this.firArea;
-                sendData.pst = this.secArea;
-                sendData.arrv = this.thirdArea;
-                sendData.sailingtime = this.sailingtime;      //起止时间
-                sendData.days = this.scheduleShow;
-                sendData.aircrfttyp = this.typeChoose;
-                sendData.seating = this.seatingNum;
-                sendData.avgguestexpect = this.avgguestExpect;
-                sendData.loadfactorsexpect = this.loadfactorsExpect;
-                sendData.subsidypolicy = this.subsidyCode;
-                sendData.blockbidprice = this.blockbidPrice;
-                sendData.remark = this.remarkMsg;
-                sendData.periodValidity = this.periodValidity; //需求发布有效期
-                sendData.publicwayStr = this.publicwayStrCode;//公开方式
-                sendData.dptAcceptnearairport = this.dptAcceptnearairport;
-                sendData.pstAcceptnearairport = this.pstAcceptnearairport;
-                sendData.arrvAcceptnearairport = this.arrvAcceptnearairport;*/
-            },
         },
         components: {
             airlineWrite,
-//            airlinePay,
             airlineAffirm,
             paySuccess,
             airlinePay,

@@ -11,10 +11,13 @@
                 </div>
                 <div class="sec-bottom font-gray">
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
-                    <span style="margin-right: 30px;">已有{{userNum}}位用户发起意向</span>
-                    <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
+                    <span style="margin-right: 30px;" v-show="userNumShow">已有{{userNum}}位用户发起意向</span>
+                    <span class="font-gray">状态:　<span  v-if="demandState5 == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
+                    <div class="anew-publish" v-show="demandState5" @click="anewPublishClickFn">
+                        重新发布
+                    </div>
                 </div>
             </div>
             <div class="third item-container">
@@ -116,6 +119,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="fifth item-container">
+                <div class="left font-gray">其他说明</div>
+                <div class="right">{{myData.remark}}</div>
             </div>
         </div>
         <div class="myplan" v-if="myplanShow">
@@ -224,22 +231,20 @@
                     <!--<div>其他说明其他说明其他说明其他说明其他说明</div>-->
                 </div>
             </div>
-
         </div>
         <div class="second-show" v-show="secondShow">
-            <div class="fifth item-container">
-                <div class="left font-gray">其他说明</div>
-                <div class="right">{{myData.remark}}</div>
-            </div>
             <div class="sixth item-container">
                 <h2>收到的意向</h2>
                 <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
             </div>
             <div class="seventh item-container" v-show="secondButtonShow">
-                <span class="danger">*您还未缴纳意向金，缴纳后可查看详细列表</span>
+                <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可查看详细列表</span>
             </div>
         </div>
-
+        <!--<div class="seventh item-container">
+            <span class="danger">*拒绝原因</span>
+            <span class="line"></span>
+        </div>-->
         <div class="third-show" v-show="thirdShow">
 
             <div class="eighth item-container">
@@ -259,11 +264,11 @@
                     <div class="item-first">
                         <div class="left">{{item.responsedate}}</div>
                         <div class="center-left">{{item.intentionCompanyName}}</div>
-                        <div class="center-right">
-                            <span class="icon-item">&#xe602; <span class="reminder"></span></span>
+                        <div class="center-right" @click="chat(item)">
+                            <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="reminderShow"></span></span>
                         </div>
-                        <div class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情
-                        </div>
+                        <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
+                        <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
                     </div>
                     <div v-show="checkDetailIndex === index">
                         <div class="item-second">
@@ -391,7 +396,7 @@
         </div>
         <div class="second-button" v-show="secondButtonShow">
             <div class="buttons">
-                <button class="btn btn-b" @click="airlinePayFn">点击此处缴纳意向金</button>
+                <button class="btn btn-b" @click="airlinePayFn" v-show="demandState6">点击此处缴纳意向金</button>
                 <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
             </div>
         </div>
@@ -492,8 +497,11 @@
                 calendarInitDay2: '',
                 calendarShow1: false,
                 myDate1: '',
-                demandStateText: false, //"审核未通过"是否显示
                 myPurposeEditShow: false,
+                reminderShow: true, // 消息提醒是否显示
+                demandState5: false, //"审核未通过"是否显示 demandState 0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
+                demandState6: false, //是否为"审核通过"
+                userNumShow: true, // 已有{{userNum}}位用户发起意向
             }
         },
         created() {
@@ -567,46 +575,50 @@
                         this.subsidypolicy = '无补贴'
                     }
                     // 修改this.showCode
-                    if (this.isSelf == true && this.isIntentionMoney == false) {
+                    if(this.myData.demandstate == 5 || this.myData.demandstate == 3 || this.myData.demandprogress == 3 || this.myData.demandprogress == 10) {
+                        this.showCode = 5; // “关闭”状态
+                    }else {
+                        if (this.isSelf == true && this.isIntentionMoney == false) {
 //                                console.info('payAfter:' + 1)
-                        this.showCode = 1;
-                    }if (this.isSelf == true && this.isIntentionMoney == true) {
+                            this.showCode = 1;
+                        }if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
-                        this.showCode = 3;
-                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
-                       /* // 获取意向列表数据
-                        let toAcceptrResponseList = {};
-                        toAcceptrResponseList.demandId = this.id;
-                        toAcceptrResponseList.intentionStatu = 0;
-                        this.$ajax({
-                            url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
-                            method: 'post',
-                            headers: {
-                                'Content-type': 'application/x-www-form-urlencoded'
-                            },
-                            params: toAcceptrResponseList
-                        }).then((response) => {
-//                                    console.info('responseList:')
-//                                    console.info(response.data.responseList)
-
-                        }).catch((error) => {
-                            console.log(error);
-                        });
-                     */
-                    }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
+                            this.showCode = 3;
+                            tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+                        }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
 //                        console.info('000000')
-                        this.showCode = 0;
-                    }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
+                            this.showCode = 0;
+                        }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
 //                        console.info('payAfter:' + 4)
-                        this.showCode = 4;
+                            this.showCode = 4;
+                        }
+                        // 判断demandState是否通过（6）demandState  0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
+                        if (this.myData.demandstate == 6) {
+                            this.demandState6 = true;
+                        }else {
+                            this.demandState6 = false;
+                        }
                     }
+//                    this.showCode = 5; // 模拟“关闭”状态
                     this.show();
-
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+            },
+            // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条意向id）)
+            chat:function (item) {
+                let chatObj = {};
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.employeeId = item.employeeId;
+                chatObj.id = this.myData.id;
+                console.info(chatObj)
+                tabulationBoxTrigger.$emit('addChat',chatObj);
+            },
+            // “重新发布”按钮点击
+            anewPublishClickFn: function () {
+                this.airlineWriteShow = true;
             },
             /*新增：我发出的方案*/
             // 关闭表单
@@ -653,6 +665,8 @@
             },
             show: function () {
                 if (this.showCode === 0) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = false;
                     this.thirdShow = false;
@@ -665,6 +679,8 @@
                     this.myplanBtnShow = false;
                     this.myplanShow = false;
                 }if (this.showCode === 1) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = false;
@@ -677,6 +693,8 @@
                     this.myplanBtnShow = false;
                     this.myplanShow = false;
                 }if (this.showCode === 2) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
@@ -689,6 +707,8 @@
                     this.myplanBtnShow = false;
                     this.myplanShow = false;
                 }if (this.showCode === 3) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
@@ -701,6 +721,8 @@
                     this.myplanBtnShow = false;
                     this.myplanShow = false;
                 }if (this.showCode === 4) {     // 我发出的方案部分
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = false;
                     this.thirdShow = false;
@@ -712,6 +734,20 @@
                     this.checkDetailIndex = ''; // 列表收起来
                     this.myplanBtnShow = true;
                     this.myplanShow = true;
+                }if (this.showCode === 5) {     // 审核未通过展示的内容
+                    this.demandState5 = true;
+                    this.userNumShow = false;
+                    this.firstShow = true;
+                    this.secondShow = false;
+                    this.thirdShow = false;
+                    this.firstButtonShow = false;
+                    this.secondButtonShow = false;
+//                    this.thirdButtonShow = false;
+//                    this.fourthButtonShow = true;
+                    this.fifthButtonShow = false;
+                    this.checkDetailIndex = ''; // 列表收起来
+                    this.myplanBtnShow = false;
+                    this.myplanShow = false;
                 }
             },
             // 日历
@@ -923,6 +959,11 @@
                     this.releaseselectedShow = true;
 //                    console.info(1)
                 }
+            },
+            //点击“收起详情”
+            checkDetailUp: function (item,index) {
+                this.checkDetailIndex = '';
+//                this.checkDetailShow = true;
             },
             //父子组件间信息的传递，点击x号关闭组件
             closeAlWriteFn: function () {
@@ -1149,6 +1190,7 @@
     }
 
     .second {
+        position: relative;
         flex-direction: column;
         height: 100px;
         background: rgba(216, 216, 216, .17);
@@ -1161,6 +1203,22 @@
         .sec-bottom {
             margin-left: 3px;
         }
+    }
+
+    /*“重新发布”按钮*/
+    .anew-publish {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 20px;
+        color: white;
+        border-radius: 20px;
+        background: #3C78FF;
+        cursor: pointer;
     }
 
     .third {

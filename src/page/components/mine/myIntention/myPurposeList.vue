@@ -44,9 +44,9 @@
                             {{item.responseProgress}}
                         </div>
                         <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span v-show="talkNumShow">1</span>
-                        </span>
+                            <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
+                                <span v-show="talkNumShow">1</span>
+                            </span>
                         </div>
                         <div class="list-f item color">
                             查看详情<span class="icon-item">&#xe686;</span>
@@ -182,6 +182,15 @@
             refreshFn: function () {
 //                console.info('refreshFn');
                 this.getListData();
+            },
+            // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条意向id）)
+            chat:function (item) {
+                let chatObj = {};
+                chatObj.demandEmployeeId = item.demandEmployeeId;
+                chatObj.employeeId = item.employeeId;
+                chatObj.id = item.demandId;
+                console.info(chatObj)
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
