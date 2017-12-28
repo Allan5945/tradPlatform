@@ -44,9 +44,17 @@
                             {{item.demandprogress}}
                         </div>
                         <div class="list-e item">
-                        <span class="icon-item talk-icon">&#xe602;
-                            <span v-show="talkNumShow">1</span>
-                        </span>
+                            <span class="icon-item talk-icon" @click.stop v-show="item.responseEmployees != null && item.intentionMoneyState === 0" @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
+                                <span class="talk-num" v-show="item.unreadMessageCount != 0">{{item.unreadMessageCount}}</span>
+                                <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
+                                    <li v-for="vl in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl)">
+                                        <div></div>
+                                        <div style="position: relative;">{{vl.nickName}}
+                                            <span class="talk-num" style="top: 0; right: -10px;" v-show="vl.chatNum != 0">{{vl.chatNum}}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </span>
                         </div>
                         <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
                         </div>
@@ -103,7 +111,6 @@
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上
                 listItemIndex: '',          // 被点击列的index，用来使其变成active
-                talkNumShow: false,         // 是否有对话
 
                 timeUpDown: true,           // 通过时间进行排序
                 sendData:{                   // 请求的参数
@@ -114,6 +121,7 @@
                                                 // 4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝
                     orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
+                responseEmployeesIndex: '', // 对我发布的需求有意向的用户列表是否显示
             }
         },
         mounted() {
@@ -168,7 +176,6 @@
 //                    console.info('myPublishList获取的数据:')
 //                    console.info(response)
                     if(response.data.opResult === '0') {
-//                        alert('我的发布列表')
                         response.data.list.list.forEach((val) => {
                             if(val.demandtype == 1 || val.demandtype == 4 ){
                                 this.myData0.push(val);
@@ -193,6 +200,15 @@
             refreshFn: function () {
 //                console.info('refreshFn');
                 this.getListData();
+            },
+            // 点击对应的意向用户，弹出聊天框
+            responseEmployeesClickFn: function (item,vl) {
+                let chatObj = {};
+                chatObj.demandEmployeeId = this.role.id;
+                chatObj.id = item.id;
+                chatObj.employeeId = vl.id;
+                console.info(chatObj)
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
@@ -294,34 +310,26 @@
                     // 运营托管详情
                     this.myPublishTransportEntrustShow = true;
                     this.myPublishAirLineEntrustShow = false;
-//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
-//                    this.myPublishAirlineShow = false;
                 }if(item.demandtype == 3 || item.demandtype == 4){
                     // 航线委托详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = true;
-//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
-//                    this.myPublishAirlineShow = false;
                 }if(item.demandtype == 1){
                     //  运力需求详情（航司发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = true;
-//                    this.myPublishAirlineShow = false;
                 }if(item.demandtype == 0){
                     //  航线需求详情（机场发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
-//                    this.myPublishShow = false; // 此组件不要了
                     this.myPublishShow0 = true;
                     this.myPublishShow1 = false;
-//                    this.myPublishAirlineShow = true;
                 }
 
             },
@@ -396,6 +404,45 @@
                 background: #F5F5F5;
             }
         }
+    }
+    .choose-type {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-radius: 4px;
+        box-shadow: 0 2px 11px $border-color;
+        background: white;
+        overflow: hidden;
+        z-index: 1;
+        li {
+            display: flex;
+            padding-left: 14px;
+            height: 35px;
+            line-height: 32px;
+            font-size: 1.2rem;
+            color: $font-color;
+            cursor: pointer;
+            &:hover {
+                background: #F5F5F5;
+            }
+        }
+    }
+    .response-employees {
+        width: 120px;
+        max-height: 175px;
+        overflow-y: scroll;
+        li {
+            position: relative;
+        }
+    }
+    .response-employees::-webkit-scrollbar {
+        width: 7px;
+    }
+    .response-employees::-webkit-scrollbar-thumb {
+        height: 56px;
+        background: #D8D8D8;
+        border-radius: 4px;
     }
 
     .icon-item {
@@ -512,7 +559,8 @@
             .talk-icon {
                 position: relative;
                 font-size: 2.5rem;
-                >span {
+                cursor: pointer;
+                .talk-num {
                     position: absolute;
                     top: -1px;
                     right: -1px;

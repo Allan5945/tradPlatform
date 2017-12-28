@@ -3,7 +3,7 @@
         <div class="dialog-wrapper">
             <div class="cancel"><span class="iconfont" @click="cancelEvent">&#xe62c;</span></div>
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
-            <div class="dialog-content">是否确认缴纳意向金***元</div>
+            <div class="dialog-content">是否确认缴纳意向金50000元</div>
             <div class="dialog-btns">
                 <div class=" btn sure-btn" @click="sureEvent" v-text="Btext">确认缴纳</div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>

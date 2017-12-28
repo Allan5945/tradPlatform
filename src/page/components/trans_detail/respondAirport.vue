@@ -11,6 +11,14 @@
           </header>
           <div class="content">
               <div class="table-form">
+                  <div>
+                      <div>联系人</div>
+                      <div>{{detailData.contact}}</div>
+                  </div>
+                   <div>
+                      <div>联系方式</div>
+                      <div>{{detailData.iHome}}</div>
+                  </div>
                    <div>
                       <div>机型</div>
                       <div>{{detailData.aircrfttyp}}</div>
@@ -93,6 +101,14 @@
                       </div>
                   </div>
                   <div class="table-form">
+                       <div>
+                          <div>联系人</div>
+                          <div>{{planData.contact}}</div>
+                      </div>
+                      <div>
+                          <div>联系方式</div>
+                          <div>{{planData.ihome}}</div>
+                      </div>
                       <div>
                           <div>拟开时间</div>
                           <div>{{planData.sailingtime}}</div>

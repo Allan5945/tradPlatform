@@ -12,16 +12,18 @@
                     </div>
                     <div class="sec-bottom font-gray">
                         <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
-                        <span style="margin-right: 30px;">已有{{userNum}}位用户发起意向</span>
-                        <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
-                            <span v-else> <span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
+                        <span style="margin-right: 30px;" v-show="userNumShow">已有{{userNum}}位用户发起意向</span>
+                        <span class="font-gray">状态:　<span  v-if="demandState5 == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
+                            <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                         </span>
+                        <div class="anew-publish" v-show="demandState5" @click="anewPublishClickFn">
+                            重新发布
+                        </div>
                     </div>
                 </div>
                 <div class="third item-container">
                     <div class="start item">
-                        <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span>
-                            <span v-show="myData.dptState == 1">区域</span></div>
+                        <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
                         <div class="item-b"><h2>
                                 <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
                                 <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
@@ -41,8 +43,7 @@
                         <span class="icon-item">&#xe672;</span>
                     </div>
                     <div class="pass item">
-                        <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span>
-                            <span v-show="myData.pstState == 1">区域</span></div>
+                        <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
                         <div class="item-b"><h2>
                                 <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
                                 <span v-show="myData.pstState == 1">{{myData.pst}}</span>
@@ -60,8 +61,7 @@
                         <span class="icon-item">&#xe672;</span>
                     </div>
                     <div class="arrive item">
-                        <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span>
-                            <span v-show="myData.arrvState == 1">区域</span></div>
+                        <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
                         <div class="item-b"><h2>
                                 <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
                                 <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
@@ -76,12 +76,14 @@
                 <div class="fourth item-container">
                     <div class="items">
                         <div class="left item font-gray">
+                            <div>联系人</div>
                             <div>拟开时间</div>
                             <div>拟飞机型</div>
                             <div>客量期望</div>
                             <div>补贴政策</div>
                         </div>
                         <div class="right item">
+                            <div class="item-a">{{myData.contact}}</div>
                             <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                             <div class="item-b">{{myData.aircrfttyp}}</div>
                             <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
@@ -92,16 +94,18 @@
                     </div>
                     <div class="items">
                         <div class="left item font-gray">
+                            <div>联系方式</div>
                             <div>拟开班期</div>
                             <div>座位数</div>
                             <div>客座率期望</div>
                             <div>有效期</div>
                         </div>
                         <div class="right item">
+                            <div class="item-a">{{myData.iHome}}</div>
                             <div class="item-a">{{myData.days}}</div>
                             <div class="item-b">{{myData.seating}}</div>
                             <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                            <div class="item-d" style="display: flex;position: relative;">{{periodValidity0}}
+                            <div class="item-d" style="display: flex; position: relative;">{{periodValidity0}}
                                 <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
                                 <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
                                     <div class="selec-data">
@@ -121,23 +125,131 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-            <div class="second-show" v-show="secondShow">
                 <div class="fifth item-container">
                     <div class="left font-gray">其他说明</div>
                     <div class="right">{{myData.remark}}</div>
                 </div>
+            </div>
+            <div class="myplan" v-if="myplanShow">
+                <div class="plan-til">
+                    <div>我发出的方案</div>
+                    <div @click="EditFn" style="cursor:pointer;"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                </div>
+                <div class="airline">
+                    <div class="airplace">
+                        <div>始发机场</div>
+                        <div>
+                            <div>{{receiveIntention.dpt}}</div>
+                            <!--<div>成都双流</div>-->
+                            <div>
+                                <span v-if="receiveIntention.dptAcceptnearairport === 0">接收</span>
+                                <span v-else>不接收</span>临近机场</div>
+                        </div>
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{receiveIntention.dptTime}}</div>
+                            <!--<div>08:00-12:00</div>-->
+                        </div>
+                    </div>
+                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                    <div class="airplace">
+                        <div>经停机场</div>
+                        <div>{{receiveIntention.pst}}</div>
+                        <!--<div>北京南苑</div>-->
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{receiveIntention.pstTime}}</div>
+                            <!--<div>待协调</div>-->
+                        </div>
+                    </div>
+                    <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                    <div class="airplace">
+                        <div>到达区域</div>
+                        <div>{{receiveIntention.arrv}}</div>
+                        <!--<div>华北地区</div>-->
+                        <div class="resouse">
+                            <div>出港资源</div>
+                            <div>{{receiveIntention.arrvTime}}</div>
+                            <!--<div></div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="table-form">
+                    <div>
+                        <div>拟开时间</div>
+                        <div>{{receiveIntention.sailingtime}}</div>
+                        <!--<div>2017.11.11-2018.11.11</div>-->
+                    </div>
+                    <div>
+                        <div>拟开班期</div>
+                        <!--<div>{{receiveIntention.days}}</div>-->
+                        <div>待定</div>
+                    </div>
+                    <div>
+                        <div>拟开机型</div>
+                        <div>{{receiveIntention.aircrfttyp}}</div>
+                        <!--<div>AA222</div>-->
+                    </div>
+                    <div>
+                        <div>座位数</div>
+                        <!--<div>{{receiveIntention.seating}}</div>-->
+                        <div>180</div>
+                    </div>
+                    <div>
+                        <div>客量预期</div>
+                        <div>{{receiveIntention.avgguestexpect}}</div>
+                        <!--<div>80</div>-->
+                    </div>
+                    <div>
+                        <div>客座率预期</div>
+                        <div>{{receiveIntention.loadfactorsexpect}}</div>
+                        <!--<div>80%</div>-->
+                    </div>
+                    <div>
+                        <div>补贴政策</div>
+                        <div>{{receiveIntention.subsidypolicy}}</div>
+                        <!--<div>按人头</div>-->
+                    </div>
+                    <div>
+                        <div>小时成本</div>
+                        <div>{{receiveIntention.hourscost}}</div>
+                        <!--<div>8</div>-->
+                    </div>
+                    <div>
+                        <div>运力归属</div>
+                        <div>{{receiveIntention.capacitycompany}}</div>
+                        <!--<div>东方航空</div>-->
+                    </div>
+                    <div>
+                        <div>运力基地</div>
+                        <div>{{receiveIntention.dpt}}</div>
+                        <!--<div>成都双流</div>-->
+                    </div>
+                    <div>
+                        <div>是否调度</div>
+                        <div>{{receiveIntention.scheduling}}</div>
+                        <!--<div>华北地区</div>-->
+                    </div>
+                    <div class="tips">
+                        <div>其他说明</div>
+                        <div>{{receiveIntention.remark}}</div>
+                        <!--<div>其他说明其他说明其他说明其他说明其他说明</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="second-show" v-show="secondShow">
                 <div class="sixth item-container">
                     <h2>收到的意向</h2>
                     <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
                 </div>
                 <div class="seventh item-container" v-show="secondButtonShow">
-                    <span class="danger">*您还未缴纳意向金，缴纳后可查看详细列表</span>
+                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可查看详细列表</span>
                 </div>
             </div>
-
+            <!--<div class="seventh item-container">
+                <span class="danger">*拒绝原因</span>
+                <span class="line"></span>
+            </div>-->
             <div class="third-show" v-show="thirdShow">
 
                 <div class="eighth item-container">
@@ -157,10 +269,10 @@
                         <div class="item-first">
                             <div class="left">{{item.responsedate}}</div>
                             <div class="center-left">{{item.intentionCompanyName}}</div>
-                            <div class="center-right">
-                                <span class="icon-item">&#xe602; <span class="reminder"></span></span>
+                            <div class="center-right" @click="chat(item)">
+                                <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="reminderShow"></span></span>
                             </div>
-                            <div v-if="checkDetailShow" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
+                            <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
                             <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
                         </div>
                         <div v-show="checkDetailIndex === index">
@@ -182,12 +294,6 @@
                                         <span v-show="item.dptTimeresources == 1">待协调</span>
                                         <span v-show="item.dptTimeresources == 2">时刻充足</span>
                                     </div>
-
-                                    <!--<div class="item-a">始发机场</div>
-                                    <div class="item-b"><h2>成都双流</h2></div>
-                                    <div class="item-c">接受临近机场</div>
-                                    <div class="item-d">出港资源</div>
-                                    <div class="item-e">08:00-12:00</div>-->
                                 </div>
                                 <div class="item-icon">
                                     <span class="icon-item">&#xe672;</span>
@@ -207,11 +313,6 @@
                                         <span v-show="item.pstTimeresources == 1">待协调</span>
                                         <span v-show="item.pstTimeresources == 2">时刻充足</span>
                                     </div>
-                                    <!--<div class="item-a">经停机场</div>
-                                    <div class="item-b"><h2>北京南苑</h2></div>
-                                    <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                    <div class="item-d">出港资源</div>
-                                    <div class="item-e">带协调</div>-->
                                 </div>
                                 <div class="item-icon">
                                     <span class="icon-item">&#xe672;</span>
@@ -228,19 +329,12 @@
                                     <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
                                     <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
                                     <div class="item-e">&nbsp;<!--此处有空格--></div>
-
-                                    <!--<div class="item-a">到达区域</div>
-                                    <div class="item-b"><h2>华北地区</h2></div>
-
-                                    &lt;!&ndash;下方有空格&ndash;&gt;
-                                    <div class="item-c">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                    <div class="item-d">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>
-                                    <div class="item-e">&nbsp;&lt;!&ndash;此处有空格&ndash;&gt;</div>-->
                                 </div>
                             </div>
                             <div class="item-third">
                                 <div class="items">
                                     <div class="left item font-gray">
+                                        <div>联系人</div>
                                         <div>拟开时间</div>
                                         <div>拟飞机型</div>
                                         <div>客量期望</div>
@@ -249,9 +343,11 @@
                                         <div>是否调度</div>
                                     </div>
                                     <div class="right item">
+                                        <div class="item-a item-height">{{item.contact}}</div>
                                         <div class="item-a item-height">{{item.sailingtime}}</div>
                                         <div class="item-b item-height">{{item.aircrfttyp}}</div>
                                         <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
+                                        <!--<div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>-->
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
@@ -262,18 +358,11 @@
                                             <span v-show="item.scheduling == 0">接受</span>
                                             <span v-show="item.scheduling == 1">不接受</span>
                                         </div>
-
-
-                                        <!--<div class="item-height">2017.11.11-2018.11.11</div>
-                                        <div class="item-height">AA2222</div>
-                                        <div class="item-height">80人/均班</div>
-                                        <div class="item-height">按人头</div>
-                                        <div class="item-height">东方航空</div>
-                                        <div class="item-height">华北地区</div>-->
                                     </div>
                                 </div>
                                 <div class="items">
                                     <div class="left item font-gray">
+                                        <div>联系方式</div>
                                         <div>拟开班期</div>
                                         <div>座位数</div>
                                         <div>客座率期望</div>
@@ -281,18 +370,12 @@
                                         <div>运力基地</div>
                                     </div>
                                     <div class="right item">
+                                        <div class="item-height">{{item.ihome}}</div>
                                         <div class="item-height">{{item.days}}</div>
                                         <div class="item-height">{{item.seating}}</div>
                                         <div class="item-height">{{item.loadfactorsexpect}}%</div>
                                         <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
                                         <div class="item-height">{{item.dpt}}</div>
-
-
-                                       <!-- <div class="item-height">待定</div>
-                                        <div class="item-height">180</div>
-                                        <div class="item-height">80%</div>
-                                        <div class="item-height">8万元/小时</div>
-                                        <div class="item-height">成都双流</div>-->
                                     </div>
                                 </div>
                             </div>
@@ -322,24 +405,41 @@
             </div>
             <div class="second-button" v-show="secondButtonShow">
                 <div class="buttons">
-                    <button class="btn btn-b" @click="airlinePayFn">点击此处缴纳意向金</button>
-                    <button class="btn btn-w" @click="endNeed">结束需求</button>
+                    <button class="btn btn-b" @click="airlinePayFn" v-show="demandState6">点击此处缴纳意向金</button>
+                    <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
                 </div>
             </div>
+            <div class="myplan-buttons" v-if="myplanBtnShow">
+                <div v-if="receiveIntention.responseselected == '0'">
+                    <div class="buttons">
+                        <div class="btn btn-w cancel-btn">已生成订单，无法更改</div>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="buttons" v-if="receiveIntention.releaseselected == '0'">
+                        <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
+                        <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
+                    </div>
+                    <div class="buttons" v-else>
+                        <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
+                        <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+                    </div>
+                </div>
 
+            </div>
             <div class="bottom" v-show="fifthButtonShow">
                 <div class="buttons">
                     <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
-                    <button class="btn btn-w" @click="endNeed">结束需求</button>
+                    <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
                 </div>
             </div>
-            <airlineWrite v-show="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW"
-                          :acceptData="myData"></airlineWrite>
-            <!--<airlinePay v-show="airlinePayShow" @close-this="closeAlPayFn" @change-showCode="changeShowCodeP"></airlinePay>-->
+            <airlineWrite v-if="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW" :acceptData="myData"></airlineWrite>
             <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn"
                            @change-showCode="changeShowCodeA"></airlineAffirm>
             <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
             <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
+
+            <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
         </div>
     </div>
 </template>
@@ -347,15 +447,17 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import airlineWrite from '$src/page/components/airlineWrite.vue'
-    //    import airlinePay from './airlinePay.vue'
     import airlineAffirm from '$src/page/components/airlineAffirm.vue'
     import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
     import airlinePay from '$src/page/components/trans_detail/dialog.vue'
     import calendar from '$src/page/components/calendar'
+    import myPurposeEdit from '$src/page/components/mine/myIntention/myPurposeEdit.vue'
+
 
     export default {
         data() {
             return {
+                myPurposeEditShow: false, //编辑表单是否显示
                 firstShow: false,
                 secondShow: false,
                 thirdShow: false,
@@ -363,6 +465,13 @@
                 purposeDetailShow: false, //意向列表，点击展开意向详情
                 firstButtonShow: false, //code为0时的按钮显示
                 secondButtonShow: false,//code为1时的按钮显示
+                
+                /*新增的：我发出的方案*/
+                myplanShow: false,     // 我发出的方案是否显示
+                myplanBtnShow: false,  // 我发出的方案按钮显示
+                receiveIntention: {}, //我发出的方案（只有isSelf为false时才有此参数，也就是只有航司登录时才有此参数）null、{}
+                /************************/
+
                 thirdButtonShow: false,
                 fourthButtonShow: false,//code为1时的按钮显示
                 fifthButtonShow: false, //委托代理
@@ -385,11 +494,10 @@
                 periodValidity0: '',
                 periodValidity1: '',
                 isIntentionMoney: '',
-                isSelf: '',
+                isSelf: '', // 是否是自己发布（我写的航线详情，只能机场发布，所以可以同过isSelf判断是哪个用户登陆）
                 subsidypolicy: '',//补贴政策
                 listData: [],    //下方的列表详情
                 id: '',
-                checkDetailShow: true, // "查看详情"是否显示，true:显示，flase：不显示
                 checkDetailIndex: '', //点击“查看详情”对应的展开
                 releaseselectedShow: true,  //发布者是否已选定 0:表示选定,1:表示未选定
                 airlineAffirmUnchooseData: {}, //“撤销选定”发的对象
@@ -398,38 +506,38 @@
                 calendarInitDay2: '',
                 calendarShow1: false,
                 myDate1: '',
-                /************/
-                demandStateText: false, //"审核未通过"是否显示
+                myPurposeEditShow: false,
+                reminderShow: true, // 消息提醒是否显示
+                demandState5: false, //"审核未通过"是否显示 demandState 0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
+                demandState6: false, //是否为"审核通过"
+                userNumShow: true, // 已有{{userNum}}位用户发起意向
             }
         },
         created() {
-//            this.initData();
+            /*tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
+//                console.info('tabulationBoxTrigger:')
+//                console.info(val.data)
+                this.id = val.data.id;
+                if (val.data.demandtype == 0) {
+                    this.getData();
+                    this.$emit('transShow');
+                }
+            });*/
+           /* tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
+                this.listData = val;   //获取意向列表
+            })*/
             tabulationBoxTrigger.$on('sendDataToMyPublish', val => { // 从myPublishList获取数据
-//                console.info('000000sendDataToMyPublish:')
-//                console.info(val)
-//                this.id = val.data.id;
                 this.id = val.id;
-//                console.info(this.id)
-//                this.showCode = 0;
                 if (val.demandtype == 0) {
                     this.getData();
                     this.$emit('transShow');
                 }
             });
-
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
 //                console.info('从dialog（已废弃）和airlineDetailPayAfter获取的意向列表:')
 //                console.info(val)
                 this.listData = val;   //获取意向列表
             }) //向payAfter的意向列表传参数
-
-        },
-        mounted() {
-//            this.initData();
-            //模拟状态码0
-//            this.showCode = 0;
-//            console.info(this.role)
-//            console.info('min-tabulationBoxTrigger')
 
         },
         computed: {
@@ -438,7 +546,7 @@
             ])
         },
         methods: {
-            // Ajax获取初始数据,并渲染
+            // ajax获取的数据，并渲染
             getData: function () {
                 this.$ajax({
                     method: 'post',
@@ -455,6 +563,7 @@
 //                    console.info(response)
 //                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
+                    this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
 //                            this.intentionCount = response.data.intentionCount;
 //                            this.detailData = response.data.data;
@@ -482,26 +591,37 @@
                         this.subsidypolicy = '人头补'
                     }
                     if (this.myData.subsidypolicy == 3) {
-                        this.subsidypolicy = '其他'
-                    }
-                    if (this.myData.subsidypolicy == 4) {
                         this.subsidypolicy = '待议'
                     }
-                    if (this.myData.subsidypolicy == 5) {
+                    if (this.myData.subsidypolicy == 3) {
                         this.subsidypolicy = '无补贴'
                     }
                     // 修改this.showCode
-                    if (this.isSelf == true && this.isIntentionMoney == false) {
-//                        console.info('payAfter:' + 1)
-                        this.showCode = 1;
-                    }if (this.isSelf == true && this.isIntentionMoney == true) { //是自己发布的，并且已经缴纳意向金
-//                        console.info('payAfter:' + 3)
-                        this.showCode = 3;
-                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
-                    }if (this.isSelf == false) {
-//                        console.info('payAfter:' + 0)
-                        this.showCode = 0;
+                    if(this.myData.demandstate == 5 || this.myData.demandstate == 3 || this.myData.demandprogress == 3 || this.myData.demandprogress == 10) {
+                        this.showCode = 5; // “关闭”状态
+                    }else {
+                        if (this.isSelf == true && this.isIntentionMoney == false) {
+//                                console.info('payAfter:' + 1)
+                            this.showCode = 1;
+                        }if (this.isSelf == true && this.isIntentionMoney == true) {
+//                                console.info('payAfter:' + 3)
+                            this.showCode = 3;
+                            tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+                        }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
+//                        console.info('000000')
+                            this.showCode = 0;
+                        }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
+//                        console.info('payAfter:' + 4)
+                            this.showCode = 4;
+                        }
+                        // 判断demandState是否通过（6）demandState  0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
+                        if (this.myData.demandstate == 6) {
+                            this.demandState6 = true;
+                        }else {
+                            this.demandState6 = false;
+                        }
                     }
+//                    this.showCode = 5; // 模拟“关闭”状态
                     this.show();
                 })
                 .catch((error) => {
@@ -509,6 +629,34 @@
                     }
                 );
             },
+            // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条意向id）)
+            chat:function (item) {
+                let chatObj = {};
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.employeeId = item.employeeId;
+                chatObj.id = this.myData.id;
+                console.info(chatObj)
+                tabulationBoxTrigger.$emit('addChat',chatObj);
+            },
+            // “重新发布”按钮点击
+            anewPublishClickFn: function () {
+                this.airlineWriteShow = true;
+            },
+            /*新增：我发出的方案*/
+            // 关闭表单
+            closeMyPurposeEdit: function () {
+                this.myPurposeEditShow = false;
+            },
+            // 刷新页面
+            refreshFn: function () {
+                this.getData();
+            },
+            //点击“编辑”,弹出表单
+            EditFn: function () {
+                this.myPurposeEditShow = true;
+            },
+            /*************/
+
             closeThisFn: function () {
                 this.$emit('close-this')
             },
@@ -521,13 +669,14 @@
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
+//                    params: this.recallData
                     params: {
                         id: this.id
                     }
                 }) .then((response) => {
 //                    console.info(response.data)
                     if(response.data.opResult === '0'){
-                        alert('成功关闭该需求！');
+                        alert('成功结束该需求！');
                         this.$emit('refresh');
                         this.closeThisFn();
                     }else{
@@ -538,37 +687,10 @@
                     console.log(error);
                 });
             },
-            /*initData: function () {
-                this.$ajax({
-                    url:"/capacityRoutesDemandDetailFindById",
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: {
-                        demandId: 78
-                    }
-                }) .then((response) => {
-//                    console.info(response.data)
-//                    this.userNum = response.data.intentionCount
-//                    this.myData = response.data.data;
-//                    this.releaseTime = this.myData.releasetime.split(" ")[0];
-//                    this.dptTime0 = this.myData.dptTime.split(',')[0];
-//                    this.dptTime1 = this.myData.dptTime.split(',')[1];
-//                    this.pstTime0 = this.myData.dptTime.split(',')[0];
-//                    this.pstTime1 = this.myData.dptTime.split(',')[1];
-//                    this.sailingtime0 = this.myData.dptTime.split(',')[0];
-//                    this.sailingtime1 = this.myData.dptTime.split(',')[1];
-//                    this.periodValidity0 = this.myData.dptTime.split(',')[0];
-//                    this.periodValidity1 = this.myData.dptTime.split(',')[1];
-//                    this.$store.dispatch('airlineData', response.data.data).then(() => {});
-                })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            },*/
             show: function () {
                 if (this.showCode === 0) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = false;
                     this.thirdShow = false;
@@ -577,10 +699,12 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
-                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
-                }
-                if (this.showCode === 1) {
+                    this.myplanBtnShow = false;
+                    this.myplanShow = false;
+                }if (this.showCode === 1) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = false;
@@ -589,10 +713,12 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = false;
-                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
-                }
-                if (this.showCode === 2) {
+                    this.myplanBtnShow = false;
+                    this.myplanShow = false;
+                }if (this.showCode === 2) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
@@ -601,10 +727,12 @@
 //                    this.thirdButtonShow = true;
 //                    this.fourthButtonShow = false;
                     this.fifthButtonShow = true;
-                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
-                }
-                if (this.showCode === 3) {
+                    this.myplanBtnShow = false;
+                    this.myplanShow = false;
+                }if (this.showCode === 3) {
+                    this.demandState5 = false;
+                    this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
@@ -613,13 +741,42 @@
 //                    this.thirdButtonShow = false;
 //                    this.fourthButtonShow = true;
                     this.fifthButtonShow = true;
-                    this.checkDetailShow = true;
                     this.checkDetailIndex = ''; // 列表收起来
+                    this.myplanBtnShow = false;
+                    this.myplanShow = false;
+                }if (this.showCode === 4) {     // 我发出的方案部分
+                    this.demandState5 = false;
+                    this.userNumShow = true;
+                    this.firstShow = true;
+                    this.secondShow = false;
+                    this.thirdShow = false;
+                    this.firstButtonShow = false;
+                    this.secondButtonShow = false;
+//                    this.thirdButtonShow = false;
+//                    this.fourthButtonShow = true;
+                    this.fifthButtonShow = false;
+                    this.checkDetailIndex = ''; // 列表收起来
+                    this.myplanBtnShow = true;
+                    this.myplanShow = true;
+                }if (this.showCode === 5) {     // 审核未通过展示的内容
+                    this.demandState5 = true;
+                    this.userNumShow = false;
+                    this.firstShow = true;
+                    this.secondShow = false;
+                    this.thirdShow = false;
+                    this.firstButtonShow = false;
+                    this.secondButtonShow = false;
+//                    this.thirdButtonShow = false;
+//                    this.fourthButtonShow = true;
+                    this.fifthButtonShow = false;
+                    this.checkDetailIndex = ''; // 列表收起来
+                    this.myplanBtnShow = false;
+                    this.myplanShow = false;
                 }
             },
             // 日历
             editCalendarFn: function () {
-                this.calendarShow1 = !this.calendarShow1;
+                this.calendarShow1 = true;
             },
             getDate1: function (d) {//获取组件返回的日期
                 this.calendarInitDay1 = d.split('-').join('.');
@@ -627,7 +784,7 @@
             getDate2: function (d) {
                 this.calendarInitDay2 = d.split('-').join('.');
             },
-            getMyDate1: function () {//获取起始的日期
+            getMyDate1: function () {//我发布的需求，修改有效期
                 if (this.calendarInitDay1 && this.calendarInitDay2) {
                     this.periodValidity0 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow1 = false;
@@ -656,14 +813,66 @@
                 } else {
                 }
             },
+            // 点击“确认方案”
+            queRenClickFn: function () {
+                this.$ajax({
+                    method: 'post',
+                    url: '/selectedResponse',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        id: this.receiveIntention.id,
+                        demandId: this.receiveIntention.demandId,
+                        responseselected: '0',
+                        releaseselected: '0'
+                    }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                        alert("确认方案成功！");
+                        this.closeThisFn();
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            },
+            // 点击“拒绝并撤回”
+            juJueFn: function () {
+                this.$ajax({
+                    method: 'post',
+                    url: '/selectedResponse',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        id: this.receiveIntention.id,
+                        demandId: this.receiveIntention.demandId,
+                        responseselected: '1',
+                        releaseselected: '0'
+                    }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                        alert("撤回方案成功！");
+                        this.closeThisFn();
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            },
             //点击“我有意向”，组件“请填写完整方案”显示
             airlineWriteFn: function () {
                 this.airlineWriteShow = true;
-                let supProperty = {};
+               /* let supProperty = {};
                 supProperty.title = this.myData.title;
                 supProperty.periodValidity = this.myData.periodValidity;
                 supProperty.releasetime = this.myData.releasetime;
-                tabulationBoxTrigger.$emit('supProperty',supProperty); //向airlineWrite.vue传一些数据
+                tabulationBoxTrigger.$emit('supProperty',supProperty); //向airlineWrite.vue传一些数据*/
             },
             // 点击“收藏”
             addCollectFn: function () {
@@ -692,10 +901,11 @@
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
 //                this.showCode = 1;
-                //接收airWrite.vue传来的对象
+                /*//接收airWrite.vue传来的对象
                 tabulationBoxTrigger.$on('responseObject', (val) => {
-//                    console.info(val);
-                })
+                    console.info(val);
+                })*/
+                this.getData(); // 重新获取、渲染数据
                 this.show();
             },
             //点击“缴纳意向金”，组件“缴纳意向金”显示
@@ -707,7 +917,6 @@
             changeShowCodeP: function () {
                 this.paySuccessShow = true; //“缴纳完成”组件显示
                 this.showCode = 2;
-                this.getData();
                 this.show();
             },
             //点击“选定”，组件“请确认以下方案”显示
@@ -764,7 +973,6 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
-                this.checkDetailShow = false;
 //                console.info('item:')
 //                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
@@ -779,7 +987,7 @@
             //点击“收起详情”
             checkDetailUp: function (item,index) {
                 this.checkDetailIndex = '';
-                this.checkDetailShow = true;
+//                this.checkDetailShow = true;
             },
             //父子组件间信息的传递，点击x号关闭组件
             closeAlWriteFn: function () {
@@ -795,37 +1003,14 @@
             closePaySucssFn: function () {
                 this.paySuccessShow = false;
             },
-            //此方法只是参考参数的名字，无其他用处
-            submitData: function () {
-                /*let sendData = {};
-                sendData.contact = this.user;
-                sendData.iHome = this.phoneNum;
-                sendData.dpt = this.firArea;
-                sendData.pst = this.secArea;
-                sendData.arrv = this.thirdArea;
-                sendData.sailingtime = this.sailingtime;      //起止时间
-                sendData.days = this.scheduleShow;
-                sendData.aircrfttyp = this.typeChoose;
-                sendData.seating = this.seatingNum;
-                sendData.avgguestexpect = this.avgguestExpect;
-                sendData.loadfactorsexpect = this.loadfactorsExpect;
-                sendData.subsidypolicy = this.subsidyCode;
-                sendData.blockbidprice = this.blockbidPrice;
-                sendData.remark = this.remarkMsg;
-                sendData.periodValidity = this.periodValidity; //需求发布有效期
-                sendData.publicwayStr = this.publicwayStrCode;//公开方式
-                sendData.dptAcceptnearairport = this.dptAcceptnearairport;
-                sendData.pstAcceptnearairport = this.pstAcceptnearairport;
-                sendData.arrvAcceptnearairport = this.arrvAcceptnearairport;*/
-            },
         },
         components: {
             airlineWrite,
-//            airlinePay,
             airlineAffirm,
             paySuccess,
             airlinePay,
-            calendar
+            calendar,
+            myPurposeEdit,
         }
     }
 </script>
@@ -885,6 +1070,7 @@
     .btn-w {
         outline: none;
     }
+
     /*日历样式*/
     #search {
         padding-top: 100px;
@@ -960,6 +1146,7 @@
     }
 
     /*********/
+
     .wrapper {
         position: fixed;
         top: 0;
@@ -981,6 +1168,7 @@
         overflow-y: scroll;
         background: white;
         color: $font-color;
+        font-size: 1.2rem;
         /*transform:translate(0,0);*/
         z-index: 100;
     }
@@ -1029,6 +1217,7 @@
     }
 
     .second {
+        position: relative;
         flex-direction: column;
         height: 100px;
         background: rgba(216, 216, 216, .17);
@@ -1041,6 +1230,22 @@
         .sec-bottom {
             margin-left: 3px;
         }
+    }
+
+    /*“重新发布”按钮*/
+    .anew-publish {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 20px;
+        color: white;
+        border-radius: 20px;
+        background: #3C78FF;
+        cursor: pointer;
     }
 
     .third {
@@ -1103,7 +1308,152 @@
             }
         }
     }
+    .myplan{
+        margin-top: 35px;
+        margin-bottom:140px;
+        .table-form{
+            width:100%;
+            box-sizing:border-box;
+            padding:60px 0 40px 40px;
+            flex-wrap: wrap;
+            display: flex;
+            >div{
+                width:240px;
+                height:40px;
+                display: flex;
+                >div{
+                    margin-bottom:20px;
+                    height:20px;
+                    line-height:20px;
+                }
+                >div:nth-of-type(1){
+                    width:80px;
+                    color:rgba(96, 94, 124, 0.7);
+                }
+                >div:nth-of-type(2){
+                    width:160px;
+                }
+            }
+            >div:nth-of-type(odd){
+                margin-right:40px;
+            }
+        }
+        .plan-til{
+            height:80px;
+            width:100%;
+            display:flex;
+            justify-content: space-between;
+            background-color:rgba(216,216,216,.2);
+            >div:nth-of-type(1){
+                font-size:2rem;
+                color:#605E7C;
+                font-weight:bold;
+                height:80px;
+                line-height:80px;
+                padding-left:40px;
+            }
+            >div:nth-of-type(2){
+                width:70px;
+                height:26px;
+                line-height:26px;
+                margin: 25px 30px 29px 0;
+                color:#605E7C;
+                text-align: center;
+                border-radius:100px;
+                background-color:#fff;
+            }
+        }
+        .airline{
+            display:flex;
+            padding-top:20px;
+            margin: 0 40px;
+            box-sizing:border-box;
+            border-bottom:1px solid #ccc;
+            >div:nth-of-type(odd){
+                height:160px;
+                width:140px;
+            }
+            >div:nth-of-type(even){
+                height:120px;
+                width:50px;
+            }
 
+        }
+        .table-form{
+            padding:40px 0 0 40px;
+            .tips{
+                width:100%;
+                >div:nth-of-type(2){
+                    width:440px;
+                }
+            }
+        }
+        .airplace{
+            margin-top:20px;
+            >div:nth-of-type(2){
+                height:45px;
+                font-size:2rem;
+                font-weight:bold;
+                padding-top:15px;
+                >div:nth-of-type(2){
+                    font-size:1rem;
+                    font-weight:normal;
+                }
+            }
+            .resouse{
+                margin:20px 0;
+            }
+        }
+    }
+    .myplan-buttons{
+        position: fixed;
+        right: 20px;
+        bottom: 0;
+        width: 560px;
+        border-top: 1px solid #ccc;
+        background: white;
+        .buttons{
+            display: flex;
+            justify-content: center;
+            height:40px;
+            margin-top:30px;
+            margin-bottom: 43px;
+            >div{
+                height:40px;
+                line-height:40px;
+                font-size:1.5rem;
+                color:#605E7C;
+                background-color:#fff;
+                text-align:center;
+                border: 0;
+                border-radius:100px;
+                cursor:pointer;
+            }
+            .cancel-btn{
+                width:100px;
+                margin-right:14px;
+            }
+            .col-btn{
+                width:80px;
+            }
+            .btn-b {
+                margin-right: 14px;
+                width: 150px;
+                border-radius: 20px;
+                color: white;
+                background: #3c78ff;
+                &:hover {
+                    background: rgba(60, 120, 255, 0.7);
+                }
+                &:active {
+                    background: #336bea;
+                }
+            }
+            .col-btn2 {
+                width: 150px;
+            }
+        }
+    }
     .fifth {
         padding-top: 20px;
         height: 80px;
@@ -1326,7 +1676,7 @@
             margin-top: 18px;
             height: 40px;
             > .btn-b {
-                margin-right: 10px;
+                margin-right: 14px;
                 width: 230px;
                 color: white;
                 border-radius: 20px;
@@ -1350,7 +1700,7 @@
         right: 0;
         bottom: 0;
         display: flex;
-        /*justify-content: center;*/
+        justify-content: center;
         width: 600px;
         height: 100px;
         background: white;
@@ -1358,7 +1708,7 @@
         .buttons {
             display: flex;
             margin-top: 18px;
-            margin-left: 90px;
+            /*margin-left: 90px;*/
             height: 40px;
             > .btn-b {
                 margin-right: 14px;

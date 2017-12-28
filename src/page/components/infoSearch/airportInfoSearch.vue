@@ -116,6 +116,7 @@
 <script>
     import echarts from 'echarts';
     import myPic from '$src/static/img/Slice.png';
+    import noimg from './../../../static/img/pubo/noimg.png';
     export default {
         data() {
             return {
