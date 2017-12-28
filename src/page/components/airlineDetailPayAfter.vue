@@ -75,12 +75,14 @@
             <div class="fourth item-container">
                 <div class="items">
                     <div class="left item font-gray">
+                        <div>联系人</div>
                         <div>拟开时间</div>
                         <div>拟飞机型</div>
                         <div>客量期望</div>
                         <div>补贴政策</div>
                     </div>
                     <div class="right item">
+                        <div class="item-a">{{myData.contact}}</div>
                         <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
@@ -91,12 +93,14 @@
                 </div>
                 <div class="items">
                     <div class="left item font-gray">
+                        <div>联系方式</div>
                         <div>拟开班期</div>
                         <div>座位数</div>
                         <div>客座率期望</div>
                         <div>有效期</div>
                     </div>
                     <div class="right item">
+                        <div class="item-a">{{myData.iHome}}</div>
                         <div class="item-a">{{myData.days}}</div>
                         <div class="item-b">{{myData.seating}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}%</div>
@@ -329,6 +333,7 @@
                         <div class="item-third">
                             <div class="items">
                                 <div class="left item font-gray">
+                                    <div>联系人</div>
                                     <div>拟开时间</div>
                                     <div>拟飞机型</div>
                                     <div>客量期望</div>
@@ -337,6 +342,7 @@
                                     <div>是否调度</div>
                                 </div>
                                 <div class="right item">
+                                    <div class="item-a item-height">{{item.contact}}</div>
                                     <div class="item-a item-height">{{item.sailingtime}}</div>
                                     <div class="item-b item-height">{{item.aircrfttyp}}</div>
                                     <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
@@ -355,6 +361,7 @@
                             </div>
                             <div class="items">
                                 <div class="left item font-gray">
+                                    <div>联系方式</div>
                                     <div>拟开班期</div>
                                     <div>座位数</div>
                                     <div>客座率期望</div>
@@ -362,6 +369,7 @@
                                     <div>运力基地</div>
                                 </div>
                                 <div class="right item">
+                                    <div class="item-height">{{item.ihome}}</div>
                                     <div class="item-height">{{item.days}}</div>
                                     <div class="item-height">{{item.seating}}</div>
                                     <div class="item-height">{{item.loadfactorsexpect}}%</div>

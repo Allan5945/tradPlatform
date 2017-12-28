@@ -44,7 +44,7 @@
                             {{item.demandprogress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" @click.stop v-show="item.responseEmployees.length != 0 " @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
+                            <span class="icon-item talk-icon" @click.stop v-show="item.responseEmployees != null && item.intentionMoneyState === 0" @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
                                 <span class="talk-num" v-show="item.unreadMessageCount != 0">{{item.unreadMessageCount}}</span>
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="vl in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl)">
@@ -176,7 +176,6 @@
 //                    console.info('myPublishList获取的数据:')
 //                    console.info(response)
                     if(response.data.opResult === '0') {
-//                        alert('我的发布列表')
                         response.data.list.list.forEach((val) => {
                             if(val.demandtype == 1 || val.demandtype == 4 ){
                                 this.myData0.push(val);

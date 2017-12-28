@@ -140,6 +140,7 @@
         list-style: none;
     }
     .tab-active {
+        color: $border-color;
         border-bottom: 4px solid $border-color;
     }
     .li-active {
@@ -161,13 +162,15 @@
 
     .area-classify {
         display: flex;
-        font-size: 1.2rem;
+        justify-content: space-around;
         > li {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 86px;
             height: 40px;
+            font-size: 1.4rem;
+            font-weight: bold;
             text-align: center;
             &:hover {
                 border-bottom: 4px solid $border-color;
