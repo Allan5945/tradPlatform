@@ -65,7 +65,7 @@ import * as vx from 'vuex'
         methods: {
         },
         mounted:function () {
-            if(Number(this.role.id ) != 1)this.myList.splice(0,2);
+            if(Number(this.role.role ) != 2)this.myList.splice(0,2);
         },
         created:function () {
             //子路由刷新判断
