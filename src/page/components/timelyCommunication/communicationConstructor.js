@@ -50,13 +50,13 @@ export default class ChatSocket{
             console.log('打开连接');
         };
         this.ws.onmessage  = (data)=>{
+            console.log(`收到信息`,chat);
             let chat = JSON.parse(data.data);
             ln.chat.chatData[chat.data.chatFlag].chatRcord.list.splice(0,0,chat.data);
             if(chat.data.chatFlag != ln.chat.setChat){
                 ln.chat.chatData[chat.data.chatFlag].noReadCount = 1;
             };
             ln.chat.change = !ln.chat.change;
-            console.log(`收到信息`,chat);
         };
         this.ws.onclose  = ()=>{
             window.sessionStorage.setItem("isLogin",null);

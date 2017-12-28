@@ -50,8 +50,14 @@
                     <div class="can-btn" @click="cancel" v-if="testingShow">拒绝</div>
                 </div>
             </footer>
+            <footer v-if="canAgent">
+                <div class="foot-tips red" v-if="!cancSuccess">*取消托管原因：{{refuseText}}</div>
+                <div class="btn">
+                    <div class="cancel-agent-btn can-btn" @click="getDialog" v-if="cancSuccess">取消托管</div>
+                </div>
+            </footer>
         </div>
-        <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog"></refuseDialog>
+        <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
 
@@ -67,9 +73,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             testingShow:true,
             isTest:true,
             isAccept:true,
+            canAgent:false,
+            cancSuccess:true,
             detailData:{},
             refuseText:'',
             CpyNm:'',
+            msg:''
          }
      },
       props:['chatData'],
@@ -82,6 +91,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         },
         cancel:function(){
           this.dialogShow = true;
+          this.msg = "拒绝";
         },
         toTest:function(){
             this.isTest =false;
@@ -106,9 +116,16 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         },
         sureDialog(text){
           this.dialogShow = false;
-          this.testingShow =false;
           this.refuseText = text;
-          this.$ajax({
+          if(this.msg == "拒绝"){
+              this.testingShow =false;
+              this.refuseAgent(text);
+          }else if(this.msg == "取消"){
+              this.cancelAgent(text);
+          }
+        },
+        refuseAgent(text){
+            this.$ajax({
                 method: 'post',
                 url: '/demandUpdate',
                 headers: {
@@ -121,6 +138,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   }
                 })
                 .then((response) => {
+                   if(response.data.opResult == '0'){
+                   this.$emit("close");
+                  }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -128,7 +148,6 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 );
         },
         accepted(){
-              this.$emit("close");
               this.$ajax({
                 method: 'post',
                 url: '/demandUpdate',
@@ -141,6 +160,39 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   }
                 })
                 .then((response) => {
+                   if(response.data.opResult == '0'){
+                   this.$emit("close");
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+        },
+        getDialog(){
+            this.dialogShow = true;
+            this.msg = "取消";
+        },
+        cancelAgent(text){
+              this.$ajax({
+                method: 'post',
+                url: '/finishCommissionedAndCustody',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandState:'1',
+                    demandId:this.chatData.id,
+                    demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,
+                    demandType:this.chatData.demandType,
+                    rek: text
+                  }
+                })
+                .then((response) => {
+                   if(response.data.opResult == '0'){
+                     this.cancSuccess = false;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -176,9 +228,15 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                       }else if(this.detailData.demandprogress == '10'){
                           this.testingShow =false;
                           this.refuseText = this.detailData.rek;
-                      }else if(this.detailData.demandprogress == '8'){
+                      }else if(this.detailData.demandprogress == '8'){//已接受
                           this.isTest = !this.isTest;
                           this.isAccept =false;
+                          this.canAgent = true;
+                      }else if(this.detailData.demandprogress == '3'){//已关闭
+                          this.canAgent = true;
+                          this.cancSuccess =false;
+                          this.isAccept =false;
+                          this.refuseText = this.detailData.rek;
                       }
                 })
                 .catch((error) => {
@@ -374,6 +432,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   border-radius:100px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+              }
+              .cancel-agent-btn{
+                  width:150px;
               }
           }
     }
