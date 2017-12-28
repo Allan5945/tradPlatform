@@ -9,7 +9,7 @@
                     </div>
                     <div class="name">张二狗</div>
                     <div class="work-info">
-                        <div class="position">太美航空&nbsp;市场部</div>
+                        <div class="position">{{role.roleStr}}&nbsp;{{role.nickName}}</div>
                         <div>成单量：<span>10</span></div>
                         <div>成单率：<span>50%</span></div>
                     </div>
@@ -31,6 +31,7 @@ import reviewList from './reviewList/viewTable.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import myPic from '$src/static/img/145.jpg';
 import loader from "$src/static/img/svg/loading-oval.svg"
+import * as vx from 'vuex'
     export default {
         data() {
             return {
@@ -63,6 +64,9 @@ import loader from "$src/static/img/svg/loading-oval.svg"
         },
         methods: {
         },
+        mounted:function () {
+            if(Number(this.role.role ) != 2)this.myList.splice(0,2);
+        },
         created:function () {
             //子路由刷新判断
             let path = this.$router.history.current.path;
@@ -75,6 +79,9 @@ import loader from "$src/static/img/svg/loading-oval.svg"
             }
         },
         computed:{
+            ...vx.mapGetters([
+                'role'
+            ]),
             img:function(){
                 return myPic;
             },
