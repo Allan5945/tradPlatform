@@ -15,7 +15,7 @@
                         <div class="airplace">
                             <div>始发机场</div>
                             <div>
-                                <div>{{ndetailData.dptNm||"—"}}</div>
+                                <div>{{ndetailData.dptNm||"待定"}}</div>
                                 <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -27,7 +27,7 @@
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
-                                <div>{{ndetailData.pstNm||"—"}}</div>
+                                <div>{{ndetailData.pstNm||"待定"}}</div>
                                 <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -39,7 +39,7 @@
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
-                                <div>{{ndetailData.arrvNm||"—"}}</div>
+                                <div>{{ndetailData.arrvNm||"待定"}}</div>
                                 <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -174,11 +174,11 @@
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
                             <div style="width: 80%;line-height: 5px;text-indent: 40px;">
-                                {{ndetailData.dptNm||"—"}}
+                                {{ndetailData.dptNm||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pstNm||"—"}}
+                                {{ndetailData.pstNm||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrvNm||"—"}}
+                                {{ndetailData.arrvNm||"待定"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>
