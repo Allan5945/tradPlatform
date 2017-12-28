@@ -169,7 +169,6 @@
             background-color: white;
             outline: none;
             color: rgba(96, 94, 124, 0.6);
-            box-shadow: none;
             border: none;
             width: 60px;
             margin: 0;
@@ -182,13 +181,13 @@
             color: #3c78ff;
             vertical-align: top;
             cursor: pointer;
-            box-shadow: 1px 1px 6px rgba(60, 120, 255, 0.6);
+            box-shadow: 0px 2px 16px rgba(4, 7, 156, 0.4) !important;
             &:hover {
-                background-color: #71c8ff;
-                color: white;
+                /*background-color: rgba(225,225,225,.6);*/
+                /*color: white;*/
             }
             &:active {
-                background-color: #6abbff;
+                background-color: rgba(60,120,225,.9);
                 color: white;
             }
         }

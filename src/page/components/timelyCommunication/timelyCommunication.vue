@@ -204,7 +204,7 @@ export default {
       ;
       if(ln.chat.setChat == 'x-t-null'){
         url = '/updateSystemState';
-        params = {fromNameId:0}
+        params = {fromNameId:this.role.id}
       }else{
         params = {
             fromNameId: id[0] == this.role.id ? id[0] : id[1],
