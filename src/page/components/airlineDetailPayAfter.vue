@@ -269,7 +269,7 @@
                         <div class="left">{{item.responsedate}}</div>
                         <div class="center-left">{{item.intentionCompanyName}}</div>
                         <div class="center-right" @click="chat(item)">
-                            <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="reminderShow"></span></span>
+                            <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="item.unreadNum != 0"></span></span>
                         </div>
                         <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
                         <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
@@ -405,7 +405,7 @@
         <div class="second-button" v-show="secondButtonShow">
             <div class="buttons">
                 <button class="btn btn-b" @click="airlinePayFn" v-show="demandState6">点击此处缴纳意向金</button>
-                <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+                <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
         <div class="myplan-buttons" v-if="myplanBtnShow">
@@ -420,7 +420,7 @@
                     <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
                 </div>
                 <div class="buttons" v-else>
-                    <div class="btn btn-w cancel-btn" @click="deleteClickFn(),closeThisFn()">取消意向</div>
+                    <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
                     <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
                 </div>
             </div>
@@ -429,34 +429,38 @@
         <div class="bottom" v-show="fifthButtonShow">
             <div class="buttons">
                 <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
-                <button class="btn btn-w" @click="closeThisFn(),endNeed()">结束需求</button>
+                <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <airlineWrite v-if="airlineWriteShow" @close-this="closeAlWriteFn" @change-showCode="changeShowCodeW" :acceptData="myData"></airlineWrite>
-        <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn"
-                       @change-showCode="changeShowCodeA"></airlineAffirm>
+        <!--航司点击“我有意向”显示 运力表单-->
+        <airlineWrite v-if="airlineWriteShow" :acceptData="myData" @change-showCode="changeShowCodeW" @close-this="closeAlWriteFn"></airlineWrite>
+        <!--航司点击 我发出的方案“编辑”显示 运力表单-->
+        <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
+        <!--机场点击 “选定”显示 运力表单-->
+        <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
+        <!--机场点击“重新发布”显示 航线表单-->
+        <airlineReqWrapper v-if="airlineReqWrapperShow" :acceptData="myData" @refresh="refreshFn" @close-this="closeAirlineReqWrapper"></airlineReqWrapper>
+
         <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
         <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
-
-        <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
-    import airlineWrite from './airlineWrite.vue'
-    //    import airlinePay from './airlinePay.vue'
-    import airlineAffirm from './airlineAffirm.vue'
-    import paySuccess from './trans_detail/paySuccess.vue'
-    import airlinePay from './trans_detail/dialog.vue'
-    import calendar from './calendar'
+    import airlineWrite from '$src/page/components/airlineWrite.vue'
+    import airlineAffirm from '$src/page/components/airlineAffirm.vue'
     import myPurposeEdit from '$src/page/components/mine/myIntention/myPurposeEdit.vue'
+    import airlineReqWrapper from '$src/page/components/airlineReqWrapper.vue'
+
+    import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
+    import airlinePay from '$src/page/components/trans_detail/dialog.vue'
+    import calendar from '$src/page/components/calendar'
 
     export default {
         data() {
             return {
-                myPurposeEditShow: false, //编辑表单是否显示
                 firstShow: false,
                 secondShow: false,
                 thirdShow: false,
@@ -474,9 +478,13 @@
                 thirdButtonShow: false,
                 fourthButtonShow: false,//code为1时的按钮显示
                 fifthButtonShow: false, //委托代理
-                airlineWriteShow: false, //组件“请填写完整方案”显示
+
+                airlineAffirmShow: false, // 发布方点击“选定”时，弹出“请确认以下方案”
+                airlineReqWrapperShow: false, // 发布方点击“重新发布”弹出
+                airlineWriteShow: false, // 意向方点击“我有意向”时，弹出“请填写完整方案”
+                myPurposeEditShow: false, // 意向方对我发出的方案，点击“编辑”时，弹出“请填写完整方案”
+
                 airlinePayShow: false,   //组件“缴纳意向金”显示
-                airlineAffirmShow: false, //组件“请确认以下方案”显示
                 paySuccessShow: false,    //组件“缴纳完成”显示
                 dialogShow: false,        //组件“缴纳意向金”显示
                 showCode: '', //0,1,2,3对应firstShow，secondShow，thirdShow，fourthShow
@@ -505,8 +513,6 @@
                 calendarInitDay2: '',
                 calendarShow1: false,
                 myDate1: '',
-                myPurposeEditShow: false,
-                reminderShow: true, // 消息提醒是否显示
                 demandState5: false, //"审核未通过"是否显示 demandState 0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
                 demandState6: false, //是否为"审核通过"
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
@@ -549,7 +555,7 @@
 //                    console.info(response)
 //                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
-                    this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据
+                    this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据(意向方数据)
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
 //                            this.intentionCount = response.data.intentionCount;
 //                            this.detailData = response.data.data;
@@ -626,7 +632,11 @@
             },
             // “重新发布”按钮点击
             anewPublishClickFn: function () {
-                this.airlineWriteShow = true;
+                this.airlineReqWrapperShow = true;
+            },
+            // 关闭
+            closeAirlineReqWrapper: function () {
+                this.airlineReqWrapperShow = false;
             },
             /*新增：我发出的方案*/
             // 关闭表单
@@ -637,7 +647,7 @@
             refreshFn: function () {
                 this.getData();
             },
-            //点击“编辑”,弹出表单
+            // 航司点击“编辑”,弹出表单
             EditFn: function () {
                 this.myPurposeEditShow = true;
             },
@@ -663,6 +673,7 @@
 //                    console.info(response.data)
                     if(response.data.opResult === '0'){
                         alert('成功结束该需求！')
+                        this.closeThisFn();
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }
@@ -807,6 +818,7 @@
                     },
                     params: {
                         id: this.receiveIntention.id,
+                        employeeId: this.receiveIntention.employeeId,
                         demandId: this.receiveIntention.demandId,
                         responseselected: '0',
                         releaseselected: '0'
@@ -833,6 +845,7 @@
                     },
                     params: {
                         id: this.receiveIntention.id,
+                        employeeId: this.receiveIntention.employeeId,
                         demandId: this.receiveIntention.demandId,
                         responseselected: '1',
                         releaseselected: '0'
@@ -849,14 +862,31 @@
                     }
                 );
             },
-            //点击“我有意向”，组件“请填写完整方案”显示
+            // 航司点击“我有意向”，弹出airlineWrite：请填写完整方案
             airlineWriteFn: function () {
                 this.airlineWriteShow = true;
-               /* let supProperty = {};
-                supProperty.title = this.myData.title;
-                supProperty.periodValidity = this.myData.periodValidity;
-                supProperty.releasetime = this.myData.releasetime;
-                tabulationBoxTrigger.$emit('supProperty',supProperty); //向airlineWrite.vue传一些数据*/
+            },
+            // 航司点击“取消意向”
+            deleteClickFn: function () {
+                this.$ajax({
+                    url: "/ResponseDel", // 取消意向
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: this.receiveIntention
+                }).then((response) => {
+//                    console.info('response:')
+//                    console.info(response)
+                    if(response.data.opResult === '0'){
+                        alert('成功取消该意向！')
+                        this.closeThisFn();
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
             },
             // 点击“收藏”
             addCollectFn: function () {
@@ -885,10 +915,6 @@
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
 //                this.showCode = 1;
-                /*//接收airWrite.vue传来的对象
-                tabulationBoxTrigger.$on('responseObject', (val) => {
-                    console.info(val);
-                })*/
                 this.getData(); // 重新获取、渲染数据
                 this.show();
             },
@@ -930,6 +956,7 @@
                 this.airlineAffirmUnchooseData.releaseselected = 1;
                 this.airlineAffirmUnchooseData.responseselected = 1;
                 this.airlineAffirmUnchooseData.id = item.id;
+                this.airlineAffirmUnchooseData.employeeId = item.employeeId;
                 this.airlineAffirmUnchooseData.demandId = item.demandId;
                 this.$ajax({
                     url:"/selectedResponse",
@@ -943,6 +970,8 @@
                     if(response.data.opResult === '0'){
                         alert('成功撤销选定!');
                         this.releaseselectedShow = true;
+                        this.showCode = 2;
+                        this.show();
                     }else{
                         alert('错误代码：' + response.data.opResult);
                     }
@@ -950,8 +979,6 @@
                 }) .catch((error) => {
                     console.log(error);
                 });
-                this.showCode = 2;
-                this.show();
             },
             // 点击意向列表的“查看详情”
             checkDetail: function (item,index) {
@@ -995,6 +1022,7 @@
             airlinePay,
             calendar,
             myPurposeEdit,
+            airlineReqWrapper,
         }
     }
 </script>
@@ -1681,7 +1709,7 @@
         right: 0;
         bottom: 0;
         display: flex;
-        /*justify-content: center;*/
+        justify-content: center;
         width: 600px;
         height: 100px;
         background: white;
@@ -1689,7 +1717,7 @@
         .buttons {
             display: flex;
             margin-top: 18px;
-            margin-left: 90px;
+            /*margin-left: 90px;*/
             height: 40px;
             > .btn-b {
                 margin-right: 14px;

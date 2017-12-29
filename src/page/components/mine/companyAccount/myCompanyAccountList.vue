@@ -41,7 +41,7 @@
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
             <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1"></AccountWithdrawDetail>
-            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" @closeThis="closeCompanyAirlineDetailPayAfterFn" :key="2"></companyAirlineDetailPayAfter>
+            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" @closeThis="closeCompanyAirlineDetailPayAfterFn" @refresh="refreshFn" :key="2"></companyAirlineDetailPayAfter>
             <companyMyIntention v-show="companyMyIntentionShow"@closeThis="closeCompanyMyIntentionFn" :key="3"></companyMyIntention>
         </transition-group>
     </div>
@@ -188,10 +188,12 @@
             // 关闭“航线详情”
             closeCompanyAirlineDetailPayAfterFn: function () {
                 this.companyAirlineDetailPayAfterShow = false;
+                tabulationBoxTrigger.hierarchy = false;
             },
             // 关闭“运力详情”
             closeCompanyMyIntentionFn: function () {
                 this.companyMyIntentionShow = false;
+                tabulationBoxTrigger.hierarchy = false;
             },
         },
         components: {
