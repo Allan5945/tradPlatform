@@ -14,7 +14,6 @@
         <newsTip></newsTip>
     </div>
 </template>
-
 <script>
     import Vue from 'vue'
     import * as vx from 'vuex'
@@ -102,10 +101,9 @@
 
         },
         mounted: function () {
-
             if(!('$chatSocket' in this)){
                 Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
-            }
+            };
             this.$ajax({
                 method: 'post',
                 url: '/airList',

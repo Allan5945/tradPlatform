@@ -822,6 +822,7 @@ export default {
   width: 160px;
   background-color: #3c78ff;
   cursor: pointer;
+    overflow-y: scroll;
   &:hover {
     background-color: #3c78ff;
   }

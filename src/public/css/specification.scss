@@ -8,6 +8,12 @@
 
 
 /**
+* 格式化默认样式
+*/
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0}
+
+
+/**
 * 文本格式
 */
 
@@ -63,10 +69,72 @@
   letter-spacing:0.5px;
 }
 
-/**
-* 通用小按钮
-* note：*
-*/
-.cetn-btn{
 
+/**
+* 小图标点击效果
+*
+*/
+.cetn-icon-click{
+  &:hover{
+    background-color: rgba(60, 120, 255, .7);
+  }
+  &:active{
+    color: #3c78ff;
+  }
 }
+
+
+  /**
+  * 通用小按钮
+  * note：*
+  */
+
+  // 白底按钮
+.cetn-btn-b {
+  background-color: white;
+  color: rgba(96, 94, 124, .6);
+  box-shadow: 1px 1px 18px rgba(0, 0, 0, .13);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  &:hover{
+    background-color: rgba(60, 120, 255, .7) !important;
+    color: white !important;
+    cursor: pointer;
+    box-shadow: 1px 2px 18px rgba(60, 120, 255, 0.5);
+  }
+  &:active{
+    background-color: #336BEA !important;
+    color: white !important;
+  }
+}
+
+// 蓝底按钮
+.cetn-btn-w {
+  background-color: #3c78ff;
+  box-shadow: 1px 1px 18px rgba(0, 0, 0, .13);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  &:hover{
+    background-color: rgba(60, 120, 255, .7) !important;
+    color: white !important;
+    cursor: pointer;
+    box-shadow: 1px 2px 18px rgba(60, 120, 255, 0.5);
+  }
+  &:active{
+    background-color: #336BEA !important;
+    color: white !important;
+  }
+}
+
+/**
+* 浮沉框样式（模态框）
+*/
+.cetn-popup-d {
+  border-radius: 4px;
+  opacity: 1;
+  background-color: white;
+  box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+}
+
+
+

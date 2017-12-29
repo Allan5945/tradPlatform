@@ -3,7 +3,7 @@
         <div>
             <div class="opinion-head">
                 <div class="opinion-input">
-                    <input type="text" v-model="inputText">
+                    <input type="text" v-model="inputText" @keydown="quResData($event)">
                     <button @click="quResData()">&#xe6c3;</button>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="no-item" v-if="list.length == 0">没有匹配到舆情</div>-->
+                <div class="no-item" v-if="nopo">没有匹配到舆情</div>
                 <el-pagination
                         v-if="list.length > 0"
                         class="pagination"
@@ -45,7 +45,7 @@
 <script>
     import * as vx from 'vuex';
     import noimg from './../../../static/img/pubo/noimg.png';
-
+    import { Loading } from 'element-ui';
     export default {
         data() {
             return {
@@ -55,7 +55,9 @@
                 currentPage4: 1, // 下标的页数
                 pageSize: 10,    // 每页的条数
                 indexPage: 1,    // 最开始的页数
-                list: []
+                list: [],
+                nopo:false,
+                loading:null
             }
         },
         mounted: function () {
@@ -84,7 +86,12 @@
             openWindow(src) {
                 window.open(src);
             },
-            quResData: function () {
+            quResData: function (e) {
+                if( e != undefined){
+                    if(e.keyCode != 13){
+                        return;
+                    }
+                };
                 this.indexPage = 1;
                 this.list = [];
                 this.resData();
@@ -113,9 +120,17 @@
                     }
                 }else if(data.opResult == "1"){
                     this.list = [];
+                };
+                if(this.list.length == 0){
+                    this.nopo = true;
+                }else{
+                    this.nopo = false;
                 }
             },
             resData: function () {
+                this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 let text = {
                     code: this.inputText,
                     type: this.inputText == "" ? 1 : 0,
@@ -132,8 +147,10 @@
                 })
                     .then((response) => {
                         this.custrol(response.data);
+                        this.loading.close();
                     })
                     .catch((error) => {
+                            this.loading.close();
                             console.log(error);
                         }
                     );
