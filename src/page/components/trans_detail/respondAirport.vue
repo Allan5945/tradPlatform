@@ -179,7 +179,7 @@
               </div>
           </footer>
       </div>
-    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :responseId = "planData.id"></sureForm>
+    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "planData"></sureForm>
     </div>
 </template>
 
@@ -271,6 +271,7 @@
                   params: {
                     id: this.planData.id,
                     demandId: this.planData.demandId,
+                    employeeId:this.planData.employeeId,
                     responseselected: '1',
                     releaseselected: '0'
                 }

@@ -197,7 +197,7 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :responseId="responseId"></myIntentForm>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response="response"></myIntentForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
@@ -221,7 +221,7 @@
              planData:{},
              selectData:{},
              intentionCount:0,
-             responseId:'',
+             response:{},
              isSign:false
          }
      },
@@ -249,7 +249,7 @@
             this.selIndex = index;
             this.myFormShow = true;
             this.selectData = val;
-            this.responseId = val.id;
+            this.response = val;
             this.selectData.releaseselected = '0';
             this.$ajax({
                 method: 'post',

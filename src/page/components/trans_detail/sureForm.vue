@@ -540,7 +540,7 @@
                 demandData:{}
             }
         },
-        props:["responseId"],
+        props:["planData"],
         components: {
             airAreaSearch,
             airportS,
@@ -594,7 +594,10 @@
                     this.warn4Show = true;
                     return
                 }*/
-                this.sendData.id = this.responseId;
+                this.sendData.id = this.planData.id;
+                this.sendData.releaseselected = this.planData.releaseselected;
+                this.sendData.responseselected = this.planData.responseselected;
+                this.sendData.responseProgress = this.planData.responseProgress;
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式

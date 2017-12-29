@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <timeIndex v-if="detailShow" :selcIndex ="selcIndex" :qyCode1="qyCode" :searchtText="airportText"></timeIndex>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -93,6 +93,7 @@
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
 import timeIndex from './timeIndex.vue'
+import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
  import myPic from '$src/static/img/airport1.png';
     export default {
         data() {
@@ -106,8 +107,7 @@ import timeIndex from './timeIndex.vue'
                 airlineShow:false,
                 airportSearch:false,
                 citySearch:false,
-                showType:false,
-                detailShow:false
+                showType:false
             }
         },
          computed:{
@@ -144,7 +144,12 @@ import timeIndex from './timeIndex.vue'
                 this.getAirCompany();
             },
             getInfo(){
-                this.detailShow = true;
+                this.$router.push({ path: '/index/information/airport'});
+                let searchData = {};
+                searchData.qyCode = this.qyCode;
+                searchData.selcType = this.selcType;
+                searchData.searchText = this.airportText;
+                tabulationBoxTrigger.$emit('searchData', searchData);
             },
             getAirCompany: function(){
                 this.$ajax({
@@ -174,6 +179,7 @@ import timeIndex from './timeIndex.vue'
 
         },
         mounted() {
+
         },
         components:{
             airportS1,

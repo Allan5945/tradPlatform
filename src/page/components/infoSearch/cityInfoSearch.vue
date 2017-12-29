@@ -55,7 +55,6 @@
                 <div class="i-echart">
                    <div id="myChart1"></div>
                     <div id="myChart2"></div>
-                    <div id="myChart3"></div>
                 </div>
                 <div class="traffic">
                     <div class="t-til">
@@ -103,7 +102,7 @@
                     </div>
                     <div class="news-box" v-for="item in infoData.opinions">
                         <div class="box-pic">
-                            <img :src="img" alt="">
+                            <img :src="item.articleImage||noimg" alt="">
                         </div>
                         <div class="box-content">
                             <div class="box-til">
@@ -128,6 +127,7 @@
 <script>
     import echarts from 'echarts';
     import myPic from '$src/static/img/Slice.png';
+    import noimg from './../../../static/img/pubo/noimg.png';
     export default {
         data() {
             return {
@@ -143,6 +143,9 @@
        computed:{
             img:function(){
                 return myPic;
+            },
+            noimg:function(){
+                return noimg;
             },
             years:function(){
                 if(this.infoData){
@@ -487,7 +490,6 @@
         .box-pic{
             width:170px;
             height:110px;
-            background-color:pink;
             img{
                 width:100%;
                 height:100%;

@@ -56,7 +56,7 @@
                     </div>
                     <div class="news-box" v-for="item in newsData">
                         <div class="box-pic">
-                            <img :src="img1" alt="">
+                            <img :src="item.articleImage||noimg" alt="">
                         </div>
                         <div class="box-content">
                             <div class="box-til">
@@ -80,7 +80,7 @@
 
 <script>
     import echarts from 'echarts';
-    import myPic1 from '$src/static/img/145.jpg';
+    import noimg from './../../../static/img/pubo/noimg.png';
     import myPic from '$src/static/img/Slice.png';
     export default {
         data() {
@@ -99,8 +99,8 @@
             img:function(){
                 return myPic;
             },
-            img1:function(){
-                return myPic1;
+            noimg:function(){
+                return  noimg;
             }
         },
         methods: {
@@ -333,7 +333,6 @@
         .box-pic{
             width:170px;
             height:110px;
-            background-color:pink;
             img{
                 width:100%;
                 height:100%;

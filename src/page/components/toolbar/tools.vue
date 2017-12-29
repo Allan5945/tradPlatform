@@ -4,7 +4,7 @@
         <router-link to="/index/information">
             <span>&#xe6fb;</span>信息查询
         </router-link>
-        <router-link to="">
+        <router-link to="/index/information/airport">
             <span>&#xe621;</span>时刻分布
         </router-link>
     </div>

@@ -214,7 +214,7 @@
             transIndex,
             infPanel,
             routeNetwork,
-            timelyCommunication
+            timelyCommunication,
         }
     }
 </script>

@@ -1,5 +1,6 @@
 <template>
-    <div >
+    <div  class="wrapper">
+        <searchHeader @searchData = "searchData"></searchHeader>
         <div class="content">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
@@ -120,16 +121,19 @@
 </template>
 
 <script>
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import echarts from 'echarts';
     import myPic from '$src/static/img/Slice.png';
     import noimg from './../../../static/img/pubo/noimg.png';
+    import searchHeader from './time.vue'
     export default {
         data() {
             return {
-                infoData:{}
+                infoData:{},
+                qyCode:'',
+                airportText:''
             }
         },
-        props:['qyCode','airportText'],
         watch: {
             'qyCode':function(){
                 this.getData();
@@ -149,6 +153,9 @@
             }
         },
         methods: {
+            searchData(data){
+                this.qyCode = data;
+            },
             openWindow(src) {
                 window.open(src);
             },
@@ -236,10 +243,15 @@
             }
         },
         mounted() {
-            this.getData();
+            /*tabulationBoxTrigger.$on('searchData', val => {
+                this.qyCode =val.qyCode;
+                this.airportText = val.searchtText;
+                this.getData();
+
+            });*/
         },
         components:{
-
+            searchHeader
         }
     }
 </script>
@@ -253,6 +265,26 @@
         list-style:none;
         padding:0;
         margin:0;
+    }
+    .wrapper{
+        position: absolute;
+        width: 100%;
+        min-height:100%;
+        top: 0;
+        left: 0;
+        background-color: #f5f5f5;
+        z-index: 12;
+        color:#605e7c;
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index:1;
+            height:120px;
+            width:100%;
+            background-color:#3c78ff;
+            display:flex;
+        }
     }
     .content{
         width:1100px;

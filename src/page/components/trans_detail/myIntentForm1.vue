@@ -545,7 +545,7 @@
                 getIntentData:{},
             }
         },
-        props:["responseId"],
+        props:["response"],
         components: {
             airAreaSearch,
             airportS,
@@ -597,8 +597,10 @@
                     return
                 }*/
                 this.sendData = this.getIntentData;
-                this.sendData.id=this.responseId;
-                 console.log(this.sendData.responseId)
+                this.sendData.id=this.response.id;
+                this.sendData.releaseselected = this.response.releaseselected;
+                this.sendData.responseselected = this.response.responseselected;
+                this.sendData.responseProgress = this.response.responseProgress;
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
