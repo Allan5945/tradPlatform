@@ -5,8 +5,8 @@
         <toPublish v-show="publichShow"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-         <infPanel></infPanel>
-         <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
+        <infPanel></infPanel>
+        <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>
         <routeNetwork v-if="role.role != '2'"></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
