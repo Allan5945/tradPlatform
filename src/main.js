@@ -26,18 +26,21 @@ Vue.prototype.$message = Message;
 Vue.use(Radio);
 Vue.use(Pagination);
 
-axios.interceptors.response.use(data => {
-    return data
-}, error => {
-    if(error.response.status === 403){  //返回403则重新登录
-        window.sessionStorage.clear();
-        return router.push('/login');
+axios.interceptors.response.use(
+    data => {
+        return data;
+    },
+    error => {
+        if(error.response.status === 403){  //返回403则重新登录
+            window.sessionStorage.clear();
+            return router.push('/login');
+        }
+        Message.error({
+            message: '加载失败'
+        });
+        return Promise.reject(error)
     }
-    Message.error({
-        message: '加载失败'
-    });
-    return Promise.reject(error)
-});
+);
 
 export default new Vue({
     el: '#app',
