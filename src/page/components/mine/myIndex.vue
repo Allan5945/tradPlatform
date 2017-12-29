@@ -21,13 +21,12 @@
                 </div>
             </div>
         </div>
-        <div class="mine-loading" v-show="false"><img :src="loader" alt="加载中..."></div>
+        <div class="mine-loading" v-show="false"><img :src="loader" alt="加载中...">预留加载动画</div>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-import reviewList from './reviewList/viewTable.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import myPic from '$src/static/img/145.jpg';
 import loader from "$src/static/img/svg/loading-oval.svg"
@@ -35,47 +34,27 @@ import * as vx from 'vuex'
     export default {
         data() {
             return {
-                myList: [{
-                    n: "审核列表",
-                    u: '/index/userCenter/reviewList'
-                }, {
-                    n: "委托/托管",
-                    u: '/index/userCenter/entrust'
-                }, {
-                    n: "我的发布",
-                    u: '/index/userCenter/myRelease'
-                }, {
-                    n: "我的意向",
-                    u: '/index/userCenter/myIntention'
-                }, {
-                    n: "我的订单",
-                    u: '/index/userCenter/myOrder'
-                }, {
-                    n: "我的收藏",
-                    u: '/index/userCenter/myCollection'
-                }, {
-                    n: "公司账户",
-                    u: '/index/userCenter/CompanyAccount'
-                }
+                myList: [
+                    {
+                        n: "我的发布",
+                        u: '/index/userCenter/myRelease'
+                    }, {
+                        n: "我的意向",
+                        u: '/index/userCenter/myIntention'
+                    }, {
+                        n: "我的订单",
+                        u: '/index/userCenter/myOrder'
+                    }, {
+                        n: "我的收藏",
+                        u: '/index/userCenter/myCollection'
+                    }, {
+                        n: "公司账户",
+                        u: '/index/userCenter/CompanyAccount'
+                    }
                 ],
+                userStatus: 0,
                 activeIndex: 0,
                 loader,//加载动画
-            }
-        },
-        methods: {
-        },
-        mounted:function () {
-            if(Number(this.role.role ) != 2)this.myList.splice(0,2);
-        },
-        created:function () {
-            //子路由刷新判断
-            let path = this.$router.history.current.path;
-            if(path.length>'/index/userCenter'.length){
-                for(let i in this.myList){
-                    if(this.myList[i].u == path){
-                        this.activeIndex = i;
-                    }
-                }
             }
         },
         computed:{
@@ -89,8 +68,38 @@ import * as vx from 'vuex'
                 return tabulationBoxTrigger.hierarchy;
             }
         },
-        components: {
-        }
+        methods: {
+        },
+        created:function () {
+            //权限判断
+            this.userStatus = this.role.role;
+            if(Number(this.role.role ) == 2){
+                let arr = [
+                    {
+                        n: "审核列表",
+                        u: '/index/userCenter/reviewList'
+                    },
+                    {
+                        n: "委托/托管",
+                        u: '/index/userCenter/entrust'
+                    }
+                ]
+                this.myList = arr.concat(this.myList);
+                arr = null;
+            }
+
+            //子路由刷新判断
+            let pathstr = this.$router.history.current.path;
+            if(pathstr.length>'/index/userCenter'.length){
+                for(let i in this.myList){
+                    if(this.myList[i].u == pathstr){
+                        return this.activeIndex = i;
+                    }
+                }
+            }
+        },
+        mounted:function () {
+        },
     }
 </script>
 

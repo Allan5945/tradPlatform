@@ -2,8 +2,9 @@ import ln from './../../../public/js/tabulationBoxTrigger.js';
 import _this from './../../../main'
 ln.$on('addChat', function (d)  {
     let employeeId = d.employeeId != null ? Number(d.employeeId) : 1;
-    if(_this.$store.getters.role.id == 1)employeeId = d.devmandEmployeeId;
+    if(_this.$store.getters.role.id == 1)employeeId = d.demandEmployeeId; //devmandEmployeeId
     let roleId = Number(_this.$store.getters.role.id);
+    console.log(employeeId,roleId,d)
     let keys = (roleId < employeeId ? roleId : employeeId)  + '-' + (roleId < employeeId ? employeeId : roleId) + "-" +d.id;
     this.chat.setChat = keys;
     if(!this.chat.chatData.hasOwnProperty(keys)){
@@ -21,11 +22,22 @@ ln.$on('addChat', function (d)  {
             },
         })
             .then((response) => {
-                response.data.data.forEach((v)=>{
-                    __this.chat.chatData[v.chatFlag] = v
-                });
-                this.chat.shut = true;
-                this.chat.narrow = true;
+                if(response.data.opResult == "1"){
+                    const h = this.$createElement;
+                    let mes = response.data.msg;
+
+                    _this.$message({
+                        showClose: true,
+                        message: mes,
+                        type: 'error'
+                    });
+                }else{
+                    response.data.data.forEach((v)=>{
+                        __this.chat.chatData[v.chatFlag] = v
+                    });
+                    this.chat.shut = true;
+                    this.chat.narrow = true;
+                }
             })
             .catch((error) => {
                     console.log(error);

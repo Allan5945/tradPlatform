@@ -3,7 +3,7 @@
         <div>
             <div class="opinion-head">
                 <div class="opinion-input">
-                    <input type="text" v-model="inputText">
+                    <input type="text" v-model="inputText" @keydown="quResData($event)">
                     <button @click="quResData()">&#xe6c3;</button>
                 </div>
             </div>
@@ -12,8 +12,7 @@
                     <span>&#xe624;</span>新闻舆情
                 </div>
                 <div class="box">
-                    <div class="item" v-for="(key,i) in list"
-                         v-if="i >= ((indexPage * pageSize) - pageSize) && i < (indexPage * pageSize)">
+                    <div class="item" v-for="(key,i) in list">
                         <div class="item-img"><img :src="key.img" alt=""></div>
                         <div class="item-nr">
                             <div class="item-title">
@@ -30,16 +29,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="no-item" v-if="list.length == 0">没有匹配到舆情</div>
+                <div class="no-item" v-if="nopo">没有匹配到舆情</div>
                 <el-pagination
                         v-if="list.length > 0"
                         class="pagination"
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="currentPage4"
-                        :page-sizes="[10, 20]"
-                        :page-size="10"
-                        layout="total, sizes, prev, pager, next, jumper"
                         :total="totalLength">
                 </el-pagination>
             </div>
@@ -49,7 +45,7 @@
 <script>
     import * as vx from 'vuex';
     import noimg from './../../../static/img/pubo/noimg.png';
-
+    import { Loading } from 'element-ui';
     export default {
         data() {
             return {
@@ -59,7 +55,9 @@
                 currentPage4: 1, // 下标的页数
                 pageSize: 10,    // 每页的条数
                 indexPage: 1,    // 最开始的页数
-                list: []
+                list: [],
+                nopo:false,
+                loading:null
             }
         },
         mounted: function () {
@@ -88,7 +86,12 @@
             openWindow(src) {
                 window.open(src);
             },
-            quResData: function () {
+            quResData: function (e) {
+                if( e != undefined){
+                    if(e.keyCode != 13){
+                        return;
+                    }
+                };
                 this.indexPage = 1;
                 this.list = [];
                 this.resData();
@@ -108,24 +111,32 @@
                                 src: val.articleUrl
                             })
                         });
-                        if (this.list.length == 0) {
-                            this.list = arr;
-                        } else {
-                            this.list = this.list.concat(arr);
-                        }
+                        this.list = arr;
+//                        if (this.list.length == 0) {
+//                            this.list = arr;
+//                        } else {
+//                            this.list = this.list.concat(arr);
+//                        }
                     }
                 }else if(data.opResult == "1"){
                     this.list = [];
+                };
+                if(this.list.length == 0){
+                    this.nopo = true;
+                }else{
+                    this.nopo = false;
                 }
             },
             resData: function () {
+                this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 let text = {
                     code: this.inputText,
                     type: this.inputText == "" ? 1 : 0,
                     codeType: 2,
                     page: this.indexPage
                 };
-
                 this.$ajax({
                     method: 'post',
                     url: '/getPublicOpinionList',
@@ -136,8 +147,10 @@
                 })
                     .then((response) => {
                         this.custrol(response.data);
+                        this.loading.close();
                     })
                     .catch((error) => {
+                            this.loading.close();
                             console.log(error);
                         }
                     );

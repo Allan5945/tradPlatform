@@ -5,8 +5,8 @@
         <toPublish v-show="publichShow"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-         <infPanel></infPanel>
-         <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
+        <infPanel></infPanel>
+        <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
         <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>
         <routeNetwork v-if="role.role != '2'"></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
@@ -14,7 +14,6 @@
         <newsTip></newsTip>
     </div>
 </template>
-
 <script>
     import Vue from 'vue'
     import * as vx from 'vuex'
@@ -102,10 +101,9 @@
 
         },
         mounted: function () {
-
             if(!('$chatSocket' in this)){
                 Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
-            }
+            };
             this.$ajax({
                 method: 'post',
                 url: '/airList',
