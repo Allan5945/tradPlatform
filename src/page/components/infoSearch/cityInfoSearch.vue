@@ -107,7 +107,7 @@
                         </div>
                         <div class="box-content">
                             <div class="box-til">
-                                <div class="name"><a :href="item.articleUrl">{{item.articleTitle}}</a></div>
+                                <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
                                 <div class="type">
                                     <div>{{item.articleType}}</div>
                                 </div>
@@ -151,6 +151,9 @@
             }
         },
         methods: {
+             openWindow(src) {
+                window.open(src);
+            },
             getData(){
                 this.$ajax({
                 method: 'post',
@@ -505,6 +508,7 @@
                 line-height:16px;
                 border-bottom:1px solid #000;
                 margin:11px 0 15px 0;
+                cursor:pointer;
             }
         }
         .type{

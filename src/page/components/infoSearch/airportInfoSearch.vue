@@ -17,7 +17,7 @@
                             <li><div>机场名字</div><div>{{infoData.airlnCd || "-"}}</div></li>
                             <li><div>所在城市</div><div>{{infoData.city || "-"}}</div></li>
                             <li><div>所属机场集团</div><div>{{infoData.membershipgroup || "-"}}</div></li>
-                            <li><div>机场类型</div><div>{{infoData.airpotcls || "-"}}</div></li>
+                            <li><div>机场类型</div><div>{{infoData.airpottype || "-"}}</div></li>
                             <li><div>是否特殊机场</div><div>{{infoData.specialairport || "-"}}</div></li>
                             <li><div>飞行区等级</div><div>{{infoData.airfieldlvl || "-"}}</div></li>
                             <li><div>灯光条件</div><div>{{infoData.lightingconditions || "-"}}</div></li>
@@ -95,7 +95,7 @@
                         </div>
                         <div class="box-content">
                             <div class="box-til">
-                                <div class="name"><a :href="item.articleUrl">{{item.articleTitle}}</a></div>
+                                <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
                                 <div class="type">
                                     <div>{{item.articleType}}</div>
                                 </div>
@@ -140,6 +140,9 @@
             }
         },
         methods: {
+            openWindow(src) {
+                window.open(src);
+            },
             getData(){
                 this.$ajax({
                 method: 'post',
@@ -473,6 +476,7 @@
                 line-height:16px;
                 border-bottom:1px solid #000;
                 margin:11px 0 15px 0;
+                cursor:pointer;
             }
         }
         .type{
