@@ -32,7 +32,7 @@
                 </div>
                 <template v-if="detailsData">
                     <div class="list-container">
-                        <div class="list items"   v-for="ditem in detailsData.list">
+                        <div class="list items"   v-for="ditem in detailsData.list" @click="turnDetailPanel(ditem)">
                             <div class="list-a item">
                                 {{ ditem.releaseTime }}
                             </div>
@@ -53,7 +53,7 @@
                                 </span>
                                 -->
                             </div>
-                            <div class="list-f item color" @click="turnDetailPanel(ditem)">
+                            <div class="list-f item color" @click.stop="turnDetailPanel(ditem)">
                                 查看详情<span class="icon-item">&#xe686;</span>
                             </div>
                         </div>
@@ -79,8 +79,17 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: {},
+                type: {
+                    "0":'航线需求',
+                    "1":'运力投放',
+                    "3":'委托航线需求',
+                    "4":'委托运力投放',
+                },
                 progressState: {
+                    '3': '关闭',
+                    '5': '交易完成',
+                    '6': '订单完成',
+                    '7': '佣金支付'
                 },
                 demandId:null,
                 detailsPanel:{
@@ -166,6 +175,7 @@
                 }).then(res=>{
                     if(res && res.data.opResult==0){
                         that.detailsData = res.data.list;
+                        return ;
                         that.detailsData.list.map(item=>{
                             if(that.superUser.progressState[item.demandProgress]){
                                 that.progressState[item.demandProgress] = that.superUser.progressState[item.demandProgress];

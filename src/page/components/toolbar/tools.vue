@@ -1,6 +1,6 @@
 <template>
     <div class="tool popup">
-            <a href="http://192.168.10.174/hangyu_login?uuid=123123" target="_blank"><span>&#xe671;</span>航路测算</a>
+            <a href="http://192.168.22.8/hangyu_login?uuid=123123" target="_blank"><span>&#xe671;</span>航路测算</a>
         <router-link to="/index/information">
             <span>&#xe6fb;</span>信息查询
         </router-link>
