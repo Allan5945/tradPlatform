@@ -1,5 +1,4 @@
 <template>
-    <div class="wrapper">
         <header>
             <div class="search-box">
                 <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
@@ -15,20 +14,12 @@
             </div>
             <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
         </header>
-        <timeSearch :qyCode="qyCode" :airportText="airportText" v-if="timeShow"></timeSearch>
-        <airportInfo :qyCode="qyCode" :airportText="airportText" v-if="airportShow"></airportInfo>
-        <airlineInfo  :qyCode="qyCode" :airportText="airportText" v-if="airlineShow"></airlineInfo>
-        <cityInfo  :qyCode="qyCode" :airportText="airportText" v-if="cityShow"></cityInfo>
-    </div>
 </template>
 
 <script>
+import * as vx from 'vuex'
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
-import timeSearch from './timeSearch.vue'
-import airportInfo from './airportInfoSearch.vue'
-import airlineInfo from './airlineInfoSearch.vue'
-import cityInfo from './cityInfoSearch.vue'
     export default {
         data() {
             return {
@@ -36,16 +27,17 @@ import cityInfo from './cityInfoSearch.vue'
                 qyCode:'',
                 selcType:'',
                 typeList:['城市','时刻','机场'],
+                searchData:{},
                 airportSearch:false,
                 citySearch:false,
-                timeShow:false,
-                airportShow:false,
-                airlineShow:false,
-                cityShow:false,
                 showType:false
             }
         },
-        props:['selcIndex','qyCode1','searchtText'],
+        computed:{
+             ...vx.mapGetters([
+                'searchInfo'
+            ])
+        },
         methods: {
             getType(i){
                 this.selcType = this.typeList[i];
@@ -64,7 +56,8 @@ import cityInfo from './cityInfoSearch.vue'
             },
              cityData(data){
                 this.airportText = data.name;
-                this.qyCode = data.code;
+                //this.qyCode = data.code;
+                this.qyCode = data.name;
                 this.citySearch = false;
             },
             searchAirport(){
@@ -72,43 +65,31 @@ import cityInfo from './cityInfoSearch.vue'
                 this.citySearch = true;
             },
             getInfo(){
-                if(this.selcType == '时刻'){
-                   this.timeShow = true;
-                   this.airportShow = false;
-                   this.airlineShow = false;
-                }else if(this.selcType == '机场'){
-                    this.airportShow = true;
-                    this.timeShow = false;
-                    this.airlineShow = false;
+                this.$store.dispatch('searchInfo', {
+                    qyCode : this.qyCode,
+                    selcType :this.selcType,
+                    searchText:this.airportText
+                });
+                 if(this.selcType == '机场'){
+                    this.$router.push({ path: '/index/information/airport'});
                 }else if(this.selcType == '航司'){
-                    this.airlineShow = true;
-                    this.airportShow = false;
-                    this.timeShow = false;
+                    this.$router.push({ path: '/index/information/airline'});
+                }else if(this.selcType == '时刻'){
+                    this.$router.push({ path: '/index/information/time'});
+                }else if(this.selcType == '城市'){
+                    this.$router.push({ path: '/index/information/city'});
                 }
+                 this.$emit('search',this.qyCode);
             }
 
         },
         mounted() {
-            this.qyCode =this.qyCode1;
-            this.airportText = this.searchtText;
-            if(this.selcIndex =="0"){
-                this.cityShow = true;
-            }else if(this.selcIndex =="1"){
-                this.airlineShow = true;
-            }else if(this.selcIndex =="2"){
-                this.airportShow = true;
-                this.selcType = "机场";
-            }else if(this.selcIndex =="3"){
-                this.timeShow = true;
-                this.selcType = "时刻";
-            }
+            this.airportText = this.searchInfo.searchText;
+            this.selcType = this.searchInfo.selcType;
+             this.qyCode = this.searchInfo.qyCode;
         },
         components:{
             airportS1,
-            timeSearch,
-            airportInfo,
-            airlineInfo,
-            cityInfo,
             cityS
         }
     }
@@ -123,26 +104,6 @@ import cityInfo from './cityInfoSearch.vue'
         list-style:none;
         padding:0;
         margin:0;
-    }
-    .wrapper{
-        position: absolute;
-        width: 100%;
-        min-height:100%;
-        top: 0;
-        left: 0;
-        background-color: #f5f5f5;
-        z-index: 12;
-        color:#605e7c;
-        header{
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index:1;
-            height:120px;
-            width:100%;
-            background-color:#3c78ff;
-            display:flex;
-        }
     }
     header{
         .search-box{

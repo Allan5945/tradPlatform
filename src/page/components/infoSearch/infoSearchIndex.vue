@@ -92,16 +92,15 @@
 <script>
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
-import timeIndex from './timeIndex.vue'
-import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
- import myPic from '$src/static/img/airport1.png';
+import * as vx from 'vuex'
+import myPic from '$src/static/img/airport1.png';
     export default {
         data() {
             return {
                 airportText:'',
                 qyCode:'',
                 selcIndex:'0',
-                selcType:'时刻',
+                selcType:'城市',
                 typeList:['城市','航司','机场','时刻'],
                 airlineData:[],
                 airlineShow:false,
@@ -135,7 +134,8 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
             },
             cityData(data){
                 this.airportText = data.name;
-                this.qyCode = data.code;
+                //this.qyCode = data.code;
+                this.qyCode = data.name;
                 this.citySearch = false;
             },
             searchAirport(){
@@ -144,12 +144,20 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
                 this.getAirCompany();
             },
             getInfo(){
-                this.$router.push({ path: '/index/information/airport'});
-                let searchData = {};
-                searchData.qyCode = this.qyCode;
-                searchData.selcType = this.selcType;
-                searchData.searchText = this.airportText;
-                tabulationBoxTrigger.$emit('searchData', searchData);
+                this.$store.dispatch('searchInfo', {
+                    qyCode : this.qyCode,
+                    selcType :this.selcType,
+                    searchText:this.airportText
+                });
+                 if(this.selcType == '机场'){
+                    this.$router.push({ path: '/index/information/airport'});
+                }else if(this.selcType == '航司'){
+                    this.$router.push({ path: '/index/information/airline'});
+                }else if(this.selcType == '时刻'){
+                    this.$router.push({ path: '/index/information/time'});
+                }else if(this.selcType == '城市'){
+                    this.$router.push({ path: '/index/information/city'});
+                }
             },
             getAirCompany: function(){
                 this.$ajax({
@@ -183,7 +191,6 @@ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
         },
         components:{
             airportS1,
-            timeIndex,
             cityS
         }
     }

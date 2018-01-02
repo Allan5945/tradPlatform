@@ -493,16 +493,11 @@
             }
         },
         mounted() {
-        tabulationBoxTrigger.$on('getClickData', val => {
+      /*  tabulationBoxTrigger.$on('getClickData', val => {
             this.demandData = val;
-        });
+        });*/
         tabulationBoxTrigger.$on('sendTable',val => {
             this.getIntentData = val;
-            /*sendData.dptState = this.dptState
-            sendData.dptAcceptnearairport = this.dptAcceptnearairport
-            sendData.dptTimeresources = this.dptTimeresources;
-            sendData.arrvTimeresources = this.arrvTimeresources;
-*/
         });
      },
         methods: {
@@ -515,9 +510,8 @@
             },
             //发送数据
             submitData: function () {
-
                 let sendData =this.getIntentData;
-                //sendData.id = '0';
+                sendData.releaseselected = '0';
                 sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 sendData.contact = this.user;  //必填 联系人
                 sendData.iHome = this.phoneNum;//必填 联系方式
@@ -577,14 +571,14 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        responseData:sendData,
-                        id: this.getIntentData.id,
-                        employeeId:this.role.id,
-                        status:0
+                        responseData:sendData
                     }
                 }) .then((response) => {
-                        this.demandData.responseId = response.data.response.id;
-                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);
+                        if(response.data.opResult == "0"){
+                            alert("选定成功!");
+                        }
+                       /* this.demandData.responseId = response.data.response.id;
+                        tabulationBoxTrigger.$emit('getdemandData',this.demandData);*/
                 }) .catch((error) => {
                     console.log(error);
                 });

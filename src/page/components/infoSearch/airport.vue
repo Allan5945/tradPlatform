@@ -1,10 +1,10 @@
 <template>
     <div  class="wrapper">
-        <searchHeader @searchData = "searchData"></searchHeader>
+        <searchHeader @search = "searchData"></searchHeader>
         <div class="content">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
-                <div class="b-til">{{airportText}}</div>
+                <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe603;</span>基本信息</div>
                      <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
@@ -51,6 +51,7 @@
                             <li><div>距离市区</div><div>{{infoData.distancefromdowntown || "-"}}</div></li>
                         </ul>
                     </div>
+                    <div class="airport-info" @click="airportInfo">机场情报></div>
                 </div>
                 <div class="i-echart">
                    <div id="myChart1"></div>
@@ -117,21 +118,23 @@
                 </div>
             </div>
         </div>
+        <airportInfo v-show="detailInfoShow" @closeDetail="closeDetail"></airportInfo>
     </div>
 </template>
 
 <script>
-    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+    import * as vx from 'vuex';
     import echarts from 'echarts';
     import myPic from '$src/static/img/Slice.png';
     import noimg from './../../../static/img/pubo/noimg.png';
-    import searchHeader from './time.vue'
+    import searchHeader from './searchHeader.vue'
+    import airportInfo from './airportInfo.vue'
     export default {
         data() {
             return {
                 infoData:{},
                 qyCode:'',
-                airportText:''
+                detailInfoShow:false
             }
         },
         watch: {
@@ -140,6 +143,9 @@
             }
         },
        computed:{
+            ...vx.mapGetters([
+                'searchInfo'
+            ]),
             img:function(){
                 return myPic;
             },
@@ -148,16 +154,19 @@
             },
             years:function(){
                 if(this.infoData){
-                    return this.infoData.years.reverse()
+                    return this.infoData.years.reverse();
                 }
             }
         },
         methods: {
-            searchData(data){
-                this.qyCode = data;
+            searchData(qyCode){
+                this.qyCode = qyCode;
             },
             openWindow(src) {
                 window.open(src);
+            },
+            airportInfo(){
+                this.detailInfoShow = true;
             },
             getData(){
                 this.$ajax({
@@ -240,18 +249,17 @@
                     newNum.push(item*100000 /(Math.pow(10,n+5)));
                 })
                 return newNum.reverse();
+            },
+            closeDetail(){
+                this.detailInfoShow = false;
             }
         },
         mounted() {
-            /*tabulationBoxTrigger.$on('searchData', val => {
-                this.qyCode =val.qyCode;
-                this.airportText = val.searchtText;
-                this.getData();
-
-            });*/
+            this.qyCode = this.searchInfo.qyCode;
         },
         components:{
-            searchHeader
+            searchHeader,
+            airportInfo
         }
     }
 </script>
@@ -354,7 +362,15 @@
         }
         .i-content{
             display:flex;
+            position:relative;
             padding:58px 0;
+            .airport-info{
+                position:absolute;
+                bottom:50px;
+                right:50px;
+                color:#3c78ff;
+                cursor:pointer;
+            }
         }
     }
     .info-box{
@@ -375,7 +391,7 @@
                 font-size:1.4rem;
             }
             .shipgroup,.fl-type{
-                width:250px;
+                width:208px;
                 overflow : hidden;
                 text-overflow: ellipsis;
                 display: -webkit-box;
