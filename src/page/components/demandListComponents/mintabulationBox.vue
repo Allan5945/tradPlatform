@@ -105,6 +105,7 @@
         },
         methods: {
             resetWindow: function () {
+                if(this.renderData.length == 0)return;
                 let messageHead = 42;
                 let tabulationHead = 62;
                 let messageBox = document.getElementById('message-box').offsetHeight;

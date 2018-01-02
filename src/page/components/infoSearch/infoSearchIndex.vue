@@ -85,29 +85,28 @@
                 </div>
             </div>
         </div>
-        <timeIndex v-if="detailShow" :selcIndex ="selcIndex" :qyCode1="qyCode" :searchtText="airportText"></timeIndex>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
-import timeIndex from './timeIndex.vue'
- import myPic from '$src/static/img/airport1.png';
+import * as vx from 'vuex'
+import myPic from '$src/static/img/airport1.png';
     export default {
         data() {
             return {
                 airportText:'',
                 qyCode:'',
                 selcIndex:'0',
-                selcType:'时刻',
+                selcType:'城市',
                 typeList:['城市','航司','机场','时刻'],
                 airlineData:[],
                 airlineShow:false,
                 airportSearch:false,
                 citySearch:false,
-                showType:false,
-                detailShow:false
+                showType:false
             }
         },
          computed:{
@@ -135,7 +134,8 @@ import timeIndex from './timeIndex.vue'
             },
             cityData(data){
                 this.airportText = data.name;
-                this.qyCode = data.code;
+                //this.qyCode = data.code;
+                this.qyCode = data.name;
                 this.citySearch = false;
             },
             searchAirport(){
@@ -144,7 +144,20 @@ import timeIndex from './timeIndex.vue'
                 this.getAirCompany();
             },
             getInfo(){
-                this.detailShow = true;
+                this.$store.dispatch('searchInfo', {
+                    qyCode : this.qyCode,
+                    selcType :this.selcType,
+                    searchText:this.airportText
+                });
+                 if(this.selcType == '机场'){
+                    this.$router.push({ path: '/index/information/airport'});
+                }else if(this.selcType == '航司'){
+                    this.$router.push({ path: '/index/information/airline'});
+                }else if(this.selcType == '时刻'){
+                    this.$router.push({ path: '/index/information/time'});
+                }else if(this.selcType == '城市'){
+                    this.$router.push({ path: '/index/information/city'});
+                }
             },
             getAirCompany: function(){
                 this.$ajax({
@@ -174,10 +187,10 @@ import timeIndex from './timeIndex.vue'
 
         },
         mounted() {
+
         },
         components:{
             airportS1,
-            timeIndex,
             cityS
         }
     }

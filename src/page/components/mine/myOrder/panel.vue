@@ -1,14 +1,24 @@
 <template>
     <div class="wrap" @click.self="closeDetail">
         <div class="box shadow">
-            <p class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
-            <listModule :ndetailData="metaData" :type="typeList[detailData.demandType]" v-if="metaData"></listModule>
+            <div class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></div>
+            <div class="aplan-wrapper">
+                <listModule :ndetailData="metaData.data"
+                            :type="typeList[detailData.demandType]"
+                            v-if="metaData">
+                </listModule>
+                <itenListModule :ndetailData="metaData.responseList[0]"
+                            :type="typeList[detailData.demandType==1?0:1]"
+                            v-if="metaData && metaData.intentionCount>0">
+                </itenListModule>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     import listModule from './detailListModule.vue';
+    import itenListModule from './Iten-ListModule.vue';
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 
     export default{
@@ -26,7 +36,7 @@
                 typeList: ['航线需求','运力投放 ']
             }
         },
-        components: {listModule},
+        components: {listModule,itenListModule},
         props: ["detailData"],
         watch:{
             reason:{
@@ -119,7 +129,7 @@
                     id : id
                 }
             }).then(res=>{
-                that.metaData = res.data.data;
+                that.metaData = res.data;
             }).catch(err=>{
             })
         },
@@ -138,7 +148,7 @@
 </script>
 
 <style lang="scss" scoped>
-    　　.input textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
+　　.input textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
     $bt-c: #605e7c;
     $txt-c: #3c78ff;
     $bor-c: #efefef;
@@ -152,7 +162,10 @@
     }
     .mgr-l{
         color: rgba(96,94,124,.7);
-        margin: 0 0 20px 30px;
+        width: 100%;
+        padding-left: 30px;
+        height:30px;
+        line-height: 30px;
     }
     .flex-center{
         display: flex;
@@ -187,6 +200,18 @@
         cursor:pointer;
     }
     /*主體内容*/
+    .aplan-wrapper{
+        position:absolute;
+        right:0;
+        width:100%;
+        box-sizing:border-box;
+        color:#605E7C;
+        overflow: hidden;
+        background-color:#fff;
+        max-height: 90%;
+        overflow-y: auto;
+        box-shadow: -5px 5px 15px rgba(216,216,216,.9) inset;
+    }
     .wrap{
         position: fixed;
         width: 100%;

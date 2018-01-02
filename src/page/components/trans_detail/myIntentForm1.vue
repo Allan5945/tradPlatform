@@ -545,7 +545,7 @@
                 getIntentData:{},
             }
         },
-        props:["responseId"],
+        props:['response'],
         components: {
             airAreaSearch,
             airportS,
@@ -559,6 +559,7 @@
         mounted() {
             tabulationBoxTrigger.$on('sendTable',val => {
                 this.getIntentData = val;
+                console.log(val)
             });
         },
         computed: {
@@ -596,9 +597,10 @@
                     this.warn4Show = true;
                     return
                 }*/
-                this.sendData = this.getIntentData;
-                this.sendData.id=this.responseId;
-                 console.log(this.sendData.responseId)
+                this.sendData = this.response;
+                 console.info('response:');
+                console.log(this.response)
+                this.sendData.releaseselected = '0';
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -659,7 +661,7 @@
                 console.info(this.sendData);
 //                console.info(this.acceptData);
                 this.$ajax({
-                    url: "/updateResponseSelective",
+                    url: "/selectedResponse",
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -667,7 +669,7 @@
                     params:this.sendData
                 }).then((response) => {
                     if(response.data.opResult == "0"){
-                        alert("修改成功！")
+                        alert("确认成功！")
                         this.$emit('closeMyForm');
                   }
                 }).catch((error) => {

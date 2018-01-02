@@ -1,9 +1,10 @@
 <template>
-    <div >
+    <div  class="wrapper">
+        <searchHeader @search = "searchData"></searchHeader>
         <div class="content">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
-                <div class="b-til">{{airportText}}</div>
+                <div class="b-til">{{infoData.airlnCd || "-"}}</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe603;</span>基本信息</div>
                      <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
@@ -56,11 +57,11 @@
                     </div>
                     <div class="news-box" v-for="item in newsData">
                         <div class="box-pic">
-                            <img :src="img1" alt="">
+                            <img :src="item.articleImage||noimg" alt="">
                         </div>
                         <div class="box-content">
                             <div class="box-til">
-                                <div class="name"><a :href="item.articleUrl">{{item.articleTitle}}</a></div>
+                                <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
                                 <div class="type">
                                     <div>{{item.articleType}}</div>
                                 </div>
@@ -79,9 +80,11 @@
 </template>
 
 <script>
+    import * as vx from 'vuex';
     import echarts from 'echarts';
-    import myPic1 from '$src/static/img/145.jpg';
+    import noimg from './../../../static/img/pubo/noimg.png';
     import myPic from '$src/static/img/Slice.png';
+    import searchHeader from './searchHeader.vue'
     export default {
         data() {
             return {
@@ -89,21 +92,26 @@
                 newsData:[]
             }
         },
-        props:['qyCode','airportText'],
         watch: {
             'qyCode':function(){
                 this.getData();
             }
         },
        computed:{
+            ...vx.mapGetters([
+                'searchInfo'
+            ]),
             img:function(){
                 return myPic;
             },
-            img1:function(){
-                return myPic1;
+            noimg:function(){
+                return  noimg;
             }
         },
         methods: {
+            searchData(qyCode){
+               this.qyCode = qyCode;
+            },
             getData(){
                 this.$ajax({
                 method: 'post',
@@ -125,13 +133,17 @@
                         console.log(error);
                     }
                 );
-            }
+            },
+             openWindow(src) {
+                window.open(src);
+            },
         },
         mounted() {
-            this.getData();
+            this.qyCode = this.searchInfo.qyCode;
+            this.getData()
         },
         components:{
-
+            searchHeader
         }
     }
 </script>
@@ -145,6 +157,26 @@
         list-style:none;
         padding:0;
         margin:0;
+    }
+    .wrapper{
+        position: absolute;
+        width: 100%;
+        min-height:100%;
+        top: 0;
+        left: 0;
+        background-color: #f5f5f5;
+        z-index: 12;
+        color:#605e7c;
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index:1;
+            height:120px;
+            width:100%;
+            background-color:#3c78ff;
+            display:flex;
+        }
     }
     .content{
         width:1100px;
@@ -330,7 +362,6 @@
         .box-pic{
             width:170px;
             height:110px;
-            background-color:pink;
             img{
                 width:100%;
                 height:100%;
@@ -351,6 +382,7 @@
                 line-height:16px;
                 border-bottom:1px solid #000;
                 margin:11px 0 15px 0;
+                cursor:pointer;
             }
         }
         .type{

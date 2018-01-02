@@ -1,12 +1,22 @@
 import ln from './../../../public/js/tabulationBoxTrigger.js';
+import Vue from 'vue'
 import _this from './../../../main'
-ln.$on('addChat', function (d)  {
-    let employeeId = d.employeeId != null ? Number(d.employeeId) : 1;
-    if(_this.$store.getters.role.id == 1)employeeId = d.demandEmployeeId; //devmandEmployeeId
-    let roleId = Number(_this.$store.getters.role.id);
-    console.log(employeeId,roleId,d)
-    let keys = (roleId < employeeId ? roleId : employeeId)  + '-' + (roleId < employeeId ? employeeId : roleId) + "-" +d.id;
-    this.chat.setChat = keys;
+ln.$on('addChat', function (d)  {    
+    let k1,k2,de = d.id,k,keys;
+    if(de == null){
+        k = [_this.$store.getters.role.id];
+    }else{
+        if(_this.$store.getters.role.id == 1){
+            k1 = _this.$store.getters.role.id;
+        };
+        if(k2 == d.employeeId){
+            k2 = d.demandEmployeeId;
+        }else{
+            k2 = d.employeeId;
+        };
+        keys = (k1 < k2 ? k1 : k2)  + '-' + (k1 < k2 ? k2 : k1) + "-" + de;
+        k = keys.split("-");
+    };
     if(!this.chat.chatData.hasOwnProperty(keys)){
         let __this = this;
         _this.$ajax({
@@ -16,16 +26,15 @@ ln.$on('addChat', function (d)  {
                 'Content-type': 'application/x-www-form-urlencoded'
             },
             params:{
-                fromNameId:_this.$store.getters.role.id,
-                toNameId:employeeId,
-                demandId:d.id,
+                fromNameId:k[0],
+                toNameId:k[1],
+                demandId:k[2],
             },
         })
             .then((response) => {
                 if(response.data.opResult == "1"){
                     const h = this.$createElement;
                     let mes = response.data.msg;
-
                     _this.$message({
                         showClose: true,
                         message: mes,
@@ -71,7 +80,12 @@ export default class ChatSocket{
             ln.chat.change = !ln.chat.change;
         };
         this.ws.onclose  = ()=>{
-            window.sessionStorage.setItem("isLogin",null);
+            setTimeout(()=>{
+                window.sessionStorage.setItem("isLogin",null);
+                Vue.prototype.$chatSocket = null;
+                // _this.$router.push("login");
+                window.location.reload();
+            },100);  // 加延迟的作用是防止刷新浏览器就清空sessionStorage，在火狐会重新登录的bug
             console.log('关闭连接');
         };
         this.ws.onerror  = ()=>{

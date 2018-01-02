@@ -86,10 +86,11 @@ import * as vx from 'vuex'
                 ]
                 this.myList = arr.concat(this.myList);
                 arr = null;
-            }
+            };
 
             //子路由刷新判断
             let pathstr = this.$router.history.current.path;
+            if(pathstr == '/index/userCenter')this.$router.push(this.myList[0].u);
             if(pathstr.length>'/index/userCenter'.length){
                 for(let i in this.myList){
                     if(this.myList[i].u == pathstr){

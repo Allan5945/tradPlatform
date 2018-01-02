@@ -30,7 +30,7 @@
                                     <!--<p>{{val.date.split(' ')[0]}}<span>{{val.date.split(' ')[1]}}</span></p>-->
                                     <div class="popup">{{val.text}}</div>
                                 </div>
-                               <span v-if="!(val.textType == '0')">{{val.date}}<span></span>{{val.text}}</span>
+                               <span v-if="!(val.textType == '0')"><p>{{val.date}}</p><span></span>{{val.text}}</span>
                             </div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                                  @mouseover="viewHsy(true,i)"
                                  @mouseout="viewHsy(false,i)"
                                  v-for="(key,i) in inData[setId].modifyRcord.list">
-                                <div>{{key.text}}</div>
+                                <div>{{inData[setId].chatObjectList.name}}{{key.text}}</div>
                                 <span v-if="(i == selectModifyHistory)">&#xe686;</span>
                             </div>
                         </div>
@@ -212,8 +212,7 @@ export default {
             demandId: id[2] == "null" ? "" : id[2]
           };
       };
-
-      if(ln.chat.chatData[ln.chat.setChat].noReadCount != 0){
+      if(ln.chat.chatData[ln.chat.setChat].noReadCount != 0 && ln.chat.chatData[ln.chat.setChat].noReadCount != undefined){
         this.$ajax({
                 method: "post",
                 url,
@@ -467,7 +466,7 @@ export default {
   }
   > div:nth-child(1) {
     color: #605e7c;
-    width: 70px;
+    // width: 70px;
   }
   > div:nth-child(2) {
     color: #605e7c;
@@ -609,7 +608,7 @@ export default {
   overflow-x: hidden;
   padding: 0 8px 0 20px;
   > div {
-    /*width: 200px;*/
+    width: 172px;
     position: absolute;
   }
 }
@@ -700,17 +699,16 @@ export default {
   > span {
     height: 30px;
     display: inline-flex;
-    flex-flow: row nowrap;
+    flex-flow:column nowrap;
     justify-content: center;
     align-items: center;
     color: rgba(96, 94, 124, 0.7);
     font-size: 1.3rem;
     background-color: #ececec;
     margin-top: 30px;
-    padding: 0 10px;
+    padding: 8px 10px;
     width: auto;
     border-radius: 5px;
-    padding-top: 0px !important;
     > span {
       margin: 0 10px;
     }

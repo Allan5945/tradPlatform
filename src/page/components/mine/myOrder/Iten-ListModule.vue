@@ -2,20 +2,16 @@
     <div class="plan-wrapper" >
         <template v-if="type.indexOf('航线')>-1">
             <header>
-                <div class="head-til" :title="ndetailData.title">{{ndetailData.title || "-"}}</div>
-                <div class="tips">
-                    <span>委托方 {{ ndetailData.num||"成都双流" }}</span>
-                    <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
-                </div>
+                <div class="head-til">选定意向方</div>
             </header>
+            <p class="sub-title"><span>{{ ndetailData.responsedate }}</span><span>{{ ndetailData.intentionCompanyName }}</span></p>
             <div class="content">
                 <div class="myplan">
                     <div class="airline">
                         <div class="airplace">
                             <div>始发机场</div>
                             <div>
-                                <div>{{ndetailData.dptNm||"—"}}</div>
+                                <div>{{ndetailData.dpt||"—"}}</div>
                                 <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -27,7 +23,7 @@
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
-                                <div>{{ndetailData.pstNm||"—"}}</div>
+                                <div>{{ndetailData.pst||"—"}}</div>
                                 <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -39,7 +35,7 @@
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
-                                <div>{{ndetailData.arrvNm||"—"}}</div>
+                                <div>{{ndetailData.arrv||"—"}}</div>
                                 <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -129,13 +125,9 @@
         </template>
         <template v-else>
             <header>
-                <div class="head-til" :title="ndetailData.title">{{ndetailData.title || "-"}}</div>
-                <div class="tips">
-                    <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
-                </div>
+                <div class="head-til">选定意向方</div>
             </header>
+            <p class="sub-title"><span>{{ ndetailData.responsedate }}</span><span>{{ ndetailData.intentionCompanyName }}</span></p>
             <div class="content">
                 <div class="myplan">
                     <div class="table-form">
@@ -174,11 +166,11 @@
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
                             <div style="width: 80%;line-height: 5px;text-indent: 40px;">
-                                {{ndetailData.dptNm||"—"}}
+                                {{ndetailData.dpt||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pstNm||"—"}}
+                                {{ndetailData.pst||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrvNm||"—"}}
+                                {{ndetailData.arrv||"—"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>
@@ -234,7 +226,6 @@
 </template>
 
 <script>
-    import extendPanel from './extend.vue'
     export default {
         data(){
             return{
@@ -267,7 +258,6 @@
             }
         },
         props:["ndetailData","type"],
-        components:{extendPanel}
     }
 </script>
 
@@ -281,6 +271,7 @@
         background-color:#fff;
         max-height: 90%;
         overflow-y: auto;
+        margin-top: 30px;
         header{
             width:100%;
             background-color:rgba(216,216,216,.2);
@@ -292,9 +283,8 @@
         .head-til{
             font-size:20px;
             font-weight:bold;
-            margin-top:30px;
-            height:20px;
-            line-height:20px;
+            height: 80px;
+            line-height: 80px;
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: nowrap;
@@ -309,10 +299,20 @@
             }
         }
     }
+    .sub-title{
+        line-height: 30px;
+        height: 30px;
+        border-bottom:1px solid #ccc;
+        margin: 0px 40px 0px 50px;
+        padding: 20px 0 20px 0;
+        span{
+            margin-right: 50px;
+        }
+    }
     .table-form{
         width:100%;
         box-sizing:border-box;
-        padding: 40px 50px 0 50px;
+        padding:40px 50px;
         flex-wrap: wrap;
         display: flex;
         .flyicon{
@@ -341,10 +341,10 @@
         }
     }
     .myplan{
-        margin-bottom:0;
+        margin-bottom:40px;
         .airline{
             display:flex;
-            padding:20px 0 0 10px;
+            padding:0 0 0 10px;
             margin: 0 40px;
             box-sizing:border-box;
             border-bottom:1px solid #ccc;

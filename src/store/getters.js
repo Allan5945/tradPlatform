@@ -26,4 +26,7 @@ export default {
     routeNetwork:(state)=>{
         return state.routeNetwork;
     },
+    searchInfo:(state)=>{
+        return state.searchInfo;
+    },
 }

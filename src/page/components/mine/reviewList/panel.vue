@@ -27,7 +27,7 @@
                     <h3>请填写不通过原因</h3>
                     <div class="rsn-body">
                         <span>原因:</span>
-                        <textarea class="txtarea" maxlength="100" v-model="reason.text"></textarea>
+                        <textarea class="txtarea" maxlength="100" v-model="reason.text" ></textarea>
                         <i class="letter-counter">{{reason.textLength}}/100</i>
                     </div>
                     <footer class="footer-s flex-center">
@@ -154,7 +154,7 @@
 </script>
 
 <style lang="scss" scoped>
-    　　.input textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
+　　.input,textarea{border:none; text-indent:5px;line-height:20px;background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;overflow:auto}
     $bt-c: #605e7c;
     $txt-c: #3c78ff;
     $bor-c: #efefef;
@@ -274,6 +274,7 @@
         background-color: $bor-c;
         padding: 10px 10px;
         .txtarea{
+            resize:none;
             display: inline-block;
             position: absolute;
             width: 420px;
