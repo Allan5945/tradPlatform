@@ -49,4 +49,7 @@ export default {
     changeOrder:({commit},vl)=>{
         commit(types.CHANGEORDER,vl)
     },
+    searchInfo:({commit},vl)=>{
+        commit(types.SEARCHINFO,vl)
+    },
 }
