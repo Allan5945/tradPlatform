@@ -598,6 +598,7 @@
                 }*/
                 this.sendData = this.getIntentData;
                 this.sendData.id=this.response.id;
+                this.sendData.employeeId = this.response.employeeId;
                 this.sendData.releaseselected = this.response.releaseselected;
                 this.sendData.responseselected = this.response.responseselected;
                 this.sendData.responseProgress = this.response.responseProgress;

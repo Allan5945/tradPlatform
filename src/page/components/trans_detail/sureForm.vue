@@ -595,6 +595,7 @@
                     return
                 }*/
                 this.sendData.id = this.planData.id;
+                this.sendData.employeeId = this.planData.employeeId;
                 this.sendData.releaseselected = this.planData.releaseselected;
                 this.sendData.responseselected = this.planData.responseselected;
                 this.sendData.responseProgress = this.planData.responseProgress;
