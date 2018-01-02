@@ -213,7 +213,7 @@ export default {
           };
       };
 
-      if(ln.chat.chatData[ln.chat.setChat].noReadCount != 0){
+      if(ln.chat.chatData[ln.chat.setChat].noReadCount != 0 && ln.chat.chatData[ln.chat.setChat].noReadCount != undefined){
         this.$ajax({
                 method: "post",
                 url,

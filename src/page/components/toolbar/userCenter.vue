@@ -23,7 +23,7 @@
     export default {
         data: ()=>{
             return {
-                defaultSubLink:'/index/userCenter/myRelease',
+                defaultSubLink:'/index/userCenter',
             }
         },
         computed: {
