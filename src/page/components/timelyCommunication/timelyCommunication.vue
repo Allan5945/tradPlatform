@@ -288,7 +288,6 @@ export default {
           noReadCount: ln.chat.chatData[k].noReadCount,
         };
       }
-      console.log(b);
       return b;
     },
     chatIng: function() {
