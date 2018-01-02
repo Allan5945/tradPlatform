@@ -31,8 +31,8 @@
         created() {
             // 接收airlineDetailPayAfter.vue传来的参数
             tabulationBoxTrigger.$on('responseText',(val) => {
-                console.info('dialog接收airlineDetailPayAfter:');
-                console.info(val);
+//                console.info('dialog接收airlineDetailPayAfter:');
+//                console.info(val);
                 this.sendData.demandId = val;
             })
         },
@@ -42,8 +42,8 @@
             },
             sureEvent(){
                 this.sendData.intentionStatu = '0'; //0：交钱，1：未交费
-                console.info("dialog的sendData:");
-                console.info(this.sendData)
+//                console.info("dialog的sendData:");
+//                console.info(this.sendData)
                 let that = this;
                 this.$ajax({
                     url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
@@ -61,7 +61,7 @@
                             that.$emit('sure');
                         },1000)
                         alert('成功提交意向金！')
-                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向payAfter的意向列表传参数
+//                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向payAfter的意向列表传参数
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }

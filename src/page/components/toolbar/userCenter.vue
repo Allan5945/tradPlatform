@@ -4,7 +4,7 @@
             <span>&#xe647;</span>
             退出
         </a>
-        <router-link to="/index/userCenter/reviewList">
+        <router-link :to="defaultSubLink">
             <span>&#xe60f;</span>
             个人中心
         </router-link>
@@ -21,19 +21,25 @@
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
-        watch: {},
+        data: ()=>{
+            return {
+                defaultSubLink:'/index/userCenter',
+            }
+        },
         computed: {
             ...vx.mapActions([
                 'close'
             ]),
+            ...vx.mapGetters([
+                'role'
+            ])
         },
         methods: {
             logout: function () {
                 this.$ajax.post('logout')
                     .then((res)=>{
                         if(res.data.opResult == 0){
-                            window.sessionStorage.setItem('isLogin',null);
-                            this.$router.push({path:'login'});
+                            this.$chatSocket.ws.close();
                         }
                     })
                     .catch((err)=>{
@@ -45,6 +51,10 @@
                 localCommunication.chat.shut = true;
                 localCommunication.chat.narrow = true;
             }
+        },
+        created: function(){
+            //配置默认子路由
+            if(this.role.role=='2') this.defaultSubLink = '/index/userCenter/reviewList' ;
         }
     }
 </script>

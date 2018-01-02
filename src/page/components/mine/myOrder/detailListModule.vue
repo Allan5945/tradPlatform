@@ -6,7 +6,7 @@
                 <div class="tips">
                     <span>委托方 {{ ndetailData.num||"成都双流" }}</span>
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -133,7 +133,7 @@
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -273,7 +273,6 @@
 
 <style lang="scss" scoped>
     .plan-wrapper{
-        position:absolute;
         right:0;
         width:100%;
         box-sizing:border-box;
@@ -282,7 +281,6 @@
         background-color:#fff;
         max-height: 90%;
         overflow-y: auto;
-        box-shadow: -5px 5px 15px rgba(216,216,216,.9) inset;
         header{
             width:100%;
             background-color:rgba(216,216,216,.2);
@@ -314,7 +312,7 @@
     .table-form{
         width:100%;
         box-sizing:border-box;
-        padding:40px 50px;
+        padding: 40px 50px 0 50px;
         flex-wrap: wrap;
         display: flex;
         .flyicon{
@@ -343,7 +341,7 @@
         }
     }
     .myplan{
-        margin-bottom:140px;
+        margin-bottom:0;
         .airline{
             display:flex;
             padding:20px 0 0 10px;

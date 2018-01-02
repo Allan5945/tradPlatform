@@ -9,6 +9,8 @@
 
 <script>
     import * as vx from 'vuex'
+    import banner from './loginProcess/banner .vue'
+
     export default {
         data () {
             return {
@@ -56,6 +58,9 @@
             ...vx.mapGetters([
                 'c_updated'
             ])
+        },
+        components:{
+            banner
         }
     }
 </script>

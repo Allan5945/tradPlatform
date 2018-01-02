@@ -1,21 +1,17 @@
 <template>
     <div class="plan-wrapper" >
-        <template v-if="type==='航线需求'">
+        <template v-if="type.indexOf('航线')>-1">
             <header>
-                <div class="head-til">{{ndetailData.title?ndetailData.title+"航线需求":"-"}}</div>
-                <div class="tips">
-                    <span>委托方 {{ ndetailData.num||"成都双流" }}</span>
-                    <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
-                </div>
+                <div class="head-til">选定意向方</div>
             </header>
+            <p class="sub-title"><span>{{ ndetailData.responsedate }}</span><span>{{ ndetailData.intentionCompanyName }}</span></p>
             <div class="content">
                 <div class="myplan">
                     <div class="airline">
                         <div class="airplace">
                             <div>始发机场</div>
                             <div>
-                                <div>{{ndetailData.dptNm||"待定"}}</div>
+                                <div>{{ndetailData.dpt||"—"}}</div>
                                 <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -27,7 +23,7 @@
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
-                                <div>{{ndetailData.pstNm||"待定"}}</div>
+                                <div>{{ndetailData.pst||"—"}}</div>
                                 <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -39,7 +35,7 @@
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
-                                <div>{{ndetailData.arrvNm||"待定"}}</div>
+                                <div>{{ndetailData.arrv||"—"}}</div>
                                 <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
                             </div>
                             <div class="resouse">
@@ -95,18 +91,43 @@
                             <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
+                    <template v-if="ndetailData.isWeituo">
+                        <header>
+                            <div class="head-til">收到的意向</div>
+                            <div class="tips">
+                                <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
+                            </div>
+                        </header>
+                        <div class="table-form-extend">
+                            <div class="table-header">
+                                <span class="item-a">收到时间</span><span class="item-b">意向方</span>
+                            </div>
+                            <ul class="table-body">
+                                <li v-for="(item, index) in extend.data">
+                                    <div class="list">
+                                        <span class="item-a">2017.12.19</span>
+                                        <span class="item-b">CTU</span>
+                                        <span v-show="extend.active!=index" @click="extend.active=index" class="item-c">查看详情</span>
+                                        <span v-show="extend.active===index" @click="extend.active=-1" class="item-c">收起详情</span>
+                                    </div>
+                                    <extendPanel class="main-info"
+                                                 v-show="extend.active===index"
+                                                 :extendData="ndetailData"
+                                                 :thisType="'yunli'"
+                                    >
+                                    </extendPanel>
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
                 </div>
             </div>
         </template>
         <template v-else>
             <header>
-                <div class="head-til">{{ndetailData.title?ndetailData.title+"运力需求":"-"}}</div>
-                <div class="tips">
-                    <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
-                </div>
+                <div class="head-til">选定意向方</div>
             </header>
+            <p class="sub-title"><span>{{ ndetailData.responsedate }}</span><span>{{ ndetailData.intentionCompanyName }}</span></p>
             <div class="content">
                 <div class="myplan">
                     <div class="table-form">
@@ -145,16 +166,16 @@
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
                             <div style="width: 80%;line-height: 5px;text-indent: 40px;">
-                                {{ndetailData.dptNm||"待定"}}
+                                {{ndetailData.dpt||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pstNm||"待定"}}
+                                {{ndetailData.pst||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrvNm||"待定"}}
+                                {{ndetailData.arrv||"—"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>
                             <div>小时成本</div>
-                            <div>{{ndetailData.hourscost||"-"}}</div>
+                            <div>{{ndetailData.hourscost?ndetailData.hourscost+"万元/小时":"-"}}</div>
                         </div>
                         <div>
                             <div>接受调度</div>
@@ -169,6 +190,35 @@
                             <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
+                    <template v-if="ndetailData.isWeituo">
+                        <header>
+                            <div class="head-til">收到的意向</div>
+                            <div class="tips">
+                                <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
+                            </div>
+                        </header>
+                        <div class="table-form-extend">
+                            <div class="table-header">
+                                <span class="item-a">收到时间</span><span class="item-b">意向方</span>
+                            </div>
+                            <ul class="table-body">
+                                <li v-for="(item, index) in extend.data">
+                                    <div class="list">
+                                        <span class="item-a">2017.12.19</span>
+                                        <span class="item-b">CTU</span>
+                                        <span v-show="extend.active!=index" @click="extend.active=index" class="item-c">查看详情</span>
+                                        <span v-show="extend.active===index" @click="extend.active=-1" class="item-c">收起详情</span>
+                                    </div>
+                                    <extendPanel class="main-info"
+                                                 v-show="extend.active===index"
+                                                 :extendData="ndetailData"
+                                                 :thisType="'yunli'"
+                                    >
+                                    </extendPanel>
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
                 </div>
             </div>
         </template>
@@ -179,52 +229,65 @@
     export default {
         data(){
             return{
+                progressState:{
+                    '3': '关闭',
+                    '5': '交易完成',
+                    '6': '订单完成',
+                    '7': '佣金支付'
+                },
                 subsidyList:["定补","保底","人头补","无补贴"],
                 timeresources:["09:00-18:00",'待协调','充足'],
                 schedulingList: ["接受","不接受"],
-                progressState: ["未处理","审核未通过","审核通过"]
+                extend:{
+                    data:[
+                        {
+                            name: '1',
+                            age:'2'
+                        },
+                        {
+                            name: '3',
+                            age:'4'
+                        },
+                        {
+                            name: '5',
+                            age:'6'
+                        },
+                    ],
+                    active: -1
+                }
             }
         },
         props:["ndetailData","type"],
-        mounted: function () {
-
-        }
     }
 </script>
 
 <style lang="scss" scoped>
     .plan-wrapper{
-        position:absolute;
         right:0;
         width:100%;
-        max-height: 75%;
         box-sizing:border-box;
         color:#605E7C;
         overflow: hidden;
-        overflow-y: auto;
         background-color:#fff;
+        max-height: 90%;
+        overflow-y: auto;
+        margin-top: 30px;
         header{
             width:100%;
             background-color:rgba(216,216,216,.2);
-            box-shadow:-5px 5px 15px rgba(216,216,216,.9) inset;
-        }
-        footer{
-            position:fixed;
-            bottom:0;
-            right:0;
-            width:600px;
-            background-color:#fff;
-            height:100px;
         }
     }
     header{
+        box-sizing: border-box;
         padding: 5px 40px 0 50px;
         .head-til{
             font-size:20px;
             font-weight:bold;
-            margin-top:30px;
-            height:20px;
-            line-height:20px;
+            height: 80px;
+            line-height: 80px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
         }
         .tips{
             height:12px;
@@ -234,6 +297,16 @@
             span{
                 margin-right:30px;
             }
+        }
+    }
+    .sub-title{
+        line-height: 30px;
+        height: 30px;
+        border-bottom:1px solid #ccc;
+        margin: 0px 40px 0px 50px;
+        padding: 20px 0 20px 0;
+        span{
+            margin-right: 50px;
         }
     }
     .table-form{
@@ -256,7 +329,7 @@
                 line-height:20px;
             }
             >div:nth-of-type(1){
-                width:90px;
+                width: 90px;
                 color:rgba(96, 94, 124, 0.7);
             }
             >div:nth-of-type(2){
@@ -268,10 +341,10 @@
         }
     }
     .myplan{
-        margin-bottom:140px;
+        margin-bottom:40px;
         .airline{
             display:flex;
-            padding:20px 0 0 10px;
+            padding:0 0 0 10px;
             margin: 0 40px;
             box-sizing:border-box;
             border-bottom:1px solid #ccc;
@@ -282,46 +355,67 @@
                 width:60px;
                 text-align: center;
             }
+            .airplace{
+                margin-top:20px;
+                >div:nth-of-type(2){
+                    height:45px;
+                    font-size:2rem;
+                    font-weight:bold;
+                    padding-top:15px;
+                    >div:nth-of-type(2){
+                        font-size:1rem;
+                        font-weight:normal;
+                    }
+                }
+                .resouse{
+                    margin:20px 0;
+                }
+            }
         }
     }
-    .airplace{
-        margin-top:20px;
-        >div:nth-of-type(2){
-            height:45px;
-            font-size:2rem;
-            font-weight:bold;
-            padding-top:15px;
-            >div:nth-of-type(2){
-                font-size:1rem;
-                font-weight:normal;
+    .table-form-extend{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 40px 0;
+        .table-header{
+            padding: 0 50px;
+            display: flex;
+            .item-a{
+                flex:2;
+            }
+            .item-b{
+                flex:5;
             }
         }
-        .resouse{
-            margin:20px 0;
-        }
-    }
-    footer{
-        border-top: 1px solid #ccc;
-        .btn{
-            height:40px;
-            margin:20px 0 40px 0;
-            >div{
-                height:40px;
-                line-height:40px;
-                font-size:1.5rem;
-                color:#605E7C;
-                background-color:#fff;
-                text-align:center;
-                border-radius:100px;
-                cursor:pointer;
-                box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
-            }
-            .cancel-btn{
-                width:100px;
-                margin-right:10px;
-            }
-            .col-btn{
-                width:80px;
+        .table-body{
+            list-style: none;
+            padding: 0 30px;
+            li{
+                background-color: #eee;
+                margin: 5px 0;
+                .list{
+                    height: 60px;
+                    line-height: 60px;
+                    padding: 0 20px;
+                    display: flex;
+                    .item-a{
+                        flex:2;
+                    }
+                    .item-b{
+                        flex:4;
+                    }
+                    .item-c{
+                        flex:1;
+                        color: #3c78ff;
+                        cursor: pointer;
+                    }
+                }
+                .main-info{
+                    box-sizing: border-box;
+                    width: 100%;
+                    padding: 0 20px;
+                    border-top: 2px solid #000;
+                }
             }
         }
     }

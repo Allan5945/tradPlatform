@@ -20,7 +20,7 @@
             </div>
             <div>
                 <div>放行准点率</div>
-                <div>{{basicMes.fxzdl}}%</div>
+                <div>{{basicMes.fxzdl}}</div>
             </div>
             <div>
                 <div>消防等级</div>
@@ -80,8 +80,8 @@
                     airCode:`${mes.iata}/${mes.icao}`,
                     airType:mes.airpottype == '' ? "-" : mes.airpottype,
                     flyL:mes.airfieldLvl == '' ? '-' : mes.airfieldLvl,
-                    isgj:mes.international == '0' ? "否" : "是",
-                    fxzdl:mes.releasePunctuality == undefined ? "-" : mes.releasePunctuality,
+                    isgj:mes.inter == '0' ? "否" : "是",
+                    fxzdl:mes.releasePunctuality == undefined ? "-" : mes.releasePunctuality + "%",
                     xfdj:mes.firelvl == '' ? "-" : mes.firelvl
                 };
                 this.basicMes = obj;       
