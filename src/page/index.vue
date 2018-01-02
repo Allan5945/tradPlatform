@@ -93,7 +93,6 @@
                     this.$store.dispatch('initialize', this.loadingData.data).then(() => {
                         this.renderComponent = true;
                     });
-
                 };
             }
         },
@@ -101,7 +100,7 @@
 
         },
         mounted: function () {
-            if(!('$chatSocket' in this)){
+            if(Vue.prototype.$chatSocket == null){
                 Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
             };
             this.$ajax({

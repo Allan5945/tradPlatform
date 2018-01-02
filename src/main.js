@@ -20,8 +20,11 @@ Vue.prototype.$airMes = airMes;   // 扩展机场转换方法
 Vue.prototype.$cityMes = cityMes;  // 扩展城市转换方法
 Vue.prototype.$jsonp = jsonp;    // 扩展jsonp请求方法
 Vue.prototype.$bExample = new BmapExamples();    // 挂载
+Vue.prototype.$chatSocket = null;   // 扩展webscoket
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$message = Message;
+
+
 
 Vue.use(Radio);
 Vue.use(Pagination);

@@ -39,8 +39,7 @@
                 this.$ajax.post('logout')
                     .then((res)=>{
                         if(res.data.opResult == 0){
-                            window.sessionStorage.setItem('isLogin',null);
-                            this.$router.push({path:'login'});
+                            this.$chatSocket.ws.close();
                         }
                     })
                     .catch((err)=>{
