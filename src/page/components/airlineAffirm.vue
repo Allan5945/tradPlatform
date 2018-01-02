@@ -414,11 +414,7 @@
     import calendar from './calendar'
 
     export default {
-        /*props: {
-            acceptData: {
-                type: Object
-            }
-        },*/
+        props: ['acceptData'],
         data() {
             return {
                 warn1Show: false,  //联系人警告
@@ -547,6 +543,8 @@
                 sendToAffirmData: {}, // 存储airlineDetailPayAfter传来的数据
                 id: '',
                 employeeId: '00',
+                url: '',            // 接口地址
+                alertMsg: '',
             }
         },
         components: {
@@ -561,49 +559,14 @@
         },
         created() {
             // 接受airlineDetailPayAfter.vue传来的数据
-            tabulationBoxTrigger.$on('sendToAffirm',val => {
-//                console.info('sendToAffirm:')
-//                console.info(val)
+           /* tabulationBoxTrigger.$on('sendToAffirm',val => {
                 this.sendToAffirmData = val;
                 this.id = val.id;
                 this.employeeId = val.employeeId;
-//                console.info('id:' + this.id)
-//                console.info('employeeId:' + this.employeeId)
-            })
-//            console.log('id22:' + this.id)
-//            console.info('employeeId22:' + this.employeeId)
-            //接受airlineWrite.vue传来的数据
-           /* tabulationBoxTrigger.$on('responseText',val => {
-                console.info('responseText:')
-                console.info(val)
-                this.id = val.Id;
-                this.employeeId = val.employeeId;
             })*/
-        },
-        mounted() {
-//            console.info(this.acceptData)
-            /*let acceptData = this.acceptData;
-            if(acceptData.dptState == 0){
-                this.space1Fn('意向机场');
-                this.firArea = acceptData.dptNm;
-            }if(acceptData.dptState == 1){
-                this.space1Fn('意向区域');
-                this.firArea = acceptData.dpt;
-            }
-            if(acceptData.pstState == 0){
-                this.space2Fn('意向机场');
-                this.secArea = acceptData.pstNm;
-            }if(acceptData.pstState == 1){
-                this.space2Fn('意向区域');
-                this.secArea = acceptData.pst;
-            }
-            if(acceptData.arrvState == 0){
-                this.space3Fn('意向机场');
-                this.thirdArea = acceptData.arrvNm;
-            }if(acceptData.arrvState == 1){
-                this.space3Fn('意向区域');
-                this.thirdArea = acceptData.arrv;
-            }*/
+            this.sendToAffirmData = this.acceptData;
+            this.id = this.acceptData.id;
+            this.employeeId = this.acceptData.employeeId;
         },
         computed: {
             sailingtime: function () {
@@ -701,7 +664,6 @@
                 if (this.arrvState == 1) {
                     this.sendToAffirmData.arrv = this.thirdArea//选填 到达地
                 }
-//                sendData.arrvCt = this.thirdAreaCode; //不传
                 this.sendToAffirmData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
                 this.sendToAffirmData.blockbidprice = this.blockbidPrice; //选填 拦标价格
                 this.sendToAffirmData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
@@ -709,21 +671,26 @@
                 this.sendToAffirmData.seating = this.seatingNum;            // 选填 座位数
                 this.sendToAffirmData.remark = this.remarkMsg;              // 选填 备注说明
                 this.sendToAffirmData.capacitycompany = this.airCompanyId;   //运力归属
-//                this.sendData.dpt = this.qyCode4;   //运力基地
+                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendToAffirmData.hourscost = this.hourConst;   //小时成本
                 this.sendToAffirmData.index = this.index;           //payAfter列表的index
-                this.sendToAffirmData.releaseselected = 0;          //发布者是否已选定 0:表示选定,1:表示未选定
                 console.info('sendToAffirmData:');
                 console.info(this.sendToAffirmData);
 //                console.info(this.acceptData);
-                /*let ajaxData = {};
-                ajaxData.id = this.id;
-                ajaxData.employeeId = this.employeeId;
-                ajaxData.status = 0;
-                console.info('ajaxData:')
-                console.info(ajaxData)*/
+
+                //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
+                if(this.acceptData.stateNum == 1){
+                    this.url = "/selectedResponse";
+                    this.sendToAffirmData.releaseselected = 0;          //发布者是否已选定 0:表示选定,1:表示未选定
+                    this.alertMsg = '成功选定该意向！';
+                }else if(this.acceptData.stateNum == 2) {
+                    this.url = "/updateResponseSelective";
+                    this.sendToAffirmData.releaseselected = this.acceptData.releaseselected;
+                    this.alertMsg = '成功编辑该意向！';
+                }
+                let that = this;
                 this.$ajax({
-                    url: "/selectedResponse",
+                    url: that.url,
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -733,9 +700,9 @@
                     console.info('response:')
                     console.info(response)
                     if(response.data.opResult === '0'){
-                        alert('成功选定该意向！');
-                        tabulationBoxTrigger.$emit('AffirmToDetailPayAfter', this.sendToAffirmData); //向airlineDetailPayAfter.vue传数据
-                        this.$emit('change-showCode');
+                        alert(this.alertMsg);
+//                        tabulationBoxTrigger.$emit('AffirmToDetailPayAfter', this.sendToAffirmData); //向airlineDetailPayAfter.vue传数据
+                        this.$emit('change-showCode',this.sendToAffirmData);
                         this.$emit('close-this');
                     }else{
                         alert('错误代码：' + response.data.opResult);

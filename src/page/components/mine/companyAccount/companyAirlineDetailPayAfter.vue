@@ -105,7 +105,7 @@
                             <div class="item-a">{{myData.days}}</div>
                             <div class="item-b">{{myData.seating}}</div>
                             <div class="item-c">{{myData.loadfactorsexpect}}%</div>
-                            <div class="item-d" style="display: flex; position: relative;">{{periodValidity0}}
+                            <div class="item-d" style="display: flex; position: relative;">{{periodValidity1}}止
                                 <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
                                 <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
                                     <div class="selec-data">
@@ -137,13 +137,17 @@
                 </div>
                 <div class="airline">
                     <div class="airplace">
-                        <div>始发机场</div>
+                        <div>始发<span v-show="receiveIntention.dptState == 0">机场</span>
+                            <span v-show="receiveIntention.dptState == 1">区域</span>
+                        </div>
                         <div>
-                            <div>{{receiveIntention.dpt}}</div>
+                            <div v-if="receiveIntention.dptState == 0">{{receiveIntention.dptNm}}</div>
+                            <div v-else-if="receiveIntention.dptState == 1">{{receiveIntention.dpt}}</div>
                             <!--<div>成都双流</div>-->
                             <div>
                                 <span v-if="receiveIntention.dptAcceptnearairport === 0">接收</span>
-                                <span v-else>不接收</span>临近机场</div>
+                                <span v-else>不接收</span>临近机场
+                            </div>
                         </div>
                         <div class="resouse">
                             <div>出港资源</div>
@@ -153,8 +157,11 @@
                     </div>
                     <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                     <div class="airplace">
-                        <div>经停机场</div>
-                        <div>{{receiveIntention.pst}}</div>
+                        <div>经停<span v-show="receiveIntention.pstState == 0">机场</span>
+                            <span v-show="receiveIntention.pstState == 1">区域</span>
+                        </div>
+                        <div v-if="receiveIntention.pstState == 0">{{receiveIntention.pstNm}}</div>
+                        <div v-else-if="receiveIntention.pstState == 1">{{receiveIntention.pst}}</div>
                         <!--<div>北京南苑</div>-->
                         <div class="resouse">
                             <div>出港资源</div>
@@ -164,8 +171,11 @@
                     </div>
                     <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                     <div class="airplace">
-                        <div>到达区域</div>
-                        <div>{{receiveIntention.arrv}}</div>
+                        <div>到达<span v-show="receiveIntention.arrvState == 0">机场</span>
+                            <span v-show="receiveIntention.arrvState == 1">区域</span>
+                        </div>
+                        <div v-if="receiveIntention.arrvState == 0">{{receiveIntention.arrvNm}}</div>
+                        <div v-else-if="receiveIntention.arrvState == 1">{{receiveIntention.arrv}}</div>
                         <!--<div>华北地区</div>-->
                         <div class="resouse">
                             <div>出港资源</div>
@@ -217,17 +227,20 @@
                     </div>
                     <div>
                         <div>运力归属</div>
-                        <div>{{receiveIntention.capacitycompany}}</div>
+                        <div>{{receiveIntention.capacityCompany.airlnCd}}</div>
                         <!--<div>东方航空</div>-->
                     </div>
                     <div>
                         <div>运力基地</div>
-                        <div>{{receiveIntention.dpt}}</div>
+                        <div>{{receiveIntention.dptNm}}</div>
                         <!--<div>成都双流</div>-->
                     </div>
                     <div>
                         <div>是否调度</div>
-                        <div>{{receiveIntention.scheduling}}</div>
+                        <div>
+                            <span v-show="receiveIntention.scheduling == 0">是</span>
+                            <span v-show="receiveIntention.scheduling == 1">否</span>
+                        </div>
                         <!--<div>华北地区</div>-->
                     </div>
                     <div class="tips">
@@ -272,6 +285,7 @@
                             <div class="center-right" @click="chat(item)">
                                 <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="item.unreadNum != 0"></span></span>
                             </div>
+                            <div style="width: 60px;margin-right: 80px;">{{responseProgressFn(item.responseProgress)}}</div>
                             <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
                             <div v-else class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetailUp(item,index)">收起详情</div>
                         </div>
@@ -353,7 +367,7 @@
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 3">待议</div>
                                         <div class="item-d item-height" v-if="item.subsidypolicy == 4">无补贴</div>
-                                        <div class="item-height">{{item.capacitycompany}}</div>
+                                        <div class="item-height">{{item.capacityCompany.airlnCd}}</div>
                                         <div class="item-height">
                                             <span v-show="item.scheduling == 0">接受</span>
                                             <span v-show="item.scheduling == 1">不接受</span>
@@ -375,7 +389,7 @@
                                         <div class="item-height">{{item.seating}}</div>
                                         <div class="item-height">{{item.loadfactorsexpect}}%</div>
                                         <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
-                                        <div class="item-height">{{item.dpt}}</div>
+                                        <div class="item-height">{{item.dptNm}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -389,7 +403,7 @@
                                 <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
                             </div>
                             <div class="item-sixth" v-else>
-                                <button class="btn btn-w btn-change" @click="airlineAffirmFn(item,index)">已选定（点击此次可再次编译）</button>
+                                <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此次可再次编译）</button>
                                 <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
                             </div>
                         </div>
@@ -412,7 +426,7 @@
             <div class="myplan-buttons" v-if="myplanBtnShow">
                 <div v-if="receiveIntention.responseselected == '0'">
                     <div class="buttons">
-                        <div class="btn btn-w cancel-btn">已生成订单，无法更改</div>
+                        <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
                     </div>
                 </div>
                 <div v-else>
@@ -435,10 +449,13 @@
             </div>
             <!--航司点击“我有意向”显示 运力表单-->
             <airlineWrite v-if="airlineWriteShow" :acceptData="myData" @change-showCode="changeShowCodeW" @close-this="closeAlWriteFn"></airlineWrite>
+
             <!--航司点击 我发出的方案“编辑”显示 运力表单-->
             <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
+
             <!--机场点击 “选定”显示 运力表单-->
-            <airlineAffirm v-show="airlineAffirmShow" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
+            <airlineAffirm v-if="airlineAffirmShow" :acceptData="airlineAffirmData" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
+
             <!--机场点击“重新发布”显示 航线表单-->
             <airlineReqWrapper v-if="airlineReqWrapperShow" :acceptData="myData" @refresh="refreshFn" @close-this="closeAirlineReqWrapper"></airlineReqWrapper>
 
@@ -461,6 +478,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
+        props: ['sendToCompany'],
         data() {
             return {
                 firstShow: false,
@@ -518,17 +536,38 @@
                 demandState5: false, //"审核未通过"是否显示 demandState 0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
                 demandState6: false, //是否为"审核通过"
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
+                airlineAffirmData: {}, // 向airlineAffirm传递的对象
+            }
+        },
+        watch: {
+            sendToCompany: function () {
+                console.info('sendToCompany:')
+                console.info(this.sendToCompany)
+                this.id = this.sendToCompany.demandId;
+                if (this.sendToCompany.demandType == '航线需求') {
+                    console.info('getData')
+                    this.getData();
+//                    this.$emit('transShow');
+                }
             }
         },
         created() {
-            tabulationBoxTrigger.$on('sendToCompany', val => {  // 从myCompanyAccountList.vue接受数据
+            /*tabulationBoxTrigger.$on('sendToCompany', val => {  // 从myCompanyAccountList.vue接受数据
                 this.id = val.demandId;
                 if (val.demandType == '航线需求') {
                     console.info('getData')
                     this.getData();
                     this.$emit('transShow');
                 }
-            });
+            });*/
+            console.info('sendToCompanyCreated:')
+            console.info(this.sendToCompany)
+            this.id = this.sendToCompany.demandId;
+            if (this.sendToCompany.demandType == '航线需求') {
+                console.info('getData')
+                this.getData();
+                this.$emit('transShow');
+            }
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
                 this.listData = val;   //获取意向列表
             })
@@ -571,9 +610,9 @@
                     this.pstTime1 = this.myData.pstTime.split(',')[1];
                     this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                     this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-                    this.periodValidity0 = this.myData.periodValidity;
-//                            this.periodValidity0 = this.myData.periodValidity.split(',')[0];
-//                            this.periodValidity1 = this.myData.periodValidity.split(',')[1];
+//                    this.periodValidity0 = this.myData.periodValidity;
+//                    this.periodValidity0 = this.myData.periodValidity.split(',')[0];
+                    this.periodValidity1 = this.myData.periodValidity.split(',')[1];
                     if (this.myData.subsidypolicy == 0) {
                         this.subsidypolicy = '定补'
                     }
@@ -622,6 +661,30 @@
                     }
                 );
             },
+            // 卡片新增功能：意向列表上添加状态信息
+            // responseProgress：（0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付）
+            responseProgressFn: function (index) {
+                if(index == 0) {
+                    return '意向征集';
+                }else if(index == 1) {
+                    return '订单确认';
+                }else if(index == 2) {
+                    return '已撤回';
+                }else if(index == 3) {
+                    return '需求关闭';
+                }else if(index == 4) {
+                    return '落选状态';
+                }else if(index == 5) {
+                    return '交易完成';
+                }else if(index == 6) {
+                    return '订单完成';
+                }else if(index == 7) {
+                    return '佣金支付';
+                }else {
+                    return '';
+                    console.info('responseProgress状态为空！');
+                }
+            },
             // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条意向id）)
             chat:function (item) {
                 let chatObj = {};
@@ -660,7 +723,6 @@
             // 点击“结束需求”按钮
             endNeed: function () {
                 this.$ajax({
-//                    url:"/demandUpdate",
                     url: "closeDemandById",
                     method: 'post',
                     headers: {
@@ -675,8 +737,6 @@
                     if(response.data.opResult === '0'){
                         alert('成功结束该需求！')
                         this.closeThisFn();
-//                        this.refreshFn();
-                        this.$emit('refresh');
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }
@@ -929,27 +989,41 @@
             //点击“确认缴纳”，this.showCode变成2
             changeShowCodeP: function () {
                 this.paySuccessShow = true; //“缴纳完成”组件显示
-                this.showCode = 2;
-                this.show();
+                /*this.showCode = 2;
+                this.show();*/
+                this.getData();
             },
             //点击“选定”，组件“请确认以下方案”显示
             airlineAffirmFn: function (item,index) {
                 this.airlineAffirmShow = true;
                 item.index = index;
+                this.airlineAffirmData = item;
+                this.airlineAffirmData.stateNum = 1; //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
 //                console.info('item:')
 //                console.info(item)
-                tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
+//                tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
+            },
+            // 点击“已选定”
+            airlineAffirmFn2: function (item,index) {
+                this.airlineAffirmShow = true;
+                item.index = index;
+                this.airlineAffirmData = item;
+                this.airlineAffirmData.stateNum = 2; //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
+//                console.info('item:')
+//                console.info(item)
+//                tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
-            changeShowCodeA: function () {
-                this.showCode = 3;
-                tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => { //从airlintAffirm获取的数据
+            changeShowCodeA: function (index) {
+               /* tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => { //从airlintAffirm获取的数据
 //                    console.info('payAfter从AffirmToDetailPayAfter:')
 //                    console.info(val)
                     let index = val.index;
                     this.listData.splice(index,1,val)
-                })
+                })*/
+                this.showCode = 3;
                 this.show();
+                this.getData(); // 重新获取数据
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 this.releaseselectedShow = false; //显示两个按钮
             },
@@ -961,6 +1035,7 @@
                 this.airlineAffirmUnchooseData.id = item.id;
                 this.airlineAffirmUnchooseData.employeeId = item.employeeId;
                 this.airlineAffirmUnchooseData.demandId = item.demandId;
+                console.info(this.airlineAffirmUnchooseData);
                 this.$ajax({
                     url:"/selectedResponse",
                     method: 'post',
@@ -1555,7 +1630,7 @@
                     width: 80px;
                 }
                 .center-right {
-                    margin-right: 220px;
+                    margin-right: 80px;
                     width: 40px;
                     .icon-item {
                         font-size: 3.0rem;

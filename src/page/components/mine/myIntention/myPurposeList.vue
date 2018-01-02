@@ -44,7 +44,7 @@
                             {{item.responseProgress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" v-show="item.responseProgress == '意向征集' || item.responseProgress == '订单确认'" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
+                            <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
                                 <span v-show="talkNumShow">1</span>
                             </span>
                         </div>

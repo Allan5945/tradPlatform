@@ -353,7 +353,7 @@
                     </span>
                     </div>
                     <span class="hover-show">...</span>
-                    <input class="input-mes-a" type="text" @focus="airportFn4" >
+                    <input class="input-mes-a" type="text" @click.stop="airportFn4" >
                     <airportS class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airportS>
                 </div>
             </div>

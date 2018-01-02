@@ -41,8 +41,8 @@
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
             <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1"></AccountWithdrawDetail>
-            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" @closeThis="closeCompanyAirlineDetailPayAfterFn" @refresh="refreshFn" :key="2"></companyAirlineDetailPayAfter>
-            <companyMyIntention v-show="companyMyIntentionShow"@closeThis="closeCompanyMyIntentionFn" :key="3"></companyMyIntention>
+            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeCompanyAirlineDetailPayAfterFn" @refresh="refreshFn" :key="2"></companyAirlineDetailPayAfter>
+            <companyMyIntention v-show="companyMyIntentionShow" @closeThis="closeCompanyMyIntentionFn" :key="3"></companyMyIntention>
         </transition-group>
     </div>
 </template>
@@ -72,6 +72,7 @@
                 sendData: {}, // ajax传递的参数
                 listItemIndex: '',
                 demandIdShow: false, // 列表数据中没有demandId时，不显示
+                sendToCompany: {},   // 向companyAirlineDetailPayAfter传数据
             }
         },
         created() {
@@ -175,7 +176,8 @@
             // 点击展示（航线、运力）详情
             needDetailClickFn: function (item) {
                 //0：航司、 1：机场、 2：太美
-                tabulationBoxTrigger.$emit('sendToCompany',item) // 向companyAirlineDetailPayAfter、companyMyIntention传数据
+//                tabulationBoxTrigger.$emit('sendToCompany',item) // 向companyAirlineDetailPayAfter、companyMyIntention传数据
+                this.sendToCompany = item;
                 tabulationBoxTrigger.hierarchy = true;
                 if(item.demandType == '航线需求'){
                     this.companyMyIntentionShow = false;
@@ -183,6 +185,7 @@
                 }if(item.demandType == '运力需求'){
                     this.companyMyIntentionShow = true;
                     this.companyAirlineDetailPayAfterShow = false;
+                    tabulationBoxTrigger.$emit('sendToCompany', item);
                 }
             },
             // 关闭“航线详情”
