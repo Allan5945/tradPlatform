@@ -534,6 +534,7 @@
                 demandState6: false, //是否为"审核通过"
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
+                airlnCd: '',            // 运力归属
             }
         },
         created() {
@@ -665,8 +666,8 @@
             chat:function (item) {
                 let chatObj = {};
                 chatObj.demandEmployeeId = this.myData.employeeId;
-                chatObj.employeeId = item.employeeId;
                 chatObj.id = this.myData.id;
+                chatObj.employeeId = item.employeeId;
                 console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },

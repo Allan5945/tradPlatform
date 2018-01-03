@@ -108,12 +108,17 @@
                 params: demandData
                 }) .then((response) => {
                         //console.log(response.opResult);
+                    if(response.data.opResult == 0){
+                        alert('成功发布托管');
+                    }else {
+                        alert(`托管发布失败，错误代码：${response.opResult}`);
+                    }
                 }) .catch((error) => {
                         console.log(error);
                     });
 
-                 this.$emit("change-showCode");
-                tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
+//                 this.$emit("change-showCode");
+//                tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
             },
             closeThis: function(){
                 this.$emit("close-this");

@@ -227,7 +227,7 @@
                     </div>
                     <div>
                         <div>运力归属</div>
-                        <div>{{receiveIntention.capacityCompany.airlnCd || '-'}}</div>
+                        <div>{{receiveIntention.capacityCompany.airlnCd}}</div>
                         <!--<div>东方航空</div>-->
                     </div>
                     <div>
@@ -478,6 +478,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
+        props:['sendDataToMyPurpose'],
         data() {
             return {
                 firstShow: false,
@@ -536,29 +537,29 @@
                 demandState6: false, //是否为"审核通过"
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
+                airlnCd: '',            // 运力归属
             }
         },
         created() {
-            tabulationBoxTrigger.$on('sendDataToMyPurpose', val => {
-                console.info(val)
-                this.id = val.demandId;
-//                if (val.demand.demandtype == 0) {
-                    this.getData();
-//                }
-            });
+            let val = this.sendDataToMyPurpose;
+            this.id = val.demandId;
+            if (val.demand.demandtype == 0) {
+                this.getData();
+            }
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
                 this.listData = val;   //获取意向列表
             })
         },
+       /* watch: {
+            id: function () {
+                this.getData();
+                console.info('11111')
+            }
+        },*/
         computed: {
             ...vx.mapGetters([
                 'role'
             ])
-        },
-        watch: {
-            id: function () {
-                this.getData();
-            }
         },
         methods: {
             // ajax获取的数据，并渲染
@@ -574,8 +575,9 @@
                     }
                 })
                 .then((response) => {
-                    console.info('response:')
-                    console.info(response)
+//                    console.info('00000')
+//                    console.info('response:')
+//                    console.info(response)
 //                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
                     this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据(意向方数据)
@@ -596,8 +598,6 @@
 //                    this.periodValidity0 = this.myData.periodValidity;
 //                    this.periodValidity0 = this.myData.periodValidity.split(',')[0];
                     this.periodValidity1 = this.myData.periodValidity.split(',')[1];
-                    console.info('myData:')
-                    console.info(this.myData)
                     if (this.myData.subsidypolicy == 0) {
                         this.subsidypolicy = '定补'
                     }
@@ -615,21 +615,20 @@
                     }
                     // 修改this.showCode
                     if(this.myData.demandstate == 5 || this.myData.demandstate == 3 || this.myData.demandprogress == 3 || this.myData.demandprogress == 10) {
-                        console.info('payAfter:5')
                         this.showCode = 5; // “关闭”状态
                     }else {
                         if (this.isSelf == true && this.isIntentionMoney == false) {
-                                console.info('payAfter:' + 1)
+//                                console.info('payAfter:' + 1)
                             this.showCode = 1;
                         }if (this.isSelf == true && this.isIntentionMoney == true) {
-                                console.info('payAfter:' + 3)
+//                                console.info('payAfter:' + 3)
                             this.showCode = 3;
                             tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
                         }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
-                        console.info('000000')
+//                        console.info('000000')
                             this.showCode = 0;
                         }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
-                             console.info('payAfter:' + 4)
+//                        console.info('payAfter:' + 4)
                             this.showCode = 4;
                         }
                         // 判断demandState是否通过（6）demandState  0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过

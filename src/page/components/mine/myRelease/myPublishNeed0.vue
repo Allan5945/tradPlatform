@@ -536,10 +536,11 @@
                 demandState6: false, //是否为"审核通过"
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
+                airlnCd: '',            // 运力归属
             }
         },
         created() {
-            tabulationBoxTrigger.$on('sendDataToMyPublish', val => { // 从myPublishList获取数据
+            tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
                 this.id = val.id;
                 if (val.demandtype == 0) {
                     this.getData();
@@ -548,7 +549,7 @@
             });
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
                 this.listData = val;   //获取意向列表
-            }) //向payAfter的意向列表传参数
+            })
         },
         computed: {
             ...vx.mapGetters([

@@ -537,6 +537,7 @@
                 demandState6: false, //是否为"审核通过"
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
+                airlnCd: '',            // 运力归属
             }
         },
         watch: {
@@ -547,21 +548,10 @@
                 if (this.sendToCompany.demandType == '航线需求') {
                     console.info('getData')
                     this.getData();
-//                    this.$emit('transShow');
                 }
             }
         },
         created() {
-            /*tabulationBoxTrigger.$on('sendToCompany', val => {  // 从myCompanyAccountList.vue接受数据
-                this.id = val.demandId;
-                if (val.demandType == '航线需求') {
-                    console.info('getData')
-                    this.getData();
-                    this.$emit('transShow');
-                }
-            });*/
-            console.info('sendToCompanyCreated:')
-            console.info(this.sendToCompany)
             this.id = this.sendToCompany.demandId;
             if (this.sendToCompany.demandType == '航线需求') {
                 console.info('getData')
