@@ -44,7 +44,7 @@
                             {{item.demandprogress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" @click.stop v-show="item.responseEmployees != null && item.intentionMoneyState === 0" @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
+                            <span class="icon-item talk-icon" @click.stop v-show="item.responseEmployees != 0 && item.intentionMoneyState === '0'" @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
                                 <span class="talk-num" v-show="item.unreadMessageCount != 0">{{item.unreadMessageCount}}</span>
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="vl in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl)">
@@ -67,8 +67,8 @@
             <myPublish0 v-show="myPublishShow0" @refresh="refreshFn" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
             <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1" :key="3"></myPublishNeed1>
             <!--<myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>-->
-            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
-            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
+            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @refresh="refreshFn" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
+            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @refresh="refreshFn" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
         </transition-group>
     </div>
 </template>
@@ -94,9 +94,10 @@
                 //不同需求类型展现的状态不同
 //                type: [],
                 type: [],
-                type0: ['运力投放','委托运力投放'], // 0：航司方登录
-                type1: ['航线需求','委托航线需求','运营托管'], // 1：机场方登录
+                type0: ['所有类型','运力投放','委托运力投放'], // 0：航司方登录
+                type1: ['所有类型','航线需求','委托航线需求','运营托管'], // 1：机场方登录
                 state: [],
+                state0: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成','待处理','已接受','处理中','已拒绝'],
                 state1: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
                 state2: ['待处理','测评中','已接受','已拒绝','已关闭'],
                 state3: ['待处理','处理中','意向征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
@@ -114,7 +115,7 @@
 
                 timeUpDown: true,           // 通过时间进行排序
                 sendData:{                   // 请求的参数
-                    page:1,                  // 页码，必传
+                    page: 2,                  // 页码，必传
 //                    pageNo:4,
                     demandType: '',         // 查询需求类型 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
                     demandprogress:'',      // 状态类型 0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、
@@ -127,6 +128,7 @@
         mounted() {
             this.judgeRole();
             this.getListData();
+            this.state = this.state0;
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         watch: {
@@ -198,7 +200,8 @@
             },
             // 刷新页面数据
             refreshFn: function () {
-//                console.info('refreshFn');
+                this.myData0 = [];
+                this.myData1 = [];
                 this.getListData();
             },
             // 点击对应的意向用户，弹出聊天框
@@ -207,7 +210,7 @@
                 chatObj.demandEmployeeId = this.role.id;
                 chatObj.id = item.id;
                 chatObj.employeeId = vl.id;
-                console.info(chatObj)
+//                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             typeShowFn: function () {
@@ -230,7 +233,10 @@
                 this.typeWriting = item;
                 this.sendData.demandprogress = ''; // 状态类型
                 this.stateWriting = '状态';
-                if(item == '航线需求') {
+                if (item == '所有类型') {
+                    this.state = this.state0;
+                    this.sendData.demandType = '';
+                }if(item == '航线需求') {
                     this.state = this.state1;
                     this.sendData.demandType = 0;
                 }if(item == '运营托管') {

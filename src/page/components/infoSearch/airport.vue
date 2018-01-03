@@ -1,9 +1,10 @@
 <template>
-    <div >
+    <div  class="wrapper">
+        <searchHeader @search = "searchData"></searchHeader>
         <div class="content">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
-                <div class="b-til">{{airportText}}</div>
+                <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
                 <div class="sidebar">
                     <div><span class="iconfont">&#xe603;</span>基本信息</div>
                      <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
@@ -16,8 +17,8 @@
                         <ul>
                             <li><div>机场名字</div><div>{{infoData.airlnCd || "-"}}</div></li>
                             <li><div>所在城市</div><div>{{infoData.city || "-"}}</div></li>
-                            <li><div>所属机场集团</div><div>{{infoData.membershipgroup || "-"}}</div></li>
-                            <li><div>机场类型</div><div>{{infoData.airpotcls || "-"}}</div></li>
+                            <li><div>所属机场集团</div><div class="shipgroup">{{infoData.membershipgroup || "-"}}</div></li>
+                            <li><div>机场类型</div><div>{{infoData.airpottype || "-"}}</div></li>
                             <li><div>是否特殊机场</div><div>{{infoData.specialairport || "-"}}</div></li>
                             <li><div>飞行区等级</div><div>{{infoData.airfieldlvl || "-"}}</div></li>
                             <li><div>灯光条件</div><div>{{infoData.lightingconditions || "-"}}</div></li>
@@ -50,11 +51,21 @@
                             <li><div>距离市区</div><div>{{infoData.distancefromdowntown || "-"}}</div></li>
                         </ul>
                     </div>
+                    <div class="airport-info" @click="airportInfo">机场情报></div>
                 </div>
                 <div class="i-echart">
-                   <div id="myChart1"></div>
-                    <div id="myChart2"></div>
-                    <div id="myChart3"></div>
+                    <div>
+                        <h5>旅客吞吐量</h5>
+                       <div id="myChart1"></div>
+                    </div>
+                    <div>
+                        <h5>货物吞吐量</h5>
+                       <div id="myChart2"></div>
+                    </div>
+                    <div>
+                        <h5>起降架次</h5>
+                       <div id="myChart3"></div>
+                    </div>
                 </div>
                 <div class="airport-track">
                     <div class="track-til">
@@ -67,35 +78,41 @@
                         <div><span>等级</span>{{item.runwaylvl || "-"}}</div>
                         <div><span>长度</span>{{item.runwaywidth|| "-"}}</div>
                         <div><span>宽度</span>{{item.runwaylength|| "-"}}</div>
-
+                    </div>
+                    <div class="track-content" v-if="!infoData.runwayList">
+                        <div style="text-align:center;width:100%;color:red;">暂无内容</div>
                     </div>
                 </div>
                 <div class="airport-policy" >
                     <div class="policy-til">
                         <div>相关政策</div>
-                        <div style="color:#3c78ff;">共2条</div>
+                        <div style="color:#3c78ff;" v-if='infoData.rewardPolicyList'>共{{infoData.rewardPolicyList.length}}条</div>
                     </div>
                     <div class="policy-content">
-                        <div class="time">2014.12.12</div>
-                        <div class="text">
-                            <div class="text-til">内容</div>
-                            <div class="text-tent">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容
-                            我是内容我是内容我是内容我是内容我是内容我是内容</div>
+                        <div class="policy-content-item" v-for="item in infoData.rewardPolicyList">
+                            <div class="time">{{item.rewardpolicydate|| "--"}}</div>
+                            <div class="text">
+                                <div class="text-til">内容</div>
+                                <div class="text-tent">{{item.rewardpolicytext|| "--"}}</div>
+                            </div>
+                        </div>
+                        <div class="policy-content-item" v-if="!infoData.rewardPolicyList">
+                           <div style="text-align:center;width:100%;color:red;">暂无内容</div>
                         </div>
                     </div>
                 </div>
                 <div class="news">
                     <div class="n-til">
                         <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                        <div class="more">查看更多></div>
+                        <div class="more" @click="getMore">查看更多></div>
                     </div>
                     <div class="news-box" v-for="item in infoData.opinions">
                         <div class="box-pic">
-                            <img :src="img" alt="">
+                            <img :src="item.articleImage||noimg" alt="">
                         </div>
                         <div class="box-content">
                             <div class="box-til">
-                                <div class="name"><a :href="item.articleUrl">{{item.articleTitle}}</a></div>
+                                <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
                                 <div class="type">
                                     <div>{{item.articleType}}</div>
                                 </div>
@@ -110,37 +127,62 @@
                 </div>
             </div>
         </div>
+        <airportInfo v-show="detailInfoShow" @closeDetail="closeDetail"></airportInfo>
     </div>
 </template>
 
 <script>
+    import * as vx from 'vuex';
     import echarts from 'echarts';
+    import { Loading } from 'element-ui';
     import myPic from '$src/static/img/Slice.png';
     import noimg from './../../../static/img/pubo/noimg.png';
+    import searchHeader from './searchHeader.vue'
+    import airportInfo from './airportInfo.vue'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
         data() {
             return {
-                infoData:{}
+                infoData:{},
+                qyCode:'',
+                detailInfoShow:false
             }
         },
-        props:['qyCode','airportText'],
         watch: {
             'qyCode':function(){
                 this.getData();
             }
         },
        computed:{
+            ...vx.mapGetters([
+                'searchInfo'
+            ]),
             img:function(){
                 return myPic;
             },
+             noimg:function(){
+                return noimg;
+            },
             years:function(){
                 if(this.infoData){
-                    return this.infoData.years.reverse()
+                    return this.infoData.years.reverse();
                 }
             }
         },
         methods: {
+            searchData(qyCode){
+                this.qyCode = qyCode;
+            },
+            openWindow(src) {
+                window.open(src);
+            },
+            airportInfo(){
+                this.detailInfoShow = true;
+            },
             getData(){
+                this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 this.$ajax({
                 method: 'post',
                 url: '/loadAirportByCode',
@@ -156,25 +198,32 @@
                         this.infoData = response.data.obj;
                         this.drawLine(this.infoData);
                     }
+                     this.loading.close();
                 })
                 .catch((error) => {
-                        console.log(error);
+                    this.loading.close();
+                    console.log(error);
                     }
                 );
             },
             drawLine(data){
-                let myChart1 = this.$echarts.init(document.getElementById('myChart1'))
-                let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
-                let myChart3 = this.$echarts.init(document.getElementById('myChart3'))
+                let myChart1 = this.$echarts.init(document.getElementById('myChart1')),
+                    myChart2 = this.$echarts.init(document.getElementById('myChart2')),
+                    myChart3 = this.$echarts.init(document.getElementById('myChart3'));
                 myChart1.setOption({
-                    title: { text: '旅客吞吐量' },
-                    tooltip: {},
                     xAxis: {
                         data: this.years
                     },
                     yAxis: {
-                        name:'单位：1000万',
-                        data: ["0","1","2","3","4","5","6"]
+                        name:'单位:1000万',
+                        //data: ["0","1","2","3","4","5","6"],
+                        type : 'value',
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type:'dashed'
+                            }
+                        }
                     },
                     series: [{
                         name: '旅客吞吐量',
@@ -183,14 +232,19 @@
                     }]
                 });
                  myChart2.setOption({
-                    title: { text: '货物吞吐量' },
-                    tooltip: {},
                     xAxis: {
                         data: this.years
                     },
                     yAxis: {
-                        name:'单位：10万',
-                        data:["0","1","2","3","4","5","6"]
+                        name:'单位:10万',
+                        //data:["0","1","2","3","4","5","6"]
+                        type : 'value',
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type:'dashed'
+                            }
+                        }
                     },
                     series: [{
                         name: '货物吞吐量',
@@ -199,14 +253,19 @@
                     }]
                 });
                   myChart3.setOption({
-                    title: { text: '起降架次' },
-                    tooltip: {},
                     xAxis: {
                         data: this.years
                     },
                     yAxis: {
-                        name:'单位：10万',
-                        data: ["0","1","2","3","4","5","6"]
+                        name:'单位:10万',
+                        //data: ["0","1","2","3","4","5","6"]
+                        type : 'value',
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type:'dashed'
+                            }
+                        }
                     },
                     series: [{
                         name: '起降架次',
@@ -221,13 +280,23 @@
                     newNum.push(item*100000 /(Math.pow(10,n+5)));
                 })
                 return newNum.reverse();
+            },
+            closeDetail(){
+                this.detailInfoShow = false;
+            },
+            getMore(){
+                 this.$router.push({ path: '/index/opinion'});
             }
         },
         mounted() {
-            this.getData();
+            this.qyCode = this.searchInfo.qyCode;
+        },
+        beforeDestory(){
+            tabulationBoxTrigger.$emit("moreNews",this.infoData.airlnCd);
         },
         components:{
-
+            searchHeader,
+            airportInfo
         }
     }
 </script>
@@ -241,6 +310,26 @@
         list-style:none;
         padding:0;
         margin:0;
+    }
+    .wrapper{
+        position: absolute;
+        width: 100%;
+        min-height:100%;
+        top: 0;
+        left: 0;
+        background-color: #f5f5f5;
+        z-index: 12;
+        color:#605e7c;
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index:1;
+            height:120px;
+            width:100%;
+            background-color:#3c78ff;
+            display:flex;
+        }
     }
     .content{
         width:1100px;
@@ -310,7 +399,15 @@
         }
         .i-content{
             display:flex;
+            position:relative;
             padding:58px 0;
+            .airport-info{
+                position:absolute;
+                bottom:50px;
+                right:50px;
+                color:#3c78ff;
+                cursor:pointer;
+            }
         }
     }
     .info-box{
@@ -330,28 +427,41 @@
                 padding-left:18px;
                 font-size:1.4rem;
             }
+            .shipgroup,.fl-type{
+                width:208px;
+                overflow : hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+            }
         }
-        .fl-type{
-            width:250px;
-            overflow : hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-        }
-
     }
     .i-echart{
-
+        margin:0 20px 20px 20px;
         height:370px;
-        margin:0 20px 20px 10px;
         display:flex;
+        >div{
+            height: 370px;
+            width:345px;
+            border:1px solid #ccc;
+            box-sizing:border-box;
+            margin-right:12px;
+        }
+         >div:last-of-type{
+             margin-right:0;
+        }
+        h5{
+            height:50px;
+            line-height:50px;
+            font-size:1.5rem;
+            padding-left:26px;
+            border-bottom:1px solid #ccc;
+        }
     }
     #myChart1,#myChart2,#myChart3{
-        flex:1;
-        height: 370px;
-        margin-left:10px;
-        border:1px solid #ccc;
+        width:345px;
+        height: 320px;
     }
     .airport-track{
         margin:0 20px;
@@ -393,12 +503,18 @@
             padding:0 20px 0 26px;
             border-bottom:1px solid #ccc;
         }
-        .policy-content{
-            margin-top:20px;
+       .policy-content{
+           margin-top:20px;
+           border-top:1px solid #ccc;
+           >div:last-of-type{
+                border-bottom:0;
+           }
+       }
+        .policy-content-item{
             height:60px;
             line-height:60px;
             font-size:1.4rem;
-            border-top:1px solid #ccc;
+            border-bottom:1px solid #ccc;
             display:flex;
              .time{
                 width:230px;
@@ -439,7 +555,7 @@
                  display:flex;
             }
             .more{
-
+                cursor:pointer;
             }
         }
     }
@@ -452,7 +568,6 @@
         .box-pic{
             width:170px;
             height:110px;
-            background-color:pink;
             img{
                 width:100%;
                 height:100%;
@@ -471,8 +586,17 @@
             .name{
                 height:16px;
                 line-height:16px;
-                border-bottom:1px solid #000;
                 margin:11px 0 15px 0;
+                cursor:pointer;
+                a{
+                    text-decoration: underline;
+                    &:hover {
+                        color: #51a2ff;
+                    }
+                    &:active {
+                        color: #3c78ff;
+                    }
+                }
             }
         }
         .type{

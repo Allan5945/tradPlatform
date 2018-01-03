@@ -44,7 +44,7 @@
                             {{item.responseProgress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" v-show="item.responseProgress == '意向征集' || item.responseProgress == '订单确认'" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
+                            <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
                                 <span v-show="talkNumShow">1</span>
                             </span>
                         </div>
@@ -55,9 +55,10 @@
                 </div>
             </div>
         </div>
-        <transition name="slidex-fade">
-            <myPurpose v-show="myPurposeShow" @close-this="closeThisFn" @refresh="refreshFn"></myPurpose>
-        </transition>
+        <transition-group name="slidex-fade">
+            <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="5"></myPurpose>
+            <myPurpose1 v-if="myPurpose1Show" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="6"></myPurpose1>
+        </transition-group>
     </div>
 </template>
 <script>
@@ -65,6 +66,7 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
     import myPurpose from './myPurpose.vue'
+    import myPurpose1 from './myPurpose1.vue'
 
     export default {
         data() {
@@ -82,6 +84,7 @@
                 state1: ['意向征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
                 state2: ['意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
                 myPurposeShow: false, // myPublish是否显示
+                myPurpose1Show: false,// myPurpose1是否显示
                 talkNumShow: false,         //是否有对话
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
@@ -96,6 +99,7 @@
                     responseProgress: '',   // 状态 [0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付]
                     orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
+                sendDataToMyPurpose: {},   // 向myPurpose、myPurpose1传数据
             }
         },
         watch:{
@@ -189,7 +193,7 @@
                 chatObj.demandEmployeeId = item.demandEmployeeId;
                 chatObj.employeeId = item.employeeId;
                 chatObj.id = item.demandId;
-                console.info(chatObj)
+//                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             typeShowFn: function () {
@@ -261,8 +265,12 @@
 //                    console.info(response.data.obj)
                     if(response.data.opResult == 0){
                         this.listItemIndex = index; //变成active状态
-                        this.myPurposeShow = true;
-                        tabulationBoxTrigger.$emit('sendDataToMyPurpose',response.data.obj); //将item的参数传递给myPurpose.vue
+                        if(this.role.role == 0) { //0：航司 1：机场 2：太美
+                            this.myPurposeShow = true;
+                        }else if(this.role.role == 1) {
+                            this.myPurpose1Show = true;
+                        }
+                        this.sendDataToMyPurpose = response.data.obj;  //将item的参数传递给myPurpose.vue
                         tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                     }else {
                         alert('错误代码response.data.opResult：' + response.data.opResult)
@@ -276,6 +284,7 @@
             closeThisFn: function () {
                 this.listItemIndex = '';
                 this.myPurposeShow = false;
+                this.myPurpose1Show = false;
                 tabulationBoxTrigger.hierarchy = false;
             }
         },
@@ -286,7 +295,8 @@
         },
         components: {
             stateList,
-            myPurpose
+            myPurpose,
+            myPurpose1,
         }
     }
 </script>

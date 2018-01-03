@@ -27,7 +27,15 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
 const opinion = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
 // 信息查询
 const information = resolve => require(['./../page/components/infoSearch/infoSearchIndex.vue'], resolve);
-
+    //信息查询 4个板块
+        //机场查询
+        const airport = resolve => require(['./../page/components/infoSearch/airport.vue'], resolve);
+        //航司查询
+        const airline = resolve => require(['./../page/components/infoSearch/airline.vue'], resolve);
+        //时刻查询
+        const time = resolve => require(['./../page/components/infoSearch/time.vue'], resolve);
+        //城市查询
+        const city = resolve => require(['./../page/components/infoSearch/city.vue'], resolve);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -80,6 +88,24 @@ const router = new VueRouter({
                 {
                     path:'information',
                     component: information,
+                    children:[
+                        {
+                            path: 'airport',
+                            component: airport
+                        },
+                        {
+                            path: 'airline',
+                            component: airline
+                        },
+                        {
+                            path: 'time',
+                            component: time
+                        },
+                        {
+                            path: 'city',
+                            component: city
+                        }
+                    ]
                 }
             ]
         },

@@ -36,7 +36,6 @@ export default {
     watch:{
         updata:function(){
             let num = Math.round(document.getElementById("case").scrollTop/document.getElementById("case").offsetHeight +1)
-            console.log(num);
             switch(num){
                 case 1:
                 case 2:

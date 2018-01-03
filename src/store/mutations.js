@@ -208,6 +208,9 @@ const mutations = {
     [types.CHANGEORDER](state,vl) {
         state.demandList.conditions.order = !state.demandList.conditions.order;
     },
+    [types.SEARCHINFO](state,vl) {
+        state.searchInfo = vl;
+    },
 };
 export default {
 	state,

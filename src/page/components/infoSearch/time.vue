@@ -1,5 +1,6 @@
 <template>
-    <div >
+    <div class="wrapper">
+        <searchHeader @search = "searchData"></searchHeader>
         <div class="content">
             <div class="banner">
                 <div class="airport-img"><img :src="img2" alt=""></div>
@@ -124,11 +125,16 @@
 </template>
 
 <script>
+ import * as vx from 'vuex';
+ import { Loading } from 'element-ui';
+ import searchHeader from './searchHeader.vue'
  import myPic1 from '$src/static/img/Slice.png';
  import myPic2 from '$src/static/img/infobg.png';
     export default {
         data() {
             return {
+                airportText:'',
+                qyCode:'',
                 timeTableList:[],
                 timeList:[],
                 timeIndex:'0',
@@ -140,16 +146,19 @@
                 sorted3:false
             }
         },
-        props:['qyCode','airportText'],
         watch: {
             "inputData": function(){
                 this.updateData();
             },
             'qyCode':function(){
                 this.updateData();
+                this.airportText = this.searchInfo.searchText;
             }
         },
        computed:{
+            ...vx.mapGetters([
+                'searchInfo'
+            ]),
             distrList1:function(){
                 if(this.distrList){
                     let data = this.distrList.splice(0,1);
@@ -165,12 +174,18 @@
             }
         },
         methods: {
+            searchData(qyCode){
+               this.qyCode = qyCode;
+            },
             getTime(i){
                 this.inputData = this.timeList[i];
                 this.showSelcList = false;
                 this.timeIndex = i;
             },
             getData(){
+                 this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 this.$ajax({
                 method: 'post',
                 url: '/getAirportTimeInfo',
@@ -186,9 +201,11 @@
                         this.timeTableList = response.data.list;
                         this.timeList = response.data.timeList;
                         this.inputData = this.timeList[0];
+                        this.loading.close();
                     }
                 })
                 .catch((error) => {
+                        this.loading.close();
                         console.log(error);
                     }
                 );
@@ -284,11 +301,13 @@
             },
         },
         mounted() {
+            this.airportText = this.searchInfo.searchText;
+            this.qyCode = this.searchInfo.qyCode;
             this.getData();
             this.getClock(this.inputData,this.qyCode);
         },
         components:{
-
+            searchHeader
         }
     }
 </script>
@@ -302,6 +321,26 @@
         list-style:none;
         padding:0;
         margin:0;
+    }
+    .wrapper{
+        position: absolute;
+        width: 100%;
+        min-height:100%;
+        top: 0;
+        left: 0;
+        background-color: #f5f5f5;
+        z-index: 12;
+        color:#605e7c;
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index:1;
+            height:120px;
+            width:100%;
+            background-color:#3c78ff;
+            display:flex;
+        }
     }
     .content{
         width:1100px;

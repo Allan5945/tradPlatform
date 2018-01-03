@@ -179,7 +179,7 @@
               </div>
           </footer>
       </div>
-    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :responseId = "planData.id"></sureForm>
+    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "planData"></sureForm>
     </div>
 </template>
 
@@ -226,7 +226,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("取消意向成功！")
+                    //alert("取消意向成功！")
                     this.$emit('responseClose');
                   }
                 })
@@ -252,7 +252,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("确认方案成功！")
+                    //alert("确认方案成功！")
                     this.$emit('responseClose');
                   }
                 })
@@ -271,13 +271,14 @@
                   params: {
                     id: this.planData.id,
                     demandId: this.planData.demandId,
+                    employeeId:this.planData.employeeId,
                     responseselected: '1',
                     releaseselected: '0'
                 }
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("撤回方案成功！")
+                    //alert("撤回方案成功！")
                     this.$emit('responseClose');
                   }
                 })
@@ -299,7 +300,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("收藏成功！")
+                    //alert("收藏成功！")
                     this.isCollect = true;
                   }
                 })
@@ -318,7 +319,7 @@
        mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             if(val.data.demandtype == 1 && this.role.role == 1){
-               console.log("demandtype"+val.data.demandtype);
+               //console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',

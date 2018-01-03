@@ -59,7 +59,7 @@
                         setTimeout(function(){
                             that.$emit('cancel');
                             that.$emit('sure');
-                        },1000)
+                        },0)
                         alert('成功提交意向金！')
 //                        tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向payAfter的意向列表传参数
                     }else{

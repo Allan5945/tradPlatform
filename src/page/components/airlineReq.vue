@@ -307,7 +307,7 @@
                 <div class="top item-child">
                     <span class="margin-right">其他说明</span>　
                     <div class="choose-input">
-                        <input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" style="border: 0;"><span>0/35</span>
+                        <input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>
                     </div>
                 </div>
                 <div class="bottom item-child">
@@ -353,7 +353,7 @@
                     </span>
                     </div>
                     <span class="hover-show">...</span>
-                    <input class="input-mes-a" type="text" @focus="airportFn4" >
+                    <input class="input-mes-a" type="text" @click.stop="airportFn4" >
                     <airportS class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airportS>
                 </div>
             </div>
@@ -367,7 +367,7 @@
 </template>
 <script>
     import airAreaSearch from './airAreaSearch.vue'
-    import airportS from '../reuseComponents/airportSearch.vue'
+    import airportS from '../reuseComponents/airportSearch1.vue'
     import calendar from './calendar'
 
     export default {
@@ -509,6 +509,9 @@
             this.space3Fn();
         },
         computed: {
+            num: function () { // 其他说明中已输入的字数
+                return this.remarkMsg.length;
+            },
             sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
             },

@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="t-btn">
-                <div class="confirm-btn" @click="submit(),closeThis()">提交</div>
+                <div class="confirm-btn" @click="submit">提交</div>
                 <div class="cancel-btn" @click="closeThis">取消</div>
             </div>
         </div>
@@ -108,12 +108,18 @@
                 params: demandData
                 }) .then((response) => {
                         //console.log(response.opResult);
+                    if(response.data.opResult == 0){
+                        alert('成功发布托管');
+                        this.closeThis();
+                    }else {
+                        alert(`托管发布失败，错误代码：${response.data.opResult}`);
+                    }
                 }) .catch((error) => {
                         console.log(error);
                     });
 
-                 this.$emit("change-showCode");
-                tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
+//                 this.$emit("change-showCode");
+//                tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
             },
             closeThis: function(){
                 this.$emit("close-this");

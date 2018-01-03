@@ -697,6 +697,18 @@
                 this.sendData.scheduling = this.scheduling;    // 接受调度（0:接收,1:不接收）
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
+               /*新增参数
+                releaseselected : '发布者选定(0:表示选定,1:表示未选定)';
+                responseselected : '响应者选定(0:表示选定,1:表示未选定)';
+                responseProgress : '响应状态:[0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付]';
+                employeeId : '响应者id';
+                demandId : '需求表ID';
+                */
+                this.sendData.releaseselected = this.planDataToForm.releaseselected;
+                this.sendData.responseselected = this.planDataToForm.responseselected;
+                this.sendData.responseProgress = this.planDataToForm.responseProgress;
+                this.sendData.employeeId = this.planDataToForm.employeeId;
+                this.sendData.demandId = this.planDataToForm.demandId;
 //                console.info('000sendData:')
 //                console.info(this.sendData);
                 this.$ajax({

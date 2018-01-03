@@ -540,7 +540,7 @@
                 demandData:{}
             }
         },
-        props:["responseId"],
+        props:["planData"],
         components: {
             airAreaSearch,
             airportS,
@@ -569,7 +569,6 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
                 this.warn4Show = true;
             },
              cancel:function(){
@@ -594,7 +593,11 @@
                     this.warn4Show = true;
                     return
                 }*/
-                this.sendData.id = this.responseId;
+                this.sendData.id = this.planData.id;
+                this.sendData.employeeId = this.planData.employeeId;
+                this.sendData.releaseselected = this.planData.releaseselected;
+                this.sendData.responseselected = this.planData.responseselected;
+                this.sendData.responseProgress = this.planData.responseProgress;
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -651,9 +654,7 @@
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
 //                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('sendData:');
-                console.info(this.sendData);
-//                console.info(this.acceptData);
+
                 this.$ajax({
                     url: "/updateResponseSelective",
                     method: 'POST',
@@ -663,7 +664,7 @@
                     params: this.sendData
                 }).then((response) => {
                     if(response.data.opResult == "0"){
-                        alert("修改意向成功！")
+                        //alert("修改成功！")
                          this.$emit('closeForm');
                   }
                 }).catch((error) => {

@@ -178,9 +178,9 @@
                                     <div>{{val.remark}}</div>
                                 </div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val)" v-if="selIndex == index">选定</div>
+                            <div class="sure-btn" @click="toSelect(val,index)" v-if="selIndex == index">选定</div>
                             <div class="btns" v-else>
-                                <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
+                                <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
                                 <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                             </div>
                         </div>
@@ -197,7 +197,8 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :responseId="responseId"></myIntentForm>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "response"></myIntentForm>
+        <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
@@ -207,6 +208,7 @@
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
   import myIntentForm from './myIntentForm1.vue'
+  import sureForm from './sureForm.vue'
   import  signDialog from './signDialog.vue'
  export default {
      data(){
@@ -215,13 +217,16 @@
              intentListShow:false,
              selIndex:'',
              myFormShow:false,
+             sureFormShow:false,
              dialogShow:false,
              text:"查看详情",
              detailData:{},
              planData:{},
+             editData:{},
+             response:{},
              selectData:{},
              intentionCount:0,
-             responseId:'',
+             response:{},
              isSign:false
          }
      },
@@ -245,13 +250,13 @@
             this.$emit('closeIntent');
          },
          toSelect:function(val,index){
-            tabulationBoxTrigger.$emit('sendTable',val);
+            //tabulationBoxTrigger.$emit('sendTable',val);
             this.selIndex = index;
             this.myFormShow = true;
-            this.selectData = val;
-            this.responseId = val.id;
-            this.selectData.releaseselected = '0';
-            this.$ajax({
+            //this.selectData = val;
+            this.response = val;
+            //this.selectData.releaseselected = '0';
+            /*this.$ajax({
                 method: 'post',
                 url: '/selectedResponse',
                 headers: {
@@ -267,7 +272,11 @@
                 .catch((error) => {
                         console.log(error);
                     }
-                );
+                );*/
+         },
+         toEdit:function(val,index){
+            this.editData = val;
+            this.sureFormShow = true;
          },
          closeNeed:function(){
                this.$ajax({
@@ -282,7 +291,7 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                    alert("取消需求成功!")
+                    //alert("取消需求成功!")
                      this.$emit('closeIntent');
                   }
                 })
@@ -305,7 +314,7 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                            this.selIndex = " ";
-                          alert("撤销选定成功!")
+                          //alert("撤销选定成功!")
                          }
                     })
                     .catch((error) => {
@@ -316,6 +325,9 @@
          },
          closeMyForm:function(){
               this.myFormShow = false;
+         },
+          closeSureForm:function(){
+              this.sureFormShow = false;
          },
          toDeal:function(){
             this.dialogShow =true;
@@ -334,7 +346,7 @@
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
 
-            console.log("demandtype"+val.data.demandtype);
+            //console.log("demandtype"+val.data.demandtype);
             if(val.data.demandtype == 1 && this.role.role == 0){
                 this.$ajax({
                 method: 'post',
@@ -372,7 +384,8 @@
      },
      components: {
             myIntentForm,
-            signDialog
+            signDialog,
+            sureForm
         }
 }
 </script>
