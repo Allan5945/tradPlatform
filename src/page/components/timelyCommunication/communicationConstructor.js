@@ -8,6 +8,8 @@ ln.$on('addChat', function (d)  {
     }else{
         if(_this.$store.getters.role.id == 1){
             k1 = _this.$store.getters.role.id;
+        }else {
+            k1 = d.employeeId;
         };
         if(k2 == d.employeeId){
             k2 = d.demandEmployeeId;

@@ -85,14 +85,14 @@
             <span class="line" style="position:absolute; left: 20px; bottom: 100px;"></span>
             <div class="eighth">
                 <div class="buttons" v-if="buttonShow">
-                    <button class="btn btn-w" @click="recallFn(),closeThisFn()">撤回该托管</button>
+                    <button class="btn btn-w" @click="recallFn">撤回该托管</button>
                 </div>
                 <!--<div class="buttons" v-else>
                     <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;"  @click="anewPublishClickFn2(),closeThisFn()">重新发布</button>
                     <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">撤回该托管</button>
                 </div>-->
             </div>
-            <editOperationForm  v-if="editOperationFormShow" @close-this="closeEditOperationForm" @change-showCode="changeShowCodeFn"></editOperationForm>
+            <editOperationForm  v-if="editOperationFormShow" @close-this="changeShowCodeFn"></editOperationForm>
         </div>
     </div>
 </template>
@@ -127,7 +127,12 @@
                 // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
                 // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
 //                this.wrongShow();
-                if(this.myData.demandprogress == 3 || this.myData.demandprogress == 8 || this.myData.demandprogress == 10){
+                if(this.myData.demandstate == 2
+                    || this.myData.demandstate == 3
+                    || this.myData.demandstate == 5
+                    || this.myData.demandprogress == 3
+                    || this.myData.demandprogress == 8
+                    || this.myData.demandprogress == 10){
                     this.buttonShow = false;
                 }else {
                     this.buttonShow = true;
@@ -213,12 +218,13 @@
                     this.releasetime = time2.join('.');*!/
                 });*/
                 this.closeThisFn();
-                this.closeEditOperationForm();
-            },
-            //关闭“编辑需求”表单
-            closeEditOperationForm: function () {
                 this.editOperationFormShow = false;
             },
+           /* //关闭“编辑需求”表单
+            closeEditOperationForm: function () {
+                this.closeThisFn();
+
+            },*/
 
             //点击“重新发布”
             anewPublishClickFn2: function () {
@@ -254,6 +260,13 @@
                         id: this.myData.id
                     }
                 }) .then((response) => {
+                    if(response.data.opResult === '0'){
+                        alert('成功撤回该托管！');
+                        this.$emit('refresh');
+                        this.closeThisFn();
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
 //                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {

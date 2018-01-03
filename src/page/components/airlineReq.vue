@@ -367,7 +367,7 @@
 </template>
 <script>
     import airAreaSearch from './airAreaSearch.vue'
-    import airportS from '../reuseComponents/airportSearch.vue'
+    import airportS from '../reuseComponents/airportSearch1.vue'
     import calendar from './calendar'
 
     export default {

@@ -113,7 +113,7 @@
             <div class="eighth">
                 <span class="line" style="position:absolute; top: 0px;"></span>
                 <div class="buttons" v-if="buttonShow">
-                    <button class="btn btn-w" @click="recallFn(),closeThisFn()">撤回该托管</button>
+                    <button class="btn btn-w" @click="recallFn">撤回该托管</button>
                 </div>
                 <!--<div class="buttons" v-else>
                     <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;" @click="anewPublishClickFn2(),closeThisFn()">重新发布</button>
@@ -298,6 +298,13 @@
                         id: this.myData.id
                     }
                 }) .then((response) => {
+                    if(response.data.opResult === '0'){
+                        alert('成功撤回该托管！');
+                        this.$emit('refresh');
+                        this.closeThisFn();
+                    }else{
+                        alert('错误代码：' + response.data.opResult)
+                    }
 //                    console.info(response.data)
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {

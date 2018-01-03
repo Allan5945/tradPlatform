@@ -668,7 +668,7 @@
                 chatObj.demandEmployeeId = this.myData.employeeId;
                 chatObj.id = this.myData.id;
                 chatObj.employeeId = item.employeeId;
-                console.info(chatObj)
+//                console.info(this.$store.getters.role.id)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // “重新发布”按钮点击
