@@ -299,7 +299,7 @@
                 <div class="top item-child">
                     <span class="margin-right">其他说明</span>　
                     <div class="choose-input">
-                        <input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" style="border: 0;"><span>0/35</span>
+                        <input class="input-mes" type="text" placeholder="可选填" maxlength="35" v-model="remarkMsg" style="border: 0;"><span>{{num}}/35</span>
                     </div>
                 </div>
                 <div class="bottom item-child">
@@ -462,6 +462,9 @@
             }
         },
         computed: {
+            num: function () { // 其他说明中已输入的字数
+                return this.remarkMsg.length;
+            },
             sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
             },
