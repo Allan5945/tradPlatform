@@ -291,7 +291,7 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                    alert("取消需求成功!")
+                    //alert("取消需求成功!")
                      this.$emit('closeIntent');
                   }
                 })
@@ -314,7 +314,7 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                            this.selIndex = " ";
-                          alert("撤销选定成功!")
+                          //alert("撤销选定成功!")
                          }
                     })
                     .catch((error) => {
@@ -346,7 +346,7 @@
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
 
-            console.log("demandtype"+val.data.demandtype);
+            //console.log("demandtype"+val.data.demandtype);
             if(val.data.demandtype == 1 && this.role.role == 0){
                 this.$ajax({
                 method: 'post',

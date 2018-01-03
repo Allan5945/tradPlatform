@@ -54,9 +54,18 @@
                     <div class="airport-info" @click="airportInfo">机场情报></div>
                 </div>
                 <div class="i-echart">
-                   <div id="myChart1"></div>
-                    <div id="myChart2"></div>
-                    <div id="myChart3"></div>
+                    <div>
+                        <h5>旅客吞吐量</h5>
+                       <div id="myChart1"></div>
+                    </div>
+                    <div>
+                        <h5>货物吞吐量</h5>
+                       <div id="myChart2"></div>
+                    </div>
+                    <div>
+                        <h5>起降架次</h5>
+                       <div id="myChart3"></div>
+                    </div>
                 </div>
                 <div class="airport-track">
                     <div class="track-til">
@@ -95,7 +104,7 @@
                 <div class="news">
                     <div class="n-til">
                         <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                        <div class="more">查看更多></div>
+                        <div class="more" @click="getMore">查看更多></div>
                     </div>
                     <div class="news-box" v-for="item in infoData.opinions">
                         <div class="box-pic">
@@ -125,10 +134,12 @@
 <script>
     import * as vx from 'vuex';
     import echarts from 'echarts';
+    import { Loading } from 'element-ui';
     import myPic from '$src/static/img/Slice.png';
     import noimg from './../../../static/img/pubo/noimg.png';
     import searchHeader from './searchHeader.vue'
     import airportInfo from './airportInfo.vue'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
         data() {
             return {
@@ -169,6 +180,9 @@
                 this.detailInfoShow = true;
             },
             getData(){
+                this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 this.$ajax({
                 method: 'post',
                 url: '/loadAirportByCode',
@@ -184,25 +198,32 @@
                         this.infoData = response.data.obj;
                         this.drawLine(this.infoData);
                     }
+                     this.loading.close();
                 })
                 .catch((error) => {
-                        console.log(error);
+                    this.loading.close();
+                    console.log(error);
                     }
                 );
             },
             drawLine(data){
-                let myChart1 = this.$echarts.init(document.getElementById('myChart1'))
-                let myChart2 = this.$echarts.init(document.getElementById('myChart2'))
-                let myChart3 = this.$echarts.init(document.getElementById('myChart3'))
+                let myChart1 = this.$echarts.init(document.getElementById('myChart1')),
+                    myChart2 = this.$echarts.init(document.getElementById('myChart2')),
+                    myChart3 = this.$echarts.init(document.getElementById('myChart3'));
                 myChart1.setOption({
-                    title: { text: '旅客吞吐量' },
-                    tooltip: {},
                     xAxis: {
                         data: this.years
                     },
                     yAxis: {
-                        name:'单位：1000万',
-                        data: ["0","1","2","3","4","5","6"]
+                        name:'单位:1000万',
+                        //data: ["0","1","2","3","4","5","6"],
+                        type : 'value',
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type:'dashed'
+                            }
+                        }
                     },
                     series: [{
                         name: '旅客吞吐量',
@@ -211,14 +232,19 @@
                     }]
                 });
                  myChart2.setOption({
-                    title: { text: '货物吞吐量' },
-                    tooltip: {},
                     xAxis: {
                         data: this.years
                     },
                     yAxis: {
-                        name:'单位：10万',
-                        data:["0","1","2","3","4","5","6"]
+                        name:'单位:10万',
+                        //data:["0","1","2","3","4","5","6"]
+                        type : 'value',
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type:'dashed'
+                            }
+                        }
                     },
                     series: [{
                         name: '货物吞吐量',
@@ -227,14 +253,19 @@
                     }]
                 });
                   myChart3.setOption({
-                    title: { text: '起降架次' },
-                    tooltip: {},
                     xAxis: {
                         data: this.years
                     },
                     yAxis: {
-                        name:'单位：10万',
-                        data: ["0","1","2","3","4","5","6"]
+                        name:'单位:10万',
+                        //data: ["0","1","2","3","4","5","6"]
+                        type : 'value',
+                        splitLine: {
+                            lineStyle: {
+                                color: ['#aaa'],
+                                type:'dashed'
+                            }
+                        }
                     },
                     series: [{
                         name: '起降架次',
@@ -252,10 +283,16 @@
             },
             closeDetail(){
                 this.detailInfoShow = false;
+            },
+            getMore(){
+                 this.$router.push({ path: '/index/opinion'});
             }
         },
         mounted() {
             this.qyCode = this.searchInfo.qyCode;
+        },
+        beforeDestory(){
+            tabulationBoxTrigger.$emit("moreNews",this.infoData.airlnCd);
         },
         components:{
             searchHeader,
@@ -401,16 +438,30 @@
         }
     }
     .i-echart{
-
+        margin:0 20px 20px 20px;
         height:370px;
-        margin:0 20px 20px 10px;
         display:flex;
+        >div{
+            height: 370px;
+            width:345px;
+            border:1px solid #ccc;
+            box-sizing:border-box;
+            margin-right:12px;
+        }
+         >div:last-of-type{
+             margin-right:0;
+        }
+        h5{
+            height:50px;
+            line-height:50px;
+            font-size:1.5rem;
+            padding-left:26px;
+            border-bottom:1px solid #ccc;
+        }
     }
     #myChart1,#myChart2,#myChart3{
-        flex:1;
-        height: 370px;
-        margin-left:10px;
-        border:1px solid #ccc;
+        width:345px;
+        height: 320px;
     }
     .airport-track{
         margin:0 20px;
@@ -504,7 +555,7 @@
                  display:flex;
             }
             .more{
-
+                cursor:pointer;
             }
         }
     }
@@ -535,9 +586,17 @@
             .name{
                 height:16px;
                 line-height:16px;
-                border-bottom:1px solid #000;
                 margin:11px 0 15px 0;
                 cursor:pointer;
+                a{
+                    text-decoration: underline;
+                    &:hover {
+                        color: #51a2ff;
+                    }
+                    &:active {
+                        color: #3c78ff;
+                    }
+                }
             }
         }
         .type{

@@ -65,11 +65,6 @@ import cityS from '../../reuseComponents/citySearch.vue'
                 this.citySearch = true;
             },
             getInfo(){
-                this.$store.dispatch('searchInfo', {
-                    qyCode : this.qyCode,
-                    selcType :this.selcType,
-                    searchText:this.airportText
-                });
                  if(this.selcType == '机场'){
                     this.$router.push({ path: '/index/information/airport'});
                 }else if(this.selcType == '航司'){
@@ -77,9 +72,15 @@ import cityS from '../../reuseComponents/citySearch.vue'
                 }else if(this.selcType == '时刻'){
                     this.$router.push({ path: '/index/information/time'});
                 }else if(this.selcType == '城市'){
+                    this.qyCode = this.airportText;
                     this.$router.push({ path: '/index/information/city'});
                 }
                  this.$emit('search',this.qyCode);
+                 this.$store.dispatch('searchInfo', {
+                    qyCode : this.qyCode,
+                    selcType :this.selcType,
+                    searchText:this.airportText
+                });
             }
 
         },

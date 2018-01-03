@@ -150,7 +150,7 @@
         methods:{
              closeDetail:function(i){
                  this.detailShowIndex = i;
-                 console.log(this.detailShowIndex)
+                 //console.log(this.detailShowIndex)
                  if(this.detailShow){
                     this.text = "收起详情";
                  }else{

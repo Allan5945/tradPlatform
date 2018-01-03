@@ -263,7 +263,7 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                    alert("选定成功!");
+
                   }
                 })
                 .catch((error) => {
@@ -331,7 +331,7 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                            this.selIndex = " ";
-                          alert("撤销选定成功!")
+                          //alert("撤销选定成功!")
                          }
                     })
                     .catch((error) => {
@@ -357,7 +357,7 @@
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             this.demandId = val.data.id;
-            console.log("demandtype"+val.data.demandtype);
+            //console.log("demandtype"+val.data.demandtype);
             if(val.data.demandtype == 1 && this.role.role == 2){
                 this.$ajax({
                 method: 'post',

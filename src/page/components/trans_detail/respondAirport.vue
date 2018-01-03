@@ -226,7 +226,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("取消意向成功！")
+                    //alert("取消意向成功！")
                     this.$emit('responseClose');
                   }
                 })
@@ -252,7 +252,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("确认方案成功！")
+                    //alert("确认方案成功！")
                     this.$emit('responseClose');
                   }
                 })
@@ -278,7 +278,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("撤回方案成功！")
+                    //alert("撤回方案成功！")
                     this.$emit('responseClose');
                   }
                 })
@@ -300,7 +300,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    alert("收藏成功！")
+                    //alert("收藏成功！")
                     this.isCollect = true;
                   }
                 })
@@ -319,7 +319,7 @@
        mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             if(val.data.demandtype == 1 && this.role.role == 1){
-               console.log("demandtype"+val.data.demandtype);
+               //console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',

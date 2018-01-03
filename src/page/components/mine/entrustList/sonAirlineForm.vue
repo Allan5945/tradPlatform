@@ -290,7 +290,7 @@
                                 </div>
                                 <div class="vertical-center">
                                     <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyTalk" @click="subsidyClick2"/>
-                                    <label for="alRsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
+                                    <label for="alRsubsidyTalk" class="input-label">可面谈</label>
                                 </div>
                             </div>
                         </div>
@@ -505,7 +505,6 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
                 this.warn4Show = true;
             },
             //发送数据
@@ -595,7 +594,7 @@
                 sendData.seating = this.seatingNum;            // 选填 座位数
                 sendData.remark = this.remarkMsg;              // 选填 备注说明
 
-                console.info(sendData);
+                //console.info(sendData);
                 this.$ajax({
                     url:"/sonDemandAdd",
                     method: 'post',
@@ -604,12 +603,9 @@
                     },
                     params: sendData
                 }) .then((response) => {
-                    console.info('1response:')
-                    console.info(response)
                     if(response.data.opResult === '0'){
                         this.$emit("closeForm");
                     }else{
-                        alert('错误代码：' + response.data.opResult)
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -899,11 +895,10 @@
             },
             subsidyClick2: function () {
                 this.subsidyCode = 3;
-                console.info('radio')
             },
-            kemiantan: function () {
+           /* kemiantan: function () {
                 console.info('label')
-            },
+            },*/
             //点击定向发布
             directionPublic: function () {
                 this.directionPublicShow = true;

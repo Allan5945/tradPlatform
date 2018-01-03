@@ -113,7 +113,7 @@
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             if(val.data.demandtype == 1 && this.role.role == 1){
-               console.log("demandtype"+val.data.demandtype);
+               //console.log("demandtype"+val.data.demandtype);
                 this.demandId = val.data.id;
                 this.$ajax({
                 method: 'post',

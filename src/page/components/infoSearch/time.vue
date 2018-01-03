@@ -126,6 +126,7 @@
 
 <script>
  import * as vx from 'vuex';
+ import { Loading } from 'element-ui';
  import searchHeader from './searchHeader.vue'
  import myPic1 from '$src/static/img/Slice.png';
  import myPic2 from '$src/static/img/infobg.png';
@@ -182,6 +183,9 @@
                 this.timeIndex = i;
             },
             getData(){
+                 this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 this.$ajax({
                 method: 'post',
                 url: '/getAirportTimeInfo',
@@ -197,9 +201,11 @@
                         this.timeTableList = response.data.list;
                         this.timeList = response.data.timeList;
                         this.inputData = this.timeList[0];
+                        this.loading.close();
                     }
                 })
                 .catch((error) => {
+                        this.loading.close();
                         console.log(error);
                     }
                 );
