@@ -42,14 +42,18 @@
                 <div class="airport-policy" >
                     <div class="policy-til">
                         <div>补贴</div>
-                        <div style="color:#3c78ff;">共2条</div>
+                        <div style="color:#3c78ff;" v-if='infoData.policys'>共{{infoData.policys.length}}条</div>
                     </div>
                     <div class="policy-content">
-                        <div class="time">2014.12.12</div>
-                        <div class="text">
-                            <div class="text-til">内容</div>
-                            <div class="text-tent">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容
-                            我是内容我是内容我是内容我是内容我是内容我是内容</div>
+                        <div class="policy-content-item" v-for="item in infoData.policys">
+                            <div class="time">{{item.policyyear|| "--"}}</div>
+                            <div class="text">
+                                <div class="text-til">内容</div>
+                                <div class="text-tent">{{item.subsidypolicy|| "--"}}</div>
+                            </div>
+                        </div>
+                        <div class="policy-content-item" v-if="!infoData.policys">
+                           <div style="text-align:center;width:100%;color:red;">暂无内容</div>
                         </div>
                     </div>
                 </div>
@@ -75,33 +79,29 @@
                         <div class="highway">
                             <div class="c-til">
                                 <div>公路</div>
-                                <div v-if="infoData.runwayList" style="color:#3c78ff;">共{{infoData.runwayList.length}}条</div>
+                                <div v-if="infoData.highwayList" style="color:#3c78ff;">共{{infoData.highwayList.length}}条</div>
                             </div>
-                            <div class="c-list-item">
-                                <div><span>类型</span></div>
-                                <div><span>代码</span></div>
-                                <div><span>途径点</span></div>
+                            <div class="c-list-item" v-for="item in infoData.highwayList">
+                                <div><span>类型</span>{{item.roadtype|| "--"}}</div>
+                                <div><span>代码</span>{{item.roadcode|| "--"}}</div>
+                                <div><span>途径点</span>{{item.roadpoint|| "--"}}</div>
                             </div>
-                             <div class="c-list-item">
-                                <div><span>类型</span></div>
-                                <div><span>代码</span></div>
-                                <div><span>途径点</span></div>
+                            <div class="c-list-item" v-if="!infoData.highwayList">
+                                <div style="text-align:center;width:100%;color:red;">暂无数据</div>
                             </div>
                         </div>
                          <div class="railway">
                             <div class="c-til">
                                 <div>铁路</div>
-                                <div  style="color:#3c78ff;">共4条</div>
+                                <div v-if="infoData.railwayList" style="color:#3c78ff;">共{{infoData.railwayList.length}}条</div>
                             </div>
-                            <div class="c-list-item">
-                                <div><span>类型</span></div>
-                                <div><span>代码</span></div>
-                                <div><span>途径点</span></div>
+                             <div class="c-list-item" v-for="item in infoData.railwayList">
+                                <div><span>类型</span>{{item.roadtype|| "--"}}</div>
+                                <div><span>代码</span>{{item.roadcode|| "--"}}</div>
+                                <div><span>途径点</span>{{item.roadpoint|| "--"}}</div>
                             </div>
-                             <div class="c-list-item">
-                                <div><span>类型</span></div>
-                                <div><span>代码</span></div>
-                                <div><span>途径点</span></div>
+                            <div class="c-list-item" v-if="!infoData.railwayList">
+                                <div style="text-align:center;width:100%;color:red;">暂无数据</div>
                             </div>
                         </div>
                     </div>
@@ -592,11 +592,17 @@
             border-bottom:1px solid #ccc;
         }
         .policy-content{
-            margin-top:20px;
+           margin-top:20px;
+           border-top:1px solid #ccc;
+           >div:last-of-type{
+                border-bottom:0;
+           }
+       }
+        .policy-content-item{
             height:60px;
             line-height:60px;
             font-size:1.4rem;
-            border-top:1px solid #ccc;
+            border-bottom:1px solid #ccc;
             display:flex;
              .time{
                 width:230px;
