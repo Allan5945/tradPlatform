@@ -56,8 +56,8 @@
             </div>
         </div>
         <transition-group name="slidex-fade">
-            <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="0"></myPurpose>
-            <myPurpose1 v-if="myPurpose1Show" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="1"></myPurpose1>
+            <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="5"></myPurpose>
+            <myPurpose1 v-if="myPurpose1Show" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="6"></myPurpose1>
         </transition-group>
     </div>
 </template>

@@ -161,7 +161,6 @@
         methods: {
             // 格式无误时显示的内容
             show: function () {
-//                this.buttonShow = true; //下方按钮显示1个
                 this.linkServiceShow = true; // 上方“联系客服”按钮
                 this.editPublishShow = false;  // 上方“编辑”按钮
                 this.anewPublishShow = false; //上方“重新发布”按钮
@@ -170,7 +169,6 @@
             },
             // “格式有误时显示的内容
             wrongShow: function () {
-//                this.buttonShow = true; //下方按钮显示1个
                 this.linkServiceShow = false; // 上方“联系客服”按钮
                 this.editPublishShow = false;  // 上方“编辑”按钮
                 this.anewPublishShow = true; // 上方“重新发布”按钮
@@ -190,7 +188,6 @@
            /* //点击“重新发布”
             anewPublishClickFn: function () {
 //                alert('重新发布')
-                this.buttonShow = false; //下方按钮显示1个
                 this.linkServiceShow = false; // 上方“联系客服”按钮
                 this.editPublishShow = true;  // 上方“编辑”按钮
                 this.anewPublishShow = false; //上方“重新发布”按钮

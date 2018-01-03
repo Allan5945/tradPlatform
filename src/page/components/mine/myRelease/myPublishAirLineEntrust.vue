@@ -163,7 +163,14 @@
                 this.id = this.myData.id;
                 // 状态有误时显示的内容
 //                this.wrongShow();
-                if(this.myData.demandprogress == 3 || this.myData.demandprogress == 8 || this.myData.demandprogress == 10){
+                // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
+                // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
+                if(this.myData.demandstate == 2
+                    || this.myData.demandstate == 3
+                    || this.myData.demandstate == 5
+                    || this.myData.demandprogress == 3
+                    || this.myData.demandprogress == 8
+                    || this.myData.demandprogress == 10){
                     this.buttonShow = false;
                 }else {
                     this.buttonShow = true;
@@ -201,7 +208,6 @@
         methods: {
             // 格式无误时显示的内容
             show: function () {
-                this.buttonShow = true; //下方按钮显示1个
                 this.linkServiceShow = true; // 上方“联系客服”按钮
                 this.editPublishShow = false;  // 上方“编辑”按钮
                 this.anewPublishShow = false; //上方“重新发布”按钮
@@ -210,7 +216,6 @@
             },
             // “格式有误时显示的内容
             wrongShow: function () {
-                this.buttonShow = true; //下方按钮显示1个
                 this.linkServiceShow = false; // 上方“联系客服”按钮
                 this.editPublishShow = false;  // 上方“编辑”按钮
                 this.anewPublishShow = true; //上方“重新发布”按钮
