@@ -193,7 +193,7 @@
                 chatObj.demandEmployeeId = item.demandEmployeeId;
                 chatObj.employeeId = item.employeeId;
                 chatObj.id = item.demandId;
-                console.info(chatObj)
+//                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             typeShowFn: function () {
@@ -249,8 +249,8 @@
             },
             // 点击列表(list)，展示详情
             listClickFn: function (item,index) {
-                console.info('purposeItem:')
-                console.info(item)
+//                console.info('purposeItem:')
+//                console.info(item)
                 this.$ajax({
                     url:"/getResponseDetails",
                     method: 'post',

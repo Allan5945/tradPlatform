@@ -346,7 +346,7 @@
       },
       mounted() {
         let val = this.sendDataToMyPurpose;
-        console.log("demandtype"+val.demand.demandtype);
+//        console.log("demandtype"+val.demand.demandtype);
         if(val.demand.demandtype == 1){
             this.$ajax({
             method: 'post',

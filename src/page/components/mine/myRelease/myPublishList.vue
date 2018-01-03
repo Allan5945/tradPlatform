@@ -210,7 +210,7 @@
                 chatObj.demandEmployeeId = this.role.id;
                 chatObj.id = item.id;
                 chatObj.employeeId = vl.id;
-                console.info(chatObj)
+//                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             typeShowFn: function () {

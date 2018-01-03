@@ -1012,7 +1012,7 @@
                 this.airlineAffirmUnchooseData.id = item.id;
                 this.airlineAffirmUnchooseData.employeeId = item.employeeId;
                 this.airlineAffirmUnchooseData.demandId = item.demandId;
-                console.info(this.airlineAffirmUnchooseData);
+//                console.info(this.airlineAffirmUnchooseData);
                 this.$ajax({
                     url:"/selectedResponse",
                     method: 'post',

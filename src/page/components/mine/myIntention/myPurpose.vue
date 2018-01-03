@@ -676,7 +676,7 @@
                 chatObj.demandEmployeeId = this.myData.employeeId;
                 chatObj.employeeId = item.employeeId;
                 chatObj.id = this.myData.id;
-                console.info(chatObj)
+//                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // “重新发布”按钮点击
@@ -1020,7 +1020,7 @@
                 this.airlineAffirmUnchooseData.id = item.id;
                 this.airlineAffirmUnchooseData.employeeId = item.employeeId;
                 this.airlineAffirmUnchooseData.demandId = item.demandId;
-                console.info(this.airlineAffirmUnchooseData);
+//                console.info(this.airlineAffirmUnchooseData);
                 this.$ajax({
                     url:"/selectedResponse",
                     method: 'post',

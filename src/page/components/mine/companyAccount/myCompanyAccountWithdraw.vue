@@ -41,6 +41,7 @@
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
+        props:['myCompanyAccountWithdraw'],
         data() {
             return {
                 inputNum: '',    // 输入的金额
@@ -51,11 +52,10 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('myCompanyAccountWithdraw',(val) => { //从myCompanyAccountList.vue接受数据
-                this.myData = val;
-                this.myAccountData = val.account;
-                this.myCardData = val.card;
-            })
+            let val = this.myCompanyAccountWithdraw;
+            this.myData = val;
+            this.myAccountData = val.account;
+            this.myCardData = val.card;
         },
         methods: {
             // 点击“取消”按钮
