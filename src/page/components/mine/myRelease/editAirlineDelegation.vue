@@ -565,7 +565,7 @@
                     if(response.data.opResult == 0){
                         alert('成功发布航线委托');
                     }else {
-                        alert(`运力委托发布失败，错误代码：${response.opResult}`);
+                        alert(`运力委托发布失败，错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);

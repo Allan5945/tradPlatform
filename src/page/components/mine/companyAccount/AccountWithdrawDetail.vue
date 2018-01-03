@@ -74,8 +74,8 @@
                 this.id = val.id;
                 this.type = val.type;
                 this.myData = val;
-                console.info('phase:');
-                console.info(val.phase);
+//                console.info('phase:');
+//                console.info(val.phase);
                 if(val.phase == 2){ // 判断页面显示的内容
                     this.showCode = 1;
                     this.withdrawFlowCode = 2;
@@ -101,8 +101,8 @@
                 this.src = `/seeTransactionRecordJpg?id=${this.id}&type=${this.type}`;
             },
             show: function () {
-                console.info('showCode:');
-                console.info(this.showCode);
+//                console.info('showCode:');
+//                console.info(this.showCode);
                 if(this.showCode == 0) {
                     this.ardButtonShow = false;
                     this.certificateShow = false;
@@ -130,8 +130,8 @@
                         id: this.id,
                     }
                 }).then((response) => {
-                    console.info('response:')
-                    console.info(response);
+//                    console.info('response:')
+//                    console.info(response);
                     if(response.data.opResult == 0) {
                         alert(`申请电子凭证成功！${response.data.opResult}`);
                     }else {

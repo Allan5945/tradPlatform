@@ -35,8 +35,8 @@
             </div>
         </div>
         <transition-group name="fade">
-            <myCompanyAccountRecharge @closeThis="closeRechargeFn" v-show="myCompanyAccountRechargeShow" :key="0"></myCompanyAccountRecharge>
-            <myCompanyAccountWithdraw @closeThis="closeWithdrawFn" @refresh="refreshFn" v-show="myCompanyAccountWithdrawShow" :key="1"></myCompanyAccountWithdraw>
+            <myCompanyAccountRecharge v-show="myCompanyAccountRechargeShow" @closeThis="closeRechargeFn" :key="0"></myCompanyAccountRecharge>
+            <myCompanyAccountWithdraw v-if="myCompanyAccountWithdrawShow" @closeThis="closeWithdrawFn" :myCompanyAccountWithdraw="myData" @refresh="refreshFn" :key="1"></myCompanyAccountWithdraw>
         </transition-group>
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
@@ -138,7 +138,7 @@
             WithdrawFn: function () {
                 this.myCompanyAccountWithdrawShow = true;
                 tabulationBoxTrigger.hierarchy = true;
-                tabulationBoxTrigger.$emit('myCompanyAccountWithdraw',this.myData) //向myCompanyAccountWithdraw.vue传数据
+//                tabulationBoxTrigger.$emit('myCompanyAccountWithdraw',this.myData) //向myCompanyAccountWithdraw.vue传数据
             },
             // 关闭“申请提现”
             closeWithdrawFn: function () {
