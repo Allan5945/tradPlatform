@@ -344,7 +344,6 @@
                     page:2
                 }
             }) .then((response) => {
-                    console.info(response)
                 response.data.list.forEach(item =>{
                     let myCompany = [];
                     myCompany.push(item.airlnCd);

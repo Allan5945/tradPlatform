@@ -569,7 +569,6 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
                 this.warn4Show = true;
             },
              cancel:function(){
@@ -655,9 +654,7 @@
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
 //                this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('sendData:');
-                console.info(this.sendData);
-//                console.info(this.acceptData);
+
                 this.$ajax({
                     url: "/updateResponseSelective",
                     method: 'POST',
@@ -667,7 +664,7 @@
                     params: this.sendData
                 }).then((response) => {
                     if(response.data.opResult == "0"){
-                        alert("修改成功！")
+                        //alert("修改成功！")
                          this.$emit('closeForm');
                   }
                 }).catch((error) => {

@@ -82,6 +82,7 @@
 <script>
     import * as vx from 'vuex';
     import echarts from 'echarts';
+    import { Loading } from 'element-ui';
     import noimg from './../../../static/img/pubo/noimg.png';
     import myPic from '$src/static/img/Slice.png';
     import searchHeader from './searchHeader.vue'
@@ -113,6 +114,9 @@
                this.qyCode = qyCode;
             },
             getData(){
+                 this.loading = Loading.service({
+                    text:"努力加载中..."
+                });
                 this.$ajax({
                 method: 'post',
                 url: '/aircompenyDetail',
@@ -127,9 +131,11 @@
                     if(response.data.opResult == "0"){
                         this.infoData = response.data.obj;
                         this.newsData = response.data.obj.publicOpinions;
+                        this.loading.close();
                     }
                 })
                 .catch((error) => {
+                        this.loading.close();
                         console.log(error);
                     }
                 );
@@ -380,9 +386,17 @@
             .name{
                 height:16px;
                 line-height:16px;
-                border-bottom:1px solid #000;
                 margin:11px 0 15px 0;
                 cursor:pointer;
+                a{
+                    text-decoration: underline;
+                    &:hover {
+                        color: #51a2ff;
+                    }
+                    &:active {
+                        color: #3c78ff;
+                    }
+                }
             }
         }
         .type{

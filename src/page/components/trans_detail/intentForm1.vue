@@ -570,7 +570,6 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
                 this.warn4Show = true;
             },
              cancel:function(){
@@ -654,8 +653,8 @@
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
                 this.sendData.dpt = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                console.info('sendData:');
-                console.info(this.sendData);
+                //console.info('sendData:');
+                //console.info(this.sendData);
                 //传输数据给付款页面
                 tabulationBoxTrigger.$emit('postResponseData', this.sendData);
                  this.$emit("sumitForm");

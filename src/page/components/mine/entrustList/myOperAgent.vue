@@ -264,7 +264,6 @@
                         that.myList = res.data.list.list;
                     }else{
                         that.myList = null;
-                        alert('暂无返回，请稍后重试。')
                     }
                 }).catch( error => {
                         console.log(error);

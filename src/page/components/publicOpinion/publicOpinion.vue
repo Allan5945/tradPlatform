@@ -44,6 +44,7 @@
 </template>
 <script>
     import * as vx from 'vuex';
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import noimg from './../../../static/img/pubo/noimg.png';
     import { Loading } from 'element-ui';
     export default {
@@ -61,8 +62,18 @@
             }
         },
         mounted: function () {
+            tabulationBoxTrigger.$on("moreNews",val=>{
+                this.inputText = val;
+                alert(val)
+            });
             this.resData();
         },
+       /* beforeDestory(){
+             tabulationBoxTrigger.$on("moreNews",val=>{
+                this.inputText = val;
+                alert("ddddd")
+            });
+         },*/
         computed: {
             ...vx.mapGetters([
                 'role'

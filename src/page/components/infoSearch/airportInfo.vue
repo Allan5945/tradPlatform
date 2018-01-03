@@ -10,21 +10,137 @@
                     <div class="box">
                         <div class="box-til"><span class="iconfont">&#xe627;</span>基本信息</div>
                         <ul class="box-item">
-                            <li><div>机场基准点坐标及其在机场的位置</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>与城市的位置关系</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>机场标高/基准温度</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>机场标高位置/高程异常</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>磁差/年变率</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>机场开放时间</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>允许飞行种类</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li><div>机场性质/飞行区指标</div><div>N3323dsdsd(跑道中心)</div></li>
-                            <li class="li-note"><div>备注</div><div>N备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div></li>
-                            <li class="li-note"><div>机场管理部门、地址、电话、地址</div><div>备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div></li>
+                            <li>
+                                <div>机场基准点坐标及其在机场的位置</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>与城市的位置关系</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>机场标高/基准温度</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>机场标高位置/高程异常</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>磁差/年变率</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>机场开放时间</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>允许飞行种类</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>机场性质/飞行区指标</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>备注</div>
+                                <div>N备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                            </li>
+                            <li class="li-note">
+                                <div>机场管理部门、地址、电话、地址</div><div>备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <div class="box-til"><span class="iconfont">&#xe625;</span>地勤服务</div>
+                        <ul class="box-item">
+                            <li>
+                                <div>货物装卸设施</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>燃油、滑油牌号</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>加油设施/能力</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>除冰设施</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>过站航空器机库</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>过站航空器维修设施</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>备注</div>
+                                <div>N备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <div class="box-til"><span class="iconfont">&#xe629;</span>消防救援</div>
+                        <ul class="box-item">
+                            <li>
+                                <div>机场消防等级</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>搬移受损航空器的能力</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>救援设备</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>备注</div>
+                                <div>N备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <div class="box-til"><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</div>
+                        <ul class="box-item">
+                            <li>
+                                <div>高度表校正点的位置及其标高</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li>
+                                <div>VOR/INS校正点</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>停机坪道面和强度</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>滑行道宽度、道面和强度</div>
+                                <div>N3323dsdsd(跑道中心)</div>
+                            </li>
+                            <li class="li-note">
+                                <div>备注</div>
+                                <div>N备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注</div>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="sidebar">
-
+                    <ul class="sidebar-list">
+                        <li><span class="iconfont">&#xe627;</span>机场位置</li>
+                        <li><span class="iconfont">&#xe625;</span>地勤服务</li>
+                        <li><span class="iconfont">&#xe629;</span>消防救援</li>
+                        <li><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</li>
+                        <li><span class="iconfont">&#xe626;</span>跑道特征</li>
+                        <li><span class="iconfont">&#xe6ef;</span>进近灯光</li>
+                        <li><span class="iconfont">&#xe669;</span>飞行程序</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -79,6 +195,8 @@
             margin:auto;
             width:1350px;
             height:800px;
+            overflow:hidden;
+            overflow-y:scroll;
             z-index: 99;
             color:#605e7c;
             background-color:#ffffff;
@@ -120,6 +238,7 @@
         }
         .sidebar{
             width:250px;
+            position:relative;
         }
     }
     .box{
@@ -161,6 +280,19 @@
                  >div:last-of-type{
                     width:790px;
                 }
+            }
+        }
+    }
+    .sidebar-list{
+        width:220px;
+        position:absolute;
+        bottom:112px;
+        left:10px;
+        .li{
+            height:42px;
+            line-height:42px;
+            span{
+                padding-left:10px;
             }
         }
     }
