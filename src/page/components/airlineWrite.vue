@@ -676,7 +676,7 @@
                     if(response.data.opResult === '0'){
                         alert('成功添加该意向！')
                         this.$emit('change-showCode');
-                        this.$emit('close-this');
+                        this.closeThis();
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }

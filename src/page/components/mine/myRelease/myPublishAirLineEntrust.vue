@@ -10,19 +10,19 @@
                 <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
                     联系客服 <span class="icon-item">&#xe720;</span>
                 </div>
-                <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn">
+                <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
                     重新发布
                 </div>
-                <div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
+              <!--  <div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
                     <span class="icon-item">&#xe653;</span>编辑
-                </div>
+                </div>-->
                 <div class="top">
                     <span style="height: 25px;">{{myData.title}}</span>
                 </div>
                 <div class="bottom">
                     <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
                     <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
-                    <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">审核未通过</span>
+                    <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
                 </div>
@@ -108,22 +108,24 @@
                 </div>
             </div>
             <div class="seventh item-container">
-                <span class="danger" v-show="wrongTextShow">*XXXX事情有误，请重新输入</span>
+                <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
             </div>
             <div class="eighth">
                 <span class="line" style="position:absolute; top: 0px;"></span>
-                <div class="buttons" v-if="buttonShow == true">
+                <div class="buttons" v-if="buttonShow">
                     <button class="btn btn-w" @click="recallFn(),closeThisFn()">撤回该托管</button>
                 </div>
-                <div class="buttons" v-else>
+                <!--<div class="buttons" v-else>
                     <button class="btn btn-w" style="width: 100px; margin-right: 12px; background: #cccccc; color: white;" @click="anewPublishClickFn2(),closeThisFn()">重新发布</button>
                     <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">撤回该托管</button>
-                </div>
+                </div>-->
             </div>
             <!--<editTransportForm v-if="editTransportFormShow" @close-this="closeEditTransportForm" @change-showCode="changeShowCodeFn"></editTransportForm>-->
             <!--<editAirlineReq v-if="editAirlineReqShow" @close-this="closeEditAirlineReq" @change-showCode="changeShowCodeFn"></editAirlineReq>-->
 
+            <!--委托运力投放-->
             <editAgentTransForm v-if="editAgentTransFormShow" @close-this="closeEditAgentTransForm" @change-showCode="changeShowCodeFn"></editAgentTransForm>
+            <!--委托航线需求-->
             <editAirlineDelegation v-if="editAirlineDelegationShow" @close-this="closeEditAirlineDelegation" @change-showCode="changeShowCodeFn"></editAirlineDelegation>
         </div>
     </div>
@@ -161,7 +163,23 @@
                 this.id = this.myData.id;
                 // 状态有误时显示的内容
 //                this.wrongShow();
-                if(this.myData.demandstate == 2){
+                // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
+                // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
+                if(this.myData.demandstate == 2
+                    || this.myData.demandstate == 3
+                    || this.myData.demandstate == 5
+                    || this.myData.demandprogress == 3
+                    || this.myData.demandprogress == 8
+                    || this.myData.demandprogress == 10){
+                    this.buttonShow = false;
+                }else {
+                    this.buttonShow = true;
+                }
+                if(this.myData.demandstate == 2
+                    || this.myData.demandstate == 3
+                    || this.myData.demandstate == 5
+                    || this.myData.demandprogress == 3
+                    || this.myData.demandprogress == 10){
                     this.wrongShow();
                 }else{
                     this.show();
@@ -190,7 +208,6 @@
         methods: {
             // 格式无误时显示的内容
             show: function () {
-                this.buttonShow = true; //下方按钮显示1个
                 this.linkServiceShow = true; // 上方“联系客服”按钮
                 this.editPublishShow = false;  // 上方“编辑”按钮
                 this.anewPublishShow = false; //上方“重新发布”按钮
@@ -199,7 +216,6 @@
             },
             // “格式有误时显示的内容
             wrongShow: function () {
-                this.buttonShow = true; //下方按钮显示1个
                 this.linkServiceShow = false; // 上方“联系客服”按钮
                 this.editPublishShow = false;  // 上方“编辑”按钮
                 this.anewPublishShow = true; //上方“重新发布”按钮
@@ -211,35 +227,23 @@
             },
             // 点击“联系客服”
             linkServiceClickFn: function () {
-                alert('联系客服');
+                let chatObj = {};
+                chatObj.id = null;
+                console.info(chatObj);
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             //点击上方“重新发布”
-            anewPublishClickFn: function () {
+            /*anewPublishClickFn: function () {
 //                alert('重新发布')
                 this.buttonShow = false; //下方按钮显示1个
                 this.linkServiceShow = false; // 上方“联系客服”按钮
                 this.editPublishShow = true;  // 上方“编辑”按钮
                 this.anewPublishShow = false; //上方“重新发布”按钮
-            },
-            // 点击“编辑”
+            },*/
+            /*// 点击“编辑”
             editPublishClickFn: function () {
-                if(this.myData.demandtype == 3) {
-                    this.editAirlineDelegationShow = true;
-//                    console.info('editAirlineDelegationShow')
-                }if(this.myData.demandtype == 4) {
-                    this.editAgentTransFormShow = true;
-//                    this.editAirlineDelegationShow = true;
-//                    console.info('editAgentTransFormShow')
-                }
-                /*if(this.myData.demandtype == 0) {
-                    this.editAirlineDelegationShow = true;
-                    console.info('editAirlineDelegationShow')
-                }if(this.myData.demandtype == 1) {
-                    this.editAgentTransFormShow = true;
-//                    this.editAirlineDelegationShow = true;
-                    console.info('editAgentTransFormShow')
-                }*/
-            },
+
+            },*/
             // 点击表单的“确认”后
             changeShowCodeFn: function () {
                 this.editPublishShow = false;
@@ -247,13 +251,6 @@
                 this.wrongTextShow = false;
                 tabulationBoxTrigger.$on('sendToMyPublish',(val) => {
                     this.myData = val;
-                    //将创建时间顺序改变
-                    /*let time1 = this.myData.releasetime.split('.');
-                    let time2 = [];
-                    for(let i = time1.length - 1; i >= 0; i--){
-                        time2.push(time1[i]);
-                    }
-                    this.releasetime = time2.join('.');*/
                 });
             },
             //关闭“编辑需求”表单
@@ -263,10 +260,14 @@
             closeEditAirlineDelegation: function () {
                 this.editAirlineDelegationShow = false;
             },
-            //点击下方“重新发布”
+            //点击“重新发布”
             anewPublishClickFn2: function () {
-                console.info(this.myData);
-                this.$ajax({
+                if(this.myData.demandtype == 3) {
+                    this.editAirlineDelegationShow = true;
+                }if(this.myData.demandtype == 4) {
+                    this.editAgentTransFormShow = true;
+                }
+                /*this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
                     headers: {
@@ -278,7 +279,7 @@
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
-                });
+                });*/
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {

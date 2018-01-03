@@ -1,6 +1,10 @@
 <template>
     <div class="wrapper" @click.self="closeThis">
         <div class="container" id="airlineReq" @click="closeAll">
+            <div class="container-top">
+                <span class="title">请填写完整方案</span>
+                <span class="close-icon" @click="closeThis">&times;</span>
+            </div>
             <div class="bg-color must">
                 <div class="right item-child">
                     <div style="display: flex;">
@@ -1479,6 +1483,29 @@
         border-radius: 4px;
     }
 
+    .container-top {
+        position: relative;
+        margin: 10px 0 30px 20px;
+        .title {
+            width: 140px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+        }
+        .close-icon {
+            position: absolute;
+            top: -2px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border: 1px solid gray;
+            border-radius: 100%;
+            cursor: pointer;
+        }
+    }
     .bg-color {
         background: #FBFBFB;
     }
