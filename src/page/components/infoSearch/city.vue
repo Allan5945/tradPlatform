@@ -82,9 +82,9 @@
                                 <div v-if="infoData.highwayList" style="color:#3c78ff;">共{{infoData.highwayList.length}}条</div>
                             </div>
                             <div class="c-list-item" v-for="item in infoData.highwayList">
-                                <div><span>类型</span>{{item.roadtype|| "--"}}</div>
-                                <div><span>代码</span>{{item.roadcode|| "--"}}</div>
-                                <div><span>途径点</span>{{item.roadpoint|| "--"}}</div>
+                                <div><span>类型</span>{{item.roadType|| "--"}}</div>
+                                <div><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
                             </div>
                             <div class="c-list-item" v-if="!infoData.highwayList">
                                 <div style="text-align:center;width:100%;color:red;">暂无数据</div>
@@ -96,9 +96,9 @@
                                 <div v-if="infoData.railwayList" style="color:#3c78ff;">共{{infoData.railwayList.length}}条</div>
                             </div>
                              <div class="c-list-item" v-for="item in infoData.railwayList">
-                                <div><span>类型</span>{{item.roadtype|| "--"}}</div>
-                                <div><span>代码</span>{{item.roadcode|| "--"}}</div>
-                                <div><span>途径点</span>{{item.roadpoint|| "--"}}</div>
+                                <div><span>类型</span>{{item.roadType|| "--"}}</div>
+                                <div><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
                             </div>
                             <div class="c-list-item" v-if="!infoData.railwayList">
                                 <div style="text-align:center;width:100%;color:red;">暂无数据</div>
@@ -225,7 +225,7 @@
                         }
                     },
                     yAxis: [{
-                        name:'单位：100000',
+                        name:'单位：亿元',
                         //data: ["0","1","2","3","4","5","6"],
                         type : 'value',
                         axisLine:{
@@ -254,24 +254,16 @@
                     series: [{
                         name: '旅游收入',
                         type: 'line',
-                        data: [3,5,6],
+                        data: [null,this.infoData.culturaleducationyYears[0].tourismincome,null],
                         color:['#605e7c']
                     },
                     {
                         name: '旅游人次',
                         type: 'bar',
-                        data: [7,5,8],
+                        data: [0,this.infoData.culturaleducationyYears[0].passengersnumberyear,0],
                         barWidth:'30%',
                          color:['red']
-                    }],
-                    /*toolbox:{
-                        show:true,
-                        feature:{
-                            mark:{
-                                show:true
-                            }
-                        }
-                    }*/
+                    }]
                 });
                  myChart2.setOption({
                     legend: {
@@ -289,7 +281,7 @@
                         }
                     },
                     yAxis: {
-                        name:'单位：100000',
+                        name:'单位：亿元',
                         //data: ["0","1","2","3","4","5","6"],
                         type : 'value',
                         axisLine:{
@@ -307,13 +299,13 @@
                     series: {
                         name: '城市GDP',
                         type: 'line',
-                        data: [3,5,6],
+                        data: [null,parseFloat(this.infoData.economicYears[0].citygdp),null],
                         color:['#605e7c']
                     }
                 });
                  myChart3.setOption({
                     legend: {
-                        data:['城市人口'],
+                        data:['常驻人口'],
                         right:10,
                         top:25
                     },
@@ -327,7 +319,7 @@
                         }
                     },
                     yAxis: {
-                        name:'单位：100000',
+                        name:'单位：万人',
                         //data: ["0","1","2","3","4","5","6"],
                         type : 'value',
                         axisLine:{
@@ -343,10 +335,10 @@
                         }
                     },
                     series: {
-                        name: '城市人口',
+                        name: '常驻人口',
                         type: 'bar',
                         barWidth:'30%',
-                        data: [3,5,6],
+                        data: [null,parseFloat(this.infoData.populations[0].residentpgenumber),null],
                         color:['#605e7c']
                     }
                 });
@@ -574,6 +566,18 @@
                     border-top:1px solid #ccc;
                     div{
                         flex:1;
+                        display:flex;
+                    }
+                    span{
+                        padding-right:10px;
+                    }
+                    .over-flow{
+                        width:120px;
+                        overflow : hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
                     }
                 }
              }

@@ -700,7 +700,7 @@
                         let myCompany = [];
                         myCompany.push(item.airlnCd);
                         myCompany.push(item.icao);
-                        myCompany.push(item.capacitycompany);
+                        myCompany.push(item.id);
                         this.airCompanyData.push(myCompany);
                     })
                 }).catch((error) => {

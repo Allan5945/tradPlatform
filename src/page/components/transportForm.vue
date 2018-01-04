@@ -321,13 +321,6 @@
                 that.directSearch =false;
                 },200);
             },
-          /*  verifyPhon:function(){
-                let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
-                if((!pattern.test(this.phoneNum)){
-                    this.isError = true;
-                }
-                this.isError = true;
-            },*/
             verifyContact:function(){
                  if(this.contact){
                      this.isError1 = false;
@@ -489,7 +482,9 @@
                     demandData.remark = this.tip;
                     demandData.periodValidity = this.myDate;
                     demandData.publicway = this.post;
-                    //demandData.directionalgoal = this.qyCode2;
+                     if(this.post == '3'){
+                        demandData.directionalgoal = this.qyCode2;
+                    }
                  this.$ajax({
                 url:"/demandAdd",
                 method: 'post',

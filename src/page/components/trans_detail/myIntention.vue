@@ -87,7 +87,7 @@
                                 <div class="airplace">
                                     <div>始发机场</div>
                                     <div>
-                                        <div>{{val.dpt}}</div>
+                                        <div>{{val.dptNm}}</div>
                                         <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
                                     </div>
                                     <div class="resouse">
@@ -99,7 +99,7 @@
                                 <div class="airplace">
                                     <div>经停机场</div>
                                     <div>
-                                        <div>{{val.pst}}</div>
+                                        <div>{{val.pstNm}}</div>
                                         <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
                                     </div>
                                     <div class="resouse">
@@ -111,7 +111,7 @@
                                 <div class="airplace">
                                     <div>到达区域</div>
                                     <div>
-                                        <div>{{val.arrv}}</div>
+                                        <div>{{val.arrvNm}}</div>
                                         <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
                                     </div>
                                     <div class="resouse">
@@ -155,7 +155,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicy}}</div>
+                                    <div>{{val.subsidypolicyStr}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -163,15 +163,15 @@
                                 </div>
                                 <div>
                                     <div>运力归属</div>
-                                    <div>{{val.capacitycompany}}</div>
+                                    <div v-if="val.capacityCompany">{{val.capacityCompany.airlnCd}}</div>
                                 </div>
                                 <div>
                                     <div>运力基地</div>
-                                    <div>{{val.dpt}}</div>
+                                    <div>{{val.dptNm}}</div>
                                 </div>
                                 <div>
                                     <div>是否调度</div>
-                                    <div>{{val.scheduling}}</div>
+                                    <div>{{val.schedulingStr}}</div>
                                 </div>
                                 <div class="tips">
                                     <div>其他说明</div>

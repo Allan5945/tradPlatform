@@ -1,7 +1,7 @@
 import ln from './../../../public/js/tabulationBoxTrigger.js';
 import Vue from 'vue'
 import _this from './../../../main'
-ln.$on('addChat', function (d)  {    
+ln.$on('addChat', function (d)  {  
     let k1,k2,de = d.id,k,keys;
     if(de == null){
         k = [_this.$store.getters.role.id];
