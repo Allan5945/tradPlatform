@@ -20,102 +20,76 @@
                 this.build();
             }
         },
-        created() {
-            this.$ajax({
-                url: "/airCompenyList",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page: 2
-                }
-            }).then((response) => {
-                if(response.data.opResult == 0) {
-                    this.companyList =  response.data.list;
-                    /* response.data.list.forEach(item => {
-                         let myCompany = [];
-                         myCompany.push(item.airlnCd);
-                         myCompany.push(item.id);
-                         myCompany.push(item.capacitycompany);
-                         this.airCompanyData.push(myCompany);
-                     })*/
-                }else {
-                    alert(`请求数据出错，错误代码：${response.data.opResult}`);
-                }
-
-            }).catch((error) => {
-                console.log(error);
-            });
-        },
         methods:{
             build:function () {
                 let ar = [];
                 this.companyList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
                     if(st != ''){
-                        /* myCompany.push(item.airlnCd);
-                         myCompany.push(item.id);
-                         */
-                        let airportName = val.cityName;  // 机场名字
-                        let code = val.code;  // 三字码
+                        let companyName = val.companyName;  // 机场名字
+                        let code = val.companyIcao;  // 三字码
                         let pinyin = val.pinyin; // 拼音
                         let py = val.py; // 拼音首字母
                         let regx = new RegExp(st,"gmi");
                         let style = "style='color: #3c78ff'";
-                        if(airportName.search(regx) != -1){
+                        if(companyName.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
-                            let aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
-                            if(st == airportName){
-                                aName = airportName;
+                            let aName = companyName.replace(reg,"<span "+style+">"+st+"</span>");
+                            if(st == companyName){
+                                aName = companyName;
                             }else{
-                                aName = airportName.replace(reg,"<span "+style+">"+st+"</span>");
+                                aName = companyName.replace(reg,"<span "+style+">"+st+"</span>");
                             }
                             ar.push({
                                 testName:aName,
-                                testCode:val.code,
-                                code:val.code,
-                                name:val.cityName,
-                                type:0
+                                testCode:val.companyIcao,
+                                code:val.companyIcao,
+                                name:val.companyName,
+                                id: val.id,
+                                type:2
                             });
                         }else if(code.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = code.replace(reg,"<span "+style+">"+st.toLocaleUpperCase()+"</span>");
                             ar.push({
-                                testName:val.cityName,
+                                testName:val.companyName,
                                 testCode:aName,
-                                code:val.code,
-                                name:val.cityName,
-                                type:0
+                                code:val.companyIcao,
+                                name:val.companyName,
+                                id: val.id,
+                                type:2
                             });
                         }else if(py.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = py.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                             ar.push({
-                                testName:val.cityName,
+                                testName:val.companyName,
                                 testCode:aName,
-                                code:val.code,
-                                name:val.cityName,
-                                type:0
+                                code:val.companyIcao,
+                                name:val.companyName,
+                                id: val.id,
+                                type:2
                             });
                         }else if(pinyin.search(regx) != -1){
                             let reg = new RegExp(st,"gmi");
                             let aName = pinyin.replace(reg,"<span "+style+">"+st.toLocaleLowerCase()+"</span>");
                             ar.push({
-                                testName:val.cityName,
+                                testName:val.companyName,
                                 testCode:aName,
-                                code:val.code,
-                                name:val.cityName,
-                                type:0
+                                code:val.companyIcao,
+                                name:val.companyName,
+                                id: val.id,
+                                type:2
                             });
                         };
                     }else{
                         ar.push({
-                            testName:val.cityName,
-                            testCode:val.code,
-                            code:val.code,
-                            name:val.cityName,
-                            type:0
+                            testName:val.companyName,
+                            testCode:val.companyIcao,
+                            code:val.companyIcao,
+                            name:val.companyName,
+                            id: val.id,
+                            type:2
                         });
                     }
                 });
@@ -145,6 +119,11 @@
 //                return vl.replace(":","")
             }
         },
+        computed:{
+            ...vx.mapGetters([
+                'companyList',
+            ]),
+        }
     }
 </script>
 <style scoped  lang="scss">

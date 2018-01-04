@@ -23,7 +23,7 @@
     import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
-    import {conversionsCity,conversions} from './../public/js/conversions'
+    import {conversionsCity,conversions,conversionsCompany} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './components/independenceComponents/infPanel.vue'
     import transIndex from './components/trans_detail/transIndex.vue'
@@ -48,10 +48,12 @@
                     airList: false,
                     demands: false,
                     cityList: false,
+                    companyList: false,
                     routeNetwork:false,
                     data: {
                         airListData: null,
                         cityListData: null,
+                        companyListData: null,
                     }
                 },
                 allDot: '',
@@ -88,7 +90,8 @@
                     this.loadingData.demands &&
                     this.loadingData.routeNetwork &&
                     this.loadingData.data.airListData != null &&
-                    this.loadingData.data.cityListData != null
+                    this.loadingData.data.cityListData != null &&
+                    this.loadingData.data.companyListData != null
                 ) {
                     this.$store.dispatch('initialize', this.loadingData.data).then(() => {
                         this.renderComponent = true;
@@ -135,7 +138,22 @@
                         console.log(error);
                     }
                 );
-
+            this.$ajax({
+                method: 'post',
+                url: '/airCompenyList',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then((response) => {
+                    this.loadingData.data.companyListData = conversionsCompany(response.data.list);
+                    this.loadingData.companyList = true;
+                    this.init();
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
             this.$ajax({
                 method: 'post',
                 url: '/getAllDemands',
@@ -191,7 +209,7 @@
             ...vx.mapGetters([
                 'c_updated',
                 'airList',
-                'role'
+                'role',
             ]),
             dis:function () {  // 计算聊天框是显示还是关闭
                 return {
