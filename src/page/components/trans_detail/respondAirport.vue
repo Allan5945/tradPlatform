@@ -74,7 +74,7 @@
                       <div class="airplace">
                           <div>始发机场</div>
                           <div>
-                             <div  v-if="this.planData.dpt !== null">{{planData.dpt}}</div>
+                             <div  v-if="this.planData.dpt !== null">{{planData.dptNm}}</div>
                           </div>
                            <div class="resouse">
                               <div>出港资源</div>
@@ -84,7 +84,7 @@
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
                           <div>经停机场</div>
-                          <div>{{planData.pst}}</div>
+                          <div>{{planData.pstNm}}</div>
                           <div class="resouse">
                               <div>出港资源</div>
                               <div>{{planData.pstTime}}</div>
@@ -93,7 +93,7 @@
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
                           <div>到达区域</div>
-                          <div>{{planData.arrv}}</div>
+                          <div>{{planData.arrvNm}}</div>
                           <div class="resouse">
                               <div>出港资源</div>
                               <div>{{planData.arrvTime}}</div>
@@ -135,7 +135,7 @@
                       </div>
                       <div>
                           <div>补贴政策</div>
-                          <div>{{planData.subsidypolicy}}</div>
+                          <div>{{planData.subsidypolicyStr}}</div>
                       </div>
                       <div>
                           <div>小时成本</div>
@@ -143,15 +143,15 @@
                       </div>
                        <div>
                           <div>运力归属</div>
-                          <div>{{planData.capacitycompany}}</div>
+                          <div v-if="planData.capacityCompany">{{planData.capacityCompany.airlnCd}}</div>
                       </div>
                        <div>
                           <div>运力基地</div>
-                          <div>{{planData.dpt}}</div>
+                          <div>{{planData.dptNm}}</div>
                       </div>
                        <div>
                           <div>是否调度</div>
-                          <div>{{planData.scheduling}}</div>
+                          <div>{{planData.schedulingStr}}</div>
                       </div>
                       <div class="tips">
                           <div>其他说明</div>

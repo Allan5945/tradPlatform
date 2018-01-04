@@ -82,9 +82,9 @@
                                 <div v-if="infoData.highwayList" style="color:#3c78ff;">共{{infoData.highwayList.length}}条</div>
                             </div>
                             <div class="c-list-item" v-for="item in infoData.highwayList">
-                                <div><span>类型</span>{{item.roadtype|| "--"}}</div>
-                                <div><span>代码</span>{{item.roadcode|| "--"}}</div>
-                                <div><span>途径点</span>{{item.roadpoint|| "--"}}</div>
+                                <div><span>类型</span>{{item.roadType|| "--"}}</div>
+                                <div><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
                             </div>
                             <div class="c-list-item" v-if="!infoData.highwayList">
                                 <div style="text-align:center;width:100%;color:red;">暂无数据</div>
@@ -96,9 +96,9 @@
                                 <div v-if="infoData.railwayList" style="color:#3c78ff;">共{{infoData.railwayList.length}}条</div>
                             </div>
                              <div class="c-list-item" v-for="item in infoData.railwayList">
-                                <div><span>类型</span>{{item.roadtype|| "--"}}</div>
-                                <div><span>代码</span>{{item.roadcode|| "--"}}</div>
-                                <div><span>途径点</span>{{item.roadpoint|| "--"}}</div>
+                                <div><span>类型</span>{{item.roadType|| "--"}}</div>
+                                <div><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
                             </div>
                             <div class="c-list-item" v-if="!infoData.railwayList">
                                 <div style="text-align:center;width:100%;color:red;">暂无数据</div>
@@ -566,6 +566,18 @@
                     border-top:1px solid #ccc;
                     div{
                         flex:1;
+                        display:flex;
+                    }
+                    span{
+                        padding-right:10px;
+                    }
+                    .over-flow{
+                        width:120px;
+                        overflow : hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
                     }
                 }
              }
