@@ -202,6 +202,8 @@
                         this.timeList = response.data.timeList;
                         this.inputData = this.timeList[0];
                         this.loading.close();
+                    }else{
+                        this.loading.close();
                     }
                 })
                 .catch((error) => {

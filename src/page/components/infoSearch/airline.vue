@@ -132,6 +132,8 @@
                         this.infoData = response.data.obj;
                         this.newsData = response.data.obj.publicOpinions;
                         this.loading.close();
+                    }else{
+                        this.loading.close();
                     }
                 })
                 .catch((error) => {

@@ -5,9 +5,9 @@
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
             <div class="dialog-content">是否确认缴纳意向金***元</div>
             <div class="dialog-btns">
-                <div class=" btn sure-btn" @click="sureEvent" v-text="Btext">确认缴纳</div>
+                <div class=" btn sure-btn" v-if="iconShow"><span class="iconfont">&#xe620;</span></div>
+                <div class=" btn sure-btn" @click="sureEvent" v-else>确认缴纳</div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>
-                <span class="iconfont" v-show="iconShow">&#xe620;</span>
             </div>
             <div class="note">
                 <div class="note1">*若交易失败，意向金将退回到您的账号</div>
@@ -23,7 +23,6 @@
     export default {
         data(){
             return{
-                Btext: '确认缴纳',
                 iconShow:false,
                 sendData: {},
                 myData:{
@@ -59,14 +58,16 @@
                     },
                     params: this.sendData
                 }).then((response) => {
+                         that.iconShow = true;
                         if(response.data.opResult == '0'){
                             setTimeout(function(){
                                 that.$emit('cancel');
                                 that.$emit('sure');
+                                that.iconShow = false;
                             },1000);
+                        }else{
+                            that.iconShow = false;
                         }
-                         this.iconShow = true;
-                         this.Btext = '';
 
                 }).catch((error) => {
                     console.log(error);
@@ -119,7 +120,6 @@
             }
         }
         .dialog-btns {
-            position:relative;
             text-align: center;
             display:flex;
             justify-content: center;
@@ -147,9 +147,6 @@
                 margin-right:8px;
             }
             span{
-                 position:absolute;
-                 top:10px;
-                 left:194px;
                  color:#ffffff;
                  font-size:16px;
                  cursor:pointer;

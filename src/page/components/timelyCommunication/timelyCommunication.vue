@@ -306,7 +306,7 @@ export default {
   },
   methods: {
     initBox:function(){
-        this.$refs.textarea.focus();
+        if(this.setId != "x-t-null"){this.$refs.textarea.focus();}
         this.timelyBox = this.$refs["timely-box"];
         let app = document.getElementById("app");
         let left = (app.offsetWidth - this.timelyBox.offsetWidth) / 2;

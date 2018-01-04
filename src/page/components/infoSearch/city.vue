@@ -196,6 +196,8 @@
                         this.infoData = response.data.citys[0];
                         this.drawLine(this.infoData);
                         this.loading.close();
+                    }else{
+                        this.loading.close();
                     }
                 })
                 .catch((error) => {
