@@ -409,12 +409,19 @@
                                     {{item.remark}}
                                 </div>
                             </div>
-                            <div class="item-fifth" v-if="releaseselectedShow">
-                                <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
+                            <div v-if="item.responseselected == '0'">
+                                <div class="item-sixth" style="left: 150px;">
+                                    <div class="btn btn-w cancel-btn" style="width: 250px;">已生成订单，无法更改</div>
+                                </div>
                             </div>
-                            <div class="item-sixth" v-else>
-                                <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此次可再次编译）</button>
-                                <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
+                            <div v-else>
+                                <div class="item-fifth" v-if="releaseselectedShow">
+                                    <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
+                                </div>
+                                <div class="item-sixth" v-else>
+                                    <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编译）</button>
+                                    <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -552,12 +552,60 @@
                 return this.calendarInitDay3 + ',' + this.calendarInitDay4;
             }
         },
+        created() {
+            this.sendData = this.acceptData;
+        },
         mounted() {
             this.space1Fn();
             this.space2Fn();
             this.space3Fn();
+            this.acceptDataFn();
         },
         methods: {
+            // 从父组件接受数据,并绑定到表单上
+            acceptDataFn: function () {
+                this.user = this.acceptData.contact;  // 联系人
+                this.phoneNum = this.acceptData.iHome; // 联系方式
+                this.myDate1 = this.acceptData.sailingtime; // 拟开时间
+                this.scheduleShow = this.acceptData.days; // 拟开班期
+                this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
+                this.seatingNum = this.acceptData.seating; // 座位数
+                this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
+                this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期望
+//                this.airCompany = this.acceptData.loadfactorsexpect; // 运力归属（这个里没有）
+                this.hourConst = this.acceptData.hourscost; // 小时成本
+                this.remarkMsg = this.acceptData.remark; // 其他说明
+                // 判断始发类型（0：机场，1：区域）
+                if(this.acceptData.dptState === "0") {
+                    this.space1ShowTitle = this.spaceList[1];
+                    this.space1Fn(this.spaceList[1]);
+                    this.firArea = this.acceptData.dptNm;
+                }else if(this.acceptData.dptState === "1") {
+                    this.space1ShowTitle = this.spaceList[0];
+                    this.space1Fn(this.spaceList[0]);
+                    this.firArea = this.acceptData.dpt;
+                }
+                // 判断经停类型（0：机场，1：区域）
+                if(this.acceptData.pstState === "0") {
+                    this.space2ShowTitle = this.spaceList[1];
+                    this.space2Fn(this.spaceList[1]);
+                    this.secArea = this.acceptData.pstNm;
+                }else if(this.pstState.pstState === "1") {
+                    this.space2ShowTitle = this.spaceList[0];
+                    this.space2Fn(this.spaceList[0]);
+                    this.secArea = this.acceptData.pst;
+                }
+                // 判断到达类型（0：机场，1：区域）
+                if(this.acceptData.arrvState === "0") {
+                    this.space3ShowTitle = this.spaceList[1];
+                    this.space3Fn(this.spaceList[1]);
+                    this.thirdArea = this.acceptData.arrvNm;
+                }else if(this.pstState.arrvState === "1") {
+                    this.space3ShowTitle = this.spaceList[0];
+                    this.space3Fn(this.spaceList[0]);
+                    this.thirdArea = this.acceptData.arrv;
+                }
+            },
             warn4Fn: function () {
                 this.warn4Show = false;
             },

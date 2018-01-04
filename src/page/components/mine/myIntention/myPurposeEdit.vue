@@ -324,10 +324,10 @@
                         </div>
                         <div class="left item-child">
                             <div class="vertical-center">
-                                <input type="checkbox" class="magic-radio" id="alWacceptDispatch" v-model="schedulingShow" @click="schedulingShowFn"/>
+                                <input type="checkbox" class="magic-radio" id="alWacceptDispatch" v-model="alWacceptDispatch" @click="schedulingShowFn"/>
                                 <label for="alWacceptDispatch" class="input-label" style="white-space: nowrap;">接受调度</label>
                             </div>
-                            <div class="choose-input" v-show="schedulingShow" style="position: relative;">
+                            <div class="choose-input" v-show="alWacceptDispatch" style="position: relative;">
                                 <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fifthArea"
                                        @click.stop="clickClose14Fn" style="border: 0;">
                                 <airportS class="aisx" v-on:resData="resData5" :searchText="fifthArea" v-show="isSearch5"
@@ -526,7 +526,7 @@
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: 0,    //航司3字码
                 scheduling: 1,     // 是否接受调度 0:接收,1:不接收
-                schedulingShow: false,
+                alWacceptDispatch: false,
                 url: '',            // 数据接口
             }
         },
@@ -969,13 +969,11 @@
             },
             // 接受调度复选按钮点击（0:接收,1:不接收）
             schedulingShowFn: function () {
-                if(this.schedulingShow == true){
+                if(this.alWacceptDispatch == true){
                     this.scheduling = 0;
                 }else {
                     this.scheduling = 1;
                 }
-
-//                this.schedulingShow = true;
             },
             // 意向机场/意向区域，input失去焦点
             airportBlurFn1: function () {
