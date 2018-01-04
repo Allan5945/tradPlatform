@@ -197,8 +197,10 @@
                     if(response.data.opResult == "0"){
                         this.infoData = response.data.obj;
                         this.drawLine(this.infoData);
+                        this.loading.close();
+                    }else{
+                        this.loading.close();
                     }
-                     this.loading.close();
                 })
                 .catch((error) => {
                     this.loading.close();

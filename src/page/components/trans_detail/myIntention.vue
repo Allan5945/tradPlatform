@@ -2,68 +2,68 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">{{detailData.demandtypeStr}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title}}</div>
+                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title||'-'}}</div>
                 <div class="note">
-                    <span>创建于{{detailData.releasetime}}</span>
-                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr}}</span></span>
+                    <span>创建于{{detailData.releasetime||'-'}}</span>
+                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr||'-'}}</span></span>
                 </div>
             </header>
             <div class="content">
                 <div class="table-form">
                     <div>
                         <div>机型</div>
-                        <div>{{detailData.aircrfttyp}}</div>
+                        <div>{{detailData.aircrfttyp||'-'}}</div>
                     </div>
                      <div>
                         <div>座位布局</div>
-                        <div>{{detailData.seating}}</div>
+                        <div>{{detailData.seating||'-'}}</div>
                     </div>
                      <div>
                         <div>运力归属</div>
-                        <div>{{detailData.capacitycompany}}</div>
+                        <div>{{detailData.capacitycompany||'-'}}</div>
                     </div>
                     <div>
                         <div>运力基地</div>
-                        <div>{{detailData.dptNm}}</div>
+                        <div>{{detailData.dptNm||'-'}}</div>
                     </div>
                     <div>
                         <div>出港时刻</div>
-                        <div>{{detailData.dptTime}}</div>
+                        <div>{{detailData.dptTime||'-'}}</div>
                     </div>
                     <div>
                         <div>班期</div>
-                        <div>{{detailData.days}}</div>
+                        <div>{{detailData.days||'-'}}</div>
                     </div>
                     <div class="intent-airline" v-if="detailData.intendedAirlines">
                        <div>意向航线</div>
                        <div class="i-line">
-                         {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
-                         {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
-                         {{detailData.intendedAirlines[0].arrvName}}
+                         {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                         {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                         {{detailData.intendedAirlines[0].arrvName||'-'}}
                        </div>
                    </div>
                     <div>
                         <div>小时成本</div>
-                        <div>{{detailData.hourscost}}万/小时</div>
+                        <div>{{detailData.hourscost||'-'}}万/小时</div>
                     </div>
                     <div style="margin:0 0 0 40px;">
                         <div>接受调度</div>
-                        <div>{{detailData.schedulingStr}}</div>
+                        <div>{{detailData.schedulingStr||'-'}}</div>
                     </div>
                     <div>
                         <div>有效期</div>
-                        <div>{{detailData.periodValidity}}</div>
+                        <div>{{detailData.periodValidity||'-'}}</div>
                     </div>
                      <div class="tips">
                         <div>其他说明</div>
-                        <div>{{detailData.remark}}</div>
+                        <div>{{detailData.remark||'-'}}</div>
                      </div>
                 </div>
             <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
-                    <div>已有<span>{{this.intentionCount }}</span>位用户发起意向</div>
+                    <div>已有<span>{{this.intentionCount||'-' }}</span>位用户发起意向</div>
                 </div>
                 <div class="intent-form" v-if="this.isSign">
                     <div>
@@ -75,9 +75,9 @@
                     </div>
                     <div class="intent-box" v-for=" (val,index) in planData" v-if="intentListShow">
                          <div class="intent-item">
-                            <div class="time">{{val.responsedate}}</div>
+                            <div class="time">{{val.responsedate||'-'}}</div>
                             <div class="person">
-                              {{val.intentionCompanyName}}
+                              {{val.intentionCompanyName||'-'}}
                               <span class="iconfont" @click="chat(val)">&#xe602;</span>
                             </div>
                             <div class="detail" @click="closeDetail">{{text}}</div>
@@ -87,95 +87,95 @@
                                 <div class="airplace">
                                     <div>始发机场</div>
                                     <div>
-                                        <div>{{val.dpt}}</div>
+                                        <div>{{val.dptNm||'-'}}</div>
                                         <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
-                                        <div>{{val.dptTime}}</div>
+                                        <div>{{val.dptTime||'-'}}</div>
                                     </div>
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
                                     <div>经停机场</div>
                                     <div>
-                                        <div>{{val.pst}}</div>
+                                        <div>{{val.pstNm||'-'}}</div>
                                         <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
-                                        <div>{{val.pstTime}}</div>
+                                        <div>{{val.pstTime||'-'}}</div>
                                     </div>
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
                                     <div>到达区域</div>
                                     <div>
-                                        <div>{{val.arrv}}</div>
+                                        <div>{{val.arrvNm||'-'}}</div>
                                         <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
-                                        <div>{{val.arrvTime}}</div>
+                                        <div>{{val.arrvTime||'-'}}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="table-form">
                                 <div>
                                     <div>联系人</div>
-                                    <div>{{val.contact}}</div>
+                                    <div>{{val.contact||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>联系方式</div>
-                                    <div>{{val.ihome}}</div>
+                                    <div>{{val.ihome||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>拟开时间</div>
-                                    <div>{{val.sailingtime}}</div>
+                                    <div>{{val.sailingtime||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>拟开班期</div>
-                                    <div>{{val.days}}</div>
+                                    <div>{{val.days||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>拟开机型</div>
-                                    <div>{{val.aircrfttyp}}</div>
+                                    <div>{{val.aircrfttyp||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>座位数</div>
-                                    <div>{{val.seating}}</div>
+                                    <div>{{val.seating||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>客量预期</div>
-                                    <div>{{val.avgguestexpect}}人</div>
+                                    <div>{{val.avgguestexpect||'-'}}人</div>
                                 </div>
                                 <div>
                                     <div>客座率预期</div>
-                                    <div>{{val.loadfactorsexpect}}%</div>
+                                    <div>{{val.loadfactorsexpect||'-'}}%</div>
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicy}}</div>
+                                    <div>{{val.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
-                                    <div>{{val.hourscost}}万元/小时</div>
+                                    <div>{{val.hourscost||'-'}}万元/小时</div>
                                 </div>
                                 <div>
                                     <div>运力归属</div>
-                                    <div>{{val.capacitycompany}}</div>
+                                    <div v-if="val.capacityCompany">{{val.capacityCompany.airlnCd||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>运力基地</div>
-                                    <div>{{val.dpt}}</div>
+                                    <div>{{val.dptNm||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>是否调度</div>
-                                    <div>{{val.scheduling}}</div>
+                                    <div>{{val.schedulingStr||'-'}}</div>
                                 </div>
                                 <div class="tips">
                                     <div>其他说明</div>
-                                    <div>{{val.remark}}</div>
+                                    <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
                             <div class="sure-btn" @click="toSelect(val,index)" v-if="selIndex == index">选定</div>

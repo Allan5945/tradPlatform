@@ -353,8 +353,8 @@
                     </span>
                     </div>
                     <span class="hover-show">...</span>
-                    <input class="input-mes-a" type="text" @click.stop="airportFn4" >
-                    <airportS class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airportS>
+                    <input class="input-mes-a" type="text" v-model="fourthArea" @click.stop="airportFn4" >
+                    <airCompanySearch class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airCompanySearch>
                 </div>
             </div>
             <div class="sixth">
@@ -368,6 +368,7 @@
 <script>
     import airAreaSearch from './airAreaSearch.vue'
     import airportS from '../reuseComponents/airportSearch1.vue'
+    import airCompanySearch from '../reuseComponents/airCompanySearch.vue'
     import calendar from './calendar'
 
     export default {
@@ -497,6 +498,7 @@
             airAreaSearch,
             airportS,
             calendar,
+            airCompanySearch,
         },
         watch: {
             typeChoose: function () {
@@ -964,8 +966,8 @@
                 this.isSearch4 = false;
                 this.fourthArea = data.name;
                 this.qyCode4 = data.code;
-                this.directionPublicCity.push(data.name);
                 this.directionPublicCityShow = true;
+                this.directionPublicCity.push(data.name);
             },
             // 选择意向区域或意向机场 0为区域，1为机场(始发经停到达均默认选择意向机场)
             space1Fn: function (item = '意向机场') {
