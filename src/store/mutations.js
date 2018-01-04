@@ -14,7 +14,6 @@ const mutations = {
         state.airList = vl.airListData;
         state.cityList = vl.cityListData;
         state.companyList = vl.companyListData;
-        console.info(state.companyList);
     },
     [types.MONODATA](state,vl) {
         if(state.demandList.type){

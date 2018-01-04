@@ -80,19 +80,21 @@
                               {{val.intentionCompanyName||'-'}}
                               <span class="iconfont" @click="chat(val)">&#xe602;</span>
                             </div>
-                            <div class="detail" @click="closeDetail">{{text}}</div>
+                            <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
+                            <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
-                        <div class="intent-detail" v-show="detailShow">
+                        <div class="intent-detail" v-show="showDetailIndex === index">
                             <div class="airline">
                                 <div class="airplace">
                                     <div>始发机场</div>
                                     <div>
                                         <div>{{val.dptNm||'-'}}</div>
-                                        <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
+                                        <div>{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
-                                        <div>{{val.dptTime||'-'}}</div>
+                                        <div v-if="val.dptTimeresources == '0'">{{val.dptTime||'-'}}</div>
+                                        <div v-else>{{val.dptTimeresourcesStr||'-'}}</div>
                                     </div>
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
@@ -100,11 +102,12 @@
                                     <div>经停机场</div>
                                     <div>
                                         <div>{{val.pstNm||'-'}}</div>
-                                        <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
+                                         <div>{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
-                                        <div>{{val.pstTime||'-'}}</div>
+                                        <div v-if="val.pstTimeresources == '0'">{{val.pstTime||'-'}}</div>
+                                        <div v-else>{{val.pstTimeresourcesStr||'-'}}</div>
                                     </div>
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
@@ -112,11 +115,12 @@
                                     <div>到达区域</div>
                                     <div>
                                         <div>{{val.arrvNm||'-'}}</div>
-                                        <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
+                                        <div>{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
-                                        <div>{{val.arrvTime||'-'}}</div>
+                                        <div v-if="val.arrvTimeresources == '0'">{{val.arrvTime||'-'}}</div>
+                                        <div v-else>{{val.arrvTimeresourcesStr||'-'}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +171,7 @@
                                 </div>
                                 <div>
                                     <div>运力基地</div>
-                                    <div>{{val.dptNm||'-'}}</div>
+                                    <div>{{val.capacityBaseNm||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>是否调度</div>
@@ -178,11 +182,11 @@
                                     <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val,index)" v-if="selIndex == index">选定</div>
-                            <div class="btns" v-else>
+                            <div class="btns" v-if="val.releaseselected == '0' ">
                                 <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
                                 <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                             </div>
+                            <div class="sure-btn" @click="toSelect(val,index)" v-else>选定</div>
                         </div>
                     </div>
                 </div>
@@ -197,7 +201,7 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "response"></myIntentForm>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData"></myIntentForm>
         <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
@@ -213,25 +217,22 @@
  export default {
      data(){
          return{
-             detailShow:false,
+             showDetailIndex:'',
              intentListShow:false,
              selIndex:'',
              myFormShow:false,
              sureFormShow:false,
              dialogShow:false,
-             text:"查看详情",
              detailData:{},
              planData:{},
              editData:{},
-             response:{},
              selectData:{},
              intentionCount:0,
-             response:{},
              isSign:false
          }
      },
      methods:{
-          chat:function (v) {
+         chat:function (v) {
               let chatData = {};
               chatData.id = this.detailData.id;
               chatData.employeeId = this.detailData.employeeId;
@@ -239,40 +240,18 @@
               ln.$emit('addChat',chatData);
             },
          closeDetail:function(){
-             this.detailShow = !this.detailShow;
-             if(this.detailShow){
-                this.text = "收起详情";
-             }else{
-                 this.text = "查看详情";
-             }
+             this.showDetailIndex = '';
+         },
+          openDetail:function(index){
+             this.showDetailIndex = index;
          },
          closeIntent:function(){
             this.$emit('closeIntent');
          },
          toSelect:function(val,index){
-            //tabulationBoxTrigger.$emit('sendTable',val);
             this.selIndex = index;
             this.myFormShow = true;
-            //this.selectData = val;
-            this.response = val;
-            //this.selectData.releaseselected = '0';
-            /*this.$ajax({
-                method: 'post',
-                url: '/selectedResponse',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params:this.selectData
-                })
-                .then((response) => {
-                    if(response.data.opResult == "0"){
-                    alert("选定成功!");
-                  }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );*/
+            this.selectData = val;
          },
          toEdit:function(val,index){
             this.editData = val;

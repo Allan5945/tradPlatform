@@ -44,8 +44,9 @@ function conversionsCompany(data) { //航司名称
             pinyin:letter.allLetter,    // 航司全拼音
             py:letter.fllLetter,    // 航司首字母拼音
             companyIcao:val.icao,  // 三字码
+            companyIata:val.iata,  // 二字码
             initial:letter.fllLetter.substring(0,1), // 第一个字母
-            id:val.id,          // 城市id
+            id:val.id,          // 航司id
         })
     });
     return mes;

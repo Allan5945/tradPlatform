@@ -29,7 +29,7 @@
                   </div>
                   <div>
                       <div>运力归属</div>
-                      <div>{{detailData.capacitycompanyStr||'-'}}</div>
+                      <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                   </div>
                    <div>
                       <div>运力基地</div>
@@ -75,28 +75,38 @@
                           <div>始发机场</div>
                           <div>
                              <div>{{planData.dptNm||'-'}}</div>
+                             <div>{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
                            <div class="resouse">
                               <div>出港资源</div>
-                              <div>{{planData.dptTime||'-'}}</div>
+                              <div v-if="planData.dptTimeresources == '0'">{{planData.dptTime||'-'}}</div>
+                              <div v-else>{{planData.dptTimeresourcesStr||'-'}}</div>
                           </div>
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
                           <div>经停机场</div>
-                          <div>{{planData.pstNm||'-'}}</div>
+                          <div>
+                            <div>{{planData.pstNm||'-'}}</div>
+                            <div>{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
+                          </div>
                           <div class="resouse">
                               <div>出港资源</div>
-                              <div>{{planData.pstTime||'-'}}</div>
+                              <div v-if="planData.pstTimeresources == '0'">{{planData.pstTime||'-'}}</div>
+                              <div v-else>{{planData.pstTimeresourcesStr||'-'}}</div>
                           </div>
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
                           <div>到达区域</div>
-                          <div>{{planData.arrvNm||'-'}}</div>
+                          <div>
+                            <div>{{planData.arrvNm||'-'}}</div>
+                            <div>{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                          </div>
                           <div class="resouse">
                               <div>出港资源</div>
-                              <div>{{planData.arrvTime||'-'}}</div>
+                              <div v-if="planData.arrvTimeresources == '0'">{{planData.arrvTime||'-'}}</div>
+                              <div v-else>{{planData.arrvTimeresourcesStr||'-'}}</div>
                           </div>
                       </div>
                   </div>
@@ -147,7 +157,7 @@
                       </div>
                        <div>
                           <div>运力基地</div>
-                          <div>{{planData.dptNm||'-'}}</div>
+                          <div>{{planData.capacityBaseNm||'-'}}</div>
                       </div>
                        <div>
                           <div>是否调度</div>

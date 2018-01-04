@@ -4,6 +4,7 @@
                 <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
                 <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcType == '时刻'||selcType == '机场' "  v-show="airportSearch"></airportS1>
                 <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcType == '城市' " v-show="citySearch"></cityS>
+                <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData" v-else-if="selcType == '航司' " v-show="airlineSearch"></airCompanyS>
                 <div class="s-type" @click="showType = !showType">
                     <span>{{selcType}}</span>
                     <span class="iconfont">&#xe605;</span>
@@ -20,16 +21,18 @@
 import * as vx from 'vuex'
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
+import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
     export default {
         data() {
             return {
                 airportText:'',
                 qyCode:'',
                 selcType:'',
-                typeList:['城市','时刻','机场'],
+                typeList:['城市','航司','机场','时刻'],
                 searchData:{},
                 airportSearch:false,
                 citySearch:false,
+                airlineSearch:false,
                 showType:false
             }
         },
@@ -40,6 +43,7 @@ import cityS from '../../reuseComponents/citySearch.vue'
         },
         methods: {
             getType(i){
+                this.airportText = '';
                 this.selcType = this.typeList[i];
                 this.showType = false;
             },
@@ -47,6 +51,8 @@ import cityS from '../../reuseComponents/citySearch.vue'
                  let that =this;
                setTimeout(function(){
                 that.airportSearch =false;
+                this.citySearch = false;
+                this.airlineSearch = false;
                 },200);
             },
             airportData(data){
@@ -60,9 +66,15 @@ import cityS from '../../reuseComponents/citySearch.vue'
                 this.qyCode = data.name;
                 this.citySearch = false;
             },
+            airCompanyData(data){
+                this.airportText = data.name;
+                this.qyCode = data.code3;
+                this.airlineSearch = false;
+            },
             searchAirport(){
                 this.airportSearch = true;
                 this.citySearch = true;
+                this.airlineSearch = true;
             },
             getInfo(){
                  if(this.selcType == '机场'){
@@ -91,7 +103,8 @@ import cityS from '../../reuseComponents/citySearch.vue'
         },
         components:{
             airportS1,
-            cityS
+            cityS,
+            airCompanyS
         }
     }
 </script>

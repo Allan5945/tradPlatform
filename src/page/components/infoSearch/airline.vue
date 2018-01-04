@@ -90,6 +90,7 @@
         data() {
             return {
                 infoData:{},
+                qyCode:'',
                 newsData:[]
             }
         },
@@ -110,8 +111,8 @@
             }
         },
         methods: {
-            searchData(qyCode){
-               this.qyCode = qyCode;
+           searchData(qyCode){
+                this.qyCode = qyCode;
             },
             getData(){
                  this.loading = Loading.service({
