@@ -10,7 +10,8 @@
         </router-link>
         <a>
             <div class="contact-client btn btn-b" @click="initDis">
-                联系客服
+                <span v-if="role.role != '2'">联系客服</span>
+                <span v-else>联系用户</span>
                 <span>&#xe60f;</span>
             </div>
         </a>
@@ -68,7 +69,7 @@
         padding: 5px 12px;
         display: flex;
         justify-content: space-between;
-        >span{
+        >span:last-of-type{
             font-family: iconfont;
             font-size: 1.5rem;
         }
