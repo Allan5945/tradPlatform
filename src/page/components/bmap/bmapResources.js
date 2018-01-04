@@ -50,7 +50,7 @@ const zs = {
             "featureType": "water",
             "elementType": "all",
             "stylers": {
-                "color": "#d6d6d5",
+                "color": "#bec8e1",
                 "visibility": "on"
             }
         },
@@ -58,7 +58,7 @@ const zs = {
             "featureType": "land",
             "elementType": "all",
             "stylers": {
-                "color": "#f6f6f6",
+                "color": "#ededed",
                 "visibility": "on"
             }
         },
@@ -66,7 +66,7 @@ const zs = {
             "featureType": "boundary",
             "elementType": "all",
             "stylers": {
-                "color": "#bdbdbd",
+                "color": "#bfbfbf",
                 "visibility": "on"
             }
         },

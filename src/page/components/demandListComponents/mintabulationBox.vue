@@ -340,7 +340,7 @@
                 font-size: 1.2rem;
             }
             > div {
-                font-size: 1.3em;
+                font-size: 1.2em;
                 color: #605E7C;
                 text-overflow: ellipsis;
                 white-space: nowrap;
