@@ -133,7 +133,7 @@
             <div class="myplan" v-if="myplanShow">
                 <div class="plan-til">
                     <div>我发出的方案</div>
-                    <div @click="EditFn" style="cursor:pointer;"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                    <div @click="EditFn" v-show="receiveIntention.releaseselected == 1" style="cursor:pointer;"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                 </div>
                 <div class="airline">
                     <div class="airplace">
@@ -186,6 +186,16 @@
                 </div>
                 <div class="table-form">
                     <div>
+                        <div>联系人</div>
+                        <div>{{receiveIntention.contact}}</div>
+                        <!--<div>2017.11.11-2018.11.11</div>-->
+                    </div>
+                    <div>
+                        <div>联系方式</div>
+                        <div>{{receiveIntention.ihome}}</div>
+                        <!--<div>2017.11.11-2018.11.11</div>-->
+                    </div>
+                    <div>
                         <div>拟开时间</div>
                         <div>{{receiveIntention.sailingtime}}</div>
                         <!--<div>2017.11.11-2018.11.11</div>-->
@@ -232,7 +242,7 @@
                     </div>
                     <div>
                         <div>运力基地</div>
-                        <div>{{receiveIntention.dptNm}}</div>
+                        <div>{{receiveIntention.capacityBaseNm}}</div>
                         <!--<div>成都双流</div>-->
                     </div>
                     <div>
