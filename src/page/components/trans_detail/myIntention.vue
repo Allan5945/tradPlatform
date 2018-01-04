@@ -292,7 +292,6 @@
                     })
                     .then((response) => {
                          if(response.data.opResult == "0"){
-                           this.selIndex = " ";
                           //alert("撤销选定成功!")
                          }
                     })

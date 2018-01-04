@@ -595,6 +595,7 @@
                 }*/
                 this.sendData.id = this.planData.id;
                 this.sendData.employeeId = this.planData.employeeId;
+                this.sendData.demandId = this.planData.demandId;
                 this.sendData.releaseselected = this.planData.releaseselected;
                 this.sendData.responseselected = this.planData.responseselected;
                 this.sendData.responseProgress = this.planData.responseProgress;
@@ -712,7 +713,7 @@
                         let myCompany = [];
                         myCompany.push(item.airlnCd);
                         myCompany.push(item.icao);
-                        myCompany.push(item.capacitycompany);
+                        myCompany.push(item.id);
                         this.airCompanyData.push(myCompany);
                     })
                 }).catch((error) => {
