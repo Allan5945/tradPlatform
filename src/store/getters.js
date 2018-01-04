@@ -11,6 +11,9 @@ export default {
     ,cityList:(state)=>{
         return state.cityList;
     }
+    ,companyList:(state)=>{
+        return state.companyList;
+    }
     ,monoData:(state)=>{
         return state.demandList.monoData;
     }

@@ -35,4 +35,19 @@ function conversionsCity(data) {
     });
     return mes;
 }
-export {conversions,conversionsCity};
+function conversionsCompany(data) { //航司名称
+    let mes = [];
+    data.forEach((val)=>{
+        let letter = letterConversions(val.airlnCd);
+        mes.push({
+            companyName:val.airlnCd,  // 航司名字
+            pinyin:letter.allLetter,    // 航司全拼音
+            py:letter.fllLetter,    // 航司首字母拼音
+            companyIcao:val.icao,  // 三字码
+            initial:letter.fllLetter.substring(0,1), // 第一个字母
+            id:val.id,          // 城市id
+        })
+    });
+    return mes;
+}
+export {conversions,conversionsCity,conversionsCompany};
