@@ -165,12 +165,12 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 40px;">
-                                {{ndetailData.dpt||"—"}}
+                            <div style="width: 80%;line-height: 5px;text-indent: 10px;">
+                                {{ndetailData.dptNm||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pst||"—"}}
+                                {{ndetailData.pstNm||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrv||"—"}}
+                                {{ndetailData.arrvNm||"—"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>

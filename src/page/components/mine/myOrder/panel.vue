@@ -1,7 +1,9 @@
 <template>
     <div class="wrap" @click.self="closeDetail">
         <div class="box shadow">
-            <div class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></div>
+            <div class="panel-header">
+                <p class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
+            </div>
             <div class="aplan-wrapper">
                 <listModule :ndetailData="metaData.data"
                             :type="typeList[detailData.demandType]"
@@ -160,12 +162,19 @@
     h1,h2,h3,h4,h5,h6{
         color: $bt-c;
     }
-    .mgr-l{
-        color: rgba(96,94,124,.7);
+    .panel-header{
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        padding-left: 30px;
-        height:30px;
-        line-height: 30px;
+        height: 50px;
+        line-height: 50px;
+        text-indent: 50px;
+        color: rgba(96,94,124,.7);
+        box-shadow: 0px 5px 10px rgba(216, 216, 216, 0.9);
+        z-index: 1;
+    }
+    .mgr-l{
     }
     .flex-center{
         display: flex;
@@ -194,6 +203,7 @@
         height:22px;
         line-height:22px;
         text-align:center;
+        text-indent: 0;
         color:#3C78FF;
         border:1px solid #ededed;
         border-radius: 11px;
@@ -202,6 +212,7 @@
     /*主體内容*/
     .aplan-wrapper{
         position:absolute;
+        top: 50px;
         right:0;
         width:100%;
         box-sizing:border-box;
