@@ -6,7 +6,7 @@
                 <div class="tips">
                     <span>委托方 {{ ndetailData.num||"成都双流" }}</span>
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ ndetailData.demandStateStr || "未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -23,7 +23,7 @@
                                 <div>{{ndetailData.dptTime||"待协调"}}</div>
                             </div>
                         </div>
-                        <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                        <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
@@ -35,7 +35,7 @@
                                 <div>{{ndetailData.pstTime||"待协调"}}</div>
                             </div>
                         </div>
-                        <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                        <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
@@ -104,7 +104,7 @@
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandprogress]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ ndetailData.demandStateStr || "未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -144,7 +144,7 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 40px;">
+                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size:16px;">
                                 {{ndetailData.dptNm||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
                                 {{ndetailData.pstNm||"待定"}}
@@ -196,6 +196,7 @@
     .plan-wrapper{
         position:absolute;
         right:0;
+        top:50px;
         width:100%;
         max-height: 75%;
         box-sizing:border-box;
@@ -206,7 +207,6 @@
         header{
             width:100%;
             background-color:rgba(216,216,216,.2);
-            box-shadow:-5px 5px 15px rgba(216,216,216,.9) inset;
         }
         footer{
             position:fixed;
@@ -279,7 +279,7 @@
                 max-width:160px;
             }
             >div:nth-of-type(even){
-                width:60px;
+                width:100px;
                 text-align: center;
             }
         }
