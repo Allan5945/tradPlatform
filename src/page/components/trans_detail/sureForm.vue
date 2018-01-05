@@ -595,6 +595,7 @@
                 }*/
                 this.sendData.id = this.planData.id;
                 this.sendData.employeeId = this.planData.employeeId;
+                this.sendData.demandId = this.planData.demandId;
                 this.sendData.releaseselected = this.planData.releaseselected;
                 this.sendData.responseselected = this.planData.responseselected;
                 this.sendData.responseProgress = this.planData.responseProgress;
@@ -652,7 +653,7 @@
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
                 this.sendData.capacitycompany = this.airCompanyId;   //运力归属
-//                this.sendData.dpt = this.qyCode4;   //运力基地
+                this.sendData.capacityBase = this.qyCode4;   //运力基地
                 this.sendData.hourscost = this.hourConst;   //小时成本
 
                 this.$ajax({
@@ -712,7 +713,7 @@
                         let myCompany = [];
                         myCompany.push(item.airlnCd);
                         myCompany.push(item.icao);
-                        myCompany.push(item.capacitycompany);
+                        myCompany.push(item.id);
                         this.airCompanyData.push(myCompany);
                     })
                 }).catch((error) => {

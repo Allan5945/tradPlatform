@@ -8,14 +8,9 @@
                 </div>
                 <div class="search-box">
                     <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
-                   <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportSearch"></airportS1>
-                   <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcIndex == '0' " v-show="citySearch"></cityS>
-                    <div class="airline popup scroll" v-show="airlineShow" v-else-if="selcIndex == '1' ">
-                        <div v-for="(item,index) in airlineData" @click="getCompanyList(index)">
-                        <span>{{item[0]}}</span>
-                        <span>{{item[1]}}</span>
-                        </div>
-                    </div>
+                   <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportShow"></airportS1>
+                   <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcIndex == '0' " v-show="cityShow"></cityS>
+                    <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData" v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
                 </div>
                 <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
             </div>
@@ -92,6 +87,7 @@
 <script>
 import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
+import airCompanyS from '../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
 import * as vx from 'vuex'
 import myPic from '$src/static/img/airport1.png';
     export default {
@@ -102,10 +98,9 @@ import myPic from '$src/static/img/airport1.png';
                 selcIndex:'0',
                 selcType:'城市',
                 typeList:['城市','航司','机场','时刻'],
-                airlineData:[],
                 airlineShow:false,
-                airportSearch:false,
-                citySearch:false,
+                airportShow:false,
+                cityShow:false,
                 showType:false
             }
         },
@@ -122,26 +117,26 @@ import myPic from '$src/static/img/airport1.png';
             closeDialog(){
                  let that =this;
                setTimeout(function(){
-                that.airportSearch =false;
+                that.airportShow =false;
                 that.airlineShow =false;
-                that.citySearch =false;
+                that.cityShow =false;
                 },200);
             },
             airportData(data){
                 this.airportText = data.name;
                 this.qyCode = data.code;
-                this.airportSearch = false;
+                this.airportShow = false;
             },
             cityData(data){
                 this.airportText = data.name;
                 //this.qyCode = data.code;
                 this.qyCode = data.name;
-                this.citySearch = false;
+                this.cityShow = false;
             },
             searchAirport(){
-                this.airportSearch = true;
-                this.citySearch = true;
-                this.getAirCompany();
+                this.airportShow = true;
+                this.cityShow = true;
+                this.airlineShow = true;
             },
             getInfo(){
                 this.$store.dispatch('searchInfo', {
@@ -160,28 +155,11 @@ import myPic from '$src/static/img/airport1.png';
                 }
             },
             getAirCompany: function(){
-                this.$ajax({
-                url:"/airCompenyList",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-            }) .then((response) => {
-                response.data.list.forEach(item =>{
-                    let airline = [];
-                    airline.push(item.airlnCd);
-                    airline.push(item.icao);
-                    //airline.push(item.id);
-                    this.airlineData.push(airline);
-                })
-            }).catch((error) => {
-                    console.log(error);
-                });
                 this.airlineShow = true;
             },
-            getCompanyList: function(i){
-                this.airportText = this.airlineData[i][0];
-                this.qyCode = this.airlineData[i][1];
+            airCompanyData: function(data){
+                this.airportText = data.name;
+                this.qyCode = data.code3;
                 this.airlineShow = false;
             },
 
@@ -191,7 +169,8 @@ import myPic from '$src/static/img/airport1.png';
         },
         components:{
             airportS1,
-            cityS
+            cityS,
+            airCompanyS
         }
     }
 </script>
@@ -372,28 +351,28 @@ import myPic from '$src/static/img/airport1.png';
             }
           }
     }
-    .airline{
-        position:absolute;
-        left:0px;
-        top:41px;
-        width:680px;
-        max-height:220px;
-        cursor:pointer;
-        z-index:10;
-        overflow:hidden;
-        overflow-y:scroll;
-        div{
-            justify-content: space-between;
-            display: flex;
-            padding: 0 14px;
-            font-size:1.3rem;
-            height:40px;
-            line-height:40px;
-            text-align:left;
-            &:hover{
-                background-color:rgba(235,235,235,.5);
-            }
-        }
+   /*  .airline{
+       position:absolute;
+       left:0px;
+       top:41px;
+       width:680px;
+       max-height:220px;
+       cursor:pointer;
+       z-index:10;
+       overflow:hidden;
+       overflow-y:scroll;
+       div{
+           justify-content: space-between;
+           display: flex;
+           padding: 0 14px;
+           font-size:1.3rem;
+           height:40px;
+           line-height:40px;
+           text-align:left;
+           &:hover{
+               background-color:rgba(235,235,235,.5);
+           }
+       }
 
-    }
+   } */
 </style>

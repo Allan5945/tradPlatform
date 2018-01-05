@@ -26,8 +26,9 @@
                 this.companyList.forEach((val)=>{
                     let st = this.searchText;   // 输入名字
                     if(st != ''){
-                        let companyName = val.companyName;  // 机场名字
-                        let code = val.companyIcao;  // 三字码
+                        let companyName = val.companyName;  // 航司名字
+                        let code3 = val.companyIcao;  // 三字码
+                        let code = val.companyIata;  // 二字码
                         let pinyin = val.pinyin; // 拼音
                         let py = val.py; // 拼音首字母
                         let regx = new RegExp(st,"gmi");
@@ -42,8 +43,9 @@
                             }
                             ar.push({
                                 testName:aName,
-                                testCode:val.companyIcao,
-                                code:val.companyIcao,
+                                testCode:val.companyIata,
+                                code3:val.companyIcao,
+                                code:val.companyIata,
                                 name:val.companyName,
                                 id: val.id,
                                 type:2
@@ -54,7 +56,8 @@
                             ar.push({
                                 testName:val.companyName,
                                 testCode:aName,
-                                code:val.companyIcao,
+                                code3:val.companyIcao,
+                                code:val.companyIata,
                                 name:val.companyName,
                                 id: val.id,
                                 type:2
@@ -65,7 +68,8 @@
                             ar.push({
                                 testName:val.companyName,
                                 testCode:aName,
-                                code:val.companyIcao,
+                                code3:val.companyIcao,
+                                code:val.companyIata,
                                 name:val.companyName,
                                 id: val.id,
                                 type:2
@@ -76,7 +80,8 @@
                             ar.push({
                                 testName:val.companyName,
                                 testCode:aName,
-                                code:val.companyIcao,
+                                code3:val.companyIcao,
+                                code:val.companyIata,
                                 name:val.companyName,
                                 id: val.id,
                                 type:2
@@ -85,8 +90,9 @@
                     }else{
                         ar.push({
                             testName:val.companyName,
-                            testCode:val.companyIcao,
-                            code:val.companyIcao,
+                            testCode:val.companyIata,
+                            code3:val.companyIcao,
+                            code:val.companyIata,
                             name:val.companyName,
                             id: val.id,
                             type:2

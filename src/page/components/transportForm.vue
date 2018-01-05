@@ -73,13 +73,8 @@
               <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
             </div>
             <div class="form-box reset">
-                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @click="getAirCompany"  @blur="closeDialog6">
-                <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:45px;width:223px;">
-                    <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
-                    <span>{{item[0]}}</span>
-                    <span>{{item[1]}}</span>
-                    </div>
-                </div>
+                <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
+                <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
             </div>
             <div class="form-box reset">
                 <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
@@ -149,6 +144,7 @@
  import * as vx from 'vuex'
  import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import airCompanyS from '../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
     export default {
         data () {
             return{
@@ -210,13 +206,13 @@
                 qyCode4:'',
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
-                airCompanyData:[]
             }
         },
         components:{
             calendar,
             airportS,
-            airportS1
+            airportS1,
+            airCompanyS
         },
         computed:{
          ...vx.mapGetters([
@@ -403,49 +399,15 @@
                 this.airplaneTyp = this.airTypData[i];
                 this.airplTypShow = false;
             },
-            getCompanyList: function(i){
-                this.airCompany = this.airCompanyData[i][0];
+            airCompanyData: function(data){
+                this.airCompany = data.name;
+                this.airCompanyId = data.id;
                 this.airCompanyShow = false;
-                this.airCompanyId = this.airCompanyData[i][2];
             },
             getAirplaneTyp:function(){
-                /*this.$ajax({
-                url:"/getDemandsForCurrentEmployee",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:2
-                }
-            }) .then((response) => {
-                response.data.list.list.forEach(item =>{
-                    this.airTypData.push(item.aircrfttyp);
-                })
-            }) .catch((error) => {
-                    console.log(error);
-                });*/
                 this.airplTypShow = true;
             },
             getAirCompany: function(){
-                this.$ajax({
-                url:"/airCompenyList",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-            }) .then((response) => {
-                response.data.list.forEach(item =>{
-                    let myCompany = [];
-                    myCompany.push(item.airlnCd);
-                    myCompany.push(item.iata);
-                    myCompany.push(item.id);
-                    this.airCompanyData.push(myCompany);
-                })
-            }).catch((error) => {
-                    console.log(error);
-                });
-                //console.log(this.airCompanyData)
                 this.airCompanyShow = true;
             },
             confirm:function(type){
