@@ -492,6 +492,7 @@
                 scheduleList: ['待定','满排','半排'],
                 subsidyList: ['保底','定补','按人头'],
                 sendData: {},
+                directionalgoal: '', // 定向发布（id）
             }
         },
         components: {
@@ -514,12 +515,12 @@
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
-            sailingtime: function () {
+            /*sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
             },
             periodValidity: function () {
                 return this.calendarInitDay3 + ',' +this.calendarInitDay4;
-            }
+            }*/
         },
         methods: {
             warn4Fn: function () {
@@ -551,9 +552,9 @@
                 this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
                 this.sendData.days = this.scheduleShow;      //必填 班期
                 this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
-                this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
+                this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
-                this.sendData.periodValidity = this.periodValidity; //必填 需求发布有效期
+                this.sendData.periodValidity = this.myDate2; //必填 需求发布有效期
 //                sendData.pst = this.secAreaCode;   //选填 经停地
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
                 if(this.pstState == 0) {
@@ -577,6 +578,7 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
+                this.sendData.directionalgoal = this.directionalgoal; // 定向发布
             },
             //发送数据
             submitData: function () {
@@ -966,6 +968,7 @@
                 this.isSearch4 = false;
                 this.fourthArea = data.name;
                 this.qyCode4 = data.code;
+                this.directionalgoal = data.id;
                 this.directionPublicCityShow = true;
                 this.directionPublicCity.push(data.name);
             },
@@ -1117,7 +1120,7 @@
             },
             publicwayFn3: function () {
                 this.directionPublicShow = true;
-                this.publicwayStrCode = 3;
+                this.publicwayStrCode = 2;
                 this.directionPublicCityShow = true;
             },
             // 起止时间显示到上方的框内
