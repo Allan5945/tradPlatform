@@ -127,7 +127,7 @@
                 </div>
             </div>
         </div>
-        <airportInfo v-show="detailInfoShow" @closeDetail="closeDetail"></airportInfo>
+        <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
     </div>
 </template>
 
@@ -145,7 +145,7 @@
             return {
                 infoData:{},
                 qyCode:'',
-                detailInfoShow:false
+                detailInfoShow:false,
             }
         },
         watch: {
