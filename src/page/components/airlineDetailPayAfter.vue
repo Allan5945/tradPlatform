@@ -272,7 +272,6 @@
             <span class="line"></span>
         </div>-->
         <div class="third-show" v-show="thirdShow">
-
             <div class="eighth item-container">
                 <div class="left font-gray">
                     收到时间
@@ -410,7 +409,7 @@
                             </div>
                         </div>
                         <div v-else>
-                            <div class="item-fifth" v-if="releaseselectedShow">
+                            <div class="item-fifth" v-if="item.releaseselected === '1'">
                                 <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
                             </div>
                             <div class="item-sixth" v-else>
@@ -426,7 +425,8 @@
             <span style="width: 560px;height: 2px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" @click="addCollectFn">收藏</button>
+                <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
             </div>
         </div>
         <div class="second-button" v-show="secondButtonShow">
@@ -448,7 +448,8 @@
                 </div>
                 <div class="buttons" v-else>
                     <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
-                    <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+                    <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                    <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
                 </div>
             </div>
 
@@ -536,7 +537,6 @@
                 listData: [],    //下方的列表详情
                 id: '',
                 checkDetailIndex: '', //点击“查看详情”对应的展开
-                releaseselectedShow: true,  //发布者是否已选定 0:表示选定,1:表示未选定
                 airlineAffirmUnchooseData: {}, //“撤销选定”发的对象
                 /*日历*/
                 calendarInitDay1: '', //日历
@@ -548,6 +548,7 @@
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
                 airlnCd: '',            // 运力归属
+                isAlreadyCollect: false, // 是否已收藏
             }
         },
         created() {
@@ -581,27 +582,18 @@
                     }
                 })
                 .then((response) => {
-//                    console.info('response:')
-//                    console.info(response)
-//                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
+                    this.isAlreadyCollect = response.data.isAlreadyCollect; // 是否收藏
                     this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据(意向方数据)
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
-//                            this.intentionCount = response.data.intentionCount;
-//                            this.detailData = response.data.data;
-//                            this.listData = response.data.responseList;   //获取意向列表
                     this.userNum = response.data.intentionCount;
                     this.myData = response.data.data;
                     this.releaseTime = this.myData.releasetime.split(" ")[0];
-//                            this.dptTime0 = this.myData.dptTime.split(',')[0];
-//                            this.dptTime1 = this.myData.dptTime.split(',')[1];
                     this.dptTime0 = this.myData.dptTime;
                     this.pstTime0 = this.myData.pstTime.split(',')[0];
                     this.pstTime1 = this.myData.pstTime.split(',')[1];
                     this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                     this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-//                    this.periodValidity0 = this.myData.periodValidity;
-//                    this.periodValidity0 = this.myData.periodValidity.split(',')[0];
                     this.periodValidity1 = this.myData.periodValidity.split(',')[1];
                     if (this.myData.subsidypolicy == 0) {
                         this.subsidypolicy = '定补'
@@ -619,8 +611,11 @@
                         this.subsidypolicy = '无补贴'
                     }
                     // 修改this.showCode
-                    if(this.myData.demandstate == 5 || this.myData.demandstate == 3 || this.myData.demandprogress == 3 || this.myData.demandprogress == 10) {
-                        this.showCode = 5; // “关闭”状态
+                    if(this.myData.demandstate == 5
+                        || this.myData.demandstate == 3
+                        || this.myData.demandprogress == 3
+                        || this.myData.demandprogress == 10) {  // “关闭”状态
+                        this.showCode = 5;
                     }else {
                         if (this.isSelf == true && this.isIntentionMoney == false) {
 //                                console.info('payAfter:' + 1)
@@ -967,17 +962,40 @@
                         demandIds: this.id
                     }
                 }) .then((response) => {
-//                    console.info('collect:')
-//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('收藏成功！')
+                        this.refreshFn();
                     }else{
                         alert('错误代码：'+ response.data.opResult)
                     }
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
                 });
+            },
+            // 取消收藏
+            cancelCollectFn:function(){
+                this.$ajax({
+                    method: 'post',
+                    url: '/delCollectByDemandId',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId:this.id
+                    }
+                })
+                    .then((response) => {
+                        if(response.data.opResult === '0'){
+                            alert('取消收藏成功！');
+                            this.refreshFn();
+                        }else{
+                            alert('错误代码：'+ response.data.opResult)
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
@@ -1018,12 +1036,10 @@
 //                tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
-            changeShowCodeA: function (index) {
+            changeShowCodeA: function (index) {//发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 this.showCode = 3;
                 this.show();
                 this.refreshFn(); // 重新获取数据
-                //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
-                this.releaseselectedShow = false; //显示两个按钮
             },
             //点击“撤销选定”，showCode变成2状态
             airlineAffirmUnchooseFn: function (item,index) {
@@ -1045,7 +1061,6 @@
 //                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功撤销选定!');
-                        this.releaseselectedShow = true;
                         this.showCode = 2;
                         this.show();
                         this.refreshFn();
@@ -1061,16 +1076,7 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
-//                console.info('item:')
-//                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
-                if(item.releaseselected == 0){
-                    this.releaseselectedShow = false;
-//                    console.info(0)
-                }else {
-                    this.releaseselectedShow = true;
-//                    console.info(1)
-                }
             },
             //点击“收起详情”
             checkDetailUp: function (item,index) {

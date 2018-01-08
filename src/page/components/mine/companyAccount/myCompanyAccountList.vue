@@ -42,7 +42,9 @@
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
             <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1"></AccountWithdrawDetail>
             <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeCompanyAirlineDetailPayAfterFn" @refresh="refreshFn" :key="2"></companyAirlineDetailPayAfter>
-            <companyMyIntention v-show="companyMyIntentionShow" @closeThis="closeCompanyMyIntentionFn" :key="3"></companyMyIntention>
+            <companyMyIntention v-show="companyMyIntentionShow" @closeThis="closeCompanyMyIntentionFn" @openIntent="openIntent" :key="3"></companyMyIntention>
+            <companyNeedDetail v-show="companyNeedDetailShow" @closeThis="closeCompanyMyIntentionFn" @transShow="transShow" :key="4"></companyNeedDetail>
+            <companyRespondAirport v-show="companyRespondAirportShow" @closeThis="closeCompanyMyIntentionFn" @responseShow="responShow" :key="5"></companyRespondAirport>
         </transition-group>
     </div>
 </template>
@@ -55,6 +57,8 @@
     import AccountWithdrawDetail from './AccountWithdrawDetail.vue'
     import companyAirlineDetailPayAfter from './companyAirlineDetailPayAfter.vue'
     import companyMyIntention from './companyMyIntention.vue'
+    import companyNeedDetail from './companyNeedDetail.vue'
+    import companyRespondAirport from './companyRespondAirport.vue'
 
     export default {
         data() {
@@ -65,6 +69,8 @@
                 AccountWithdrawDetailShow: false,    // 提现详情
                 companyAirlineDetailPayAfterShow: false, // 航线详情是否显示
                 companyMyIntentionShow: false,           // 运力详情是否显示
+                companyNeedDetailShow: false,            // 运力详情是否显示
+                companyRespondAirportShow: false,        // 运力详情是否显示
                 myData: {},     //获取的数据
                 myListData: [], // 获取的列表数据
                 myAccountData: {},
@@ -109,6 +115,23 @@
                     console.log(error);
                 });
             },
+            // 张帅的运力详情页面，不是我的
+            openIntent() {
+                this.companyMyIntentionShow = true;
+                this.companyNeedDetailShow = false;
+                this.companyRespondAirportShow = false;
+            },
+            transShow(){
+                this.companyMyIntentionShow = false;
+                this.companyNeedDetailShow = true;
+                this.companyRespondAirportShow = false;
+            },
+            responShow(){
+                this.companyMyIntentionShow = false;
+                this.companyNeedDetailShow = false;
+                this.companyRespondAirportShow = true;
+            },
+            //***************************
             // 点击“充值”
             rechargeFn: function () {
                 this.$ajax({
@@ -183,7 +206,7 @@
                     this.companyMyIntentionShow = false;
                     this.companyAirlineDetailPayAfterShow = true;
                 }if(item.demandType == '运力需求'){
-                    this.companyMyIntentionShow = true;
+//                    this.companyMyIntentionShow = true;
                     this.companyAirlineDetailPayAfterShow = false;
                     tabulationBoxTrigger.$emit('sendToCompany', item);
                 }
@@ -196,6 +219,8 @@
             // 关闭“运力详情”
             closeCompanyMyIntentionFn: function () {
                 this.companyMyIntentionShow = false;
+                this.companyNeedDetailShow = false;
+                this.companyRespondAirportShow = false;
                 tabulationBoxTrigger.hierarchy = false;
             },
         },
@@ -206,6 +231,8 @@
             AccountWithdrawDetail,
             companyAirlineDetailPayAfter,
             companyMyIntention,
+            companyNeedDetail,
+            companyRespondAirport,
         }
     }
 </script>
