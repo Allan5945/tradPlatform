@@ -62,18 +62,17 @@
             }
         },
         mounted: function () {
+            this.resData();
+        },
+        created:function(){
             tabulationBoxTrigger.$on("moreNews",val=>{
                 this.inputText = val;
                 alert(val)
             });
-            this.resData();
         },
-       /* beforeDestory(){
-             tabulationBoxTrigger.$on("moreNews",val=>{
-                this.inputText = val;
-                alert("ddddd")
-            });
-         },*/
+        beforeDestroy() {
+          this.tabulationBoxTrigger.$off('moreNews', this.handleMyEvent)
+        },
         computed: {
             ...vx.mapGetters([
                 'role'

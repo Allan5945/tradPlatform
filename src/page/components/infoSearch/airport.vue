@@ -213,6 +213,8 @@
                     myChart2 = this.$echarts.init(document.getElementById('myChart2')),
                     myChart3 = this.$echarts.init(document.getElementById('myChart3'));
                 myChart1.setOption({
+                    tooltip: {
+                    },
                     xAxis: {
                         data: this.years
                     },
@@ -234,6 +236,8 @@
                     }]
                 });
                  myChart2.setOption({
+                    tooltip: {
+                    },
                     xAxis: {
                         data: this.years
                     },
@@ -255,6 +259,8 @@
                     }]
                 });
                   myChart3.setOption({
+                    tooltip: {
+                    },
                     xAxis: {
                         data: this.years
                     },

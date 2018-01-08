@@ -211,6 +211,8 @@
                     myChart2 = this.$echarts.init(document.getElementById('myChart2')),
                     myChart3 = this.$echarts.init(document.getElementById('myChart3'));
                 myChart1.setOption({
+                    tooltip: {
+                    },
                     legend: {
                         data:['旅游收入','旅游人次'],
                         itemGap :340,
@@ -268,6 +270,8 @@
                     }]
                 });
                  myChart2.setOption({
+                    tooltip: {
+                    },
                     legend: {
                         data:['城市GDP'],
                         left:5,
@@ -306,6 +310,8 @@
                     }
                 });
                  myChart3.setOption({
+                    tooltip: {
+                    },
                     legend: {
                         data:['常驻人口'],
                         right:10,
