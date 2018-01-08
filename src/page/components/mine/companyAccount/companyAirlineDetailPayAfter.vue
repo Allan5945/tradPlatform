@@ -76,14 +76,12 @@
                 <div class="fourth item-container">
                     <div class="items">
                         <div class="left item font-gray">
-                            <div>联系人</div>
                             <div>拟开时间</div>
                             <div>拟飞机型</div>
                             <div>客量期望</div>
                             <div>补贴政策</div>
                         </div>
                         <div class="right item">
-                            <div class="item-a">{{myData.contact}}</div>
                             <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                             <div class="item-b">{{myData.aircrfttyp}}</div>
                             <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
@@ -93,14 +91,12 @@
                     </div>
                     <div class="items">
                         <div class="left item font-gray">
-                            <div>联系方式</div>
                             <div>拟开班期</div>
                             <div>座位数</div>
                             <div>客座率期望</div>
                             <div>有效期</div>
                         </div>
                         <div class="right item">
-                            <div class="item-a">{{myData.iHome}}</div>
                             <div class="item-a">{{myData.days}}</div>
                             <div class="item-b">{{myData.seating}}</div>
                             <div class="item-c">{{myData.loadfactorsexpect}}%</div>
@@ -424,7 +420,7 @@
                 </div>
             </div>
             <div class="first-button" v-show="firstButtonShow">
-                <span style="width: 560px;height: 2px;background: black;"></span>
+                <span style="width: 560px;height: 1px;background: black;"></span>
                 <div class="buttons">
                     <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
                     <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
@@ -450,8 +446,8 @@
                     </div>
                     <div class="buttons" v-else>
                         <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
-                        <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                        <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
+                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-w cancel-btn" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</div>
                     </div>
                 </div>
 
@@ -1647,7 +1643,7 @@
                 height: 59px;
                 border-top-left-radius: 4px;
                 border-top-right-radius: 4px;
-                border-bottom: 2px solid $font-color;
+                border-bottom: 1px solid $font-color;
                 .left {
                     margin-right: 40px;
                     width: 80px;

@@ -262,7 +262,7 @@
                             <span class="margin-right">拟飞机型</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="输入选择机型"
-                                       style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" @input="warn4Fn"
+                                       style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" readonly
                                        v-model="typeChoose">
                             </div>
                             <ul class="choose-type air-type" v-show="airTypeShow">
@@ -601,7 +601,7 @@
                 this.remarkMsg = this.acceptData.remark; // 其他说明
                 // 判断始发类型（0：机场，1：区域）
                 // 机场传三字码，区域和省份传汉字
-                if(this.acceptData.dptState === "0") {
+                if(this.acceptData.dptState == "0") {
                     this.space1ShowTitle = this.spaceList[1];
                     this.space1Fn(this.spaceList[1]);
                     this.firArea = this.acceptData.dptNm;
@@ -623,13 +623,14 @@
                     }else if(this.acceptData.dptTimeresources === "2") {
                         mPubEairAEnough.checked = true;
                     }
-                }else if(this.acceptData.dptState === "1") {
+                }else if(this.acceptData.dptState == "1") {
+                    console.info('11')
                     this.space1ShowTitle = this.spaceList[0];
                     this.space1Fn(this.spaceList[0]);
                     this.firArea = this.acceptData.dpt;
                 }
                 // 判断经停类型（0：机场，1：区域）
-                if(this.acceptData.pstState === "0") {
+                if(this.acceptData.pstState == "0") {
                     this.space2ShowTitle = this.spaceList[1];
                     this.space2Fn(this.spaceList[1]);
                     this.secArea = this.acceptData.pstNm;
@@ -651,13 +652,13 @@
                     }else if(this.acceptData.pstTimeresources === "2") {
                         mPubEairBEnough.checked = true;
                     }
-                }else if(this.acceptData.pstState === "1") {
+                }else if(this.acceptData.pstState == "1") {
                     this.space2ShowTitle = this.spaceList[0];
                     this.space2Fn(this.spaceList[0]);
                     this.secArea = this.acceptData.pst;
                 }
                 // 判断到达类型（0：机场，1：区域）
-                if(this.acceptData.arrvState === "0") {
+                if(this.acceptData.arrvState == "0") {
                     this.space3ShowTitle = this.spaceList[1];
                     this.space3Fn(this.spaceList[1]);
                     this.thirdArea = this.acceptData.arrvNm;
@@ -679,7 +680,7 @@
                     }else if(this.acceptData.arrvTimeresources === "2") {
                         mPubEairCEnough.checked = true;
                     }
-                }else if(this.acceptData.arrvState === "1") {
+                }else if(this.acceptData.arrvState == "1") {
                     this.space3ShowTitle = this.spaceList[0];
                     this.space3Fn(this.spaceList[0]);
                     this.thirdArea = this.acceptData.arrv;
@@ -724,7 +725,7 @@
             },
             //发送数据
             submitData: function () {
-                let req = document.getElementById('airlineAffirm'); //控制滚动条的位置
+                let req = document.getElementById('myPurposeEdit'); //控制滚动条的位置
                 //表单验证（部分）
                 if(this.user == '') {
                     this.warn1Show = true;
@@ -810,18 +811,8 @@
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
                 //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
-                if(this.acceptData.stateNum == 1){
-                    this.url = "/selectedResponse";
-                    this.sendData.releaseselected = 0;          //发布者是否已选定 0:表示选定,1:表示未选定
-                    this.alertMsg = '成功选定该意向！';
-                }else if(this.acceptData.stateNum == 2) {
-                    this.url = "/updateResponseSelective";
-                    this.sendData.releaseselected = this.acceptData.releaseselected;
-                    this.alertMsg = '成功编辑该意向！';
-                }
-                let that = this;
                 this.$ajax({
-                    url: that.url, // 我有意向
+                    url: "/updateResponseSelective", // 我有意向
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -831,8 +822,8 @@
 //                    console.info('response:')
 //                    console.info(response)
                     if(response.data.opResult === '0'){
-                        alert('成功添加该意向！')
-                        this.$emit('change-showCode');
+                        alert('成功编辑该意向！')
+                        this.$emit('refresh');
                         this.closeThis();
                     }else{
                         alert('错误代码：' + response.data.opResult)

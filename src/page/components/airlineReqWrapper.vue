@@ -247,7 +247,7 @@
                         <div class="right item-child">
                             <span class="margin-right">拟飞机型</span>　
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择机型" style="border: 0; line-height: 24px;" @click.stop="getAirType" @input="warn4Fn" v-model="typeChoose">
+                                <input class="input-mes" type="text" placeholder="输入选择机型" style="border: 0; line-height: 24px;" @click.stop="getAirType" readonly v-model="typeChoose">
                             </div>
                             <ul class="choose-type air-type" v-show="airTypeShow">
                                 <li v-for="item in airType" @click="chooseAirType(item)">{{item}}</li>
