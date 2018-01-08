@@ -4,7 +4,6 @@
             <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
         </transition>
         <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
-       <!--  <myPlan v-show="planShow" @showPlan="showPlan"></myplan> -->
         <respondAirport @responseShow="responShow" @responseClose="responClose" v-show="respond"></respondAirport>
         <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent"></myintention>
@@ -16,7 +15,6 @@
 <script>
     import needDetail from './needDetail.vue'
     import intentForm from './intentForm1.vue'
-    import myPlan from './myPlan.vue'
     import myIntention from './myIntention.vue'
     import transDialog from './transDialog.vue'
     import respondAirport from './respondAirport.vue'
@@ -29,7 +27,6 @@
                 dialog:false,
                 payDialog:false,
                 intentFormShow:false,
-                planShow:false,
                 adminShow:false,
                 respond:false,
                 intentShow:false,
@@ -70,9 +67,6 @@
                 this.payDialog = true;
                 this.detailShow = false;
             },
-            showPlan(){
-                this.planShow = false;
-            },
             transShow(){
                 this.detailShow = true;
                 this.respond = false;
@@ -96,7 +90,6 @@
         components: {
             needDetail,
             intentForm,
-            myPlan,
             transDialog,
             myIntention,
             paySuccess,

@@ -127,7 +127,7 @@
                 </div>
             </div>
         </div>
-        <airportInfo v-show="detailInfoShow" @closeDetail="closeDetail"></airportInfo>
+        <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
     </div>
 </template>
 
@@ -145,7 +145,7 @@
             return {
                 infoData:{},
                 qyCode:'',
-                detailInfoShow:false
+                detailInfoShow:false,
             }
         },
         watch: {
@@ -213,6 +213,8 @@
                     myChart2 = this.$echarts.init(document.getElementById('myChart2')),
                     myChart3 = this.$echarts.init(document.getElementById('myChart3'));
                 myChart1.setOption({
+                    tooltip: {
+                    },
                     xAxis: {
                         data: this.years
                     },
@@ -234,6 +236,8 @@
                     }]
                 });
                  myChart2.setOption({
+                    tooltip: {
+                    },
                     xAxis: {
                         data: this.years
                     },
@@ -255,6 +259,8 @@
                     }]
                 });
                   myChart3.setOption({
+                    tooltip: {
+                    },
                     xAxis: {
                         data: this.years
                     },

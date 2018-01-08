@@ -87,12 +87,17 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                     this.qyCode = this.airportText;
                     this.$router.push({ path: '/index/information/city'});
                 }
-                 this.$emit('search',this.qyCode);
-                 this.$store.dispatch('searchInfo', {
-                    qyCode : this.qyCode,
-                    selcType :this.selcType,
-                    searchText:this.airportText
-                });
+
+                if(this.qyCode !== ''){
+                     this.$emit('search',this.qyCode);
+                     this.$store.dispatch('searchInfo', {
+                        qyCode : this.qyCode,
+                        selcType :this.selcType,
+                        searchText:this.airportText
+                    });
+                }else{
+                    this.$emit('search', this.searchInfo.qyCode);
+                }
             }
 
         },

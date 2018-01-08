@@ -21,7 +21,7 @@
                     </div>
                      <div>
                         <div>运力归属</div>
-                        <div>{{detailData.capacitycompany}}</div>
+                        <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                     </div>
                     <div>
                         <div>运力基地</div>
@@ -63,7 +63,7 @@
             <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
-                    <div>已有<span>{{this.intentionCount }}</span>位用户发起意向</div>
+                    <div>已有<span>{{this.intentionCount||'0'}}</span>位用户发起意向</div>
                 </div>
                 <div class="intent-form">
                     <div>
@@ -77,18 +77,20 @@
                          <div class="intent-item">
                             <div class="time">{{val.responsedate}}</div>
                             <div class="person">
-                                {{val.intentionCompanyName}}
+                                {{val.intentionCompanyName||'-'}}
                                 <span class="iconfont" @click="chat(val)">&#xe602;</span>
                             </div>
-                            <div class="detail" @click="closeDetail">{{text}}</div>
+                            <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
+                            <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
-                        <div class="intent-detail" v-show="detailShow">
+                        <div class="intent-detail" v-show="showDetailIndex === index">
                             <div class="airline">
                                 <div class="airplace">
-                                    <div>始发机场</div>
+                                    <div v-if="val.dptState =='0' ">始发机场</div>
+                                    <div v-else>始发区域</div>
                                     <div>
-                                        <div>{{val.dpt}}</div>
-                                        <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
+                                        <div>{{val.dptNm||'-'}}</div>
+                                        <div>{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
@@ -97,10 +99,11 @@
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
-                                    <div>经停机场</div>
+                                    <div v-if="val.pstState =='0' ">经停机场</div>
+                                    <div v-else>经停区域</div>
                                     <div>
-                                        <div>{{val.pst}}</div>
-                                        <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
+                                        <div>{{val.pstNm||'-'}}</div>
+                                         <div>{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
@@ -109,10 +112,11 @@
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
-                                    <div>到达区域</div>
+                                    <div v-if="val.arrvState =='0' ">到达机场</div>
+                                    <div v-else>到达区域</div>
                                     <div>
-                                        <div>{{val.arrv}}</div>
-                                        <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
+                                        <div>{{val.arrvNm||'-'}}</div>
+                                        <div>{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
                                     <div class="resouse">
                                         <div>出港资源</div>
@@ -155,7 +159,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicy}}</div>
+                                    <div>{{val.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -163,26 +167,26 @@
                                 </div>
                                 <div>
                                     <div>运力归属</div>
-                                    <div>{{val.capacitycompany}}</div>
+                                    <div v-if="val.capacityCompany">{{val.capacityCompany.airlnCd||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>运力基地</div>
-                                    <div>{{val.dpt}}</div>
+                                    <div>{{val.capacityBaseNm||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>是否调度</div>
-                                    <div>{{val.scheduling}}</div>
+                                    <div>{{val.schedulingStr||'-'}}</div>
                                 </div>
                                 <div class="tips">
                                     <div>其他说明</div>
                                     <div>{{val.remark}}</div>
                                 </div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val)" v-if="selIndex == index">选定</div>
-                            <div class="btns" v-else>
-                                <div class="sel-btn" @click="toSelect(val)">已选定（点击此次可再次编辑）</div>
+                            <div class="btns" v-if="val.releaseselected == '0' ">
+                                <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
                                 <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                             </div>
+                            <div class="sure-btn" @click="toSelect(val)" v-else>选定</div>
                         </div>
                     </div>
                 </div>
@@ -198,7 +202,8 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :responseId="responseId"></myIntentForm>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData"></myIntentForm>
+        <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
@@ -208,22 +213,23 @@
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
   import myIntentForm from './myIntentForm1.vue'
+  import sureForm from './sureForm.vue'
   import  signDialog from './signDialog.vue'
  export default {
      data(){
          return{
-             detailShow:false,
+             showDetailIndex:'',
              intentListShow:false,
              selIndex:'',
              myFormShow:false,
+             sureFormShow:false,
              dialogShow:false,
-             text:"查看详情",
              detailData:{},
              planData:{},
              selectData:{},
+             editData:{},
              intentionCount:0,
              demandId:'',
-             responseId:'',
              isCollect:true
          }
      },
@@ -236,40 +242,22 @@
               ln.$emit('addChat',chatData);
             },
          closeDetail:function(){
-             this.detailShow = !this.detailShow;
-             if(this.detailShow){
-                this.text = "收起详情";
-             }else{
-                 this.text = "查看详情";
-             }
+             this.showDetailIndex = '';
+         },
+          openDetail:function(index){
+             this.showDetailIndex = index;
          },
          closeAdmin:function(){
             this.$emit('closeAdmin');
          },
          toSelect:function(val,index){
-            tabulationBoxTrigger.$emit('sendTable',val);
             this.selIndex = index;
             this.myFormShow = true;
             this.selectData = val;
-            this.responseId = val.id;
-            this.selectData.releaseselected = '0';
-            this.$ajax({
-                method: 'post',
-                url: '/selectedResponse',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params:this.selectData
-                })
-                .then((response) => {
-                    if(response.data.opResult == "0"){
-
-                  }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+         },
+         toEdit:function(val){
+            this.editData = val;
+            this.sureFormShow = true;
          },
          collect:function(){
              this.$ajax({
@@ -340,6 +328,9 @@
                     );
 
          },
+          closeSureForm:function(){
+              this.sureFormShow = false;
+         },
          closeMyForm:function(){
               this.myFormShow = false;
          },
@@ -401,7 +392,8 @@
      },
      components: {
             myIntentForm,
-            signDialog
+            signDialog,
+            sureForm
         }
 }
 </script>

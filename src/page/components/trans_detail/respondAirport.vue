@@ -6,7 +6,7 @@
               <div class="head-til">{{detailData.title||'-'}}</div>
               <div class="tips">
                   <span>创建于{{detailData.releasetime||'-'}}</span>
-                  <span>已有{{intentionCount||'-'}}位用户发起意向</span>
+                  <span>已有{{intentionCount||'0'}}位用户发起意向</span>
               </div>
           </header>
           <div class="content">
@@ -72,7 +72,8 @@
                   </div>
                   <div class="airline">
                       <div class="airplace">
-                          <div>始发机场</div>
+                          <div v-if="planData.dptState =='0' ">始发机场</div>
+                          <div v-else>始发区域</div>
                           <div>
                              <div>{{planData.dptNm||'-'}}</div>
                              <div>{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
@@ -85,7 +86,8 @@
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
-                          <div>经停机场</div>
+                          <div v-if="planData.pstState =='0' ">经停机场</div>
+                          <div v-else>经停区域</div>
                           <div>
                             <div>{{planData.pstNm||'-'}}</div>
                             <div>{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
@@ -98,7 +100,8 @@
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
-                          <div>到达区域</div>
+                          <div v-if="planData.arrvState =='0' ">到达机场</div>
+                          <div v-else>到达区域</div>
                           <div>
                             <div>{{planData.arrvNm||'-'}}</div>
                             <div>{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>

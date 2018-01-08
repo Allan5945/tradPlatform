@@ -21,7 +21,7 @@
                     </div>
                      <div>
                         <div>运力归属</div>
-                        <div>{{detailData.capacitycompany||'-'}}</div>
+                        <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                     </div>
                     <div>
                         <div>运力基地</div>
@@ -63,7 +63,7 @@
             <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
-                    <div>已有<span>{{this.intentionCount||'-' }}</span>位用户发起意向</div>
+                    <div>已有<span>{{this.intentionCount||'0' }}</span>位用户发起意向</div>
                 </div>
                 <div class="intent-form" v-if="this.isSign">
                     <div>
@@ -80,13 +80,15 @@
                               {{val.intentionCompanyName||'-'}}
                               <span class="iconfont" @click="chat(val)">&#xe602;</span>
                             </div>
+                            <div>{{val.responseProgressStr}}</div>
                             <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
                             <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
                         <div class="intent-detail" v-show="showDetailIndex === index">
                             <div class="airline">
                                 <div class="airplace">
-                                    <div>始发机场</div>
+                                    <div v-if="val.dptState =='0' ">始发机场</div>
+                                    <div v-else>始发区域</div>
                                     <div>
                                         <div>{{val.dptNm||'-'}}</div>
                                         <div>{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
@@ -99,7 +101,8 @@
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
-                                    <div>经停机场</div>
+                                    <div v-if="val.pstState =='0' ">经停机场</div>
+                                    <div v-else>经停区域</div>
                                     <div>
                                         <div>{{val.pstNm||'-'}}</div>
                                          <div>{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
@@ -112,7 +115,8 @@
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
                                 <div class="airplace">
-                                    <div>到达区域</div>
+                                    <div v-if="val.arrvState =='0' ">到达机场</div>
+                                    <div v-else>到达区域</div>
                                     <div>
                                         <div>{{val.arrvNm||'-'}}</div>
                                         <div>{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
@@ -186,7 +190,8 @@
                                 <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
                                 <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val,index)" v-else>选定</div>
+                            <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
+                            <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                         </div>
                     </div>
                 </div>
@@ -194,14 +199,14 @@
 
             </div>
             <footer>
-                <div class="foot-tips" v-if="!this.isSign">*您还未签约，签约后可查看详细列表</div>
+                <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
-                    <div class="deal-btn" v-if="!this.isSign" @click="toDeal">申请签约</div>
+                    <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
                     <div class="col-btn" @click="closeNeed">结束需求</div>
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData"></myIntentForm>
+        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
@@ -219,10 +224,10 @@
          return{
              showDetailIndex:'',
              intentListShow:false,
-             selIndex:'',
              myFormShow:false,
              sureFormShow:false,
              dialogShow:false,
+             selected:false,
              detailData:{},
              planData:{},
              editData:{},
@@ -248,8 +253,7 @@
          closeIntent:function(){
             this.$emit('closeIntent');
          },
-         toSelect:function(val,index){
-            this.selIndex = index;
+         toSelect:function(val){
             this.myFormShow = true;
             this.selectData = val;
          },
@@ -293,6 +297,7 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                           //alert("撤销选定成功!")
+                          this.selected = false;
                          }
                     })
                     .catch((error) => {
@@ -303,6 +308,10 @@
          },
          closeMyForm:function(){
               this.myFormShow = false;
+         },
+          surePlan:function(){
+              this.myFormShow = false;
+              this.selected = true;
          },
           closeSureForm:function(){
               this.sureFormShow = false;
@@ -343,6 +352,14 @@
                     //有意向方显示列表信息
                     if(this.planData){
                       this.intentListShow = true;
+                    }
+                    //是否有选定
+                    let len = this.planData.length;
+                    this.selected = false;
+                    for(let i =0;i<len;i++){
+                        if(this.planData[i].releaseselected == '0'){
+                          this.selected = true;
+                        }
                     }
                     //判断是否签约用户
                     this.isSign = response.data.isSign;
@@ -637,7 +654,7 @@
                 }
                 .detail{
                     width:60px;
-                    margin-left:210px;
+                    margin-left:175px;
                     color:#3C78FF;
                     cursor:pointer;
                 }
@@ -655,7 +672,7 @@
           }
           .btn{
               height:40px;
-              margin:20px 0 40px 0;
+              margin-top:28px;
               >div{
                   height:40px;
                   line-height:40px;
@@ -668,7 +685,7 @@
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
               }
                .col-btn{
-                  width:120px;
+                  width:250px;
                   &:hover{
                     color:#fff;
                     background-color: #3C78FF;

@@ -9,8 +9,8 @@
                 <div class="search-box">
                     <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
                    <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportShow"></airportS1>
-                   <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcIndex == '0' " v-show="cityShow"></cityS>
-                    <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData" v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
+                   <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData" v-else-if="selcIndex == '0' " v-show="cityShow"></cityS>
+                    <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData"  v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
                 </div>
                 <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
             </div>
@@ -111,6 +111,7 @@ import myPic from '$src/static/img/airport1.png';
         },
         methods: {
             getType(i){
+                this.airportText = '';
                 this.selcType = this.typeList[i];
                 this.selcIndex = i;
             },
@@ -134,16 +135,21 @@ import myPic from '$src/static/img/airport1.png';
                 this.cityShow = false;
             },
             searchAirport(){
+                if(this.selcIndex == '0'){
+                    this.airportText = '';
+                }
                 this.airportShow = true;
                 this.cityShow = true;
                 this.airlineShow = true;
             },
             getInfo(){
-                this.$store.dispatch('searchInfo', {
-                    qyCode : this.qyCode,
-                    selcType :this.selcType,
-                    searchText:this.airportText
-                });
+                if(this.qyCode !== ''){
+                    this.$store.dispatch('searchInfo', {
+                        qyCode : this.qyCode,
+                        selcType :this.selcType,
+                        searchText:this.airportText
+                    });
+                }
                  if(this.selcType == '机场'){
                     this.$router.push({ path: '/index/information/airport'});
                 }else if(this.selcType == '航司'){
@@ -161,8 +167,7 @@ import myPic from '$src/static/img/airport1.png';
                 this.airportText = data.name;
                 this.qyCode = data.code3;
                 this.airlineShow = false;
-            },
-
+            }
         },
         mounted() {
 

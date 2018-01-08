@@ -5,7 +5,7 @@
             <div class="head-til">{{detailData.title||'-'}}</div>
             <div class="tips">
                 <span>创建于{{detailData.releasetime||'-'}}</span>
-                <span>已有{{intentionCount||'-'}}位用户发起意向</span>
+                <span>已有{{intentionCount||'0'}}位用户发起意向</span>
             </div>
         </header>
         <div class="content">
