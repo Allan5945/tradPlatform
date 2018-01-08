@@ -14,7 +14,7 @@
 
 <script>
     import needDetail from './needDetail.vue'
-    import intentForm from './intentForm1.vue'
+    import intentForm from './intentForm.vue'
     import myIntention from './myIntention.vue'
     import transDialog from './transDialog.vue'
     import respondAirport from './respondAirport.vue'

@@ -2,7 +2,7 @@
     <div class="detail-wrapper">
         <header>
             <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title||'-'}}</div>
+            <div class="head-til">{{detailData.title||'-'}}运力投放</div>
             <div class="tips">
                 <span>创建于{{detailData.releasetime||'-'}}</span>
                 <span>已有{{intentionCount||'0'}}位用户发起意向</span>

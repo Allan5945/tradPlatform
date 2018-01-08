@@ -3,7 +3,7 @@
         <div class="plan-wrapper scroll">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
                     <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr||'-'}}</span></span>
@@ -91,9 +91,9 @@
                                     <div v-else>始发区域</div>
                                     <div>
                                         <div>{{val.dptNm||'-'}}</div>
-                                        <div>{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
+                                        <div v-if="val.dptState =='0' ">{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.dptState =='0' ">
                                         <div>出港资源</div>
                                         <div v-if="val.dptTimeresources == '0'">{{val.dptTime||'-'}}</div>
                                         <div v-else>{{val.dptTimeresourcesStr||'-'}}</div>
@@ -105,9 +105,9 @@
                                     <div v-else>经停区域</div>
                                     <div>
                                         <div>{{val.pstNm||'-'}}</div>
-                                         <div>{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
+                                         <div v-if="val.pstState =='0' ">{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.pstState =='0' ">
                                         <div>出港资源</div>
                                         <div v-if="val.pstTimeresources == '0'">{{val.pstTime||'-'}}</div>
                                         <div v-else>{{val.pstTimeresourcesStr||'-'}}</div>
@@ -119,9 +119,9 @@
                                     <div v-else>到达区域</div>
                                     <div>
                                         <div>{{val.arrvNm||'-'}}</div>
-                                        <div>{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                                        <div v-if="val.arrvState =='0' ">{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.arrvState =='0' ">
                                         <div>出港资源</div>
                                         <div v-if="val.arrvTimeresources == '0'">{{val.arrvTime||'-'}}</div>
                                         <div v-else>{{val.arrvTimeresourcesStr||'-'}}</div>

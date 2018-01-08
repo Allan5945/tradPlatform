@@ -10,7 +10,7 @@
                     <div style="display: flex;">
                         <span>联系人<span class="warn"> *</span>　</span>
                         <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user"
-                               @keyup="warn1Show=false">
+                               @keyup="warn1Show=false" disabled>
                     </div>
                     <div class="warn" v-show="warn1Show">*请填写联系人</div>
                 </div>
@@ -18,7 +18,7 @@
                     <div style="display: flex;">
                         <span>联系方式<span class="warn"> *</span>　</span>
                         <input class="input-mes" type="text" placeholder="请填写有效联系方式" @blur="verifyPhon"
-                               v-model="phoneNum">
+                               v-model="phoneNum" disabled>
                     </div>
                     <div class="warn" v-show="warn2Show">*电话格式有误，请重新输入</div>
                 </div>
@@ -262,7 +262,7 @@
                             <span class="margin-right">拟飞机型</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="输入选择机型"
-                                       style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" @input="warn4Fn"
+                                       style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" readonly
                                        v-model="typeChoose">
                             </div>
                             <ul class="choose-type air-type" v-show="airTypeShow">
@@ -601,6 +601,7 @@
                 this.remarkMsg = this.acceptData.remark; // 其他说明
                 // 判断始发类型（0：机场，1：区域）
                 // 机场传三字码，区域和省份传汉字
+                console.info(typeof this.acceptData.dptState)
                 if(this.acceptData.dptState === "0") {
                     this.space1ShowTitle = this.spaceList[1];
                     this.space1Fn(this.spaceList[1]);

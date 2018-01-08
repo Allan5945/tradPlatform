@@ -384,7 +384,7 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="hourConst"
+                                <input class="input-mes" type="text" placeholder="填写举例：5" v-model="hourConst"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                         </div>
