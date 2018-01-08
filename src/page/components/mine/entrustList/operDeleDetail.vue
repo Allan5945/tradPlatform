@@ -2,86 +2,92 @@
     <div class="wrapper" @click.self="closeDetail">
         <div class="detail-wrapper scroll" >
             <header>
-                <div class="top-til">{{detailData.demandtypeStr}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title}}</div>
+                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title||'-'}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
-                    <div>委托方&nbsp;{{CpyNm}}</div>
-                    <div>创建于{{detailData.releasetime}}</div>
-                    <div><span>{{detailData.demandprogressStr}}</span></div>
+                    <div>委托方&nbsp;{{CpyNm||'-'}}</div>
+                    <div>创建于{{detailData.releasetime||'-'}}</div>
+                    <div><span>{{detailData.demandprogressStr||'-'}}</span></div>
                 </div>
             </header>
             <div class="content">
                 <div class="airline">
                     <div class="air-box">
-                        <div>始发机场</div>
+                        <div v-if="detailData.dptState =='0' ">始发机场</div>
+                        <div v-else>始发区域</div>
                         <div  class="place">
-                            <div>{{detailData.dptNm}}</div>
-                            <div>{{detailData.dptAcceptnearairportStr}}临近机场</div>
+                            <div v-if="detailData.dptState =='0' ">{{detailData.dptNm||'-'}}</div>
+                            <div v-else>{{detailData.dpt||'-'}}</div>
+                            <div v-if="detailData.dptState =='0' ">{{detailData.dptAcceptnearairportStr||'-'}}临近机场</div>
                         </div>
-                        <div>
-                            <div>出港时刻</div>
-                            <div>{{detailData.dptTime}}</div>
+                        <div v-if="detailData.dptState =='0' ">
+                            <div>出港资源</div>
+                            <div v-if="detailData.dptTimeresources == '0'">{{detailData.dptTime||'-'}}</div>
+                            <div v-else>{{detailData.dptTimeresourcesStr||'-'}}</div>
                        </div>
                     </div>
                     <div class="air-box">
-                        <div>到达机场</div>
+                        <div v-if="detailData.arrvState =='0' ">到达机场</div>
+                        <div v-else>到达区域</div>
                         <div class="place">
-                            <div>{{detailData.arrvNm}}</div>
-                            <div>{{detailData.arrvAcceptnearairportStr}}临近机场</div>
+                            <div v-if="detailData.arrvState =='0' ">{{detailData.arrvNm||'-'}}</div>
+                            <div v-else>{{detailData.arrv||'-'}}</div>
+                            <div v-if="detailData.arrvState =='0' ">{{detailData.arrvAcceptnearairportStr||'-'}}临近机场</div>
                         </div>
-                        <div>
-                            <div>出港时刻</div>
-                            <div>{{detailData.arrvTime}}</div>
+                        <div v-if="detailData.arrvState =='0' ">
+                            <div>出港资源</div>
+                            <div v-if="detailData.arrvTimeresources == '0'">{{detailData.arrvTime||'-'}}</div>
+                            <div v-else>{{detailData.arrvTimeresourcesStr||'-'}}</div>
                        </div>
                     </div>
                 </div>
                 <div class="content-box border">
                     <div >
                         <div>拟开时间</div>
-                        <div>{{detailData.sailingtime}}</div>
+                        <div>{{detailData.sailingtime||'-'}}</div>
                     </div>
                     <div>
                         <div>拟开班期</div>
-                        <div>{{detailData.days}}</div>
+                        <div>{{detailData.days||'-'}}</div>
                     </div>
                     <div>
                         <div>拟飞机型</div>
-                        <div>{{detailData.aircrfttyp}}</div>
+                        <div>{{detailData.aircrfttyp||'-'}}</div>
                     </div>
                      <div>
                         <div>座位布局</div>
-                        <div>{{detailData.seating}}</div>
+                        <div>{{detailData.seating||'-'}}</div>
                     </div>
                      <div>
                         <div>客量期望</div>
-                        <div>{{detailData.avgguestexpect}}人</div>
+                        <div>{{detailData.avgguestexpect||'-'}}人</div>
                     </div>
                     <div>
                         <div>客座率期望</div>
-                        <div>{{detailData.loadfactorsexpect}}%</div>
+                        <div>{{detailData.loadfactorsexpect||'-'}}%</div>
                     </div>
                     <div>
                         <div>补贴政策</div>
-                        <div>{{detailData.subsidypolicynumber }}</div>
+                        <div>{{detailData.subsidypolicyStr||'-' }}</div>
                     </div>
                     <div>
                         <div>有效期</div>
-                        <div>{{detailData.periodValidity}}</div>
+                        <div>{{detailData.periodValidity||'-'}}</div>
                     </div>
                     <div class="note">
                         <div>其他说明</div>
-                        <div class="note-text">{{detailData.remark}}</div>
+                        <div class="note-text">{{detailData.remark||'-'}}</div>
                     </div>
                 </div>
                 <div class="content-box ">
                     <div>
                         <div>联系人</div>
-                        <div>{{detailData.contact}}</div>
+                        <div>{{detailData.contact||'-'}}</div>
                     </div>
                     <div>
                         <div>联系方式</div>
-                        <div>{{detailData.iHome}}</div>
+                        <div>{{detailData.iHome||'-'}}</div>
                     </div>
                 </div>
             </div>
@@ -90,23 +96,29 @@
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
            <sonNeedDetail :demandId = "chatData.id" v-show="sondetailShow"></sonNeedDetail>
-             <footer v-show="isClose">
-                <div class="foot-tips"></div>
+             <footer v-if="isClose">
+                <div class="foot-tips" v-if="tipShow">*拒绝原因：{{refuseText}}</div>
                 <div class="btn" v-if="orderShow">
-                    <div class="test-btn" @click="order" >订单完成</div>
-                    <div class="can-btn" @click="cancel">取消</div>
+                    <div class="test-btn" @click="order" v-if="orderOver">订单完成</div>
+                    <div class="can-btn" @click="cancel" v-if="orderOver">取消</div>
+                     <div class="can-btn" @click="cancel" style="width:160px;" v-else>取消</div>
                 </div>
                 <div class="btn" v-else>
-                    <div class="test-btn" @click="accept">接受委托</div>
-                    <div class="can-btn" @click="refuse">拒绝</div>
+                    <div class="test-btn" @click="accept" v-if="!tipShow">接受委托</div>
+                    <div class="can-btn" @click="refuse" v-if="!tipShow">拒绝</div>
                 </div>
+            </footer>
+            <footer v-else>
+                <div class="foot-tips" >*取消原因：{{refuseText}}</div>
             </footer>
         </div>
         <operDeleForm v-show="formShow" @closeForm="closeForm" ></operDeleForm>
+        <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
 
 <script>
+import refuseDialog from './refuseDialog.vue';
 import operDeleForm from './operDeleForm.vue'
 import sonNeedDetail from './sonNeedDetail.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
@@ -122,6 +134,11 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             detailData:{},
             CpyNm:'',//委托方
             sondetailShow:false,
+            dialogShow:false,
+            tipShow:false,
+            orderOver:true,
+            msg:'',
+            refuseText:''
          }
      },
       props:['chatData'],
@@ -133,7 +150,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           this.$emit("close");
         },
         refuse(){
-
+          this.dialogShow = true;
+          this.msg = "拒绝";
+        },
+        cancel(){
+          this.dialogShow = true;
+          this.msg = "取消";
         },
         newNeed(){
           this.formShow = true;
@@ -188,8 +210,46 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     }
                 );
         },
-        cancel(){
+        sureDialog(text){
+            this.dialogShow = false;
+            this.refuseText = text;
+            if(this.msg == "拒绝"){
+                this.refuseDele(text);
+            }else if(this.msg == "取消"){
+                this.cancelDele(text);
+            }
+        },
+        cancelDialog(){
+            this.dialogShow = false;
+        },
+        refuseDele(text){
              this.$ajax({
+                method: 'post',
+                url: '/checkCommissionedAndCustody',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandState:'1',
+                    demandId:this.chatData.id,
+                    demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,
+                    demandType:this.chatData.demandType,
+                    rek:text
+                  }
+                })
+                .then((response) => {
+                  if(response.data.opResult == '0'){
+                   this.$emit("close");
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+        },
+        cancelDele(text){
+            this.$ajax({
                 method: 'post',
                 url: '/finishCommissionedAndCustody',
                 headers: {
@@ -200,7 +260,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     demandId:this.chatData.id,
                     demandEmployeeId:this.chatData.demandEmployeeId,
                     title:this.chatData.title,
-                    demandType:this.chatData.demandType
+                    demandType:this.chatData.demandType,
+                    rek:text
                   }
                 })
                 .then((response) => {
@@ -237,13 +298,18 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                      //状态处理
                       if(this.detailData.demandprogress == '7'){
 
-                      }else if(this.detailData.demandprogress == '6' ){
+                      }else if(this.detailData.demandprogress == '6' ){//订单完成，最终完成
                           this.orderShow = true;
                           this.sondetailShow = true;
-                      }else if(this.detailData.demandprogress == '9'){
+                          this.orderOver =false;
+                      }else if(this.detailData.demandprogress == '9'){//处理中
                           this.orderShow = true;
-                      }else if(this.detailData.demandprogress == '3'){
+                      }else if(this.detailData.demandprogress == '3'){//已关闭
                           this.isClose = false;
+                          this.refuseText = this.detailData.rek;
+                      }else if(this.detailData.demandprogress == '10'){//已拒绝
+                          this.tipShow = true;
+                          this.refuseText = this.detailData.rek;
                       }
                 })
                 .catch((error) => {
@@ -257,7 +323,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
     },
      components: {
         operDeleForm,
-        sonNeedDetail
+        sonNeedDetail,
+        refuseDialog
      }
 }
 </script>
@@ -307,6 +374,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           bottom:0;
           right:0;
           width:600px;
+          height:120px;
           background-color:#fff;
         }
     }
@@ -459,10 +527,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
       }
     }
     footer{
+          border-top:1px solid #ccc;
+          position:relative;
           .foot-tips{
-            height:40px;
-            margin:0 20px;
-            border-bottom:1px solid #ccc;
+            position:absolute;
+            top:-30px;
+            left:20px;
             color: red;
           }
           .btn{

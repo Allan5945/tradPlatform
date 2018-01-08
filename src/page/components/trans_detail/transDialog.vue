@@ -39,9 +39,9 @@
                 this.sendData= val;
             })
             //触发意向更新
-            this.myData.data.id = this.sendData.demandId;
+           /* this.myData.data.id = this.sendData.demandId;
             this.myData.data.demandtype = "1";
-            tabulationBoxTrigger.$emit('tabulationBoxTrigger', this.myData);
+            tabulationBoxTrigger.$emit('tabulationBoxTrigger', this.myData);*/
 
         },
         methods: {
