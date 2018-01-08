@@ -87,8 +87,7 @@
                             <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                             <div class="item-b">{{myData.aircrfttyp}}</div>
                             <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
-                            <div class="item-d" v-if="myData.subsidypolicy == ''">有补贴</div>
-                            <div class="item-d" v-else>{{subsidypolicy}}</div>
+                            <div class="item-d">{{subsidypolicyFn(myData.subsidypolicy)}}</div>
                             <!--<div>有补贴</div>-->
                         </div>
                     </div>
@@ -227,7 +226,7 @@
                     </div>
                     <div>
                         <div>补贴政策</div>
-                        <div>{{receiveIntention.subsidypolicy}}</div>
+                        <div>{{subsidypolicyFn(receiveIntention.subsidypolicy)}}</div>
                         <!--<div>按人头</div>-->
                     </div>
                     <div>
@@ -237,7 +236,9 @@
                     </div>
                     <div>
                         <div>运力归属</div>
-                        <div>{{receiveIntention.capacityCompany.airlnCd}}</div>
+                        <div>
+                            <span v-if="receiveIntention.capacityCompany != null">{{receiveIntention.capacityCompany.airlnCd}}</span>
+                        </div>
                         <!--<div>东方航空</div>-->
                     </div>
                     <div>
@@ -247,10 +248,8 @@
                     </div>
                     <div>
                         <div>是否调度</div>
-                        <div>
-                            <span v-show="receiveIntention.scheduling == 0">是</span>
-                            <span v-show="receiveIntention.scheduling == 1">否</span>
-                        </div>
+                        <div v-if="receiveIntention.scheduling === '0'">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
+                        <div v-else>否</div>
                         <!--<div>华北地区</div>-->
                     </div>
                     <div class="tips">
@@ -371,16 +370,13 @@
                                         <div class="item-a item-height">{{item.sailingtime}}</div>
                                         <div class="item-b item-height">{{item.aircrfttyp}}</div>
                                         <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
-                                        <!--<div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>-->
-                                        <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
-                                        <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
-                                        <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
-                                        <div class="item-d item-height" v-if="item.subsidypolicy == 3">待议</div>
-                                        <div class="item-d item-height" v-if="item.subsidypolicy == 4">无补贴</div>
-                                        <div class="item-height">{{item.capacityCompany.airlnCd}}</div>
+                                        <div class="item-d item-height">{{subsidypolicyFn(item.subsidypolicy)}}</div>
                                         <div class="item-height">
-                                            <span v-show="item.scheduling == 0">接受</span>
-                                            <span v-show="item.scheduling == 1">不接受</span>
+                                            <span v-if="item.capacityCompany != null">{{item.capacityCompany.airlnCd}}</span>
+                                        </div>
+                                        <div class="item-height">
+                                            <span v-if="item.scheduling === '0'">{{item.airportForSchedulines[0].airlnCdName}}</span>
+                                            <span v-else>否</span>
                                         </div>
                                     </div>
                                 </div>
@@ -399,7 +395,7 @@
                                         <div class="item-height">{{item.seating}}</div>
                                         <div class="item-height">{{item.loadfactorsexpect}}%</div>
                                         <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
-                                        <div class="item-height">{{item.dptNm}}</div>
+                                        <div class="item-height">{{item.capacityBaseNm}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -468,7 +464,7 @@
             <airlineWrite v-if="airlineWriteShow" :acceptData="myData" @change-showCode="changeShowCodeW" @close-this="closeAlWriteFn"></airlineWrite>
 
             <!--航司点击 我发出的方案“编辑”显示 运力表单-->
-            <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
+            <myPurposeEdit v-if="myPurposeEditShow" :acceptData="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
 
             <!--机场点击 “选定”显示 运力表单-->
             <airlineAffirm v-if="airlineAffirmShow" :acceptData="airlineAffirmData" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
@@ -559,11 +555,8 @@
         },
         watch: {
             sendToCompany: function () {
-//                console.info('sendToCompany:')
-//                console.info(this.sendToCompany)
                 this.id = this.sendToCompany.demandId;
                 if (this.sendToCompany.demandType == '航线需求') {
-//                    console.info('getData')
                     this.getData();
                 }
             }
@@ -571,7 +564,6 @@
         created() {
             this.id = this.sendToCompany.demandId;
             if (this.sendToCompany.demandType == '航线需求') {
-//                console.info('getData')
                 this.getData();
                 this.$emit('transShow');
             }
@@ -668,6 +660,20 @@
                     }
                 );
             },
+            // 将补贴类型从数字变成汉字
+            subsidypolicyFn: function (index) {
+                if(index === '0'){
+                    return '定补';
+                }else if(index === '1') {
+                    return '保底';
+                }else if(index === '2') {
+                    return '人头补';
+                }else if(index === '3') {
+                    return '待议';
+                }else if(index === '4') {
+                    return '无补贴';
+                }
+            },
             // 卡片新增功能：意向列表上添加状态信息
             // responseProgress：（0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付）
             responseProgressFn: function (index) {
@@ -696,9 +702,9 @@
             chat:function (item) {
                 let chatObj = {};
                 chatObj.demandEmployeeId = this.myData.employeeId;
-                chatObj.employeeId = item.employeeId;
                 chatObj.id = this.myData.id;
-//                console.info(chatObj)
+                chatObj.employeeId = item.employeeId;
+//                console.info(this.$store.getters.role.id)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // “重新发布”按钮点击
@@ -985,8 +991,8 @@
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
 //                this.showCode = 1;
-                this.getData(); // 重新获取、渲染数据
-                this.show();
+//                this.show();
+                this.refreshFn(); // 重新获取、渲染数据
             },
             //点击“缴纳意向金”，组件“缴纳意向金”显示
             airlinePayFn: function () {
@@ -998,7 +1004,7 @@
                 this.paySuccessShow = true; //“缴纳完成”组件显示
                 /*this.showCode = 2;
                 this.show();*/
-                this.getData();
+                this.refreshFn();
             },
             //点击“选定”，组件“请确认以下方案”显示
             airlineAffirmFn: function (item,index) {
@@ -1022,15 +1028,9 @@
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
             changeShowCodeA: function (index) {
-               /* tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => { //从airlintAffirm获取的数据
-//                    console.info('payAfter从AffirmToDetailPayAfter:')
-//                    console.info(val)
-                    let index = val.index;
-                    this.listData.splice(index,1,val)
-                })*/
                 this.showCode = 3;
                 this.show();
-                this.getData(); // 重新获取数据
+                this.refreshFn(); // 重新获取数据
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 this.releaseselectedShow = false; //显示两个按钮
             },
@@ -1057,6 +1057,7 @@
                         this.releaseselectedShow = true;
                         this.showCode = 2;
                         this.show();
+                        this.refreshFn();
                     }else{
                         alert('错误代码：' + response.data.opResult);
                     }

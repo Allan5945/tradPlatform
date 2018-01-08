@@ -247,8 +247,8 @@
                 </div>
                 <div>
                     <div>是否调度</div>
-                    <div v-if="receiveIntention.scheduling == 0">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
-                    <div v-else-if="receiveIntention.scheduling == 1">否</div>
+                    <div v-if="receiveIntention.scheduling === '0'">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
+                    <div v-else>否</div>
                     <!--<div>华北地区</div>-->
                 </div>
                 <div class="tips">
@@ -374,8 +374,8 @@
                                         <span v-if="item.capacityCompany != null">{{item.capacityCompany.airlnCd}}</span>
                                     </div>
                                     <div class="item-height">
-                                        <span v-if="item.scheduling == 0">{{item.airportForSchedulines[0].airlnCdName}}</span>
-                                        <span v-else-if="item.scheduling == 1">否</span>
+                                        <span v-if="item.scheduling === '0'">{{item.airportForSchedulines[0].airlnCdName}}</span>
+                                        <span v-else>否</span>
                                     </div>
                                 </div>
                             </div>

@@ -631,7 +631,7 @@
                     }else if(this.acceptData.pstTimeresources === "2") {
                         alRairBEnough.checked = true;
                     }
-                }else if(this.pstState.pstState === "1") {
+                }else if(this.acceptData.pstState === "1") {
                     this.space2ShowTitle = this.spaceList[0];
                     this.space2Fn(this.spaceList[0]);
                     this.secArea = this.acceptData.pst;
@@ -659,7 +659,7 @@
                     }else if(this.acceptData.arrvTimeresources === "2") {
                         alRairCEnough.checked = true;
                     }
-                }else if(this.pstState.arrvState === "1") {
+                }else if(this.acceptData.arrvState === "1") {
                     this.space3ShowTitle = this.spaceList[0];
                     this.space3Fn(this.spaceList[0]);
                     this.thirdArea = this.acceptData.arrv;
