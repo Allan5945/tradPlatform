@@ -337,8 +337,6 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
-                        console.info('111');
-                        alert('111');
                         this.$emit('responseShow');
                         this.isIntentionMoney = response.data.isIntentionMoney;
                         this.intentionCount = response.data.intentionCount;
