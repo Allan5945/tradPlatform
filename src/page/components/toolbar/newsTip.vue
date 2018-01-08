@@ -18,6 +18,46 @@
             initDis(){
                 localCommunication.chat.shut = true;
                 localCommunication.chat.narrow = true;
+            },
+            query(){
+                let _this = this;
+                this.$ajax({
+                    method: 'post',
+                    url: '/openChat',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params:{
+                        fromNameId:this.$store.getters.role.id,
+                    },
+                })
+                    .then((response) => {
+                        let chatFlag = null;
+                        response.data.data.forEach((v)=>{
+                            if(chatFlag == null)chatFlag = v.chatFlag;
+                            if(!localCommunication.chat.chatData.hasOwnProperty(v.chatFlag)){
+                                localCommunication.chat.chatData[v.chatFlag] = v;
+                            };
+                        });
+                        let obj ={
+                            chatFlag:"x-t-null",
+                            chatObjectList:[],
+                            chatRcord:response.data.systemMessage.chatRcord,
+                            modifyRcord:null,
+                            noReadCount:response.data.systemMessage.noReadCount,
+                            rightTableDown:[],
+                            rightTableUp:response.data.systemMessage.rightTableUp,
+                            title:response.data.systemMessage.title
+                        };
+                        if(chatFlag == null){chatFlag = "x-t-null"};
+                        localCommunication.chat.chatData[obj.chatFlag] = obj;
+                        localCommunication.chat.setChat = chatFlag;
+                        localCommunication.chat.change =  !localCommunication.chat.change;
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
             }
         },
         computed:{
@@ -33,44 +73,11 @@
             }
         },
         mounted:function () {
+            this.query();
             let _this = this;
-            this.$ajax({
-                method: 'post',
-                url: '/openChat',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params:{
-                    fromNameId:this.$store.getters.role.id,
-                },
-            })
-                .then((response) => {
-                    let chatFlag = null;
-                    response.data.data.forEach((v)=>{
-                        if(chatFlag == null)chatFlag = v.chatFlag;
-                        if(!localCommunication.chat.chatData.hasOwnProperty(v.chatFlag)){
-                            localCommunication.chat.chatData[v.chatFlag] = v;
-                        };
-                    });
-                    let obj ={
-                        chatFlag:"x-t-null",
-                        chatObjectList:[],
-                        chatRcord:response.data.systemMessage.chatRcord,
-                        modifyRcord:null,
-                        noReadCount:response.data.systemMessage.noReadCount,
-                        rightTableDown:[],
-                        rightTableUp:response.data.systemMessage.rightTableUp,
-                        title:response.data.systemMessage.title
-                    };
-                    if(chatFlag == null){chatFlag = "x-t-null"};
-                    localCommunication.chat.chatData[obj.chatFlag] = obj;
-                    localCommunication.chat.setChat = chatFlag;
-                    localCommunication.chat.change =  !localCommunication.chat.change;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+            localCommunication.$on("queryChat",function(){
+               _this.query();
+            });
         }
     }
 </script>
