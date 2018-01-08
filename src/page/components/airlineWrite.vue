@@ -262,7 +262,7 @@
                             <span class="margin-right">拟飞机型</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="输入选择机型"
-                                       style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" @input="warn4Fn"
+                                       style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" readonly
                                        v-model="typeChoose">
                             </div>
                             <ul class="choose-type air-type" v-show="airTypeShow">
@@ -647,7 +647,7 @@
                     }else if(this.acceptData.pstTimeresources === "2") {
                         alWairBEnough.checked = true;
                     }
-                }else if(this.pstState.pstState === "1") {
+                }else if(this.acceptData.pstState === "1") {
                     this.space2ShowTitle = this.spaceList[0];
                     this.space2Fn(this.spaceList[0]);
                     this.secArea = this.acceptData.pst;
@@ -675,7 +675,7 @@
                     }else if(this.acceptData.arrvTimeresources === "2") {
                         alWairCEnough.checked = true;
                     }
-                }else if(this.pstState.arrvState === "1") {
+                }else if(this.acceptData.arrvState === "1") {
                     this.space3ShowTitle = this.spaceList[0];
                     this.space3Fn(this.spaceList[0]);
                     this.thirdArea = this.acceptData.arrv;

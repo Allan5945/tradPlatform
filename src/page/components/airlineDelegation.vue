@@ -235,7 +235,7 @@
                     <div class="right item-child">
                         <span class="margin-right">拟飞机型</span>　
                         <div class="choose-input">
-                            <input class="input-mes" type="text" placeholder="输入选择机型" style="border: 0; line-height: 24px;" @focus="getAirType" @input="warn4Fn" v-model="typeChoose">
+                            <input class="input-mes" type="text" placeholder="输入选择机型" style="border: 0; line-height: 24px;" @focus="getAirType" readonly v-model="typeChoose">
                         </div>
                         <ul class="choose-type air-type" v-show="airTypeShow">
                             <li v-for="item in airType" @click="chooseAirType(item)">{{item}}</li>
@@ -474,7 +474,7 @@
         },
         methods: {
             warn4Fn: function () {
-                console.info(4)
+//                console.info(4)
                 this.warn4Show = true;
             },
             //发送数据
@@ -543,7 +543,7 @@
                 sendData.seating = this.seatingNum;            // 选填 座位数
                 sendData.remark = this.remarkMsg;              // 选填 备注说明
 
-                console.info(sendData);
+//                console.info(sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -552,7 +552,7 @@
                     },
                     params: sendData
                 }) .then((response) => {
-                    console.info(response.data)
+//                    console.info(response.data)
                     if(response.data.opResult === '0'){
                         alert('成功发布委托！')
                         this.$emit("closeForm");

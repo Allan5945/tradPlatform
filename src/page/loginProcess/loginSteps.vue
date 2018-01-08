@@ -1,49 +1,26 @@
 <template>
-  <div class="login-steps">
-        <h1>登录</h1>
-        <input type="text" placeholder="用户名" v-model="username">
-        <input type="password" placeholder="密码" v-model="password">
-        <button @click="logined">登录</button>
+  <div class="login-steps popup">
+        <titles></titles>
+        <loginBox v-if="setpes == 0" v-on:openClass="openClass"></loginBox>
+        <registered v-if="setpes == 1" v-on:openClass="openClass"></registered>
   </div>
 </template>
 <script>
 import * as vx from 'vuex';
+import titles from './components/title.vue';
+import loginBox from './loginStepsComponents/loginBox.vue';
+import registered from './loginStepsComponents/registered.vue';
+
 export default {
         data () {
             return {
-                username:'jichang',
-                password:'1',
-                name:1
+                setpes:0,  // 0,登录流程。1，找回密码流程。2，注册功能
             }
         },
         methods:{
-            logined:function () {
-                this.$ajax({
-                    method: 'post',
-                    url: '/login',
-                    params:{
-                        username:this.username,//BKadmin*权限0 //KYadmin*权限1 //TGOadmin*权限2d
-                        password:this.password
-                    },
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                .then((response) => {
-                    if(response.data.obj != undefined){
-                        this.$store.dispatch('role',response.data.obj).then((e) => {});
-                        window.sessionStorage.setItem('isLogin','ok');
-                        window.sessionStorage.setItem('role',JSON.stringify(response.data.obj));
-                        this.$router.push("index");
-                    }else{
-                        alert('错了')
-                    }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-            }
+           openClass(c){
+               this.setpes = c;
+           }
         },
         created:function () {
             window.sessionStorage.clear();
@@ -52,14 +29,20 @@ export default {
             ...vx.mapGetters([
                 'c_updated'
             ])
+        },
+        components:{
+            titles,
+            loginBox,
+            registered
         }
 }
 </script>
 <style lang="scss" scoped>
     .login-steps{
         position: fixed;
-        right: 50px;
-        top: 20px;
+      
+        /*right: 50px;*/
+        /*top: 20px;*/
     }
 </style>
 

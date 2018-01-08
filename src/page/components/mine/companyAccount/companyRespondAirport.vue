@@ -198,7 +198,6 @@
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import sureForm from '$src/page/components/trans_detail/sureForm.vue'
  export default {
-//     props:['sendDataToMyPurpose'],
      data(){
          return{
              planShow:true,
@@ -215,7 +214,7 @@
         },
      methods:{
          closeDetail:function(){
-          this.$emit('close-this');
+          this.$emit('closeThis');
          },
          getSureForm:function(){
           this.sureFormShow = true;
@@ -238,8 +237,7 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("取消意向成功！")
-                      this.$emit('refresh');
-                    this.$emit('close-this');
+                    this.$emit('responseClose');
                   }
                 })
                 .catch((error) => {
@@ -265,8 +263,7 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("确认方案成功！")
-                      this.$emit('refresh');
-                    this.$emit('close-this');
+                    this.$emit('responseClose');
                   }
                 })
                 .catch((error) => {
@@ -292,8 +289,7 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("撤回方案成功！")
-                      this.$emit('refresh');
-                    this.$emit('close-this');
+                    this.$emit('responseClose');
                   }
                 })
                 .catch((error) => {
@@ -315,7 +311,6 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("收藏成功！")
-                      this.$emit('refresh');
                     this.isCollect = true;
                   }
                 })
@@ -332,42 +327,43 @@
             ])
       },
        mounted() {
-           tabulationBoxTrigger.$on('sendDataToMyPurpose12', val => {
-                if(val.demand.demandtype == 1){
-                    this.$ajax({
-                    method: 'post',
-                    url: '/capacityRoutesDemandDetailFindById',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                      params: {
-                        demandId: val.demand.id
+        tabulationBoxTrigger.$on('sendToCompany', val => {
+            if(val.demandType == '运力需求' && this.role.role == 1){
+               //console.log("demandtype"+val.data.demandtype);
+                this.$ajax({
+                method: 'post',
+                url: '/capacityRoutesDemandDetailFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId: val.demandId
+                }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
+                        this.$emit('responseShow');
+                        this.isIntentionMoney = response.data.isIntentionMoney;
+                        this.intentionCount = response.data.intentionCount;
+                        this.detailData = response.data.data;
+                        this.planData = response.data.receiveIntention;
+
+                        if(response.data.isAlreadyCollect == true){
+                            this.isCollect = true;
+                        }else if(response.data.isAlreadyCollect == false){
+                           this.isCollect = false;
+                        }
                     }
-                    })
-                    .then((response) => {
-                        if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
 
-                            this.$emit('responseShow');
-                            this.isIntentionMoney = response.data.isIntentionMoney;
-                            this.intentionCount = response.data.intentionCount;
-                            this.detailData = response.data.data;
-                            this.planData = response.data.receiveIntention;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
 
-                            if(response.data.isAlreadyCollect == true){
-                                this.isCollect = true;
-                            }else if(response.data.isAlreadyCollect == false){
-                               this.isCollect = false;
-                            }
-                        }
+            };
+        });
 
-                    })
-                    .catch((error) => {
-                            console.log(error);
-                        }
-                    );
-
-                };
-           })
      },
 
 }

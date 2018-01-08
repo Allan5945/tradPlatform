@@ -57,7 +57,8 @@
         </div>
         <transition-group name="slidex-fade">
             <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="5"></myPurpose>
-            <myPurpose1 v-if="myPurpose1Show" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="6"></myPurpose1>
+            <myPurpose1 v-show="myPurpose1Show" @close-this="closeThisFn" @responseShow="responShow" @refresh="refreshFn" :key="6"></myPurpose1>
+            <myPurpose2 v-show="myPurpose2Show" @close-this="closeThisFn" @transShow="transShow" @refresh="refreshFn" :key="7"></myPurpose2>
         </transition-group>
     </div>
 </template>
@@ -67,6 +68,7 @@
     import stateList from '../stateList.vue'
     import myPurpose from './myPurpose.vue'
     import myPurpose1 from './myPurpose1.vue'
+    import myPurpose2 from './myPurpose2.vue'
 
     export default {
         data() {
@@ -85,6 +87,7 @@
                 state2: ['意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
                 myPurposeShow: false, // myPublish是否显示
                 myPurpose1Show: false,// myPurpose1是否显示
+                myPurpose2Show: false,
                 talkNumShow: false,         //是否有对话
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
@@ -98,7 +101,7 @@
                     responseProgress: '',   // 状态 [0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付]
                     orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
-                sendDataToMyPurpose: {},   // 向myPurpose、myPurpose1传数据
+                sendDataToMyPurpose: {},   // 向myPurpose传数据
             }
         },
         watch:{
@@ -142,7 +145,7 @@
                     this.typeWriting = '航线需求';
                     this.state = this.state1;
                     this.sendData.demandType = 0;
-                }if(this.role.role == 2) {
+                }if(this.role.role == 2) {  // 太美
                     this.type = this.type2;
                     this.myData = this.myData2;
                 }
@@ -195,6 +198,16 @@
 //                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
+            // 不是我的，张帅的页面是否显示
+            responShow: function () {
+                this.myPurpose1Show = true;
+                this.myPurpose2Show = false;
+            },
+            transShow: function () {
+                this.myPurpose1Show = false;
+                this.myPurpose2Show = true;
+            },
+            //*******************
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
             },
@@ -266,8 +279,15 @@
                         this.listItemIndex = index; //变成active状态
                         if(this.role.role == 0) { //0：航司 1：机场 2：太美
                             this.myPurposeShow = true;
-                        }else if(this.role.role == 1) {
-                            this.myPurpose1Show = true;
+                        }else if(this.role.role == 1) { //1：机场
+//                            this.myPurpose1Show = true;
+                            tabulationBoxTrigger.$emit('sendDataToMyPurpose12', response.data.obj);
+                        }else if(this.role.role == 2) { //2：太美
+                            if(response.data.obj.demandtype === '0') { //demandtype：（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
+                                this.myPurposeShow = true;
+                            }else if(response.data.obj.demandtype === '1') { //demandtype：（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
+                                tabulationBoxTrigger.$emit('sendDataToMyPurpose12', response.data.obj);
+                            }
                         }
                         this.sendDataToMyPurpose = response.data.obj;  //将item的参数传递给myPurpose.vue
                         tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
@@ -284,6 +304,7 @@
                 this.listItemIndex = '';
                 this.myPurposeShow = false;
                 this.myPurpose1Show = false;
+                this.myPurpose2Show = false;
                 tabulationBoxTrigger.hierarchy = false;
             }
         },
@@ -296,6 +317,7 @@
             stateList,
             myPurpose,
             myPurpose1,
+            myPurpose2,
         }
     }
 </script>

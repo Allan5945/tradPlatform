@@ -2,8 +2,8 @@
     <div class="banner-panel" @mousewheel="wheel($event)" @DOMMouseScroll="wheel($event)" ref="bannerPanel">
         <!-- 板块1 -->
         <div class="banner-item banner-item-i1">
-            <p :style="{'top':box.height/2 - 92 +'px'}">设想飞过无数个地方</br>却从未彼此相遇</h1>
-            <p :style="{'top':box.height/2 - 90 +'px'}">IMAGINE FLYING THROUFH COUNTLESS PLACES</br>BUT NEVER MET EACH OTHER</p>
+            <p :style="{'top':box.height/2 - 92 +'px'}">设想飞过无数个地方<br>却从未彼此相遇</p>
+            <p :style="{'top':box.height/2 - 90 +'px'}">IMAGINE FLYING THROUFH COUNTLESS PLACES<br>BUT NEVER MET EACH OTHER</p>
         </div>
         <!-- 板块2 -->
         <div class="banner-item banner-item-i2">
@@ -196,6 +196,10 @@
         <div class="logo-img">
             <img src="./../../static/img/logo/logo.png" alt="">
         </div>
+        <div class="login-zc">
+            <span @click="steps(true)">登录/</span>
+            <span @click="steps(false)">注册</span>
+        </div>
     </div>
 </template>
 <script>
@@ -217,6 +221,9 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
            this.initCont();
         },
         methods:{
+            steps(t){
+                this.$emit("steps",t)
+            },
             wheel(e){
                 let t = true;  // true，表示下滑动，false，上滑动
                 if("deltaY" in e){
@@ -228,10 +235,11 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
                        t = false;
                     };
                 };
+                let top = document.getElementById("case").offsetHeight;
                 if(t){
-                    document.getElementById("case").scrollTop = document.getElementById("case").scrollTop + 100;
+                    document.getElementById("case").scrollTop = document.getElementById("case").scrollTop + top;
                 }else{
-                    document.getElementById("case").scrollTop = document.getElementById("case").scrollTop - 100;
+                    document.getElementById("case").scrollTop = document.getElementById("case").scrollTop - top;
                 };
                 this.genxin();
             },
@@ -256,6 +264,20 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
     }
 </script>
 <style scoped lang="scss">
+    .login-zc{
+        position: fixed;
+        top: 20px;
+        right: 55px;
+        >span{
+            color: #4260fe;
+            font-weight: 600;
+            font-size: 1.4rem;
+            cursor: pointer;
+            &:hover{
+                color: #1830ff;
+            }
+        }
+    }
     .banner-panel{
         width: 100%;
         background-color: white;
