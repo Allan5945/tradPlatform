@@ -1,7 +1,7 @@
 <template>
   <div class="content-box">
-    <bannersPanel></bannersPanel>
-    <loginSteps></loginSteps>
+    <bannersPanel v-on:steps="steps"></bannersPanel>
+    <loginSteps v-if="stepOff" :offType="offType"></loginSteps>
   </div>
 </template>
 
@@ -13,11 +13,18 @@
     export default {
         data () {
             return {
-               
+                stepOff:true,
+                offType:true
             }
         },
         methods:{
-          
+            steps:function (t) {
+                this.stepOff = true;
+                this.offType = t;
+                if(t){
+
+                }
+            }
         },
         created:function () {
         },

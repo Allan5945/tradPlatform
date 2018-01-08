@@ -1,7 +1,7 @@
 import ln from './../../../public/js/tabulationBoxTrigger.js';
 import Vue from 'vue'
 import _this from './../../../main'
-ln.$on('addChat', function (d)  {  
+ln.$on('addChat', function (d)  { 
     let k1,k2,de = d.id,k,keys;
     if(de == null){
         k = [_this.$store.getters.role.id];
@@ -11,7 +11,7 @@ ln.$on('addChat', function (d)  {
         }else {
             k1 = d.employeeId;
         };
-        if(k2 == d.employeeId){
+        if(k1 == d.employeeId){
             k2 = d.demandEmployeeId;
         }else{
             k2 = d.employeeId;
@@ -73,8 +73,17 @@ export default class ChatSocket{
             console.log('打开连接');
         };
         this.ws.onmessage  = (data)=>{
-            console.log(`收到信息`,chat);
+            console.log(`收到信息`,data);
+            if(!ln.chat.chatData.hasOwnProperty(chat.data.chatFlag)){
+                ln.$emit("queryChat");
+                return false;
+            }
             let chat = JSON.parse(data.data);
+            if(ln.chat.chatData[chat.data.chatFlag].chatRcord == null){
+                ln.chat.chatData[chat.data.chatFlag].chatRcord = {
+                    list:[]
+                }
+            };
             ln.chat.chatData[chat.data.chatFlag].chatRcord.list.splice(0,0,chat.data);
             if(chat.data.chatFlag != ln.chat.setChat){
                 ln.chat.chatData[chat.data.chatFlag].noReadCount = 1;
