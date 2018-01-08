@@ -2,9 +2,9 @@
     <div class="plan-wrapper" >
         <template v-if="type==='航线需求'">
             <header>
-                <div class="head-til">{{ndetailData.title?ndetailData.title+"航线需求":"-"}}</div>
+                <div class="head-til">{{ndetailData.title?ndetailData.title+" 航线需求":"-"}}</div>
                 <div class="tips">
-                    <span>委托方 {{ ndetailData.num||"成都双流" }}</span>
+                    <span>发布方 {{ ndetailData.num||"成都双流" }}</span>
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>状态：<span style="color: #336BEA">{{ ndetailData.demandStateStr || "未知状态" }}</span></span>
                 </div>
@@ -100,7 +100,7 @@
         </template>
         <template v-else>
             <header>
-                <div class="head-til">{{ndetailData.title?ndetailData.title+"运力需求":"-"}}</div>
+                <div class="head-til">{{ndetailData.title?ndetailData.title+" 运力需求":"-"}}</div>
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
@@ -128,11 +128,11 @@
                         </div>
                         <div>
                             <div>运力归属</div>
-                            <div>{{ndetailData.capacitycompany||"-"}}</div>
+                            <div>{{ndetailData.capacityCompany.airlnCd || "-"}}</div>
                         </div>
                         <div>
                             <div>运力基地</div>
-                            <div>{{ndetailData.dpt||"-"}}</div>
+                            <div>{{ndetailData.capacityCompany.headquarterslocation||"-"}}</div>
                         </div>
                         <div>
                             <div>出港时刻</div>
@@ -145,11 +145,11 @@
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
                             <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size:16px;">
-                                {{ndetailData.dptNm||"待定"}}
+                                {{ndetailData.intendedAirlines[0].dptName||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.pstNm||"待定"}}
+                                {{ndetailData.intendedAirlines[0].pstName||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
-                                {{ndetailData.arrvNm||"待定"}}
+                                {{ndetailData.intendedAirlines[0].arrvName||"待定"}}
                             </div>
                         </div><div style="display: none"></div>
                         <div>
@@ -162,7 +162,7 @@
                         </div>
                         <div>
                             <div>有效期</div>
-                            <div>{{ndetailData.hourscost?ndetailData.hourscost+" 止":"-"}}</div>
+                            <div>{{ ndetailData.periodValidity ? ndetailData.periodValidity+" 止" : "-"}}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
