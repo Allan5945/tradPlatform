@@ -18,6 +18,15 @@
         watch:{
             searchText:function () {
                 this.build();
+                if(this.list.length == '1'){
+                    let code = this.list[0].name,
+                        name = this.list[0].name;
+                    this.$store.dispatch('searchInfo', {
+                      qyCode : code,
+                      searchText:name,
+                      selcType :'城市'
+                    });
+                }
             }
         },
         methods:{
@@ -113,7 +122,7 @@
     .item{
         color: #605E7C;
         white-space:nowrap;
-        font-size: 1rem;
+        font-size: 1.2rem;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;

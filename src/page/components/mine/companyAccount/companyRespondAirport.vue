@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="wrapper" @click.self="closeDetail">
       <div class="plan-wrapper scroll">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
               <div class="head-til">{{detailData.title||'-'}}</div>
               <div class="tips">
                   <span>创建于{{detailData.releasetime||'-'}}</span>
-                  <span>已有{{intentionCount||'0'}}位用户发起意向</span>
+                  <span>已有{{intentionCount||'-'}}位用户发起意向</span>
               </div>
           </header>
           <div class="content">
@@ -72,8 +72,7 @@
                   </div>
                   <div class="airline">
                       <div class="airplace">
-                          <div v-if="planData.dptState =='0' ">始发机场</div>
-                          <div v-else>始发区域</div>
+                          <div>始发机场</div>
                           <div>
                              <div>{{planData.dptNm||'-'}}</div>
                              <div>{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
@@ -86,8 +85,7 @@
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
-                          <div v-if="planData.pstState =='0' ">经停机场</div>
-                          <div v-else>经停区域</div>
+                          <div>经停机场</div>
                           <div>
                             <div>{{planData.pstNm||'-'}}</div>
                             <div>{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
@@ -100,8 +98,7 @@
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
-                          <div v-if="planData.arrvState =='0' ">到达机场</div>
-                          <div v-else>到达区域</div>
+                          <div>到达区域</div>
                           <div>
                             <div>{{planData.arrvNm||'-'}}</div>
                             <div>{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>
@@ -199,7 +196,7 @@
 <script>
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import sureForm from './sureForm.vue'
+ import sureForm from '$src/page/components/trans_detail/sureForm.vue'
  export default {
      data(){
          return{
@@ -217,7 +214,7 @@
         },
      methods:{
          closeDetail:function(){
-          this.$emit('responseClose');
+          this.$emit('closeThis');
          },
          getSureForm:function(){
           this.sureFormShow = true;
@@ -330,8 +327,8 @@
             ])
       },
        mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
+        tabulationBoxTrigger.$on('sendToCompany', val => {
+            if(val.demandType == '运力需求' && this.role.role == 1){
                //console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',
@@ -340,13 +337,11 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: val.demandId
                 }
                 })
                 .then((response) => {
                     if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
-                        console.info('111');
-                        alert('111');
                         this.$emit('responseShow');
                         this.isIntentionMoney = response.data.isIntentionMoney;
                         this.intentionCount = response.data.intentionCount;
@@ -375,6 +370,15 @@
 </script>
 
 <style lang="scss" scoped>
+    .wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
+    }
     .plan-wrapper{
         position:absolute;
         top:0;

@@ -1,67 +1,69 @@
 <template>
-    <div class="detail-wrapper">
-        <header>
-            <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title||'-'}}</div>
-            <div class="tips">
-                <span>创建于{{detailData.releasetime||'-'}}</span>
-                <span>已有{{intentionCount||'0'}}位用户发起意向</span>
-            </div>
-        </header>
-        <div class="content">
-            <div>
-                <div>机型</div>
-                <div>{{detailData.aircrfttyp||'-'}}</div>
-            </div>
-             <div>
-                <div>座位布局</div>
-                <div>{{detailData.seating||'-'}}</div>
-            </div>
-            <div>
-                <div>运力归属</div>
-                <div>***</div>
-            </div>
-             <div>
-                <div>运力基地</div>
-                <div>{{detailData.dptNm||'-'}}</div>
-            </div>
-            <div >
-                <div>出港时刻</div>
-                <div>{{detailData.dptTime||'-'}}</div>
-            </div>
-            <div>
-                <div>班期</div>
-                <div>{{detailData.days||'-'}}</div>
-            </div>
-           <div class="intent-airline" v-if="detailData.intendedAirlines">
-               <div>意向航线</div>
-               <div class="i-line">
-                 {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
-                 {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
-                 {{detailData.intendedAirlines[0].arrvName||'-'}}
+    <div class="wrapper" @click.self="closeDetail">
+        <div class="detail-wrapper">
+            <header>
+                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="tips">
+                    <span>创建于{{detailData.releasetime||'-'}}</span>
+                    <span>已有{{intentionCount||'-'}}位用户发起意向</span>
+                </div>
+            </header>
+            <div class="content">
+                <div>
+                    <div>机型</div>
+                    <div>{{detailData.aircrfttyp||'-'}}</div>
+                </div>
+                 <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating||'-'}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>***</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm||'-'}}</div>
+                </div>
+                <div >
+                    <div>出港时刻</div>
+                    <div>{{detailData.dptTime||'-'}}</div>
+                </div>
+                <div>
+                    <div>班期</div>
+                    <div>{{detailData.days||'-'}}</div>
+                </div>
+               <div class="intent-airline" v-if="detailData.intendedAirlines">
+                   <div>意向航线</div>
+                   <div class="i-line">
+                     {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].arrvName||'-'}}
+                   </div>
                </div>
-           </div>
-            <div>
-                <div>小时成本</div>
-                <div>{{detailData.hourscost||'-'}}万/小时</div>
+                <div>
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                </div>
+                <div style="margin:0 0 0 40px;">
+                    <div>接受调度</div>
+                    <div>{{detailData.schedulingStr||'-'}}</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div>{{detailData.periodValidity||'-'}}</div>
+                </div>
             </div>
-            <div style="margin:0 0 0 40px;">
-                <div>接受调度</div>
-                <div>{{detailData.schedulingStr||'-'}}</div>
-            </div>
-            <div>
-                <div>有效期</div>
-                <div>{{detailData.periodValidity||'-'}}</div>
-            </div>
+            <footer>
+                <div>*隐藏信息在提交意向后可查看</div>
+                <div class="btn">
+                    <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
+                    <div class="col-btn"  v-else>已收藏</div>
+                </div>
+            </footer>
         </div>
-        <footer>
-            <div>*隐藏信息在提交意向后可查看</div>
-            <div class="btn">
-                <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
-                <div class="col-btn"  v-else>已收藏</div>
-            </div>
-        </footer>
     </div>
 </template>
 
@@ -80,7 +82,7 @@
      },
      methods:{
          closeDetail:function(){
-            this.$emit("closeDetail");
+            this.$emit("closeThis");
          },
          haveInvent:function(){
              this.$emit("formShow");
@@ -111,10 +113,10 @@
             ])
         },
       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
+        tabulationBoxTrigger.$on('sendToCompany', val => {
+            if(val.demandType == '运力需求' && this.role.role == 1){
                //console.log("demandtype"+val.data.demandtype);
-                this.demandId = val.data.id;
+                this.demandId = val.demandId
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -151,6 +153,15 @@
 </script>
 
 <style lang="scss" scoped>
+    .wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
+    }
     .detail-wrapper{
         position:absolute;
         top:0;

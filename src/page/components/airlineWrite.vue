@@ -524,7 +524,7 @@
                 hourConst: '',             //小时成本
                 airCompanyData: [], //航司内容
                 airCompanyShow: false, //下拉列表是否显示
-                airCompanyId: 0,    //航司3字码
+                airCompanyId: '',    //航司3字码
                 scheduling: 1,     // 是否接受调度 0:接收,1:不接收
                 schedulingShow: false,
                 url: '',            // 数据接口
@@ -545,12 +545,12 @@
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
-            sailingtime: function () {
+           /* sailingtime: function () {
                 return this.calendarInitDay1 + ',' + this.calendarInitDay2;
-            },
-            periodValidity: function () {
-                return this.calendarInitDay3 + ',' + this.calendarInitDay4;
-            }
+            },*/
+            /*periodValidity: function () {
+                return this.calendarInitDay3 + '-' + this.calendarInitDay4;
+            }*/
         },
         created() {
             this.sendData = this.acceptData;
@@ -564,6 +564,27 @@
         methods: {
             // 从父组件接受数据,并绑定到表单上
             acceptDataFn: function () {
+                /*单选按钮是否选定*/
+                let alWairAYes = document.getElementById('alWairAYes');
+                let alWairANo = document.getElementById('alWairANo');
+                let alWairAResYes = document.getElementById('alWairAResYes');
+                let alWairAWait = document.getElementById('alWairAWait');
+                let alWairAEnough = document.getElementById('alWairAEnough');
+                let alWairBYes = document.getElementById('alWairBYes');
+                let alWairBNo = document.getElementById('alWairBNo');
+                let alWairBResYes = document.getElementById('alWairBResYes');
+                let alWairBWait = document.getElementById('alWairBWait');
+                let alWairBEnough = document.getElementById('alWairBEnough');
+                let alWairCYes = document.getElementById('alWairCYes');
+                let alWairCNo = document.getElementById('alWairCNo');
+                let alWairCResYes = document.getElementById('alWairCResYes');
+                let alWairCWait = document.getElementById('alWairCWait');
+                let alWairCEnough = document.getElementById('alWairCEnough');
+                let alWsubsidyYes = document.getElementById('alWsubsidyYes');
+                let alWsubsidyNo = document.getElementById('alWsubsidyNo');
+                let alWsubsidyTalk = document.getElementById('alWsubsidyTalk');
+                let alWacceptDispatch = document.getElementById('alWacceptDispatch');
+
                 this.user = this.acceptData.contact;  // 联系人
                 this.phoneNum = this.acceptData.iHome; // 联系方式
                 this.myDate1 = this.acceptData.sailingtime; // 拟开时间
@@ -572,14 +593,32 @@
                 this.seatingNum = this.acceptData.seating; // 座位数
                 this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
                 this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期望
-//                this.airCompany = this.acceptData.loadfactorsexpect; // 运力归属（这个里没有）
                 this.hourConst = this.acceptData.hourscost; // 小时成本
                 this.remarkMsg = this.acceptData.remark; // 其他说明
                 // 判断始发类型（0：机场，1：区域）
+                // 机场传三字码，区域和省份传汉字
                 if(this.acceptData.dptState === "0") {
                     this.space1ShowTitle = this.spaceList[1];
                     this.space1Fn(this.spaceList[1]);
                     this.firArea = this.acceptData.dptNm;
+                    this.qyCode1 = this.acceptData.dpt;
+                    /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
+                    if(this.acceptData.dptAcceptnearairport === "0") {
+                        alWairAYes.checked = true;
+                    }else if(this.acceptData.dptAcceptnearairport === "1") {
+                        alWairANo.checked = true;
+                    }
+                    /*单选按钮：时刻资源 0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值，
+                        1:待协调，2:时刻充足。*/
+                    if(this.acceptData.dptTimeresources === "0") {
+                        alWairAResYes.checked = true;
+                        this.startTime1Show = this.acceptData.dptTime.split(',')[0];
+                        this.endTime1Show = this.acceptData.dptTime.split(',')[1];
+                    }else if(this.acceptData.dptTimeresources === "1") {
+                        alWairAWait.checked = true;
+                    }else if(this.acceptData.dptTimeresources === "2") {
+                        alWairAEnough.checked = true;
+                    }
                 }else if(this.acceptData.dptState === "1") {
                     this.space1ShowTitle = this.spaceList[0];
                     this.space1Fn(this.spaceList[0]);
@@ -590,7 +629,25 @@
                     this.space2ShowTitle = this.spaceList[1];
                     this.space2Fn(this.spaceList[1]);
                     this.secArea = this.acceptData.pstNm;
-                }else if(this.pstState.pstState === "1") {
+                    this.qyCode2 = this.acceptData.pst;
+                    /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
+                    if(this.acceptData.pstAcceptnearairport === "0") {
+                        alWairBYes.checked = true;
+                    }else if(this.acceptData.pstAcceptnearairport === "1") {
+                        alWairBNo.checked = true;
+                    }
+                    /*单选按钮：时刻资源 0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值，
+                        1:待协调，2:时刻充足。*/
+                    if(this.acceptData.pstTimeresources === "0") {
+                        alWairBResYes.checked = true;
+                        this.startTime2Show = this.acceptData.pstTime.split(',')[0];
+                        this.endTime2Show = this.acceptData.pstTime.split(',')[1];
+                    }else if(this.acceptData.pstTimeresources === "1") {
+                        alWairBWait.checked = true;
+                    }else if(this.acceptData.pstTimeresources === "2") {
+                        alWairBEnough.checked = true;
+                    }
+                }else if(this.acceptData.pstState === "1") {
                     this.space2ShowTitle = this.spaceList[0];
                     this.space2Fn(this.spaceList[0]);
                     this.secArea = this.acceptData.pst;
@@ -600,10 +657,55 @@
                     this.space3ShowTitle = this.spaceList[1];
                     this.space3Fn(this.spaceList[1]);
                     this.thirdArea = this.acceptData.arrvNm;
-                }else if(this.pstState.arrvState === "1") {
+                    this.qyCode3 = this.acceptData.arrv;
+                    /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
+                    if(this.acceptData.arrvAcceptnearairport === "0") {
+                        alWairCYes.checked = true;
+                    }else if(this.acceptData.arrvAcceptnearairport === "1") {
+                        alWairCNo.checked = true;
+                    }
+                    /*单选按钮：时刻资源 0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值，
+                        1:待协调，2:时刻充足。*/
+                    if(this.acceptData.arrvTimeresources === "0") {
+                        alWairCResYes.checked = true;
+                        this.startTime3Show = this.acceptData.arrvTime.split(',')[0];
+                        this.endTime3Show = this.acceptData.arrvTime.split(',')[1];
+                    }else if(this.acceptData.arrvTimeresources === "1") {
+                        alWairCWait.checked = true;
+                    }else if(this.acceptData.arrvTimeresources === "2") {
+                        alWairCEnough.checked = true;
+                    }
+                }else if(this.acceptData.arrvState === "1") {
                     this.space3ShowTitle = this.spaceList[0];
                     this.space3Fn(this.spaceList[0]);
                     this.thirdArea = this.acceptData.arrv;
+                }
+                // 是否接收调度(0:接收,1:不接收)，这个表单没有
+                this.scheduling = this.acceptData.scheduling;
+                if(this.scheduling === "0") {
+                    alWacceptDispatch.checked = true;
+                }else if(this.scheduling === "1") {
+                    alWacceptDispatch.checked = false;
+                }
+                // 补贴状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴。
+                this.subsidyCode = this.acceptData.subsidypolicy;
+                if(this.acceptData.subsidypolicy === "0" || this.acceptData.subsidypolicy === "1" || this.acceptData.subsidypolicy === "2") {
+                    alWsubsidyYes.checked = true;
+                    this.subsidypolicyFn(this.acceptData.subsidypolicy);
+                }else if(this.acceptData.arrvTimeresources === "3") {
+                    alWsubsidyTalk.checked = true;
+                }else if(this.acceptData.arrvTimeresources === "4") {
+                    alWsubsidyNo.checked = true;
+                }
+            },
+            // 将补贴类型从数字变成汉字
+            subsidypolicyFn: function (index) {
+                if(index === '0'){
+                    this.subsidyShow = '定补';
+                }else if(index === '1') {
+                    this.subsidyShow = '保底';
+                }else if(index === '2') {
+                    this.subsidyShow = '人头补';
                 }
             },
             warn4Fn: function () {
@@ -648,12 +750,7 @@
                 }
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.demandId = this.acceptData.id;
-                this.sendData.employeeId = this.acceptData.employeeId;
-                this.sendData.title = this.acceptData.title;
-                this.sendData.periodValidity = this.acceptData.periodValidity;
-                this.sendData.releasetime = this.acceptData.releasetime;
-
-
+                delete this.sendData.id;
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.Ihome = this.phoneNum;//必填 联系方式
                 if (this.dptState == 0) {
@@ -676,7 +773,7 @@
                 this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
                 this.sendData.days = this.scheduleShow;      //必填 班期
                 this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
-                this.sendData.sailingtime = this.sailingtime;      //必填 拟开行时间（起止时间）
+                this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
                 if (this.pstState == 0) {
@@ -991,24 +1088,21 @@
                     this.isSearch1 = true;
                     this.isSearch2 = false;
                     this.isSearch3 = false;
-
                 }
                 if (this.isSearchCode1 == 0) {
                     this.airAreaSearchShow1 = true;
                     this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = false;
-
                 }
             },
             // 接受调度复选按钮点击（0:接收,1:不接收）
             schedulingShowFn: function () {
+                this.schedulingShow = !this.schedulingShow;
                 if(this.schedulingShow == true){
                     this.scheduling = 0;
                 }else {
                     this.scheduling = 1;
                 }
-
-//                this.schedulingShow = true;
             },
             // 意向机场/意向区域，input失去焦点
             airportBlurFn1: function () {
@@ -1191,8 +1285,7 @@
                     this.myDate1 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow1 = false;
                     this.warn6Show = false;
-                } else {
-                }
+                } else {}
             },
             getDate3: function (d) {
                 this.calendarInitDay3 = d.split('-').join('.');

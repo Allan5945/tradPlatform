@@ -86,8 +86,7 @@
                         <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
-                        <div class="item-d" v-if="myData.subsidypolicy == ''">有补贴</div>
-                        <div class="item-d" v-else>{{subsidypolicy}}</div>
+                        <div class="item-d">{{subsidypolicyFn(myData.subsidypolicy)}}</div>
                         <!--<div>有补贴</div>-->
                     </div>
                 </div>
@@ -226,7 +225,7 @@
                 </div>
                 <div>
                     <div>补贴政策</div>
-                    <div>{{receiveIntention.subsidypolicy}}</div>
+                    <div>{{subsidypolicyFn(receiveIntention.subsidypolicy)}}</div>
                     <!--<div>按人头</div>-->
                 </div>
                 <div>
@@ -236,7 +235,9 @@
                 </div>
                 <div>
                     <div>运力归属</div>
-                    <div>{{receiveIntention.capacityCompany.airlnCd}}</div>
+                    <div>
+                        <span v-if="receiveIntention.capacityCompany != null">{{receiveIntention.capacityCompany.airlnCd}}</span>
+                    </div>
                     <!--<div>东方航空</div>-->
                 </div>
                 <div>
@@ -246,10 +247,8 @@
                 </div>
                 <div>
                     <div>是否调度</div>
-                    <div>
-                        <span v-show="receiveIntention.scheduling == 0">是</span>
-                        <span v-show="receiveIntention.scheduling == 1">否</span>
-                    </div>
+                    <div v-if="receiveIntention.scheduling === '0'">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
+                    <div v-else>否</div>
                     <!--<div>华北地区</div>-->
                 </div>
                 <div class="tips">
@@ -273,7 +272,6 @@
             <span class="line"></span>
         </div>-->
         <div class="third-show" v-show="thirdShow">
-
             <div class="eighth item-container">
                 <div class="left font-gray">
                     收到时间
@@ -370,16 +368,13 @@
                                     <div class="item-a item-height">{{item.sailingtime}}</div>
                                     <div class="item-b item-height">{{item.aircrfttyp}}</div>
                                     <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
-                                    <!--<div class="item-d item-height" v-if="item.subsidypolicy === ''">有补贴</div>-->
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 0">定补</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 1">保底</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 2">人头补</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 3">待议</div>
-                                    <div class="item-d item-height" v-if="item.subsidypolicy == 4">无补贴</div>
-                                    <div class="item-height">{{item.capacityCompany.airlnCd}}</div>
+                                    <div class="item-d item-height">{{subsidypolicyFn(item.subsidypolicy)}}</div>
                                     <div class="item-height">
-                                        <span v-show="item.scheduling == 0">接受</span>
-                                        <span v-show="item.scheduling == 1">不接受</span>
+                                        <span v-if="item.capacityCompany != null">{{item.capacityCompany.airlnCd}}</span>
+                                    </div>
+                                    <div class="item-height">
+                                        <span v-if="item.scheduling === '0'">{{item.airportForSchedulines[0].airlnCdName}}</span>
+                                        <span v-else>否</span>
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +393,7 @@
                                     <div class="item-height">{{item.seating}}</div>
                                     <div class="item-height">{{item.loadfactorsexpect}}%</div>
                                     <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
-                                    <div class="item-height">{{item.dptNm}}</div>
+                                    <div class="item-height">{{item.capacityBaseNm}}</div>
                                 </div>
                             </div>
                         </div>
@@ -414,7 +409,7 @@
                             </div>
                         </div>
                         <div v-else>
-                            <div class="item-fifth" v-if="releaseselectedShow">
+                            <div class="item-fifth" v-if="item.releaseselected === '1'">
                                 <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
                             </div>
                             <div class="item-sixth" v-else>
@@ -430,7 +425,8 @@
             <span style="width: 560px;height: 2px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" @click="addCollectFn">收藏</button>
+                <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
             </div>
         </div>
         <div class="second-button" v-show="secondButtonShow">
@@ -452,7 +448,8 @@
                 </div>
                 <div class="buttons" v-else>
                     <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
-                    <div class="btn btn-w col-btn" @click="addCollectFn">收藏</div>
+                    <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                    <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
                 </div>
             </div>
 
@@ -467,7 +464,7 @@
         <airlineWrite v-if="airlineWriteShow" :acceptData="myData" @change-showCode="changeShowCodeW" @close-this="closeAlWriteFn"></airlineWrite>
 
         <!--航司点击 我发出的方案“编辑”显示 运力表单-->
-        <myPurposeEdit v-if="myPurposeEditShow" :planDataToForm="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
+        <myPurposeEdit v-if="myPurposeEditShow" :acceptData="receiveIntention" @refresh="refreshFn" @close-this="closeMyPurposeEdit"></myPurposeEdit>
 
         <!--机场点击 “选定”显示 运力表单-->
         <airlineAffirm v-if="airlineAffirmShow" :acceptData="airlineAffirmData" @close-this="closeAlAffirmFn" @change-showCode="changeShowCodeA"></airlineAffirm>
@@ -540,7 +537,6 @@
                 listData: [],    //下方的列表详情
                 id: '',
                 checkDetailIndex: '', //点击“查看详情”对应的展开
-                releaseselectedShow: true,  //发布者是否已选定 0:表示选定,1:表示未选定
                 airlineAffirmUnchooseData: {}, //“撤销选定”发的对象
                 /*日历*/
                 calendarInitDay1: '', //日历
@@ -552,6 +548,7 @@
                 userNumShow: true, // 已有{{userNum}}位用户发起意向
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
                 airlnCd: '',            // 运力归属
+                isAlreadyCollect: false, // 是否已收藏
             }
         },
         created() {
@@ -585,27 +582,18 @@
                     }
                 })
                 .then((response) => {
-//                    console.info('response:')
-//                    console.info(response)
-//                            console.info(response.data.responseList)
                     this.isSelf = response.data.isSelf;
+                    this.isAlreadyCollect = response.data.isAlreadyCollect; // 是否收藏
                     this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据(意向方数据)
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
-//                            this.intentionCount = response.data.intentionCount;
-//                            this.detailData = response.data.data;
-//                            this.listData = response.data.responseList;   //获取意向列表
                     this.userNum = response.data.intentionCount;
                     this.myData = response.data.data;
                     this.releaseTime = this.myData.releasetime.split(" ")[0];
-//                            this.dptTime0 = this.myData.dptTime.split(',')[0];
-//                            this.dptTime1 = this.myData.dptTime.split(',')[1];
                     this.dptTime0 = this.myData.dptTime;
                     this.pstTime0 = this.myData.pstTime.split(',')[0];
                     this.pstTime1 = this.myData.pstTime.split(',')[1];
                     this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                     this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-//                    this.periodValidity0 = this.myData.periodValidity;
-//                    this.periodValidity0 = this.myData.periodValidity.split(',')[0];
                     this.periodValidity1 = this.myData.periodValidity.split(',')[1];
                     if (this.myData.subsidypolicy == 0) {
                         this.subsidypolicy = '定补'
@@ -623,8 +611,11 @@
                         this.subsidypolicy = '无补贴'
                     }
                     // 修改this.showCode
-                    if(this.myData.demandstate == 5 || this.myData.demandstate == 3 || this.myData.demandprogress == 3 || this.myData.demandprogress == 10) {
-                        this.showCode = 5; // “关闭”状态
+                    if(this.myData.demandstate == 5
+                        || this.myData.demandstate == 3
+                        || this.myData.demandprogress == 3
+                        || this.myData.demandprogress == 10) {  // “关闭”状态
+                        this.showCode = 5;
                     }else {
                         if (this.isSelf == true && this.isIntentionMoney == false) {
 //                                console.info('payAfter:' + 1)
@@ -654,6 +645,20 @@
                         console.log(error);
                     }
                 );
+            },
+            // 将补贴类型从数字变成汉字
+            subsidypolicyFn: function (index) {
+                if(index === '0'){
+                    return '定补';
+                }else if(index === '1') {
+                    return '保底';
+                }else if(index === '2') {
+                    return '人头补';
+                }else if(index === '3') {
+                    return '待议';
+                }else if(index === '4') {
+                    return '无补贴';
+                }
             },
             // 卡片新增功能：意向列表上添加状态信息
             // responseProgress：（0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付）
@@ -957,23 +962,46 @@
                         demandIds: this.id
                     }
                 }) .then((response) => {
-//                    console.info('collect:')
-//                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('收藏成功！')
+                        this.refreshFn();
                     }else{
                         alert('错误代码：'+ response.data.opResult)
                     }
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
                 });
             },
+            // 取消收藏
+            cancelCollectFn:function(){
+                this.$ajax({
+                    method: 'post',
+                    url: '/delCollectByDemandId',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId:this.id
+                    }
+                })
+                    .then((response) => {
+                        if(response.data.opResult === '0'){
+                            alert('取消收藏成功！');
+                            this.refreshFn();
+                        }else{
+                            alert('错误代码：'+ response.data.opResult)
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
+            },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
 //                this.showCode = 1;
-                this.getData(); // 重新获取、渲染数据
-                this.show();
+//                this.show();
+                this.refreshFn(); // 重新获取、渲染数据
             },
             //点击“缴纳意向金”，组件“缴纳意向金”显示
             airlinePayFn: function () {
@@ -985,7 +1013,7 @@
                 this.paySuccessShow = true; //“缴纳完成”组件显示
                 /*this.showCode = 2;
                 this.show();*/
-                this.getData();
+                this.refreshFn();
             },
             //点击“选定”，组件“请确认以下方案”显示
             airlineAffirmFn: function (item,index) {
@@ -1008,18 +1036,10 @@
 //                tabulationBoxTrigger.$emit('sendToAffirm',item) //向airlineAffirm.vue传递数据
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
-            changeShowCodeA: function (index) {
-               /* tabulationBoxTrigger.$on('AffirmToDetailPayAfter', val => { //从airlintAffirm获取的数据
-//                    console.info('payAfter从AffirmToDetailPayAfter:')
-//                    console.info(val)
-                    let index = val.index;
-                    this.listData.splice(index,1,val)
-                })*/
+            changeShowCodeA: function (index) {//发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
                 this.showCode = 3;
                 this.show();
-                this.getData(); // 重新获取数据
-                //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
-                this.releaseselectedShow = false; //显示两个按钮
+                this.refreshFn(); // 重新获取数据
             },
             //点击“撤销选定”，showCode变成2状态
             airlineAffirmUnchooseFn: function (item,index) {
@@ -1041,9 +1061,9 @@
 //                    console.info(response)
                     if(response.data.opResult === '0'){
                         alert('成功撤销选定!');
-                        this.releaseselectedShow = true;
                         this.showCode = 2;
                         this.show();
+                        this.refreshFn();
                     }else{
                         alert('错误代码：' + response.data.opResult);
                     }
@@ -1056,16 +1076,7 @@
             checkDetail: function (item,index) {
                 this.checkDetailIndex = '';
                 this.checkDetailIndex = index;
-//                console.info('item:')
-//                console.info(item)
                 //发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
-                if(item.releaseselected == 0){
-                    this.releaseselectedShow = false;
-//                    console.info(0)
-                }else {
-                    this.releaseselectedShow = true;
-//                    console.info(1)
-                }
             },
             //点击“收起详情”
             checkDetailUp: function (item,index) {

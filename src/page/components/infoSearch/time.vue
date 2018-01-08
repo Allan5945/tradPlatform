@@ -151,7 +151,8 @@
                 this.updateData();
             },
             'qyCode':function(){
-                this.updateData();
+                this.getData();
+                this.getClock(this.inputData,this.qyCode);
                 this.airportText = this.searchInfo.searchText;
             }
         },

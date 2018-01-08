@@ -133,7 +133,7 @@
             </div>
         </div>
         <div class="t-btn">
-            <div class="agent-btn " @click="confirm(4)" >委托代理</div>
+            <div class="agent-btn " @click="confirm(4)" v-if="btnShow">委托代理</div>
             <div class="confirm-btn " @click="confirm(1)">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
         </div>
@@ -163,6 +163,7 @@
                 pickEnd:false,
                 airplTypShow:false,
                 airCompanyShow:false,
+                btnShow:true,
                 contact: '',
                 intendedDpt:'',
                 intendedPst:'',
@@ -215,9 +216,12 @@
             airCompanyS
         },
         computed:{
-         ...vx.mapGetters([
+            ...vx.mapGetters([
                 'role'
-            ])
+            ]),
+            num: function(){
+                return this.tip.length <= 35? this.tip.length: 35;
+            }
         },
         methods:{
              getNeed: function(i) {
@@ -463,17 +467,14 @@
                 });
             }
         },
-        computed:{
-            num: function(){
-                return this.tip.length <= 35? this.tip.length: 35;
-            }
-        },
         watch:{
 
 
         },
         beforeMount:function () {
-
+            if(this.role.role == 2){
+                this.btnShow = false;
+            }
         }
 
     }
