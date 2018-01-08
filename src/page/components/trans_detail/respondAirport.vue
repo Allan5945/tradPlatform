@@ -191,7 +191,7 @@
 <script>
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import sureForm from './sureForm1.vue'
+ import sureForm from './sureForm.vue'
  export default {
      data(){
          return{
