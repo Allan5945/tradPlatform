@@ -55,6 +55,7 @@
                                 <div class="personal-panel-name">
                                     <p>{{inData.company}}</p>
                                     <div class="">{{kfIng.department}}<span>{{kfIng.name}}</span></div>
+                                    <div class="">{{kfIng.phone}}</span></div>
                                 </div>
                             </div>
                             <div class="demand-history">
@@ -266,6 +267,9 @@ export default {
               break;
             case "name":
               chatObjectList["name"] = v.val;
+              break;
+            case "phone":
+              chatObjectList["phone"] = v.val;
               break;
           }
         });
