@@ -83,7 +83,7 @@
                 this.contact = this.contact.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
             },
             verifyPhon: function () {
-                if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum))){
                     this.isError2 = true;
                 }else{
                     this.isError2 = false;

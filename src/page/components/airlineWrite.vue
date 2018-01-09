@@ -42,7 +42,7 @@
                             </div>
                             <div class="bottom">
                                 <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea"
-                                       @click.stop="airportFn1" @blur="airportBlurFn1">
+                                       @click.stop="airportFn1" @focus="airportFn1" @blur="airportBlurFn1">
                                 <airportS class="aisx" v-on:resData="resData1" :searchText="firArea"
                                           v-show="isSearch1"></airportS>
                             </div>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="bottom">
                                 <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea"
-                                       @click.stop="airportFn2" @blur="airportBlurFn2">
+                                       @click.stop="airportFn2" @focus="airportFn2" @blur="airportBlurFn2">
                                 <airportS class="aisx" v-on:resData="resData2" :searchText="secArea"
                                           v-show="isSearch2"></airportS>
                             </div>
@@ -81,7 +81,7 @@
                             </div>
                             <div class="bottom">
                                 <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea"
-                                       @click.stop="airportFn3" @blur="airportBlurFn3">
+                                       @click.stop="airportFn3" @focus="airportFn3" @blur="airportBlurFn3">
                                 <airportS class="aisx" v-on:resData="resData3" :searchText="thirdArea"
                                           v-show="isSearch3" style="left: -65px;"></airportS>
                             </div>
@@ -435,6 +435,9 @@
                 secArea: '', //经停地 2的意向区域
                 secAreaCode: '', //三字码（只有城市有）
                 thirdArea: '', //到达地 3的意向区域
+                firAreaBus: '', // 始发地-中转站
+                secAreaBus: '', // 经停地-中转站
+                thirdAreaBus: '', // 到达地-中转站
                 thirdAreaCode: '', //三字码（只有城市有）
                 fourArea: '', // 运力基地
                 fifthArea: '', // 接受调度
@@ -600,7 +603,9 @@
                 if(this.acceptData.dptState === "0") {
                     this.space1ShowTitle = this.spaceList[1];
                     this.space1Fn(this.spaceList[1]);
-                    this.firArea = this.acceptData.dptNm;
+                    if(this.acceptData.dptNm != null) {
+                        this.firArea = this.acceptData.dptNm;
+                    }
                     this.qyCode1 = this.acceptData.dpt;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.dptAcceptnearairport === "0") {
@@ -628,7 +633,9 @@
                 if(this.acceptData.pstState === "0") {
                     this.space2ShowTitle = this.spaceList[1];
                     this.space2Fn(this.spaceList[1]);
-                    this.secArea = this.acceptData.pstNm;
+                    if(this.acceptData.pstNm != null) {
+                        this.secArea = this.acceptData.pstNm;
+                    }
                     this.qyCode2 = this.acceptData.pst;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.pstAcceptnearairport === "0") {
@@ -656,7 +663,10 @@
                 if(this.acceptData.arrvState === "0") {
                     this.space3ShowTitle = this.spaceList[1];
                     this.space3Fn(this.spaceList[1]);
-                    this.thirdArea = this.acceptData.arrvNm;
+                    if(this.acceptData.dptNm != null) {
+                        this.firArea = this.acceptData.dptNm;
+                    }
+
                     this.qyCode3 = this.acceptData.arrv;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.arrvAcceptnearairport === "0") {

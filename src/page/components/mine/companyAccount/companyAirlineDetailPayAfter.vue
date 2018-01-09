@@ -1311,11 +1311,16 @@
     }
 
     .first {
-        position: relative;
+        position: fixed;
+        top: 0;
+        right: 0;
         justify-content: space-between;
         align-items: center;
+        width: 520px;
         height: 41px;
         font-size: 12px;
+        background: white;
+        z-index: 10;
         .close-icon {
             position: absolute;
             right: 12px;
@@ -1335,6 +1340,7 @@
     .second {
         position: relative;
         flex-direction: column;
+        margin-top: 41px;
         height: 100px;
         background: rgba(216, 216, 216, .17);
         .sec-top {
