@@ -382,7 +382,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b" @click="submitData">确认选定该意向</button>
+                <button class="btn-b" @click="submitData">确认修改该方案</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -604,7 +604,9 @@
                 if(this.acceptData.dptState == "0") {
                     this.space1ShowTitle = this.spaceList[1];
                     this.space1Fn(this.spaceList[1]);
-                    this.firArea = this.acceptData.dptNm;
+                    if(this.acceptData.dptNm != null) {
+                        this.firArea = this.acceptData.dptNm;
+                    }
                     this.qyCode1 = this.acceptData.dpt;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.dptAcceptnearairport === "0") {
@@ -633,7 +635,9 @@
                 if(this.acceptData.pstState == "0") {
                     this.space2ShowTitle = this.spaceList[1];
                     this.space2Fn(this.spaceList[1]);
-                    this.secArea = this.acceptData.pstNm;
+                    if(this.acceptData.pstNm != null) {
+                        this.secArea = this.acceptData.pstNm;
+                    }
                     this.qyCode2 = this.acceptData.pst;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.pstAcceptnearairport === "0") {
@@ -661,7 +665,9 @@
                 if(this.acceptData.arrvState == "0") {
                     this.space3ShowTitle = this.spaceList[1];
                     this.space3Fn(this.spaceList[1]);
-                    this.thirdArea = this.acceptData.arrvNm;
+                    if(this.acceptData.arrvNm != null) {
+                        this.thirdArea = this.acceptData.arrvNm;
+                    }
                     this.qyCode3 = this.acceptData.arrv;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.arrvAcceptnearairport === "0") {
@@ -697,7 +703,9 @@
                     this.schedulingShow = false;
                 }
                 // 运力基地
-                this.fourArea = this.acceptData.capacityBaseNm;
+                if(this.acceptData.capacityBaseNm != null) {
+                    this.fourArea = this.acceptData.capacityBaseNm;
+                }
                 this.qyCode4 = this.acceptData.capacityBase;
                 // 补贴状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴。
                 this.subsidyCode = this.acceptData.subsidypolicy;
@@ -1031,7 +1039,7 @@
             },
             // 电话号码验证
             verifyPhon: function () {
-                if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))) {
+                if (!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum))) {
                     this.warn2Show = true;
                 } else {
                     this.warn2Show = false;
