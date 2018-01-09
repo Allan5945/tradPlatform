@@ -122,11 +122,11 @@
             }
         },
         methods: {
-            delayChange: function () {  // 1000ms延迟
+            delayChange: function () {  // 500ms延迟，防止快速切换状态
                 this.filterDelay = false;
                 setTimeout(()=>{
                     this.filterDelay = true;
-                },1000)
+                },500)
             },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;
