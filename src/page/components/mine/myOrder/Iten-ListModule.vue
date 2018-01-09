@@ -11,32 +11,32 @@
                         <div class="airplace">
                             <div>始发机场</div>
                             <div>
-                                <div>{{ndetailData.dpt||"—"}}</div>
-                                <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
+                                <div>{{ndetailData.dptNm||"—"}}</div>
+                                <div>{{ airportAcept[ndetailData.dptAcceptnearairport] || '-' }}</div>
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
                                 <div>{{ndetailData.dptTime||"待协调"}}</div>
                             </div>
                         </div>
-                        <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                        <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
-                                <div>{{ndetailData.pst||"—"}}</div>
-                                <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
+                                <div>{{ndetailData.pstNm||"—"}}</div>
+                                <div>{{ airportAcept[ndetailData.pstAcceptnearairport] || '-' }}</div>
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
                                 <div>{{ndetailData.pstTime||"待协调"}}</div>
                             </div>
                         </div>
-                        <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                        <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
-                                <div>{{ndetailData.arrv||"—"}}</div>
-                                <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
+                                <div>{{ndetailData.arrvNm||"—"}}</div>
+                                <div>{{ airportAcept[ndetailData.arrvAcceptnearairport] || '-' }}</div>
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
@@ -79,19 +79,19 @@
                         </div>
                         <div>
                             <div>补贴政策</div>
-                            <div>{{subsidyList[ndetailData.subsidypolicy]||"-"}}</div>
+                            <div>{{ ndetailData.subsidypolicyStr ||"-"}}</div>
 
                         </div>
                         <div>
                             <div>有效期</div>
-                            <div>{{ndetailData.hourscost?ndetailData.hourscost+" 止":"-"}}</div>
+                            <div>{{ ndetailData.sailingtime? ndetailData.sailingtime.substr(-10)+" 止" :"-" }}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
                             <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
-                    <template v-if="ndetailData.isWeituo">
+                    <template v-if="false">
                         <header>
                             <div class="head-til">收到的意向</div>
                             <div class="tips">
@@ -137,7 +137,7 @@
                         </div>
                         <div>
                             <div>联系方式</div>
-                            <div>{{ndetailData.iHome||"-"}}</div>
+                            <div>{{ndetailData.ihome||"-"}}</div>
                         </div>
                         <div>
                             <div>机型</div>
@@ -149,11 +149,11 @@
                         </div>
                         <div>
                             <div>运力归属</div>
-                            <div>{{ndetailData.capacitycompany||"-"}}</div>
+                            <div>{{ndetailData.capacityCompany.airlnCd||"-"}}</div>
                         </div>
                         <div>
                             <div>运力基地</div>
-                            <div>{{ndetailData.dpt||"-"}}</div>
+                            <div>{{ndetailData.capacityCompany.headquarterslocation||"-"}}</div>
                         </div>
                         <div>
                             <div>出港时刻</div>
@@ -165,7 +165,7 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 10px;">
+                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size: 16px;">
                                 {{ndetailData.dptNm||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
                                 {{ndetailData.pstNm||"—"}}
@@ -175,15 +175,15 @@
                         </div><div style="display: none"></div>
                         <div>
                             <div>小时成本</div>
-                            <div>{{ndetailData.hourscost?ndetailData.hourscost+"万元/小时":"-"}}</div>
+                            <div>{{ndetailData.hourscost?ndetailData.hourscost+" 万元":"-"}}</div>
                         </div>
                         <div>
                             <div>接受调度</div>
-                            <div>{{schedulingList[ndetailData.scheduling]||"不接受"}}</div>
+                            <div>{{ndetailData.schedulingStr}}</div>
                         </div>
                         <div>
                             <div>有效期</div>
-                            <div>{{ndetailData.hourscost?ndetailData.hourscost+" 止":"-"}}</div>
+                            <div>{{ ndetailData.sailingtime? ndetailData.sailingtime.substr(-10)+" 止" :"-" }}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
@@ -235,9 +235,12 @@
                     '6': '订单完成',
                     '7': '佣金支付'
                 },
-                subsidyList:["定补","保底","人头补","无补贴"],
+                //subsidyList:["定补","保底","人头补","无补贴"],
                 timeresources:["09:00-18:00",'待协调','充足'],
-                schedulingList: ["接受","不接受"],
+                airportAcept:{
+                    "0":"接受临近机场",
+                    "1":"不接受临近机场"
+                },
                 extend:{
                     data:[
                         {
@@ -352,7 +355,7 @@
                 max-width:160px;
             }
             >div:nth-of-type(even){
-                width:60px;
+                width:100px;
                 text-align: center;
             }
             .airplace{

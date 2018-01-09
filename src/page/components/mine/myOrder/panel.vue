@@ -9,10 +9,31 @@
                             :type="typeList[detailData.demandType]"
                             v-if="metaData">
                 </listModule>
-                <itenListModule :ndetailData="metaData.responseList[0]"
+                <itenListModule
+                            :ndetailData="metaData.responseList[0]"
                             :type="typeList[detailData.demandType==1?0:1]"
-                            v-if="metaData && metaData.intentionCount>0">
+                            v-if="metaData && metaData.responseList.length>0">
                 </itenListModule>
+                <template v-if="false">
+                    <header>
+                        <div class="head-til">收到的意向</div>
+                    </header>
+                    <div class="table-form-extend">
+                        <div class="table-header">
+                            <span class="item-a">收到时间</span><span class="item-b">意向方</span>
+                        </div>
+                        <ul class="table-body">
+                            <li v-for="(item, index) in extend.data">
+                                <div class="list">
+                                    <span class="item-a">2017.12.19</span>
+                                    <span class="item-b">CTU</span>
+                                    <span v-show="extend.active!=index" @click="extend.active=index" class="item-c">查看详情</span>
+                                    <span v-show="extend.active===index" @click="extend.active=-1" class="item-c">收起详情</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
@@ -35,7 +56,24 @@
                 },
                 metaData: null,
                 fatherScroll:true,
-                typeList: ['航线需求','运力投放 ']
+                typeList: ['航线需求','运力投放 '],
+                extend:{
+                    data:[
+                        {
+                            name: '1',
+                            age:'2'
+                        },
+                        {
+                            name: '3',
+                            age:'4'
+                        },
+                        {
+                            name: '5',
+                            age:'6'
+                        },
+                    ],
+                    active: -1
+                }
             }
         },
         components: {listModule,itenListModule},
@@ -123,12 +161,15 @@
             }
             //取出拒绝原因
             let that = this;
-            let id = this.detailData.id;
+            let id = this.detailData.id,
+                responseId = this.detailData.responseId;
+
             this.$ajax({
                 method: 'GET',
                 url: '/seeMyOrderDetail',
                 params: {
-                    id : id
+                    id,
+                    responseId
                 }
             }).then(res=>{
                 that.metaData = res.data;
@@ -311,5 +352,77 @@
         width: 90%;
         height: 120px;
         bottom: 0;
+    }
+
+
+    header{
+        box-sizing: border-box;
+        width:100%;
+        background-color:rgba(216,216,216,.2);
+        padding: 5px 40px 0 50px;
+        .head-til{
+            font-size:20px;
+            font-weight:bold;
+            height: 80px;
+            line-height: 80px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+        .tips{
+            height:12px;
+            line-height:12px;
+            color:rgba(96, 94, 124, 0.7);
+            padding:20px 0;
+            span{
+                margin-right:30px;
+            }
+        }
+    }
+    .table-form-extend{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 40px 0;
+        .table-header{
+            padding: 0 50px;
+            display: flex;
+            .item-a{
+                flex:2;
+            }
+            .item-b{
+                flex:5;
+            }
+        }
+        .table-body{
+            list-style: none;
+            padding: 0 30px;
+            li{
+                background-color: #eee;
+                margin: 5px 0;
+                .list{
+                    height: 60px;
+                    line-height: 60px;
+                    padding: 0 20px;
+                    display: flex;
+                    .item-a{
+                        flex:2;
+                    }
+                    .item-b{
+                        flex:4;
+                    }
+                    .item-c{
+                        flex:1;
+                        color: #3c78ff;
+                        cursor: pointer;
+                    }
+                }
+                .main-info{
+                    box-sizing: border-box;
+                    width: 100%;
+                    padding: 0 20px;
+                    border-top: 2px solid #000;
+                }
+            }
+        }
     }
 </style>

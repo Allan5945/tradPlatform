@@ -85,10 +85,9 @@
                 //不同需求类型展现的状态不同
                 type: ['航线需求','运力投放'],
                 progressState:{
-                    ' ': '全部',
                     '4': '未处理',
                     '5': '审核未通过',
-                    '6': '审核通过'
+                    '6': '审核通过',
                 },
                 demandId:null,
                 detailsPanel:{
@@ -175,6 +174,7 @@
         }
     }
 </script>
+
 <style lang="scss" scoped>
     $icon-color: #3c78ff;
     $font-color: #605e7c;
