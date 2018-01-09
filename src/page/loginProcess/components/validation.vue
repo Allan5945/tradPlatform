@@ -1,6 +1,6 @@
 <template>
     <div class="validation user-select">
-        <div class="icon-v" @mousedown="bgmove" :style="{'left':jl + 'px'}">&#xe62a;</div>
+        <div class="icon-v" @mousedown="bgmove" :style="{'left':jl + 'px'}" v-html="suc? '&#xe61f;':'&#xe62a;'" :class="{'suc':suc}">&#xe62a;</div>
         <div class="bg-box" :style="{'width':jl + 'px'}"></div>
         <div class="icon-mes" v-text="tltle" :class="{'icon-c':tltle.length == 4}"></div>
     </div>
@@ -13,7 +13,9 @@
                 mouWz:0,
                 ksl:0,
                 jl:0,
-                tltle:"滑动验证码进行验证"
+                tltle:"滑动验证码进行验证",
+                iconText:"&#xe62a;",
+                suc:false
             } 
         },
         mounted:function(){
@@ -41,9 +43,11 @@
                             this.hkoff = false;
                             this.jl = 263;
                             this.tltle = "验证成功";
+                            this.$emit('validation');
                             return;
                         };
                         this.jl = jl;
+                        this.suc = true;
                    };
                    
                } 
@@ -90,5 +94,8 @@
    }
     .icon-c{
        color:white;
+   }
+   .suc{
+       color: #7ac13d;
    }
 </style>
