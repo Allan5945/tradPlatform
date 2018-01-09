@@ -382,7 +382,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b" @click="submitData">提交意向</button>
+                <button class="btn-b" @click="submitData">支付意向金提交意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -561,7 +561,7 @@
             this.space2Fn();
             this.space3Fn();
             //this.acceptDataFn();
-
+            //
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
                     this.demandData.demandId = val.data.id;
                     this.demandData.employeeId = val.data.employeeId;

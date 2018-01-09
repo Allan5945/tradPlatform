@@ -43,6 +43,10 @@
                          {{detailData.intendedAirlines[0].arrvName||'-'}}
                        </div>
                    </div>
+                   <div class="intent-airline" v-else>
+                       <div>意向航线</div>
+                       <div class="i-line">-</div>
+                   </div>
                     <div>
                         <div>小时成本</div>
                         <div>{{detailData.hourscost||'-'}}万/小时</div>
@@ -206,8 +210,8 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData" @surePlan="surePlan"></myIntentForm>
-        <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
+        <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
+        <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
@@ -216,8 +220,8 @@
   import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
-  import myIntentForm from './myIntentForm1.vue'
-  import sureForm from './sureForm.vue'
+  import myIntentForm from './myIntentForm.vue'
+  import sureForm from './sureForm1.vue'
   import  signDialog from './signDialog.vue'
  export default {
      data(){
@@ -354,12 +358,14 @@
                       this.intentListShow = true;
                     }
                     //是否有选定
-                    let len = this.planData.length;
-                    this.selected = false;
-                    for(let i =0;i<len;i++){
-                        if(this.planData[i].releaseselected == '0'){
-                          this.selected = true;
-                        }
+                    if(this.planData !== {}){
+                      let len = this.planData.length;
+                      this.selected = false;
+                      for(let i =0;i<len;i++){
+                          if(this.planData[i].releaseselected == '0'){
+                            this.selected = true;
+                          }
+                      }
                     }
                     //判断是否签约用户
                     this.isSign = response.data.isSign;
