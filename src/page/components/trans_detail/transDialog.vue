@@ -3,7 +3,7 @@
         <div class="dialog-wrapper">
             <div class="cancel"><span class="iconfont" @click="cancelEvent">&#xe62c;</span></div>
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
-            <div class="dialog-content">是否确认缴纳意向金***元</div>
+            <div class="dialog-content">是否确认缴纳意向金50000元</div>
             <div class="dialog-btns">
                 <div class=" btn sure-btn" v-if="iconShow"><span class="iconfont">&#xe620;</span></div>
                 <div class=" btn sure-btn" @click="sureEvent" v-else>确认缴纳</div>
@@ -39,9 +39,9 @@
                 this.sendData= val;
             })
             //触发意向更新
-            this.myData.data.id = this.sendData.demandId;
+           /* this.myData.data.id = this.sendData.demandId;
             this.myData.data.demandtype = "1";
-            tabulationBoxTrigger.$emit('tabulationBoxTrigger', this.myData);
+            tabulationBoxTrigger.$emit('tabulationBoxTrigger', this.myData);*/
 
         },
         methods: {

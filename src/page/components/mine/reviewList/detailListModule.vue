@@ -15,8 +15,8 @@
                         <div class="airplace">
                             <div>始发机场</div>
                             <div>
-                                <div>{{ndetailData.dptNm||"待定"}}</div>
-                                <div v-show="ndetailData.dptAcceptnearairport=='0'">接受临近机场</div>
+                                <div>{{ndetailData.dptNm||"—"}}</div>
+                                <div>{{ airportAcept[ndetailData.dptAcceptnearairport] || '-' }}</div>
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
@@ -27,8 +27,8 @@
                         <div class="airplace">
                             <div>经停机场</div>
                             <div>
-                                <div>{{ndetailData.pstNm||"待定"}}</div>
-                                <div v-show="ndetailData.pstAcceptnearairport=='0'">接受临近机场</div>
+                                <div>{{ndetailData.pstNm||"—"}}</div>
+                                <div>{{ airportAcept[ndetailData.pstAcceptnearairport] || '-' }}</div>
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
@@ -39,8 +39,8 @@
                         <div class="airplace">
                             <div>到达区域</div>
                             <div>
-                                <div>{{ndetailData.arrvNm||"待定"}}</div>
-                                <div v-show="ndetailData.arrvAcceptnearairport=='0'">接受临近机场</div>
+                                <div>{{ndetailData.arrvNm||"—"}}</div>
+                                <div>{{ airportAcept[ndetailData.arrvAcceptnearairport] || '-' }}</div>
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
@@ -88,7 +88,7 @@
                         </div>
                         <div>
                             <div>有效期</div>
-                            <div>{{ndetailData.hourscost?ndetailData.hourscost+" 止":"-"}}</div>
+                            <div>{{ ndetailData.periodValidity ? ndetailData.periodValidity.substr(-10)+" 止" : "-" }}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
@@ -132,11 +132,11 @@
                         </div>
                         <div>
                             <div>运力基地</div>
-                            <div>{{ndetailData.capacityCompany.headquarterslocation||"-"}}</div>
+                            <div>{{ ndetailData.dptNm ||"-"}}</div>
                         </div>
                         <div>
                             <div>出港时刻</div>
-                            <div>{{timeresources[ndetailData.dptTimeresources]||"-"}}</div>
+                            <div>{{ ndetailData.dptTime||"-" }}</div>
                         </div>
                         <div>
                             <div>班期</div>
@@ -154,15 +154,15 @@
                         </div><div style="display: none"></div>
                         <div>
                             <div>小时成本</div>
-                            <div>{{ndetailData.hourscost||"-"}}</div>
+                            <div>{{ ndetailData.hourscost?ndetailData.hourscost+' 万元':"-"}}</div>
                         </div>
                         <div>
                             <div>接受调度</div>
                             <div>{{schedulingList[ndetailData.scheduling]||"不接受"}}</div>
                         </div>
-                        <div>
+                        <div style="width: 100%;">
                             <div>有效期</div>
-                            <div>{{ ndetailData.periodValidity ? ndetailData.periodValidity+" 止" : "-"}}</div>
+                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ ndetailData.periodValidity ? ndetailData.periodValidity.substr(-10)+" 止" : "-" }}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>
@@ -180,14 +180,16 @@
         data(){
             return{
                 subsidyList:["定补","保底","人头补","无补贴"],
-                timeresources:["09:00-18:00",'待协调','充足'],
                 schedulingList: ["接受","不接受"],
+                airportAcept:{
+                    "0":"接受临近机场",
+                    "1":"不接受临近机场"
+                },
                 progressState: ["未处理","审核未通过","审核通过"]
             }
         },
         props:["ndetailData","type"],
         mounted: function () {
-
         }
     }
 </script>

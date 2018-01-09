@@ -3,7 +3,7 @@
       <div class="plan-wrapper scroll">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
-              <div class="head-til">{{detailData.title||'-'}}</div>
+              <div class="head-til">{{detailData.title||'-'}}运力投放</div>
               <div class="tips">
                   <span>创建于{{detailData.releasetime||'-'}}</span>
                   <span>已有{{intentionCount||'0'}}位用户发起意向</span>
@@ -11,14 +11,6 @@
           </header>
           <div class="content">
               <div class="table-form">
-                  <div>
-                      <div>联系人</div>
-                      <div>{{detailData.contact||'-'}}</div>
-                  </div>
-                   <div>
-                      <div>联系方式</div>
-                      <div>{{detailData.iHome||'-'}}</div>
-                  </div>
                    <div>
                       <div>机型</div>
                       <div>{{detailData.aircrfttyp||'-'}}</div>
@@ -76,9 +68,9 @@
                           <div v-else>始发区域</div>
                           <div>
                              <div>{{planData.dptNm||'-'}}</div>
-                             <div>{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
+                             <div v-if="planData.dptState =='0' ">{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
-                           <div class="resouse">
+                           <div class="resouse" v-if="planData.dptState =='0' ">
                               <div>出港资源</div>
                               <div v-if="planData.dptTimeresources == '0'">{{planData.dptTime||'-'}}</div>
                               <div v-else>{{planData.dptTimeresourcesStr||'-'}}</div>
@@ -90,9 +82,9 @@
                           <div v-else>经停区域</div>
                           <div>
                             <div>{{planData.pstNm||'-'}}</div>
-                            <div>{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
+                            <div v-if="planData.pstState =='0' ">{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
-                          <div class="resouse">
+                          <div class="resouse" v-if="planData.pstState =='0' ">
                               <div>出港资源</div>
                               <div v-if="planData.pstTimeresources == '0'">{{planData.pstTime||'-'}}</div>
                               <div v-else>{{planData.pstTimeresourcesStr||'-'}}</div>
@@ -104,9 +96,9 @@
                           <div v-else>到达区域</div>
                           <div>
                             <div>{{planData.arrvNm||'-'}}</div>
-                            <div>{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                            <div v-if="planData.arrvState =='0' ">{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
-                          <div class="resouse">
+                          <div class="resouse" v-if="planData.arrvState =='0' ">
                               <div>出港资源</div>
                               <div v-if="planData.arrvTimeresources == '0'">{{planData.arrvTime||'-'}}</div>
                               <div v-else>{{planData.arrvTimeresourcesStr||'-'}}</div>
@@ -192,14 +184,14 @@
               </div>
           </footer>
       </div>
-    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "planData"></sureForm>
+    <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
     </div>
 </template>
 
 <script>
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import sureForm from './sureForm.vue'
+ import sureForm from './sureForm1.vue'
  export default {
      data(){
          return{
@@ -345,8 +337,6 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
-                        console.info('111');
-                        alert('111');
                         this.$emit('responseShow');
                         this.isIntentionMoney = response.data.isIntentionMoney;
                         this.intentionCount = response.data.intentionCount;

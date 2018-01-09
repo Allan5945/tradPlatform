@@ -30,6 +30,7 @@
                 isSel: false,
                 showType:'',
                 myShow:[1,2,3,4,5],
+                myShow1:[1,3],
                 msg:'选择需求类型',
                 needType:[],
                 needType1:['运力投放','委托运力投放'],
@@ -63,8 +64,10 @@
              getNeed: function(i){
                 if(this.role.role == 1){ //角色为机场
                     this.showType = this.myShow[i+2];
-                }else{//角色为航司和太美
+                }else if(this.role.role == 0){//角色为航司
                     this.showType = this.myShow[i];
+                }else if(this.role.role == 2){//角色为太美
+                    this.showType = this.myShow1[i];
                 }
                 this.msg = this.needType[i];
                 this.isSel = true;

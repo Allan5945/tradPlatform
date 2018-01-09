@@ -1,7 +1,7 @@
 <template>
-    <div  class="wrapper">
+    <div class="wrapper">
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="content">
+        <div class="content" v-if="showDetail">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
                 <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
@@ -127,6 +127,7 @@
                 </div>
             </div>
         </div>
+        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
         <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
     </div>
 </template>
@@ -146,6 +147,7 @@
                 infoData:{},
                 qyCode:'',
                 detailInfoShow:false,
+                showDetail:true
             }
         },
         watch: {
@@ -195,11 +197,13 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
+                        this.showDetail = true;
                         this.infoData = response.data.obj;
                         this.drawLine(this.infoData);
                         this.loading.close();
                     }else{
                         this.loading.close();
+                        this.showDetail = false;
                     }
                 })
                 .catch((error) => {
@@ -298,6 +302,9 @@
         },
         mounted() {
             this.qyCode = this.searchInfo.qyCode;
+            if(this.qyCode == ''){
+                this.showDetail=false;
+            }
         },
         beforeDestory(){
             tabulationBoxTrigger.$emit("moreNews",this.infoData.airlnCd);

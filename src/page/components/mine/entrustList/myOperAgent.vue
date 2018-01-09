@@ -234,7 +234,7 @@
                             return "4";
                             break;
                         case "已完成":
-                            return "5";
+                            return "6";
                             break;
                         case "待处理":
                             return "7";

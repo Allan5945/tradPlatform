@@ -3,10 +3,10 @@
         <div class="plan-wrapper scroll">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
-                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr||'-'}}</span></span>
+                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -42,6 +42,10 @@
                          {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
                          {{detailData.intendedAirlines[0].arrvName||'-'}}
                        </div>
+                   </div>
+                   <div class="intent-airline" v-else>
+                       <div>意向航线</div>
+                       <div class="i-line">-</div>
                    </div>
                     <div>
                         <div>小时成本</div>
@@ -91,9 +95,9 @@
                                     <div v-else>始发区域</div>
                                     <div>
                                         <div>{{val.dptNm||'-'}}</div>
-                                        <div>{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
+                                        <div v-if="val.dptState =='0' ">{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.dptState =='0' ">
                                         <div>出港资源</div>
                                         <div v-if="val.dptTimeresources == '0'">{{val.dptTime||'-'}}</div>
                                         <div v-else>{{val.dptTimeresourcesStr||'-'}}</div>
@@ -105,9 +109,9 @@
                                     <div v-else>经停区域</div>
                                     <div>
                                         <div>{{val.pstNm||'-'}}</div>
-                                         <div>{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
+                                         <div v-if="val.pstState =='0' ">{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.pstState =='0' ">
                                         <div>出港资源</div>
                                         <div v-if="val.pstTimeresources == '0'">{{val.pstTime||'-'}}</div>
                                         <div v-else>{{val.pstTimeresourcesStr||'-'}}</div>
@@ -119,9 +123,9 @@
                                     <div v-else>到达区域</div>
                                     <div>
                                         <div>{{val.arrvNm||'-'}}</div>
-                                        <div>{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                                        <div v-if="val.arrvState =='0' ">{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.arrvState =='0' ">
                                         <div>出港资源</div>
                                         <div v-if="val.arrvTimeresources == '0'">{{val.arrvTime||'-'}}</div>
                                         <div v-else>{{val.arrvTimeresourcesStr||'-'}}</div>
@@ -206,8 +210,8 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData" @surePlan="surePlan"></myIntentForm>
-        <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
+        <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
+        <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
@@ -216,8 +220,8 @@
   import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
-  import myIntentForm from './myIntentForm1.vue'
-  import sureForm from './sureForm.vue'
+  import myIntentForm from './myIntentForm.vue'
+  import sureForm from './sureForm1.vue'
   import  signDialog from './signDialog.vue'
  export default {
      data(){
@@ -354,12 +358,14 @@
                       this.intentListShow = true;
                     }
                     //是否有选定
-                    let len = this.planData.length;
-                    this.selected = false;
-                    for(let i =0;i<len;i++){
-                        if(this.planData[i].releaseselected == '0'){
-                          this.selected = true;
-                        }
+                    if(this.planData !== {}){
+                      let len = this.planData.length;
+                      this.selected = false;
+                      for(let i =0;i<len;i++){
+                          if(this.planData[i].releaseselected == '0'){
+                            this.selected = true;
+                          }
+                      }
                     }
                     //判断是否签约用户
                     this.isSign = response.data.isSign;

@@ -7,12 +7,13 @@
                         <div  @click="getType(index)" v-for="(value,index) in typeList" :class="{active:selcIndex == index}">{{value}}</div>
                 </div>
                 <div class="search-box">
-                    <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
+                    <input type="text" v-model="airportText" @focus="infoSearch" @blur="closeDialog" maxlength="20">
                    <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportShow"></airportS1>
                    <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData" v-else-if="selcIndex == '0' " v-show="cityShow"></cityS>
                     <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData"  v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
                 </div>
-                <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
+                <div class="search-btn" @click="getInfo" v-if="search"><span class="iconfont">&#xe62e;</span></div>
+                <div class="search-btn" v-else><span class="iconfont">&#xe62e;</span></div>
             </div>
         </div>
         <div class="hots">
@@ -101,13 +102,23 @@ import myPic from '$src/static/img/airport1.png';
                 airlineShow:false,
                 airportShow:false,
                 cityShow:false,
-                showType:false
+                showType:false,
+                search:false
             }
         },
          computed:{
             img:function(){
                 return myPic;
             }
+        },
+        watch:{
+           'airportText':function(){
+            if(this.airportText){
+                this.search = true;
+            }else{
+                this.search = false;
+            }
+           }
         },
         methods: {
             getType(i){
@@ -134,22 +145,23 @@ import myPic from '$src/static/img/airport1.png';
                 this.qyCode = data.name;
                 this.cityShow = false;
             },
-            searchAirport(){
-                if(this.selcIndex == '0'){
-                    this.airportText = '';
-                }
+            infoSearch(){
                 this.airportShow = true;
                 this.cityShow = true;
                 this.airlineShow = true;
             },
             getInfo(){
-                if(this.qyCode !== ''){
-                    this.$store.dispatch('searchInfo', {
+                if(this.qyCode == ''){
+                    return false;
+                }else{
+                     this.$store.dispatch('searchInfo', {
                         qyCode : this.qyCode,
                         selcType :this.selcType,
                         searchText:this.airportText
                     });
                 }
+                this.airportText = '';
+                this.qyCode = '';
                  if(this.selcType == '机场'){
                     this.$router.push({ path: '/index/information/airport'});
                 }else if(this.selcType == '航司'){

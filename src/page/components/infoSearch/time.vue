@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="content">
+        <div class="content" v-if="showDetail">
             <div class="banner">
                 <div class="airport-img"><img :src="img2" alt=""></div>
                 <div class="b-til">{{airportText}}</div>
@@ -121,6 +121,7 @@
             </div>
 
         </div>
+        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
     </div>
 </template>
 
@@ -143,7 +144,8 @@
                 showSelcList:false,
                 sorted1:false,
                 sorted2:false,
-                sorted3:false
+                sorted3:false,
+                showDetail:true
             }
         },
         watch: {
@@ -199,12 +201,17 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
+                         this.showDetail= true;
+                        if(this.timeTableList.length == 0){
+                            this.showDetail= false;
+                        }
                         this.timeTableList = response.data.list;
                         this.timeList = response.data.timeList;
                         this.inputData = this.timeList[0];
                         this.loading.close();
                     }else{
                         this.loading.close();
+                        this.showDetail= false;
                     }
                 })
                 .catch((error) => {
@@ -308,6 +315,10 @@
             this.qyCode = this.searchInfo.qyCode;
             this.getData();
             this.getClock(this.inputData,this.qyCode);
+
+             if(this.qyCode == ''){
+                this.showDetail=false;
+            }
         },
         components:{
             searchHeader
