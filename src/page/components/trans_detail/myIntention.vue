@@ -6,7 +6,7 @@
                 <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
-                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr||'-'}}</span></span>
+                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
                 </div>
             </header>
             <div class="content">

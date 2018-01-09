@@ -1,7 +1,7 @@
 <template>
     <div  class="wrapper">
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="content">
+        <div class="content" v-if="showDetail">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
                 <div class="b-til">{{infoData.airlnCd || "-"}}</div>
@@ -76,6 +76,7 @@
                 </div>
             </div>
         </div>
+        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
     </div>
 </template>
 
@@ -91,7 +92,8 @@
             return {
                 infoData:{},
                 qyCode:'',
-                newsData:[]
+                newsData:[],
+                showDetail:true
             }
         },
         watch: {
@@ -130,11 +132,16 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
+                        this.showDetail = false;
+                        if(response.data.obj){
+                            this.showDetail = true;
+                        }
                         this.infoData = response.data.obj;
                         this.newsData = response.data.obj.publicOpinions;
                         this.loading.close();
                     }else{
                         this.loading.close();
+                        this.showDetail = false;
                     }
                 })
                 .catch((error) => {
@@ -150,6 +157,9 @@
         mounted() {
             this.qyCode = this.searchInfo.qyCode;
             this.getData()
+            if(this.qyCode == ''){
+                this.showDetail=false;
+            }
         },
         components:{
             searchHeader

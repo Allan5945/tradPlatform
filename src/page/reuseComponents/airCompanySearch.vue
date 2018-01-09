@@ -26,6 +26,12 @@
                       searchText:name,
                       selcType :'航司'
                     });
+                }else if(this.list.length == '0'){
+                    this.$store.dispatch('searchInfo', {
+                      qyCode : '',
+                      searchText:'',
+                      selcType :'航司'
+                    });
                 }
             }
         },

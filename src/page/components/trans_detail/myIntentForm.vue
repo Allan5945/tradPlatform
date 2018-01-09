@@ -3,7 +3,7 @@
         <div class="container" id="airlineWrite" @click="closeAll">
             <div class="container-top">
                 <span class="title">请确认以下方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="close-icon iconfont" @click="closeThis" style="color:#3c78ff;">&#xe62c;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBWait1" @click="pstTimeresourcesFn1"><label for="alWairBWait1" class="input-label">带协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBWait1" @click="pstTimeresourcesFn1"><label for="alWairBWait1" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBEnough1" @click="pstTimeresourcesFn2"><label for="alWairBEnough1" class="input-label">时刻充足</label>
@@ -206,7 +206,7 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCWait1"  @click="arrvTimeresourcesFn1"><label for="alWairCWait1" class="input-label">带协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCWait1"  @click="arrvTimeresourcesFn1"><label for="alWairCWait1" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCEnough1" @click="arrvTimeresourcesFn2"><label for="alWairCEnough1">时刻充足</label>
@@ -2003,7 +2003,7 @@
 
     .sixth {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         margin-bottom: 44px;
         button {
             padding: 9px 0;
@@ -2013,7 +2013,6 @@
             cursor: pointer;
         }
         .btn-b {
-            margin-left: 120px;
             margin-right: 20px;
             width: 200px;
             color: white;

@@ -1,7 +1,7 @@
 <template>
         <header>
             <div class="search-box">
-                <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog">
+                <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog" maxlength="20">
                 <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcType == '时刻'||selcType == '机场' "  v-show="airportSearch"></airportS1>
                 <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcType == '城市' " v-show="citySearch"></cityS>
                 <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData" v-else-if="selcType == '航司' " v-show="airlineSearch"></airCompanyS>
@@ -13,7 +13,8 @@
                     <div @click="getType(index)" v-for="(value,index) in typeList">{{value}}</div>
                 </div>
             </div>
-            <div class="search-btn" @click="getInfo"><span class="iconfont">&#xe62e;</span></div>
+            <div class="search-btn" @click="getInfo"  v-if="searchActive"><span class="iconfont">&#xe62e;</span></div>
+            <div class="search-btn" v-else><span class="iconfont">&#xe62e;</span></div>
         </header>
 </template>
 
@@ -33,13 +34,23 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                 airportSearch:false,
                 citySearch:false,
                 airlineSearch:false,
-                showType:false
+                showType:false,
+                searchActive:false
             }
         },
         computed:{
              ...vx.mapGetters([
                 'searchInfo'
             ])
+        },
+        watch:{
+           'airportText':function(){
+            if(this.airportText){
+                this.searchActive = true;
+            }else{
+                this.searchActive = false;
+            }
+           }
         },
         methods: {
             getType(i){
@@ -51,8 +62,8 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                  let that =this;
                setTimeout(function(){
                 that.airportSearch =false;
-                this.citySearch = false;
-                this.airlineSearch = false;
+                that.citySearch = false;
+                that.airlineSearch = false;
                 },200);
             },
             airportData(data){
@@ -104,7 +115,7 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         mounted() {
             this.airportText = this.searchInfo.searchText;
             this.selcType = this.searchInfo.selcType;
-             this.qyCode = this.searchInfo.qyCode;
+             //this.qyCode = this.searchInfo.qyCode;
         },
         components:{
             airportS1,

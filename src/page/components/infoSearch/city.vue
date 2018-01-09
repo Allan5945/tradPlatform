@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="content">
+        <div class="content" v-if="showDetail">
             <div class="banner">
                 <div class="airport-img"><img :src="img" alt=""></div>
                 <div class="b-til">{{infoData.cityname || "-"}}</div>
@@ -132,6 +132,7 @@
                 </div>
             </div>
         </div>
+        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
     </div>
 </template>
 
@@ -146,7 +147,8 @@
         data() {
             return {
                 infoData:{},
-                qyCode:''
+                qyCode:'',
+                showDetail:true
             }
         },
         watch: {
@@ -193,11 +195,13 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
+                        this.showDetail = true;
                         this.infoData = response.data.citys[0];
                         this.drawLine(this.infoData);
                         this.loading.close();
                     }else{
                         this.loading.close();
+                        this.showDetail = false;
                     }
                 })
                 .catch((error) => {
@@ -361,6 +365,9 @@
         },
         mounted() {
             this.qyCode = this.searchInfo.qyCode;
+            if(this.qyCode == ''){
+                this.showDetail=false;
+            }
         },
         components:{
             searchHeader
