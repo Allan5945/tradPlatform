@@ -2,8 +2,8 @@
     <div class="wrapper">
         <div class="container" id="airlineWrite" @click="closeAll">
             <div class="container-top">
-                <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="title">编辑方案</span>
+                <span class="close-icon iconfont" @click="closeThis" style="color:#3c78ff;">&#xe62c;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -93,10 +93,10 @@
                                 <div class="top">是否接受临近机场</div>
                                 <div class="bottom">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-a" id="alWairAYes" @change="dptAcceptnearairport = 0"><label for="alWairAYes" class="input-label">是</label>
+                                        <input type="radio" class="magic-radio" name="airport-a" id="alWairAYes2" @change="dptAcceptnearairport = 0"><label for="alWairAYes2" class="input-label">是</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-a" id="alWairANo" checked @change="dptAcceptnearairport = 1"><label for="alWairANo" class="input-label">否</label>
+                                        <input type="radio" class="magic-radio" name="airport-a" id="alWairANo2" checked @change="dptAcceptnearairport = 1"><label for="alWairANo2" class="input-label">否</label>
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                                 <div class="top">出港资源</div>
                                 <div class="resource-time">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-a-res" id="alWairAResYes" checked @click="dptTimeresourcesFn0"><label for="alWairAResYes" class="input-label">有</label>
+                                        <input type="radio" class="magic-radio" name="airport-a-res" id="alWairAResYes2" checked @click="dptTimeresourcesFn0"><label for="alWairAResYes2" class="input-label">有</label>
                                     </div>
                                     <div class="time-frame" @click.stop="clickClose4Fn ">
                                         <span>{{startTime1Show}}</span>
@@ -122,10 +122,10 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-a-res" id="alWairAWait" @click="dptTimeresourcesFn1"><label for="alWairAWait" class="input-label">待协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-a-res" id="alWairAWait2" @click="dptTimeresourcesFn1"><label for="alWairAWait2" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-a-res" id="alWairAEnough" @click="dptTimeresourcesFn2"><label for="alWairAEnough" class="input-label">时刻充足</label>
+                                        <input type="radio" class="magic-radio" name="airport-a-res" id="alWairAEnough2" @click="dptTimeresourcesFn2"><label for="alWairAEnough2" class="input-label">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -135,10 +135,10 @@
                                 <div class="top">是否接受临近机场</div>
                                 <div class="bottom">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b" id="alWairBYes" @change="pstAcceptnearairport = 0"><label for="alWairBYes" class="input-label">是</label>
+                                        <input type="radio" class="magic-radio" name="airport-b" id="alWairBYes2" @change="pstAcceptnearairport = 0"><label for="alWairBYes2" class="input-label">是</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b" id="alWairBNo" checked @change="pstAcceptnearairport = 1"><label for="alWairBNo" class="input-label">否</label>
+                                        <input type="radio" class="magic-radio" name="airport-b" id="alWairBNo2" checked @change="pstAcceptnearairport = 1"><label for="alWairBNo2" class="input-label">否</label>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                                 <div class="top">出港资源</div>
                                 <div class="resource-time">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBResYes" checked @click="pstTimeresourcesFn0"><label for="alWairBResYes" class="input-label">有</label>
+                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBResYes2" checked @click="pstTimeresourcesFn0"><label for="alWairBResYes2" class="input-label">有</label>
                                     </div>
                                     <div class="time-frame" @click.stop="clickClose6Fn ">
                                         <span>{{startTime2Show}}</span>
@@ -164,10 +164,10 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBWait" @click="pstTimeresourcesFn1"><label for="alWairBWait" class="input-label">带协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBWait2" @click="pstTimeresourcesFn1"><label for="alWairBWait2" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBEnough" @click="pstTimeresourcesFn2"><label for="alWairBEnough" class="input-label">时刻充足</label>
+                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBEnough2" @click="pstTimeresourcesFn2"><label for="alWairBEnough2" class="input-label">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -177,10 +177,10 @@
                                 <div class="top">是否接受临近机场</div>
                                 <div class="bottom">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c" id="alWairCYes" @change="arrvAcceptnearairport = 0"><label for="alWairCYes" class="input-label">是</label>
+                                        <input type="radio" class="magic-radio" name="airport-c" id="alWairCYes2" @change="arrvAcceptnearairport = 0"><label for="alWairCYes2" class="input-label">是</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c" id="alWairCNo" checked @change="arrvAcceptnearairport = 1"><label for="alWairCNo" class="input-label">否</label>
+                                        <input type="radio" class="magic-radio" name="airport-c" id="alWairCNo2" checked @change="arrvAcceptnearairport = 1"><label for="alWairCNo2" class="input-label">否</label>
                                     </div>
                                 </div>
                             </div>
@@ -188,7 +188,7 @@
                                 <div class="top">出港资源</div>
                                 <div class="resource-time">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCResYes" checked @click="arrvTimeresourcesFn0"><label for="alWairCResYes" class="input-label">有</label>
+                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCResYes2" checked @click="arrvTimeresourcesFn0"><label for="alWairCResYes2" class="input-label">有</label>
                                     </div>
                                     <div class="time-frame"  @click.stop="clickClose8Fn ">
                                         <span>{{startTime3Show}}</span>
@@ -206,10 +206,10 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCWait"  @click="arrvTimeresourcesFn1"><label for="alWairCWait" class="input-label">带协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCWait2"  @click="arrvTimeresourcesFn1"><label for="alWairCWait2" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCEnough" @click="arrvTimeresourcesFn2"><label for="alWairCEnough">时刻充足</label>
+                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCEnough2" @click="arrvTimeresourcesFn2"><label for="alWairCEnough2">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -302,7 +302,7 @@
 
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyYes" checked/><label for="alWsubsidyYes" class="input-label">有补贴</label>
+                                    <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyYes2" checked/><label for="alWsubsidyYes2" class="input-label">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big"
@@ -314,18 +314,18 @@
                                 </div>
                                 <div style="display: flex">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyNo" @click="subsidyClick1"/><label for="alWsubsidyNo" class="input-label">无补贴</label>
+                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyNo2" @click="subsidyClick1"/><label for="alWsubsidyNo2" class="input-label">无补贴</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyTalk" @click="subsidyClick2"/><label for="alWsubsidyTalk" class="input-label">可面谈</label>
+                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyTalk2" @click="subsidyClick2"/><label for="alWsubsidyTalk2" class="input-label">可面谈</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="left item-child">
                             <div class="vertical-center">
-                                <input type="checkbox" class="magic-radio" id="alWacceptDispatch" v-model="schedulingShow" @click="schedulingShowFn"/>
-                                <label for="alWacceptDispatch" class="input-label" style="white-space: nowrap;">接受调度</label>
+                                <input type="checkbox" class="magic-radio" id="alWacceptDispatch2" v-model="schedulingShow" @click="schedulingShowFn"/>
+                                <label for="alWacceptDispatch2" class="input-label" style="white-space: nowrap;">接受调度</label>
                             </div>
                             <div class="choose-input" v-show="schedulingShow" style="position: relative;">
                                 <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fifthArea"
@@ -382,7 +382,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b" @click="submitData">提交意向</button>
+                <button class="btn-b" @click="submitData">确认方案</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -543,7 +543,7 @@
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
-                return this.remarkMsg.length;
+                return this.remarkMsg.length <= 35? this.remarkMsg.length: 35;
             },
            /* sailingtime: function () {
                 return this.calendarInitDay1 + ',' + this.calendarInitDay2;
@@ -553,7 +553,7 @@
             }*/
         },
         created() {
-            this.sendData = this.acceptData;
+            //this.sendData = this.acceptData;
         },
         mounted() {
             this.space1Fn();
@@ -565,28 +565,28 @@
             // 从父组件接受数据,并绑定到表单上
             acceptDataFn: function () {
                 /*单选按钮是否选定*/
-                let alWairAYes = document.getElementById('alWairAYes');
-                let alWairANo = document.getElementById('alWairANo');
-                let alWairAResYes = document.getElementById('alWairAResYes');
-                let alWairAWait = document.getElementById('alWairAWait');
-                let alWairAEnough = document.getElementById('alWairAEnough');
-                let alWairBYes = document.getElementById('alWairBYes');
-                let alWairBNo = document.getElementById('alWairBNo');
-                let alWairBResYes = document.getElementById('alWairBResYes');
-                let alWairBWait = document.getElementById('alWairBWait');
-                let alWairBEnough = document.getElementById('alWairBEnough');
-                let alWairCYes = document.getElementById('alWairCYes');
-                let alWairCNo = document.getElementById('alWairCNo');
-                let alWairCResYes = document.getElementById('alWairCResYes');
-                let alWairCWait = document.getElementById('alWairCWait');
-                let alWairCEnough = document.getElementById('alWairCEnough');
-                let alWsubsidyYes = document.getElementById('alWsubsidyYes');
-                let alWsubsidyNo = document.getElementById('alWsubsidyNo');
-                let alWsubsidyTalk = document.getElementById('alWsubsidyTalk');
-                let alWacceptDispatch = document.getElementById('alWacceptDispatch');
+                let alWairAYes = document.getElementById('alWairAYes2');
+                let alWairANo = document.getElementById('alWairANo2');
+                let alWairAResYes = document.getElementById('alWairAResYes2');
+                let alWairAWait = document.getElementById('alWairAWait2');
+                let alWairAEnough = document.getElementById('alWairAEnough2');
+                let alWairBYes = document.getElementById('alWairBYes2');
+                let alWairBNo = document.getElementById('alWairBNo2');
+                let alWairBResYes = document.getElementById('alWairBResYes2');
+                let alWairBWait = document.getElementById('alWairBWait2');
+                let alWairBEnough = document.getElementById('alWairBEnough2');
+                let alWairCYes = document.getElementById('alWairCYes2');
+                let alWairCNo = document.getElementById('alWairCNo2');
+                let alWairCResYes = document.getElementById('alWairCResYes2');
+                let alWairCWait = document.getElementById('alWairCWait2');
+                let alWairCEnough = document.getElementById('alWairCEnough2');
+                let alWsubsidyYes = document.getElementById('alWsubsidyYes2');
+                let alWsubsidyNo = document.getElementById('alWsubsidyNo2');
+                let alWsubsidyTalk = document.getElementById('alWsubsidyTalk2');
+                let alWacceptDispatch = document.getElementById('alWacceptDispatch2');
 
                 this.user = this.acceptData.contact;  // 联系人
-                this.phoneNum = this.acceptData.iHome; // 联系方式
+                this.phoneNum = this.acceptData.ihome; // 联系方式
                 this.myDate1 = this.acceptData.sailingtime; // 拟开时间
                 this.scheduleShow = this.acceptData.days; // 拟开班期
                 this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
@@ -647,7 +647,7 @@
                     }else if(this.acceptData.pstTimeresources === "2") {
                         alWairBEnough.checked = true;
                     }
-                }else if(this.pstState.pstState === "1") {
+                }else if(this.acceptData.pstState === "1") {
                     this.space2ShowTitle = this.spaceList[0];
                     this.space2Fn(this.spaceList[0]);
                     this.secArea = this.acceptData.pst;
@@ -675,18 +675,28 @@
                     }else if(this.acceptData.arrvTimeresources === "2") {
                         alWairCEnough.checked = true;
                     }
-                }else if(this.pstState.arrvState === "1") {
+                }else if(this.acceptData.arrvState === "1") {
                     this.space3ShowTitle = this.spaceList[0];
                     this.space3Fn(this.spaceList[0]);
                     this.thirdArea = this.acceptData.arrv;
                 }
-                // 是否接收调度(0:接收,1:不接收)，这个表单没有
+                // 是否接收调度(0:接收,1:不接收)
                 this.scheduling = this.acceptData.scheduling;
                 if(this.scheduling === "0") {
-                    alWacceptDispatch.checked = true;
+                    this.schedulingShow = true;
+                    if(this.acceptData.airportForSchedulines){
+                        this.fifthArea = this.acceptData.airportForSchedulines[0].airlnCd;
+                        this.qyCode5 = this.acceptData.schedulineport;
+                    }
                 }else if(this.scheduling === "1") {
-                    alWacceptDispatch.checked = false;
+                    this.schedulingShow = false;
                 }
+                //运力归属
+                this.capacitycompany = this.acceptData.capacitycompany;
+                this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                //运力基地
+                this.qyCode4 = this.acceptData.capacityBase;
+                this.fourArea = this.acceptData.capacityBaseNm;
                 // 补贴状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴。
                 this.subsidyCode = this.acceptData.subsidypolicy;
                 if(this.acceptData.subsidypolicy === "0" || this.acceptData.subsidypolicy === "1" || this.acceptData.subsidypolicy === "2") {
@@ -748,6 +758,12 @@
                     req.scrollTop = 250;
                     return
                 }
+                this.sendData.id = this.acceptData.id;
+                this.sendData.employeeId = this.acceptData.employeeId;
+                this.sendData.demandId = this.acceptData.demandId;
+                this.sendData.releaseselected = this.acceptData.releaseselected;
+                this.sendData.responseselected = this.acceptData.responseselected;
+                this.sendData.responseProgress = this.acceptData.responseProgress;
                 this.sendData.demandtype = '1';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.Ihome = this.phoneNum;//必填 联系方式
@@ -1992,7 +2008,7 @@
 
     .sixth {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         margin-bottom: 44px;
         button {
             padding: 9px 0;
@@ -2002,7 +2018,6 @@
             cursor: pointer;
         }
         .btn-b {
-            margin-left: 120px;
             margin-right: 20px;
             width: 200px;
             color: white;

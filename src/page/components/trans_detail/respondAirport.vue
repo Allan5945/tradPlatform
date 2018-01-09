@@ -184,14 +184,14 @@
               </div>
           </footer>
       </div>
-    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
+    <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
     </div>
 </template>
 
 <script>
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import sureForm from './sureForm.vue'
+ import sureForm from './sureForm1.vue'
  export default {
      data(){
          return{

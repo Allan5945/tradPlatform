@@ -41,6 +41,10 @@
                  {{detailData.intendedAirlines[0].arrvName||'-'}}
                </div>
            </div>
+           <div class="intent-airline" v-else>
+               <div>意向航线</div>
+               <div class="i-line">-</div>
+           </div>
             <div>
                 <div>小时成本</div>
                 <div>{{detailData.hourscost||'-'}}万/小时</div>

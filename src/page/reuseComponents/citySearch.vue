@@ -26,6 +26,12 @@
                       searchText:name,
                       selcType :'城市'
                     });
+                }else if(this.list.length == '0'){
+                    this.$store.dispatch('searchInfo', {
+                      qyCode : '',
+                      searchText:'',
+                      selcType :'城市'
+                    });
                 }
             }
         },

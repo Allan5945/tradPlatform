@@ -205,7 +205,7 @@
                 if(item.demandType == '航线需求'){
                     this.companyMyIntentionShow = false;
                     this.companyAirlineDetailPayAfterShow = true;
-                }if(item.demandType == '运力需求'){
+                }if(item.demandType == '运力需求' || item.demandType == '运力投放'){
 //                    this.companyMyIntentionShow = true;
                     this.companyAirlineDetailPayAfterShow = false;
                     tabulationBoxTrigger.$emit('sendToCompany', item);

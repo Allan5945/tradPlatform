@@ -3,7 +3,7 @@
         <div class="container" id="airlineWrite" @click="closeAll">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="close-icon iconfont" @click="closeThis" style="color:#3c78ff;">&#xe62c;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBWait" @click="pstTimeresourcesFn1"><label for="alWairBWait" class="input-label">带协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBWait" @click="pstTimeresourcesFn1"><label for="alWairBWait" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-b-res" id="alWairBEnough" @click="pstTimeresourcesFn2"><label for="alWairBEnough" class="input-label">时刻充足</label>
@@ -206,7 +206,7 @@
                                 </div>
                                 <div class="resource-others">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCWait"  @click="arrvTimeresourcesFn1"><label for="alWairCWait" class="input-label">带协调</label>
+                                        <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCWait"  @click="arrvTimeresourcesFn1"><label for="alWairCWait" class="input-label">待协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="alWairCEnough" @click="arrvTimeresourcesFn2"><label for="alWairCEnough">时刻充足</label>
@@ -382,7 +382,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b" @click="submitData">提交意向</button>
+                <button class="btn-b" @click="submitData">支付意向金提交意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -561,7 +561,7 @@
             this.space2Fn();
             this.space3Fn();
             //this.acceptDataFn();
-
+            //
             tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
                     this.demandData.demandId = val.data.id;
                     this.demandData.employeeId = val.data.employeeId;
@@ -2009,7 +2009,7 @@
 
     .sixth {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         margin-bottom: 44px;
         button {
             padding: 9px 0;
@@ -2019,7 +2019,6 @@
             cursor: pointer;
         }
         .btn-b {
-            margin-left: 120px;
             margin-right: 20px;
             width: 200px;
             color: white;
@@ -2036,7 +2035,7 @@
         .btn-w {
             width: 100px;
             border-radius: 20px;
-            border: 0;
+            border: 1px solid #b5b5b5;
             outline: none;
         }
     }

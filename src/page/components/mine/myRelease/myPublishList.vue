@@ -79,7 +79,6 @@
 //    import myPublish from './myPublishNeed.vue' // 运力需求详情
     import myPublish0 from './myPublishNeed0.vue' // 航线需求详情
     import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
-
 //    import myPublishAirline from './myPublishAirline.vue' //航线需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
@@ -94,8 +93,8 @@
                 //不同需求类型展现的状态不同
 //                type: [],
                 type: [],
-                type0: ['所有类型','运力投放','委托运力投放'], // 0：航司方登录
-                type1: ['所有类型','航线需求','委托航线需求','运营托管'], // 1：机场方登录
+                type0: ['所有类型','运力投放','运力委托'], // 0：航司方登录
+                type1: ['所有类型','航线需求','航线委托','运营托管'], // 1：机场方登录
                 state: [],
                 state0: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成','待处理','已接受','处理中','已拒绝'],
                 state1: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
@@ -241,11 +240,11 @@
                 }if(item == '运营托管') {
                     this.state = this.state2;
                     this.sendData.demandType = 2;
-                }if(item == '委托运力投放' || item == '委托航线需求') {
+                }if(item == '运力委托' || item == '航线委托') {
                     this.state = this.state3;
-                    if(item == '委托运力投放') {
+                    if(item == '运力委托') {
                         this.sendData.demandType = 4;
-                    }if(item == '委托航线需求') {
+                    }if(item == '航线委托') {
                         this.sendData.demandType = 3;
                     }
                 }if(item == '运力投放') {
@@ -308,7 +307,7 @@
                     console.log(error);
                 });
 
-                //['运力投放','委托运力投放','航线需求','委托航线需求','运营托管'],
+                //['运力投放','运力委托','航线需求','航线委托','运营托管'],
 //                响应的需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
 //                 除去0和1两种状态, 其他状态不再地图上呈现，仅在太美角色个人中心的委托列表中呈现。
                 if(item.demandtype == 2){

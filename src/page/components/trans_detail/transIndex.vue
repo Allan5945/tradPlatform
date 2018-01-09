@@ -5,7 +5,7 @@
         </transition>
         <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
         <respondAirport @responseShow="responShow" @responseClose="responClose" v-show="respond"></respondAirport>
-        <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
         <myIntention @closeIntent="intentShow = false" v-show="intentShow" @openIntent="openIntent"></myintention>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
        <transAdmin @closeAdmin="adminShow = false" v-show="adminShow" @openAdmin="openAdmin" @formShow="formShow"></transAdmin>

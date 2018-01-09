@@ -36,7 +36,7 @@
             </div>
             <div class="form-box">
                 <div class="t-title">是否有班期</div>
-                <div class="radio-box">
+                <div class="radio-box" @click="verifyFlight">
                     <div class="t-radio">
                         <input type="radio" class="magic-radio" id="flightYes" v-model="getFlight" value="true"><label for="flightYes">有&nbsp;</label>
                     </div>
@@ -48,9 +48,10 @@
                         </div>
                     </div>
                     <div class="t-radio">
-                        <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="flase"><label for="flightNo">无</label>
+                        <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="false"><label for="flightNo">无</label>
                     </div>
                 </div>
+                <div class="error" v-show="isError4" style="left:0;top:60px;">*请选择班期</div>
             </div>
             <div class="form-box air-route">
                 <div class="t-title">意向航线</div>
@@ -60,21 +61,24 @@
                 <airportS1 class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS1>
                 <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" @focus="openSearch5" @blur="closeDialog3">
                 <airportS1 class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS1>
-                <div class="error" v-show="isError3" style="left:58px;top:53px;">*请输入起飞机场</div>
+                <div class="error" v-show="isError3" style="left:58px;top:53px;">*请选择起飞机场</div>
             </div>
             <div class="form-box">
                 <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
                 <div class="airpl-typ popup scroll" v-show="airplTypShow">
                     <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                 </div>
+                <div class="error" v-show="isError5" style="left:58px;top:53px;">*请选择机型</div>
             </div>
             <div class="form-box se-place" >
                 <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
               <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
+               <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
             </div>
             <div class="form-box reset">
                 <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
                 <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
+                <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
             </div>
             <div class="form-box reset">
                 <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
@@ -97,7 +101,7 @@
                 <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
                 <span class="num"><span >{{num}}</span>/35</span>
             </div>
-            <div class="form-box get-time" ref="timeForm">
+            <div class="form-box get-time" ref="timeForm" @click="verifyDate">
                 <div class="t-title" ref="timeTitle">发布有效期</div>
                <div class="calendar time-btn" ref="timeDate">
                  <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
@@ -112,6 +116,7 @@
                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar>
                  </div>
                </div>
+                <div class="error" v-show="isError8" style="left:58px;top:53px;">*请选择发布有效期</div>
             </div>
         </div>
         <div class="post-type">
@@ -155,6 +160,12 @@
                 isError1: false,
                 isError2: false,
                 isError3:false,
+                isError4:false,
+                isError5:false,
+                isError6:false,
+                isError7:false,
+                isError8:false,
+                isError9:false,
                 phoneNum: '',
                 getFlight: 'true',
                 getTime: 'true',
@@ -262,9 +273,6 @@
             },
              openSearch3: function(){
                 this.dptSearch =true;
-                 if(this.qyCode3){
-                     this.isError3 = false;
-                }
             },
 
              openSearch4: function(){
@@ -277,6 +285,9 @@
                 let that =this;
                setTimeout(function(){
                 that.dptSearch =false;
+                    if(that.qyCode3){
+                     that.isError3 = false;
+                    }
                 },200);
             },
              closeDialog2(){
@@ -295,18 +306,27 @@
                 let that =this;
                setTimeout(function(){
                 that.airplTypShow =false;
+                    if(that.airplaneTyp){
+                     that.isError5 = false;
+                    }
                 },200);
             },
              closeDialog5(){
                 let that =this;
                setTimeout(function(){
                 that.isSearch =false;
+                    if(that.qyCode){
+                     that.isError6 = false;
+                    }
                 },200);
             },
              closeDialog6(){
                 let that =this;
                setTimeout(function(){
                 that.airCompanyShow =false;
+                    if(that.airCompanyId){
+                     that.isError7 = false;
+                    }
                 },200);
             },
              closeDialog7(){
@@ -328,7 +348,7 @@
                 this.contact = this.contact.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
             },
             verifyPhon: function () {
-                if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum))){
                     this.isError2 = true;
                 }else{
                     this.isError2 = false;
@@ -342,6 +362,22 @@
                 if(this.hourcost>100){
                     this.hourcost = '';
                 }
+            },
+            verifyFlight:function(){
+                let that =this;
+               setTimeout(function(){
+                    if(that.msg !== "选择班期类型"||that.getFlight == 'false'){
+                        that.isError4 = false;
+                    }
+                },100);
+            },
+            verifyDate:function(){
+                 let that =this;
+               setTimeout(function(){
+                    if(that.myDate !== '选择起始时间'){
+                        that.isError8 = false;
+                    }
+                },100);
             },
             pickTime1: function(i) {
                 this.timeStartIndex = i;
@@ -416,15 +452,42 @@
             },
             confirm:function(type){
                 //必填信息验证
-                if(!this.contact){
+                if(this.contact == ''){//联系人
                      this.isError1 = true;
+                     return false;
                 }
-                if(this.phoneNum == ''){
+                if(this.phoneNum == ''){//联系方式
                     this.isError2 = true;
+                    return false;
                 }
-                if(this.qyCode3 == ''){
+                if(this.msg == '选择班期类型'){//选择班期
+                    this.isError4 = true;
+                    return false;
+                }
+                if(this.intendedDpt == ''){//起始机场
                     this.isError3 = true;
+                    return false;
                 }
+                if(this.airplaneTyp == ''){//飞机类型
+                    this.isError5 = true;
+                    return false;
+                }
+                if(this.searchText == ''){//运力基地
+                    this.isError6 = true;
+                    return false;
+                }
+                if(this.airCompany == ''){//运力归属
+                    this.isError7 = true;
+                    return false;
+                }
+                if(this.myDate == '选择起始时间'){//有效时间
+                    this.isError8 = true;
+                    return false;
+                }
+                /*if(this.post == ''){//公开方式
+                    this.isError9 = true;
+                    return false;
+                }*/
                 let demandData = {};
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
