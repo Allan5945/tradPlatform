@@ -450,7 +450,8 @@
                         </div>
                         <div v-else>
                             <div class="item-fifth" v-if="item.releaseselected === '1'">
-                                <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
+                                <button class="btn btn-disable" v-if="btnDisableShow">选定</button>
+                                <button class="btn btn-b" v-else @click="airlineAffirmFn(item,index)">选定</button>
                             </div>
                             <div class="item-sixth" v-else>
                                 <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编译）</button>
@@ -589,6 +590,7 @@
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
                 airlnCd: '',            // 运力归属
                 isAlreadyCollect: false, // 是否已收藏
+                btnDisableShow: false,       // 禁止点击按钮
             }
         },
         created() {
@@ -601,6 +603,11 @@
             });
             tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
                 this.listData = val;   //获取意向列表
+                this.listData.forEach((v) => {
+                    if(v.releaseselected === '0') {
+                        this.btnDisableShow = true;
+                    }
+                })
             })
         },
         computed: {
@@ -1776,6 +1783,20 @@
                     &:active {
                         background: #336bea;
                     }
+                }
+                > .btn-disable {
+                    width: 250px;
+                    border-radius: 20px;
+                    color: #A6A6A6;
+                    background: #cccccc;
+                    outline: none;
+                    border: 0;
+                    /*&:hover {
+                        background: rgba(60, 120, 255, 0.7);
+                    }
+                    &:active {
+                        background: #336bea;
+                    }*/
                 }
             }
             .item-sixth {
