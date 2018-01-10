@@ -95,7 +95,7 @@
                         <div>补贴政策</div>
                     </div>
                     <div class="right item">
-                        <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
+                        <div class="item-a">{{myData.sailingtime}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
                         <div class="item-d">{{subsidypolicyFn(myData.subsidypolicy)}}</div>
@@ -450,7 +450,8 @@
                         </div>
                         <div v-else>
                             <div class="item-fifth" v-if="item.releaseselected === '1'">
-                                <button class="btn btn-b" @click="airlineAffirmFn(item,index)">选定</button>
+                                <button class="btn btn-disable" v-if="btnDisableShow">选定</button>
+                                <button class="btn btn-b" v-else @click="airlineAffirmFn(item,index)">选定</button>
                             </div>
                             <div class="item-sixth" v-else>
                                 <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编译）</button>
@@ -466,7 +467,7 @@
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
                 <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
+                <button class="btn btn-b" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-show="secondButtonShow">
@@ -489,7 +490,7 @@
                 <div class="buttons" v-else>
                     <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
                     <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-w cancel-btn" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</div>
+                    <div class="btn btn-b cancel-btn" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
                 </div>
             </div>
 
@@ -589,6 +590,7 @@
                 airlineAffirmData: {}, // 向airlineAffirm传递的对象
                 airlnCd: '',            // 运力归属
                 isAlreadyCollect: false, // 是否已收藏
+                btnDisableShow: false,       // 禁止点击按钮
             }
         },
         created() {
@@ -599,9 +601,6 @@
                     this.$emit('transShow');
                 }
             });
-            tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
-                this.listData = val;   //获取意向列表
-            })
         },
         computed: {
             ...vx.mapGetters([
@@ -656,20 +655,35 @@
                         || this.myData.demandprogress == 3
                         || this.myData.demandprogress == 10) {  // “关闭”状态
                         this.showCode = 5;
+                        this.show();
                     }else {
                         if (this.isSelf == true && this.isIntentionMoney == false) {
 //                                console.info('payAfter:' + 1)
                             this.showCode = 1;
+                            this.show();
                         }if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
                             this.showCode = 3;
-                            tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+                            this.show();
+                            if(this.myData.demandprogress == 4
+                            || this.myData.demandprogress == 5
+                            || this.myData.demandprogress == 6) { // 判断“结束需求”按钮是否显示
+                                this.fifthButtonShow = false;
+                            }
+                            this.listData = response.data.responseList;   //获取意向列表
+                            this.listData.forEach((v) => {
+                                if(v.releaseselected === '0') {
+                                    this.btnDisableShow = true;
+                                }
+                            })
                         }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
 //                        console.info('000000')
                             this.showCode = 0;
+                            this.show();
                         }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
 //                        console.info('payAfter:' + 4)
                             this.showCode = 4;
+                            this.show();
                         }
                         // 判断demandState是否通过（6）demandState  0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
                         if (this.myData.demandstate == 6) {
@@ -679,7 +693,7 @@
                         }
                     }
 //                    this.showCode = 5; // 模拟“关闭”状态
-                    this.show();
+
                 })
                 .catch((error) => {
                         console.log(error);
@@ -1037,6 +1051,18 @@
                         }
                     );
             },
+            cancelCollectOver1Fn: function () {
+                this.$refs.cancelCollect1.innerHTML = '取消收藏';
+            },
+            cancelCollectOut1Fn:function () {
+                this.$refs.cancelCollect1.innerHTML = '已收藏';
+            },
+            cancelCollectOver2Fn: function () {
+                this.$refs.cancelCollect2.innerHTML = '取消收藏';
+            },
+            cancelCollectOut2Fn:function () {
+                this.$refs.cancelCollect2.innerHTML = '已收藏';
+            },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
 //                this.showCode = 1;
@@ -1103,6 +1129,7 @@
                         alert('成功撤销选定!');
                         this.showCode = 2;
                         this.show();
+                        this.btnDisableShow = false;
                         this.refreshFn();
                     }else{
                         alert('错误代码：' + response.data.opResult);
@@ -1776,6 +1803,20 @@
                     &:active {
                         background: #336bea;
                     }
+                }
+                > .btn-disable {
+                    width: 250px;
+                    border-radius: 20px;
+                    color: #A6A6A6;
+                    background: #cccccc;
+                    outline: none;
+                    border: 0;
+                    /*&:hover {
+                        background: rgba(60, 120, 255, 0.7);
+                    }
+                    &:active {
+                        background: #336bea;
+                    }*/
                 }
             }
             .item-sixth {

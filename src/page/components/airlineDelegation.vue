@@ -31,7 +31,7 @@
                             </ul>
                         </div>
                         <div class="bottom">
-                            <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1">
+                            <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1" @focus="airportFn1">
                             <airportS class="aisx" v-on:resData="resData1" :searchText="firArea" v-show="isSearch1"></airportS>
                         </div>
                         <div class="warn" v-show="warn3Show">*始发地不能为空</div>
@@ -49,7 +49,7 @@
                             </ul>
                         </div>
                         <div class="bottom">
-                            <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" >
+                            <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" @focus="airportFn2" >
                             <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                             </ul>
                         </div>
                         <div class="bottom">
-                            <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" >
+                            <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
                             <airportS class="aisx" style="left: -60px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
                         </div>
                     </div>
@@ -343,6 +343,7 @@
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import airAreaSearch from './airAreaSearch.vue'
     import airportS from '../reuseComponents/airportSearch1.vue'
     import airCompanySearch from '../reuseComponents/airCompanySearch.vue'
@@ -382,13 +383,16 @@
                 user: '', //联系人
                 phoneNum: '', //电话号码
                 firArea: '', //始发地 1的意向区域
+                firAreaBus: '', // 始发地-中转站
                 firAreaCode: '', //三字码（只有城市有）
                 dptState: '',  //始发地类型（0：机场，1：区域）
                 pstState: '',
                 arrvState: '',
                 secArea: '', //经停地 2的意向区域
+                secAreaBus: '', // 经停地-中转站
                 secAreaCode: '', //三字码（只有城市有）
                 thirdArea: '', //到达地 3的意向区域
+                thirdAreaBus: '', // 到达地-中转站
                 thirdAreaCode: '', //三字码（只有城市有）
 
                 areaInput1: '', //输入的机场或区域
@@ -470,6 +474,10 @@
                 subsidyList: ['保底','定补','按人头'],
                 sendData: {},
                 directionalgoal: '', // 定向发布（id）
+                getEnterMsg: {}, //当前登录机场信息
+                moreShow: false, // 定向发布长度是否超出显示范围
+                littleListWrapperShow: false, // 多条显示
+                submitData2Click: false,  // “委托代理”按钮是否已经被点击
             }
         },
         components: {
@@ -487,11 +495,15 @@
             this.space1Fn();
             this.space2Fn();
             this.space3Fn();
+            this.getEnterMsgFn();
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
+            ...vx.mapGetters([
+                'role','airList'
+            ])
             /*sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
             },
@@ -500,6 +512,17 @@
             }*/
         },
         methods: {
+            // 数据初始化：获取当前登录机场信息
+            getEnterMsgFn: function () {
+                this.airList.forEach((val) => {
+                    if(val.code == this.role.airlineretrievalcondition) {
+                        this.getEnterMsg = val.allData;
+                    }
+                })
+                this.firArea = this.getEnterMsg.airlnCdName;
+                this.firAreaBus = this.getEnterMsg.airlnCdName;
+                this.qyCode1 = this.getEnterMsg.iata;
+            },
             warn4Fn: function () {
 //                console.info(4)
                 this.warn4Show = true;
@@ -560,9 +583,7 @@
             //发送数据
             submitData: function () {
                 let req = document.getElementById('airlineReq'); //控制滚动条的位置
-                //联系人/联系方式/始发地/区域/运力所在基地/机型/班期/拟开航时间/
-                // 需求有效时间
-                // 接受邻近机场/公开方式/
+                //联系人/联系方式/始发地/区域/运力所在基地/机型/班期/拟开航时间/需求有效时间/接受邻近机场/公开方式/
 
                 //表单验证（部分）
                 if(this.user == '') { // 联系人
@@ -617,6 +638,14 @@
                 });
             },
             // 委托发布
+            submitData2ClickFn: function () { // 点击“委托发布”
+                this.submitData2Click = true; // “委托发布”按钮是否已经点击，false：还未点击，true：已点击
+                this.$emit('changeTitle');
+            },
+            closeSubmitData2: function () { // 点“委托发布”后的“取消”按钮
+                this.submitData2Click = false;
+                this.$emit('restoreTitle');
+            },
             submitData2: function () {
                 let req = document.getElementById('airlineReq'); //控制滚动条的位置
                 //表单验证（部分）
@@ -696,6 +725,10 @@
                 this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
+                // 始发、经停、到达中转站
+                this.firArea = this.firAreaBus;
+                this.secArea = this.secAreaBus;
+                this.thirdArea = this.thirdAreaBus;
             },
             clickClose1Fn: function () {
                 this.space1 = !this.space1;
@@ -818,19 +851,22 @@
             },
             //区域选择，获取点击的区域
             getArea1: function (areaMes) {
-                this.firArea = areaMes.name;
-                this.firAreaCode = areaMes.code; //三字码（只有城市有）
+                this.firAreaBus = areaMes.name;
+                this.firArea = this.firAreaBus;
+                this.firAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow1 = false;
                 this.warn3Show = false;
             },
             getArea2: function (areaMes) {
-                this.secArea = areaMes.name;
-                this.secAreaCode = areaMes.code; //三字码（只有城市有）
+                this.secAreaBus = areaMes.name;
+                this.secArea = this.secAreaBus;
+                this.secAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow2 = false;
             },
             getArea3: function (areaMes) {
-                this.thirdArea = areaMes.name;
-                this.thirdAreaCode = areaMes.code; //三字码（只有城市有）
+                this.thirdAreaBus = areaMes.name;
+                this.thirdArea = this.thirdAreaBus;
+                this.thirdAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow3 = false;
             },
             //时刻资源
@@ -925,32 +961,42 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
-                this.firArea = data.name;
+                this.firAreaBus = data.name;
+//                this.firArea = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;
             },
             resData2: function (data) {
                 this.isSearch2 = false;
-                this.secArea = data.name;
+                this.secAreaBus = data.name;
+//                this.secArea = data.name;
                 this.qyCode2 = data.code;
             },
             resData3: function (data) {
                 this.isSearch3 = false;
-                this.thirdArea = data.name;
+                this.thirdAreaBus = data.name;
+//                this.thirdArea = data.name;
                 this.qyCode3 = data.code;
             },
-            resData4: function (data) {
+            resData4: function (data) { // 定向发布，点击选择定向航司
                 this.isSearch4 = false;
-                this.fourthArea = data.name;
+//                this.fourthArea = data.name;
+                this.fourthArea = ''; // 讲定向发布输入框置空
                 this.qyCode4 = data.code;
                 this.directionalgoal = data.id;
                 this.directionPublicCityShow = true;
-                this.directionPublicCity.push(data.name);
+                if(this.directionPublicCity.length < 5) {
+                    this.directionPublicCity.push(data.name);
+                }
+                this.$nextTick(() => {
+                    this.moreShowFn();
+                })
             },
             // 选择意向区域或意向机场 0为区域，1为机场(始发经停到达均默认选择意向机场)
             space1Fn: function (item = '意向机场') {
                 this.space1ShowTitle = item;
                 this.firArea = '';
+                this.firAreaBus = '';
                 if(item == '意向区域') {
                     this.space1Show = '请输入意向区域';
                     this.isSearchCode1 = 0;
@@ -977,6 +1023,7 @@
             space2Fn: function (item = '意向机场') {
                 this.space2ShowTitle = item;
                 this.secArea = '';
+                this.secAreaBus = '';
                 if(item == '意向区域') {
                     this.space2Show = '请输入意向区域';
                     this.isSearchCode2 = 0;
@@ -1002,6 +1049,7 @@
             space3Fn: function (item = '意向机场') {
                 this.space3ShowTitle = item;
                 this.thirdArea = '';
+                this.thirdAreaBus = '';
                 if(item == '意向区域') {
                     this.space3Show = '请输入意向区域';
                     this.isSearchCode3 = 0;
@@ -1041,10 +1089,15 @@
             // 点击删除小标签
             littleLabelClose: function (index) {
                 this.directionPublicCity.splice(index,1);
+                this.$nextTick(() => {
+                    this.moreShowFn();
+                })
             },
             labelWrapperClick: function () {
-                this.isSearch4 = true;
-                this.directionPublicCityShow = false;
+                this.$nextTick(() => {
+                    this.isSearch4 = true;
+                    this.directionPublicCityShow = false;
+                });
             },
             // 日历
             getDate1: function(d){//获取组件返回的日期
@@ -1097,6 +1150,17 @@
                 this.directionPublicShow = true;
                 this.publicwayStrCode = 2;
                 this.directionPublicCityShow = true;
+                this.$nextTick(() => {
+                    this.moreShowFn();
+                })
+            },
+            moreShowFn: function () { // 判断省略号是否显示
+//                console.info(this.$refs.littleLabelWrapper.offsetWidth)
+                if(this.$refs.littleLabelWrapper.offsetWidth >= 196) {
+                    this.moreShow = true;
+                }else {
+                    this.moreShow = false;
+                }
             },
             // 起止时间显示到上方的框内
             startTime1Fn: function (item) {
@@ -1203,6 +1267,7 @@
     }
 
     .choose-input {
+        position: relative;
         display: flex;
         justify-content: space-between;
         flex-grow: 1;
@@ -1288,9 +1353,25 @@
         position: absolute;
         top: 0;
         display: flex;
-        max-width: 220px;
+        max-width: 196px;
         overflow: hidden;
         z-index: 3;
+    }
+    .little-list-wrapper {
+        position: absolute;
+        top: 25px;
+        left: -260px;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        width: 290px;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 2px 11px $border-color;
+        z-index: 3;
+        .little-label {
+            margin: 0 3px 3px 0;
+        }
     }
     .little-label{
         display: flex;
@@ -1315,18 +1396,21 @@
         background: white;
         cursor: pointer;
     }
-    .hover-show {
+    .more-show {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 25px;
+        height: 25px;
+        color: $icon-color;
+        background: white;
+        cursor: pointer;
+        z-index: 10;
+    }
+    .dot {
         position: absolute;
         top: -3px;
-        right: 0px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 20px;
-        height: 23px;
-        border-radius: 20px;
-        color: $icon-color;
-        cursor: pointer;
+        right: 5px;
     }
     /***********/
 
