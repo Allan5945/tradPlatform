@@ -95,7 +95,7 @@
                         <div>补贴政策</div>
                     </div>
                     <div class="right item">
-                        <div class="item-a">{{sailingtime0}}-{{sailingtime1}}</div>
+                        <div class="item-a">{{myData.sailingtime}}</div>
                         <div class="item-b">{{myData.aircrfttyp}}</div>
                         <div class="item-c">{{myData.loadfactorsexpect}}人/均班</div>
                         <div class="item-d">{{subsidypolicyFn(myData.subsidypolicy)}}</div>
@@ -601,14 +601,6 @@
                     this.$emit('transShow');
                 }
             });
-            tabulationBoxTrigger.$on('responseListToPayAfter',(val) => { //获取意向列表（监听了两个事件：airlineDetailPayAfter和dialog（已废弃）两个文件的）
-                this.listData = val;   //获取意向列表
-                this.listData.forEach((v) => {
-                    if(v.releaseselected === '0') {
-                        this.btnDisableShow = true;
-                    }
-                })
-            })
         },
         computed: {
             ...vx.mapGetters([
@@ -663,20 +655,35 @@
                         || this.myData.demandprogress == 3
                         || this.myData.demandprogress == 10) {  // “关闭”状态
                         this.showCode = 5;
+                        this.show();
                     }else {
                         if (this.isSelf == true && this.isIntentionMoney == false) {
 //                                console.info('payAfter:' + 1)
                             this.showCode = 1;
+                            this.show();
                         }if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
                             this.showCode = 3;
-                            tabulationBoxTrigger.$emit('responseListToPayAfter',response.data.responseList) //向airlineDetailPayAfter的意向列表传参数
+                            this.show();
+                            if(this.myData.demandprogress == 4
+                            || this.myData.demandprogress == 5
+                            || this.myData.demandprogress == 6) { // 判断“结束需求”按钮是否显示
+                                this.fifthButtonShow = false;
+                            }
+                            this.listData = response.data.responseList;   //获取意向列表
+                            this.listData.forEach((v) => {
+                                if(v.releaseselected === '0') {
+                                    this.btnDisableShow = true;
+                                }
+                            })
                         }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
 //                        console.info('000000')
                             this.showCode = 0;
+                            this.show();
                         }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
 //                        console.info('payAfter:' + 4)
                             this.showCode = 4;
+                            this.show();
                         }
                         // 判断demandState是否通过（6）demandState  0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
                         if (this.myData.demandstate == 6) {
@@ -686,7 +693,7 @@
                         }
                     }
 //                    this.showCode = 5; // 模拟“关闭”状态
-                    this.show();
+
                 })
                 .catch((error) => {
                         console.log(error);
@@ -1110,6 +1117,7 @@
                         alert('成功撤销选定!');
                         this.showCode = 2;
                         this.show();
+                        this.btnDisableShow = false;
                         this.refreshFn();
                     }else{
                         alert('错误代码：' + response.data.opResult);

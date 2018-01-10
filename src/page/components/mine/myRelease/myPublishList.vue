@@ -64,11 +64,11 @@
         </div>
         <transition-group name="slidex-fade">
             <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
-            <myPublish0 v-show="myPublishShow0" @refresh="refreshFn" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
+            <myPublish0 v-show="myPublishShow0" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
             <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1" :key="3"></myPublishNeed1>
             <!--<myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>-->
-            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @refresh="refreshFn" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
-            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @refresh="refreshFn" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
+            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
+            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
         </transition-group>
     </div>
 </template>
@@ -348,12 +348,14 @@
                 this.myPublishShow0 = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             },
             // 点击关闭:我的发布-运力需求详情
             closeMyPublishShowFn1: function () {
                 this.myPublishShow1 = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             },
             /*// 点击关闭:我的发布-行线需求详情
             closeMyPublishAirlineFn: function () {
@@ -366,12 +368,14 @@
                 this.myPublishTransportEntrustShow = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             },
             // 点击关闭:我的发布-发布的航线托管
             closeMyPublishAirLineEntrustFn: function () {
                 this.myPublishAirLineEntrustShow = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             }
         },
         components: {

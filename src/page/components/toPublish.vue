@@ -11,7 +11,7 @@
         </div>
         <transportForm v-if="showType== 1" @closeForm="closeForm"></transportForm>
         <agentTransForm v-else-if="showType== 2" @closeForm="closeForm"></agentTransForm>
-        <airlineReq v-else-if="showType== 3" @closeForm="closeForm"></airlineReq>
+        <airlineReq v-else-if="showType== 3" @closeForm="closeForm" @changeTitle="changeTitleFn" @restoreTitle="restoreTitleFn"></airlineReq>
         <airlineDelegation v-else-if="showType== 4" @closeForm="closeForm"></airlineDelegation>
         <operationForm v-else-if="showType== 5" @closeForm="closeForm"></operationForm>
     </div>
@@ -75,7 +75,13 @@
             closeForm: function(){
                 this.showType = '';
                 this.msg = "选择需求类型";
-            }
+            },
+            changeTitleFn: function () {
+                this.msg = "委托航线需求";
+            },
+            restoreTitleFn: function () {
+                this.msg = "航线需求";
+            },
         }
     }
 </script>

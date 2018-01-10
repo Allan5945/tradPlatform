@@ -56,9 +56,9 @@
             </div>
         </div>
         <transition-group name="slidex-fade">
-            <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" @refresh="refreshFn" :key="5"></myPurpose>
-            <myPurpose1 v-show="myPurpose1Show" @close-this="closeThisFn" @responseShow="responShow" @refresh="refreshFn" :key="6"></myPurpose1>
-            <myPurpose2 v-show="myPurpose2Show" @close-this="closeThisFn" @transShow="transShow" @refresh="refreshFn" :key="7"></myPurpose2>
+            <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" :key="5"></myPurpose>
+            <myPurpose1 v-show="myPurpose1Show" @close-this="closeThisFn" @responseShow="responShow" :key="6"></myPurpose1>
+            <myPurpose2 v-show="myPurpose2Show" @close-this="closeThisFn" @transShow="transShow" :key="7"></myPurpose2>
         </transition-group>
     </div>
 </template>
@@ -79,7 +79,7 @@
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: [],
-                type0: ['运力需求'],
+                type0: ['运力投放'],
                 type1: ['航线需求'],
                 type2: ['运力投放','航线需求'],
                 state: [],
@@ -136,7 +136,7 @@
                 if(this.role.role == 1) {  // 机场
                     this.type = this.type0;
                     this.myData = this.myData0;
-                    this.typeWriting = '运力需求';
+                    this.typeWriting = '运力投放';
                     this.state = this.state2;
                     this.sendData.demandType = 1;
                 }if(this.role.role == 0) {  // 航司
@@ -306,6 +306,7 @@
                 this.myPurpose1Show = false;
                 this.myPurpose2Show = false;
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             }
         },
         computed: {
