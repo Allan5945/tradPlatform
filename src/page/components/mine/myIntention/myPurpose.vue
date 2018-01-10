@@ -468,7 +468,7 @@
                 <div class="buttons">
                     <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
                     <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                    <button class="btn btn-w" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</button>
+                    <button class="btn btn-w" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
                 </div>
             </div>
             <div class="second-button" v-show="secondButtonShow">
@@ -491,7 +491,7 @@
                     <div class="buttons" v-else>
                         <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
                         <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                        <div class="btn btn-w cancel-btn" v-else @click="cancelCollectFn" style="width: 120px;">取消收藏</div>
+                        <div class="btn btn-w cancel-btn" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
                     </div>
                 </div>
 
@@ -1051,6 +1051,18 @@
                             console.log(error);
                         }
                     );
+            },
+            cancelCollectOver1Fn: function () {
+                this.$refs.cancelCollect1.innerHTML = '取消收藏';
+            },
+            cancelCollectOut1Fn:function () {
+                this.$refs.cancelCollect1.innerHTML = '已收藏';
+            },
+            cancelCollectOver2Fn: function () {
+                this.$refs.cancelCollect2.innerHTML = '取消收藏';
+            },
+            cancelCollectOut2Fn:function () {
+                this.$refs.cancelCollect2.innerHTML = '已收藏';
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {

@@ -674,7 +674,7 @@
                 this.sendDataFn();
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-                console.info(this.sendData);
+//                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -1521,7 +1521,7 @@
         width: 540px;
         height:270px;
         padding:20px 10px 10px 10px;
-        z-index: 1;
+        z-index: 11;
     }
     .calendar-box .selec-data{
         height:30px;
