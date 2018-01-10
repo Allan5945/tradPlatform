@@ -101,6 +101,8 @@
             },
             lose: function () {
                 setTimeout(() => {
+                    console.log(this.searchText)
+                    console.log(this.airList)
                     if (this.$airMes(this.airList, this.searchText) == '' && this.$cityMes(this.cityList, this.searchText) == '') {
                         this.searchText = '';
                     }

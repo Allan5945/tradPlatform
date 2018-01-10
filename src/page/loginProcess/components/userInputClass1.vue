@@ -21,7 +21,7 @@
         methods:{
             yzgs(){
                 if(this.user == ''){return false};
-                if(!(/^1[34578]\d{9}$/.test(this.user)) || !(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/).test(this.user)){ 
+                if(!(/^1[34578]\d{9}$/.test(this.user)) && !(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/).test(this.user)){ 
                     this.show = true;
                     setTimeout(()=>{this.show = false;},1000);
                     this.$emit('tip','填写的格式错误！');
