@@ -51,9 +51,9 @@
                 </div>
             </footer>
             <footer v-if="canAgent">
-                <div class="foot-tips red" v-if="!cancSuccess">*取消托管原因：{{refuseText}}</div>
+                <!-- <div class="foot-tips red" v-if="!cancSuccess">*取消托管原因：{{refuseText}}</div> -->
                 <div class="btn">
-                    <div class="cancel-agent-btn can-btn" @click="getDialog" v-if="cancSuccess">取消托管</div>
+                    <div class="cancel-agent-btn can-btn" @click="cancelAgent" v-if="cancSuccess">取消托管</div>
                 </div>
             </footer>
         </div>
@@ -169,11 +169,11 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     }
                 );
         },
-        getDialog(){
+       /* getDialog(){
             this.dialogShow = true;
             this.msg = "取消";
-        },
-        cancelAgent(text){
+        },*/
+        cancelAgent(){
               this.$ajax({
                 method: 'post',
                 url: '/finishCommissionedAndCustody',
@@ -186,12 +186,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     demandEmployeeId:this.chatData.demandEmployeeId,
                     title:this.chatData.title,
                     demandType:this.chatData.demandType,
-                    rek: text
+                    //rek: text
                   }
                 })
                 .then((response) => {
                    if(response.data.opResult == '0'){
-                     this.cancSuccess = false;
+                     this.$emit("close");
                     }
                 })
                 .catch((error) => {
@@ -432,6 +432,10 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   border-radius:100px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  &:hover{
+                    color:#fff;
+                    background-color: #3C78FF;
+                  }
               }
               .cancel-agent-btn{
                   width:150px;

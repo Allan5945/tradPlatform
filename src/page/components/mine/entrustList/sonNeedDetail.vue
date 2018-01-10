@@ -15,96 +15,111 @@
                         <div class="time">{{val.releasetime}}</div>
                         <div class="title">{{val.title}}</div>
                         <div class="progress">{{val.demandprogressStr}}<span class="iconfont">&#xe602;</span></div>
-                        <div class="detail" @click="closeDetail(index)">{{text}}</div>
+                        <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
+                        <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                     </div>
-                    <div class="intent-detail" v-if="detailShowIndex == index">
+                    <div class="intent-detail" v-show="showDetailIndex === index">
                         <div class="airline">
-                            <div class="airplace">
-                                <div>始发机场</div>
-                                <div>
-                                    <div>{{val.dpt}}</div>
-                                    <div v-if="val.dptAcceptnearairport == 0">接受临近机场</div>
+                                <div class="airplace">
+                                    <div v-if="val.dptState =='0' ">始发机场</div>
+                                    <div v-else>始发区域</div>
+                                    <div>
+                                        <div>{{val.dptNm||'-'}}</div>
+                                        <div v-if="val.dptState =='0' ">{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
+                                    </div>
+                                    <div class="resouse" v-if="val.dptState =='0' ">
+                                        <div>出港资源</div>
+                                        <div v-if="val.dptTimeresources == '0'">{{val.dptTime||'-'}}</div>
+                                        <div v-else>{{val.dptTimeresourcesStr||'-'}}</div>
+                                    </div>
                                 </div>
-                                <div class="resouse">
-                                    <div>出港资源</div>
-                                    <div>{{val.dptTime}}</div>
+                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                                <div class="airplace">
+                                    <div v-if="val.pstState =='0' ">经停机场</div>
+                                    <div v-else>经停区域</div>
+                                    <div>
+                                        <div>{{val.pstNm||'-'}}</div>
+                                         <div v-if="val.pstState =='0' ">{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
+                                    </div>
+                                    <div class="resouse" v-if="val.pstState =='0' ">
+                                        <div>出港资源</div>
+                                        <div v-if="val.pstTimeresources == '0'">{{val.pstTime||'-'}}</div>
+                                        <div v-else>{{val.pstTimeresourcesStr||'-'}}</div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                                <div class="airplace">
+                                    <div v-if="val.arrvState =='0' ">到达机场</div>
+                                    <div v-else>到达区域</div>
+                                    <div>
+                                        <div>{{val.arrvNm||'-'}}</div>
+                                        <div v-if="val.arrvState =='0' ">{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                                    </div>
+                                    <div class="resouse" v-if="val.arrvState =='0' ">
+                                        <div>出港资源</div>
+                                        <div v-if="val.arrvTimeresources == '0'">{{val.arrvTime||'-'}}</div>
+                                        <div v-else>{{val.arrvTimeresourcesStr||'-'}}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
-                            <div class="airplace">
-                                <div>经停机场</div>
-                                <div>
-                                    <div>{{val.pst}}</div>
-                                    <div v-if="val.pstAcceptnearairport == 0">接受临近机场</div>
-                                </div>
-                                <div class="resouse">
-                                    <div>出港资源</div>
-                                    <div>{{val.pstTime}}</div>
-                                </div>
-                            </div>
-                            <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
-                            <div class="airplace">
-                                <div>到达区域</div>
-                                <div>
-                                    <div>{{val.arrv}}</div>
-                                    <div v-if="val.arrvAcceptnearairport == 0">接受临近机场</div>
-                                </div>
-                                <div class="resouse">
-                                    <div>出港资源</div>
-                                    <div>{{val.arrvTime}}</div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="table-form">
-                            <div>
-                                <div>拟开时间</div>
-                                <div>{{val.sailingtime}}</div>
+                                <div>
+                                    <div>联系人</div>
+                                    <div>{{val.contact||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>联系方式</div>
+                                    <div>{{val.ihome||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>拟开时间</div>
+                                    <div>{{val.sailingtime||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>拟开班期</div>
+                                    <div>{{val.days||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>拟开机型</div>
+                                    <div>{{val.aircrfttyp||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>座位数</div>
+                                    <div>{{val.seating||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>客量预期</div>
+                                    <div>{{val.avgguestexpect||'-'}}人</div>
+                                </div>
+                                <div>
+                                    <div>客座率预期</div>
+                                    <div>{{val.loadfactorsexpect||'-'}}%</div>
+                                </div>
+                                <div>
+                                    <div>补贴政策</div>
+                                    <div>{{val.subsidypolicyStr||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>小时成本</div>
+                                    <div>{{val.hourscost||'-'}}万元/小时</div>
+                                </div>
+                                <div>
+                                    <div>运力归属</div>
+                                    <div v-if="val.capacityCompany">{{val.capacityCompany.airlnCd||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>运力基地</div>
+                                    <div>{{val.capacityBaseNm||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>是否调度</div>
+                                    <div>{{val.schedulingStr||'-'}}</div>
+                                </div>
+                                <div class="tips">
+                                    <div>其他说明</div>
+                                    <div>{{val.remark||'-'}}</div>
+                                </div>
                             </div>
-                            <div>
-                                <div>拟开班期</div>
-                                <div>{{val.days}}</div>
-                            </div>
-                            <div>
-                                <div>拟开机型</div>
-                                <div>{{val.aircrfttyp}}</div>
-                            </div>
-                            <div>
-                                <div>座位数</div>
-                                <div>{{val.seating}}</div>
-                            </div>
-                            <div>
-                                <div>客量预期</div>
-                                <div>{{val.avgguestexpect}}人</div>
-                            </div>
-                            <div>
-                                <div>客座率预期</div>
-                                <div>{{val.loadfactorsexpect}}%</div>
-                            </div>
-                            <div>
-                                <div>补贴政策</div>
-                                <div>{{val.subsidypolicy}}</div>
-                            </div>
-                            <div>
-                                <div>小时成本</div>
-                                <div>{{val.hourscost}}万元/小时</div>
-                            </div>
-                            <div>
-                                <div>运力归属</div>
-                                <div>{{val.capacitycompany}}</div>
-                            </div>
-                            <div>
-                                <div>运力基地</div>
-                                <div>{{val.dpt}}</div>
-                            </div>
-                            <div>
-                                <div>是否调度</div>
-                                <div>{{val.scheduling}}</div>
-                            </div>
-                            <div class="tips">
-                                <div>其他说明</div>
-                                <div>{{val.remark}}</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -115,54 +130,17 @@
     export default {
         data () {
             return{
-              detailData:{},
-              detailShowIndex:null,
-              intentListShow:false,
-              selIndex:'',
-              myFormShow:false,
-              dialogShow:false,
-              text:"查看详情",
+              showDetailIndex:'',
             }
         },
-        props:['demandId'],
-        mounted() {
-          this.$ajax({
-                method: 'post',
-                url: '/getCommissionedAndCustodyDemandDetails',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    id:this.demandId
-                  }
-                })
-                .then((response) => {
-                    this.detailData = response.data.listSonDemands;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-        },
-        components:{
-
-        },
+        props:['detailData'],
         methods:{
-             closeDetail:function(i){
-                 this.detailShowIndex = i;
-                 //console.log(this.detailShowIndex)
-                 if(this.detailShow){
-                    this.text = "收起详情";
-                 }else{
-                     this.text = "查看详情";
-                 }
+              closeDetail:function(){
+                 this.showDetailIndex = '';
              },
-             getNeed: function(i){
-
-            },
-            closeForm: function(){
-
-            }
+              openDetail:function(index){
+                 this.showDetailIndex = index;
+             }
         }
     }
 </script>

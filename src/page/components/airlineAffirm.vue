@@ -601,7 +601,7 @@
                 this.remarkMsg = this.acceptData.remark; // 其他说明
                 // 判断始发类型（0：机场，1：区域）
                 // 机场传三字码，区域和省份传汉字
-                console.info(typeof this.acceptData.dptState)
+//                console.info(typeof this.acceptData.dptState)
                 if(this.acceptData.dptState === "0") {
                     this.space1ShowTitle = this.spaceList[1];
                     this.space1Fn(this.spaceList[1]);

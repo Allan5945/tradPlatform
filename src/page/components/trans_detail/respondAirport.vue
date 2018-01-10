@@ -56,6 +56,10 @@
                       <div>有效期</div>
                       <div>{{detailData.periodValidity||'-'}}</div>
                   </div>
+                  <div class="note">
+                      <div>其他说明</div>
+                      <div>{{detailData.remark||'-'}}</div>
+                  </div>
               </div>
               <div class="myplan">
                   <div class="plan-til">
@@ -158,7 +162,7 @@
                           <div>是否调度</div>
                           <div>{{planData.schedulingStr||'-'}}</div>
                       </div>
-                      <div class="tips">
+                      <div class="note">
                           <div>其他说明</div>
                           <div>{{planData.remark||'-'}}</div>
                       </div>
@@ -470,6 +474,12 @@
               }
           }
       }
+      .note{
+          width:100%;
+          >div:nth-of-type(2){
+              width:440px;
+          }
+      }
     }
     .myplan{
         &::after {
@@ -520,33 +530,28 @@
         }
         .table-form{
             padding:40px 0 0 40px;
-            .tips{
-                width:100%;
-                >div:nth-of-type(2){
-                    width:440px;
-                }
-            }
         }
     }
-      .airplace{
-            margin-top:20px;
-             >div:nth-of-type(2){
-               height:45px;
-               font-size:2rem;
-               font-weight:bold;
-               padding-top:15px;
-               >div:nth-of-type(2){
-                   font-size:1rem;
-                   font-weight:normal;
-               }
-            }
-              .resouse{
-              margin:20px 0;
+    .airplace{
+        margin-top:20px;
+        >div:nth-of-type(2){
+            height:45px;
+            font-size:2rem;
+            font-weight:bold;
+            padding-top:15px;
+            >div:nth-of-type(2){
+                font-size:1rem;
+                font-weight:normal;
             }
         }
-        .close{
-            color:#3c78ff;
+        .resouse{
+            margin:20px 0;
         }
+    }
+
+    .close{
+        color:#3c78ff;
+    }
     footer{
         border-top: 1px solid #ccc;
           .btn{

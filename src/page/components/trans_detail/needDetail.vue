@@ -1,77 +1,84 @@
 <template>
-    <div class="detail-wrapper">
-        <header>
-            <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title||'-'}}运力投放</div>
-            <div class="tips">
-                <span>创建于{{detailData.releasetime||'-'}}</span>
-                <span>已有{{intentionCount||'0'}}位用户发起意向</span>
-            </div>
-        </header>
-        <div class="content">
-            <div>
-                <div>机型</div>
-                <div>{{detailData.aircrfttyp||'-'}}</div>
-            </div>
-             <div>
-                <div>座位布局</div>
-                <div>{{detailData.seating||'-'}}</div>
-            </div>
-            <div>
-                <div>运力归属</div>
-                <div>***</div>
-            </div>
-             <div>
-                <div>运力基地</div>
-                <div>{{detailData.dptNm||'-'}}</div>
-            </div>
-            <div >
-                <div>出港时刻</div>
-                <div>{{detailData.dptTime||'-'}}</div>
-            </div>
-            <div>
-                <div>班期</div>
-                <div>{{detailData.days||'-'}}</div>
-            </div>
-           <div class="intent-airline" v-if="detailData.intendedAirlines">
-               <div>意向航线</div>
-               <div class="i-line">
-                 {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
-                 {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
-                 {{detailData.intendedAirlines[0].arrvName||'-'}}
+    <div>
+        <div class="detail-wrapper">
+            <header>
+                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+                <div class="tips">
+                    <span>创建于{{detailData.releasetime||'-'}}</span>
+                    <span>已有{{intentionCount||'0'}}位用户发起意向</span>
+                </div>
+            </header>
+            <div class="content">
+                <div>
+                    <div>机型</div>
+                    <div>{{detailData.aircrfttyp||'-'}}</div>
+                </div>
+                 <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating||'-'}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>***</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm||'-'}}</div>
+                </div>
+                <div >
+                    <div>出港时刻</div>
+                    <div>{{detailData.dptTime||'-'}}</div>
+                </div>
+                <div>
+                    <div>班期</div>
+                    <div>{{detailData.days||'-'}}</div>
+                </div>
+               <div class="intent-airline" v-if="detailData.intendedAirlines">
+                   <div>意向航线</div>
+                   <div class="i-line">
+                     {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].arrvName||'-'}}
+                   </div>
                </div>
-           </div>
-           <div class="intent-airline" v-else>
-               <div>意向航线</div>
-               <div class="i-line">-</div>
-           </div>
-            <div>
-                <div>小时成本</div>
-                <div>{{detailData.hourscost||'-'}}万/小时</div>
+               <div class="intent-airline" v-else>
+                   <div>意向航线</div>
+                   <div class="i-line">-</div>
+               </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                </div>
+                <div style="margin:0 0 0 40px;">
+                    <div>接受调度</div>
+                    <div>{{detailData.schedulingStr||'-'}}</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div>{{detailData.periodValidity||'-'}}</div>
+                </div>
             </div>
-            <div style="margin:0 0 0 40px;">
-                <div>接受调度</div>
-                <div>{{detailData.schedulingStr||'-'}}</div>
-            </div>
-            <div>
-                <div>有效期</div>
-                <div>{{detailData.periodValidity||'-'}}</div>
-            </div>
+            <footer>
+                <div>*隐藏信息在提交意向后可查看</div>
+                <div class="btn">
+                    <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
+                    <div class="col-btn"  v-else>已收藏</div>
+                </div>
+            </footer>
         </div>
-        <footer>
-            <div>*隐藏信息在提交意向后可查看</div>
-            <div class="btn">
-                <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
-                <div class="col-btn"  v-else>已收藏</div>
-            </div>
-        </footer>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :demandId="demandId"></intentForm>
+        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
     </div>
 </template>
 
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';
+ import intentForm from './intentForm.vue'
+ import transDialog from './transDialog.vue'
+
  export default {
      data(){
          return{
@@ -79,15 +86,27 @@
              detailData:{},
              intentionCount:0,
              demandId:'',
-             isCollect:true
+             isCollect:true,
+             intentFormShow:false,
+             dialog:false,
          }
      },
      methods:{
          closeDetail:function(){
-            this.$emit("closeDetail");
+            this.$emit('closeDetail','1');
+         },
+         closeForm:function(){
+            this.intentFormShow = false;
+         },
+         closeDialog:function(){
+            this.dialog = false;
+         },
+         sureDialog:function(){
+                this.intentFormShow = false;
+                this.$emit('closeDetail','2');
          },
          haveInvent:function(){
-             this.$emit("formShow");
+            this.intentFormShow = true;
          },
          collect:function(){
              this.$ajax({
@@ -131,7 +150,7 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "004"|| response.data.receiveIntention == null){
-                        this.$emit("transShow");
+                        this.$emit('transShow');
                     }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
@@ -147,10 +166,11 @@
                 );
             };
         });
-
-
-
      },
+      components: {
+            intentForm,
+            transDialog
+        }
 }
 </script>
 
