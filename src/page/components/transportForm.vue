@@ -1,5 +1,5 @@
 <template>
-    <div class="t-form scroll popup">
+    <div class="t-form scroll popup" id="transForm">
         <div class="t-must">
             <div class="form-box">
                 <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact">
@@ -116,7 +116,7 @@
                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar>
                  </div>
                </div>
-                <div class="error" v-show="isError8" style="left:58px;top:53px;">*请选择发布有效期</div>
+                <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
             </div>
         </div>
         <div class="post-type">
@@ -168,7 +168,7 @@
                 isError9:false,
                 phoneNum: '',
                 getFlight: 'true',
-                getTime: 'true',
+                getTime: '',
                 dispatch:false,
                 pickStart:false,
                 pickEnd:false,
@@ -451,29 +451,36 @@
                 this.airCompanyShow = true;
             },
             confirm:function(type){
+                let trans = document.getElementById('transForm');
                 //必填信息验证
                 if(this.contact == ''){//联系人
                      this.isError1 = true;
+                     trans.scrollTop = 0;
                      return false;
                 }
-                if(this.phoneNum == ''){//联系方式
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum)) ){//联系方式
                     this.isError2 = true;
+                    trans.scrollTop = 0;
                     return false;
                 }
                 if(this.msg == '选择班期类型'){//选择班期
                     this.isError4 = true;
+                    trans.scrollTop = 0;
                     return false;
                 }
                 if(this.intendedDpt == ''){//起始机场
                     this.isError3 = true;
+                     trans.scrollTop = 0;
                     return false;
                 }
                 if(this.airplaneTyp == ''){//飞机类型
                     this.isError5 = true;
+                    trans.scrollTop = 0;
                     return false;
                 }
                 if(this.searchText == ''){//运力基地
                     this.isError6 = true;
+                    trans.scrollTop = 0;
                     return false;
                 }
                 if(this.airCompany == ''){//运力归属
@@ -484,7 +491,7 @@
                     this.isError8 = true;
                     return false;
                 }
-                /*if(this.post == ''){//公开方式
+                /*if(this.post == ''){//公开方式、接受调度
                     this.isError9 = true;
                     return false;
                 }*/

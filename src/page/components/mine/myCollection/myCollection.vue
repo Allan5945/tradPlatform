@@ -61,7 +61,8 @@
     </div>
 </template>
 <script>
-    import stateList from './../stateList.vue'
+    import stateList from './../stateList.vue';
+    import * as vx from 'vuex';
     import collectDetail from './collectDetail.vue';
     import ln from './../../../../public/js/tabulationBoxTrigger';
 
@@ -87,6 +88,11 @@
                     releaseTime:"Desc"
                 }
             }
+        },
+        computed:{
+         ...vx.mapGetters([
+                'role'
+            ])
         },
         methods: {
             chat:function (v) {
@@ -213,6 +219,11 @@
         },
         mounted() {
             this.getListData();
+            if(this.role.role == 1){//机场
+                this.type = ['运力投放'];
+            }else if(this.role.role == 0){//航司
+                this.type = ['航线需求'];
+            }
          },
         components: {
             stateList,
