@@ -6,7 +6,6 @@
  * */
 
 const airMes = function (data,field = '$%') {
-    console.log(data,field)
     for(let i = 0;i < data.length;i ++){
         if(data[i].cityName != null && data[i].cityName == field){
             return data[i];

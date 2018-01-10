@@ -43,11 +43,11 @@
                             this.hkoff = false;
                             this.jl = 263;
                             this.tltle = "验证成功";
+                             this.suc = true;
                             this.$emit('validation');
                             return;
                         };
                         this.jl = jl;
-                        this.suc = true;
                    };
                    
                } 
@@ -88,7 +88,7 @@
    .icon-mes{
        text-align: center;
        line-height: 28px;
-       color:#c5c2c2;
+       color:#605E7C;
        position: relative;
        z-index: 2;
    }

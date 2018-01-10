@@ -2,9 +2,10 @@
   <div class="user-input-box">
     <input :type="inputeType" class="user-input"
         :class="{'animated':showErr,'shake':showErr,'err-input':showErr}"
-        @blur="focusTip()"
+        @blur="focusTip(true)"
         @focus="focusTip()"
         @input="changeTip()"
+        @keyup="entered($event)"
         v-model="inputMes"
     >
     <span @click="toview" class="user-toview" :class="{'show-color':showText}" v-html="showText ? '&#xe685;':'&#xe7d3;'" v-if="this.par.isPrompt">&#xe685;</span>
@@ -19,6 +20,7 @@ export default {
             showText:false,    // 是否显示 密码 
             showTip:false,     // 是否显示 信息
             showErr:false,     // 显示输入错误，输入框抖动
+            showErrDelay:false, 
             inputeType:"",    // 输入框的类型值
             inputMes:"",     // 输入的内容
             // par:{
@@ -34,6 +36,11 @@ export default {
     },
     props:['par'],
     methods:{
+        entered(e){
+            if(e.keyCode == 13){
+                this.$emit('entered');
+            }
+        },
         initInput(){  // 初始化输入框
             this.inputMes = this.par.defaultText;
             if(this.inputMes != ""){
@@ -53,31 +60,42 @@ export default {
                 this.inputeType = "text"
             }
         },
-        focusTip(){
+        focusTip(t){
             if(this.inputMes == ""){
                 this.showTip = !this.showTip;
             };
+            if(t == true && this.par.isshowErr && this.inputMes != "" && this.showErrDelay){
+                this.showErr = true;
+                setTimeout(()=>{this.showErr = false;this.showErrDelay = false;},1000);
+                this.$emit('reqMes',{n:"",p:'请输入正确的格式',i:false});
+            }
         },
         changeTip(t){ 
-            let err = false;
-            if(this.par.openJudge.length > 0){
-                this.par.openJudge.forEach(element => {
-                    if((element).test(this.inputMes)){
-                        ty = true;
-                    }
-                });
+            if(this.par.class1){
+                if(this.inputMes){
+                    
+                }
             }else{
-                // return false;
-            };
-            let mes = {};
-            if(err == false && this.par.isshowErr){
-                this.showErr = true;
-                setTimeout(()=>{this.showErr = false;},1000);
-                mes = {n:"",p:'填写的格式错误！'};
-            }else{
-                mes = {n:this.inputMes,p:''};
-            };
-            this.$emit('reqMes',mes);
+                 let err = false;
+                if(this.par.openJudge.length > 0){
+                    this.par.openJudge.forEach(element => {
+                        if((element).test(this.inputMes)){
+                            err = true;
+                        }
+                    });
+                }else{
+                    // return false;
+                };
+                let mes = {};
+                if(err == false && this.par.isshowErr){
+                    this.showErrDelay = true;
+                    mes = {n:this.inputMes,p:'',i:true};
+                }else{
+                    this.showErrDelay = false;
+                    mes = {n:this.inputMes,p:'',i:false};
+                };
+                this.$emit('reqMes',mes);
+            }
         }
     },
     mounted:function () {
