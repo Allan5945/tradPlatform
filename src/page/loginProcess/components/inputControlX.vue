@@ -1,124 +1,86 @@
 <template>
   <div class="user-input-box">
-    <input :type="inputeType" class="user-input"
-        :class="{'animated':showErr,'shake':showErr,'err-input':showErrInput || errs}"
-        @blur="focusTip(true)"
+    <input :type="arg.inputeType" class="user-input"
+        :class="{'animated':arg.showErr,'shake':arg.showErr,'err-input':arg.showErrInput,'suc-input':arg.showSucInput}"
+        @blur="blurTip()"
         @focus="focusTip()"
         @input="changeTip()"
         @keyup="entered($event)"
-        v-model="inputMes"
+        v-model="arg.inputMes"
     >
-    <span @click="toview" class="user-toview" :class="{'show-color':showText}" v-html="showText ? '&#xe685;':'&#xe7d3;'" v-if="this.par.isPrompt">&#xe685;</span>
-    <span class="user-judge" v-if="userJudge || mandatoryJudge">&#xe61f;</span>
-    <span v-html="showTip ? par.tip[1] : par.tip[0]" class="user-tip" :class="{'user-tip-tran':showTip}"></span>
+    <span @click="toview" class="user-toview" :class="{'show-color':arg.showText}" v-html="arg.showText ? '&#xe685;':'&#xe7d3;'">&#xe685;</span>
+    <span class="user-judge" v-if="false">&#xe61f;</span>
+    <span v-html="arg.showPlaceholder ? arg.placeholderTip[1] : arg.placeholderTip[0]" class="user-tip" :class="{'user-tip-tran':arg.showPlaceholder}"></span>
   </div> 
 </template>
 <<script>
 export default {
     data(){ 
         return{
-            showText:false,    // 是否显示 密码 
-            showTip:false,     // 是否显示 信息
-            showErr:false,     // 显示输入错误，输入框抖动
-            showErrDelay:false,  // 
-            showErrInput:false,  // 是否当前输入框格式错误
-            inputeType:"",    // 输入框的类型值
-            inputMes:"",     // 输入的内容
-            // par:{
-            //     defaultText:"",     // 默认的值
-            //     inputType:true,   // 输入框类型，true、text。false、password
-            //     isJudge:true,  // 是否显示正确的绿钩  true、显示。false、不显示
-            //     isPrompt:true, // 是否密码显示功能 true、。false、
-            //     isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
-            //     tip:["请输入账号、手机号或者邮箱","账号"], // 1，输入框的placeholder值。2，显示值
-            //     openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/],                   // 输入正则判断
-            // },
+            arg:{
+                inputeType:"text", // 输入框的类型
+                inputMes:"",     // 输入框的值
+                showText:false,  // 是否显示密码
+                showErr:false,   // 是否抖动
+                showErrInput:false, // 是否显示框错误
+                showSucInput:false, // 是否显示框正确
+                showTip:true,   // 是否选中框
+                placeholderTip:['1','2'],
+                showPlaceholder:false,   // 是否开启输入框placeholder
+                validation:0,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/]
+            }
         }
     },
-    props:['par','errs','mandatoryJudge'],
+    // props:['arg'],
     methods:{ 
-        entered(e){
-            if(e.keyCode == 13){
-                this.$emit('entered');
-            }
-        },
-        initInput(){  // 初始化输入框
-            this.inputMes = this.par.defaultText;
-            if(this.inputMes != ""){
-                 this.showTip = true;
-            };
-            if(this.par.inputType){
-                this.inputeType = 'text';
-            }else{
-                this.inputeType = 'password';
-            };
-        },
-        toview(){   // 如果输入框类型有显示密码功能则点击眼睛切换状态
-            this.showText = !this.showText; 
-            if(this.inputeType == "text"){
-                this.inputeType = "password"
-            }else{
-                this.inputeType = "text"
-            }
-        },
-        focusTip(t){
-            if(this.inputMes == ""){
-                this.showTip = !this.showTip;
-            };
-            if(t == true && this.par.isshowErr && this.inputMes != "" && this.showErrDelay){
-                this.showErr = true;
-                setTimeout(()=>{this.showErr = false;this.showErrDelay = false;},1000);
-                this.$emit('reqMes',{n:"",p:'请输入正确的格式',i:false});
-            }
-        },
-        changeTip(t){ 
-            if(this.par.class0){
-                if(this.inputMes.length > 16 || this.inputMes.indexOf(" ") != -1){
-                    this.showErrDelay = true;
-                    this.showErrInput = true;
-                    this.$emit('reqMes',{n:"",p:'请输入正确的格式',i:true});
-                }else{
-                    this.showErrInput = false;
-                    this.showErrDelay = false;
-                    this.$emit('reqMes',{n:this.inputMes,p:'',i:false});
-                }
-            }else{
-                 let err = false;
-                if(this.par.openJudge.length > 0){
-                    this.par.openJudge.forEach(element => {
-                        if((element).test(this.inputMes)){
-                            err = true;
-                        }
-                    });
-                }else{
-                    // return false;
-                };
-                let mes = {};
-                if(err == false && this.par.isshowErr){
-                    this.showErrDelay = true;
-                    mes = {n:this.inputMes,p:'',i:true};
-                }else{
-                    this.showErrDelay = false;
-                    mes = {n:this.inputMes,p:'',i:false};
-                };
-                this.$emit('reqMes',mes);
-            }
-        }
+      entered(e){   // 触发enter按键
+          if(e.keyCode == 13)this.$emit('entered');
+      },
+      toview(){   // 切换密码是否显示
+        this.arg.showText = !this.arg.showText;
+      },
+      changePlaceholder(){  // 切换placeholder的值
+          if(this.arg.inputMes == ""){
+              this.arg.showPlaceholder = !this.arg.showPlaceholder;
+          }
+      },
+      focusTip(){
+          this.changePlaceholder();
+      },
+      blurTip(){
+          this.changePlaceholder();
+      },
+      changeTip(){
+          let t = false,c = "";
+          switch (this.arg.validation) {
+                case 0:
+                    let reg = [/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/];
+                    if(reg[0].test(this.arg.inputMes) || reg[1].test(this.arg.inputMes)){
+                        t = true  
+                    };
+                  break;
+                case 1:
+                    if(this.arg.inputMes.length <= 16 && this.arg.inputMes.length >=6 && this.arg.inputMes.indexOf(" ") == -1){
+                        t = true  
+                    };
+                  break;
+          };
+          if(!t){series(t)}
+          if(t)c = this.arg.inputMes;
+          this.$emit('resMes',{t,c})
+      },
+      series(){
+          if(this.showErr){
+
+          }
+      }
     },
     mounted:function () {
-        this.initInput();
+    //    setTimeout(()=>{this.$emit("update:arg",{a:66874445})},5000)
     },
     computed:{
-        userJudge:function(){   // 输入的值类型正确
-            if(!this.par.isJudge){return false};
-            let ty = false;
-            this.par.openJudge.forEach(element => {
-                if((element).test(this.inputMes)){
-                    ty = true;
-                }
-            });
-            return ty;
-        }
+       
     }
 }
 </script>
@@ -133,6 +95,9 @@ export default {
     }
     input:focus{ 
         border:1px solid #4b78e0;
+    }
+    .suc-input{
+        border:1px solid #78c342;
     }
     .err-input{
         border:1px solid #deaaac;
