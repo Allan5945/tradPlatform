@@ -24,7 +24,7 @@
                     this.$store.dispatch('searchInfo', {
                       qyCode : code,
                       searchText:name,
-                      selcType :''
+                      selcType :'机场'
                     });
                 }else if(this.list.length == '0'){
                     this.$store.dispatch('searchInfo', {

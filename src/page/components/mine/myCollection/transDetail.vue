@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="detail-wrapper">
+    <div class="wrapper" @click.self="closeDetail">
+        <div class="detail-wrapper" v-if="myShow1">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title||'-'}}运力投放</div>
@@ -63,11 +63,12 @@
                 <div>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
                     <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                    <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                     <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
                     <div class="col-btn" @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
+        <myResponse v-if="myShow2" @responseClose="closeDetail" :resData="resData"></myResponse>
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :demandId="demandId"></intentForm>
         <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
@@ -77,9 +78,10 @@
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';
- import intentForm from './intentForm.vue'
- import transDialog from './transDialog.vue'
- import paySuccess  from './paySuccess.vue'
+ import intentForm from '$src/page/components/trans_detail/intentForm.vue'
+ import transDialog from '$src/page/components/trans_detail/transDialog.vue'
+ import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue';
+ import myResponse from './myResponse.vue'
 
  export default {
      data(){
@@ -88,13 +90,17 @@
              detailData:{},
              intentionCount:0,
              demandId:'',
+             resData:{},
              text:'已收藏',
+             myShow1:false,
+             myShow2:false,
              isCollect:false,
              intentFormShow:false,
              dialog:false,
-             payDialog:false
+             payDialog:false,
          }
      },
+     props:['needData'],
      methods:{
          closeDetail:function(){
             this.$emit('closeDetail');
@@ -109,7 +115,7 @@
             this.intentFormShow = false;
             this.payDialog = true;
          },
-         closePaySuccess:function(){
+        closePaySuccess:function(){
             this.payDialog = false;
             this.$emit('closeDetail');
         },
@@ -128,16 +134,14 @@
                 }
                 })
                 .then((response) => {
-                  if(response.data.opResult == "0"){
-                      this.isCollect = true;
-                  }
+                  this.isCollect = true;
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
          },
-         cancelCollect:function(){
+          cancelCollect:function(){
             this.$ajax({
                 method: 'post',
                 url: '/delCollectByDemandId',
@@ -151,6 +155,7 @@
                 .then((response) => {
                      if(response.data.opResult == "0"){
                       this.isCollect = false;
+                      this.$emit('closeDetail');
                   }
                 })
                 .catch((error) => {
@@ -172,10 +177,9 @@
             ])
         },
       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
-               //console.log("demandtype"+val.data.demandtype);
-                this.demandId = val.data.id;
+            tabulationBoxTrigger.hierarchy = true;
+            if(this.needData.demandType == 1 && this.role.role == 1){
+                this.demandId = this.needData.id;
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -188,14 +192,20 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "004"|| response.data.receiveIntention == null){
-                        this.$emit('transShow');
+                        this.myShow1 = true;
+                        this.intentionCount = response.data.intentionCount;
+                        this.detailData = response.data.data;
+
+                    }else if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
+                        this.myShow2 = true;
+                        this.resData = response.data;
+
                     }
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
+
                      if(response.data.isAlreadyCollect == true){
                         this.isCollect = true;
                     }else if(response.data.isAlreadyCollect == false){
-                        this.isCollect = false;
+                       this.isCollect = false;
                     }
                 })
                 .catch((error) => {
@@ -203,17 +213,29 @@
                     }
                 );
             };
-        });
      },
+    destroyed: function () {
+        tabulationBoxTrigger.hierarchy = false;
+    },
       components: {
             intentForm,
             transDialog,
-            paySuccess
+            paySuccess,
+            myResponse
         }
 }
 </script>
 
 <style lang="scss" scoped>
+    .wrapper{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 11;
+    }
     .detail-wrapper{
         position:absolute;
         top:0;
@@ -367,6 +389,7 @@
                   background-color:#3c78ff;
 
               }
+
           }
     }
 </style>

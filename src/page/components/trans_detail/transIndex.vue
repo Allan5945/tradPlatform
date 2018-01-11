@@ -1,6 +1,5 @@
 <template>
-    <div >
-        <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
+    <div>
         <needDetail  v-show="detailShow" @transShow="transShow" @closeDetail= "closeDetail"></needDetail>
         <respondAirport v-show="respond" @responseShow="responShow" @responseClose="responClose" ></respondAirport>
         <myIntention v-show="intentShow" @closeIntent="intentShow = false"  @openIntent="openIntent"></myintention>
@@ -13,7 +12,6 @@
     import myIntention from './myIntention.vue'//航司方
     import respondAirport from './respondAirport.vue'//机场方（运力响应后）
     import transAdmin  from './transAdmin.vue'//太美
-    import paySuccess  from './paySuccess.vue'
 
     export default {
         data() {
@@ -22,18 +20,14 @@
                 adminShow:false,
                 respond:false,
                 intentShow:false,
-                payDialog:false
             }
         },
         methods: {
             formShow(){
 
             },
-            closeDetail(i){
+            closeDetail(){
                 this.detailShow = false;
-                if(i == '2'){
-                    this.payDialog = true;
-                }
             },
             openIntent() {
                 this.intentShow = true;
@@ -59,10 +53,7 @@
                 this.respond = false;
                 this.intentShow = false;
                 this.$emit('closeAirline');
-            },
-            closePaySuccess(){
-                this.payDialog = false;
-         },
+            }
         },
         mounted: function () {
 
@@ -71,8 +62,7 @@
             needDetail,
             myIntention,
             respondAirport,
-            transAdmin,
-            paySuccess
+            transAdmin
         }
     }
 </script>
