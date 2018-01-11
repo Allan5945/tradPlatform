@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="miList-wrapper">
+        <div class="miList-wrapper" @click="closeAllFn">
             <div class="miList-container">
                 <div class="title items">
                     <div class="list-a item">
@@ -10,7 +10,7 @@
                             <span class="icon-item icon-down" :class="{active: timeUpDown == false}">&#xe605;</span>
                         </div>
                     </div>
-                    <div class="list-b item" @click="typeShowFn">
+                    <div class="list-b item" @click.stop="typeShowFn">
                         {{typeWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <ul class="type-list" v-show="typeShow">
@@ -20,10 +20,10 @@
                     <div class="list-c item">
                         发布标题
                     </div>
-                    <div class="list-d item" @click="stateShowFn">
+                    <div class="list-d item" @click.stop="stateShowFn">
                         <span>{{stateWriting}}</span>
                         <div class="triangle-little" style="margin-left: 10px"></div>
-                        <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
+                        <stateList class="state-list" :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
                     </div>
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
@@ -91,10 +91,10 @@
                 type: [],
                 type0: ['运力投放'],
                 type1: ['航线需求'],
-                type2: ['运力投放','航线需求'],
+                type2: ['需求类型','运力投放','航线需求'],
                 state: [],
-                state1: ['意向征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
-                state2: ['意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
+                state1: ['状态','意向征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
+                state2: ['状态','意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
                 myPurposeShow: false, // myPublish是否显示
                 myPurpose1Show: false,// myPurpose1是否显示
                 myPurpose2Show: false,
@@ -121,26 +121,20 @@
         watch:{
             'sendData.orderType': function () {
                 this.getListData();
+//                console.info(0)
             },
-           /* 'sendData.demandType': function () {
+            'sendData.demandType': function () {
                 this.getListData();
-            },*/
+//                console.info(1)
+            },
             'sendData.responseProgress': function () {
                 this.getListData();
+//                console.info(2)
             },
             'sendData.page': function () {
                 this.getListData();
+//                console.info(3)
             },
-            myData0: function () {
-                this.myData0.forEach((val) => {
-                    this.myData2.push(val)
-                })
-            },
-            myData1: function () {
-                this.myData1.forEach((val) => {
-                    this.myData2.push(val)
-                })
-            }
         },
         mounted() {
             this.judgeRole();
@@ -157,23 +151,29 @@
                 this.sendData.page = val;
             },
             /*************************/
+            // 点击关闭所有下拉框
+            closeAllFn: function () {
+                this.typeShow = false;   //需求类型显示
+                this.stateShow = false;   //状态显示
+            },
             // 角色判断(0:航司,1:机场(政府),2:太美)，我的意向: 航司：航线需求,机场：运力需求
             judgeRole: function () {
-                if(this.role.role == 1) {  // 机场
-                    this.type = this.type0;
-                    this.myData = this.myData0;
-                    this.typeWriting = '运力投放';
-                    this.state = this.state2;
-                    this.sendData.demandType = 1;
-                }if(this.role.role == 0) {  // 航司
+                if(this.role.role == 0) {  // 航司
                     this.type = this.type1;
                     this.myData = this.myData1;
                     this.typeWriting = '航线需求';
                     this.state = this.state1;
                     this.sendData.demandType = 0;
+                }if(this.role.role == 1) {  // 机场
+                    this.type = this.type0;
+                    this.myData = this.myData0;
+                    this.typeWriting = '运力投放';
+                    this.state = this.state2;
+                    this.sendData.demandType = 1;
                 }if(this.role.role == 2) {  // 太美
                     this.type = this.type2;
                     this.myData = this.myData2;
+                    this.state = this.state2;
                 }
             },
             // ajax获取列表数据
@@ -186,13 +186,15 @@
                     },
                     params: this.sendData
                 }) .then((response) => {
-                    this.myData0 = [];
-                    this.myData1 = [];
                     if(response.data.opResult === '0') {
+                        this.myData0 = [];
+                        this.myData1 = [];
+                        this.myData2 = [];
                         this.totalCount = response.data.list.totalCount;
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
                         response.data.list.list.forEach((val) => {
+                            this.myData2.push(val);
                             if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
                                 this.myData0.push(val);
                             }
@@ -202,9 +204,9 @@
                         });
                         this.judgeRole();
                     }else if(response.data.opResult === '1') {
-//                        console.info('ajax1')
-//                        this.myData0 = [];
-//                        this.myData1 = [];
+                        this.myData0 = [];
+                        this.myData1 = [];
+                        this.myData2 = [];
                         this.totalCount = 0;
                         this.judgeRole();
                     }else {
@@ -248,6 +250,7 @@
             timeUpDownClick: function () {
                 this.myData0 = [];
                 this.myData1 = [];
+                this.myData2 = [];
                 this.timeUpDown = !this.timeUpDown;
                 this.sendData.orderType = this.timeUpDown ? 0 : 1;
             },
@@ -255,10 +258,14 @@
             typeClickFn: function (item) {
                 this.myData0 = [];
                 this.myData1 = [];
+                this.myData2 = [];
                 this.typeWriting = item;
                 this.sendData.responseProgress = '';
                 this.stateWriting = '状态';
-                if(item == '运力投放' || item == '运力需求') {
+                if(item == '需求类型') {
+                    this.state = this.state2;
+                    this.sendData.demandType = '';
+                }if(item == '运力投放' || item == '运力需求') {
                     this.state = this.state2;
                     this.sendData.demandType = 1;
                 }if(item == '航线需求') {
@@ -270,8 +277,11 @@
             stateClickFn: function (item) {
                 this.myData0 = [];
                 this.myData1 = [];
+                this.myData2 = [];
                 this.stateWriting = item;
-                if(item == '意向征集') {
+                if(item == '状态') {
+                    this.sendData.responseProgress = '';
+                }if(item == '意向征集') {
                     this.sendData.responseProgress = 0;
                 }if(item == '订单确认') {
                     this.sendData.responseProgress = 1;
@@ -486,6 +496,18 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+            .state-list {
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+            .state-list::-webkit-scrollbar {
+                width: 7px;
+            }
+            .state-list::-webkit-scrollbar-thumb {
+                height: 56px;
+                background: #D8D8D8;
+                border-radius: 4px;
             }
         }
         .list-e {

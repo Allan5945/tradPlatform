@@ -240,12 +240,12 @@
                 </div>
                 <div>
                     <div>客量预期</div>
-                    <div>{{receiveIntention.avgguestexpect}} 人/均班</div>
+                    <div>{{receiveIntention.avgguestexpect || '-'}}人/均班</div>
                     <!--<div>80</div>-->
                 </div>
                 <div>
                     <div>客座率预期</div>
-                    <div>{{receiveIntention.loadfactorsexpect}} %</div>
+                    <div>{{receiveIntention.loadfactorsexpect || '-'}}%</div>
                     <!--<div>80%</div>-->
                 </div>
                 <div>
@@ -255,7 +255,7 @@
                 </div>
                 <div>
                     <div>小时成本</div>
-                    <div>{{receiveIntention.hourscost}} 万元/小时</div>
+                    <div>{{receiveIntention.hourscost || '-'}}万元/小时</div>
                     <!--<div>8</div>-->
                 </div>
                 <div>
@@ -437,7 +437,7 @@
                                 </div>
                             </div>
                         </div>
-                       <!-- <div class="item-seventh">
+                        <!--<div class="item-seventh">
                             <div class="left font-gray">调度范围</div>
                             <div class="right">
                                 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场

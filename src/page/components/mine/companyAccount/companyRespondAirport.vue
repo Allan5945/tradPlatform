@@ -56,6 +56,10 @@
                       <div>有效期</div>
                       <div>{{detailData.periodValidity||'-'}}</div>
                   </div>
+                  <div class="note">
+                      <div>其他说明</div>
+                      <div>{{detailData.remark||'-'}}</div>
+                  </div>
               </div>
               <div class="myplan">
                   <div class="plan-til">
@@ -158,7 +162,7 @@
                           <div>是否调度</div>
                           <div>{{planData.schedulingStr||'-'}}</div>
                       </div>
-                      <div class="tips">
+                      <div class="note">
                           <div>其他说明</div>
                           <div>{{planData.remark||'-'}}</div>
                       </div>
@@ -179,8 +183,9 @@
               </div>
               <div class="btn" v-else>
                   <div class="cancel-btn"  @click="cancelIntent">取消意向</div>
-                  <div class="col-btn" @click="collect" v-if="!isCollect">收藏</div>
-                  <div class="col-btn"  v-if="isCollect">已收藏</div>
+                  <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
+                  @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                  <div class="col-btn" @click="collect" v-else>收藏</div>
               </div>
           </footer>
       </div>
@@ -201,7 +206,8 @@
              planData:{},
              detailData:{},
              intentionCount:0,
-             demandData:{}
+             demandData:{},
+             text:'已收藏',
          }
      },
       components: {
@@ -232,7 +238,7 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("取消意向成功！")
-                    this.$emit('responseClose');
+                    this.$emit('closeThis');
                   }
                 })
                 .catch((error) => {
@@ -258,7 +264,7 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("确认方案成功！")
-                    this.$emit('responseClose');
+                    this.$emit('closeThis');
                   }
                 })
                 .catch((error) => {
@@ -284,7 +290,7 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("撤回方案成功！")
-                    this.$emit('responseClose');
+                    this.$emit('closeThis');
                   }
                 })
                 .catch((error) => {
@@ -313,6 +319,34 @@
                         console.log(error);
                     }
                 );
+         },
+          cancelCollect:function(){
+            this.$ajax({
+                method: 'post',
+                url: '/delCollectByDemandId',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.planData.demandId
+                  }
+                })
+                .then((response) => {
+                     if(response.data.opResult == "0"){
+                      this.isCollect = false;
+                  }
+                })
+                .catch((error) => {
+                         console.log(error);
+                    }
+                );
+         },
+         changeText:function(i){
+            if(i == '1'){
+              this.text = "取消收藏";
+            }else{
+              this.text = "已收藏";
+            }
          }
 
      },
@@ -338,7 +372,7 @@
                 .then((response) => {
                     if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
                         this.$emit('responseShow');
-                        this.isIntentionMoney = response.data.isIntentionMoney;
+                        //this.isIntentionMoney = response.data.isIntentionMoney;
                         this.intentionCount = response.data.intentionCount;
                         this.detailData = response.data.data;
                         this.planData = response.data.receiveIntention;
@@ -479,6 +513,12 @@
               }
           }
       }
+      .note{
+          width:100%;
+          >div:nth-of-type(2){
+              width:440px;
+          }
+      }
     }
     .myplan{
         &::after {
@@ -529,33 +569,28 @@
         }
         .table-form{
             padding:40px 0 0 40px;
-            .tips{
-                width:100%;
-                >div:nth-of-type(2){
-                    width:440px;
-                }
-            }
         }
     }
-      .airplace{
-            margin-top:20px;
-             >div:nth-of-type(2){
-               height:45px;
-               font-size:2rem;
-               font-weight:bold;
-               padding-top:15px;
-               >div:nth-of-type(2){
-                   font-size:1rem;
-                   font-weight:normal;
-               }
-            }
-              .resouse{
-              margin:20px 0;
+    .airplace{
+        margin-top:20px;
+        >div:nth-of-type(2){
+            height:45px;
+            font-size:2rem;
+            font-weight:bold;
+            padding-top:15px;
+            >div:nth-of-type(2){
+                font-size:1rem;
+                font-weight:normal;
             }
         }
-        .close{
-            color:#3c78ff;
+        .resouse{
+            margin:20px 0;
         }
+    }
+
+    .close{
+        color:#3c78ff;
+    }
     footer{
         border-top: 1px solid #ccc;
           .btn{
@@ -582,6 +617,11 @@
               }
                .col-btn{
                   width:80px;
+              }
+              .cancel{
+                  color:#fff;
+                  background-color:#3c78ff;
+
               }
               .refuse-btn{
                   width:100px;

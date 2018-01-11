@@ -63,17 +63,24 @@
                 <div>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
                     <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                    <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
-                    <div class="col-btn"  v-else>已收藏</div>
+                    <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn" @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :demandId="demandId"></intentForm>
+        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+        <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
     </div>
 </template>
 
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';
+ import intentForm from '$src/page/components/trans_detail/intentForm.vue'
+ import transDialog from '$src/page/components/trans_detail/transDialog.vue'
+ import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue'
+
  export default {
      data(){
          return{
@@ -81,15 +88,33 @@
              detailData:{},
              intentionCount:0,
              demandId:'',
-             isCollect:true
+             text:'已收藏',
+             isCollect:false,
+             intentFormShow:false,
+             dialog:false,
+             payDialog:false
          }
      },
      methods:{
          closeDetail:function(){
-            this.$emit("close-this");
+            this.$emit('close-this');
          },
+         closeForm:function(){
+            this.intentFormShow = false;
+         },
+         closeDialog:function(){
+            this.dialog = false;
+         },
+         sureDialog:function(){
+            this.intentFormShow = false;
+            this.payDialog = true;
+         },
+         closePaySuccess:function(){
+            this.payDialog = false;
+            this.$emit('close-this');
+        },
          haveInvent:function(){
-             this.$emit("refresh");
+            this.intentFormShow = true;
          },
          collect:function(){
              this.$ajax({
@@ -103,12 +128,42 @@
                 }
                 })
                 .then((response) => {
-                  this.isCollect = false;
+                  if(response.data.opResult == "0"){
+                      this.isCollect = true;
+                  }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+         },
+         cancelCollect:function(){
+            this.$ajax({
+                method: 'post',
+                url: '/delCollectByDemandId',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.demandId
+                  }
+                })
+                .then((response) => {
+                     if(response.data.opResult == "0"){
+                      this.isCollect = false;
+                  }
+                })
+                .catch((error) => {
+                         console.log(error);
+                    }
+                );
+         },
+         changeText:function(i){
+          if(i == '1'){
+            this.text = "取消收藏";
+          }else{
+            this.text = "已收藏";
+          }
          }
      },
      computed: {
@@ -122,25 +177,25 @@
                //console.log("demandtype"+val.data.demandtype);
                 this.demandId = val.demand.id;
                 this.$ajax({
-                    method: 'post',
-                    url: '/capacityRoutesDemandDetailFindById',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                      params: {
-                        demandId: this.demandId
-                    }
+                method: 'post',
+                url: '/capacityRoutesDemandDetailFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId: this.demandId
+                }
                 })
                 .then((response) => {
                     if(response.data.opResult == "004"|| response.data.receiveIntention == null){
-                        this.$emit("transShow");
+                        this.$emit('transShow');
                     }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                      if(response.data.isAlreadyCollect == true){
-                        this.isCollect = false;
+                        this.isCollect = true;
                     }else if(response.data.isAlreadyCollect == false){
-                       this.isCollect = true;
+                        this.isCollect = false;
                     }
                 })
                 .catch((error) => {
@@ -149,23 +204,16 @@
                 );
             };
         });
-
-
-
      },
+      components: {
+            intentForm,
+            transDialog,
+            paySuccess
+        }
 }
 </script>
 
 <style lang="scss" scoped>
-    .wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, .4);
-        z-index: 30;
-    }
     .detail-wrapper{
         position:absolute;
         top:0;
@@ -309,6 +357,15 @@
                   border-radius:100px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  &:hover{
+                      color:#fff;
+                      background-color:#3c78ff;
+                  }
+              }
+              >.cancel{
+                  color:#fff;
+                  background-color:#3c78ff;
+
               }
           }
     }
