@@ -1,6 +1,7 @@
 <template>
     <div class="registered-box">
         <div v-if="!newPas">
+            <!-- <inputControx :test.sync="test"></inputControx> -->
             <userInput :par="userArg" v-on:reqMes="reqEmail"></userInput>
             <div class="occupies-prompt"> 
                 <validation v-if="validationTag" v-on:validation="validaon"></validation>
@@ -8,7 +9,7 @@
                 <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
             </div>
         </div>
-        <div class="set-newpas">
+        <div class="set-newpas" v-if="newPas">
             <userInput :par="newPas0" v-on:reqMes="reqnewPas0" :errs="errs0"></userInput>
             <userInput :par="newPas1" v-on:reqMes="reqnewPas1" style="margin-top:32px;" v-if="determine" :errs="errs1" :mandatoryJudge="mandatoryJudge1"></userInput>
             <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
@@ -26,12 +27,13 @@ import userInput from '../components/userInputClass1.vue';
 import validation from '../components/validation.vue'; 
 import verificationCode from '../components/verificationCode.vue'; 
 import inputControl from '../components/inputControl.vue'; 
-// import inputControl from '../components/inputControlX.vue'; 
+import inputControx from '../components/inputControlX.vue'; 
 import errTip from '../components/errTip.vue'; 
  
 export default {
     data(){
         return{
+            test:{a:'666666',b:2},
             id:"",
             userArg:{
                 defaultText:"",     // 默认的值
@@ -191,7 +193,11 @@ export default {
     userInput:inputControl, 
     validation,
     verificationCode,
-    errTip
+    errTip,
+    inputControx
+  },
+  mounted:function(){
+      console.log(this.test)
   },
   computed:{
       process(){
