@@ -61,6 +61,16 @@
                     </div>
                 </div>
             </div>
+            <el-pagination
+                    class="pagination"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage4"
+                    :page-sizes="[100, 200, 300, 400]"
+                    :page-size="numPrePage"
+                    layout="prev, pager, next, jumper, total"
+                    :total="totalCount">
+            </el-pagination>
         </div>
         <transition-group name="slidex-fade">
             <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
@@ -121,6 +131,10 @@
                     orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
                 responseEmployeesIndex: '', // 对我发布的需求有意向的用户列表是否显示
+                currentPage4: 1,    // element-ui组件
+                totalCount: 1,
+                pageCount: 1,
+                numPrePage: 1,
             }
         },
         mounted() {
@@ -139,9 +153,11 @@
 //                this.judgeRole();
             },
             'sendData.demandprogress': function () {
-//                console.info('1')
                 this.getListData();
 //                this.judgeRole();
+            },
+            'sendData.page': function () {
+                this.getListData();
             },
         },
         computed: {
@@ -150,6 +166,16 @@
             ]),
         },
         methods: {
+            // element-ui里的方法
+            handleSizeChange(val) {
+//                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+//                console.log(`当前页: ${val}`);
+                this.sendData.page = val;
+            },
+            /*************************/
+
             // 根据登陆角色不同，展示的数据不同
             judgeRole: function () {
                 // 判断是机场(1)还是航司(0)登录
@@ -176,6 +202,11 @@
 //                    console.info('myPublishList获取的数据:')
 //                    console.info(response)
                     if(response.data.opResult === '0') {
+                        this.myData0 = [];
+                        this.myData1 = [];
+                        this.totalCount = response.data.list.totalCount;
+                        this.pageCount = response.data.list.pageCount;
+                        this.numPrePage = response.data.list.numPrePage;
                         response.data.list.list.forEach((val) => {
                             if(val.demandtype == 1 || val.demandtype == 4 ){
                                 this.myData0.push(val);
@@ -188,6 +219,7 @@
 //                        console.info('ajax1')
                         this.myData0 = [];
                         this.myData1 = [];
+                        this.totalCount = 0;
                         this.judgeRole();
                     }else {
                         alert('无法请求到数据，错误代码：' + response.data.opResult)
@@ -198,8 +230,8 @@
             },
             // 刷新页面数据
             refreshFn: function () {
-                this.myData0 = [];
-                this.myData1 = [];
+//                this.myData0 = [];
+//                this.myData1 = [];
                 this.getListData();
             },
             // 点击对应的意向用户，弹出聊天框
@@ -393,6 +425,11 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    /*element-ui分页组件*/
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
     ul {
         position: absolute;
         margin: 0;

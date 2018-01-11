@@ -59,7 +59,6 @@
     import companyMyIntention from './companyMyIntention.vue'
     import companyNeedDetail from './companyNeedDetail.vue'
     import companyRespondAirport from './companyRespondAirport.vue'
-
     export default {
         data() {
             return {

@@ -17,8 +17,9 @@
             </div>
         </div>
         <div class="choose">
-            <div class="items bg-color" style="position: relative;">
+            <div class="items bg-color" style="position: relative; padding-bottom: 20px;">
                 <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
+                <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地、经停地、到达地不能相同！</div>
                 <div class="first">
                     <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1" @li-click="getArea1" style="left: 0;"></airAreaSearch>
                     <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow2" @li-click="getArea2" style="left: 70px;"></airAreaSearch>
@@ -398,6 +399,7 @@
                 warn6Show: false,  //拟开航时间警告
                 warn7Show: false,  //需求有效期警告
                 warn8Show: false,  //始发地为区域，经停、到达必须有一个为意向机场
+                warn9Show: false,  // 始发地、经停地、到达地不能相同
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -646,12 +648,22 @@
                     return
                 }if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
                     if((this.pstState == 0 && this.sendData.pst != '')
-                        || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域，经停或到达必须有一个为意向机场
+                        || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
                         this.warn8Show = false;
                     }else{
                         this.warn8Show = true;
                         req.scrollTop = 0;
                         return
+                    }
+                }if(this.sendData.pst != '' || this.sendData.arrv != '') { //始发、经停、到达不能相同
+                    if(this.sendData.dpt == this.sendData.pst
+                        || this.sendData.dpt == this.sendData.arrv
+                        || this.sendData.pst == this.sendData.arrv) {
+                        this.warn9Show = true;
+                        req.scrollTop = 0;
+                        return
+                    }else {
+                        this.warn9Show = false;
                     }
                 }
                 if(this.myDate1 == '选择起止时间') { // 拟开时间
@@ -924,12 +936,16 @@
                 this.secArea = this.secAreaBus;
                 this.secAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow2 = false;
+                this.warn8Show = false;
+                this.warn9Show = false;
             },
             getArea3: function (areaMes) {
                 this.thirdAreaBus = areaMes.name;
                 this.thirdArea = this.thirdAreaBus;
                 this.thirdAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow3 = false;
+                this.warn8Show = false;
+                this.warn9Show = false;
             },
             //时刻资源
             dptTimeresourcesFn0: function () {
@@ -1034,6 +1050,7 @@
 //                this.secArea = data.name;
                 this.qyCode2 = data.code;
                 this.warn8Show = false;
+                this.warn9Show = false;
             },
             resData3: function (data) {
                 this.isSearch3 = false;
@@ -1041,6 +1058,7 @@
 //                this.thirdArea = data.name;
                 this.qyCode3 = data.code;
                 this.warn8Show = false;
+                this.warn9Show = false;
             },
             resData4: function (data) { // 定向发布，点击下拉选择定向航司
                 this.isSearch4 = false;
@@ -1694,7 +1712,7 @@
         position: relative;
         display: flex;
         justify-content: space-between;
-        padding: 10px 20px 20px 20px;
+        padding: 10px 20px 0 20px;
         height: 160px;
         .item {
             position: absolute;

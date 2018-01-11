@@ -240,12 +240,12 @@
                 </div>
                 <div>
                     <div>客量预期</div>
-                    <div>{{receiveIntention.avgguestexpect}}</div>
+                    <div>{{receiveIntention.avgguestexpect}} 人/均班</div>
                     <!--<div>80</div>-->
                 </div>
                 <div>
                     <div>客座率预期</div>
-                    <div>{{receiveIntention.loadfactorsexpect}}</div>
+                    <div>{{receiveIntention.loadfactorsexpect}} %</div>
                     <!--<div>80%</div>-->
                 </div>
                 <div>
@@ -255,7 +255,7 @@
                 </div>
                 <div>
                     <div>小时成本</div>
-                    <div>{{receiveIntention.hourscost}}</div>
+                    <div>{{receiveIntention.hourscost}} 万元/小时</div>
                     <!--<div>8</div>-->
                 </div>
                 <div>
@@ -407,7 +407,7 @@
                                     <div class="item-a item-height">{{item.contact}}</div>
                                     <div class="item-a item-height">{{item.sailingtime}}</div>
                                     <div class="item-b item-height">{{item.aircrfttyp}}</div>
-                                    <div class="item-c item-height">{{item.loadfactorsexpect}}人/均班</div>
+                                    <div class="item-c item-height">{{item.loadfactorsexpect || '-'}}人/均班</div>
                                     <div class="item-d item-height">{{subsidypolicyFn(item.subsidypolicy)}}</div>
                                     <div class="item-height">
                                         <span v-if="item.capacityCompany != null">{{item.capacityCompany.airlnCd}}</span>
@@ -431,18 +431,18 @@
                                     <div class="item-height">{{item.ihome}}</div>
                                     <div class="item-height">{{item.days}}</div>
                                     <div class="item-height">{{item.seating}}</div>
-                                    <div class="item-height">{{item.loadfactorsexpect}}%</div>
-                                    <div class="item-height" style="display: flex;">{{item.hourscost}}万元/小时</div>
+                                    <div class="item-height">{{item.loadfactorsexpect || '-'}}%</div>
+                                    <div class="item-height" style="display: flex;">{{item.hourscost || '-'}}万元/小时</div>
                                     <div class="item-height">{{item.capacityBaseNm}}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="item-seventh">
+                       <!-- <div class="item-seventh">
                             <div class="left font-gray">调度范围</div>
                             <div class="right">
                                 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场
                             </div>
-                        </div>
+                        </div>-->
                         <div class="item-fourth">
                             <div class="left font-gray">其他说明</div>
                             <div class="right">

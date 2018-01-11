@@ -54,6 +54,16 @@
                     </div>
                 </div>
             </div>
+            <el-pagination
+                    class="pagination"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage4"
+                    :page-sizes="[100, 200, 300, 400]"
+                    :page-size="numPrePage"
+                    layout="prev, pager, next, jumper, total"
+                    :total="totalCount">
+            </el-pagination>
         </div>
         <transition-group name="slidex-fade">
             <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" :key="5"></myPurpose>
@@ -102,6 +112,10 @@
                     orderType: 0            // 发布时间排序类型，0:倒序，1:正序
                 },
                 sendDataToMyPurpose: {},   // 向myPurpose传数据
+                currentPage4: 1,    // element-ui组件
+                totalCount: 1,
+                pageCount: 1,
+                numPrePage: 1,
             }
         },
         watch:{
@@ -112,6 +126,9 @@
                 this.getListData();
             },*/
             'sendData.responseProgress': function () {
+                this.getListData();
+            },
+            'sendData.page': function () {
                 this.getListData();
             },
             myData0: function () {
@@ -131,6 +148,15 @@
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         methods: {
+            // element-ui里的方法
+            handleSizeChange(val) {
+//                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+//                console.log(`当前页: ${val}`);
+                this.sendData.page = val;
+            },
+            /*************************/
             // 角色判断(0:航司,1:机场(政府),2:太美)，我的意向: 航司：航线需求,机场：运力需求
             judgeRole: function () {
                 if(this.role.role == 1) {  // 机场
@@ -163,6 +189,9 @@
                     this.myData0 = [];
                     this.myData1 = [];
                     if(response.data.opResult === '0') {
+                        this.totalCount = response.data.list.totalCount;
+                        this.pageCount = response.data.list.pageCount;
+                        this.numPrePage = response.data.list.numPrePage;
                         response.data.list.list.forEach((val) => {
                             if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
                                 this.myData0.push(val);
@@ -176,6 +205,7 @@
 //                        console.info('ajax1')
 //                        this.myData0 = [];
 //                        this.myData1 = [];
+                        this.totalCount = 0;
                         this.judgeRole();
                     }else {
                         alert('无法请求到数据，错误代码：' + response.data.opResult)
@@ -326,6 +356,10 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
     ul {
         position: absolute;
         margin: 0;

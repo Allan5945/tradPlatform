@@ -53,8 +53,8 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info('dialog:')
-                    console.info(response)
+//                    console.info('dialog:')
+//                    console.info(response)
                     if(response.data.opResult === '0'){
                         setTimeout(function(){
                             that.$emit('cancel');
