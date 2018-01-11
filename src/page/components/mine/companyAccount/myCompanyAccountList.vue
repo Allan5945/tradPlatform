@@ -41,7 +41,7 @@
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
             <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1"></AccountWithdrawDetail>
-            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeCompanyAirlineDetailPayAfterFn" @refresh="refreshFn" :key="2"></companyAirlineDetailPayAfter>
+            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeCompanyAirlineDetailPayAfterFn" :key="2"></companyAirlineDetailPayAfter>
             <companyMyIntention v-show="companyMyIntentionShow" @closeThis="closeCompanyMyIntentionFn" @openIntent="openIntent" :key="3"></companyMyIntention>
             <companyNeedDetail v-show="companyNeedDetailShow" @closeThis="closeCompanyMyIntentionFn" @transShow="transShow" :key="4"></companyNeedDetail>
             <companyRespondAirport v-show="companyRespondAirportShow" @closeThis="closeCompanyMyIntentionFn" @responseShow="responShow" :key="5"></companyRespondAirport>
@@ -190,11 +190,13 @@
             closeAccountRechargeDetailFn: function () {
                 this.AccountRechargeDetailShow = false;
                 this.listItemIndex = '';
+                this.refreshFn();
             },
             // 关闭“提现详情”
             closeAccountWithdrawDetailFn: function () {
                 this.AccountWithdrawDetailShow = false;
                 this.listItemIndex = '';
+                this.refreshFn();
             },
             // 点击展示（航线、运力）详情
             needDetailClickFn: function (item) {
@@ -215,6 +217,7 @@
             closeCompanyAirlineDetailPayAfterFn: function () {
                 this.companyAirlineDetailPayAfterShow = false;
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             },
             // 关闭“运力详情”
             closeCompanyMyIntentionFn: function () {
@@ -222,6 +225,7 @@
                 this.companyNeedDetailShow = false;
                 this.companyRespondAirportShow = false;
                 tabulationBoxTrigger.hierarchy = false;
+                this.refreshFn();
             },
         },
         components: {

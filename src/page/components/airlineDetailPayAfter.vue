@@ -437,6 +437,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="item-seventh">
+                            <div class="left font-gray">调度范围</div>
+                            <div class="right">
+                                南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场
+                            </div>
+                        </div>
                         <div class="item-fourth">
                             <div class="left font-gray">其他说明</div>
                             <div class="right">
@@ -489,8 +495,8 @@
                 </div>
                 <div class="buttons" v-else>
                     <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
-                    <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
                 </div>
             </div>
 
@@ -591,6 +597,7 @@
                 airlnCd: '',            // 运力归属
                 isAlreadyCollect: false, // 是否已收藏
                 btnDisableShow: false,       // 禁止点击按钮
+                btnDisableShowArry: [],    // 存储获取的releaseselected参数
             }
         },
         created() {
@@ -601,6 +608,7 @@
                     this.$emit('transShow');
                 }
             });
+
         },
         computed: {
             ...vx.mapGetters([
@@ -633,7 +641,7 @@
                     this.pstTime1 = this.myData.pstTime.split(',')[1];
                     this.sailingtime0 = this.myData.sailingtime.split(',')[0];
                     this.sailingtime1 = this.myData.sailingtime.split(',')[1];
-                    this.periodValidity1 = this.myData.periodValidity.split(',')[1];
+                    this.periodValidity1 = this.myData.periodValidity.split('-')[1];
                     if (this.myData.subsidypolicy == 0) {
                         this.subsidypolicy = '定补'
                     }
@@ -671,11 +679,20 @@
                                 this.fifthButtonShow = false;
                             }
                             this.listData = response.data.responseList;   //获取意向列表
+                            this.btnDisableShowArry = [];
                             this.listData.forEach((v) => {
                                 if(v.releaseselected === '0') {
-                                    this.btnDisableShow = true;
+                                    this.btnDisableShowArry.push('0');
+                                }else {
+                                    this.btnDisableShowArry.push('1');
                                 }
-                            })
+                            });
+                            // 判断当中有没有已选定的 1：未选定，0：已选定
+                            if(this.btnDisableShowArry.indexOf('0') == '-1') {
+                                this.btnDisableShow = false;
+                            }else{
+                                this.btnDisableShow = true;
+                            }
                         }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
 //                        console.info('000000')
                             this.showCode = 0;
@@ -887,7 +904,7 @@
             },
             // 日历
             editCalendarFn: function () {
-                this.calendarShow1 = true;
+                this.calendarShow1 = !this.calendarShow1;
             },
             getDate1: function (d) {//获取组件返回的日期
                 this.calendarInitDay1 = d.split('-').join('.');
@@ -1770,6 +1787,17 @@
                             height: 40px;
                         }
                     }
+                }
+            }
+            .item-seventh {
+                display: flex;
+                /*margin-bottom: 95px;*/
+                padding: 0 20px;
+                /*height: 80px;*/
+                .left {
+                    flex-shrink: 0;
+                    width: 80px;
+                    line-height: 20px;
                 }
             }
             .item-fourth {

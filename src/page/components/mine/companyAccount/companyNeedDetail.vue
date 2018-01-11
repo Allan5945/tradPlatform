@@ -3,10 +3,10 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="tips">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
-                    <span>已有{{intentionCount||'-'}}位用户发起意向</span>
+                    <span>已有{{intentionCount||'0'}}位用户发起意向</span>
                 </div>
             </header>
             <div class="content">
@@ -41,6 +41,10 @@
                      {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
                      {{detailData.intendedAirlines[0].arrvName||'-'}}
                    </div>
+               </div>
+               <div class="intent-airline" v-else>
+                   <div>意向航线</div>
+                   <div class="i-line">-</div>
                </div>
                 <div>
                     <div>小时成本</div>
@@ -116,7 +120,7 @@
         tabulationBoxTrigger.$on('sendToCompany', val => {
             if((val.demandType == '运力需求' || val.demandType == '运力投放') && this.role.role == 1){
                //console.log("demandtype"+val.data.demandtype);
-                this.demandId = val.demandId
+                this.demandId = val.demandId;
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',

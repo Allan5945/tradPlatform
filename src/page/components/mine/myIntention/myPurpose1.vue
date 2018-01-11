@@ -3,22 +3,14 @@
       <div class="plan-wrapper scroll">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
-              <div class="head-til">{{detailData.title||'-'}}</div>
+              <div class="head-til">{{detailData.title||'-'}}运力投放</div>
               <div class="tips">
                   <span>创建于{{detailData.releasetime||'-'}}</span>
-                  <span>已有{{intentionCount||'-'}}位用户发起意向</span>
+                  <span>已有{{intentionCount||'0'}}位用户发起意向</span>
               </div>
           </header>
           <div class="content">
               <div class="table-form">
-                  <div>
-                      <div>联系人</div>
-                      <div>{{detailData.contact||'-'}}</div>
-                  </div>
-                   <div>
-                      <div>联系方式</div>
-                      <div>{{detailData.iHome||'-'}}</div>
-                  </div>
                    <div>
                       <div>机型</div>
                       <div>{{detailData.aircrfttyp||'-'}}</div>
@@ -72,12 +64,13 @@
                   </div>
                   <div class="airline">
                       <div class="airplace">
-                          <div>始发机场</div>
+                          <div v-if="planData.dptState =='0' ">始发机场</div>
+                          <div v-else>始发区域</div>
                           <div>
                              <div>{{planData.dptNm||'-'}}</div>
-                             <div>{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
+                             <div v-if="planData.dptState =='0' ">{{planData.dptAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
-                           <div class="resouse">
+                           <div class="resouse" v-if="planData.dptState =='0' ">
                               <div>出港资源</div>
                               <div v-if="planData.dptTimeresources == '0'">{{planData.dptTime||'-'}}</div>
                               <div v-else>{{planData.dptTimeresourcesStr||'-'}}</div>
@@ -85,12 +78,13 @@
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
-                          <div>经停机场</div>
+                          <div v-if="planData.pstState =='0' ">经停机场</div>
+                          <div v-else>经停区域</div>
                           <div>
                             <div>{{planData.pstNm||'-'}}</div>
-                            <div>{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
+                            <div v-if="planData.pstState =='0' ">{{planData.pstAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
-                          <div class="resouse">
+                          <div class="resouse" v-if="planData.pstState =='0' ">
                               <div>出港资源</div>
                               <div v-if="planData.pstTimeresources == '0'">{{planData.pstTime||'-'}}</div>
                               <div v-else>{{planData.pstTimeresourcesStr||'-'}}</div>
@@ -98,12 +92,13 @@
                       </div>
                       <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                       <div class="airplace">
-                          <div>到达区域</div>
+                          <div v-if="planData.arrvState =='0' ">到达机场</div>
+                          <div v-else>到达区域</div>
                           <div>
                             <div>{{planData.arrvNm||'-'}}</div>
-                            <div>{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                            <div v-if="planData.arrvState =='0' ">{{planData.arrvAcceptnearairportStr||'-'}}临近机场</div>
                           </div>
-                          <div class="resouse">
+                          <div class="resouse" v-if="planData.arrvState =='0' ">
                               <div>出港资源</div>
                               <div v-if="planData.arrvTimeresources == '0'">{{planData.arrvTime||'-'}}</div>
                               <div v-else>{{planData.arrvTimeresourcesStr||'-'}}</div>
@@ -189,16 +184,15 @@
               </div>
           </footer>
       </div>
-    <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "planData"></sureForm>
+    <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
     </div>
 </template>
 
 <script>
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import sureForm from '$src/page/components/trans_detail/sureForm.vue'
+ import sureForm from '$src/page/components/trans_detail/sureForm1.vue'
  export default {
-//     props:['sendDataToMyPurpose'],
      data(){
          return{
              planShow:true,
@@ -238,7 +232,6 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("取消意向成功！")
-                      this.$emit('refresh');
                     this.$emit('close-this');
                   }
                 })
@@ -265,7 +258,6 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("确认方案成功！")
-                      this.$emit('refresh');
                     this.$emit('close-this');
                   }
                 })
@@ -292,7 +284,6 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("撤回方案成功！")
-                      this.$emit('refresh');
                     this.$emit('close-this');
                   }
                 })
@@ -315,7 +306,6 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                     //alert("收藏成功！")
-                      this.$emit('refresh');
                     this.isCollect = true;
                   }
                 })
@@ -332,42 +322,43 @@
             ])
       },
        mounted() {
-           tabulationBoxTrigger.$on('sendDataToMyPurpose12', val => {
-                if(val.demand.demandtype == 1){
-                    this.$ajax({
-                    method: 'post',
-                    url: '/capacityRoutesDemandDetailFindById',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                      params: {
-                        demandId: val.demand.id
+        tabulationBoxTrigger.$on('sendDataToMyPurpose12', val => {
+            if(val.demand.demandtype == 1 && this.role.role == 1){
+               //console.log("demandtype"+val.data.demandtype);
+                this.$ajax({
+                method: 'post',
+                url: '/capacityRoutesDemandDetailFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId: val.demand.id
+                }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
+                        this.$emit('responseShow');
+                        this.isIntentionMoney = response.data.isIntentionMoney;
+                        this.intentionCount = response.data.intentionCount;
+                        this.detailData = response.data.data;
+                        this.planData = response.data.receiveIntention;
+
+                        if(response.data.isAlreadyCollect == true){
+                            this.isCollect = true;
+                        }else if(response.data.isAlreadyCollect == false){
+                           this.isCollect = false;
+                        }
                     }
-                    })
-                    .then((response) => {
-                        if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
 
-                            this.$emit('responseShow');
-                            this.isIntentionMoney = response.data.isIntentionMoney;
-                            this.intentionCount = response.data.intentionCount;
-                            this.detailData = response.data.data;
-                            this.planData = response.data.receiveIntention;
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
 
-                            if(response.data.isAlreadyCollect == true){
-                                this.isCollect = true;
-                            }else if(response.data.isAlreadyCollect == false){
-                               this.isCollect = false;
-                            }
-                        }
+            };
+        });
 
-                    })
-                    .catch((error) => {
-                            console.log(error);
-                        }
-                    );
-
-                };
-           })
      },
 
 }

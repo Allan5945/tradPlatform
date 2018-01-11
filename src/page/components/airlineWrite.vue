@@ -663,10 +663,9 @@
                 if(this.acceptData.arrvState === "0") {
                     this.space3ShowTitle = this.spaceList[1];
                     this.space3Fn(this.spaceList[1]);
-                    if(this.acceptData.dptNm != null) {
-                        this.firArea = this.acceptData.dptNm;
+                    if(this.acceptData.arrvNm != null) {
+                        this.thirdArea = this.acceptData.arrvNm;
                     }
-
                     this.qyCode3 = this.acceptData.arrv;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.arrvAcceptnearairport === "0") {

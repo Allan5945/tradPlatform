@@ -3,10 +3,10 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="tips">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
-                    <span>已有{{intentionCount||'-'}}位用户发起意向</span>
+                    <span>已有{{intentionCount||'0'}}位用户发起意向</span>
                 </div>
             </header>
             <div class="content">
@@ -41,6 +41,10 @@
                      {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
                      {{detailData.intendedAirlines[0].arrvName||'-'}}
                    </div>
+               </div>
+               <div class="intent-airline" v-else>
+                   <div>意向航线</div>
+                   <div class="i-line">-</div>
                </div>
                 <div>
                     <div>小时成本</div>
@@ -85,7 +89,7 @@
             this.$emit("close-this");
          },
          haveInvent:function(){
-             this.$emit('refresh');
+             this.$emit("refresh");
          },
          collect:function(){
              this.$ajax({
@@ -99,7 +103,6 @@
                 }
                 })
                 .then((response) => {
-                    this.$emit('refresh');
                   this.isCollect = false;
                 })
                 .catch((error) => {
@@ -113,20 +116,20 @@
                 'role'
             ])
         },
-     mounted() {
+      mounted() {
         tabulationBoxTrigger.$on('sendDataToMyPurpose12', val => {
-            if(val.demand.demandtype == 1){
+            if(val.demand.demandtype == 1 && this.role.role == 1){
                //console.log("demandtype"+val.data.demandtype);
                 this.demandId = val.demand.id;
                 this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: this.demandId
-                }
+                    method: 'post',
+                    url: '/capacityRoutesDemandDetailFindById',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                      params: {
+                        demandId: this.demandId
+                    }
                 })
                 .then((response) => {
                     if(response.data.opResult == "004"|| response.data.receiveIntention == null){
@@ -146,6 +149,9 @@
                 );
             };
         });
+
+
+
      },
 }
 </script>
