@@ -110,6 +110,7 @@
                             this.loginTime ++;
                             setTimeout(()=>{this.showE = false;},1500);
                         }else{
+                            this.$emit('update:ags',{  tltle:"(╯︵╰)登录失败",text:"登录异常，请稍后再试或者拨打客服服务热线"});
                             this.$emit('update:loginErr',true);
                         }
                     }

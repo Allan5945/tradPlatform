@@ -185,34 +185,6 @@ export default {
         transition: all .3s ease;
         z-index: -1;
     }
-    //  .user-input{
-    //     position: relative;
-    //     >span{
-    //         position: absolute;
-    //         font-family: iconfont;
-    //         top: 9px;
-    //         right:18px; 
-    //         font-size: 1.8rem;
-    //         cursor: pointer;
-    //         color:#989898;
-    //     }
-    //    >input{
-    //     width: 273px;
-    //     height: 38px;
-    //     border:1px solid #e9e9e9; 
-    //     border-radius:19px;
-    //     padding-left: 15px;
-    //     outline: none;
-    //     color: #605E7C;
-    //     letter-spacing:0;
-    //     &::-webkit-input-placeholder{
-    //         letter-spacing:0;
-    //     }
-    //    }
-    // }
-    // .show-color{
-    //     color:#4468fc !important;
-    // }
 </style>
 
 

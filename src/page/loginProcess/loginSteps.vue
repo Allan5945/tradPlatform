@@ -1,9 +1,9 @@
 <template>
   <div class="login-steps popup">
         <titles v-on:clear="closeWindow" :arg="title"></titles>
-        <loginBox v-if="setpes == 0 && !openErr" v-on:openClass="openClass" :loginErr.sync="openErr"></loginBox>
-        <loginErr v-if="openErr" :loginErr.sync="openErr"></loginErr>
-        <registered v-if="setpes == 1" v-on:openClass="openClass"></registered>
+        <loginBox v-if="setpes == 0 && !openErr" v-on:openClass="openClass" :ags.sync="ags" :loginErr.sync="openErr"></loginBox>
+        <loginErr v-if="openErr" :loginErr.sync="openErr" :ags="ags"></loginErr>
+        <registered v-if="setpes == 1" v-on:openClass="openClass" :loginErr.sync="openErr" v-on:pasChange="pasChange"></registered>
   </div>
 </template>
 <script>
@@ -18,6 +18,10 @@ export default {
             return {
                 setpes:0,  // 0,登录流程。1，找回密码流程。2，注册功能
                 openErr:false, // 是否打开 登录失败的界面
+                ags:{
+                    tltle:"(╯︵╰)登录失败",
+                    text:"登录异常，请稍后再试或者拨打客服服务热线"
+                }
             }
         },
         props:['foo'],
@@ -27,6 +31,22 @@ export default {
            },
            closeWindow(){
                this.$emit('update:stepOff', false)
+           },
+           pasChange(t){
+               if(t){
+                    this.ags = {
+                    tltle:"(oﾟ▽ﾟ)o修改成功",
+                    text:""
+                  }
+               }else{
+                   this.ags = {
+                    tltle:"(╯︵╰)修改失败",
+                    text:"请稍后再试或者拨打客服服务热线"
+                  }
+                 
+               }
+                this.setpes = 0;
+                this.openErr = true;
            }
         },
         created:function () {

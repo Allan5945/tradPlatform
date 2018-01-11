@@ -1,7 +1,7 @@
 <template>
   <div class="loginErr-box">
-        <h3 class="loginErr-title">(╯︵╰)登录失败</h3>
-        <p class="loginErr-mes">站好异常，请稍后再试或者拨打客服服务热线</br>{{time}}s后自动返回登录</p>
+        <h3 class="loginErr-title" v-text="ags.tltle"></h3>
+        <p class="loginErr-mes">{{ags.text}}</br>{{time}}s后自动返回登录</p>
         <div class="btn btn-b back-btn" @click="backLogin">返回登录</div>
         <div class="cup">
             <cuPhone></cuPhone>
@@ -16,14 +16,14 @@ export default {
             time:5
         }
     },
-    peops:['loginErr'],
+    props:['loginErr','ags'],
     methods:{
-        
         backLogin(){
             this.$emit('update:loginErr',false);
         }
     },
    mounted:function(){
+       console.log(this.ags)
         setInterval(()=>{
             this.time --;
             if(this.time == 0){

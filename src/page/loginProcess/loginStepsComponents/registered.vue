@@ -8,12 +8,14 @@
                 <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
             </div>
         </div>
-        <div>
-            <userInput :par="newPas0" v-on:reqMes="reqnewPas0"></userInput>
+        <div class="set-newpas">
+            <userInput :par="newPas0" v-on:reqMes="reqnewPas0" :errs="errs0"></userInput>
+            <userInput :par="newPas1" v-on:reqMes="reqnewPas1" style="margin-top:32px;" v-if="determine" :errs="errs1" :mandatoryJudge="mandatoryJudge1"></userInput>
+            <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
         </div>
          <div class="step-btn">
              <div v-if="!newPas" :class="{'btn-b':process ,'step-btn-dis':!process}" class="btn" @click="bgyanz">确认</div>
-             <div v-if="newPas" :class="{'btn-b':true ,'step-btn-dis':!true}" class="btn">确认</div>
+             <div v-if="newPas" :class="{'btn-b':reeq ,'step-btn-dis':!reeq}" class="btn" @click="changePas">确认</div>
              <div class="btn btn-w" @click="openReg">返回登录</div>
          </div>
          <div class="lxkf">联系客户：0000-0000000</div>
@@ -24,11 +26,13 @@ import userInput from '../components/userInputClass1.vue';
 import validation from '../components/validation.vue'; 
 import verificationCode from '../components/verificationCode.vue'; 
 import inputControl from '../components/inputControl.vue'; 
+// import inputControl from '../components/inputControlX.vue'; 
 import errTip from '../components/errTip.vue'; 
  
 export default {
     data(){
         return{
+            id:"",
             userArg:{
                 defaultText:"",     // 默认的值
                 inputType:true,   // 输入框类型，true、text。false、password
@@ -46,19 +50,36 @@ export default {
             validationTag:false,  // 滑动验证
 
             //      新密码 
-            newPas:true,     // 是否填写新密码
-           newPas0:{
+            newPas:false,     // 是否填写新密码
+            newp0:"",
+            errs0:false,   // 强行让输入框报错
+            newPas0:{
                 defaultText:"",     // 默认的值
                 inputType:false,   // 输入框类型，true、text。false、password
-                isJudge:true,  // 是否显示正确的绿钩  true、显示。false、不显示
+                isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
                 isPrompt:false, // 是否密码显示功能 true、。false、
                 isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
-                tip:["请输入新密码","新密码"], // 1，输入框的placeholder值。2，显示值
+                tip:["填写新密码","新密码"], // 1，输入框的placeholder值。2，显示值
                 openJudge:[],  // 输入正则判断       、
-                class0:true,   // 定制判断，用于判断密码格式      
+                class0:true,   // 定制判断，用于判断密码格式 (普通输入框不用带)     
             },
+            newp1:"",
+            mandatoryJudge1:false,  // 强制正确
+            errs1:false,         // 强行让输入框报错
+             newPas1:{
+                defaultText:"",     // 默认的值
+                inputType:false,   // 输入框类型，true、text。false、password
+                isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
+                isPrompt:false, // 是否密码显示功能 true、。false、
+                isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
+                tip:["确认新密码","新密码"], // 1，输入框的placeholder值。2，显示值
+                openJudge:[],  // 输入正则判断       、
+                class0:true,   // 定制判断，用于判断密码格式 (普通输入框不用带)     
+            },
+            setTime:"",    // 移出事件延迟
         }
     },
+    peops:['loginErr'],
     watch:{
         emailOrPhone(){
             if(this.emailOrPhone != ""){
@@ -72,6 +93,7 @@ export default {
     methods:{
         bgyanz(){
             // 验证验证码
+            // this.newPas =
         },
         reqEmail(data){  // 获取传递的值
             if(data.i){
@@ -84,16 +106,19 @@ export default {
                 this.emailOrPhone = data.n;
             }else{
                 this.emailOrPhone = "";
-                this.tiperr = data.p;
-                this.showtip = true;
+                 this.tip(data.p);
                 this.verCode = false;
                 this.validationTag = false;
             }
         },
         tip(tip){
-            this.tps = tip;
+            if(tip == "")return;
+            if(this.setTime != ""){
+                clearTimeout(this.setTime);
+            };
+            this.tiperr = tip;
             this.showtip = true;
-            setTimeout(()=>{this.showtip = false;},1500); 
+            this.setTime = setTimeout(()=>{this.showtip = false;},1500); 
         },
         openReg(){
             this.$emit('openClass',0);
@@ -109,10 +134,58 @@ export default {
             this.validationTag = false;
             this.verCode = true;
         },
+        reqErrs(d){
+            if(d.n == ""){
+                this.tip(d.p);
+            }else{
+                if(d.i){
+                    this.tip(d.p);
+                }else{
+                    if(this.newp0 != "" && this.newp1 != "" && this.newp1 != this.newp0){
+                        this.tip("两次密码输入不一致，请重新输入");
+                    } 
+                }
+            }
+        },
         reqnewPas0(d){
-            console.log(d);
-            
+            this.newp0 = d.n;
+            this.reqErrs(d);
+        },
+        reqnewPas1(d){
+            this.newp1 = d.n;
+            if(this.newp0 != "" && this.newp1 == this.newp0){
+                this.mandatoryJudge1 = true;
+            }else{
+                this.mandatoryJudge1 = false;
+            }
+            this.reqErrs(d);
+        },
+        changePas(){
+            if(!this.newPas)return false;
+            this.$ajax({
+                    method: 'post',
+                    url: '/updateEmployee',
+                    params:{
+                        id:this.id,//BKadmin*权限0 //KYadmin*权限1 //TGOadmin*权限2d
+                        password:this.newp0
+                    },
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                        this.$emit('pasChange',true)
+                    }else{
+                        this.$emit('pasChange',false)
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         }
+      
     },
   components:{
     userInput:inputControl, 
@@ -127,7 +200,19 @@ export default {
                 re = true;
             }
             return re;
-      }
+      },
+      determine(){
+          let t = false;
+          if(this.newp0)t = true;
+          return t;
+      },
+      reeq(){
+            let t = false;
+            if(this.newp1 != "" && this.newp0 != "" && this.newp1 == this.newp0){
+                t = true;
+            };
+            return t;
+       }
   }
 }
 </script>
@@ -161,6 +246,10 @@ export default {
             text-align: center;
             line-height: 45px;
         }
+    }
+    .set-newpas{
+        height: 284px;
+        position: relative;
     }
     .step-btn-dis{
         cursor: not-allowed;
