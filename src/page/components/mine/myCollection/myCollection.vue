@@ -54,6 +54,16 @@
                     </div>
                 </div>
             </div>
+            <!--  <el-pagination
+                   class="pagination"
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="4"
+                   :page-sizes="[100, 200, 300, 400]"
+                   :page-size="numPrePage"
+                   layout="prev, pager, next, jumper, total"
+                   :total="totalCount">
+                        </el-pagination> -->
         </div>
         <transition name="slidex-fade">
             <transDetail v-if="transShow" @closeDetail="closeDetail" @showDetail="showTrans" :needData="needData"></transDetail>
@@ -87,6 +97,9 @@
                 state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
                 collectList:null,
                 needData:null,
+                numPrePage:1,
+                totalCount: 1,
+                pageCount: 1,
                 sentData:{
                     page: 1,
                     pageNo:4,
@@ -102,6 +115,13 @@
             ])
         },
         methods: {
+            handleSizeChange(val) {
+//                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+//                console.log(`当前页: ${val}`);
+                this.sendData.page = val;
+            },
             chat:function (v) {
                 ln.$emit('addChat',v);
             },
@@ -202,6 +222,9 @@
                         params: this.sentData
                     }).then(res => {
                         if(res && res.data.opResult == 0){
+                            /*that.totalCount = response.data.list.totalCount;
+                            that.pageCount = response.data.list.pageCount;
+                            that.numPrePage = response.data.list.numPrePage;*/
                             that.collectList = res.data.list.list;
                         }else{
                             that.collectList = null;
