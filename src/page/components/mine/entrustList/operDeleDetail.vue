@@ -352,10 +352,10 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     this.detailData = response.data.demandDetail;
                     this.listSonDemands = response.data.listSonDemands;
                      //状态处理
-                      if(this.detailData.demandprogress == '4'){//子需求订单完成
+                      if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'){//子需求需求发布/需求征集/子订单确认/子订单完成
                           this.orderShow = true;
                           this.sondetailShow = true;
-                      }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成
+                      }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
                           this.orderShow = true;
                           this.sondetailShow = true;
                           this.orderOver =false;
@@ -363,13 +363,10 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                           this.orderShow = true;
                       }else if(this.detailData.demandprogress == '3'){//已关闭
                           this.isClose = false;
-                          this.refuseText = this.detailData.rek;
+                          //this.refuseText = this.detailData.rek;
                       }else if(this.detailData.demandprogress == '10'){//已拒绝
                           this.tipShow = true;
                           this.refuseText = this.detailData.rek;
-                      }else if(this.detailData.demandprogress == '0'){//需求发布
-                          this.orderShow = true;
-                          this.sondetailShow = true;
                       }
 
                       //显示运力或者航司详情

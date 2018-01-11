@@ -56,34 +56,41 @@
             </div>
         </div>
         <transition name="slidex-fade">
-            <collectDetail v-if="detailShow" @closeDetail="closeDetail" :demandId="demandId"></collectDetail>
+            <transDetail v-if="transShow" @closeDetail="closeDetail" @showDetail="showTrans" :needData="needData"></transDetail>
         </transition>
+        <transition name="slidex-fade">
+           <airlineDetail v-if="airlineShow" @close-this="closeDetail" :needData="needData"></airlineDetail>
+        </transition>
+
     </div>
 </template>
 <script>
     import stateList from './../stateList.vue';
     import * as vx from 'vuex';
-    import collectDetail from './collectDetail.vue';
+    import transDetail from './transDetail.vue';
+    import airlineDetail from './airlineDetail.vue';
     import ln from './../../../../public/js/tabulationBoxTrigger';
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
     export default {
         data() {
             return {
                 typeShow: false,    //需求类型显示
                 stateShow: false,   //状态显示
-                detailShow:false,
                 sorted:true,
+                transShow:false,
+                airlineShow:false,
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: ['运力投放','航线需求'],
                 state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
                 collectList:null,
-                demandId:null,
+                needData:null,
                 sentData:{
                     page: 1,
                     pageNo:4,
-                    demandType: null,
+                    demandType:'',
                     demandProgress:null,
                     releaseTime:"Desc"
                 }
@@ -119,12 +126,12 @@
                  this.sentData.demandProgress = this.turnProgress(item);
             },
              openDetail:function(val){
-                this.demandId = val.id;
-                this.detailShow = true;
-            },
-            closeDetail:function(){
-                 this.detailShow = false;
-                 //this.collectList.$delete(key);
+                this.needData = val;
+                if(val.demandType == 1){
+                    this.transShow = true;
+                }if(val.demandType == 0){
+                    this.airlineShow = true;
+                }
             },
             timeSort:function(){
                 this.sorted = !this.sorted;
@@ -205,6 +212,13 @@
                         }
                     );
             },
+            closeDetail(){
+                this.transShow = false;
+                this.airlineShow = false;
+            },
+            showTrans(){
+                this.transShow = true;
+            }
         },
         watch:{
             'sentData.releaseTime': function(){
@@ -227,7 +241,8 @@
          },
         components: {
             stateList,
-            collectDetail
+            transDetail,
+            airlineDetail
         }
     }
 </script>

@@ -183,7 +183,7 @@
               </div>
               <div class="btn" v-else>
                   <div class="cancel-btn"  @click="cancelIntent">取消意向</div>
-                  <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
+                 <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
                   @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
                   <div class="col-btn" @click="collect" v-else>收藏</div>
               </div>
@@ -196,7 +196,7 @@
 <script>
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
- import sureForm from './sureForm1.vue'
+ import sureForm from '$src/page/components/trans_detail/sureForm1.vue'
  export default {
      data(){
          return{
@@ -212,7 +212,8 @@
      },
       components: {
             sureForm
-        },
+      },
+     props:['resData'],
      methods:{
          closeDetail:function(){
           this.$emit('responseClose');
@@ -320,7 +321,7 @@
                     }
                 );
          },
-          cancelCollect:function(){
+         cancelCollect:function(){
             this.$ajax({
                 method: 'post',
                 url: '/delCollectByDemandId',
@@ -334,6 +335,7 @@
                 .then((response) => {
                      if(response.data.opResult == "0"){
                       this.isCollect = false;
+                      this.$emit('responseClose');
                   }
                 })
                 .catch((error) => {
@@ -356,42 +358,15 @@
             ])
       },
        mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
-               //console.log("demandtype"+val.data.demandtype);
-                this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: val.data.id
-                }
-                })
-                .then((response) => {
-                    if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
-                        this.$emit('responseShow');
-                        //this.isIntentionMoney = response.data.isIntentionMoney;
-                        this.intentionCount = response.data.intentionCount;
-                        this.detailData = response.data.data;
-                        this.planData = response.data.receiveIntention;
+          this.intentionCount = this.resData.intentionCount;
+          this.detailData = this.resData.data;
+          this.planData = this.resData.receiveIntention;
 
-                        if(response.data.isAlreadyCollect == true){
-                            this.isCollect = true;
-                        }else if(response.data.isAlreadyCollect == false){
-                           this.isCollect = false;
-                        }
-                    }
-
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-
-            };
-        });
+         if(this.resData.isAlreadyCollect == true){
+              this.isCollect = true;
+         }else if(this.resData.isAlreadyCollect == false){
+              this.isCollect = false;
+          }
 
      },
 

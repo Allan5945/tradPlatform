@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <searchHeader @search = "searchData"></searchHeader>
+        <timeHeader @search = "searchData"></timeHeader>
         <div class="content" v-if="showDetail">
             <div class="banner">
                 <div class="airport-img"><img :src="img2" alt=""></div>
@@ -128,7 +128,7 @@
 <script>
  import * as vx from 'vuex';
  import { Loading } from 'element-ui';
- import searchHeader from './searchHeader.vue'
+ import timeHeader from './timeHeader.vue'
  import myPic1 from '$src/static/img/Slice.png';
  import myPic2 from '$src/static/img/infobg.png';
     export default {
@@ -233,7 +233,10 @@
                     }
                 })
                 .then((response) => {
-                    this.distrList = response.data.list;
+                    if(response.data.opResult == "0"){
+                        this.distrList = response.data.list;
+                        this.showDetail= true;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -310,18 +313,20 @@
                 return point;
             },
         },
-        mounted() {
+        beforeMounted() {
             this.airportText = this.searchInfo.searchText;
             this.qyCode = this.searchInfo.qyCode;
-            this.getData();
-            this.getClock(this.inputData,this.qyCode);
-
              if(this.qyCode == ''){
                 this.showDetail=false;
             }
         },
+        mounted(){
+            this.getData();
+            this.getClock(this.inputData,this.qyCode);
+
+        },
         components:{
-            searchHeader
+            timeHeader
         }
     }
 </script>

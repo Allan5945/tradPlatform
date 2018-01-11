@@ -28,7 +28,7 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
             return {
                 airportText:'',
                 qyCode:'',
-                selcType:'',
+                selcType:'时刻',
                 typeList:['城市','航司','机场','时刻'],
                 searchData:{},
                 airportSearch:false,
@@ -93,6 +93,7 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                 }else if(this.selcType == '航司'){
                     this.$router.push({ path: '/index/information/airline'});
                 }else if(this.selcType == '时刻'){
+                    this.$store.dispatch('searchInfo', {selcType :this.selcType,});
                     this.$router.push({ path: '/index/information/time'});
                 }else if(this.selcType == '城市'){
                     this.qyCode = this.airportText;
@@ -114,7 +115,6 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         },
         mounted() {
             this.airportText = this.searchInfo.searchText;
-            this.selcType = this.searchInfo.selcType;
             this.closeDialog();
              //this.qyCode = this.searchInfo.qyCode;
         },
