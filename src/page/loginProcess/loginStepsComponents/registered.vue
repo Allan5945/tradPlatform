@@ -33,7 +33,6 @@ import errTip from '../components/errTip.vue';
 export default {
     data(){
         return{
-            test:{a:'666666',b:2},
             id:"",
             userArg:{
                 defaultText:"",     // 默认的值
