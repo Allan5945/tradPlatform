@@ -19,6 +19,7 @@ ln.$on('addChat', function (d)  {
         keys = (k1 < k2 ? k1 : k2)  + '-' + (k1 < k2 ? k2 : k1) + "-" + de;
         k = keys.split("-");
     };
+    
     if(!this.chat.chatData.hasOwnProperty(keys)){
         let __this = this;
         _this.$ajax({
@@ -68,17 +69,17 @@ export default class ChatSocket{
             this.ws = new MozWebSocket(w);
         }else{
             alert("not support");
-        }
+        } 
         this.ws.onopen = ()=>{
             console.log('打开连接');
         };
         this.ws.onmessage  = (data)=>{
             console.log(`收到信息`,data);
+            let chat = JSON.parse(data.data);
             if(!ln.chat.chatData.hasOwnProperty(chat.data.chatFlag)){
                 ln.$emit("queryChat");
                 return false;
             }
-            let chat = JSON.parse(data.data);
             if(ln.chat.chatData[chat.data.chatFlag].chatRcord == null){
                 ln.chat.chatData[chat.data.chatFlag].chatRcord = {
                     list:[]

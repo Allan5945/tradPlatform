@@ -11,7 +11,7 @@
                     <div><span>{{detailData.demandprogressStr||'-'}}</span></div>
                 </div>
             </header>
-            <div class="content">
+            <div class="airline-content" v-if="isAirline">
                 <div class="airline">
                     <div class="air-box">
                         <div v-if="detailData.dptState =='0' ">始发机场</div>
@@ -91,26 +91,80 @@
                     </div>
                 </div>
             </div>
+            <div class="trans-content" v-else>
+                <div>
+                    <div>机型</div>
+                    <div>{{detailData.aircrfttyp||'-'}}</div>
+                </div>
+                 <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating||'-'}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm||'-'}}</div>
+                </div>
+                <div >
+                    <div>出港时刻</div>
+                    <div>{{detailData.dptTime||'-'}}</div>
+                </div>
+                <div>
+                    <div>班期</div>
+                    <div>{{detailData.days||'-'}}</div>
+                </div>
+               <div class="intent-airline" v-if="detailData.intendedAirlines">
+                   <div>意向航线</div>
+                   <div class="i-line">
+                     {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].arrvName||'-'}}
+                   </div>
+               </div>
+               <div class="intent-airline" v-else>
+                   <div>意向航线</div>
+                   <div class="i-line">-</div>
+               </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                </div>
+                <div style="margin:0 0 0 40px;">
+                    <div>接受调度</div>
+                    <div>{{detailData.schedulingStr||'-'}}</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div>{{detailData.periodValidity||'-'}}</div>
+                </div>
+                <div class="note">
+                    <div>其他说明</div>
+                    <div class="note-text">{{detailData.remark||'-'}}</div>
+                </div>
+            </div>
             <div class="sub-need" v-show="orderShow">
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
-           <sonNeedDetail :demandId = "chatData.id" v-show="sondetailShow"></sonNeedDetail>
+           <sonNeedDetail :detailData = "listSonDemands" v-if="sondetailShow"></sonNeedDetail>
              <footer v-if="isClose">
                 <div class="foot-tips" v-if="tipShow">*拒绝原因：{{refuseText}}</div>
                 <div class="btn" v-if="orderShow">
                     <div class="test-btn" @click="order" v-if="orderOver">订单完成</div>
-                    <div class="can-btn" @click="cancel" v-if="orderOver">取消</div>
-                     <div class="can-btn" @click="cancel" style="width:160px;" v-else>取消</div>
+                    <div class="can-btn" @click="cancelDele" v-if="orderOver">取消</div>
+                     <div class="can-btn" @click="cancelDele" style="width:160px;" v-else>取消</div>
                 </div>
                 <div class="btn" v-else>
                     <div class="test-btn" @click="accept" v-if="!tipShow">接受委托</div>
                     <div class="can-btn" @click="refuse" v-if="!tipShow">拒绝</div>
                 </div>
             </footer>
-            <footer v-else>
-                <div class="foot-tips" >*取消原因：{{refuseText}}</div>
-            </footer>
+           <!--  <footer v-else>
+               <div class="foot-tips" >*取消原因：{{refuseText}}</div>
+           </footer> -->
         </div>
         <operDeleForm v-show="formShow" @closeForm="closeForm" ></operDeleForm>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
@@ -137,6 +191,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             dialogShow:false,
             tipShow:false,
             orderOver:true,
+            isAirline:true,
+            listSonDemands:[],
             msg:'',
             refuseText:''
          }
@@ -153,10 +209,10 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           this.dialogShow = true;
           this.msg = "拒绝";
         },
-        cancel(){
+        /*cancel(){
           this.dialogShow = true;
           this.msg = "取消";
-        },
+        },*/
         newNeed(){
           this.formShow = true;
         },
@@ -248,7 +304,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     }
                 );
         },
-        cancelDele(text){
+        cancelDele(){
             this.$ajax({
                 method: 'post',
                 url: '/finishCommissionedAndCustody',
@@ -261,7 +317,6 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     demandEmployeeId:this.chatData.demandEmployeeId,
                     title:this.chatData.title,
                     demandType:this.chatData.demandType,
-                    rek:text
                   }
                 })
                 .then((response) => {
@@ -295,10 +350,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 .then((response) => {
                     this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
+                    this.listSonDemands = response.data.listSonDemands;
                      //状态处理
-                      if(this.detailData.demandprogress == '7'){
-
-                      }else if(this.detailData.demandprogress == '6' ){//订单完成，最终完成
+                      if(this.detailData.demandprogress == '4'){//子需求订单完成
+                          this.orderShow = true;
+                          this.sondetailShow = true;
+                      }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成
                           this.orderShow = true;
                           this.sondetailShow = true;
                           this.orderOver =false;
@@ -310,13 +367,22 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                       }else if(this.detailData.demandprogress == '10'){//已拒绝
                           this.tipShow = true;
                           this.refuseText = this.detailData.rek;
+                      }else if(this.detailData.demandprogress == '0'){//需求发布
+                          this.orderShow = true;
+                          this.sondetailShow = true;
                       }
+
+                      //显示运力或者航司详情
+                       if(this.chatData.demandType == '4'){
+                            this.isAirline = false;
+                        }else if(this.chatData.demandType == '3'){
+                            this.isAirline = true;
+                        }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-
      },
     destroyed: function () {
         tabulationBoxTrigger.hierarchy = false;
@@ -366,7 +432,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             background-color:rgba(216,216,216,.17);
             position:relative;
         }
-        .content{
+        .airline-content{
             padding:40px 40px 0 40px;
         }
         footer{
@@ -497,6 +563,51 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
       border-top:1px solid #ccc;
       border-bottom:1px solid #ccc;
     }
+    //运力详情样式
+    .trans-content{
+      padding:60px 40px 0 40px;
+      flex-wrap: wrap;
+      display: flex;
+      >div{
+          width:240px;
+          height:40px;
+          display: flex;
+          >div{
+              margin-bottom:20px;
+              height:20px;
+              line-height:20px;
+          }
+          >div:nth-of-type(1){
+              width:80px;
+              color:rgba(96, 94, 124, 0.7);
+          }
+          >div:nth-of-type(2){
+              width:160px;
+          }
+      }
+      >div:nth-of-type(odd){
+          margin-right:40px;
+      }
+      .note{
+          width:520px;
+          height:60px;
+          .note-text{
+             width:440px;
+          }
+      }
+      .intent-airline{
+          width:100%;
+          .i-line{
+              width:440px;
+              margin-right:0;
+              display: flex;
+              .iconfont{
+                display:block;
+                margin:0 25px;
+              }
+          }
+      }
+    }
     .sub-need{
       position:relative;
       width:100%;
@@ -565,7 +676,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
+                  box-sizing:border-box;
                   border:1px solid rgba(96,94,124,.6);
+                   &:hover{
+                    color:#fff;
+                    background-color: #3C78FF;
+                  }
               }
               .cancel-btn{
                   width:180px;
@@ -579,7 +695,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   cursor:pointer;
                   border:1px solid rgba(96,94,124,.6);
                   box-shadow: 0px 0px 8px rgba(60, 120, 255,0.5);
+                  &:hover{
+                    color:#fff;
+                    background-color: #3C78FF;
+                  }
               }
+
           }
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="login-box">
         <userInput :par="userArg" v-on:reqMes="userReqMes"></userInput>
-        <pasInput :par="pasArg" style="margin-top:30px;" v-on:reqMes="pasReqMes"></pasInput>
+        <pasInput :par="pasArg" style="margin-top:30px;" v-on:reqMes="pasReqMes" v-on:entered="entered"></pasInput>
         <div class="operation">
             <el-checkbox v-model="checked" style="color:#605E7C">记住密码</el-checkbox>
             <button class="forget-pas" @click="openReg">忘记密码?</button>
@@ -58,6 +58,7 @@
                 lodings:false,   // true 正在加载，false  
             }
         },
+        props:['loginErr'],
         created:function(){
             let mes = JSON.parse(localStorage.getItem('remember'));
             if(mes != null){
@@ -75,6 +76,9 @@
             validation,
         },
         methods:{
+            entered(){
+                if(this.dis)this.logined();
+            },
             logined:function () {
                 this.lodings = true;
                 this.$ajax({
@@ -101,9 +105,14 @@
                         window.sessionStorage.setItem('role',JSON.stringify(response.data.obj));
                         this.$router.push("index");
                     }else{
-                        this.showE = true;
-                        this.loginTime ++;
-                        setTimeout(()=>{this.showE = false;},1500);
+                        if(response.data.opResult == '1'){
+                            this.showE = true;
+                            this.loginTime ++;
+                            setTimeout(()=>{this.showE = false;},1500);
+                        }else{
+                            this.$emit('update:ags',{  tltle:"(╯︵╰)登录失败",text:"登录异常，请稍后再试或者拨打客服服务热线"});
+                            this.$emit('update:loginErr',true);
+                        }
                     }
                 })
                 .catch((error) => {
@@ -179,7 +188,7 @@
         }
     }
     .occupies-prompt{ 
-        height:80px;
+        height:83px;
         padding-top: 28px;
         position: relative;
     }

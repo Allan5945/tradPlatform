@@ -57,6 +57,14 @@
                     </div>
                 </div>
             </div>
+            <div  style="float:right;padding-right:120px;">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                @current-change="pageChange"
+                :total="totalCount*2">
+              </el-pagination>
+            </div>
         </div>
         <transition name="slidex-fade">
             <agentDetail @close="closeAgentDetail" v-if="agentShow" :chatData="chatData"></agentDetail>
@@ -89,9 +97,10 @@
                 type3:['航线委托','运力委托','托管'],
                 state: [],
                 state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['待处理','处理中','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                state2: ['待处理','处理中','需求发布','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
                 myList:null,
                 demandId:null,
+                totalCount:'',
                 sentData:{
                     page:1,
                     pageNo:4,
@@ -127,9 +136,13 @@
             },
              'sentData.releaseTime': function(){
                 this.getListData();
-            },
+            }
         },
         methods: {
+            pageChange(page){
+                this.sentData.page = page;
+                this.getListData();
+            },
             chat:function (v) {
                 ln.$emit('addChat',v);
             },
@@ -190,6 +203,9 @@
             },
             getProgress:function(val){
                 switch (val) {
+                         case "0":
+                            return "需求发布";
+                            break;
                         case "1":
                             return "需求征集";
                             break;
@@ -221,6 +237,9 @@
             },
             turnProgress:function(val){
                  switch (val) {
+                        case "需求发布":
+                            return "0";
+                            break;
                         case "需求征集":
                             return "1";
                             break;
@@ -262,6 +281,7 @@
                 }).then(res => {
                     if(res && res.data.opResult == 0){
                         that.myList = res.data.list.list;
+                        this.totalCount = res.data.list.totalCount;
                     }else{
                         that.myList = null;
                     }

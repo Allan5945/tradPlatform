@@ -1,15 +1,20 @@
 <template>
     <div class="login-title">
-        <span v-text="title"></span>
-        <div class="btn-w">&#xe62c;</div>
+        <span v-text="arg"></span>
+        <div class="btn-w" @click="clear">&#xe62c;</div>
     </div>
 </template>
 <script>
     export default {
+        props:['arg'],
         data(){
             return{
-                title:"开启航线开通在线时代"
             } 
+        },
+        methods:{
+            clear(){
+                this.$emit('clear');
+            }
         }
     }
 </script>

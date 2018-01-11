@@ -1,7 +1,9 @@
 <template>
   <div class="content-box">
     <bannersPanel v-on:steps="steps"></bannersPanel>
-    <loginSteps v-if="stepOff" :offType="offType"></loginSteps>
+    <transition name="fade">
+        <loginSteps v-if="stepOff" :stepOff.sync="stepOff"></loginSteps>
+    </transition>
   </div>
 </template>
 
@@ -21,12 +23,10 @@
             steps:function (t) {
                 this.stepOff = true;
                 this.offType = t;
-                if(t){
-
-                }
             }
         },
         created:function () {
+            
         },
         computed:{
           
@@ -38,6 +38,13 @@
     }
 </script>
 <style lang="scss" scoped>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    };
+
     .content-box{
         overflow: hidden;
         position: relative;

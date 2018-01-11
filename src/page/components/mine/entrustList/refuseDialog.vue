@@ -4,10 +4,11 @@
             <div class="til">请填写{{msg}}原因</div>
             <div class="content">
                 <div class="reson">{{msg}}原因</div>
-                <div class="r-input"><input type="text" placeholder="可选填" v-model="refuseText"></div>
+                <div class="r-input"><input type="text"  v-model="refuseText" placeholder="必填"></div>
             </div>
             <div class="btns">
-                <div class="sure-btn" @click="sure">确认</div>
+                <div class="sure-btn active" @click="sure" v-if="isSend">确认</div>
+                <div class="sure-btn" v-else="isSend">确认</div>
                 <div class="cancel-btn" @click="cancel">取消</div>
             </div>
         </div>
@@ -18,7 +19,17 @@
     export default {
         data(){
             return{
-                refuseText:''
+                refuseText:'',
+                isSend:false
+            }
+        },
+        watch:{
+            "refuseText" :function(){
+                if(this.refuseText.length !== 0){
+                    this.isSend =true;
+                }else{
+                    this.isSend =false;
+                }
             }
         },
         props:['msg'],
@@ -102,10 +113,16 @@
             width:100px;
             text-align:center;
             border-radius:100px;
-            color:#ffffff;
-            background-color:#3C78FF;
+            color:#ccc;
+            background-color:#f5f5f5;
             margin-right:8px;
             cursor:pointer;
+            border:1px solid #c0ccda;
+        }
+        .active{
+            border:0;
+            color:#ffffff;
+            background-color:#3C78FF;
             box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
         }
         .cancel-btn{

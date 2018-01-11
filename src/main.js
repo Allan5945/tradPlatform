@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import echarts from 'echarts'
-import {Radio,Pagination,Message,Checkbox} from 'element-ui'
+import {Radio,Pagination,Message,Checkbox,pagination} from 'element-ui'
 
 import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
