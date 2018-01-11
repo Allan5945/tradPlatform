@@ -338,7 +338,7 @@
         tabulationBoxTrigger.$on('sendToCompany', val => {
 
             //console.log("demandtype"+val.data.demandtype);
-            if((val.demandType == '运力需求' || val.demandType == '运力投放') && this.role.role == 0){
+            if((val.demandType == '运力需求' || val.demandType == '运力投放')){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
