@@ -56,6 +56,10 @@
                       <div>有效期</div>
                       <div>{{detailData.periodValidity||'-'}}</div>
                   </div>
+                  <div class="note">
+                      <div>其他说明</div>
+                      <div>{{detailData.remark||'-'}}</div>
+                  </div>
               </div>
               <div class="myplan">
                   <div class="plan-til">
@@ -158,7 +162,7 @@
                           <div>是否调度</div>
                           <div>{{planData.schedulingStr||'-'}}</div>
                       </div>
-                      <div class="tips">
+                      <div class="note">
                           <div>其他说明</div>
                           <div>{{planData.remark||'-'}}</div>
                       </div>
@@ -179,8 +183,9 @@
               </div>
               <div class="btn" v-else>
                   <div class="cancel-btn"  @click="cancelIntent">取消意向</div>
-                  <div class="col-btn" @click="collect" v-if="!isCollect">收藏</div>
-                  <div class="col-btn"  v-if="isCollect">已收藏</div>
+                  <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
+                       @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                  <div class="col-btn" @click="collect" v-else>收藏</div>
               </div>
           </footer>
       </div>
@@ -201,7 +206,8 @@
              planData:{},
              detailData:{},
              intentionCount:0,
-             demandData:{}
+             demandData:{},
+             text:'已收藏',
          }
      },
       components: {
@@ -313,8 +319,35 @@
                         console.log(error);
                     }
                 );
+         },
+         cancelCollect:function(){
+             this.$ajax({
+                 method: 'post',
+                 url: '/delCollectByDemandId',
+                 headers: {
+                     'Content-type': 'application/x-www-form-urlencoded'
+                 },
+                 params: {
+                     demandId:this.planData.demandId
+                 }
+             })
+                 .then((response) => {
+                     if(response.data.opResult == "0"){
+                         this.isCollect = false;
+                     }
+                 })
+                 .catch((error) => {
+                         console.log(error);
+                     }
+                 );
+         },
+         changeText:function(i){
+             if(i == '1'){
+                 this.text = "取消收藏";
+             }else{
+                 this.text = "已收藏";
+             }
          }
-
      },
       computed:{
          ...vx.mapGetters([
@@ -480,6 +513,12 @@
           }
       }
     }
+    .note{
+        width:100%;
+        >div:nth-of-type(2){
+            width:440px;
+        }
+    }
     .myplan{
         &::after {
             display: block;
@@ -529,12 +568,6 @@
         }
         .table-form{
             padding:40px 0 0 40px;
-            .tips{
-                width:100%;
-                >div:nth-of-type(2){
-                    width:440px;
-                }
-            }
         }
     }
       .airplace{
@@ -582,6 +615,10 @@
               }
                .col-btn{
                   width:80px;
+              }
+              .cancel{
+                  color:#fff;
+                  background-color:#3c78ff;
               }
               .refuse-btn{
                   width:100px;
