@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="miList-wrapper">
+        <div class="miList-wrapper" @click="closeAllFn">
             <div class="miList-container">
                 <div class="title items">
                     <div class="list-a item">
@@ -10,7 +10,7 @@
                             <span class="icon-item icon-down" :class="{active: timeUpDown == false}">&#xe605;</span>
                         </div>
                     </div>
-                    <div class="list-b item" @click="typeShowFn">
+                    <div class="list-b item" @click.stop="typeShowFn">
                         {{typeWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <ul class="type-list" v-show="typeShow">
@@ -20,10 +20,10 @@
                     <div class="list-c item">
                         发布标题
                     </div>
-                    <div class="list-d item" @click="stateShowFn">
+                    <div class="list-d item" @click.stop="stateShowFn">
                         <span>{{stateWriting}}</span>
                         <div class="triangle-little" style="margin-left: 10px"></div>
-                        <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
+                        <stateList class="state-list" :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
                     </div>
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
@@ -103,14 +103,15 @@
                 //不同需求类型展现的状态不同
 //                type: [],
                 type: [],
-                type0: ['所有类型','运力投放','运力委托'], // 0：航司方登录
-                type1: ['所有类型','航线需求','航线委托','运营托管'], // 1：机场方登录
+                type0: ['需求类型','运力投放','运力委托'], // 0：航司方登录
+                type1: ['需求类型','航线需求','航线委托','运营托管'], // 1：机场方登录
+                type2: ['需求类型','运力投放','运力委托','航线需求','航线委托','运营托管'], // 2：太美登录
                 state: [],
-                state0: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成','待处理','已接受','处理中','已拒绝'],
-                state1: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
-                state2: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state3: ['待处理','处理中','意向征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
-                state4: ['需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','交易完成'],
+                state0: ['状态','需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成','待处理','已接受','处理中','已拒绝'],
+                state1: ['状态','需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
+                state2: ['状态','待处理','测评中','已接受','已拒绝','已关闭'],
+                state3: ['状态','待处理','处理中','意向征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                state4: ['状态','需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','交易完成'],
                 myPublishShow: false,       // myPublish(我的发布-运力详情)是否显示
                 myPublishShow0: false,       // myPublish(运力详情 + 航线详情)是否显示
                 myPublishShow1: false,       // 运力详情显示
@@ -120,6 +121,7 @@
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上
+                myData2: [],                 // 太美能看到所有数据，渲染到页面上
                 listItemIndex: '',          // 被点击列的index，用来使其变成active
 
                 timeUpDown: true,           // 通过时间进行排序
@@ -175,7 +177,11 @@
                 this.sendData.page = val;
             },
             /*************************/
-
+            // 点击关闭所有下拉框
+            closeAllFn: function () {
+                this.typeShow = false;   //需求类型显示
+                this.stateShow = false;   //状态显示
+            },
             // 根据登陆角色不同，展示的数据不同
             judgeRole: function () {
                 // 判断是机场(1)还是航司(0)登录
@@ -187,6 +193,9 @@
                 }if(this.role.role == 1) {
                     this.type = this.type1;
                     this.myData = this.myData1;
+                }if(this.role.role == 2) { // 太美
+                    this.type = this.type2;
+                    this.myData = this.myData2;
                 }
             },
             // ajax获取列表数据
@@ -204,10 +213,12 @@
                     if(response.data.opResult === '0') {
                         this.myData0 = [];
                         this.myData1 = [];
+                        this.myData2 = [];
                         this.totalCount = response.data.list.totalCount;
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
                         response.data.list.list.forEach((val) => {
+                            this.myData2.push(val);
                             if(val.demandtype == 1 || val.demandtype == 4 ){
                                 this.myData0.push(val);
                             }if(val.demandtype == 0 || val.demandtype == 3 || val.demandtype == 2){
@@ -219,6 +230,7 @@
 //                        console.info('ajax1')
                         this.myData0 = [];
                         this.myData1 = [];
+                        this.myData2 = [];
                         this.totalCount = 0;
                         this.judgeRole();
                     }else {
@@ -253,6 +265,7 @@
             timeUpDownClick: function () {
                 this.myData0 = [];
                 this.myData1 = [];
+                this.myData2 = [];
                 this.timeUpDown = !this.timeUpDown;
                 this.sendData.orderType = this.timeUpDown ? 0 : 1;
             },
@@ -260,10 +273,11 @@
             typeClickFn: function (item) {
                 this.myData0 = [];
                 this.myData1 = [];
+                this.myData2 = [];
                 this.typeWriting = item;
                 this.sendData.demandprogress = ''; // 状态类型
                 this.stateWriting = '状态';
-                if (item == '所有类型') {
+                if (item == '需求类型') {
                     this.state = this.state0;
                     this.sendData.demandType = '';
                 }if(item == '航线需求') {
@@ -289,8 +303,11 @@
             stateClickFn: function (item) {
                 this.myData0 = [];
                 this.myData1 = [];
+                this.myData2 = [];
                 this.stateWriting = item;
-                if(item == '需求发布') {
+                if(item == '状态') {
+                    this.sendData.demandprogress = '';
+                }if(item == '需求发布') {
                     this.sendData.demandprogress = 0;
                 }if(item == '意向征集') {
 //                    console.info(0)
@@ -596,6 +613,18 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+            .state-list {
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+            .state-list::-webkit-scrollbar {
+                width: 7px;
+            }
+            .state-list::-webkit-scrollbar-thumb {
+                height: 56px;
+                background: #D8D8D8;
+                border-radius: 4px;
             }
         }
         .list-e {
