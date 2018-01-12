@@ -609,6 +609,8 @@
                         this.firArea = this.acceptData.dptNm;
                     }
                     this.qyCode1 = this.acceptData.dpt;
+                    this.dptTimeresources = this.acceptData.dptTimeresources;
+                    this.dptAcceptnearairport = this.acceptData.dptAcceptnearairport;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.dptAcceptnearairport === "0") {
                         alAairAYes.checked = true;
@@ -639,6 +641,8 @@
                         this.secArea = this.acceptData.pstNm;
                     }
                     this.qyCode2 = this.acceptData.pst;
+                    this.pstTimeresources = this.acceptData.pstTimeresources;
+                    this.pstAcceptnearairport = this.acceptData.pstAcceptnearairport;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.pstAcceptnearairport === "0") {
                         alAairBYes.checked = true;
@@ -669,6 +673,8 @@
                         this.thirdArea = this.acceptData.arrvNm;
                     }
                     this.qyCode3 = this.acceptData.arrv;
+                    this.arrvTimeresources = this.acceptData.arrvTimeresources;
+                    this.arrvAcceptnearairport = this.acceptData.arrvAcceptnearairport;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.arrvAcceptnearairport === "0") {
                         alAairCYes.checked = true;
@@ -775,8 +781,7 @@
                 this.sendData.Ihome = this.phoneNum;//必填 联系方式
                 if (this.dptState == 0) {
                     this.sendData.dpt = this.qyCode1;//必填 机场传三字码，区域和省份传汉字
-                }
-                if (this.dptState == 1) {
+                }else if (this.dptState == 1) {
                     this.sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
                 }
                 this.sendData.dptState = this.dptState;         //始发地类型（0：机场，1：区域）
@@ -796,19 +801,25 @@
                 this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
-                if (this.pstState == 0) {
-                    this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
-                }
-                if (this.pstState == 1) {
-                    this.sendData.pst = this.secArea;//选填 经停地
+                if(this.secArea != '') {
+                    if (this.pstState == 0) {
+                        this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
+                    } else if (this.pstState == 1) {
+                        this.sendData.pst = this.secArea;//选填 经停地
+                    }
+                }else {
+                    this.sendData.pst = '';
                 }
                 this.sendData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
                 this.sendData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
-                if (this.arrvState == 0) {
-                    this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
-                }
-                if (this.arrvState == 1) {
-                    this.sendData.arrv = this.thirdArea//选填 到达地
+                if(this.thirdArea != '') {
+                    if (this.arrvState == 0) {
+                        this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
+                    } else if (this.arrvState == 1) {
+                        this.sendData.arrv = this.thirdArea//选填 到达地
+                    }
+                }else {
+                    this.sendData.arrv = '';
                 }
                 this.sendData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
                 this.sendData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
@@ -842,7 +853,7 @@
 //                    console.info('response:')
 //                    console.info(response)
                     if(response.data.opResult === '0'){
-                        alert('成功添加该意向！')
+                        alert(this.alertMsg)
                         this.$emit('change-showCode');
                         this.closeThis();
                     }else{

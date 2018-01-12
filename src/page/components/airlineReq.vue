@@ -370,7 +370,7 @@
             </div>
             <div class="sixth" v-if="submitData2Click == false">
                 <button class="btn-a btn-blue" @click="submitData2ClickFn" v-show="role.role != 2">委托代理</button>
-                <button class="btn-b btn-blue" @click="submitData">确认发布</button>
+                <button class="btn-b btn-blue" @click。stop="submitData">确认发布</button>
                 <button class="btn-c btn-cancel" @click="closeThis">取消</button>
             </div>
             <div class="sixth" v-else>
@@ -617,16 +617,25 @@
                 }else if(this.dptState == 1) {
                     this.sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
                 }
-                if(this.pstState == 0) {
-                    this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
-                }else if(this.pstState == 1) {
-                    this.sendData.pst = this.secArea;//选填 经停地
+                if(this.secArea != '') {
+                    if(this.pstState == 0) {
+                        this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
+                    }else if(this.pstState == 1) {
+                        this.sendData.pst = this.secArea;//选填 经停地
+                    }
+                }else {
+                    this.sendData.pst = '';
                 }
-                if(this.arrvState == 0) {
-                    this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
-                }else if(this.arrvState == 1) {
-                    this.sendData.arrv = this.thirdArea//选填 到达地
+                if(this.thirdArea != '') {
+                    if(this.arrvState == 0) {
+                        this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
+                    }else if(this.arrvState == 1) {
+                        this.sendData.arrv = this.thirdArea;//选填 到达地
+                    }
+                }else {
+                    this.sendData.arrv = '';
                 }
+
             },
             //发送数据
             submitData: function () {
@@ -799,10 +808,11 @@
                 this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
+                this.warn9Show = false;
                 // 始发、经停、到达中转站
                 this.firArea = this.firAreaBus;
-                this.secArea = this.secAreaBus;
-                this.thirdArea = this.thirdAreaBus;
+//                this.secArea = this.secAreaBus;
+//                this.thirdArea = this.thirdAreaBus;
             },
             clickClose1Fn: function () {
                 this.space1 = !this.space1;
@@ -932,16 +942,18 @@
                 this.warn3Show = false;
             },
             getArea2: function (areaMes) {
-                this.secAreaBus = areaMes.name;
-                this.secArea = this.secAreaBus;
+//                this.secAreaBus = areaMes.name;
+//                this.secArea = this.secAreaBus;
+                this.secArea = areaMes.name;
                 this.secAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow2 = false;
                 this.warn8Show = false;
                 this.warn9Show = false;
             },
             getArea3: function (areaMes) {
-                this.thirdAreaBus = areaMes.name;
-                this.thirdArea = this.thirdAreaBus;
+//                this.thirdAreaBus = areaMes.name;
+//                this.thirdArea = this.thirdAreaBus;
+                this.thirdArea = areaMes.name;
                 this.thirdAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow3 = false;
                 this.warn8Show = false;
@@ -1046,16 +1058,16 @@
             },
             resData2: function (data) {
                 this.isSearch2 = false;
-                this.secAreaBus = data.name;
-//                this.secArea = data.name;
+//                this.secAreaBus = data.name;
+                this.secArea = data.name;
                 this.qyCode2 = data.code;
                 this.warn8Show = false;
                 this.warn9Show = false;
             },
             resData3: function (data) {
                 this.isSearch3 = false;
-                this.thirdAreaBus = data.name;
-//                this.thirdArea = data.name;
+//                this.thirdAreaBus = data.name;
+                this.thirdArea = data.name;
                 this.qyCode3 = data.code;
                 this.warn8Show = false;
                 this.warn9Show = false;
@@ -1107,7 +1119,7 @@
             space2Fn: function (item = '意向机场') {
                 this.space2ShowTitle = item;
                 this.secArea = '';
-                this.secAreaBus = '';
+//                this.secAreaBus = '';
                 if(item == '意向区域') {
                     this.space2Show = '请输入意向区域';
                     this.isSearchCode2 = 0;
@@ -1133,7 +1145,7 @@
             space3Fn: function (item = '意向机场') {
                 this.space3ShowTitle = item;
                 this.thirdArea = '';
-                this.thirdAreaBus = '';
+//                this.thirdAreaBus = '';
                 if(item == '意向区域') {
                     this.space3Show = '请输入意向区域';
                     this.isSearchCode3 = 0;

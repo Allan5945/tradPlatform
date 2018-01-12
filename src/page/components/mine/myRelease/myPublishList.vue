@@ -86,10 +86,8 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
-//    import myPublish from './myPublishNeed.vue' // 运力需求详情
     import myPublish0 from './myPublishNeed0.vue' // 航线需求详情
     import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
-//    import myPublishAirline from './myPublishAirline.vue' //航线需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
 

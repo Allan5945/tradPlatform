@@ -624,6 +624,8 @@
                         this.firArea = this.acceptData.dptNm;
                     }
                     this.qyCode1 = this.acceptData.dpt;
+                    this.dptTimeresources = this.acceptData.dptTimeresources;
+                    this.dptAcceptnearairport = this.acceptData.dptAcceptnearairport;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.dptAcceptnearairport === "0") {
                         alRWairAYes.checked = true;
@@ -654,6 +656,8 @@
                         this.secArea = this.acceptData.pstNm;
                     }
                     this.qyCode2 = this.acceptData.pst;
+                    this.pstTimeresources = this.acceptData.pstTimeresources;
+                    this.pstAcceptnearairport = this.acceptData.pstAcceptnearairport;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.pstAcceptnearairport === "0") {
                         alRWairBYes.checked = true;
@@ -684,6 +688,8 @@
                         this.thirdArea = this.acceptData.arrvNm;
                     }
                     this.qyCode3 = this.acceptData.arrv;
+                    this.arrvTimeresources = this.acceptData.arrvTimeresources;
+                    this.arrvAcceptnearairport = this.acceptData.arrvAcceptnearairport;
                     /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
                     if(this.acceptData.arrvAcceptnearairport === "0") {
                         alRWairCYes.checked = true;
@@ -788,15 +794,23 @@
                 }else if(this.dptState == 1) {
                     this.sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
                 }
-                if(this.pstState == 0) {
-                    this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
-                }else if(this.pstState == 1) {
-                    this.sendData.pst = this.secArea;//选填 经停地
+                if(this.secArea != '') {
+                    if(this.pstState == 0) {
+                        this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
+                    }else if(this.pstState == 1) {
+                        this.sendData.pst = this.secArea;//选填 经停地
+                    }
+                }else {
+                    this.sendData.pst = '';
                 }
-                if(this.arrvState == 0) {
-                    this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
-                }else if(this.arrvState == 1) {
-                    this.sendData.arrv = this.thirdArea//选填 到达地
+                if(this.thirdArea != '') {
+                    if(this.arrvState == 0) {
+                        this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
+                    }else if(this.arrvState == 1) {
+                        this.sendData.arrv = this.thirdArea;//选填 到达地
+                    }
+                }else {
+                    this.sendData.arrv = '';
                 }
             },
             //发送数据
@@ -962,8 +976,8 @@
                 this.calendarShow2 = false;
                 // 始发、经停、到达中转站
                 this.firArea = this.firAreaBus;
-                this.secArea = this.secAreaBus;
-                this.thirdArea = this.thirdAreaBus;
+//                this.secArea = this.secAreaBus;
+//                this.thirdArea = this.thirdAreaBus;
             },
             clickClose1Fn: function () {
                 this.space1 = !this.space1;
@@ -1093,14 +1107,16 @@
                 this.warn3Show = false;
             },
             getArea2: function (areaMes) {
-                this.secAreaBus = areaMes.name;
-                this.secArea = this.secAreaBus;
+//                this.secAreaBus = areaMes.name;
+//                this.secArea = this.secAreaBus;
+                this.secArea = areaMes.name;
                 this.secAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow2 = false;
             },
             getArea3: function (areaMes) {
-                this.thirdAreaBus = areaMes.name;
-                this.thirdArea = this.thirdAreaBus;
+//                this.thirdAreaBus = areaMes.name;
+//                this.thirdArea = this.thirdAreaBus;
+                this.thirdArea = areaMes.name;
                 this.thirdAreaCode = areaMes.code; //三字码（只有机场有）
                 this.airAreaSearchShow3 = false;
             },
@@ -1203,15 +1219,15 @@
             },
             resData2: function (data) {
                 this.isSearch2 = false;
-                this.secAreaBus = data.name;
-//                this.secArea = data.name;
+//                this.secAreaBus = data.name;
+                this.secArea = data.name;
                 this.qyCode2 = data.code;
                 this.warn8Show = false;
             },
             resData3: function (data) {
                 this.isSearch3 = false;
-                this.thirdAreaBus = data.name;
-//                this.thirdArea = data.name;
+//                this.thirdAreaBus = data.name;
+                this.thirdArea = data.name;
                 this.qyCode3 = data.code;
                 this.warn8Show = false;
             },
@@ -1262,7 +1278,7 @@
             space2Fn: function (item = '意向机场') {
                 this.space2ShowTitle = item;
                 this.secArea = '';
-                this.secAreaBus = '';
+//                this.secAreaBus = '';
                 if(item == '意向区域') {
                     this.space2Show = '请输入意向区域';
                     this.isSearchCode2 = 0;
@@ -1288,7 +1304,7 @@
             space3Fn: function (item = '意向机场') {
                 this.space3ShowTitle = item;
                 this.thirdArea = '';
-                this.thirdAreaBus = '';
+//                this.thirdAreaBus = '';
                 if(item == '意向区域') {
                     this.space3Show = '请输入意向区域';
                     this.isSearchCode3 = 0;
