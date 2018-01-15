@@ -390,9 +390,9 @@
                 firArea: '', //始发地 1的意向区域
                 firAreaBus: '', // 始发地-中转站
                 firAreaCode: '', //三字码（只有城市有）
-                dptState: '',  //始发地类型（0：机场，1：区域）
-                pstState: '',
-                arrvState: '',
+                dptState: 0,  //始发地类型（0：机场，1：区域）
+                pstState: 0,
+                arrvState: 0,
                 secArea: '', //经停地 2的意向区域
                 secAreaBus: '', // 经停地-中转站
                 secAreaCode: '', //三字码（只有城市有）
@@ -725,7 +725,7 @@
                     return
                 }*/
                 this.sendDataFn();
-                this.sendData.demandtype = '2';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+                this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',

@@ -13,10 +13,11 @@
                     <div class="sec-bottom font-gray">
                         <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
                         <span style="margin-right: 30px;" v-show="userNumShow">已有{{userNum}}位用户发起意向</span>
-                        <span class="font-gray">状态:　<span  v-if="demandState5 == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
+                        <span class="font-gray">状态:　
+                            <span  v-if="demandState5" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                             <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                         </span>
-                        <div class="anew-publish" v-show="demandState5 == true && isSelf == true" @click="anewPublishClickFn">
+                        <div class="anew-publish" v-show="demandState5 && isSelf == true" @click="anewPublishClickFn">
                             重新发布
                         </div>
                     </div>
@@ -35,12 +36,12 @@
                             <span v-else>不接受</span>临近机场
                         </div>
                         <div class="item-d font-gray" v-show="myData.dptState == 0 && myData.dptNm != null">出港资源</div>
-                        <div class="item-e" v-show="myData.dptState == 0 && myData.dptNm != null">
-                            <span v-show="myData.dptTimeresources == 0">{{dptTime0}}</span>
-                            <span v-show="myData.dptTimeresources == 1">待协调</span>
-                            <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                            <div class="item-e" v-show="myData.dptState == 0 && myData.dptNm != null">
+                                <span v-show="myData.dptTimeresources == 0">{{myData.dptTime}}</span>
+                                <span v-show="myData.dptTimeresources == 1">待协调</span>
+                                <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                            </div>
                         </div>
-                    </div>
                     <div class="item-icon">
                         <span class="icon-item">&#xe672;</span>
                     </div>
@@ -57,12 +58,12 @@
                             <span v-else>不接受</span>临近机场
                         </div>
                         <div class="item-d font-gray" v-show="myData.pstState == 0 && myData.pstNm != null">出港资源</div>
-                        <div class="item-e" v-show="myData.pstState == 0 && myData.pstNm != null">
-                            <span v-show="myData.pstTimeresources == 0">{{pstTime0}}-{{pstTime1}}</span>
-                            <span v-show="myData.pstTimeresources == 1">待协调</span>
-                            <span v-show="myData.pstTimeresources == 2">时刻充足</span>
+                            <div class="item-e" v-show="myData.pstState == 0 && myData.pstNm != null">
+                                <span v-show="myData.pstTimeresources == 0">{{myData.pstTime}}</span>
+                                <span v-show="myData.pstTimeresources == 1">待协调</span>
+                                <span v-show="myData.pstTimeresources == 2">时刻充足</span>
+                            </div>
                         </div>
-                    </div>
                     <div class="item-icon">
                         <span class="icon-item">&#xe672;</span>
                     </div>
@@ -80,13 +81,13 @@
                             <span v-else>不接受</span>临近机场
                         </div>
                         <div class="item-d font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null">出港资源</div>
-                        <div class="item-e" v-show="myData.arrvState == 0 && myData.arrvNm != null">
-                            <span v-show="myData.arrvTimeresources == 0"><!--{{arrvTime0}}-{{arrvTime1}}--></span>
-                            <span v-show="myData.arrvTimeresources == 1">待协调</span>
-                            <span v-show="myData.arrvTimeresources == 2">时刻充足</span>
+                            <div class="item-e" v-show="myData.arrvState == 0 && myData.arrvNm != null">
+                                <span v-show="myData.arrvTimeresources == 0">{{myData.arrvTime}}</span>
+                                <span v-show="myData.arrvTimeresources == 1">待协调</span>
+                                <span v-show="myData.arrvTimeresources == 2">时刻充足</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <div class="fourth item-container">
                     <div class="items">
                         <div class="left item font-gray">
@@ -113,8 +114,8 @@
                         <div class="right item">
                             <div class="item-a">{{myData.days}}</div>
                             <div class="item-b">{{myData.seating}}</div>
-                            <div class="item-c">{{myData.loadfactorsexpect || '-'}}%</div>
-                            <div class="item-d" style="display: flex; position: relative;">{{periodValidity1}}止
+                            <div class="item-c">{{myData.loadfactorsexpect}}%</div>
+                            <div class="item-d" style="display: flex; position: relative;">{{periodValidity1 || '-'}}止
                                 <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
                                 <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
                                     <div class="selec-data">
@@ -141,8 +142,15 @@
             </div>
             <div class="myplan" v-if="myplanShow">
                 <div class="plan-til">
-                    <div>我发出的方案</div>
-                    <div @click="EditFn" v-show="receiveIntention.releaseselected == 1" style="cursor:pointer;"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                    <div>
+                        我发出的方案
+                        <span v-show="receiveIntention.responseProgress == 2
+                            || receiveIntention.responseProgress == 4">({{receiveIntention.responseProgressStr}})</span>
+                    </div>
+                    <div @click="EditFn" v-show="receiveIntention.releaseselected == 1
+                            && (receiveIntention.responseProgress != 2 && receiveIntention.responseProgress != 4)" style="cursor:pointer;">
+                        <span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑
+                    </div>
                 </div>
                 <div class="airline">
                     <div class="airplace">
@@ -288,7 +296,7 @@
                     </div>
                     <div>
                         <div>是否调度</div>
-                        <div v-if="receiveIntention.scheduling === '0'">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
+                        <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
                         <div v-else>否</div>
                         <!--<div>华北地区</div>-->
                     </div>
@@ -429,7 +437,7 @@
                                             <span v-if="item.capacityCompany != null">{{item.capacityCompany.airlnCd}}</span>
                                         </div>
                                         <div class="item-height">
-                                            <span v-if="item.scheduling === '0'">{{item.airportForSchedulines[0].airlnCdName}}</span>
+                                            <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">{{item.airportForSchedulines[0].airlnCdName}}</span>
                                             <span v-else>否</span>
                                         </div>
                                     </div>
@@ -447,12 +455,18 @@
                                         <div class="item-height">{{item.ihome}}</div>
                                         <div class="item-height">{{item.days}}</div>
                                         <div class="item-height">{{item.seating}}</div>
-                                        <div class="item-height">{{item.loadfactorsexpect}}%</div>
+                                        <div class="item-height">{{item.loadfactorsexpect || '-'}}%</div>
                                         <div class="item-height" style="display: flex;">{{item.hourscost || '-'}}万元/小时</div>
                                         <div class="item-height">{{item.capacityBaseNm}}</div>
                                     </div>
                                 </div>
                             </div>
+                            <!--<div class="item-seventh">
+                                <div class="left font-gray">调度范围</div>
+                                <div class="right">
+                                    南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场
+                                </div>
+                            </div>-->
                             <div class="item-fourth">
                                 <div class="left font-gray">其他说明</div>
                                 <div class="right">
@@ -483,7 +497,7 @@
                 <div class="buttons">
                     <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
                     <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                    <button class="btn btn-w" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
+                    <button class="btn btn-b" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
                 </div>
             </div>
             <div class="second-button" v-show="secondButtonShow">
@@ -492,7 +506,7 @@
                     <button class="btn btn-w" @click="endNeed">结束需求</button>
                 </div>
             </div>
-            <div class="myplan-buttons" v-if="myplanBtnShow">
+            <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4">
                 <div v-if="receiveIntention.responseselected == '0'">
                     <div class="buttons">
                         <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
@@ -504,12 +518,12 @@
                         <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
                     </div>
                     <div class="buttons" v-else>
-                        <div class="btn btn-w cancel-btn" @click="deleteClickFn">取消意向</div>
-                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                        <div class="btn btn-w cancel-btn" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                        <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
+                        <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
+                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
                     </div>
                 </div>
-
             </div>
             <div class="bottom" v-show="fifthButtonShow">
                 <div class="buttons">
@@ -608,7 +622,7 @@
                 airlnCd: '',            // 运力归属
                 isAlreadyCollect: false, // 是否已收藏
                 btnDisableShow: false,       // 禁止点击按钮
-                btnDisableShowArry: [],
+                btnDisableShowArry: [],    // 存储获取的releaseselected参数
             }
         },
         created() {
@@ -619,6 +633,7 @@
                     this.$emit('transShow');
                 }
             });
+
         },
         computed: {
             ...vx.mapGetters([
@@ -647,10 +662,10 @@
                     this.myData = response.data.data;
                     this.releaseTime = this.myData.releasetime.split(" ")[0];
                     this.dptTime0 = this.myData.dptTime;
-                    this.pstTime0 = this.myData.pstTime.split(',')[0];
-                    this.pstTime1 = this.myData.pstTime.split(',')[1];
-                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
-                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
+//                    this.pstTime0 = this.myData.pstTime.split(',')[0];
+//                    this.pstTime1 = this.myData.pstTime.split(',')[1];
+//                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
+//                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
                     this.periodValidity1 = this.myData.periodValidity.split('-')[1];
                     if (this.myData.subsidypolicy == 0) {
                         this.subsidypolicy = '定补'
@@ -1007,6 +1022,13 @@
             },
             // 航司点击“我有意向”，弹出airlineWrite：请填写完整方案
             airlineWriteFn: function () {
+                this.myData.chongXinFaQi = '0';
+                this.airlineWriteShow = true;
+            },
+            // "重新发起意向"，弹出airlineWrite：请填写完整方案,chongXinFaQi = 0:不是重新发起，chongXinFaQi = 1：是重新发起
+            airlineWriteFn2: function () {
+                this.myData = this.receiveIntention;
+                this.myData.chongXinFaQi = '1';
                 this.airlineWriteShow = true;
             },
             // 航司点击“取消意向”
@@ -1801,6 +1823,17 @@
                             height: 40px;
                         }
                     }
+                }
+            }
+            .item-seventh {
+                display: flex;
+                /*margin-bottom: 95px;*/
+                padding: 0 20px;
+                /*height: 80px;*/
+                .left {
+                    flex-shrink: 0;
+                    width: 80px;
+                    line-height: 20px;
                 }
             }
             .item-fourth {

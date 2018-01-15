@@ -278,7 +278,7 @@
                         <span>补贴政策</span>　
                         <div style="display: flex; flex-direction: column;">
                             <div class="vertical-center" style="margin-bottom: 10px;">
-                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" checked/><label for="alRsubsidyYes" class="input-label">有补贴</label>
+                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" checked @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
                                 <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
                                     <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                     <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
@@ -370,11 +370,11 @@
             </div>
             <div class="sixth" v-if="submitData2Click == false">
                 <button class="btn-a btn-blue" @click="submitData2ClickFn" v-show="role.role != 2">委托代理</button>
-                <button class="btn-b btn-blue" @click。stop="submitData">确认发布</button>
+                <button class="btn-b btn-blue" @click.stop="submitData">确认发布</button>
                 <button class="btn-c btn-cancel" @click="closeThis">取消</button>
             </div>
             <div class="sixth" v-else>
-                <button class="btn-b btn-blue" @click="submitData2">确认发布</button>
+                <button class="btn-b btn-blue" @click.stop="submitData2">确认发布</button>
                 <button class="btn-c btn-cancel" @click="closeSubmitData2">取消</button>
             </div>
         </div>
@@ -425,9 +425,9 @@
                 firArea: '', //始发地 1的意向区域
                 firAreaBus: '', // 始发地-中转站
                 firAreaCode: '', //三字码（只有城市有）
-                dptState: '',  //始发地类型（0：机场，1：区域）
-                pstState: '',
-                arrvState: '',
+                dptState: 0,  //始发地类型（0：机场，1：区域）
+                pstState: 0,
+                arrvState: 0,
                 secArea: '', //经停地 2的意向区域
                 secAreaBus: '', // 经停地-中转站
                 secAreaCode: '', //三字码（只有城市有）
@@ -617,7 +617,7 @@
                 }else if(this.dptState == 1) {
                     this.sendData.dpt = this.firArea;//必填 机场传三字码，区域和省份传汉字
                 }
-                if(this.secArea != '') {
+                if(this.secArea.replace(/(^\s*)|(\s*$)/g,"") != '') {
                     if(this.pstState == 0) {
                         this.sendData.pst = this.qyCode2;//选填 经停地，机场三字码
                     }else if(this.pstState == 1) {
@@ -626,7 +626,7 @@
                 }else {
                     this.sendData.pst = '';
                 }
-                if(this.thirdArea != '') {
+                if(this.thirdArea.replace(/(^\s*)|(\s*$)/g,"") != '') {
                     if(this.arrvState == 0) {
                         this.sendData.arrv = this.qyCode3;//选填 到达地，机场三字码
                     }else if(this.arrvState == 1) {
@@ -762,7 +762,7 @@
                     return
                 }*/
                 this.sendDataFn();
-                this.sendData.demandtype = '2';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
+                this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -808,6 +808,7 @@
                 this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
+                this.warn8Show = false;
                 this.warn9Show = false;
                 // 始发、经停、到达中转站
                 this.firArea = this.firAreaBus;
@@ -1113,7 +1114,6 @@
                     this.dptState = 0;
                 }if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
                     this.secondShow = false;
-//                    this.dptState = '';
                 }
             },
             space2Fn: function (item = '意向机场') {
@@ -1139,7 +1139,6 @@
                     this.pstState = 0;
                 }if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
                     this.secondShow = false;
-//                    this.pstState = '';
                 }
             },
             space3Fn: function (item = '意向机场') {
@@ -1165,22 +1164,11 @@
                     this.arrvState = 0;
                 }if(this.second1Show == false && this.second2Show == false && this.second3Show == false) {
                     this.secondShow = false;
-//                    this.arrvState = '';
                 }
             },
             scheduleListFn: function (item) {
                 this.scheduleShow = item;
                 this.warn5Show = false;
-            },
-            subsidyListFn: function (item) {
-                this.subsidyShow = item;
-                if(item == '定补'){
-                    this.subsidyCode = 0;
-                }if(item == '保底'){
-                    this.subsidyCode = 1;
-                }if(item == '人头补'){
-                    this.subsidyCode = 2;
-                }
             },
             // 点击删除小标签
             littleLabelClose: function (index) {
@@ -1223,12 +1211,25 @@
                 }else{}
             },
             //补贴点击，改变补贴码
+            subsidyClick0: function () {
+                this.subsidyCode = '';
+            },
             subsidyClick1: function () {
                 this.subsidyCode = 4;
             },
             subsidyClick2: function () {
                 this.subsidyCode = 3;
 //                console.info('radio')
+            },
+            subsidyListFn: function (item) {
+                this.subsidyShow = item;
+                if(item == '定补'){
+                    this.subsidyCode = 0;
+                }if(item == '保底'){
+                    this.subsidyCode = 1;
+                }if(item == '人头补'){
+                    this.subsidyCode = 2;
+                }
             },
             kemiantan: function () {
 //                console.info('label')
