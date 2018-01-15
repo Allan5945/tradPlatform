@@ -62,9 +62,9 @@
             <footer>
                 <div>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
-                    <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                     <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
-                    <div class="col-btn" @click="collect" v-else>收藏</div>
+                    <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                     <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn" :class="{active: !inventBtnShow}" @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
@@ -98,6 +98,7 @@
              intentFormShow:false,
              dialog:false,
              payDialog:false,
+             inventBtnShow:true
          }
      },
      props:['needData'],
@@ -196,10 +197,14 @@
                         this.intentionCount = response.data.intentionCount;
                         this.detailData = response.data.data;
 
+                        let progress = this.detailData.demandprogress;
+                        if(progress == '4'||progress == '6'||progress == '3'){
+                            this.inventBtnShow = false;
+                        }
+
                     }else if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
                         this.myShow2 = true;
                         this.resData = response.data;
-
                     }
 
                      if(response.data.isAlreadyCollect == true){
@@ -388,6 +393,9 @@
                   color:#fff;
                   background-color:#3c78ff;
 
+              }
+              >.active{
+                width:180px;
               }
 
           }

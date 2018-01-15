@@ -508,10 +508,9 @@
                 if(this.dispatch){       //接受调度
                     if(this.qyCode1 == ''){
                         this.isError9 = true;
+                        return false;
                     };
-                    return false;
                 }
-
                 let demandData = {};
                     demandData.demandtype = type;
                     demandData.contact = this.contact;

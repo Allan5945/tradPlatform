@@ -168,7 +168,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicyStr||'-'}}</div>
+                                    <div>{{turnPolicyCode(planData.subsidypolicy)||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -191,7 +191,7 @@
                                     <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
-                            <div v-show="!rePublish">
+                            <div v-if="selectBtnShow">
                                 <div class="btns" v-if="val.releaseselected == '0' ">
                                     <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
                                     <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
@@ -205,7 +205,7 @@
             </div>
 
             </div>
-            <footer v-show="!rePublish">
+            <footer v-show="footShow">
                 <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
                     <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
@@ -244,7 +244,9 @@
              selectData:{},
              intentionCount:0,
              isSign:false,
-             rePublish:false
+             rePublish:false,
+             footShow:true,
+             selectBtnShow:true
          }
      },
      methods:{
@@ -335,7 +337,27 @@
          },
          toPublish:function(){
             this.dataFormShow = true;
-         }
+         },
+         turnPolicyCode:function(val){
+            switch (val) {
+                case "0":
+                    return "定补";
+                    break;
+                case "1":
+                    return "保底";
+                    break;
+                case "2":
+                    return "人头补";
+                    break;
+                case "3":
+                    return "待议";
+                    break;
+                case "4":
+                    return "无补贴";
+                    break;
+            }
+        }
+
 
 
      },
@@ -368,8 +390,13 @@
                     this.planData = response.data.responseList;
                     //判断状态
                     let progress = this.detailData.demandprogress;
-                    if(progress == "3"){
+                    if(progress == "3"){//审核不通过
                       this.rePublish == true;
+                      this.footShow  = false;
+                      this.selectBtnShow = false;
+                    }else if(progress == "4"){//订单完成
+                      this.footShow  = false;
+                      this.selectBtnShow = false;
                     }
                     //有意向方显示列表信息
                     if(this.planData){

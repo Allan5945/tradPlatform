@@ -69,7 +69,7 @@
                     </div>
                     <div>
                         <div>补贴政策</div>
-                        <div>{{detailData.subsidypolicyStr||'-' }}</div>
+                        <div>{{turnPolicyCode(detailData.subsidypolicy)||'-' }}</div>
                     </div>
                     <div>
                         <div>有效期</div>
@@ -332,6 +332,25 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         closeForm(){
           this.formShow =false;
           this.sondetailShow = true;
+        },
+        turnPolicyCode(val){
+            switch (val) {
+                case "0":
+                    return "定补";
+                    break;
+                case "1":
+                    return "保底";
+                    break;
+                case "2":
+                    return "人头补";
+                    break;
+                case "3":
+                    return "待议";
+                    break;
+                case "4":
+                    return "无补贴";
+                    break;
+            }
         }
      },
       mounted() {

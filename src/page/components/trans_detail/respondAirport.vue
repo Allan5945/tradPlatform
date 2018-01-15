@@ -63,8 +63,8 @@
               </div>
               <div class="myplan">
                   <div class="plan-til">
-                      <div>我发出的方案</div>
-                      <div style="cursor:pointer;" @click="getSureForm" v-show="planData.responseselected !== '0' "><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                      <div>我发出的方案<span>{{planState}}</span></div>
+                      <div style="cursor:pointer;" @click="getSureForm" v-if="editShow"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                   </div>
                   <div class="airline">
                       <div class="airplace">
@@ -144,7 +144,7 @@
                       </div>
                       <div>
                           <div>补贴政策</div>
-                          <div>{{planData.subsidypolicyStr||'-'}}</div>
+                          <div>{{turnPolicyCode(planData.subsidypolicy)||'-'}}</div>
                       </div>
                       <div>
                           <div>小时成本</div>
@@ -171,18 +171,19 @@
               </div>
 
           </div>
-          <footer v-if="planData.responseselected == '0' ">
+          <footer v-show="orderComplete">
               <div class="btn">
                   <div class="order" >已生成订单，无法更改</div>
               </div>
           </footer>
-          <footer v-else>
+          <footer  v-if="footShow">
               <div class="btn" v-if="planData.releaseselected == '0' ">
                   <div class="cancel-btn"  @click="confirm">确认方案</div>
                   <div class="refuse-btn" @click="refuse">拒绝并撤回</div>
               </div>
               <div class="btn" v-else>
-                  <div class="cancel-btn"  @click="cancelIntent">取消意向</div>
+                  <div class="intent-btn"  @click="toIntent" v-if="withdraw">重新发起意向</div>
+                  <div class="cancel-btn"  @click="cancelIntent" v-else>取消意向</div>
                   <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
                   @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
                   <div class="col-btn" @click="collect" v-else>收藏</div>
@@ -190,6 +191,11 @@
           </footer>
       </div>
     <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
+    <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @closeForm="closeReForm" :acceptData = "planData"></reIntentForm>
+    <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
+    <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+    <paySuccess v-show="payDialog" @cancel="closePaySuccess" ></paySuccess>
+
     </div>
 </template>
 
@@ -197,21 +203,38 @@
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import sureForm from './sureForm1.vue'
+ import reIntentForm from './reIntentForm.vue'
+ import intentForm from './intentForm.vue'
+ import transDialog from './transDialog.vue'
+ import paySuccess  from './paySuccess.vue'
  export default {
      data(){
          return{
              planShow:true,
              isCollect:false,
              sureFormShow:false,
+             editShow:true,
+             withdraw:false,
+             intentFormShow:false,
+             dialog:false,
+             payDialog:false,
+             reFormShow:false,
+             footShow:true,
+             orderComplete:false,
              planData:{},
              detailData:{},
              intentionCount:0,
              demandData:{},
              text:'已收藏',
+             planState:''
          }
      },
       components: {
-            sureForm
+            sureForm,
+            intentForm,
+            transDialog,
+            paySuccess,
+            reIntentForm
         },
      methods:{
          closeDetail:function(){
@@ -245,6 +268,9 @@
                         console.log(error);
                     }
                 );
+         },
+         toIntent:function(){
+             this.reFormShow = true;
          },
          confirm:function(){
           this.$ajax({
@@ -347,7 +373,43 @@
             }else{
               this.text = "已收藏";
             }
-         }
+         },
+         closeForm:function(){
+            this.intentFormShow = false;
+         },
+         closeReForm:function(){
+             this.reFormShow = false;
+         },
+         closeDialog:function(){
+            this.dialog = false;
+         },
+         sureDialog:function(){
+            this.reFormShow = false;
+            this.payDialog = true;
+         },
+         closePaySuccess:function(){
+            this.payDialog = false;
+            this.$emit('responseClose');
+        },
+        turnPolicyCode:function(val){
+            switch (val) {
+                case "0":
+                    return "定补";
+                    break;
+                case "1":
+                    return "保底";
+                    break;
+                case "2":
+                    return "人头补";
+                    break;
+                case "3":
+                    return "待议";
+                    break;
+                case "4":
+                    return "无补贴";
+                    break;
+            }
+        }
 
      },
       computed:{
@@ -372,10 +434,40 @@
                 .then((response) => {
                     if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
                         this.$emit('responseShow');
-                        //this.isIntentionMoney = response.data.isIntentionMoney;
                         this.intentionCount = response.data.intentionCount;
                         this.detailData = response.data.data;
                         this.planData = response.data.receiveIntention;
+                        //选定状态无法编辑
+                        if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
+                            this.editShow = false;
+                        }
+                        //已撤回,意向征集和已落选,订单完成
+                        let progress = this.planData.responseProgress;
+                        if(progress == '2'){
+                          this.editShow = false;
+                          this.withdraw = true;
+                          this.planState = "（已撤回）";
+                        }else if(progress == '0'){
+                            this.editShow = true;
+                            this.withdraw = false;
+                            this.planState = " ";
+                        }else if(progress == '4'){
+                            this.editShow = false;
+                            this.footShow = false;
+                            this.planState = "（已落选）";
+                        }else if(progress == '6'){
+                            this.editShow = false;
+                            this.footShow = false;
+                            this.orderComplete = true;
+                        }else if(progress == '3'){
+                            this.editShow = false;
+                            this.footShow = false;
+                        }
+
+
+
+
+
 
                         if(response.data.isAlreadyCollect == true){
                             this.isCollect = true;
@@ -605,6 +697,12 @@
               .cancel-btn{
                   width:100px;
                   margin-right:10px;
+              }
+              .intent-btn{
+                  width:180px;
+                  color:#fff;
+                  margin-right:10px;
+                  background-color:#3c78ff;
               }
                .col-btn{
                   width:80px;

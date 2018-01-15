@@ -97,7 +97,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicyStr||'-'}}</div>
+                                    <div>{{turnPolicyCode(val.subsidypolicy)||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -140,7 +140,26 @@
              },
               openDetail:function(index){
                  this.showDetailIndex = index;
-             }
+             },
+             turnPolicyCode:function(val){
+                switch (val) {
+                    case "0":
+                        return "定补";
+                        break;
+                    case "1":
+                        return "保底";
+                        break;
+                    case "2":
+                        return "人头补";
+                        break;
+                    case "3":
+                        return "待议";
+                        break;
+                    case "4":
+                        return "无补贴";
+                        break;
+                }
+            }
         }
     }
 </script>

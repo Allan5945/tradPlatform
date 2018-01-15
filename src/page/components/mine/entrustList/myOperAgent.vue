@@ -144,6 +144,7 @@
                 this.getListData();
             },
             chat:function (v) {
+                v.employeeId = this.role.id;
                 ln.$emit('addChat',v);
             },
             typeShowFn: function () {
@@ -183,6 +184,7 @@
 
             },
             getDetail:function(val){
+                val.employeeId = this.role.id;
                  this.chatData = val;
                 if(val.demandType == '2'){//托管详情
                     this.agentShow = true;
