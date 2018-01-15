@@ -178,7 +178,7 @@
         },
       mounted() {
             tabulationBoxTrigger.hierarchy = true;
-            if(this.needData.demandType == 1 && this.role.role == 1){
+            if(this.needData.demandType == 1){
                 this.demandId = this.needData.id;
                 this.$ajax({
                 method: 'post',

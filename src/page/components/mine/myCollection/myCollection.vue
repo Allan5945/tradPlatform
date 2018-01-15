@@ -54,16 +54,16 @@
                     </div>
                 </div>
             </div>
-            <!--  <el-pagination
+            <el-pagination
                    class="pagination"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
-                   :current-page="4"
-                   :page-sizes="[100, 200, 300, 400]"
+                   :current-page="1"
+                   :page-sizes="[3,4]"
                    :page-size="numPrePage"
                    layout="prev, pager, next, jumper, total"
                    :total="totalCount">
-                        </el-pagination> -->
+                        </el-pagination>
         </div>
         <transition name="slidex-fade">
             <transDetail v-if="transShow" @closeDetail="closeDetail" @showDetail="showTrans" :needData="needData"></transDetail>
@@ -98,7 +98,7 @@
                 collectList:null,
                 needData:null,
                 numPrePage:1,
-                totalCount: 1,
+                totalCount: 0,
                 pageCount: 1,
                 sentData:{
                     page: 1,
@@ -116,11 +116,11 @@
         },
         methods: {
             handleSizeChange(val) {
-//                console.log(`每页 ${val} 条`);
+//            console.log(`每页 ${val} 条`);
             },
-            handleCurrentChange(val) {
+            handleCurrentChange(page) {
 //                console.log(`当前页: ${val}`);
-                this.sendData.page = val;
+                this.sentData.page = page;
             },
             chat:function (v) {
                 ln.$emit('addChat',v);
@@ -222,9 +222,9 @@
                         params: this.sentData
                     }).then(res => {
                         if(res && res.data.opResult == 0){
-                            /*that.totalCount = response.data.list.totalCount;
-                            that.pageCount = response.data.list.pageCount;
-                            that.numPrePage = response.data.list.numPrePage;*/
+                            that.totalCount = res.data.list.totalCount;
+                            that.pageCount = res.data.list.pageCount;
+                            that.numPrePage = res.data.list.numPrePage;
                             that.collectList = res.data.list.list;
                         }else{
                             that.collectList = null;
@@ -253,6 +253,9 @@
              'sentData.demandProgress':function(){
                 this.getListData();
             },
+            'sentData.page':function(){
+                this.getListData();
+            }
         },
         mounted() {
             this.getListData();
@@ -447,5 +450,9 @@
     .list-active {
         border: 1px solid #d0d0d0;
         background: #ebebeb;
+    }
+    .pagination{
+        text-align:center;
+        padding-bottom:20px;
     }
 </style>
