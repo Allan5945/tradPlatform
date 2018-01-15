@@ -382,7 +382,7 @@
                 </div>
             </div>
             <div class="sixth">
-                <button class="btn-b" @click="submitData">确认方案</button>
+                <button class="btn-b" @click="submitData">确认选定该意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>

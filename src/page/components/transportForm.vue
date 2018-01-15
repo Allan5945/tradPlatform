@@ -2,7 +2,7 @@
     <div class="t-form scroll popup" id="transForm">
         <div class="t-must">
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
                 <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
             </div>
             <div class="form-box">
@@ -96,6 +96,7 @@
                 <div class="history" v-show="dispatch">
                     <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
                 </div>
+                <div class="error" v-show="isError9" style="left:65px;top:53px;">*请选择调度机场</div>
             </div>
             <div class="form-box tips pad1">
                 <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
@@ -181,7 +182,7 @@
                 intendedArrv:'',
                 airplaneTyp:'',
                 airCompany:'',
-                airCompanyId: 0,
+                airCompanyId:'',
                 dptState:[0,1],//运力基地：机场为0，地区为1
                 seat:'',
                 hourcost:'',
@@ -233,6 +234,19 @@
             num: function(){
                 return this.tip.length <= 35? this.tip.length: 35;
             }
+        },
+        watch:{
+            /*'dispatch' :function(val){
+                if(val){
+                    this.isError9 =true;
+                }
+            },*/
+            'qyCode1':function(val){
+                 if(val){
+                    this.isError9 =false;
+                }
+            }
+
         },
         methods:{
              getNeed: function(i) {
@@ -463,7 +477,7 @@
                     trans.scrollTop = 0;
                     return false;
                 }
-                if(this.msg == '选择班期类型'){//选择班期
+                if(this.getFlight =='true'&& this.msg == '选择班期类型'){//选择班期
                     this.isError4 = true;
                     trans.scrollTop = 0;
                     return false;
@@ -491,19 +505,22 @@
                     this.isError8 = true;
                     return false;
                 }
-                /*if(this.post == ''){//公开方式、接受调度
-                    this.isError9 = true;
+                if(this.dispatch){       //接受调度
+                    if(this.qyCode1 == ''){
+                        this.isError9 = true;
+                    };
                     return false;
-                }*/
+                }
+
                 let demandData = {};
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
-                    demandData.intendedDpt = this.qyCode3;
-                    demandData.intendedPst = this.qyCode4;
-                    demandData.intendedArrv = this.qyCode5;
+                    demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
+                    demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
+                    demandData.intendedArrv = this.intendedArrv == '' ? '': this.qyCode5;
                     demandData.aircrfttyp = this.airplaneTyp;
                     demandData.dpt = this.qyCode;
                     demandData.dptState = this.dptState[0];
@@ -531,15 +548,22 @@
             }) .then((response) => {
                 if(response.data.opResult == "0"){
                    this.$emit("closeForm");
-                  }
+                   this.$message({
+                        message: '发布成功!',
+                        type: 'success',
+                        duration:2000
+                    });
+                  }else{
+                    this.$message({
+                        message: '提交失败，请稍后再试!',
+                        type: 'warning',
+                        duration:2000
+                    });
+                 }
             }) .catch((error) => {
                     console.log(error);
                 });
             }
-        },
-        watch:{
-
-
         },
         beforeMount:function () {
             if(this.role.role == 2){

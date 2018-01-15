@@ -5,7 +5,7 @@
                 <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
             </div>
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
                 <div class="error" v-show="isError1" style="left:100px;top:158px;">*请填写联系人</div>
             </div>
             <div class="form-box" style="position:relative;">
@@ -27,7 +27,7 @@
            </div> -->
             <div class="form-box">
                 <div class="t-title">航班号</div>
-                <input type="text" placeholder="请输入" v-model="flightNum">
+                <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
                 <!-- <div class="num-list popup scroll" v-show="flightListShow">
                     <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
                 </div> -->
@@ -117,6 +117,17 @@
                         }) .then((response) => {
                             if(response.data.opResult == "0"){
                                 this.$emit("closeForm");
+                                this.$message({
+                                  message: '发布成功!',
+                                  type: 'success',
+                                  duration:2000
+                                });
+                            }else{
+                                 this.$message({
+                                  message: '提交失败，请稍后再试!',
+                                  type: 'warning',
+                                  duration:2000
+                                });
                             }
                         }) .catch((error) => {
                                 console.log(error);
