@@ -693,7 +693,9 @@
                 }
                 //运力归属
                 this.capacitycompany = this.acceptData.capacitycompany;
-                this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                if(this.acceptData.capacityCompany){
+                    this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                }
                 //运力基地
                 this.qyCode4 = this.acceptData.capacityBase;
                 this.fourArea = this.acceptData.capacityBaseNm;
