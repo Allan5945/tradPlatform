@@ -21,9 +21,9 @@
                             重新发布
                         </div>
                         <div class="anew-publish btn-b"
-                             v-show="(receiveIntention.responseProgress != 2
-                            && receiveIntention.responseProgress != 3
-                            && receiveIntention.responseProgress != 4) && isSelf == false" @click="beginTalkClickFn">
+                             v-if="(myplanBtnShow && (receiveIntention.responseProgress != 2
+                                && receiveIntention.responseProgress != 3
+                                && receiveIntention.responseProgress != 4)) && isSelf == false" @click="beginTalkClickFn">
                             发起对话
                         </div>
                     </div>
@@ -322,10 +322,10 @@
                     <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可查看详细列表</span>
                 </div>
             </div>
-            <!--<div class="seventh item-container">
-                <span class="danger">*拒绝原因</span>
-                <span class="line"></span>
-            </div>-->
+            <div class="tenth item-container danger" v-show="myData.demandstate == 5">
+                <span>拒绝原因：</span>
+                <span>{{myData.rek}}</span>
+            </div>
             <div class="third-show" v-show="thirdShow">
                 <div class="eighth item-container">
                     <div class="left font-gray">
@@ -549,7 +549,7 @@
             <!--机场点击“重新发布”显示 航线表单-->
             <airlineReqWrapper v-if="airlineReqWrapperShow" :acceptData="myData" @refresh="refreshFn" @close-this="closeAirlineReqWrapper"></airlineReqWrapper>
 
-            <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>
+            <!--<paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>-->
             <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
         </div>
     </div>
@@ -1140,7 +1140,7 @@
             },
             //点击“确认缴纳”，this.showCode变成2
             changeShowCodeP: function () {
-                this.paySuccessShow = true; //“缴纳完成”组件显示
+//                this.paySuccessShow = true; //“缴纳完成”组件显示
                 /*this.showCode = 2;
                 this.show();*/
                 this.refreshFn();
@@ -1225,9 +1225,9 @@
                 this.airlineAffirmShow = false;
 //                console.info('取消')
             },
-            closePaySucssFn: function () {
+           /* closePaySucssFn: function () {
                 this.paySuccessShow = false;
-            },
+            },*/
         },
         components: {
             airlineWrite,
@@ -1916,6 +1916,12 @@
                 }
             }
         }
+    }
+
+    .tenth {
+        position: absolute;
+        bottom: 130px;
+        @include line-clamp(3);
     }
 
     .first-button {

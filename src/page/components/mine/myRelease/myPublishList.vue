@@ -334,25 +334,6 @@
             // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
-//                console.info('listItem:')
-//                console.info(item)
-                this.$ajax({
-                    url:"/demandFind",
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: {
-                        demandId: item.id //发布时间排序类型 0-倒序 1-正序
-                    }
-                }) .then((response) => {
-//                    console.info('我的发布详情:')
-//                    console.info(response.data.data)
-                    tabulationBoxTrigger.$emit('sendDataToMyPublish',response.data.data); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue
-                    tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
-                }).catch((error) => {
-                    console.log(error);
-                });
 
                 //['运力投放','运力委托','航线需求','航线委托','运营托管'],
 //                响应的需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
@@ -370,7 +351,7 @@
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
                 }if(item.demandtype == 1){
-                    //  运力需求详情（航司发布，我写的）
+                    //  运力需求详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
                     this.myPublishShow0 = false;
@@ -382,14 +363,9 @@
                     this.myPublishShow0 = true;
                     this.myPublishShow1 = false;
                 }
-
+                tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue...
+                tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },
-           /* // 点击关闭:我的发布-运力需求详情
-            closeMyPublishShowFn: function () {
-                this.myPublishShow = false;
-                this.listItemIndex = '';
-                tabulationBoxTrigger.hierarchy = false;
-            },*/
             // 点击关闭:我的发布-航线详情
             closeMyPublishShowFn0: function () {
                 this.myPublishShow0 = false;
@@ -404,12 +380,6 @@
                 tabulationBoxTrigger.hierarchy = false;
                 this.refreshFn();
             },
-            /*// 点击关闭:我的发布-行线需求详情
-            closeMyPublishAirlineFn: function () {
-//                this.myPublishAirlineShow = false;
-                this.listItemIndex = '';
-                tabulationBoxTrigger.hierarchy = false;
-            },*/
             // 点击关闭:我的发布-发布的运力托管
             closeMyPublishTransportEntrustFn: function () {
                 this.myPublishTransportEntrustShow = false;

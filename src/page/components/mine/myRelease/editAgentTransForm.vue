@@ -1,26 +1,27 @@
 <template>
     <div class="wrapper">
-        <div class="t-form scroll popup">
+        <div class="t-form scroll popup" id="transForm">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
                 <span class="close-icon" @click="closeThis">&times;</span>
             </div>
             <div class="t-must">
                 <div class="form-box">
-                    <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact">
+                    <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
+                    <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" v-model="phoneNum">
-                    <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
+                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="error" v-show="isError2" style="top:58px;right:36px;">*电话格式有误，请重新输入</div>
                 </div>
-                <div style="height:20px;width:100%;" v-if="isError"></div>
+                <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
             <div class="t-optional">
                 <div class="form-box">
                     <div class="t-title">出港时刻</div>
                     <div class="radio-box">
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="eATFtimeYes" v-model="getTime" value="true" ><label for="eATFtimeYes">有&nbsp;</label>
+                            <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
                         </div>
                         <div class="selected" v-if="this.getTime == 'true'">
                             <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
@@ -34,7 +35,7 @@
                           </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="eATFtimeNo" v-model="getTime" value="false"><label for="eATFtimeNo">无</label>
+                            <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
                         </div>
                     </div>
                 </div>
@@ -42,7 +43,7 @@
                     <div class="t-title">是否有班期</div>
                     <div class="radio-box">
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="eATFflightYes" v-model="getFlight" value="true"><label for="eATFflightYes">有&nbsp;</label>
+                            <input type="radio" class="magic-radio" id="flightYes" v-model="getFlight" value="true"><label for="flightYes">有&nbsp;</label>
                         </div>
                         <div class="selected border" @click="showBox=!showBox" v-show="this.getFlight == 'true'">
                             <span class="fl-til" v-text="msg" :class="{selec:isSel}"></span>
@@ -52,51 +53,46 @@
                             </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="eATFflightNo" v-model="getFlight" value="flase"><label for="eATFflightNo">无</label>
+                            <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="flase"><label for="flightNo">无</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-box air-route">
                     <div class="t-title">意向航线</div>
-                    <input type="text" placeholder="起飞机场" v-model="intendedDpt" v-on:keyup="openSearch3"><span class="icon-item ">&#xe672;</span>
-                    <airportS class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS>
-                    <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" v-on:keyup="openSearch4"><span class="icon-item ">&#xe672;</span>
-                    <airportS class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS>
-                    <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" v-on:keyup="openSearch5">
-                    <airportS class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS>
+                    <input type="text" placeholder="起飞机场" v-model="intendedDpt" @focus="openSearch3" @blur="closeDialog1"><span class="icon-item ">&#xe672;</span>
+                    <airportS1 class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS1>
+                    <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" @focus="openSearch4" @blur="closeDialog2"><span class="icon-item ">&#xe672;</span>
+                    <airportS1 class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS1>
+                    <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" @focus="openSearch5" @blur="closeDialog3">
+                    <airportS1 class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS1>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" v-on:keyup="getAirplaneTyp">
+                    <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
                     <div class="airpl-typ popup scroll" v-show="airplTypShow">
                         <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                     </div>
                 </div>
                 <div class="form-box se-place" >
-                    <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" v-on:keyup="openSearch">
-                  <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
+                    <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
+                  <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
                 </div>
                 <div class="form-box reset">
-                    <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" v-on:keyup="getAirCompany">
-                    <div class="airpl-typ popup scroll" v-show="airCompanyShow" style="top:49px;">
-                        <div v-for="(item,index) in airCompanyData" @click="getCompanyList(index)">
-                        <span>{{item[0]}}</span>
-                        <span>{{item[1]}}</span>
-                        </div>
-                    </div>
+                    <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
+                    <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
                 </div>
                 <div class="form-box reset">
                     <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
                 </div>
                 <div class="form-box pad1 taken">
-                    <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost">
+                    <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
                     <span>w/h</span>
                 </div>
                 <div class="form-box  pad1 dispatch">
                     <div class="t-checkbox">
-                        <input type="checkbox" name=" " id="eATFdispatch" class="magic-radio" v-model="dispatch"><label for="eATFdispatch">接受调度</label>
+                        <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
                     </div>
-                    <input type="text" v-show="dispatch" v-model="dispatchText" v-on:keyup="openSearch1" placeholder=" ">
-                    <airportS class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS>
+                    <input type="text" v-show="dispatch" v-model="dispatchText" @focus="openSearch1" @blur="closeDialog7" placeholder=" ">
+                    <airportS1 class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS1>
                     <div class="history" v-show="dispatch">
                         <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
                     </div>
@@ -122,35 +118,19 @@
                    </div>
                 </div>
             </div>
-            <!-- <div class="post-type">
-                <div class="t-radio">
-                    <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
-                </div>
-                <div class="t-radio">
-                    <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
-                </div>
-                <div class="t-radio">
-                    <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
-                </div>
-                <div class="direction t-radio" style="position:relative;">
-                    <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" v-on:keyup="openSearch2">
-                    <div class="history" v-show="this.post == '3'" style="top:-5px;left:2px;line-height:26px;">
-                        <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
-                    </div>
-                    <airportS class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS>
-                </div>
-            </div> -->
             <div class="t-btn">
-                <div class="confirm-btn " @click="confirm(),closeThis()">确认发布</div>
-                <div class="cancel-btn " @click="closeThis">取消</div>
+                <div class="confirm-btn " @click="confirm(4)">确认发布</div>
+                <div class="cancel-btn " @click="cancel">取消</div>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
-    import airportS from '$src/page/reuseComponents/airportSearch.vue'
-    import calendar from '$src/page/components/calendar'
+ import calendar from '$src/page/components/calendar'
+ import * as vx from 'vuex'
+ import airportS from '$src/page/reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
+ import airportS1 from '$src/page/reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import airCompanyS from '$src/page/reuseComponents/airCompanySearch.vue'//可匹配航司搜索
     export default {
         data () {
             return{
@@ -158,10 +138,11 @@
                 boxShow1: false,
                 boxShow2: false,
                 isSel: false,
-                isError: false,
+                isError1: false,
+                isError2: false,
                 phoneNum: '',
-                getFlight: 'true',
-                getTime: 'true',
+                getFlight: '',
+                getTime: '',
                 dispatch:false,
                 pickStart:false,
                 pickEnd:false,
@@ -173,13 +154,15 @@
                 intendedArrv:'',
                 airplaneTyp:'',
                 airCompany:'',
-                airCompanyId: 0,
+                airCompanyId: '',
                 dptState:[0,1],//运力基地：机场为0，地区为1
                 seat:'',
                 hourcost:'',
                 post:'0',
                 timeStart:'00:00',
                 timeEnd:'00:00',
+                timeStartIndex:0,
+                timeEndIndex:0,
                 tip: '',
                 searchData:["双流机场","武当山机场"],
                 searchData1:["双流机场","武当山机场"],
@@ -208,14 +191,23 @@
                 qyCode4:'',
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
-                airCompanyData:[]
             }
         },
         components:{
             calendar,
-            airportS
+            airportS,
+            airportS1,
+            airCompanyS
+        },
+        computed:{
+         ...vx.mapGetters([
+                'role'
+            ])
         },
         methods:{
+            closeThis:function(){
+                this.$emit("close-this");
+            },
              getNeed: function(i) {
                 this.msg = this.stateType[i];
                 this.isSel = true;
@@ -255,11 +247,60 @@
              openSearch3: function(){
                 this.dptSearch =true;
             },
+
              openSearch4: function(){
                 this.pstSearch =true;
             },
              openSearch5: function(){
                 this.arrvSearch =true;
+            },
+             closeDialog1(){
+                let that =this;
+               setTimeout(function(){
+                that.dptSearch =false;
+                },200);
+            },
+             closeDialog2(){
+                let that =this;
+               setTimeout(function(){
+                that.pstSearch =false;
+                },200);
+            },
+             closeDialog3(){
+                let that =this;
+               setTimeout(function(){
+                that.arrvSearch =false;
+                },200);
+            },
+             closeDialog4(){
+                let that =this;
+               setTimeout(function(){
+                that.airplTypShow =false;
+                },200);
+            },
+             closeDialog5(){
+                let that =this;
+               setTimeout(function(){
+                that.isSearch =false;
+                },200);
+            },
+             closeDialog6(){
+                let that =this;
+               setTimeout(function(){
+                that.airCompanyShow =false;
+                },200);
+            },
+             closeDialog7(){
+                let that =this;
+               setTimeout(function(){
+                that.dispatchSearch =false;
+                },200);
+            },
+             closeDialog8(){
+                let that =this;
+               setTimeout(function(){
+                that.directSearch =false;
+                },200);
             },
           /*  verifyPhon:function(){
                 let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
@@ -268,22 +309,44 @@
                 }
                 this.isError = true;
             },*/
-            /*verifyPhon: function () {
-                if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
-                    this.isError = true;
-                }else{
-                    this.isError = false;
+            verifyContact:function(){
+                 if(this.contact){
+                     this.isError1 = false;
                 }
-            },*/
+                this.contact = this.contact.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
+            },
+            verifyPhon: function () {
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum))){
+                    this.isError2 = true;
+                }else{
+                    this.isError2 = false;
+                }
+                if(this.phoneNum == ''){
+                    this.isError2 = false;
+                }
+            },
+            verifyHourcost:function(){
+                this.hourcost =  this.hourcost.replace(/[^0-9.]/g,'');
+                if(this.hourcost>100){
+                    this.hourcost = '';
+                }
+            },
             pickTime1: function(i) {
+                this.timeStartIndex = i;
                 this.timeStart = this.timeData[i];
                 this.boxShow1 = false;
                 this.pickStart = true;
+                if(i > this.timeEndIndex||i == this.timeEndIndex){
+                    this.timeEnd = " ";
+                }
             },
              pickTime2: function(i) {
-                this.timeEnd = this.timeData[i];
-                this.boxShow2 = false;
-                this.pickEnd = true;
+                this.timeEndIndex = i;
+                if(i > this.timeStartIndex){
+                    this.timeEnd = this.timeData[i];
+                    this.boxShow2 = false;
+                    this.pickEnd = true;
+                }
             },
             delItem:function(i){
                 this.searchData.splice(i,1);
@@ -291,8 +354,8 @@
              delItem1:function(i){
                 this.searchData1.splice(i,1);
             },
-            closeThis:function(){
-                this.$emit("close-this");
+            cancel:function(){
+                this.closeThis();
             },
             resData: function (data) {
                 this.isSearch = false;
@@ -300,106 +363,82 @@
                 this.qyCode = data.code;
             },
             disData: function(data){
-                this.dispatchSearch = false;
                 this.dispatchText = data.name;
                 this.qyCode1 = data.code;
+                this.dispatchSearch = false;
             },
             directData: function(data){
-                this.directSearch = false;
                 this.directText = data.name;
                 this.qyCode2 = data.code;
+                this.directSearch = false;
             },
             dptData: function (data) {
-                this.dptSearch = false;
                 this.intendedDpt = data.name;
                 this.qyCode3 = data.code;
+                this.dptSearch = false;
             },
             pstData: function (data) {
-                this.pstSearch = false;
                 this.intendedPst = data.name;
                 this.qyCode4 = data.code;
+                this.pstSearch = false;
             },
             arrvData: function (data) {
-                this.arrvSearch = false;
                 this.intendedArrv = data.name;
                 this.qyCode5 = data.code;
+                this.arrvSearch = false;
             },
             getAirType: function(i){
                 this.airplaneTyp = this.airTypData[i];
                 this.airplTypShow = false;
             },
-            getCompanyList: function(i){
-                this.airCompany = this.airCompanyData[i][0];
+             airCompanyData: function(data){
+                this.airCompany = data.name;
+                this.airCompanyId = data.id;
                 this.airCompanyShow = false;
-                this.airCompanyId = this.airCompanyData[i][2];
             },
             getAirplaneTyp:function(){
-                /*this.$ajax({
-                url:"/getDemandsForCurrentEmployee",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:2
-                }
-            }) .then((response) => {
-                response.data.list.list.forEach(item =>{
-                    this.airTypData.push(item.aircrfttyp);
-                })
-            }) .catch((error) => {
-                    console.log(error);
-                });*/
                 this.airplTypShow = true;
             },
             getAirCompany: function(){
-                this.$ajax({
-                url:"/airCompenyList",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: {
-                    page:2
-                }
-            }) .then((response) => {
-                response.data.list.forEach(item =>{
-                    let myCompany = [];
-                    myCompany.push(item.airlnCd);
-                    myCompany.push(item.icao);
-                    myCompany.push(item.capacitycompany);
-                    this.airCompanyData.push(myCompany);
-                })
-            }).catch((error) => {
-                    console.log(error);
-                });
-                //console.log(this.airCompanyData)
                 this.airCompanyShow = true;
             },
-            confirm:function(){
-                let demandData = { };
-                    demandData.demandtype = "4";
+            confirm:function(type){
+                 let trans = document.getElementById('transForm');
+                //必填信息验证
+                if(this.contact ==''){
+                    this.isError1 = true;
+                    trans.scrollTop = 0;
+                }
+                if(this.phoneNum == ''){
+                    this.isError2 = true;
+                    trans.scrollTop = 0;
+                }
+                let demandData = {};
+                    demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
-                    demandData.intendedDpt = this.qyCode3;
-                    demandData.intendedPst = this.qyCode4;
-                    demandData.intendedArrv = this.qyCode5;
+                    demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
+                    demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
+                    demandData.intendedArrv = this.intendedArrv == '' ? '': this.qyCode5;
                     demandData.aircrfttyp = this.airplaneTyp;
                     demandData.dpt = this.qyCode;
                     demandData.dptState = this.dptState[0];
                     demandData.capacitycompany = this.airCompanyId;
                     demandData.seating = this.seat;
-                    demandData.hourcost = this.hourcost;
-                    demandData.schedulingStr = this.dispatch == false? '无':'有';
+                    demandData.hourscost = this.hourcost;
+                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
+                    demandData.scheduling = this.dispatch == false? '1':'0';
+                    if(this.dispatch){
+                        demandData.schedulinePort  = this.qyCode1;
+                    }
                     demandData.remark = this.tip;
-                    demandData.periodValidity = this.myDate;
+                    demandData.periodValidity = this.myDate == '选择起始时间'? '': this.myDate;
                     demandData.publicway = this.post;
-                    //demandData.directionalgoal = this.directText;
-                    //demandData.demandprogress = '0';
-                    tabulationBoxTrigger.$emit('sendToMyPublish',demandData);
-                     this.$ajax({
+                    //demandData.directionalgoal = this.qyCode2;
+                    if(!this.isError1 && !this.isError2){
+                        this.$ajax({
                         url:"/demandAdd",
                         method: 'post',
                         headers: {
@@ -407,24 +446,39 @@
                         },
                         params: demandData
                     }) .then((response) => {
-                         if(response.data.opResult == 0){
-                            alert('成功发布运力委托');
-                         }else {
-                             alert(`运力委托发布失败，错误代码：${response.data.opResult}`);
-                         }
+                        if(response.data.opResult == "0"){
+                           this.closeThis();
+                           this.$message({
+                              message: '发布成功!',
+                              type: 'success',
+                              duration:2000
+                            });
+                        }else{
+                            this.$message({
+                                message: '提交失败，请稍后再试!',
+                                type: 'warning',
+                                duration:2000
+                            });
+                        }
                     }) .catch((error) => {
                             console.log(error);
                         });
-                        this.$emit('change-showCode');
-            },
+                    }
+            }
         },
         computed:{
             num: function(){
                 return this.tip.length <= 35? this.tip.length: 35;
             }
         },
-        watch:{},
-         beforeMount:function () {}
+        watch:{
+
+
+        },
+        beforeMount:function () {
+
+        }
+
     }
 </script>
 
@@ -476,8 +530,8 @@
     .t-form{
         /*position:absolute;
         top:65px;
-        left:0;*/
-        /*z-index:99;*/
+        left:0;
+        z-index:99;*/
         box-sizing:border-box;
         overflow-y: scroll;
         font-size:1.2rem;
@@ -574,23 +628,13 @@
         text-align:center;
         border-right:1px solid rgba(151,151,151,.3);
     }
-    .post-type{
-        display: flex;
-        margin: 40px 0 70px 0;
-        .t-radio{
-            margin-right:20px;
-            height:26px;
-            line-height:26px;
-        }
-    }
     .t-btn{
         font-size: 1.5rem;
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin-bottom:22px;
-        margin-top:40px;
+        margin:40px 0 22px 0;
         >div{
           height:40px;
           line-height:40px;
@@ -601,34 +645,23 @@
           cursor:pointer;
 
         }
-        .agent-btn{
-          width:100px;
-          margin-right: 20px;
-          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
-        }
         .confirm-btn{
           width:190px;
-          margin:0 10px;
+          margin:0 10px 0 30px;
           box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .cancel-btn{
           width:80px;
           color:rgba(96,94,124,.6);
           box-sizing:border-box;
-          opacity: 0.4;
+          opacity:40%;
           background-color:#fff;
           border: 1px solid rgba(96,94,124,.6);
         }
     }
     .confirm-btn:hover{
-           background-color: rgba(80, 139, 255,1);
-          color: white !important;
-          cursor: pointer;
-          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
-    }
-    .agent-btn:hover{
-           background-color: rgba(80, 139, 255,1);
-          color: white !important;
+          background-color: rgba(80, 139, 255,1);
+          color: white;
           cursor: pointer;
           box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
     }
@@ -740,8 +773,6 @@
     }
     .error{
         position:absolute;
-        top:58px;
-        right:36px;
         color:red;
     }
     .aisx {

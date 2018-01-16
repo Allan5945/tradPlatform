@@ -518,6 +518,21 @@
             }*/
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
                 this.airList.forEach((val) => {
@@ -668,10 +683,12 @@
                     params: this.sendData
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('成功发布！')
+//                        alert('成功发布！')
+                        this.open6(`成功发布！`);
                         this.$emit("closeForm");
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -735,10 +752,12 @@
                     params: this.sendData
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('成功委托！')
+//                        alert('成功委托！')
+                        this.open6(`成功委托！`);
                         this.$emit("closeForm");
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);

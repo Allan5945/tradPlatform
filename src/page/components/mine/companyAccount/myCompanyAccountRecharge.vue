@@ -7,7 +7,7 @@
                 </div>
                 <div class="right">
                     <div class="title font-gray">如有疑问，请联系客服</div>
-                    <div class="anew-publish" @click="chat">
+                    <div class="anew-publish" @click="linkServiceClickFn">
                         联系客服<span class="icon-item">&#xe720;</span>
                     </div>
                 </div>
@@ -57,12 +57,11 @@
                 this.$emit('closeThis');
                 tabulationBoxTrigger.hierarchy = false;
             },
-            // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条意向id）)
-            chat:function (item) {
+            // 点击“联系客服”
+            linkServiceClickFn: function () {
                 let chatObj = {};
-                chatObj.demandEmployeeId = this.myData.employeeId;
-                chatObj.id = this.myData.id;
-//                chatObj.employeeId = item.employeeId;
+                chatObj.id = null;
+                console.info(chatObj);
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
         },

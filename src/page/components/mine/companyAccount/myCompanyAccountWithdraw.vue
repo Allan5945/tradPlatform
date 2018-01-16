@@ -7,7 +7,7 @@
                 </div>
                 <div class="right warn">
                     <div class="title ">*提现金额将在财务审核通过后，转入您的账户，如有疑问，请联系客服</div>
-                    <div class="anew-publish">
+                    <div class="anew-publish" @click="linkServiceClickFn">
                         联系客服<span class="icon-item">&#xe720;</span>
                     </div>
                 </div>
@@ -62,6 +62,13 @@
             closeThisFn: function () {
                 this.$emit('closeThis');
                 tabulationBoxTrigger.hierarchy = false;
+            },
+            // 点击“联系客服”
+            linkServiceClickFn: function () {
+                let chatObj = {};
+                chatObj.id = null;
+                console.info(chatObj);
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // 点击“确定”按钮
             sendData: function () {

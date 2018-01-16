@@ -592,6 +592,21 @@
             this.acceptDataFn();
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // 从父组件接受数据,并绑定到表单上
             acceptDataFn: function () {
                 /*单选按钮是否选定*/
@@ -898,11 +913,13 @@
 //                    console.info('response:')
 //                    console.info(response)
                     if(response.data.opResult === '0'){
-                        alert('成功编辑该意向！')
+//                        alert('成功编辑该意向！')
+                        this.open6(`成功编辑该意向！`);
                         this.$emit('refresh');
                         this.closeThis();
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);

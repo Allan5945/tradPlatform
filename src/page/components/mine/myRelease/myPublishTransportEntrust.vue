@@ -13,9 +13,6 @@
                 <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
                     重新发布
                 </div>
-                <!--<div class="edit-publish btn-w" v-show="editPublishShow" @click="editPublishClickFn">
-                    <span class="icon-item">&#xe653;</span>编辑
-                </div>-->
                 <div class="top">
                     <span style="height: 25px;">{{myData.title}}</span>
                 </div>
@@ -31,11 +28,9 @@
                 <div class="items">
                     <div class="left item">
                         <div class="font-gray">航班号</div>
-                        <div class="font-gray">其他说明</div>
                     </div>
                     <div class="right item">
                         <div class="item-height">{{myData.fltNbr}}</div>
-                        <div class="item-height">{{myData.remark}}</div>
                     </div>
                 </div>
                 <div class="items">
@@ -48,17 +43,8 @@
                 </div>
             </div>
             <div class="add-item item-container">
-                <div class="left item font-gray">意向机场</div>
-                <div class="right item" v-if="myData.intendedairline === '0'">
-                    <span>{{myData.intendedAirlines[0].dptName}}</span>
-                    <span class="icon-item">&#xe672;</span>
-                    <span>{{myData.intendedAirlines[0].pstName}}</span>
-                    <span class="icon-item">&#xe672;</span>
-                    <span>{{myData.intendedAirlines[0].arrvName}}</span>
-                </div>
-                <div class="right item" v-else>
-                    <span>无</span>
-                </div>
+                <div class="left font-gray">其他说明</div>
+                <div class="right">{{myData.remark}}</div>
             </div>
             <span class="line"></span>
             <div class="fifth item-container">
@@ -119,41 +105,56 @@
         mounted() {
             // 从myPublishList获取参数，并渲染到页面上
             tabulationBoxTrigger.$on('sendDataToMyPublish',val => {
-//                console.info('从myPublishList获取的数据:');
-//                console.info(val);
-                this.myData = val;
-                this.id = this.myData.id;
-                // 状态有误时显示的内容
-                // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
-                // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
-//                this.wrongShow();
-                if(this.myData.demandstate == 2
-                    || this.myData.demandstate == 3
-                    || this.myData.demandstate == 5
-                    || this.myData.demandprogress == 3
-                    || this.myData.demandprogress == 8
-                    || this.myData.demandprogress == 10){
-                    this.buttonShow = false;
-                }else {
-                    this.buttonShow = true;
-                }
-                if(this.myData.demandstate == 2
-                    || this.myData.demandstate == 3
-                    || this.myData.demandstate == 5
-                    || this.myData.demandprogress == 3
-                    || this.myData.demandprogress == 10){
-                    this.wrongShow();
-                }else{
-                    this.show();
-//                    this.wrongShow();
-                }
-                //将创建时间顺序改变
-                let time1 = this.myData.releasetime.split('.');
-                let time2 = [];
-                for(let i = time1.length - 1; i >= 0; i--){
-                    time2.push(time1[i]);
-                }
-                this.releasetime = time2.join('.');
+                this.id = val.id;
+                this.$ajax({
+                    url:"/demandFind",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId: val.id //发布时间排序类型 0-倒序 1-正序
+                    }
+                }) .then((response) => {
+                    if(response.data.opResult == 0) {
+                        this.myData = response.data.data;
+                        // 状态有误时显示的内容
+                        // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
+                        // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
+                        if(this.myData.demandstate == 2
+                            || this.myData.demandstate == 3
+                            || this.myData.demandstate == 5
+                            || this.myData.demandprogress == 3
+                            || this.myData.demandprogress == 8
+                            || this.myData.demandprogress == 10){
+                            this.buttonShow = false;
+                        }else {
+                            this.buttonShow = true;
+                        }
+                        if(this.myData.demandstate == 2
+                            || this.myData.demandstate == 3
+                            || this.myData.demandstate == 5
+                            || this.myData.demandprogress == 3
+                            || this.myData.demandprogress == 10){
+                            this.wrongShow();
+                        }else{
+                            this.show();
+                        }
+                        //将创建时间顺序改变
+                        let time1 = this.myData.releasetime.split('.');
+                        let time2 = [];
+                        for(let i = time1.length - 1; i >= 0; i--){
+                            time2.push(time1[i]);
+                        }
+                        this.releasetime = time2.join('.');
+                    }else {
+                        alert(`错误代码：${response.data.opResult}`)
+                    }
+
+                }).catch((error) => {
+                    console.log(error);
+                });
+
             });
 
             //判断审核是否通过,“重新发布”是否显示
@@ -203,53 +204,19 @@
             },*/
             // 点击表单的“确认”后
             changeShowCodeFn: function () {
-                /*this.editPublishShow = false;
-                this.anewPublishShow = false;
-                this.wrongTextShow = false;
-                tabulationBoxTrigger.$on('sendToMyPublish',(val) => {
-                    this.myData = val;
-                    this.myData.id = this.id
-                    //将创建时间顺序改变
-                    /!*let time1 = this.myData.releasetime.split('.');
-                    let time2 = [];
-                    for(let i = time1.length - 1; i >= 0; i--){
-                        time2.push(time1[i]);
-                    }
-                    this.releasetime = time2.join('.');*!/
-                });*/
                 this.closeThisFn();
                 this.editOperationFormShow = false;
             },
-           /* //关闭“编辑需求”表单
-            closeEditOperationForm: function () {
-                this.closeThisFn();
-
-            },*/
 
             //点击“重新发布”
             anewPublishClickFn2: function () {
                 this.editOperationFormShow = true;
-                /*this.$ajax({
-                    url:"/demandAdd",
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: this.myData
-                }) .then((response) => {
-//                    console.info(response.data)
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
-                }) .catch((error) => {
-                    console.log(error);
-                });*/
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {
                 this.recallData.id = this.myData.id;
                 this.recallData.demandprogress = 3;
-//                console.info(this.recallData);
                 this.$ajax({
-//                    url:"/demandUpdate",
                     url: "closeDemandById",
                     method: 'post',
                     headers: {
@@ -267,8 +234,6 @@
                     }else{
                         alert('错误代码：' + response.data.opResult)
                     }
-//                    console.info(response.data)
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
                 });
@@ -416,18 +381,15 @@
     }
     .add-item {
         display: flex;
-        .item {
-            display: flex;
-            align-items: center;
-            height: 40px;
-        }
+        margin-top: 15px;
+        height: 80px;
         .left {
+            flex-shrink: 0;
             width: 80px;
+            line-height: 20px;
         }
         .right {
-        }
-        .icon-item {
-            margin: 0 15px 0 20px;
+            @include line-clamp(3);
         }
     }
     .fifth {
