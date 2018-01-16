@@ -132,7 +132,7 @@
             </div>
             <div class="direction t-radio" style="position:relative;">
                 <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" @focus="openSearch2" @blur="closeDialog8">
-                <div class="history" v-show="this.post == '3'" style="top:-5px;left:2px;line-height:26px;">
+                <div class="history" v-show="selecShow1" style="top:-5px;left:2px;line-height:26px;" @click="selecShow1 = false">
                     <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
                 </div>
                 <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS1>
@@ -176,6 +176,7 @@
                 airplTypShow:false,
                 airCompanyShow:false,
                 btnShow:true,
+                selecShow1:true,
                 contact: '',
                 intendedDpt:'',
                 intendedPst:'',
@@ -193,7 +194,7 @@
                 timeEndIndex:0,
                 tip: '',
                 searchData:["双流机场","武当山机场"],
-                searchData1:["双流机场","武当山机场"],
+                searchData1:[],
                 msg:'选择班期类型',
                 stateType:['待定','满排','半排'],
                 myDate:'选择起始时间',
@@ -261,7 +262,7 @@
             },
             getMyDate: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
-                    this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                    this.myDate = this.calendarInitDay1 + " - " + this.calendarInitDay2;
                     this.calendarShow = false;
                     this.$refs.timeDate.style.width = "213px";
                     this.$refs.timeForm.style.width = "579px";
@@ -430,7 +431,7 @@
                 this.dispatchSearch = false;
             },
             directData: function(data){
-                this.directText = data.name;
+                this.searchData1.push(data.name);
                 this.qyCode2 = data.code;
                 this.directSearch = false;
             },
@@ -909,9 +910,10 @@
         top:18px;
         right:-15px;
         width:180px;
+        height:300px;
         display:flex;
+        align-content: flex-start;
         .his-item{
-            float:left;
             background-color:#f3f3f7;
             border-radius:100px;
             color:#3c78ff;

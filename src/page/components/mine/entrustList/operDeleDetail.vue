@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" @click.self="closeDetail">
-        <div class="detail-wrapper scroll" >
+        <div class="detail-wrapper scroll" v-if="myShow">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title||'-'}}</div>
@@ -56,12 +56,12 @@
                         <div>{{detailData.aircrfttyp||'-'}}</div>
                     </div>
                      <div>
-                        <div>座位布局</div>
+                        <div>座位数</div>
                         <div>{{detailData.seating||'-'}}</div>
                     </div>
                      <div>
                         <div>客量期望</div>
-                        <div>{{detailData.avgguestexpect||'-'}}人</div>
+                        <div>{{detailData.avgguestexpect||'-'}}人/均班</div>
                     </div>
                     <div>
                         <div>客座率期望</div>
@@ -73,7 +73,7 @@
                     </div>
                     <div>
                         <div>有效期</div>
-                        <div>{{detailData.periodValidity||'-'}}</div>
+                        <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                     </div>
                     <div class="note">
                         <div>其他说明</div>
@@ -92,6 +92,14 @@
                 </div>
             </div>
             <div class="trans-content" v-else>
+                <div>
+                    <div>联系人</div>
+                    <div>{{detailData.contact||'-'}}</div>
+                </div>
+                <div>
+                    <div>联系方式</div>
+                    <div>{{detailData.iHome||'-'}}</div>
+                </div>
                 <div>
                     <div>机型</div>
                     <div>{{detailData.aircrfttyp||'-'}}</div>
@@ -138,7 +146,7 @@
                 </div>
                 <div>
                     <div>有效期</div>
-                    <div>{{detailData.periodValidity||'-'}}</div>
+                    <div>{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                 </div>
                 <div class="note">
                     <div>其他说明</div>
@@ -149,7 +157,26 @@
                   <div class="need-til">关联的子需求</div>
                   <div class="need-btn" @click="newNeed">新建子需求</div>
             </div>
-           <sonNeedDetail :detailData = "listSonDemands" v-if="sondetailShow"></sonNeedDetail>
+             <div class="son-need-list" v-if="sonListShow">
+                <div class="intent-form">
+                    <div>
+                        <div>发布时间
+                          <span class="iconfont icon-up active">&#xe605;</span>
+                          <span class="iconfont icon-down">&#xe605;</span>
+                        </div>
+                        <div>发布标题</div>
+                        <div>需求状态</div>
+                    </div>
+                    <div class="intent-box" v-for="(val,index) in listSonDemands">
+                         <div class="intent-item">
+                            <div class="time">{{val.releasetime}}</div>
+                            <div class="title">{{val.title}}</div>
+                            <div class="progress">{{val.demandprogressStr}}</div>
+                            <div class="detail" @click="getSonDetail(val)">查看详情</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
              <footer v-if="isClose">
                 <div class="foot-tips" v-if="tipShow">*拒绝原因：{{refuseText}}</div>
                 <div class="btn" v-if="orderShow">
@@ -167,6 +194,7 @@
            </footer> -->
         </div>
         <operDeleForm v-show="formShow" @closeForm="closeForm" ></operDeleForm>
+        <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
@@ -187,14 +215,19 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             isClose:true,
             detailData:{},
             CpyNm:'',//委托方
+            sonListShow:true,
             sondetailShow:false,
             dialogShow:false,
             tipShow:false,
             orderOver:true,
             isAirline:true,
+            myShow:true,
             listSonDemands:[],
             msg:'',
-            refuseText:''
+            refuseText:'',
+            demandType:'',
+            sonId:''
+
          }
      },
       props:['chatData'],
@@ -331,7 +364,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         },
         closeForm(){
           this.formShow =false;
-          this.sondetailShow = true;
+          this.sonListShow = true;
         },
         turnPolicyCode(val){
             switch (val) {
@@ -351,6 +384,15 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     return "无补贴";
                     break;
             }
+        },
+        getSonDetail(val){
+          this.sonId = val.id;
+          this.myShow = false;
+          this.sondetailShow = true;
+        },
+        toBack(){
+          this.myShow = true;
+          this.sondetailShow = false;
         }
      },
       mounted() {
@@ -373,25 +415,26 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                      //状态处理
                       if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'){//子需求需求发布/需求征集/子订单确认/子订单完成
                           this.orderShow = true;
-                          this.sondetailShow = true;
                       }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
                           this.orderShow = true;
-                          this.sondetailShow = true;
                           this.orderOver =false;
                       }else if(this.detailData.demandprogress == '9'){//处理中
                           this.orderShow = true;
                       }else if(this.detailData.demandprogress == '3'){//已关闭
                           this.isClose = false;
+                          this.sonListShow = false;
                           //this.refuseText = this.detailData.rek;
                       }else if(this.detailData.demandprogress == '10'){//已拒绝
                           this.tipShow = true;
+                          this.sonListShow = false;
                           this.refuseText = this.detailData.rek;
                       }
 
                       //显示运力或者航司详情
-                       if(this.chatData.demandType == '4'){
+                      this.demandType = this.chatData.demandType;
+                       if(this.demandType == '4'){
                             this.isAirline = false;
-                        }else if(this.chatData.demandType == '3'){
+                        }else if(this.demandType == '3'){
                             this.isAirline = true;
                         }
                 })
@@ -653,6 +696,66 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
 
       }
     }
+
+     .intent-form{
+            >div:nth-of-type(1){
+                position:relative;
+                height:75px;
+                width:100%;
+                box-sizing:border-box;
+                padding: 30px 0 25px 40px;
+                >div{
+                    display:inline-block;
+                    width:80px;
+                    padding-right:50px;
+                }
+                 .icon-up {
+                    position: absolute;
+                    bottom: 33px;
+                    transform: rotate(180deg);
+                }
+                .icon-down {
+                    position: absolute;
+                    top: 33px;
+                }
+            }
+            .intent-box{
+                 margin:0 20px 5px 20px;
+                 border-radius:2px;
+                 overflow:hidden;
+                 background-color:rgba(216,216,216,.2);
+            }
+            .intent-item{
+                display:flex;
+                height:60px;
+                line-height: 60px;
+                .time{
+                    padding-left:20px;
+                    width:140px;
+                    overflow:hidden;
+                }
+                .title{
+                    width:140px;
+                    overflow:hidden;
+                }
+                .progress{
+                    padding-left:40px;
+                    display:flex;
+                    width:200px;
+                    span{
+                        font-size:25px;
+                        margin-left:10px;
+                    }
+
+                }
+                .detail{
+                    width:140px;
+                    color:#3C78FF;
+                    cursor:pointer;
+                }
+            }
+
+        }
     footer{
           border-top:1px solid #ccc;
           position:relative;
