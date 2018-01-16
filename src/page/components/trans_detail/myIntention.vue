@@ -390,7 +390,7 @@
                     this.planData = response.data.responseList;
                     //判断状态
                     let progress = this.detailData.demandprogress;
-                    if(progress == "3"){//3.关闭（审核不通过、下架、过期）
+                    if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
                       this.rePublish == true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
@@ -517,6 +517,7 @@
             cursor:pointer;
         }
     }
+
     .table-form{
       width:100%;
       box-sizing:border-box;
