@@ -8,6 +8,7 @@
                     <span>创建于{{detailData.releasetime||'-'}}</span>
                     <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
                 </div>
+                <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
             </header>
             <div class="content">
                 <div class="table-form">
@@ -167,7 +168,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicyStr||'-'}}</div>
+                                    <div>{{turnPolicyCode(planData.subsidypolicy)||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -190,19 +191,21 @@
                                     <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
-                            <div class="btns" v-if="val.releaseselected == '0' ">
-                                <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
-                                <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                            <div v-if="selectBtnShow">
+                                <div class="btns" v-if="val.releaseselected == '0' ">
+                                    <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
+                                    <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                                </div>
+                                <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
+                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
-                            <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             </div>
-            <footer>
+            <footer v-show="footShow">
                 <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
                     <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
@@ -212,6 +215,7 @@
         </div>
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
+        <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
@@ -222,6 +226,7 @@
   import * as vx from 'vuex'
   import myIntentForm from '$src/page/components/trans_detail/myIntentForm.vue'
   import sureForm from '$src/page/components/trans_detail/sureForm1.vue'
+  import dataForm from '$src/page/components/trans_detail/dataForm.vue'
   import  signDialog from '$src/page/components/trans_detail/signDialog.vue'
  export default {
      data(){
@@ -230,6 +235,7 @@
              intentListShow:false,
              myFormShow:false,
              sureFormShow:false,
+             dataFormShow:false,
              dialogShow:false,
              selected:false,
              detailData:{},
@@ -237,7 +243,10 @@
              editData:{},
              selectData:{},
              intentionCount:0,
-             isSign:false
+             isSign:false,
+             rePublish:false,
+             footShow:true,
+             selectBtnShow:true
          }
      },
      methods:{
@@ -279,7 +288,7 @@
                 .then((response) => {
                     if(response.data.opResult == "0"){
                     //alert("取消需求成功!")
-                     this.$emit('closeIntent');
+                     this.$emit('close-this');
                   }
                 })
                 .catch((error) => {
@@ -320,9 +329,35 @@
           closeSureForm:function(){
               this.sureFormShow = false;
          },
+         closeDataForm:function(){
+            this.dataFormShow = false;
+         },
          toDeal:function(){
             this.dialogShow =true;
-         }
+         },
+         toPublish:function(){
+            this.dataFormShow = true;
+         },
+         turnPolicyCode:function(val){
+            switch (val) {
+                case "0":
+                    return "定补";
+                    break;
+                case "1":
+                    return "保底";
+                    break;
+                case "2":
+                    return "人头补";
+                    break;
+                case "3":
+                    return "待议";
+                    break;
+                case "4":
+                    return "无补贴";
+                    break;
+            }
+        }
+
 
 
      },
@@ -353,6 +388,16 @@
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                     this.planData = response.data.responseList;
+                    //判断状态
+                    let progress = this.detailData.demandprogress;
+                    if(progress == "3"){//3.关闭（审核不通过、下架、过期）
+                      this.rePublish == true;
+                      this.footShow  = false;
+                      this.selectBtnShow = false;
+                    }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
+                      this.footShow  = false;
+                      this.selectBtnShow = false;
+                    }
                     //有意向方显示列表信息
                     if(this.planData){
                       this.intentListShow = true;
@@ -378,15 +423,13 @@
             };
         });
 
-          /*tabulationBoxTrigger.$on('getTable',val=>{
-                this.planData[this.selIndex] = val;
-                console.log(this.planData[this.selIndex])
-            });*/
+
      },
      components: {
             myIntentForm,
             signDialog,
-            sureForm
+            sureForm,
+            dataForm
         }
 }
 </script>
@@ -428,6 +471,7 @@
         }
     }
     header{
+        position:relative;
         .top-til{
           justify-content: space-between;
           display: flex;
@@ -467,6 +511,19 @@
           span{
             margin-right:30px;
           }
+        }
+        .rep-btn{
+            position:absolute;
+            right:15px;
+            top:60px;
+            width:100px;
+            height:20px;
+            line-height:20px;
+            color:#ffffff;
+            text-align:center;
+            background-color:#3c78ff;
+            border-radius:100px;
+            cursor:pointer;
         }
     }
     .table-form{

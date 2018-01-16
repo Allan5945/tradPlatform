@@ -228,7 +228,6 @@
             linkServiceClickFn: function () {
                 let chatObj = {};
                 chatObj.id = null;
-                console.info(chatObj);
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // 点击表单的“确认”后

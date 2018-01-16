@@ -188,7 +188,6 @@
             linkServiceClickFn: function () {
                 let chatObj = {};
                 chatObj.id = null;
-                console.info(chatObj);
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
            /* //点击“重新发布”
