@@ -4,7 +4,7 @@
         <pasInput :par="pasArg" style="margin-top:30px;" v-on:reqMes="pasReqMes" v-on:entered="entered"></pasInput>
         <div class="operation">
             <el-checkbox v-model="checked" style="color:#605E7C">记住密码</el-checkbox>
-            <button class="forget-pas" @click="openReg">忘记密码?</button>
+            <button class="forget-pas" @click="openReg(1)">忘记密码?</button>
         </div>
          <div class="occupies-prompt"> 
             <validation v-if="loginTime >= 3" v-on:validation="validaon"></validation>
@@ -12,18 +12,16 @@
         </div>
         <loginBtn :arg="{text:'登录'}" :dis="dis" style="margin-top:20px;" v-on:to-login="logined" :lodings="lodings"></loginBtn>
         <div class="footer">
-            <div>申请账号</div>
+            <div @click="openReg(2)">申请账号</div>
             <span>客户热线：0000-0000000</span>
         </div> 
     </div>
 </template>
 <script>
     import * as vx from 'vuex';
-    import userInput from '../components/userInput.vue';
-    import pasInput from '../components/pasInput.vue'; 
     import loginBtn from '../components/loginBtn.vue';
     import validation from '../components/validation.vue';  
-    import inputControl from '../components/inputControl.vue'; 
+    import inputControl from '../components/inputControl.vue';
 
     
     export default { 
@@ -120,8 +118,8 @@
                     }
                 );
             },
-            openReg(){
-                this.$emit('openClass',1);
+            openReg(n){
+                this.$emit('openClass',n);
             },
             userReqMes(mes){
                 this.mes.u = mes.n; 

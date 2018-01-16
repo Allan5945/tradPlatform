@@ -260,40 +260,59 @@
         },
         methods:{
             acceptDataFn:function(){
-                    this.contact = this.acceptData.contact ;
+                    this.contact = this.acceptData.contact;
                     this.phoneNum = this.acceptData.iHome;
                     this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
                     if(this.acceptData.dptTime !== '无'){
                         this.timeStart = this.acceptData.dptTime.split('-')[0];
-                        this.timeStart =this.acceptData.dptTime.split('-')[1];
+                        this.timeEnd =this.acceptData.dptTime.split('-')[1];
+                        this.pickStart = true;
+                        this.pickEnd = true;
                     }
                     this.getFlight = this.acceptData.days  == '无'? 'false':'true';
                     if(this.acceptData.days  !== '无'){
                         this.msg = this.acceptData.days;
+                        this.isSel = true;
                     }
-                    this.intendedDpt = this.detailData.intendedAirlines[0].dptName;
-                    this.qyCode3 = this.detailData.intendedAirlines[0].dpt;
-                    this.intendedPst = this.detailData.intendedAirlines[0].pstName;
-                    this.qyCode4 = this.detailData.intendedAirlines[0].pst;
-                    this.intendedArrv = this.detailData.intendedAirlines[0].arrvName;
-                    this.qyCode5 = this.detailData.intendedAirlines[0].arrv;
-                    /*this.acceptData.aircrfttyp = this.airplaneTyp;
-                    this.acceptData.dpt = this.qyCode;
-                    this.acceptData.dptState = this.dptState[0];
-                    this.acceptData.capacitycompany = this.airCompanyId;
-                    this.acceptData.seating = this.seat;
-                    this.acceptData.hourscost = this.hourcost;
-                    this.acceptData.schedulingStr = this.dispatch == false? '不接受':'接受';
-                    this.acceptData.scheduling = this.dispatch == false? '1':'0';
+                    if(this.acceptData.intendedAirlines){
+                        this.intendedDpt = this.acceptData.intendedAirlines[0].dptName;
+                        this.qyCode3 = this.acceptData.intendedAirlines[0].dpt;
+                        this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
+                        this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
+                        this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
+                        this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
+                    }
+                    this.airplaneTyp = this.acceptData.aircrfttyp;
+
+                    this.qyCode = this.acceptData.dpt;
+                    if(this.qyCode){
+                        this.searchText = this.acceptData.dptNm;
+                    }
+
+                    this.airCompanyId = this.acceptData.capacitycompany;
+                    if( this.airCompanyId){
+                        this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                    }
+
+                    this.seat = this.acceptData.seating;
+                    this.hourcost = this.acceptData.hourscost;
+
+                    this.dispatch = this.acceptData.scheduling == '0'? true:false ;
                     if(this.dispatch){
-                        demandData.schedulinePort  = this.qyCode1;
+
                     }
-                    demandData.remark = this.tip;
-                    demandData.periodValidity = this.myDate;
-                    demandData.publicway = this.post;
+
+                     this.tip = this.acceptData.remark;
+
+                    this.myDate = this.acceptData.periodValidity;
+                    this.$refs.timeDate.style.width = "213px";
+                    this.$refs.timeForm.style.width = "579px";
+                    this.$refs.timeTitle.style.width = "60px";
+
+                    this.post = this.acceptData.publicway;
                      if(this.post == '3'){
-                        demandData.directionalgoal = this.qyCode2;
-                    }*/
+
+                    }
             },
              getNeed: function(i) {
                 this.msg = this.stateType[i];
@@ -554,8 +573,8 @@
                 if(this.dispatch){       //接受调度
                     if(this.qyCode1 == ''){
                         this.isError9 = true;
+                        return false;
                     };
-                    return false;
                 }
 
                 let demandData = {};

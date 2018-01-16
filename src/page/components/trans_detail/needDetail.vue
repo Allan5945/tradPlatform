@@ -62,13 +62,13 @@
             <footer>
                 <div>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
-                    <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                    <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
-                    <div class="col-btn" @click="collect" v-else>收藏</div>
+                    <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn" :class="{active: !inventBtnShow}"  @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
-        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :demandId="demandId"></intentForm>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
         <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
     </div>
@@ -92,7 +92,8 @@
              isCollect:false,
              intentFormShow:false,
              dialog:false,
-             payDialog:false
+             payDialog:false,
+             inventBtnShow:false
          }
      },
      methods:{
@@ -151,6 +152,13 @@
                 .then((response) => {
                      if(response.data.opResult == "0"){
                       this.isCollect = false;
+                  }else{
+                      this.$emit('closeDetail');
+                      this.$message({
+                          message: '数据错误，请稍后再试!',
+                          type: 'warning',
+                          duration:2000
+                      });
                   }
                 })
                 .catch((error) => {
@@ -192,6 +200,13 @@
                     }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
+
+                    let progress = this.detailData.demandprogress;
+                     //需求发布、意向征集
+                    if(progress == '0'||progress == '1'){
+                        this.inventBtnShow = true;
+                    }
+
                      if(response.data.isAlreadyCollect == true){
                         this.isCollect = true;
                     }else if(response.data.isAlreadyCollect == false){
@@ -366,6 +381,9 @@
                   color:#fff;
                   background-color:#3c78ff;
 
+              }
+              >.active{
+                width:180px;
               }
           }
     }

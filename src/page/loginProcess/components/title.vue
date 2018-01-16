@@ -22,7 +22,7 @@
     .login-title{
         display: flex;
         height: 50px;
-        width: 330px;
+        width: 325px;
         justify-content: space-between;
         align-items: center;
         padding: 0 15px 0 20px;

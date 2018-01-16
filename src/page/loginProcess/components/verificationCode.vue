@@ -8,7 +8,7 @@
         v-model="pas"
       >
       <span v-html="showTip ? tip[1] : tip[0]" class="user-tip" :class="{'user-tip-tran':showTip}"></span>
-      <div @click="sendCode" class="btn btn-w" :class="{'dis-btn':dis}">发送验证码</div>
+      <div @click="sendCode" class="btn btn-w" :class="{'dis-btn':dis}" v-text="num"></div>
     </div>
 </template>
 <script>
@@ -19,13 +19,13 @@
                 pas:"",
                 dis:false,
                 tip:['请输入验证码','验证码'],
+                num:"发送验证码"
             } 
         }, 
-        props:['mes'],
+        props:['mes','verCode'],
         computed:{
-            
+
         },
-        props:['verCode','emailOrPhone'],
         filters:{
             capitalize: function (value) {
                 return 6;
@@ -35,7 +35,7 @@
             yanz(){
                 let reg = /^[0-9][0-9]*$/;
                 if(!reg.test(this.pas)){
-                    this.pas =  this.pas.substring(0,this.pas.Length - 1);
+                    this.pas =  this.pas.substring(0,this.pas.length - 1);
                 };
                 this.$emit('setCode',this.pas);
             },
@@ -45,6 +45,9 @@
                 };
             },
             sendCode(){
+                if(this.num == "发送验证码"){
+                    return false;
+                };
                 this.$ajax({
                 method: 'post',
                 url: '/getValidCode',
@@ -62,6 +65,14 @@
                             message: "发送验证码成功！",
                             type: 'success'
                         });
+                       let num = 60;
+                        let set = setInterval(()=>{
+                            this.num = num +"秒后重新发送";
+                            if(num == 0){
+                                this.num = "发送验证码";
+                                clearInterval(set);
+                            };
+                        },1000);
                    }else{
                        this.$message({
                             showClose: true,

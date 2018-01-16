@@ -123,6 +123,7 @@
                 this.sentData.page = page;
             },
             chat:function (v) {
+                v.employeeId = this.role.id;
                 ln.$emit('addChat',v);
             },
             typeShowFn: function () {

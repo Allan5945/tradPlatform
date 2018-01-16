@@ -3,14 +3,16 @@
         <titles v-on:clear="closeWindow" :arg="title"></titles>
         <loginBox v-if="setpes == 0 && !openErr" v-on:openClass="openClass" :ags.sync="ags" :loginErr.sync="openErr"></loginBox>
         <loginErr v-if="openErr" :loginErr.sync="openErr" :ags="ags"></loginErr>
-        <registered v-if="setpes == 1" v-on:openClass="openClass" :loginErr.sync="openErr" v-on:pasChange="pasChange"></registered>
+        <backPas v-if="setpes == 1" v-on:openClass="openClass" :loginErr.sync="openErr" v-on:pasChange="pasChange"></backPas>
+        <registere v-if="setpes == 2" v-on:openClass="openClass"></registere>
   </div>
 </template>
 <script>
 import * as vx from 'vuex';
 import titles from './components/title.vue';
 import loginBox from './loginStepsComponents/loginBox.vue';
-import registered from './loginStepsComponents/registered.vue';
+import backPas from './loginStepsComponents/backPas.vue';
+import registere from './loginStepsComponents/registere.vue';
 import loginErr from './components/loginErr.vue';
 
 export default {
@@ -74,8 +76,9 @@ export default {
         components:{
             titles,
             loginBox,
-            registered,
-            loginErr
+            registere,
+            loginErr,
+            backPas
         }
 }
 </script>
@@ -84,6 +87,7 @@ export default {
         position: fixed;
         right:23%;
         top: 18%;
+        /*width: 360px;*/
     }
 </style>
 

@@ -17,10 +17,10 @@
 export default {
     data(){ 
         return{
-            showText:false,    // 是否显示 密码 
+            showText:false,    // 是否显示 密码
             showTip:false,     // 是否显示 信息
             showErr:false,     // 显示输入错误，输入框抖动
-            showErrDelay:false,  // 
+            showErrDelay:false,  //
             showErrInput:false,  // 是否当前输入框格式错误
             inputeType:"",    // 输入框的类型值
             inputMes:"",     // 输入的内容
@@ -71,7 +71,7 @@ export default {
                 this.$emit('reqMes',{n:"",p:'请输入正确的格式',i:false});
             }
         },
-        changeTip(t){ 
+        changeTip(){
             if(this.par.class0){
                 if(this.inputMes.length > 16 || this.inputMes.indexOf(" ") != -1){
                     this.showErrDelay = true;
@@ -98,7 +98,8 @@ export default {
                     this.showErrDelay = true;
                     mes = {n:this.inputMes,p:'',i:true};
                 }else{
-                    this.showErrDelay = false;
+                    this.showErrDelay = true;
+                    this.showErrInput = true;
                     mes = {n:this.inputMes,p:'',i:false};
                 };
                 this.$emit('reqMes',mes);

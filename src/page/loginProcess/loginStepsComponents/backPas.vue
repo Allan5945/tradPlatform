@@ -1,9 +1,9 @@
 <template>
     <div class="registered-box">
         <div v-if="!newPas">
-            <!-- <inputControx :test.sync="test"></inputControx> -->
+            <!--<inputControx :arg="test" v-on:resMes="resMes"></inputControx>-->
             <userInput :par="userArg" v-on:reqMes="reqEmail"></userInput>
-            <div class="occupies-prompt"> 
+            <div class="occupies-prompt">
                 <validation v-if="validationTag" v-on:validation="validaon"></validation>
                 <verificationCode :mes="emailOrPhone" v-on:setCode="setCode" :verCode.sync="verCode" v-if="verCode" style="margin-top:30px;"></verificationCode>
                 <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
@@ -27,12 +27,21 @@ import userInput from '../components/userInputClass1.vue';
 import validation from '../components/validation.vue'; 
 import verificationCode from '../components/verificationCode.vue'; 
 import inputControl from '../components/inputControl.vue'; 
-import inputControx from '../components/inputControlX.vue'; 
+//import inputControx from '../components/inputControlX.vue';
 import errTip from '../components/errTip.vue'; 
  
 export default {
     data(){
         return{
+            test:{
+                inputeType:"text", // 输入框的类型
+                inputMes:"",     // 输入框的值
+                showText:false,  // 是否显示密码
+                showErrInput:false, // 是否显示框错误
+                showSucInput:false, // 是否显示框正确
+                placeholderTip:['1','2'],
+                validation:0,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+            },
             id:"",
             userArg:{
                 defaultText:"",     // 默认的值
@@ -45,12 +54,11 @@ export default {
             },
             showtip:false,
             codeYz:'',          // 验证码
-            tiperr:"",  
+            tiperr:"",
             verCode:false,       // 是否显示短信/邮箱验证
             emailOrPhone:"",      // 输入的具体邮箱或者手机值
             validationTag:false,  // 滑动验证
-
-            //      新密码 
+            //      新密码
             newPas:false,     // 是否填写新密码
             newp0:"",
             errs0:false,   // 强行让输入框报错
@@ -92,6 +100,9 @@ export default {
         }
     },
     methods:{
+        resMes(data){
+            console.log(data)
+        },
         bgyanz(){
             // 验证验证码
             // this.newPas =
@@ -193,10 +204,9 @@ export default {
     validation,
     verificationCode,
     errTip,
-    inputControx
+//    inputControx
   },
   mounted:function(){
-      console.log(this.test)
   },
   computed:{
       process(){

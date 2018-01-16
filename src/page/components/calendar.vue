@@ -135,7 +135,7 @@ export default {
       return this.render(y, m);
     },
     sentToFather: function(d) {
-      d = d.replace(/\//g, "-");
+      d = d.replace(/\//g, ".");
       this.$emit("changeDate", d);
     }
   },
