@@ -1,10 +1,18 @@
 <template>
     <div class="tool popup">
+        <router-link :to="path.setting">
+            <span>&#xe60f;</span>
+            设置
+        </router-link>
+        <a @click="showSetting(true)">
+            <span>&#xe647;</span>
+            设置
+        </a>
         <a @click="logout">
             <span>&#xe647;</span>
             退出
         </a>
-        <router-link :to="defaultSubLink">
+        <router-link :to="path.defaultSubLink">
             <span>&#xe60f;</span>
             个人中心
         </router-link>
@@ -15,18 +23,27 @@
                 <span>&#xe60f;</span>
             </div>
         </a>
+        <setting v-if="show.setting"></setting>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
+    import setting from '$src/page/components/setting/container.vue'
 
     export default {
         data: ()=>{
             return {
-                defaultSubLink:'/index/userCenter',
+                path:{
+                    defaultSubLink:'/index/userCenter',
+                    setting: '/index/setting'
+                },
+                show: {
+                    setting: false
+                }
             }
         },
+        components: {setting},
         computed: {
             ...vx.mapActions([
                 'close'
@@ -47,6 +64,9 @@
                         console.log(err);
                     })
             },
+            showSetting: function (flag) {
+                this.show.setting = flag;
+            },
             initDis(){
                 localCommunication.$emit('addChat',{id:null});
                 localCommunication.chat.shut = true;
@@ -55,7 +75,7 @@
         },
         created: function(){
             //配置默认子路由
-            if(this.role.role=='2') this.defaultSubLink = '/index/userCenter/reviewList' ;
+            if(this.role.role=='2') this.path.defaultSubLink = '/index/userCenter/reviewList' ;
         }
     }
 </script>
