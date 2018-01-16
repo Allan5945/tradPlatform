@@ -19,8 +19,8 @@
                 pas:"",
                 dis:false,
                 tip:['请输入验证码','验证码'],
-                num:"发送验证码"
-            } 
+                num:"发送验证码",
+            }
         }, 
         props:['mes','verCode'],
         computed:{
@@ -45,7 +45,7 @@
                 };
             },
             sendCode(){
-                if(this.num == "发送验证码"){
+                if(this.num != "发送验证码"){
                     return false;
                 };
                 this.$ajax({
@@ -65,11 +65,13 @@
                             message: "发送验证码成功！",
                             type: 'success'
                         });
-                       let num = 60;
+                       this.dis = true;
+                        let num = 60;
                         let set = setInterval(()=>{
-                            this.num = num +"秒后重新发送";
+                            this.num = num-- +"秒";
                             if(num == 0){
                                 this.num = "发送验证码";
+                                this.dis = false;
                                 clearInterval(set);
                             };
                         },1000);
@@ -143,7 +145,7 @@
            font-size: 1.2rem;
            flex: 1;
            border-radius:0 19px 19px 0;
-           justify-content: flex-start;
+           justify-content: center;
        }
        >span{
             position: absolute;

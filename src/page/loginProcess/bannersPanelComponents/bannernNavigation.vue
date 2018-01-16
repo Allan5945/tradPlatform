@@ -35,7 +35,7 @@ export default {
     props:["updata"],
     watch:{
         updata:function(){
-            let num = Math.round(document.getElementById("case").scrollTop/document.getElementById("case").offsetHeight +1)
+            let num = Math.round(document.getElementById("case").scrollTop/document.getElementById("case").offsetHeight +1);
             switch(num){
                 case 1:
                 case 2:
@@ -47,6 +47,9 @@ export default {
                 break;
                 case 5:
                 this.setBan = 2;
+                case 6:
+                this.setBan = 2;
+                break;
             }
         }
     },
@@ -86,7 +89,7 @@ export default {
         left:55px;
         >ul{
             list-style: none;
-             color:rgba(0,0,0,.4);
+             color:#494949;
              >li{
                  cursor: pointer;
                  margin-bottom:20px;
@@ -98,7 +101,7 @@ export default {
                     color: rgb(47, 0, 255);
                  }
                  >div:nth-child(1){
-                     border-right:1px solid rgba(0,0,0,.4);
+                     border-right:1px solid #494949;
                      padding:0 5px;
                      font-size: 1.4rem;
                      width: 20px;
@@ -113,7 +116,7 @@ export default {
     .banner-nav-set{
         font-size: 1.6rem;
         height:38px !important;
-        color: rgba(0,0,0,.8) !important;
+        color: white !important;
          >div:nth-child(1){
             font-size: 1.7rem !important;
          };

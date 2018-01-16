@@ -51,11 +51,11 @@ export default {
         }
     }
     .banner-item{
-        width: 10px;
-        height:10px;
+        width: 8px;
+        height:8px;
         margin-bottom: 18px;
         border-radius:50%;
-        border:1px solid rgba(0, 0, 0, 0.4);
+        border:1px solid rgba(255,255,255,.4);
         cursor: pointer;
         &:hover{
              border:1px solid #4468fc;

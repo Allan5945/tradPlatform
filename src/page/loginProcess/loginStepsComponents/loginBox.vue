@@ -3,7 +3,7 @@
         <userInput :par="userArg" v-on:reqMes="userReqMes"></userInput>
         <pasInput :par="pasArg" style="margin-top:30px;" v-on:reqMes="pasReqMes" v-on:entered="entered"></pasInput>
         <div class="operation">
-            <el-checkbox v-model="checked" style="color:#605E7C">记住密码</el-checkbox>
+            <el-checkbox v-model="checked">记住密码</el-checkbox>
             <button class="forget-pas" @click="openReg(1)">忘记密码?</button>
         </div>
          <div class="occupies-prompt"> 
@@ -144,7 +144,10 @@
     }
 </script>
 <style lang="scss" scoped>
-    
+
+    .el-checkb{
+
+    }
     .slide-fade-enter-active,.slide-fade-leave-active {
         transition: all .3s ease;
     }
@@ -161,6 +164,7 @@
         // align-items: center;
         position: relative;
         padding:45px 35px 0 35px;
+        width: 290px;
     }
     .select-user,.select-pas{
         position: absolute;
@@ -179,8 +183,9 @@
         background-color:transparent;
         border:none;
         outline:none;
-        color:#409EFF;
+        color:#508bff;
         cursor:pointer;
+        font-size: 1.2rem;
         &:hover{ 
            color:#248cfa;
         }
@@ -218,7 +223,7 @@
             }
         }
         >span{
-            color: #605E7C;
+            color: rgba(0,0,0,.4);
         }
     }
    

@@ -244,6 +244,7 @@ export default {
         position: relative;
         height: 375px;
         padding:45px 35px 0 35px;
+        width: 290px;
     }
     .occupies-prompt{ 
         height:210px;
@@ -274,7 +275,7 @@ export default {
         height: 50px;
         line-height: 50px;
         text-align: center;
-        color: #605E7C;
+        color: rgba(0,0,0,.4);
     }
     .select-pas{
         position: absolute;

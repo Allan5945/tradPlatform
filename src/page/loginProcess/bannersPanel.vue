@@ -13,20 +13,22 @@
             </div>
             <div class="banner-cl-b" style="left:384px;top:440px;">
                 <div>
-                    <img src="" alt="">
+                    <img src="./../../static/img/loginBaner/a12.png" alt="">
                     <div>
                         <h2>为机场提供运力</h2>
                         <p>TO PROVIDE CAPACITY FOR THE AIRPORT</p>
+                        <p style="margin-top:48px;color:rgba(255,255,255,.6);line-height: 25px;">为机场提供运力为机运力为机场提供运力为场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力运力为机场提供运力</p>
                     </div>
                 </div>
                 <div>一呼百应</div> 
             </div> 
             <div class="banner-cl-b" style="left:1080px;top:440px;">
                 <div>
-                    <img src="" alt="">
+                    <img src="./../../static/img/loginBaner/a1.png" alt="">
                     <div>
                         <h2>为机场提供运力</h2>
-                        <p>为机场提供运力为机场提供运力为机场提供运力为机场提供运力</p>
+                        <p>TO PROVIDE CAPACITY FOR THE AIRPORT</p>
+                        <p style="margin-top:48px;color:rgba(255,255,255,.6);line-height: 25px;">为机场提供运力为机运力为机场提供运力为场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力为机场提供运力运力为机场提供运力</p>
                     </div>
                 </div>
                 <div>一呼百应</div> 
@@ -38,6 +40,7 @@
                 <p>专业的航线交易和运力提供平台 </p>
                 <p>PROFESSIONAL ROUTE TRADING AND CAPACITY SUPPLY PLATFORM</p>
             </div>
+            <p class="banner-clx">成都太美航空技术有限公司，延承海南太美航空股份有限公司“航空+旅游”核心业务方向，以航空旅游数据服务为切入点，充分利用IT、DT及互联网技术，面向政府、机场、中小航空企业等专业领域客户提供大数据系统研发、大数据分析等产品及服务。</p>
             <div class="banner-icon">
                 <div>
                     <div>&#xe671;</div>
@@ -69,7 +72,11 @@
                 </div>
             </div>
             <div class="banner-img">
-                <img src="" alt="">
+                <img class="banner-i0" src="../../static/img/loginBaner/a3.png">
+                <img class="banner-i1" src="../../static/img/loginBaner/a2.png">
+                <img class="banner-i2" src="../../static/img/loginBaner/a9.png">
+                <img class="banner-i3" src="../../static/img/loginBaner/a11.png">
+                <img class="banner-i4" src="../../static/img/loginBaner/a10.png">
             </div>
         </div> 
         <!-- 板块4 -->
@@ -78,14 +85,15 @@
                 <p>专业的航线交易和运力提供平台 </p>
                 <p>PROFESSIONAL ROUTE TRADING AND CAPACITY SUPPLY PLATFORM</p>
             </div>
+            <p class="banner-clx">成都太美航空技术有限公司，延承海南太美航空股份有限公司“航空+旅游”核心业务方向，以航空旅游数据服务为切入点，充分利用IT、DT及互联网技术，面向政府、机场、中小航空企业等专业领域客户提供大数据系统研发、大数据分析等产品及服务。</p>
             <div class="banner-imTex">
                 <div>
-                    <img src="" alt="">
+                    <img src="../../static/img/loginBaner/a4.png" alt="">
                     <h5>开航无忧</h5>
                     <p>最优秀的航线运营团队帮助运营航线</p>
                 </div>
                 <div>
-                    <img src="" alt="">
+                    <img src="../../static/img/loginBaner/a5.png" alt="">
                     <h5>投放无忧</h5>
                     <p>最优秀的市场团队帮助找合适的航点</p>
                 </div>
@@ -118,7 +126,7 @@
                         <p>辅助决策</p>
                     </div>
                     <div>
-                        <img src="" alt="">
+                        <img src="../../static/img/loginBaner/a6.png" alt="">
                     </div>
                 </div>
                  <div>
@@ -128,7 +136,7 @@
                         <p>辅助决策</p>
                     </div>
                     <div>
-                        <img src="" alt="">
+
                     </div>
                 </div>
                  <div>
@@ -138,7 +146,8 @@
                         <p>辅助决策</p>
                     </div>
                     <div>
-                        <img src="" alt="">
+                        <img src="../../static/img/loginBaner/a7.png" alt="">
+
                     </div>
                 </div>
                   <div>
@@ -158,7 +167,7 @@
                         <p>辅助决策</p>
                     </div>
                     <div>
-                        <img src="" alt="">
+                        <img src="../../static/img/loginBaner/a8.png" alt="">
                     </div>
                 </div>
                   <div>
@@ -211,6 +220,7 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         data(){
             return {
                 updata:true,
+                iswheel:true,
                 box:{
                     width:0,
                     height:0,
@@ -236,11 +246,14 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
                     };
                 };
                 let top = document.getElementById("case").offsetHeight;
+                if(!this.iswheel)return;
                 if(t){
                     document.getElementById("case").scrollTop = document.getElementById("case").scrollTop + top;
                 }else{
                     document.getElementById("case").scrollTop = document.getElementById("case").scrollTop - top;
                 };
+                this.iswheel = false;
+                setTimeout(()=>{this.iswheel = true},1000);
                 this.genxin();
             },
             genxin(){
@@ -280,7 +293,6 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
     }
     .banner-panel{
         width: 100%;
-        background-color: white;
         position: absolute;
         top: 0px;
         height: 600%;
@@ -305,6 +317,7 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
             font-weight: bold;
             letter-spacing: 3px;
             line-height: 50px;
+            color: white;
         }
         >p:nth-child(2){
             position: absolute;
@@ -313,6 +326,7 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
             font-weight: bold;
             letter-spacing: 2px;
             line-height: 25px;
+            color: white;
         }
     }
     .banner-cl{
@@ -327,10 +341,12 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         >p:nth-child(1){
             padding-top: 40px;
             font-weight: 600;
-            font-size: 2.7rem;
+            font-size: 1.7rem;
+            color: white;
         };
          >p:nth-child(2){
-            padding-top: 6px;
+             padding-top: 6px;
+             color: white;
         };
     };
     
@@ -340,8 +356,9 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         top: -14px;
         left: 0;
         font-size: 13rem;
-        font-weight: 1000;
-        color: rgba(0,0,0,.15);
+        font-weight: 900;
+        color: #2f2f2f;
+        z-index: -1;
     }
     .banner-cl-b{
         position: absolute;
@@ -353,13 +370,17 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
             height:100%;
             display: inline-flex;
             >img{
-                width: 245px;
-                height: 100%;
+                width: 220px;
+                height: 220px;
                 display:inline-block;
+                position: relative;
+                margin-right: 30px;
+                transform:translate(-20px, 54px) ;
             }
             >div{
                 color:white;
                 padding-top:50px;
+                width: 289px;
                 >h2{
                     font-size:3rem;
                     padding-bottom:2px;
@@ -373,7 +394,7 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
             position: absolute;
             right: -18px;
             top: -25px;
-            width: 172px;
+            width: 128px;
             height: 36px;
             line-height: 36px;
             text-align: center;
@@ -401,10 +422,14 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
             }
             >div:nth-child(2){
                 padding: 5px 0 0 15px;
+                color: white;
                 >div{
                     font-weight: bold;
                     font-size: 1.8rem;
                     margin-bottom: 14px;
+                }
+                >span{
+                    color: rgba(255,255,255,.6);
                 }
             }
         }
@@ -415,7 +440,10 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         left: 980px;
         width: 800px;
         height: 800px;
-        background-color:gray;
+        >img{
+            position: absolute;
+            display: inline-block;
+        }
     }
     .banner-imTex{
         position: absolute;
@@ -423,7 +451,6 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         width: 700px;
         height:300px;
         top:600px;
-        background-color:gray;
         display: flex;
         justify-content:space-between;
         >div{
@@ -436,10 +463,11 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
             >h5{
                 padding: 64px 0 18px 0;
                 font-size: 1.8rem;
+                color: white;
             }
             >p{
                 font-size: 1rem;
-                color:rgba(0, 0, 0, 0.4);
+                color: rgba(255,255,255,.6);
             }
         }
     }
@@ -452,44 +480,57 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
               height:280px;
               >span{
                   color:#4466fb;
+                  font-weight: 900;
               }
               >h5{
-                  padding:27px 0;
+                  color: white;
+                  padding:20px 0 15px 0px;
                   font-size: 1.6rem;
+              }
+              >p{
+                  color: rgba(255,255,255,.6);
+                  line-height: 20px;
               }
           }
     }
-    
     .banner-making{
         position:absolute;
         left:387px;
         top:200px;
         width: 1260px;
+        >div:nth-child(even){
+            background-color: transparent;
+        }
+        >div:nth-child(odd){
+            background-color: #262626;
+            box-shadow: 3px 3px 8px rgba(0,0,0,.5);
+        }
         >div{
             float: left;
             width:420px;
             height: 298px;
-            outline: 1px solid saddlebrown;
             display:flex;
             >div:nth-child(1){
-                width:277px;
+                width:253px;
                 padding: 80px 0 0 24px;
                 >span{
                     color:#4466fb;
+                    font-weight: 900;
                 }
                 >h5{
                     margin-top: 54px;
                     font-weight: bold;
                     font-size: 1.5rem;
+                    color: white;
                 }
                  >p{
-                    padding-top: 20px;
+                    padding-top: 15px;
                     font-size: 1rem;
+                     color: rgba(255,255,255,.6);
                 }
             }
              >div:nth-child(2){
                  flex:1;
-                 background-color: gray;
             }
         }
     }
@@ -509,17 +550,20 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         >h5{
             font-size: 1.8rem;
             padding-bottom: 10px;
+            color: white;
         }
          >span{
-            font-size: 1.2rem;
+             font-size: 1.2rem;
+             color: white;
+             /*color: rgba(225,225,225,.8);*/
         }
          >p{
             padding-top: 37px;
             font-size: 1.2rem;
-            line-height: 30px;
+            line-height: 24px;
             letter-spacing: 1px;
-            color:rgba(0, 0, 0, 0.4);
-        }
+             color: rgba(255,255,255,.6);
+         }
     }
     .banner-item-phone{
         height: 180px;
@@ -533,8 +577,42 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
                 padding-bottom:16px;
             }
             >span{
-               font-size: 1.4rem; 
+               font-size: 1.4rem;
+                color: white;
             }
         }
+    }
+    .banner-i0{
+        bottom: 0;
+        left: 170px;
+        z-index: 10;
+    }
+    .banner-i1{
+        bottom: 50px;
+        left: -70px;
+        z-index: 9;
+    }
+    .banner-i2{
+        right: 0;
+        z-index: 7;
+        top: -30px;
+    }
+    .banner-i3{
+        right: 0;
+        z-index: 5;
+        top: 100px;
+    }
+    .banner-i4{
+        left: 0;
+        z-index: 6;
+        top: 0;
+    }
+    .banner-clx{
+        position: absolute;
+        top: 422px;
+        left: 387px;
+        color: rgba(255,255,255,.6);
+        width: 453px;
+        line-height: 25px;
     }
 </style>
