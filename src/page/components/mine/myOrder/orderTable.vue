@@ -59,6 +59,15 @@
                         </div>
                     </div>
                 </template>
+                <el-pagination
+                        class="pagination"
+                        @size-change="handleSizeChange"
+                        @current-change="pageChange"
+                        :current-page="pageControl.now"
+                        :page-size="getParams.pageNo"
+                        layout="prev, pager, next, jumper, total"
+                        :total="pageControl.totalData">
+                </el-pagination>
             </div>
         </div>
         <transition name="slidex-fade">
@@ -114,10 +123,15 @@
                 },
                 getParams:{     //请求参数
                     page: 1,
-                    pageNo : 10,
+                    pageNo : 5,
                     demandType : '' ,
                     releaseTime: '',
                     demandProgress : ''
+                },
+                pageControl:{
+                    totalPage: -1,
+                    now: -1,
+                    totalData: -1
                 }
             }
         },
@@ -175,6 +189,9 @@
                 }).then(res=>{
                     if(res && res.data.opResult==0){
                         that.detailsData = res.data.list;
+                        that.pageControl.totalPage = res.data.list.pageCount;
+                        that.pageControl.now = res.data.list.pageNo;
+                        that.pageControl.totalData = res.data.list.totalCount;
                         return ;
                         that.detailsData.list.map(item=>{
                             if(that.superUser.progressState[item.demandProgress]){
@@ -194,6 +211,15 @@
             },
             getSort : function () {
 
+            },
+            pageChange(p){
+                if(this.getParams.page !== p){
+                    this.getParams.page = p;
+                    this.getListData();
+                }
+            },
+            handleSizeChange(p){
+                console.log(p)
             }
         },
         mounted() {
@@ -365,5 +391,10 @@
     .list-container{
         height: 280px;
         overflow-y: auto;
+    }
+    .pagination{
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 </style>
