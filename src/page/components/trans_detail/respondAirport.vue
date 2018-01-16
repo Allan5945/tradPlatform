@@ -8,6 +8,7 @@
                   <span>创建于{{detailData.releasetime||'-'}}</span>
                   <span>已有{{intentionCount||'0'}}位用户发起意向</span>
               </div>
+              <div class="chatBox" v-if="chatShow" @click="toChat">发起对话</div>
           </header>
           <div class="content">
               <div class="table-form">
@@ -177,7 +178,7 @@
               </div>
           </footer>
           <footer  v-if="footShow">
-              <div class="btn" v-if="planData.releaseselected == '0' ">
+              <div class="btn" v-if="confirmShow">
                   <div class="cancel-btn"  @click="confirm">确认方案</div>
                   <div class="refuse-btn" @click="refuse">拒绝并撤回</div>
               </div>
@@ -201,7 +202,8 @@
 
 <script>
  import * as vx from 'vuex';
- import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+ import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+ import ln from '$src/public/js/tabulationBoxTrigger'
  import sureForm from './sureForm1.vue'
  import reIntentForm from './reIntentForm.vue'
  import intentForm from './intentForm.vue'
@@ -221,10 +223,11 @@
              reFormShow:false,
              footShow:true,
              orderComplete:false,
+             chatShow:true,
+             confirmShow:false,
              planData:{},
              detailData:{},
              intentionCount:0,
-             demandData:{},
              text:'已收藏',
              planState:''
          }
@@ -237,6 +240,13 @@
             reIntentForm
         },
      methods:{
+         toChat:function(){
+            let chatData = {};
+            chatData.id = this.detailData.id;
+            chatData.employeeId = this.detailData.employeeId;
+            chatData.demandEmployeeId = this.planData.employeeId;
+            ln.$emit('addChat',chatData);
+         },
          closeDetail:function(){
           this.$emit('responseClose');
          },
@@ -441,18 +451,21 @@
                         if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
                             this.editShow = false;
                         }
-                        //已撤回,意向征集和已落选,订单完成
+                        //已撤回,意向征集和已落选,订单完成,订单关闭,交易完成/佣金支付，订单确认
                         let progress = this.planData.responseProgress;
                         if(progress == '2'){
                           this.editShow = false;
+                          this.chatShow = false;
                           this.withdraw = true;
                           this.planState = "（已撤回）";
                         }else if(progress == '0'){
                             this.editShow = true;
+                            this.chatShow = true;
                             this.withdraw = false;
                             this.planState = " ";
                         }else if(progress == '4'){
                             this.editShow = false;
+                            this.chatShow = false;
                             this.footShow = false;
                             this.planState = "（已落选）";
                         }else if(progress == '6'){
@@ -462,6 +475,12 @@
                         }else if(progress == '3'){
                             this.editShow = false;
                             this.footShow = false;
+                            this.chatShow = false;
+                        }else if(progress == '5'||progress == '7'){
+                            this.editShow = false;
+                            this.footShow = false;
+                        }else if(progress == '2'){
+                            this.confirmShow = true;
                         }
 
 
@@ -556,6 +575,19 @@
           span{
             margin-right:30px;
           }
+        }
+        .chatBox{
+            position:absolute;
+            right:15px;
+            top:60px;
+            width:100px;
+            height:20px;
+            line-height:20px;
+            color:#ffffff;
+            text-align:center;
+            background-color:#3c78ff;
+            border-radius:100px;
+            cursor:pointer;
         }
     }
     .table-form{

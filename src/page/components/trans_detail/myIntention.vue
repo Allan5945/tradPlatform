@@ -390,11 +390,11 @@
                     this.planData = response.data.responseList;
                     //判断状态
                     let progress = this.detailData.demandprogress;
-                    if(progress == "3"){//审核不通过
+                    if(progress == "3"){//3.关闭（审核不通过、下架、过期）
                       this.rePublish == true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
-                    }else if(progress == "4"){//订单完成
+                    }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
                       this.footShow  = false;
                       this.selectBtnShow = false;
                     }

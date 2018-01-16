@@ -93,7 +93,7 @@
              intentFormShow:false,
              dialog:false,
              payDialog:false,
-             inventBtnShow:true
+             inventBtnShow:false
          }
      },
      methods:{
@@ -152,6 +152,13 @@
                 .then((response) => {
                      if(response.data.opResult == "0"){
                       this.isCollect = false;
+                  }else{
+                      this.$emit('closeDetail');
+                      this.$message({
+                          message: '数据错误，请稍后再试!',
+                          type: 'warning',
+                          duration:2000
+                      });
                   }
                 })
                 .catch((error) => {
@@ -195,8 +202,9 @@
                     this.detailData = response.data.data;
 
                     let progress = this.detailData.demandprogress;
-                    if(progress == '4'||progress == '6'||progress == '3'){
-                        this.inventBtnShow = false;
+                     //需求发布、意向征集
+                    if(progress == '0'||progress == '1'){
+                        this.inventBtnShow = true;
                     }
 
                      if(response.data.isAlreadyCollect == true){

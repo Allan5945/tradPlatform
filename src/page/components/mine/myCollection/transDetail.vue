@@ -98,7 +98,7 @@
              intentFormShow:false,
              dialog:false,
              payDialog:false,
-             inventBtnShow:true
+             inventBtnShow:false
          }
      },
      props:['needData'],
@@ -198,8 +198,9 @@
                         this.detailData = response.data.data;
 
                         let progress = this.detailData.demandprogress;
-                        if(progress == '4'||progress == '6'||progress == '3'){
-                            this.inventBtnShow = false;
+                           //需求发布、意向征集
+                        if(progress == '0'||progress == '1'){
+                            this.inventBtnShow = true;
                         }
 
                     }else if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
