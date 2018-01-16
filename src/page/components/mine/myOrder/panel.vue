@@ -162,8 +162,7 @@
             //取出拒绝原因
             let that = this;
             let id = this.detailData.id,
-                responseId = this.detailData.responseId;
-
+                responseId = this.detailData.responseId||'-1';
             this.$ajax({
                 method: 'GET',
                 url: '/seeMyOrderDetail',

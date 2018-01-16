@@ -143,10 +143,11 @@ export default {
     }
     .user-input-box{
         position: relative;
-        width:290px;
+        width: 100%;
     }
     .user-input{
-        width: 273px;
+        display: inline-block;
+        width: 95%;
         height: 38px;
         border-radius:19px;
         padding-left: 15px;
@@ -184,7 +185,7 @@ export default {
         top: 12px;
         left:15px;
         transition: all .3s ease;
-        z-index: -1;
+        pointer-events: none;
     }
     //  .user-input{
     //     position: relative;

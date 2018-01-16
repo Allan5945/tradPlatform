@@ -23,6 +23,8 @@ const userCenter = resolve => require(['./../page/components/mine/myIndex.vue'],
     const myCollection = resolve => require(['./../page/components/mine/myCollection/myCollection.vue'], resolve);
     // 公司账户
     const companyAccount = resolve => require(['./../page/components/mine/companyAccount/myCompanyAccountList.vue'], resolve);
+// 设置
+const setting = resolve => require(['$src/page/components/setting/container.vue'],resolve);
 // 新闻舆情
 const opinion = resolve => require(['./../page/components/publicOpinion/publicOpinion.vue'], resolve);
 // 信息查询
@@ -106,6 +108,10 @@ const router = new VueRouter({
                             component: city
                         }
                     ]
+                },
+                {
+                    path: 'setting',
+                    component: setting
                 }
             ]
         },
