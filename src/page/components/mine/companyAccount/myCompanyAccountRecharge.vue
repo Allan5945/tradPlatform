@@ -7,7 +7,7 @@
                 </div>
                 <div class="right">
                     <div class="title font-gray">如有疑问，请联系客服</div>
-                    <div class="anew-publish">
+                    <div class="anew-publish" @click="chat">
                         联系客服<span class="icon-item">&#xe720;</span>
                     </div>
                 </div>
@@ -56,6 +56,14 @@
             closeThisFn: function () {
                 this.$emit('closeThis');
                 tabulationBoxTrigger.hierarchy = false;
+            },
+            // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条意向id）)
+            chat:function (item) {
+                let chatObj = {};
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.id = this.myData.id;
+//                chatObj.employeeId = item.employeeId;
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
         },
         components: {}

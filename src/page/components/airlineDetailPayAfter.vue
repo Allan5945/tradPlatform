@@ -16,8 +16,14 @@
                         <span  v-if="demandState5" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
-                    <div class="anew-publish" v-show="demandState5 && isSelf == true" @click="anewPublishClickFn">
+                    <div class="anew-publish btn-b" v-show="demandState5 && isSelf == true" @click="anewPublishClickFn">
                         重新发布
+                    </div>
+                    <div class="anew-publish btn-b"
+                         v-if="(receiveIntention.responseProgress != 2
+                            && receiveIntention.responseProgress != 3
+                            && receiveIntention.responseProgress != 4) && isSelf == false" @click="beginTalkClickFn">
+                        发起对话
                     </div>
                 </div>
             </div>
@@ -789,6 +795,15 @@
             // “重新发布”按钮点击
             anewPublishClickFn: function () {
                 this.airlineReqWrapperShow = true;
+            },
+            // “发起对话”按钮点击,弹出对话框
+            beginTalkClickFn: function () {
+                let chatObj = {};
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.id = this.receiveIntention.demandId;
+                chatObj.employeeId = this.receiveIntention.employeeId;
+//                console.info(this.$store.getters.role.id)
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // 关闭
             closeAirlineReqWrapper: function () {

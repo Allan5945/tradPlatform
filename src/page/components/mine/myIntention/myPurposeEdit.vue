@@ -330,6 +330,26 @@
                                 <label for="alAacceptDispatch" class="input-label" style="white-space: nowrap;">接受调度</label>
                             </div>
                             <div class="choose-input" v-show="schedulingShow" style="position: relative;">
+                                <!--8888888888888888888888888888888888888888888888888888888888888-->
+                                <div class="little-label-wrapper" v-show="directionPublicCityShow" ref="littleLabelWrapper" @click="labelWrapperClick">
+                                    <span class="little-label" v-for="(item,index) in directionPublicCity">
+                                        {{item.name}}
+                                        <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
+                                    </span>
+                                </div>
+                                <!--<span class="more-show" v-show="moreShow" @mouseover="littleListWrapperShow = true" @mouseout="littleListWrapperShow = false">
+                                    <span class="dot">...</span>
+                                    <div class="little-list-wrapper" v-show="littleListWrapperShow">
+                                        <span class="little-label" v-for="(item,index) in directionPublicCity">
+                                            {{item.name}}
+                                            <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
+                                        </span>
+                                    </div>
+                                </span>-->
+                                <!--9999999999999999999999999999999999999999999999999999999999999-->
+
+
+
                                 <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fifthArea"
                                        @click.stop="clickClose14Fn" style="border: 0;">
                                 <airportS class="aisx" v-on:resData="resData5" :searchText="fifthArea" v-show="isSearch5"
@@ -473,7 +493,8 @@
                 qyCode2: "", //经停地机场三字码
                 qyCode3: "", //到达地机场三字码
                 qyCode4: "", //运力基地三字码
-                qyCode5: '', //接受调度三字码
+                qyCode5: '', //接受调度三字码（不传三字码了，改成id）
+                id5: '',     // 接受调度机场id
                 searchText: '',
                 isSearch1: false,//机场搜索是否显示
                 isSearch2: false,
@@ -532,7 +553,9 @@
                 airCompanyShow: false, //下拉列表是否显示
                 airCompanyId: '',    //航司3字码
                 scheduling: 1,     // 是否接受调度 0:接收,1:不接收
-                schedulingShow: false,
+                schedulingShow: false, // 点击“接受调度”显示
+                directionPublicCityShow: false, // 定向发布小标签那一行
+                moreShow: false,        // 定向发布长度是否超出显示范围，省略号是否显示
                 url: '',            // 数据接口
                 alertMsg: '',
             }
@@ -911,7 +934,7 @@
                 this.isSearch4 = false;
                 this.isSearch5 = false;
                 this.isSearch6 = false;
-                this.directionPublicCityShow = true;  //定向发布小标签那一行
+//                this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.warn3Show = false;
                 this.warn8Show = false;
@@ -1173,6 +1196,7 @@
                     this.airAreaSearchShow3 = false;
                 }
             },
+            /***********↓↓↓↓↓↓↓接受调度↓↓↓↓**********************/
             // 接受调度复选按钮点击（0:接收,1:不接收）
             schedulingShowFn: function () {
                 this.schedulingShow = !this.schedulingShow;
@@ -1182,6 +1206,27 @@
                     this.scheduling = 1;
                 }
             },
+            // 点击删除小标签
+            littleLabelClose: function (index) {
+                this.directionPublicCity.splice(index,1);
+                this.$nextTick(() => {
+                    this.moreShowFn();
+                })
+            },
+            labelWrapperClick: function () {
+                this.$nextTick(() => {
+                    this.isSearch5 = true;
+                    this.directionPublicCityShow = false;
+                });
+            },
+            moreShowFn: function () { // 判断省略号是否显示
+                if(this.$refs.littleLabelWrapper.offsetWidth >= 196) {
+                    this.moreShow = true;
+                }else {
+                    this.moreShow = false;
+                }
+            },
+            /***********↑↑↑接受调度↑↑↑**********************/
             // 意向机场/意向区域，input失去焦点
             airportBlurFn1: function () {
                 this.space1 = false;
@@ -1240,7 +1285,7 @@
                 this.fourArea = data.name;
                 this.qyCode4 = data.code;
             },
-            resData5: function (data) {
+            resData5: function (data) {  // “接受调度”，选择点击下拉框的机场
                 this.isSearch5 = false;
                 this.fifthArea = data.name;
                 this.qyCode5 = data.code;
@@ -1353,10 +1398,10 @@
             },
             // 日历
             getDate1: function (d) {//获取组件返回的日期
-                this.calendarInitDay1 = d.split('-').join('.');
+                this.calendarInitDay1 = d;
             },
             getDate2: function (d) {
-                this.calendarInitDay2 = d.split('-').join('.');
+                this.calendarInitDay2 = d;
             },
             getMyDate1: function () {//获取起始的日期
                 if (this.calendarInitDay1 && this.calendarInitDay2) {
@@ -1367,10 +1412,10 @@
                 }
             },
             getDate3: function (d) {
-                this.calendarInitDay3 = d.split('-').join('.');
+                this.calendarInitDay3 = d;
             },
             getDate4: function (d) {
-                this.calendarInitDay4 = d.split('-').join('.');
+                this.calendarInitDay4 = d;
             },
             //补贴点击，改变补贴码
             subsidyClick0: function () {

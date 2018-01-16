@@ -984,7 +984,7 @@
                 this.isSearch2 = false;
                 this.isSearch3 = false;
                 this.isSearch4 = false;
-                this.directionPublicCityShow = true;  //定向发布小标签那一行
+//                this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
 //                this.secArea = this.secAreaBus;
@@ -1376,10 +1376,10 @@
             },
             // 日历
             getDate1: function(d){//获取组件返回的日期
-                this.calendarInitDay1 = d.split('-').join('.');
+                this.calendarInitDay1 = d;
             },
             getDate2: function(d){
-                this.calendarInitDay2 = d.split('-').join('.');
+                this.calendarInitDay2 = d;
             },
             getMyDate1: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
@@ -1389,10 +1389,10 @@
                 }else{}
             },
             getDate3: function(d){
-                this.calendarInitDay3 = d.split('-').join('.');
+                this.calendarInitDay3 = d;
             },
             getDate4: function(d){
-                this.calendarInitDay4 = d.split('-').join('.');
+                this.calendarInitDay4 = d;
             },
             getMyDate2: function(){//获取起始的日期
                 if(this.calendarInitDay3 && this.calendarInitDay4){

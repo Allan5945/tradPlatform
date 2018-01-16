@@ -60,6 +60,7 @@
                                 testCode:val.code,
                                 code:val.code,
                                 name:val.cityName,
+                                id: val.allData.id, // 返回机场id
                                 type:0
                             });
                         }else if(code.search(regx) != -1){
@@ -70,6 +71,7 @@
                                 testCode:aName,
                                 code:val.code,
                                 name:val.cityName,
+                                id: val.allData.id, // 返回机场id
                                 type:0
                             });
                         }else if(py.search(regx) != -1){
@@ -80,6 +82,7 @@
                                 testCode:aName,
                                 code:val.code,
                                 name:val.cityName,
+                                id: val.allData.id, // 返回机场id
                                 type:0
                             });
                         }else if(pinyin.search(regx) != -1){
@@ -90,6 +93,7 @@
                                 testCode:aName,
                                 code:val.code,
                                 name:val.cityName,
+                                id: val.allData.id, // 返回机场id
                                 type:0
                             });
                         };
@@ -99,6 +103,7 @@
                             testCode:val.code,
                             code:val.code,
                             name:val.cityName,
+                            id: val.allData.id, // 返回机场id
                             type:0
                         });
                     }
