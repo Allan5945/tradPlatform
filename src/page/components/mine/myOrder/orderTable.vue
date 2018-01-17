@@ -46,12 +46,10 @@
                                 {{ progressState[ditem.demandProgress] || "未知状态" }}
                             </div>
                             <div class="list-e item">
-                                <!--
-                                <span class="icon-item talk-icon">
+                                <span class="icon-item talk-icon" @click.stop="openChat(ditem)" v-if="ditem.responseEmployeeId">
                                     &#xe602;
-                                    <span>1</span>
+                                    <!--<span>&nbsp;</span>-->
                                 </span>
-                                -->
                             </div>
                             <div class="list-f item color" @click.stop="turnDetailPanel(ditem)">
                                 查看详情<span class="icon-item">&#xe686;</span>
@@ -77,6 +75,7 @@
 </template>
 <script>
     import panel from './panel.vue';
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import * as vx from 'vuex'
 
     export default {
@@ -169,6 +168,14 @@
                     this.getParams.demandProgress = k;
                     this.getListData();
                 }
+            },
+            openChat: function (p) {    // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条id）)
+                let chatObj = {
+                    demandEmployeeId: p.demandEmployeeId,
+                    employeeId: p.responseEmployeeId,
+                    id: p.id,
+                };
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             timeSort:function(){
                 if(this.filterDelay){
@@ -357,6 +364,7 @@
             .talk-icon {
                 position: relative;
                 font-size: 2.5rem;
+                cursor: pointer;
                 >span {
                     position: absolute;
                     top: -1px;

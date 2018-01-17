@@ -23,7 +23,8 @@
                         <div class="anew-publish btn-b"
                              v-if="(myplanBtnShow && (receiveIntention.responseProgress != 2
                                 && receiveIntention.responseProgress != 3
-                                && receiveIntention.responseProgress != 4))" @click="beginTalkClickFn">
+                                && receiveIntention.responseProgress != 4)
+                                && myData.demandprogress != 3)" @click="beginTalkClickFn">
                             发起对话
                         </div>
                     </div>
@@ -154,7 +155,8 @@
                             || receiveIntention.responseProgress == 4">({{receiveIntention.responseProgressStr}})</span>
                     </div>
                     <div @click="EditFn" v-show="receiveIntention.releaseselected == 1
-                            && (receiveIntention.responseProgress != 2 && receiveIntention.responseProgress != 4)" style="cursor:pointer;">
+                            && (receiveIntention.responseProgress != 2 && receiveIntention.responseProgress != 4)
+                            && myData.demandprogress != 3" style="cursor:pointer;">
                         <span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑
                     </div>
                 </div>
@@ -653,6 +655,21 @@
             ])
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // ajax获取的数据，并渲染
             getData: function () {
                 this.$ajax({
@@ -696,8 +713,6 @@
                     }
                     // 修改this.showCode
                     if(this.myData.demandstate == 5
-                        || this.myData.demandstate == 3
-                        || this.myData.demandprogress == 3
                         || this.myData.demandprogress == 10) {  // “关闭”状态
                         this.showCode = 5;
                         this.show();
@@ -744,6 +759,15 @@
                             this.demandState6 = true;
                         }else {
                             this.demandState6 = false;
+                        }
+                        if(this.myData.demandprogress == 3) {  // 判断当“需求关闭”状态时，还需要显示
+                            this.demandState5 = true;
+                            this.userNumShow = false;
+                            this.firstShow = true;
+                            this.secondButtonShow = false;
+                            this.fifthButtonShow = false;
+                            this.myplanBtnShow = false;
+                            this.firstButtonShow = false;
                         }
                     }
 //                    this.showCode = 5; // 模拟“关闭”状态
@@ -851,10 +875,12 @@
                 }) .then((response) => {
 //                    console.info(response.data)
                     if(response.data.opResult === '0'){
-                        alert('成功结束该需求！')
+//                        alert('成功结束该需求！')
+                        this.open6(`成功结束该需求！`);
                         this.closeThisFn();
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
@@ -976,9 +1002,11 @@
 //                        console.info('1response:')
 //                        console.info(response)
                         if(response.data.opResult === '0'){
-                            alert('有效期修改成功！')
+//                            alert('有效期修改成功！')
+                            this.open6(`有效期修改成功！`);
                         }else{
-                            alert('错误代码：' + response.data.opResult)
+//                            alert('错误代码：' + response.data.opResult)
+                            this.open8(`错误代码：${response.data.opResult}`);
                         }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                     }) .catch((error) => {
@@ -1005,7 +1033,8 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                        alert("确认方案成功！");
+//                        alert("确认方案成功！");
+                        this.open6(`确认方案成功！`);
                         this.closeThisFn();
                     }
                 })
@@ -1032,7 +1061,8 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                        alert("撤回方案成功！");
+//                        alert("撤回方案成功！");
+                        this.open6(`撤回方案成功！`);
                         this.closeThisFn();
                     }
                 })
@@ -1065,10 +1095,12 @@
 //                    console.info('response:')
 //                    console.info(response)
                     if(response.data.opResult === '0'){
-                        alert('成功取消该意向！')
+//                        alert('成功取消该意向！')
+                        this.open6(`成功取消该意向！`);
                         this.closeThisFn();
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);
@@ -1087,10 +1119,12 @@
                     }
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('收藏成功！')
+//                        alert('收藏成功！')
+                        this.open6(`收藏成功！`);
                         this.refreshFn();
                     }else{
-                        alert('错误代码：'+ response.data.opResult)
+//                        alert('错误代码：'+ response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -1110,10 +1144,12 @@
                 })
                     .then((response) => {
                         if(response.data.opResult === '0'){
-                            alert('取消收藏成功！');
+//                            alert('取消收藏成功！');
+                            this.open6(`取消收藏成功！`);
                             this.refreshFn();
                         }else{
-                            alert('错误代码：'+ response.data.opResult)
+//                            alert('错误代码：'+ response.data.opResult)
+                            this.open8(`错误代码：${response.data.opResult}`);
                         }
                     })
                     .catch((error) => {
@@ -1146,9 +1182,7 @@
             },
             //点击“确认缴纳”，this.showCode变成2
             changeShowCodeP: function () {
-                this.paySuccessShow = true; //“缴纳完成”组件显示
-                /*this.showCode = 2;
-                this.show();*/
+//                this.paySuccessShow = true; //“缴纳完成”组件显示
                 this.refreshFn();
             },
             //点击“选定”，组件“请确认以下方案”显示
@@ -1196,13 +1230,15 @@
                 }) .then((response) => {
 //                    console.info(response)
                     if(response.data.opResult === '0'){
-                        alert('成功撤销选定!');
+//                        alert('成功撤销选定!');
+                        this.open6(`成功撤销选定!`);
                         this.showCode = 2;
                         this.show();
                         this.btnDisableShow = false;
                         this.refreshFn();
                     }else{
-                        alert('错误代码：' + response.data.opResult);
+//                        alert('错误代码：' + response.data.opResult);
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
@@ -1230,9 +1266,6 @@
             closeAlAffirmFn: function () {
                 this.airlineAffirmShow = false;
 //                console.info('取消')
-            },
-            closePaySucssFn: function () {
-                this.paySuccessShow = false;
             },
         },
         components: {

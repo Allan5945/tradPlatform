@@ -477,10 +477,12 @@
                     <button class="btn btn-w" @click="endNeed">结束需求</button>
                 </div>
             </div>
-            <div class="myplan-buttons" v-if="myplanBtnShow">
+            <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4">
                 <div v-if="receiveIntention.responseselected == '0'">
                     <div class="buttons">
                         <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
+                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-w cancel-btn" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
                     </div>
                 </div>
                 <div v-else>

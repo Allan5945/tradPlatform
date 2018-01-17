@@ -526,7 +526,7 @@
                 spaceList: ['意向区域', '意向机场'],
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
-                sendData: {},
+//                sendData: {},
                 responseId: '',
                 airCompany: '',//运力归属
                 hourConst: '',             //小时成本
@@ -554,6 +554,11 @@
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
+            sendData: function () {
+                let obj = {};
+                obj = JSON.parse(JSON.stringify(this.acceptData));
+                return obj;
+            }
            /* sailingtime: function () {
                 return this.calendarInitDay1 + ',' + this.calendarInitDay2;
             },*/
@@ -561,9 +566,9 @@
                 return this.calendarInitDay3 + '-' + this.calendarInitDay4;
             }*/
         },
-        created() {
+        /*created() {
             this.sendData = this.acceptData;
-        },
+        },*/
         mounted() {
             this.space1Fn();
             this.space2Fn();
@@ -833,10 +838,6 @@
                 }if(this.typeChoose == '') { // 机型
                     this.warn4Show = true;
                     req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') { // 发布有效期
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
                     return
                 }if(this.airCompany == '') {
                     this.warn10Show = true;
@@ -1257,7 +1258,7 @@
             resData5: function (data) {
                 this.isSearch5 = false;
                 this.fifthArea = data.name;
-                this.qyCode5 = data.code;
+                this.qyCode5 = data.id;
             },
             resData6: function (data) {
                 this.isSearch6 = false;
@@ -1732,7 +1733,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 2;
+        z-index: 12;
     }
 
     .container {

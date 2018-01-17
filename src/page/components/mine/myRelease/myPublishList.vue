@@ -44,7 +44,8 @@
                             {{item.demandprogress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" @click.stop v-show="item.responseEmployees != 0 && item.intentionMoneyState === '0'" @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
+                            <span class="icon-item talk-icon" @click.stop v-show="talkShowFn(item)"
+                                  @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
                                 <span class="talk-num" v-show="item.unreadMessageCount != 0">{{item.unreadMessageCount}}</span>
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="vl in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl)">
@@ -174,7 +175,37 @@
 //                console.log(`当前页: ${val}`);
                 this.sendData.page = val;
             },
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             /*************************/
+            talkShowFn: function (item) {  // 列表中的交谈按钮是否显示
+                if(this.role.role === '1'){  //0：航司 1：机场 2：太美
+                    if(item.responseEmployees != null && item.responseEmployees.length != 0 && item.intentionMoneyState === '0'){
+                        return true
+                    }else {
+                        return false
+                    }
+                }else{
+                    if(item.responseEmployees != null && item.responseEmployees.length != 0){
+                        return true
+                    }else {
+                        return false
+                    }
+                }
+            },
             // 点击关闭所有下拉框
             closeAllFn: function () {
                 this.typeShow = false;   //需求类型显示
@@ -232,7 +263,8 @@
                         this.totalCount = 0;
                         this.judgeRole();
                     }else {
-                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+//                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+                        this.open8(`无法请求到数据，错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);
