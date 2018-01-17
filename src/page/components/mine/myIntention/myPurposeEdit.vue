@@ -1306,7 +1306,7 @@
             resData5: function (data) {  // “接受调度”，选择点击下拉框的机场
                 this.isSearch5 = false;
                 this.fifthArea = data.name;
-                this.qyCode5 = data.code;
+                this.qyCode5 = data.id;
             },
             resData6: function (data) {
                 this.isSearch6 = false;

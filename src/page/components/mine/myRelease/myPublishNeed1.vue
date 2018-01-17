@@ -377,7 +377,7 @@
         tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
 
             //console.log("demandtype"+val.data.demandtype);
-            if(val.demandtype == 1 && this.role.role == 0){
+            if(val.demandtype == 1 && (this.role.role == 0 || this.role.role == 2)){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -417,7 +417,11 @@
                       }
                     }
                     //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    if(this.role.role == 2){
+                        this.isSign = true;
+                    }else{
+                        this.isSign = response.data.isSign;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
