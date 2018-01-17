@@ -163,7 +163,7 @@
                             .then((response) => {
                                 if(response.data.opResult == "0"){
                                     this.newPas = true;
-                                    this.$emit('pasChange',true)
+                                    this.$emit('pasChange',true,1)
                                 }else{
                                     this.$emit('pasChange',false)
                                 }

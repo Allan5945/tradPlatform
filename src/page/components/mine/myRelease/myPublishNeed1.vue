@@ -205,6 +205,10 @@
             </div>
 
             </div>
+            <div style="position: absolute; bottom: 110px; width: 530px; padding-left: 40px; color: red;" v-show="detailData.demandstate == 5">
+                <span>拒绝原因：</span>
+                <span>{{detailData.rek}}</span>
+            </div>
             <footer v-show="footShow">
                 <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
@@ -373,7 +377,7 @@
         tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
 
             //console.log("demandtype"+val.data.demandtype);
-            if(val.demandtype == 1 && this.role.role == 0){
+            if(val.demandtype == 1 && (this.role.role == 0 || this.role.role == 2)){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -390,7 +394,7 @@
                     this.planData = response.data.responseList;
                     //判断状态
                     let progress = this.detailData.demandprogress;
-                    if(progress == "3"){//3.关闭（审核不通过、下架、过期）
+                    if(progress == "3" || progress == "10"){//3.关闭（审核不通过、下架、过期）
                       this.rePublish == true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
@@ -413,7 +417,11 @@
                       }
                     }
                     //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    if(this.role.role == 2){
+                        this.isSign = true;
+                    }else{
+                        this.isSign = response.data.isSign;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);

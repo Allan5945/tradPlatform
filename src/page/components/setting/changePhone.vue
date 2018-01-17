@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <footer v-show="show.footer">
-                        <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==-1" @click="show.self=false">忘记密码？</span>&nbsp;</p>
+                        <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==0" @click="closeThis(true)">忘记密码？</span>&nbsp;</p>
                         <div class="step-btn">
                             <div class="btn" :class="{'btn-b':text.status,'btn-blk':!text.status}" @click="next()">{{ text.status?text.btnText1:text.btnText2 }}</div>
                             <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
@@ -72,16 +72,12 @@
             </div>
         </template>
         <div class="result flex-center" v-else>
-            <backPwd
-                    v-on:openClass="closePwd"
-                    v-on:pasChange="pasChange"></backPwd>
         </div>
     </div>
 </template>
 <script>
     import inputControl from '$src/page/loginProcess/components/inputControl.vue';
     import validation from '$src/page/loginProcess/components/validation.vue';
-    import backPwd from '$src/page/loginProcess/loginStepsComponents/backPas.vue';
     import {Steps,Step,Loading} from 'element-ui';
 
     export default {
@@ -140,7 +136,6 @@
         props: ['ud'],
         components:{
             validation,
-            backPwd,
             "inputControl": inputControl,
             "pwdInput": inputControl,
             "el-steps": Steps,
@@ -175,16 +170,6 @@
             }
         },
         methods:{
-            closePwd(){
-                this.show.self = true;
-            },
-            pasChange(ok){
-                if(ok){
-                    alert('修改成功');
-                }else{
-                    alert('修改失败')
-                }
-            },
             iptEnter(p){
                 this.next();
             },
@@ -194,10 +179,11 @@
             phoneReqMes(p){
                 this.userData.phone = p.n;
             },
-            closeThis(){
+            closeThis(f){
                 this.$emit('subchange',{
                     name: 'phone'
                 })
+                this.ud.showBackPwd = f===true ? true: false;
             },
             delayClose(){
                 setTimeout(this.closeThis,3000)

@@ -22,7 +22,8 @@
                     <div class="anew-publish btn-b"
                          v-if="(myplanBtnShow && (receiveIntention.responseProgress != 2
                             && receiveIntention.responseProgress != 3
-                            && receiveIntention.responseProgress != 4))" @click="beginTalkClickFn">
+                            && receiveIntention.responseProgress != 4)
+                            && myData.demandprogress != 3)" @click="beginTalkClickFn">
                         发起对话
                     </div>
                 </div>
@@ -153,7 +154,8 @@
                         || receiveIntention.responseProgress == 4">({{receiveIntention.responseProgressStr}})</span>
                 </div>
                 <div @click="EditFn" v-show="receiveIntention.releaseselected == 1
-                        && (receiveIntention.responseProgress != 2 && receiveIntention.responseProgress != 4)" style="cursor:pointer;">
+                        && (receiveIntention.responseProgress != 2 && receiveIntention.responseProgress != 4)
+                        && myData.demandprogress != 3" style="cursor:pointer;">
                     <span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑
                 </div>
             </div>
@@ -702,8 +704,6 @@
                     }
                     // 修改this.showCode
                     if(this.myData.demandstate == 5
-                        || this.myData.demandstate == 3
-                        || this.myData.demandprogress == 3
                         || this.myData.demandprogress == 10) {  // “关闭”状态
                         this.showCode = 5;
                         this.show();
@@ -750,6 +750,15 @@
                             this.demandState6 = true;
                         }else {
                             this.demandState6 = false;
+                        }
+                        if(this.myData.demandprogress == 3) {  // 判断当“需求关闭”状态时，还需要显示
+                            this.demandState5 = true;
+                            this.userNumShow = false;
+                            this.firstShow = true;
+                            this.secondButtonShow = false;
+                            this.fifthButtonShow = false;
+                            this.myplanBtnShow = false;
+                            this.firstButtonShow = false;
                         }
                     }
 //                    this.showCode = 5; // 模拟“关闭”状态

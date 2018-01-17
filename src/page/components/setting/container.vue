@@ -88,6 +88,9 @@
             <div class="swrapper flex-center" v-if="show.unbindMail">
                 <unbindMail v-on:subchange="turnOver" :ud="userData"></unbindMail>
             </div>
+            <div class="swrapper flex-center" v-if="userData.showBackPwd">
+                <backPwdBox v-on:subchange="turnOver" :ud="userData"></backPwdBox>
+            </div>
         </transition>
 
     </section>
@@ -100,6 +103,7 @@
     import changePwd from './changePwd'
     import bindMail from './bindMail'
     import unbindMail from './unbindMail'
+    import backPwdBox from './backPwdBox'
 
     export default{
         data(){
@@ -119,7 +123,8 @@
                     company: '',
                     department: '',
                     post: '',
-
+                    showBackPwd: false,
+                    lastShow: ''
                 },
                 control:{
                     edit:false,
@@ -127,20 +132,30 @@
                 },
             }
         },
+        watch: {
+            "userData.showBackPwd": function (n,o) {
+                if(!n && this.userData.lastShow!==""){
+//                    this.show[this.userData.lastShow]=true;
+                }
+            }
+        },
         components:{
             changePhone,
             changePwd,
             bindMail,
             unbindMail,
+            backPwdBox
         },
         methods: {
             closeDetail:function () {//关闭所有
-//                window.location = '/#/index/'
                 this.$emit('closeSet');
             },
             turnOver: function (d) {
                 let that = this;
                 that.show[d.name] = false;
+                if(d.name!=="backPwd"){
+                    that.userData.lastShow = d.name;
+                }
             },
             changeText(e,type){
                 let txt = event.srcElement.innerText, changeFlag= false;
@@ -180,12 +195,27 @@
                         }
                     }).then(res=>{
                         if(res.data.opResult === '0'){
-                            console.log('修改成功');
+                            this.$message({
+                                showClose: true,
+                                message: "修改成功！",
+                                type: 'success',
+                                duration: 1500
+                            });
                         }else{
-                            alert('修改失败,请稍后重试');
+                            this.$message({
+                                showClose: true,
+                                message: "修改失败，请稍后重试！",
+                                type: 'error',
+                                duration: 1500
+                            });
                         }
                     }).catch(err=>{
-                        alert("*不知道4##还是5##");
+                        this.$message({
+                            showClose: true,
+                            message: "网络错误，请稍后重试！",
+                            type: 'error',
+                            duration: 1500
+                        });
                     })
                 }
                 that.control.edit = !that.control.edit;
@@ -208,7 +238,12 @@
                         ud.department=d.department;
                         ud.post=d.position;
                     }else{
-
+                        this.$message({
+                            showClose: true,
+                            message: "网络错误，请稍后重试！",
+                            type: 'error',
+                            duration: 1500
+                        });
                     }
                 }).catch(err=>{
 
@@ -236,6 +271,7 @@
     /*通用設定*/
     *{
         box-sizing: border-box;
+        font-size: 12px;
     }
     /*主體内容*/
     .setting-wrap{
@@ -245,8 +281,7 @@
         top: 0;
         left: 0;
         background-color: rgba(0, 0, 0, 0.2);
-        cursor: default;
-        z-index: 19;
+        cursor: auto;
     }
     .shadow{
         box-shadow: 0px 2px 0px #888;
