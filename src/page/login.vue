@@ -3,7 +3,7 @@
         <div class="gl-ifm" id="WebGL-output"></div>
         <bannersPanel v-on:steps="steps"></bannersPanel>
         <transition name="fade">
-            <loginSteps v-if="stepOff" :stepOff.sync="stepOff"></loginSteps>
+            <loginSteps v-if="stepOff" :stepOff.sync="stepOff" :setpes.sync="setpes"></loginSteps>
         </transition>
     </div>
 </template>
@@ -19,13 +19,13 @@
         data() {
             return {
                 stepOff: false,
-                offType: true
+                setpes: true
             }
         },
         methods: {
             steps: function (t) {
                 this.stepOff = true;
-                this.offType = t;
+                this.setpes = t ? 0 : 2;
             },
             initGLMap(){
                     var camera = null;

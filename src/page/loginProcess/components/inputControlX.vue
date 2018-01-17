@@ -3,8 +3,8 @@
         <input :type="arg.inputeType" class="user-input"
                :class="{'err-input':showErrInputPerform}"
                @input="changeInputMes()"
-               @blur="changePlaceholder();blused()"
-               @focus="changePlaceholder()"
+               @blur="changePlaceholder(false);blused();"
+               @focus="changePlaceholder(true)"
                @keyup="entered($event)"
                v-model="arg.inputMes"
         >
@@ -30,6 +30,11 @@
                 showTextPlaceholder:false,
             }
         },
+        mounted:function () {
+            if(this.arg.inputMes != ""){
+                this.showPlaceholder = true;
+            }
+        },
         props: ['arg'],
         methods: {
             blused(){
@@ -53,11 +58,13 @@
                     this.arg.inputeType = "text";
                 }
             },
-            changePlaceholder() {  // 切换placeholder的值
+            changePlaceholder(t) {  // 切换placeholder的值
                 if (this.arg.inputMes == "") {
                     this.staging = {t:true};
-                    this.showPlaceholder = !this.showPlaceholder;
-                }
+                    this.showPlaceholder = t;
+                }else{
+                    this.showPlaceholder = true;
+                };
             },
             changeInputMes() {    // 输入框改变验证是否通过
                 if(this.arg.inputMes == ''){
@@ -85,6 +92,14 @@
                     case 2:   //
                         reg = [ /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/];
                         if (reg[0].test(this.arg.inputMes)) {
+                            t = true
+                        }else{
+                            c = "请输入正确的格式";
+                        };
+                        break;
+                    case 3:   // 账号
+                        reg = [/^1[34578]\d{9}$/, /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/];
+                        if (reg[0].test(this.arg.inputMes) || reg[1].test(this.arg.inputMes)) {
                             t = true
                         }else{
                             c = "请输入正确的格式";
