@@ -77,6 +77,7 @@
 </template>
 <script>
     import panel from './panel.vue';
+    import * as vx from 'vuex'
 
     export default {
         data() {
@@ -91,8 +92,6 @@
                 type: {
                     "0":'航线需求',
                     "1":'运力投放',
-                    "3":'委托航线需求',
-                    "4":'委托运力投放',
                 },
                 progressState: {
                     '3': '关闭',
@@ -134,6 +133,11 @@
                     totalData: -1
                 }
             }
+        },
+        computed:{
+            ...vx.mapGetters([
+                'role'
+            ]),
         },
         methods: {
             delayChange: function () {  // 500ms延迟，防止快速切换状态
@@ -223,6 +227,14 @@
             }
         },
         mounted() {
+            if(this.role.role == "2") { // 太美
+                this.type = this.superUser.typeList;
+            }else if(this.role.role == "1"){//机场
+                this.type["3"] = '委托航线需求'
+            }else if(this.role.role == "0"){//航司
+                this.type["4"] = '委托运力需求'
+                delete this.progressState["7"];
+            }
             this.getListData();
         },
         components: {

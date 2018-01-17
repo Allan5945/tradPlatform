@@ -3,76 +3,84 @@
         <header>
             <p>修改密码 <span  class="iconfont closer" @click="closeThis">&#xe62c;</span></p>
         </header>
-        <template v-if="active<2">
-            <div class="process-body">
-                <ul class="pwd-err-tip" v-show="show.pwdErr">
-                    <li>· 长度为6-16个字符</li>
-                    <li>· 支持数字、大小写字母和标点符号</li>
-                    <li>· 不允许空格</li>
-                </ul>
-                <div class="process-main" v-show="active==0">
-                    <pwdInput :par="pasArg" v-on:reqMes="pasReqMes0" v-on:entered="iptEnter"></pwdInput>
-                    <!--
-                    <div class="full-btn">
-                        <input :type="iptType.showpwd0" v-model="userData.pwd" placeholder="输入登录密码" maxlength="16">
-                        <span v-show="userData.pwd.length>0 && iptType.showpwd0==='password'" @click="iptType.showpwd0 ='text'">&#xe685;</span>
-                        <span v-show="userData.pwd.length>0 && iptType.showpwd0==='text'" @click="iptType.showpwd0 = 'password'" style="line-height: 38px;">&#xe7d3;</span>
+        <template v-if="show.self">
+            <template v-if="active<2">
+                <div class="process-body">
+                    <ul class="pwd-err-tip" v-show="show.pwdErr">
+                        <li>· 长度为6-16个字符</li>
+                        <li>· 支持数字、大小写字母和标点符号</li>
+                        <li>· 不允许空格</li>
+                    </ul>
+                    <div class="process-main" v-show="active==0">
+                        <pwdInput :par="pasArg" v-on:reqMes="pasReqMes0" v-on:entered="iptEnter"></pwdInput>
+                        <!--
+                        <div class="full-btn">
+                            <input :type="iptType.showpwd0" v-model="userData.pwd" placeholder="输入登录密码" maxlength="16">
+                            <span v-show="userData.pwd.length>0 && iptType.showpwd0==='password'" @click="iptType.showpwd0 ='text'">&#xe685;</span>
+                            <span v-show="userData.pwd.length>0 && iptType.showpwd0==='text'" @click="iptType.showpwd0 = 'password'" style="line-height: 38px;">&#xe7d3;</span>
+                        </div>
+                        -->
                     </div>
-                    -->
-                </div>
-                <div class="process-main" v-show="active==1">
+                    <div class="process-main" v-show="active==1">
 
-                    <pwdInput :par="npasArg" v-on:reqMes="pasReqMes1" @focus="show.pwdErr=false;"></pwdInput>
-                    <pwdInput :par="vnpasArg" v-on:reqMes="pasReqMes2" style="margin-top:30px;"></pwdInput>
-                    <!--
-                    <div class="full-btn">
-                        <input :type="iptType.showpwd1" v-model.trim="userData.npwd" placeholder="输入新密码" @focus="show.pwdErr=false;">
-                        <span v-show="userData.npwd.length>0 && iptType.showpwd1==='password'" @click="iptType.showpwd1 ='text'">&#xe685;</span>
-                        <span v-show="userData.npwd.length>0 && iptType.showpwd1==='text'" @click="iptType.showpwd1 = 'password'" style="line-height: 38px;">&#xe7d3;</span>
-                    </div>
+                        <pwdInput :par="npasArg" v-on:reqMes="pasReqMes1" @focus="show.pwdErr=false;"></pwdInput>
+                        <pwdInput :par="vnpasArg" v-on:reqMes="pasReqMes2" style="margin-top:30px;"></pwdInput>
+                        <!--
+                        <div class="full-btn">
+                            <input :type="iptType.showpwd1" v-model.trim="userData.npwd" placeholder="输入新密码" @focus="show.pwdErr=false;">
+                            <span v-show="userData.npwd.length>0 && iptType.showpwd1==='password'" @click="iptType.showpwd1 ='text'">&#xe685;</span>
+                            <span v-show="userData.npwd.length>0 && iptType.showpwd1==='text'" @click="iptType.showpwd1 = 'password'" style="line-height: 38px;">&#xe7d3;</span>
+                        </div>
 
-                    <div class="full-btn" style="margin-top: 30px;">
-                        <input :type="iptType.showpwd2" v-model.trim="userData.vnpwd" placeholder="确认密码" @focus="show.pwdErr=false;">
-                        <span v-show="userData.vnpwd.length>0 && userData.vnpwd.length===userData.npwd.length && userData.vnpwd===userData.npwd.replace(/ /g,'')"
-                              style="pointer-events: none;color: rgb(125,220,13);">&#xe61f;</span>
+                        <div class="full-btn" style="margin-top: 30px;">
+                            <input :type="iptType.showpwd2" v-model.trim="userData.vnpwd" placeholder="确认密码" @focus="show.pwdErr=false;">
+                            <span v-show="userData.vnpwd.length>0 && userData.vnpwd.length===userData.npwd.length && userData.vnpwd===userData.npwd.replace(/ /g,'')"
+                                  style="pointer-events: none;color: rgb(125,220,13);">&#xe61f;</span>
+                        </div>
+                        -->
                     </div>
-                    -->
-                </div>
-                <div class="pwd-tips">
+                    <div class="pwd-tips">
 
-                </div>
-                <footer v-show="show.footer">
-                    <p class="wjmm"><span class="tips">{{ text.tipsText }}</span> <span v-show="active==-1">忘记密码？</span>&nbsp;</p>
-                    <div class="step-btn">
-                        <div class="btn btn-b" @click="next()">{{ text.btnText2 }}</div>
-                        <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
                     </div>
-                    <p class="lxkf">客服热线：0000-0000000</p>
+                    <footer v-show="show.footer">
+                        <p class="wjmm"><span class="tips">{{ text.tipsText }}</span> <span v-show="active==-1" @click="show.self=false">忘记密码？</span>&nbsp;</p>
+                        <div class="step-btn">
+                            <div class="btn btn-b" @click="next()">{{ text.btnText2 }}</div>
+                            <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
+                        </div>
+                        <p class="lxkf">客服热线：0000-0000000</p>
+                    </footer>
+                </div>
+            </template>
+            <div class="result" v-else>
+                <div class="overPage" v-if="result">
+                    <div>
+                        <h1>(*^__^*)修改密码成功</h1>
+                        <p>3秒后自动返回</p>
+                    </div>
+                </div>
+                <div class="overPage" v-else>
+                    <div>
+                        <h1>(⊙v⊙)修改密码失败</h1>
+                        <p>3秒后自动返回</p>
+                    </div>
+                </div>
+                <footer>
+                    客服热线：000-0000000
                 </footer>
             </div>
         </template>
-        <div class="result" v-else>
-            <div class="overPage" v-if="result">
-                <div>
-                    <h1>(*^__^*)修改密码成功</h1>
-                    <p>3秒后自动返回</p>
-                </div>
-            </div>
-            <div class="overPage" v-else>
-                <div>
-                    <h1>(⊙v⊙)修改密码失败</h1>
-                    <p>3秒后自动返回</p>
-                </div>
-            </div>
-            <footer>
-                客服热线：000-0000000
-            </footer>
+        <div class="result flex-center" v-else>
+            <backPwd
+                    v-on:openClass="closePwd"
+                    v-on:pasChange="pasChange"></backPwd>
         </div>
     </div>
 </template>
 <script>
     import {Loading} from 'element-ui';
     import inputControl from '$src/page/loginProcess/components/inputControl.vue';
+    import backPwd from '$src/page/loginProcess/loginStepsComponents/backPas.vue';
 
     export default {
         data(){
@@ -81,6 +89,7 @@
                 result: false,
                 tps:"",
                 show:{
+                    self:true,
                     footer: true,
                     pwdErr: false
                 },
@@ -135,6 +144,7 @@
         props: ['ud'],
         components:{
             "pwdInput": inputControl,
+            backPwd,
         },
         watch: {
             'active': function (n,o) {
@@ -150,6 +160,16 @@
             },
         },
         methods:{
+            closePwd(){
+                this.show.self = true;
+            },
+            pasChange(ok){
+                if(ok){
+                    alert('修改成功');
+                }else{
+                    alert('修改失败')
+                }
+            },
             iptEnter(p){
                 this.next();
             },
@@ -251,7 +271,6 @@
             },
             next() {
                 let that = this;
-                //if(!that.text.status)return;
                 switch(this.active){
                     case 0:
                         that.checkPwd();
@@ -299,6 +318,7 @@
             line-height: 50px;
             position: relative;
             box-shadow: 0 5px 15px $lightblue;
+            z-index: 1;
             p{
                 text-indent: 20px;
                 color: #999;

@@ -193,6 +193,7 @@
             line-height: 50px;
             position: relative;
             box-shadow: 0 5px 15px $lightblue;
+            z-index: 1;
             p{
                 text-indent: 20px;
                 color: #999;

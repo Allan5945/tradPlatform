@@ -63,6 +63,15 @@
                         </div>
                     </div>
                 </template>
+                <el-pagination
+                        class="pagination"
+                        @size-change="handleSizeChange"
+                        @current-change="pageChange"
+                        :current-page="pageControl.now"
+                        :page-size="getParams.pageNo"
+                        layout="prev, pager, next, jumper, total"
+                        :total="pageControl.totalData">
+                </el-pagination>
             </div>
         </div>
         <transition name="slidex-fade">
@@ -99,7 +108,13 @@
                     demandType : '' ,
                     demandState : '',
                     page: 1,
+                    pageNo: 5,
                     orderType : 0
+                },
+                pageControl:{
+                    totalPage: -1,
+                    now: -1,
+                    totalData: -1
                 }
             }
         },
@@ -157,6 +172,11 @@
                 }).then(res=>{
                     if(res && res.data.opResult==0){
                         that.detailsData = res.data.list;
+                        that.pageControl.totalPage = res.data.list.pageCount;
+                        that.pageControl.now = res.data.list.pageNo;
+                        that.pageControl.totalData = res.data.list.totalCount;
+
+
                     }else{
                         that.detailsData = null;
                         alert('暂无返回，请稍后重试。')
@@ -164,6 +184,15 @@
                 }).catch(err=>{
                     that.detailsPanel.show = false;
                 })
+            },
+            pageChange(p){
+                if(this.getParams.page !== p){
+                    this.getParams.page = p;
+                    this.getListData();
+                }
+            },
+            handleSizeChange(p){
+                console.log(p)
             }
         },
         mounted() {
@@ -336,5 +365,10 @@
     .list-container{
         height: 280px;
         overflow-y: auto;
+    }
+    .pagination{
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 </style>

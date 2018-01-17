@@ -1,6 +1,6 @@
 <template>
     <transition name="slidex-fade">
-    <div class="setting-wrap" @click.self="closeDetail">
+    <section class="setting-wrap" @click.self="closeDetail">
         <div class="box shadow">
             <div class="setting-header">
                 <p class="mgr-l">个人设置<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
@@ -90,7 +90,7 @@
             </div>
         </transition>
 
-    </div>
+    </section>
     </transition>
 </template>
 
@@ -100,7 +100,6 @@
     import changePwd from './changePwd'
     import bindMail from './bindMail'
     import unbindMail from './unbindMail'
-    import settingEditDiv from './inputDiv'
 
     export default{
         data(){
@@ -133,11 +132,11 @@
             changePwd,
             bindMail,
             unbindMail,
-            settingEditDiv
         },
         methods: {
             closeDetail:function () {//关闭所有
-                window.location = '/#/index/'
+//                window.location = '/#/index/'
+                this.$emit('closeSet');
             },
             turnOver: function (d) {
                 let that = this;
@@ -246,6 +245,7 @@
         top: 0;
         left: 0;
         background-color: rgba(0, 0, 0, 0.2);
+        cursor: default;
         z-index: 19;
     }
     .shadow{
@@ -403,11 +403,21 @@
         width: 220px;
         background-color: #3c78ff;
         box-shadow: 1px 1px 6px rgba(60,120,255,.6);
+        &:hover{
+            background-color: #508bff;
+            box-shadow: 1px 2px 18px rgba(60, 120, 255, 0.5);
+        }
     }
     .btn-gray{
-        color: #000;
+        color: rgba(96, 94, 124, 0.6);
+        box-shadow: 1px 1px 18px rgba(0, 0, 0, 0.13);
         width: 100px;
         border: 1px solid #ccc;
+        &:hover{
+            background-color: rgba(60,120,255,.7);
+            color: #fff;
+            box-shadow: 1px 2px 18px rgba(60,120,255,.5);
+        }
     }
     .footer-s{
         position: absolute;
