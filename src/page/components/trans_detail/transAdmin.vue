@@ -2,22 +2,23 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">{{detailData.demandtypeStr}}详情<span class="iconfont" @click="closeAdmin">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title}}</div>
+                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeAdmin">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="note">
-                    <span>创建于{{detailData.releasetime}}</span>
-                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandStateStr}}</span></span>
+                    <span>创建于{{detailData.releasetime||'-'}}</span>
+                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
                 </div>
+                <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
             </header>
             <div class="content">
                 <div class="table-form">
                     <div>
                         <div>机型</div>
-                        <div>{{detailData.aircrfttyp}}</div>
+                        <div>{{detailData.aircrfttyp||'-'}}</div>
                     </div>
                      <div>
                         <div>座位布局</div>
-                        <div>{{detailData.seating}}</div>
+                        <div>{{detailData.seating||'-'}}</div>
                     </div>
                      <div>
                         <div>运力归属</div>
@@ -25,47 +26,51 @@
                     </div>
                     <div>
                         <div>运力基地</div>
-                        <div>{{detailData.dptNm}}</div>
+                        <div>{{detailData.dptNm||'-'}}</div>
                     </div>
                     <div>
                         <div>出港时刻</div>
-                        <div>{{detailData.dptTime}}</div>
+                        <div>{{detailData.dptTime||'-'}}</div>
                     </div>
                     <div>
                         <div>班期</div>
-                        <div>{{detailData.days}}</div>
+                        <div>{{detailData.days||'-'}}</div>
                     </div>
                     <div class="intent-airline" v-if="detailData.intendedAirlines">
                        <div>意向航线</div>
                        <div class="i-line">
-                         {{detailData.intendedAirlines[0].dptName}}<span class="iconfont">&#xe672;</span>
-                         {{detailData.intendedAirlines[0].pstName}}<span class="iconfont">&#xe672;</span>
-                         {{detailData.intendedAirlines[0].arrvName}}
+                         {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                         {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                         {{detailData.intendedAirlines[0].arrvName||'-'}}
                        </div>
+                   </div>
+                   <div class="intent-airline" v-else>
+                       <div>意向航线</div>
+                       <div class="i-line">-</div>
                    </div>
                     <div>
                         <div>小时成本</div>
-                        <div>{{detailData.hourscost}}万/小时</div>
+                        <div>{{detailData.hourscost||'-'}}万/小时</div>
                     </div>
                     <div style="margin:0 0 0 40px;">
                         <div>接受调度</div>
-                        <div>{{detailData.schedulingStr}}</div>
+                        <div>{{detailData.schedulingStr||'-'}}</div>
                     </div>
                     <div>
                         <div>有效期</div>
-                        <div>{{detailData.periodValidity}}</div>
+                        <div>{{detailData.periodValidity||'-'}}</div>
                     </div>
                      <div class="tips">
                         <div>其他说明</div>
-                        <div>{{detailData.remark}}</div>
+                        <div>{{detailData.remark||'-'}}</div>
                      </div>
                 </div>
             <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
-                    <div>已有<span>{{this.intentionCount||'0'}}</span>位用户发起意向</div>
+                    <div>已有<span>{{this.intentionCount||'0' }}</span>位用户发起意向</div>
                 </div>
-                <div class="intent-form">
+                <div class="intent-form" >
                     <div>
                         <div>收到时间
                           <span class="iconfont icon-up active">&#xe605;</span>
@@ -75,11 +80,12 @@
                     </div>
                     <div class="intent-box" v-for=" (val,index) in planData" v-if="intentListShow">
                          <div class="intent-item">
-                            <div class="time">{{val.responsedate}}</div>
+                            <div class="time">{{val.responsedate||'-'}}</div>
                             <div class="person">
-                                {{val.intentionCompanyName||'-'}}
-                                <span class="iconfont" @click="chat(val)">&#xe602;</span>
+                              {{val.intentionCompanyName||'-'}}
+                              <span class="iconfont" @click="chat(val)" v-if="isSelf">&#xe602;</span>
                             </div>
+                            <div>{{val.responseProgressStr}}</div>
                             <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
                             <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
@@ -90,11 +96,12 @@
                                     <div v-else>始发区域</div>
                                     <div>
                                         <div>{{val.dptNm||'-'}}</div>
-                                        <div>{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
+                                        <div v-if="val.dptState =='0' ">{{val.dptAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.dptState =='0' ">
                                         <div>出港资源</div>
-                                        <div>{{val.dptTime}}</div>
+                                        <div v-if="val.dptTimeresources == '0'">{{val.dptTime||'-'}}</div>
+                                        <div v-else>{{val.dptTimeresourcesStr||'-'}}</div>
                                     </div>
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
@@ -103,11 +110,12 @@
                                     <div v-else>经停区域</div>
                                     <div>
                                         <div>{{val.pstNm||'-'}}</div>
-                                         <div>{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
+                                         <div v-if="val.pstState =='0' ">{{val.pstAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.pstState =='0' ">
                                         <div>出港资源</div>
-                                        <div>{{val.pstTime}}</div>
+                                        <div v-if="val.pstTimeresources == '0'">{{val.pstTime||'-'}}</div>
+                                        <div v-else>{{val.pstTimeresourcesStr||'-'}}</div>
                                     </div>
                                 </div>
                                 <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
@@ -116,54 +124,55 @@
                                     <div v-else>到达区域</div>
                                     <div>
                                         <div>{{val.arrvNm||'-'}}</div>
-                                        <div>{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                                        <div v-if="val.arrvState =='0' ">{{val.arrvAcceptnearairportStr||'-'}}临近机场</div>
                                     </div>
-                                    <div class="resouse">
+                                    <div class="resouse" v-if="val.arrvState =='0' ">
                                         <div>出港资源</div>
-                                        <div>{{val.arrvTime}}</div>
+                                        <div v-if="val.arrvTimeresources == '0'">{{val.arrvTime||'-'}}</div>
+                                        <div v-else>{{val.arrvTimeresourcesStr||'-'}}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="table-form">
                                 <div>
                                     <div>联系人</div>
-                                    <div>{{val.contact}}</div>
+                                    <div>{{val.contact||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>联系方式</div>
-                                    <div>{{val.ihome}}</div>
+                                    <div>{{val.ihome||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>拟开时间</div>
-                                    <div>{{val.sailingtime}}</div>
+                                    <div>{{val.sailingtime||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>拟开班期</div>
-                                    <div>{{val.days}}</div>
+                                    <div>{{val.days||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>拟开机型</div>
-                                    <div>{{val.aircrfttyp}}</div>
+                                    <div>{{val.aircrfttyp||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>座位数</div>
-                                    <div>{{val.seating}}</div>
+                                    <div>{{val.seating||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>客量预期</div>
-                                    <div>{{val.avgguestexpect}}人</div>
+                                    <div>{{val.avgguestexpect||'-'}}人</div>
                                 </div>
                                 <div>
                                     <div>客座率预期</div>
-                                    <div>{{val.loadfactorsexpect}}%</div>
+                                    <div>{{val.loadfactorsexpect||'-'}}%</div>
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{val.subsidypolicyStr||'-'}}</div>
+                                    <div>{{turnPolicyCode(val.subsidypolicy)||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
-                                    <div>{{val.hourscost}}万元/小时</div>
+                                    <div>{{val.hourscost||'-'}}万元/小时</div>
                                 </div>
                                 <div>
                                     <div>运力归属</div>
@@ -179,32 +188,41 @@
                                 </div>
                                 <div class="tips">
                                     <div>其他说明</div>
-                                    <div>{{val.remark}}</div>
+                                    <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
-                            <div class="btns" v-if="val.releaseselected == '0' ">
-                                <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
-                                <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                            <div v-if="selectBtnShow" v-show="isSelf">
+                                <div class="btns" v-if="val.releaseselected == '0' ">
+                                    <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
+                                    <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                                </div>
+                                <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
+                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
-                            <div class="sure-btn" @click="toSelect(val)" v-else>选定</div>
                         </div>
                     </div>
                 </div>
             </div>
-
             </div>
-            <footer>
+            <div class="foot" v-show="footShow" v-if="isSelf">
                 <div class="btn">
-                    <!-- <div class="col-btn" @click="closeNeed">结束需求</div> -->
-                     <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                    <div class="col-btn" @click="collect" v-if="isCollect">收藏</div>
-                    <div class="col-btn"  v-else>已收藏</div>
+                    <div class="col-btn" @click="closeNeed">结束需求</div>
+                </div>
+            </div>
+            <footer v-else>
+                <div class="btn" >
+                    <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn" :class="{active: !inventBtnShow}"  @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm" :response = "selectData"></myIntentForm>
-        <sureForm v-show="sureFormShow" @closeForm="closeSureForm" :planData = "editData"></sureForm>
-         <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
+        <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
+        <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
+        <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
+        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+        <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
     </div>
 </template>
 
@@ -212,25 +230,38 @@
   import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
-  import myIntentForm from './myIntentForm1.vue'
-  import sureForm from './sureForm.vue'
-  import  signDialog from './signDialog.vue'
+  import myIntentForm from './myIntentForm.vue'
+  import sureForm from './sureForm1.vue'
+  import dataForm from './dataForm.vue'
+  import intentForm from './intentForm.vue'
+  import transDialog from './transDialog.vue'
+  import paySuccess  from './paySuccess.vue'
+
  export default {
      data(){
          return{
              showDetailIndex:'',
              intentListShow:false,
-             selIndex:'',
              myFormShow:false,
              sureFormShow:false,
-             dialogShow:false,
+             dataFormShow:false,
+             selected:false,
+             intentFormShow:false,
+             dialog:false,
+             payDialog:false,
+             inventBtnShow:false,
+             text:'已收藏',
+             isCollect:false,
              detailData:{},
              planData:{},
-             selectData:{},
              editData:{},
-             intentionCount:0,
+             selectData:{},
              demandId:'',
-             isCollect:true
+             intentionCount:0,
+             rePublish:false,
+             footShow:true,
+             selectBtnShow:true,
+             isSelf:false
          }
      },
      methods:{
@@ -250,14 +281,154 @@
          closeAdmin:function(){
             this.$emit('closeAdmin');
          },
-         toSelect:function(val,index){
-            this.selIndex = index;
+         toSelect:function(val){
             this.myFormShow = true;
             this.selectData = val;
          },
-         toEdit:function(val){
+         toEdit:function(val,index){
             this.editData = val;
             this.sureFormShow = true;
+         },
+         closeNeed:function(){
+               this.$ajax({
+                method: 'post',
+                url: '/closeDemandById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.detailData.id
+                }
+                })
+                .then((response) => {
+                    if(response.data.opResult == "0"){
+                    //alert("取消需求成功!")
+                     this.$emit('closeIntent');
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+         },
+         cancelSel:function(val){
+              this.selectData = val;
+              this.selectData.releaseselected = '1';
+              this.$ajax({
+                    method: 'post',
+                    url: '/selectedResponse',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                      params:this.selectData
+                    })
+                    .then((response) => {
+                         if(response.data.opResult == "0"){
+                          //alert("撤销选定成功!")
+                          this.selected = false;
+                         }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
+
+         },
+         closeMyForm:function(){
+              this.myFormShow = false;
+         },
+          surePlan:function(){
+              this.myFormShow = false;
+              this.selected = true;
+         },
+          closeSureForm:function(){
+              this.sureFormShow = false;
+         },
+         closeDataForm:function(){
+            this.dataFormShow = false;
+         },
+         toDeal:function(){
+            this.dialogShow =true;
+         },
+         toPublish:function(){
+            this.dataFormShow = true;
+         },
+         turnPolicyCode:function(val){
+            switch (val) {
+                case "0":
+                    return "定补";
+                    break;
+                case "1":
+                    return "保底";
+                    break;
+                case "2":
+                    return "人头补";
+                    break;
+                case "3":
+                    return "待议";
+                    break;
+                case "4":
+                    return "无补贴";
+                    break;
+            }
+        },
+         haveInvent:function(){
+            this.intentFormShow = true;
+         },
+         cancelCollect:function(){
+            this.$ajax({
+                method: 'post',
+                url: '/delCollectByDemandId',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.demandId
+                  }
+                })
+                .then((response) => {
+                     if(response.data.opResult == "0"){
+                      this.isCollect = false;
+                  }else{
+                      this.$emit('closeAdmin');
+                      this.$message({
+                          message: '数据错误，请稍后再试!',
+                          type: 'warning',
+                          duration:2000
+                      });
+                  }
+                })
+                .catch((error) => {
+                         console.log(error);
+                    }
+                );
+         },
+         changeText:function(i){
+          if(i == '1'){
+            this.text = "取消收藏";
+          }else{
+            this.text = "已收藏";
+          }
+         },
+         closeAdmin:function(){
+            this.$emit('closeAdmin');
+         },
+         closeForm:function(){
+            this.intentFormShow = false;
+         },
+         closeDialog:function(){
+            this.dialog = false;
+         },
+         sureDialog:function(){
+            this.intentFormShow = false;
+            this.payDialog = true;
+         },
+         closePaySuccess:function(){
+            this.payDialog = false;
+            this.$emit('closeAdmin');
+        },
+         haveInvent:function(){
+            this.intentFormShow = true;
          },
          collect:function(){
              this.$ajax({
@@ -272,7 +443,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                      this.isCollect = false;
+                      this.isCollect = true;
                   }
                 })
                 .catch((error) => {
@@ -280,74 +451,20 @@
                     }
                 );
          },
-         haveInvent:function(){
-             this.$emit("formShow");
-         },
-        /* closeNeed:function(){
-               this.$ajax({
-                method: 'post',
-                url: '/closeDemandById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    id:this.detailData.id,
-                }
-                })
-                .then((response) => {
-                    if(response.data.opResult == "0"){
-                    alert("取消需求成功!")
-                     this.$emit('closeIntent');
-                  }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-         },*/
-         cancelSel:function(val){
-              this.selectData = val;
-              this.selectData.releaseselected = '1';
-              this.$ajax({
-                    method: 'post',
-                    url: '/selectedResponse',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                      params:this.selectData
-                    })
-                    .then((response) => {
-                         if(response.data.opResult == "0"){
-                           this.selIndex = " ";
-                          //alert("撤销选定成功!")
-                         }
-                    })
-                    .catch((error) => {
-                            console.log(error);
-                        }
-                    );
 
-         },
-          closeSureForm:function(){
-              this.sureFormShow = false;
-         },
-         closeMyForm:function(){
-              this.myFormShow = false;
-         },
-         toDeal:function(){
-            this.dialogShow =true;
-         }
 
      },
-
       computed: {
             ...vx.mapGetters([
                 'role'
             ])
         },
+      watch: {
+
+      },
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            this.demandId = val.data.id;
+                this.demandId = val.data.id;
             //console.log("demandtype"+val.data.demandtype);
             if(val.data.demandtype == 1 && this.role.role == 2){
                 this.$ajax({
@@ -357,43 +474,66 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: this.demandId
+                    demandId: val.data.id
                 }
                 })
                 .then((response) => {
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                     this.planData = response.data.responseList;
+                    //判断状态
+                    let progress = this.detailData.demandprogress;
+                    if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
+                      this.rePublish == true;
+                      this.footShow  = false;
+                      this.selectBtnShow = false;
+                    }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
+                      this.footShow  = false;
+                      this.selectBtnShow = false;
+                    }else if(progress == '0'||progress == '1'){//需求发布、意向征集
+                        this.inventBtnShow = true;
+                    }
+
                     //有意向方显示列表信息
                     if(this.planData){
                       this.intentListShow = true;
                     }
+                    //是否有选定
+                    if(this.planData !== {}){
+                      let len = this.planData.length;
+                      this.selected = false;
+                      for(let i =0;i<len;i++){
+                          if(this.planData[i].releaseselected == '0'){
+                            this.selected = true;
+                          }
+                      }
+                    }
+                    //是否太美发布
+                    this.isSelf = response.data.isSelf;
                     //是否收藏
                      if(response.data.isAlreadyCollect == true){
-                        this.isCollect = false;
+                        this.isCollect = true;
                     }else if(response.data.isAlreadyCollect == false){
-                       this.isCollect = true;
+                        this.isCollect = false;
                     }
-
-                        if(response.data.opResult == "0"){
-                           this.$emit("openAdmin");
-                         }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+             this.$emit("openAdmin");
             };
         });
 
-          tabulationBoxTrigger.$on('getTable',val=>{
-              this.selShow = false;
-            });
+
      },
      components: {
             myIntentForm,
-            signDialog,
-            sureForm
+            sureForm,
+            dataForm,
+            intentForm,
+            transDialog,
+            paySuccess
         }
 }
 </script>
@@ -416,16 +556,25 @@
             height:141px;
             background-color:rgba(216,216,216,.2);
         }
-        footer{
+        .foot{
           position:fixed;
           bottom:0;
           right:0;
           width:600px;
           background-color:#fff;
+          height:140px;
+        }
+         footer{
+          position:fixed;
+          bottom:0;
+          right:0;
+          width:600px;
           height:100px;
+          background-color:#fff;
         }
     }
     header{
+        position:relative;
         .top-til{
           justify-content: space-between;
           display: flex;
@@ -466,7 +615,21 @@
             margin-right:30px;
           }
         }
+        .rep-btn{
+            position:absolute;
+            right:15px;
+            top:60px;
+            width:100px;
+            height:20px;
+            line-height:20px;
+            color:#ffffff;
+            text-align:center;
+            background-color:#3c78ff;
+            border-radius:100px;
+            cursor:pointer;
+        }
     }
+
     .table-form{
       width:100%;
       box-sizing:border-box;
@@ -667,25 +830,56 @@
                 }
                 .detail{
                     width:60px;
-                    margin-left:210px;
+                    margin-left:175px;
                     color:#3C78FF;
                     cursor:pointer;
                 }
             }
 
         }
-     footer{
-      border-top: 1px solid #ccc;
-        >div:nth-of-type(1){
-              margin: 0 20px;
-              padding-left:20px;
-              height:40px;
-              color:rgba(96, 94, 124, 0.7);
-              box-sizing:border-box;
+    .foot{
+        border-top: 1px solid #ccc;
+        position:relative;
+          .foot-tips{
+            color:red;
+            position:absolute;
+            top:-30px;
+            left:40px;
           }
           .btn{
               height:40px;
-              padding-top:50px;
+              margin-top:28px;
+              >div{
+                  height:40px;
+                  line-height:40px;
+                  font-size:1.5rem;
+                  color:#605E7C;
+                  background-color:#fff;
+                  text-align:center;
+                  border-radius:100px;
+                  cursor:pointer;
+                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+              }
+               .col-btn{
+                  width:250px;
+                  &:hover{
+                    color:#fff;
+                    background-color: #3C78FF;
+                  }
+                }
+              .deal-btn{
+                  width:180px;
+                    color:#fff;
+                    background-color: #3C78FF;
+                    margin-right:10px;
+              }
+          }
+    }
+     footer{
+          border-top: 1px solid #ccc;
+          .btn{
+              height:40px;
+              margin:30px 0;
               >.intent-btn{
                   width:230px;
                   height:40px;
@@ -714,6 +908,18 @@
                   border-radius:100px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  &:hover{
+                      color:#fff;
+                      background-color:#3c78ff;
+                  }
+              }
+              >.cancel{
+                  color:#fff;
+                  background-color:#3c78ff;
+
+              }
+              >.active{
+                width:180px;
               }
           }
     }

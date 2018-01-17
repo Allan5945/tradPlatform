@@ -10,7 +10,7 @@
                             <span class="icon-item icon-down" :class="{active:!sorted}">&#xe605;</span>
                         </div>
                     </div>
-                    <div class="list-b item" @click="typeShowFn">
+                    <div class="list-b item" @click="typeShowFn" style="cursor:pointer;">
                         {{typeWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <ul class="type-list" v-show="typeShow">
@@ -21,7 +21,7 @@
                     <div class="list-c item">
                         发布标题
                     </div>
-                    <div class="list-d item" @click="stateShowFn">
+                    <div class="list-d item" @click="stateShowFn" style="cursor:pointer;">
                         {{stateWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
@@ -94,10 +94,10 @@
                 type: [],
                 type1:['航线委托'],
                 type2:['运力委托'],
-                type3:['航线委托','运力委托','托管'],
+                type3:['需求类型','航线委托','运力委托','托管'],
                 state: [],
-                state1: ['待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['待处理','处理中','需求发布','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                state1: ['状态','待处理','测评中','已接受','已拒绝','已关闭'],
+                state2: ['状态','待处理','处理中','需求发布','意向征集','订单确认','订单完成','佣金支付','已拒绝','已完成','已关闭'],
                 myList:null,
                 demandId:null,
                 totalCount:'',
@@ -166,6 +166,9 @@
                 }else if(item == '托管') {
                     this.state = this.state1;
                     this.sentData.demandType = "2";
+                }else if(item == '需求类型') {
+                    this.state = this.state2;
+                    this.sentData.demandType = null;
                 }
             },
             stateClickFn: function (item) {
@@ -209,7 +212,7 @@
                             return "需求发布";
                             break;
                         case "1":
-                            return "需求征集";
+                            return "意向征集";
                             break;
                         case "2":
                             return "订单确认";
@@ -219,6 +222,9 @@
                             break;
                         case "4":
                             return "订单完成";
+                            break;
+                        case "5":
+                            return "佣金支付";
                             break;
                         case "6":
                             return "已完成";
@@ -239,10 +245,13 @@
             },
             turnProgress:function(val){
                  switch (val) {
+                        case "状态":
+                            return null;
+                            break;
                         case "需求发布":
                             return "0";
                             break;
-                        case "需求征集":
+                        case "意向征集":
                             return "1";
                             break;
                         case "订单确认":
@@ -253,6 +262,9 @@
                             break;
                         case "订单完成":
                             return "4";
+                            break;
+                        case "佣金支付":
+                            return "5";
                             break;
                         case "已完成":
                             return "6";

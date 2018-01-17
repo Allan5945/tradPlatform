@@ -71,7 +71,7 @@
             });
         },
         beforeDestroy() {
-          this.tabulationBoxTrigger.$off('moreNews', this.handleMyEvent)
+          /*this.tabulationBoxTrigger.$off('moreNews', this.handleMyEvent)*/
         },
         computed: {
             ...vx.mapGetters([

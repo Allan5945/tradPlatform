@@ -10,7 +10,7 @@
                             <span class="icon-item icon-down" :class="{active:!sorted}">&#xe605;</span>
                         </div>
                     </div>
-                    <div class="list-b item" @click="typeShowFn">
+                    <div class="list-b item" @click="typeShowFn" style="cursor:pointer;">
                         {{typeWriting}}
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <ul class="type-list" v-show="typeShow">
@@ -20,7 +20,7 @@
                     <div class="list-c item">
                         发布标题
                     </div>
-                    <div class="list-d item" @click="stateShowFn">
+                    <div class="list-d item" @click="stateShowFn" style="cursor:pointer;">
                         <span>{{stateWriting}}</span>
                         <div class="triangle-little" style="margin-left: 10px"></div>
                         <stateList :state="state" v-show="stateShow" @stateClick="stateClickFn"></stateList>
@@ -93,8 +93,8 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['运力投放','航线需求'],
-                state: ['需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
+                type: ['需求类型','运力投放','航线需求'],
+                state: ['状态','需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
                 collectList:null,
                 needData:null,
                 numPrePage:1,
@@ -140,6 +140,8 @@
                     this.sentData.demandType = "0";
                 }else if(item == '运力投放') {
                     this.sentData.demandType = "1";
+                }else if(item == '需求类型') {
+                    this.sentData.demandType = null;
                 }
             },
             stateClickFn: function (item) {
@@ -194,6 +196,9 @@
             },
             turnProgress:function(val){
                     switch (val) {
+                        case "状态":
+                            return null;
+                            break;
                         case "需求发布":
                             return "0";
                             break;
