@@ -313,14 +313,12 @@
                 return point;
             },
         },
-        beforeMounted() {
+        mounted(){
             this.airportText = this.searchInfo.searchText;
             this.qyCode = this.searchInfo.qyCode;
              if(this.qyCode == ''){
                 this.showDetail=false;
             }
-        },
-        mounted(){
             this.getData();
             this.getClock(this.inputData,this.qyCode);
 

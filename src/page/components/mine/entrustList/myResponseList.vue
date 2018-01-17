@@ -1,76 +1,11 @@
 <template>
-    <div>
-        <div class="plan-wrapper scroll">
-            <header>
-                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
-                <div class="note">
-                    <span>创建于{{detailData.releasetime||'-'}}</span>
-                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
-                </div>
-                <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
-            </header>
-            <div class="content">
-                <div class="table-form">
-                    <div>
-                        <div>机型</div>
-                        <div>{{detailData.aircrfttyp||'-'}}</div>
-                    </div>
-                     <div>
-                        <div>座位布局</div>
-                        <div>{{detailData.seating||'-'}}</div>
-                    </div>
-                     <div>
-                        <div>运力归属</div>
-                        <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
-                    </div>
-                    <div>
-                        <div>运力基地</div>
-                        <div>{{detailData.dptNm||'-'}}</div>
-                    </div>
-                    <div>
-                        <div>出港时刻</div>
-                        <div>{{detailData.dptTime||'-'}}</div>
-                    </div>
-                    <div>
-                        <div>班期</div>
-                        <div>{{detailData.days||'-'}}</div>
-                    </div>
-                    <div class="intent-airline" v-if="detailData.intendedAirlines">
-                       <div>意向航线</div>
-                       <div class="i-line">
-                         {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
-                         {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
-                         {{detailData.intendedAirlines[0].arrvName||'-'}}
-                       </div>
-                   </div>
-                   <div class="intent-airline" v-else>
-                       <div>意向航线</div>
-                       <div class="i-line">-</div>
-                   </div>
-                    <div>
-                        <div>小时成本</div>
-                        <div>{{detailData.hourscost||'-'}}万/小时</div>
-                    </div>
-                    <div style="margin:0 0 0 40px;">
-                        <div>接受调度</div>
-                        <div>{{detailData.schedulingStr||'-'}}</div>
-                    </div>
-                    <div>
-                        <div>有效期</div>
-                        <div>{{detailData.periodValidity||'-'}}</div>
-                    </div>
-                     <div class="tips">
-                        <div>其他说明</div>
-                        <div>{{detailData.remark||'-'}}</div>
-                     </div>
-                </div>
-            <div class="intent">
+    <div class="my-response-list">
+         <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
-                    <div>已有<span>{{this.intentionCount||'0' }}</span>位用户发起意向</div>
+                    <div>已有<span>{{intentionCount||'0' }}</span>位用户发起意向</div>
                 </div>
-                <div class="intent-form" v-if="this.isSign">
+                <div class="intent-form">
                     <div>
                         <div>收到时间
                           <span class="iconfont icon-up active">&#xe605;</span>
@@ -78,7 +13,7 @@
                         </div>
                         <div>意向方</div>
                     </div>
-                    <div class="intent-box" v-for=" (val,index) in planData" v-if="intentListShow">
+                    <div class="intent-box" v-for=" (val,index) in responseData" >
                          <div class="intent-item">
                             <div class="time">{{val.responsedate||'-'}}</div>
                             <div class="person">
@@ -203,53 +138,36 @@
                     </div>
                 </div>
             </div>
-            </div>
-            <footer v-show="footShow">
-                <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
-                <div class="btn">
-                    <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
-                    <div class="col-btn" @click="closeNeed">结束需求</div>
-                </div>
-            </footer>
-        </div>
-        <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
+             <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
-        <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
-         <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
-
 <script>
-  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-  import ln from '$src/public/js/tabulationBoxTrigger'
+  import ln from './../../../../public/js/tabulationBoxTrigger';
   import * as vx from 'vuex'
-  import myIntentForm from './myIntentForm.vue'
-  import sureForm from './sureForm1.vue'
-  import dataForm from './dataForm.vue'
-  import  signDialog from './signDialog.vue'
- export default {
-     data(){
-         return{
-             showDetailIndex:'',
-             intentListShow:false,
-             myFormShow:false,
-             sureFormShow:false,
-             dataFormShow:false,
-             dialogShow:false,
-             selected:false,
-             detailData:{},
-             planData:{},
-             editData:{},
-             selectData:{},
-             intentionCount:0,
-             isSign:false,
-             rePublish:false,
-             footShow:true,
-             selectBtnShow:true
-         }
-     },
-     methods:{
-         chat:function (v) {
+
+    export default {
+        data () {
+            return{
+                 showDetailIndex:'',
+                 myFormShow:false,
+                 sureFormShow:false,
+                 dataFormShow:false,
+                 dialogShow:false,
+                 selected:false,
+                 editData:{},
+                 selectData:{},
+                 selectBtnShow:false
+            }
+        },
+        props:['responseData','intentionCount','detailData'],
+        computed:{
+         ...vx.mapGetters([
+                'role'
+            ])
+        },
+        methods:{
+             chat:function (v) {
               let chatData = {};
               chatData.id = this.detailData.id;
               chatData.employeeId = this.detailData.employeeId;
@@ -358,79 +276,8 @@
         }
 
 
-
-     },
-      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },
-      watch: {
-
-      },
-      mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-
-            //console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && this.role.role == 0){
-                this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: val.data.id
-                }
-                })
-                .then((response) => {
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
-                    this.planData = response.data.responseList;
-                    //判断状态
-                    let progress = this.detailData.demandprogress;
-                    if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
-                      this.rePublish == true;
-                      this.footShow  = false;
-                      this.selectBtnShow = false;
-                    }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
-                      this.footShow  = false;
-                      this.selectBtnShow = false;
-                    }
-                    //有意向方显示列表信息
-                    if(this.planData){
-                      this.intentListShow = true;
-                    }
-                    //是否有选定
-                    if(this.planData !== {}){
-                      let len = this.planData.length;
-                      this.selected = false;
-                      for(let i =0;i<len;i++){
-                          if(this.planData[i].releaseselected == '0'){
-                            this.selected = true;
-                          }
-                      }
-                    }
-                    //判断是否签约用户
-                    this.isSign = response.data.isSign;
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-             this.$emit("openIntent");
-            };
-        });
-
-
-     },
-     components: {
-            myIntentForm,
-            signDialog,
-            sureForm,
-            dataForm
         }
-}
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -763,3 +610,6 @@
           }
     }
 </style>
+
+
+
