@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
+        <div class="container-top">
+            <span class="title">请填写完整方案</span>
+            <span class="close-icon" @click="closeThis">&times;</span>
+        </div>
         <div class="container" id="airlineReq" @click="closeAll">
-            <div class="container-top">
-                <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
-            </div>
             <div class="bg-color must">
                 <div class="right item-child">
                     <div style="display: flex;">
@@ -489,6 +489,7 @@
                 getEnterMsg: {}, //当前登录机场信息
                 moreShow: false, // 定向发布长度是否超出显示范围
                 littleListWrapperShow: false, // 多条显示
+                submitData2Click: false,  // “委托代理”按钮是否已经被点击
             }
         },
         components: {
@@ -620,7 +621,7 @@
                 }
 
             },
-            // 委托发布
+            //发送数据
             submitData2: function () {
                 this.sendStateMsgFn();
                 let req = document.getElementById('airlineReq'); //控制滚动条的位置
@@ -633,27 +634,13 @@
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
-                }/*if(this.firArea == '') {
-                    this.warn3Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate1 == '选择起止时间') {
-                    this.warn6Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.scheduleShow == '选择班期类型') {
-                    this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') {
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') {
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
-                    return
-                }*/
+                }if(this.myDate1 == '选择起止时间') { // 拟开时间
+                    this.myDate1 = '';
+                }if(this.scheduleShow == '选择班期类型') { //班期
+                    this.scheduleShow = '';
+                }if(this.myDate2 == '选择起止时间') { // 发布有效期
+                    this.myDate2 = '';
+                }
                 this.sendDataFn();
                 this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                 this.$ajax({
@@ -1533,7 +1520,7 @@
         }
     }
     .container {
-       /* position: absolute;
+        /*position: absolute;
         top: 65px;
         right: 0px;*/
         padding: 20px 20px 0 20px;

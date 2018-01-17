@@ -616,98 +616,6 @@
 
             },
             //发送数据
-            submitData: function () {
-                this.sendStateMsgFn();
-                let req = document.getElementById('airlineReq'); //控制滚动条的位置
-                //联系人/联系方式/始发地/区域/运力所在基地/机型/班期/拟开航时间/需求有效时间/接受邻近机场/公开方式/
-                //表单验证（部分）
-                if(this.user == '') { // 联系人
-                    this.warn1Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.phoneNum == '' || this.warn2Show == true) { // 联系方式
-                    this.warn2Show = true;
-                    req.scrollTop = 0;
-                    return
-                }/*if(this.firArea == '') { // 始发地
-                    this.warn3Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
-                    if((this.pstState == 0 && this.sendData.pst != '')
-                        || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
-                        this.warn8Show = false;
-                    }else{
-                        this.warn8Show = true;
-                        req.scrollTop = 0;
-                        return
-                    }
-                }if(this.sendData.pst != '' || this.sendData.arrv != '') { //始发、经停、到达不能相同
-                    if(this.sendData.dpt == this.sendData.pst
-                        || this.sendData.dpt == this.sendData.arrv
-                        || this.sendData.pst == this.sendData.arrv) {
-                        this.warn9Show = true;
-                        req.scrollTop = 0;
-                        return
-                    }else {
-                        this.warn9Show = false;
-                    }
-                }
-                if(this.myDate1 == '选择起止时间') { // 拟开时间
-                    this.warn6Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.scheduleShow == '选择班期类型') { //班期
-                    this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') { // 机型
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') { // 发布有效期
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
-                    return
-                }*/
-                this.sendDataFn();
-                this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
-
-//                console.info(this.sendData);
-                this.$ajax({
-                    url:"/demandAdd",
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: this.sendData
-                }) .then((response) => {
-                    if(response.data.opResult === '0'){
-//                        alert('成功发布！')
-                        this.open6(`成功发布！`);
-                        this.$emit("closeForm");
-                    }else{
-//                        alert('错误代码：' + response.data.opResult)
-                        this.open8(`错误代码：${response.data.opResult}`);
-                    }
-                }) .catch((error) => {
-                    console.log(error);
-                });
-            },
-            // 委托发布
-            submitData2ClickFn: function () { // 点击“委托发布”
-                this.submitData2Click = true; // “委托发布”按钮是否已经点击，false：还未点击，true：已点击
-                this.warn3Show = false;
-                this.warn4Show = false;
-                this.warn5Show = false;
-                this.warn6Show = false;
-                this.warn7Show = false;
-                this.$emit('changeTitle');
-            },
-            closeSubmitData2: function () { // 点“委托发布”后的“取消”按钮
-                this.submitData2Click = false;
-                this.$emit('restoreTitle');
-            },
             submitData2: function () {
                 this.sendStateMsgFn();
                 let req = document.getElementById('airlineReq'); //控制滚动条的位置
@@ -720,27 +628,13 @@
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
-                }/*if(this.firArea == '') {
-                    this.warn3Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate1 == '选择起止时间') {
-                    this.warn6Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.scheduleShow == '选择班期类型') {
-                    this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') {
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') {
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
-                    return
-                }*/
+                }if(this.myDate1 == '选择起止时间') { // 拟开时间
+                    this.myDate1 = '';
+                }if(this.scheduleShow == '选择班期类型') { //班期
+                    this.scheduleShow = '';
+                }if(this.myDate2 == '选择起止时间') { // 发布有效期
+                    this.myDate2 = '';
+                }
                 this.sendDataFn();
                 this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                 this.$ajax({

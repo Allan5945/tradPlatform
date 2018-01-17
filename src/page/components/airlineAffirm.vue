@@ -23,8 +23,8 @@
                     <div class="warn" v-show="warn2Show">*电话格式有误，请重新输入</div>
                 </div>
             </div>
-            <div class="choose" style="position: relative; padding-bottom: 20px;">
-                <div class="items bg-color">
+            <div class="choose">
+                <div class="items bg-color" style="position: relative; padding-bottom: 20px;">
                     <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
                     <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地、经停地、到达地不能相同！</div>
                     <div class="first">
@@ -523,7 +523,7 @@
                 spaceList: ['意向区域', '意向机场'],
                 scheduleList: ['待定', '满排', '半排'],
                 subsidyList: ['保底', '定补', '按人头'],
-                sendData: {},
+//                sendData: {},
                 responseId: '',
                 airCompany: '',//运力归属
                 hourConst: '',             //小时成本
@@ -551,16 +551,15 @@
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
-           /* sailingtime: function () {
-                return this.calendarInitDay1 + ',' + this.calendarInitDay2;
-            },*/
-            /*periodValidity: function () {
-                return this.calendarInitDay3 + '-' + this.calendarInitDay4;
-            }*/
+            sendData: function () {
+                let obj = {};
+                obj = JSON.parse(JSON.stringify(this.acceptData));
+                return obj;
+            }
         },
-        created() {
+        /*created() {
             this.sendData = this.acceptData;
-        },
+        },*/
         mounted() {
             this.space1Fn();
             this.space2Fn();
@@ -838,10 +837,6 @@
                 }if(this.typeChoose == '') { // 机型
                     this.warn4Show = true;
                     req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') { // 发布有效期
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
                     return
                 }if(this.airCompany == '') {
                     this.warn10Show = true;

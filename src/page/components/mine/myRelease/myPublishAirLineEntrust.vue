@@ -163,6 +163,7 @@
                             || this.myData.demandstate == 3
                             || this.myData.demandstate == 5
                             || this.myData.demandprogress == 3
+                            || this.myData.demandprogress == 6
                             || this.myData.demandprogress == 8
                             || this.myData.demandprogress == 10){
                             this.buttonShow = false;

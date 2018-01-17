@@ -577,17 +577,6 @@
                     type: 'error'
                 });
             },
-            /*// 数据初始化：获取当前登录机场信息
-            getEnterMsgFn: function () {
-                this.airList.forEach((val) => {
-                    if(val.code == this.role.airlineretrievalcondition) {
-                        this.getEnterMsg = val.allData;
-                    }
-                })
-                this.firArea = this.getEnterMsg.airlnCdName;
-                this.firAreaBus = this.getEnterMsg.airlnCdName;
-                this.qyCode1 = this.getEnterMsg.iata;
-            },*/
             // 从父组件接受数据,并绑定到表单上
             acceptDataFn: function () {
                 /*单选按钮是否选定*/
@@ -640,6 +629,7 @@
                     this.space1Fn(this.spaceList[1]);
                     if(this.acceptData.dptNm != null) {
                         this.firArea = this.acceptData.dptNm;
+                        this.firAreaBus = this.acceptData.dptNm;
                     }
                     this.qyCode1 = this.acceptData.dpt;
                     this.dptTimeresources = this.acceptData.dptTimeresources;
