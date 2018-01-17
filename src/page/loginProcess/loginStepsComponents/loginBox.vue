@@ -1,9 +1,9 @@
 <template>
     <div class="login-box">
-        <userInput :par="userArg" v-on:reqMes="userReqMes"></userInput>
-        <pasInput :par="pasArg" style="margin-top:30px;" v-on:reqMes="pasReqMes" v-on:entered="entered"></pasInput>
+        <userObj :arg="data2" v-on:resMes="resMes2"></userObj>
+        <userObj :arg="data3" v-on:resMes="resMes3" style="margin-top: 30px"></userObj>
         <div class="operation">
-            <el-checkbox v-model="checked">记住密码</el-checkbox>
+            <el-checkbox v-model="mes.checked">记住密码</el-checkbox>
             <button class="forget-pas" @click="openReg(1)">忘记密码?</button>
         </div>
          <div class="occupies-prompt"> 
@@ -20,38 +20,37 @@
 <script>
     import * as vx from 'vuex';
     import loginBtn from '../components/loginBtn.vue';
-    import validation from '../components/validation.vue';  
-    import inputControl from '../components/inputControl.vue';
+    import validation from '../components/validation.vue';
+    import inputControl from '../components/inputControlX.vue';
 
     
     export default { 
         data(){
             return {
-                userArg:{
-                    defaultText:"jichang",     // 默认的值
-                    inputType:true,   // 输入框类型，true、text。false、password
-                    isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
-                    isPrompt:false, // 是否密码显示功能 true、。false、
-                    isshowErr:false, // 是否错误抖动 true、抖动。false、不抖动
-                    tip:["请输入账号、手机号或者邮箱","账号"], // 1，输入框的placeholder值。2，显示值
-                    openJudge:[],                   // 输入正则判断              
-                    // openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/],                   // 输入正则判断              
+                data2: {
+                    inputeType: "text", // 输入框的类型
+                    inputMes: "",     // 输入框的值
+                    showText: false,  // 是否显示密码
+                    showErrInput: false, // 是否显示框错误
+                    showSucInput: false, // 是否显示框正确
+                    placeholderTip: ["请输入账号、手机号或者邮箱","账号"],
+                    validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
                 },
-                pasArg:{
-                    defaultText:"1",     // 默认的值
-                    inputType:false,   // 输入框类型，true、text。false、password
-                    isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
-                    isPrompt:true, // 是否密码显示功能 true、。false、
-                    isshowErr:false, // 是否错误抖动 true、抖动。false、不抖动
-                    tip:["请输入登录密码","密码"], // 1，输入框的placeholder值。2，显示值
-                    openJudge:[],               
+                data3: {
+                    inputeType: "password", // 输入框的类型
+                    inputMes: "",     // 输入框的值
+                    showText: true,  // 是否显示密码
+                    showErrInput: false, // 是否显示框错误
+                    showSucInput: false, // 是否显示框正确
+                    placeholderTip: ["请输入登录密码","密码"],
+                    validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
                 },
-                checked: true,
                 loginTime:0,
                 showE:false,
                 mes:{
                     p:"1",
-                    u:"jichang"
+                    u:"jichang",
+                    checked:false
                 },
                 lodings:false,   // true 正在加载，false  
             }
@@ -60,16 +59,16 @@
         created:function(){
             let mes = JSON.parse(localStorage.getItem('remember'));
             if(mes != null){
-                this.userArg.defaultText = mes.u;
-                this.pasArg.defaultText = mes.p;
+                this.data2.inputMes = mes.u;
+                this.data3.inputMes = mes.p;
+                this.mes = mes;
             };
         },
         mounted:function(){
           
         },
         components:{
-            userInput:inputControl,
-            pasInput:inputControl,
+            userObj:inputControl,
             loginBtn,
             validation,
         },
@@ -93,7 +92,7 @@
                 .then((response) => {
                     this.lodings = false;
                     if(response.data.obj != undefined){
-                        if(this.checked){
+                        if(this.mes.checked){
                             localStorage.setItem("remember",JSON.stringify(this.mes))
                         }else{
                             localStorage.clear("remember");
@@ -121,14 +120,14 @@
             openReg(n){
                 this.$emit('openClass',n);
             },
-            userReqMes(mes){
-                this.mes.u = mes.n; 
-            },
-            pasReqMes(mes){
-                this.mes.p = mes.n;           
-            },
             validaon(){
                 setTimeout(()=>{this.loginTime = 0;},1000);
+            },
+            resMes2(data){
+                this.mes.u = data.i;
+            },
+            resMes3(data){
+                this.mes.p = data.i;
             }
         },
         computed:{

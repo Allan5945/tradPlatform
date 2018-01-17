@@ -1,260 +1,235 @@
 <template>
-    <div class="registered-box">
-        <div v-if="!newPas">
-            <!--<inputControx :arg="test" v-on:resMes="resMes"></inputControx>-->
-            <userInput :par="userArg" v-on:reqMes="reqEmail"></userInput>
-            <div class="occupies-prompt">
-                <validation v-if="validationTag" v-on:validation="validaon"></validation>
-                <verificationCode :mes="emailOrPhone" v-on:setCode="setCode" :verCode.sync="verCode" v-if="verCode" style="margin-top:30px;"></verificationCode>
-                <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
-            </div>
+    <div class="back-pas-box">
+        <userObj :arg="data1" v-on:resMes="resMes1" v-if="!newPas"></userObj>
+        <validation v-on:validation="validaon" v-if="validationTag" style="width: 290px; margin-top: 30px"></validation>
+        <verificationCode :mes="collect.tel" v-on:setCode="setCode" :verCode.sync="verCode" v-if="verCode"
+                          style="margin-top:30px;width: 290px"></verificationCode>
+        <userObj :arg="data2" v-on:resMes="resMes2" v-if="newPas"></userObj>
+        <userObj :arg="data3" v-on:resMes="resMes3" v-if="newpas.pas1 != ''" style="margin-top: 30px"></userObj>
+        <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip" style="bottom: 90px;left:20px;"></errTip>
+        <div class="step-btn">
+            <div v-if="!newPas" :class="{'btn-b':process ,'step-btn-dis':!process}" class="btn" @click="validCodefun">确认</div>
+            <div v-if="newPas" :class="{'btn-b':reeq ,'step-btn-dis':!reeq}" class="btn" @click="updateEmployee">确认</div>
+            <div class="btn btn-w" @click="openReg">返回登录</div>
         </div>
-        <div class="set-newpas" v-if="newPas">
-            <userInput :par="newPas0" v-on:reqMes="reqnewPas0" :errs="errs0"></userInput>
-            <userInput :par="newPas1" v-on:reqMes="reqnewPas1" style="margin-top:32px;" v-if="determine" :errs="errs1" :mandatoryJudge="mandatoryJudge1"></userInput>
-            <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
-        </div>
-         <div class="step-btn">
-             <div v-if="!newPas" :class="{'btn-b':process ,'step-btn-dis':!process}" class="btn" @click="bgyanz">确认</div>
-             <div v-if="newPas" :class="{'btn-b':reeq ,'step-btn-dis':!reeq}" class="btn" @click="changePas">确认</div>
-             <div class="btn btn-w" @click="openReg">返回登录</div>
-         </div>
-         <div class="lxkf">联系客户：0000-0000000</div>
+        <div class="lxkf">联系客户：0000-0000000</div>
     </div>
 </template>
 <script>
-import userInput from '../components/userInputClass1.vue';
-import validation from '../components/validation.vue'; 
-import verificationCode from '../components/verificationCode.vue'; 
-import inputControl from '../components/inputControl.vue'; 
-//import inputControx from '../components/inputControlX.vue';
-import errTip from '../components/errTip.vue'; 
- 
-export default {
-    data(){
-        return{
-            test:{
-                inputeType:"text", // 输入框的类型
-                inputMes:"",     // 输入框的值
-                showText:false,  // 是否显示密码
-                showErrInput:false, // 是否显示框错误
-                showSucInput:false, // 是否显示框正确
-                placeholderTip:['1','2'],
-                validation:0,   // number,1、账号/邮箱，2、密码，3、..自己扩展
-            },
-            id:"",
-            userArg:{
-                defaultText:"",     // 默认的值
-                inputType:true,   // 输入框类型，true、text。false、password
-                isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
-                isPrompt:false, // 是否密码显示功能 true、。false、
-                isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
-                tip:["请输入账号绑定的邮箱或手机号","请输入账号绑定的邮箱或手机号"], // 1，输入框的placeholder值。2，显示值
-                openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/],  // 输入正则判断              
-            },
-            showtip:false,
-            codeYz:'',          // 验证码
-            tiperr:"",
-            verCode:false,       // 是否显示短信/邮箱验证
-            emailOrPhone:"",      // 输入的具体邮箱或者手机值
-            validationTag:false,  // 滑动验证
-            //      新密码
-            newPas:false,     // 是否填写新密码
-            newp0:"",
-            errs0:false,   // 强行让输入框报错
-            newPas0:{
-                defaultText:"",     // 默认的值
-                inputType:false,   // 输入框类型，true、text。false、password
-                isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
-                isPrompt:false, // 是否密码显示功能 true、。false、
-                isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
-                tip:["填写新密码","新密码"], // 1，输入框的placeholder值。2，显示值
-                openJudge:[],  // 输入正则判断       、
-                class0:true,   // 定制判断，用于判断密码格式 (普通输入框不用带)     
-            },
-            newp1:"",
-            mandatoryJudge1:false,  // 强制正确
-            errs1:false,         // 强行让输入框报错
-             newPas1:{
-                defaultText:"",     // 默认的值
-                inputType:false,   // 输入框类型，true、text。false、password
-                isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
-                isPrompt:false, // 是否密码显示功能 true、。false、
-                isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
-                tip:["确认新密码","新密码"], // 1，输入框的placeholder值。2，显示值
-                openJudge:[],  // 输入正则判断       、
-                class0:true,   // 定制判断，用于判断密码格式 (普通输入框不用带)     
-            },
-            setTime:"",    // 移出事件延迟
-        }
-    },
-    peops:['loginErr'],
-    watch:{
-        emailOrPhone(){
-            if(this.emailOrPhone != ""){
-                this.validationTag = true;
-                this.verCode = false;
-            }else{
-                this.validationTag = false;
-            }
-        }
-    },
-    methods:{
-        resMes(data){
-            console.log(data)
-        },
-        bgyanz(){
-            // 验证验证码
-            // this.newPas =
-        },
-        reqEmail(data){  // 获取传递的值
-            if(data.i){
-                this.verCode = false;
-                this.validationTag = false;
-                this.codeYz = "";
-                return;
-            };
-            if(data.n != ''){
-                this.emailOrPhone = data.n;
-            }else{
-                this.emailOrPhone = "";
-                 this.tip(data.p);
-                this.verCode = false;
-                this.validationTag = false;
+    import inputControl from '../components/inputControlX.vue';
+    import errTip from '../components/errTip.vue';
+    import validation from '../components/validation.vue';
+    import verificationCode from '../components/verificationCode.vue';
+
+    export default {
+        data(){
+            return{
+                newPas:false,
+                collect:{
+                    tel:"",
+                    validCode:""
+                },
+                data1: {
+                    inputeType: "text", // 输入框的类型
+                    inputMes: "",     // 输入框的值
+                    showText: false,  // 是否显示密码
+                    showErrInput: true, // 是否显示框错误
+                    showSucInput: false, // 是否显示框正确
+                    placeholderTip: ["请输入账号绑定的邮箱或手机号", "请输入账号绑定的邮箱或手机号"],
+                    validation: 3,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                },
+                newpas:{
+                    pas1:"",
+                    pas2:""
+                },
+                data2: {
+                    inputeType: "password", // 输入框的类型
+                    inputMes: "",     // 输入框的值
+                    showText: true,  // 是否显示密码
+                    showErrInput: true, // 是否显示框错误
+                    showSucInput: false, // 是否显示框正确
+                    placeholderTip: ["新密码", "新密码"],
+                    validation: 1,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                },
+                data3: {
+                    inputeType: "password", // 输入框的类型
+                    inputMes: "",     // 输入框的值
+                    showText: true,  // 是否显示密码
+                    showErrInput: true, // 是否显示框错误
+                    showSucInput: false, // 是否显示框正确
+                    placeholderTip: ["确认新密码", "确认新密码"],
+                    validation: 1,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                },
+                validationTag: false,
+                verCode: false,       // 是否显示短信/邮箱验证
+                tiperr: "请输入正确的格式",
+                showtip: false,
             }
         },
-        tip(tip){
-            if(tip == "")return;
-            if(this.setTime != ""){
-                clearTimeout(this.setTime);
-            };
-            this.tiperr = tip;
-            this.showtip = true;
-            this.setTime = setTimeout(()=>{this.showtip = false;},1500); 
-        },
-        openReg(){
-            this.$emit('openClass',0);
-        },
-        setCode:function(code){
-            if(code.length == 6){
-                this.codeYz = code;
-            }else{
-                this.codeYz = '';
-            }
-        },
-        validaon:function(){
-            this.validationTag = false;
-            this.verCode = true;
-        },
-        reqErrs(d){
-            if(d.n == ""){
-                this.tip(d.p);
-            }else{
-                if(d.i){
-                    this.tip(d.p);
+        methods:{
+            resMes1(data) {
+                this.verCode = false;
+                if(data.t){
+                    this.validationTag = true;
+                    this.collect.tel = data.i;
                 }else{
-                    if(this.newp0 != "" && this.newp1 != "" && this.newp1 != this.newp0){
-                        this.tip("两次密码输入不一致，请重新输入");
-                    } 
+                    this.collect.tel = '';
+                    this.validationTag = false;
+                };
+                if(data.steps == 1 && !data.t){
+                    this.tiperr = '请输入正确的格式';
+                    this.showtip = true;
                 }
-            }
-        },
-        reqnewPas0(d){
-            this.newp0 = d.n;
-            this.reqErrs(d);
-        },
-        reqnewPas1(d){
-            this.newp1 = d.n;
-            if(this.newp0 != "" && this.newp1 == this.newp0){
-                this.mandatoryJudge1 = true;
-            }else{
-                this.mandatoryJudge1 = false;
-            }
-            this.reqErrs(d);
-        },
-        changePas(){
-            if(!this.newPas)return false;
-            this.$ajax({
+            },
+            resMes2(data) {
+                if(data.t){
+                    this.newpas.pas1 = data.i;
+                }else{
+                    this.newpas.pas1 = '';
+                };
+                if(data.steps == 1 && !data.t){
+                    this.tiperr = '密码格式不正确';
+                    this.showtip = true;
+                }
+            },
+            resMes3(data) {
+                if(data.t){
+                    this.newpas.pas2 = data.i;
+                }else{
+                    this.newpas.pas2 = '';
+                };
+                if(data.steps == 1 && !data.t){
+                    this.tiperr = '密码格式不正确';
+                    this.showtip = true;
+                }
+            },
+            validaon() {
+                this.validationTag = false;
+                this.verCode = true;
+            },
+            setCode: function (code) {
+                if (code.length == 6) {
+                    this.collect.validCode = code;
+                } else {
+                    this.collect.validCode = '';
+                }
+            },
+            openReg(){
+                this.$emit('openClass',0);
+            },
+            validCodefun(){
+                if(!this.process)return;
+//                this.newPas = true;
+//                this.verCode = false;
+//                return;
+                this.$ajax({
                     method: 'post',
-                    url: '/updateEmployee',
+                    url: '/validCode',
                     params:{
-                        id:this.id,//BKadmin*权限0 //KYadmin*权限1 //TGOadmin*权限2d
-                        password:this.newp0
+                        contactWay:this.collect.tel,
+                        code:this.collect.validCode
                     },
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     }
                 })
-                .then((response) => {
-                    if(response.data.opResult == "0"){
-                        this.$emit('pasChange',true)
+                    .then((response) => {
+                        if(response.data.opResult == "0"){
+                            this.newPas = true;
+                            this.verCode = false;
+                        }else{
+                            this.tiperr = '验证码不匹配';
+                            this.showtip = true;
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
+            },
+            updateEmployee(){
+                if(this.reeq){
+                    if(this.newpas.pas1 == this.newpas.pas2){
+                        this.$ajax({
+                            method: 'post',
+                            url: '/resetPwd',
+                            params:{
+                                contactWay:this.collect.tel,
+                                newPwd :this.newpas.pas2
+                            },
+                            headers: {
+                                'Content-type': 'application/x-www-form-urlencoded'
+                            }
+                        })
+                            .then((response) => {
+                                if(response.data.opResult == "0"){
+                                    this.newPas = true;
+                                    this.$emit('pasChange',true)
+                                }else{
+                                    this.$emit('pasChange',false)
+                                }
+                            })
+                            .catch((error) => {
+                                    console.log(error);
+                                }
+                            );
                     }else{
-                        this.$emit('pasChange',false)
+                        this.tiperr = '两次密码不一样';
+                        this.showtip = true;
                     }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-        }
-      
-    },
-  components:{
-    userInput:inputControl, 
-    validation,
-    verificationCode,
-    errTip,
-//    inputControx
-  },
-  mounted:function(){
-  },
-  computed:{
-      process(){
-            let re = false;
-            if(this.verCode && this.codeYz != ""){
-                re = true;
+                }
             }
-            return re;
-      },
-      determine(){
-          let t = false;
-          if(this.newp0)t = true;
-          return t;
-      },
-      reeq(){
-            let t = false;
-            if(this.newp1 != "" && this.newp0 != "" && this.newp1 == this.newp0){
-                t = true;
-            };
-            return t;
-       }
-  }
-}
+        },
+        computed:{
+            process(){
+                if(
+                    this.collect.tel != ""
+                    &&this.collect.validCode != ""
+                ){
+                    return true;
+                }
+                return false
+            },
+            reeq(){
+                let t = false;
+                if(this.newpas.pas1 != '' && this.newpas.pas2 != ''){
+                    t = true;
+                };
+                return t;
+            }
+        },
+        components:{
+            userObj:inputControl,
+            errTip,
+            validation,
+            verificationCode,
+        }
+    }
 </script>
 <style lang="scss" scoped>
-    .slide-fade-enter-active,.slide-fade-leave-active {
-        transition: all .3s ease;
+    .lxkf{
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: rgba(0,0,0,.4);
+        position: absolute;
+        bottom: 0;
     }
-    .slide-fade-enter, .slide-fade-leave-to
-    {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    .registered-box{
-        position: relative;
-        height: 375px;
-        padding:45px 35px 0 35px;
-        width: 290px;
-    }
-    .occupies-prompt{ 
-        height:210px;
-        padding-top: 28px;
-        position: relative;
+    .back-pas-box{
+        padding-top: 50px;
+        width: 360px;
+        height: 370px;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
     }
     .step-btn{
+        position: absolute;
+        bottom: 50px;
         color: white;
         display: flex;
         justify-content: space-between;
+        width: 290px;
         >div{
             border-radius:25px;
             width: 135px;
@@ -263,25 +238,8 @@ export default {
             line-height: 45px;
         }
     }
-    .set-newpas{
-        height: 284px;
-        position: relative;
-    }
     .step-btn-dis{
         cursor: not-allowed;
         background-color:#cccccc;
     }
-    .lxkf{
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        color: rgba(0,0,0,.4);
-    }
-    .select-pas{
-        position: absolute;
-        top:65px;
-        color:#989898;
-    }
 </style>
-
-
