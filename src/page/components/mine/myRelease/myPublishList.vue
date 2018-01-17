@@ -175,6 +175,21 @@
 //                console.log(`当前页: ${val}`);
                 this.sendData.page = val;
             },
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             /*************************/
             talkShowFn: function (item) {  // 列表中的交谈按钮是否显示
                 if(this.role.role === '1'){  //0：航司 1：机场 2：太美
@@ -248,7 +263,8 @@
                         this.totalCount = 0;
                         this.judgeRole();
                     }else {
-                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+//                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+                        this.open8(`无法请求到数据，错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);

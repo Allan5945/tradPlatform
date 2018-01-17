@@ -150,6 +150,21 @@
 //                console.log(`当前页: ${val}`);
                 this.sendData.page = val;
             },
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             /*************************/
             // 点击关闭所有下拉框
             closeAllFn: function () {
@@ -210,7 +225,8 @@
                         this.totalCount = 0;
                         this.judgeRole();
                     }else {
-                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+//                        alert('无法请求到数据，错误代码：' + response.data.opResult)
+                        this.open8(`无法请求到数据,错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);
@@ -332,7 +348,8 @@
                         this.sendDataToMyPurpose = response.data.obj;  //将item的参数传递给myPurpose.vue
                         tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                     }else {
-                        alert('错误代码response.data.opResult：' + response.data.opResult)
+//                        alert('错误代码response.data.opResult：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
 
                 }).catch((error) => {
