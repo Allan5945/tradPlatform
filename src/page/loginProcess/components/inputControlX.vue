@@ -204,7 +204,7 @@
         top: 12px;
         left: 15px;
         transition: all .3s ease;
-        z-index: -1;
+        pointer-events: none;
     }
 </style>
 
