@@ -429,7 +429,7 @@
       },
        mounted() {
         tabulationBoxTrigger.$on('sendDataToMyPurpose12', val => {
-            if(val.demand.demandtype == 1 && this.role.role == 1){
+            if(val.demand.demandtype == 1 && (this.role.role == 1 || this.role.role == 2)){
                //console.log("demandtype"+val.data.demandtype);
                 this.$ajax({
                 method: 'post',
