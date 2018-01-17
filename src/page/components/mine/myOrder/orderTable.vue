@@ -233,6 +233,7 @@
                 this.type["3"] = '委托航线需求'
             }else if(this.role.role == "0"){//航司
                 this.type["4"] = '委托运力需求'
+                delete this.progressState["7"];
             }
             this.getListData();
         },

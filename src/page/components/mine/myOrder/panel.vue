@@ -12,7 +12,7 @@
                 <itenListModule
                             :ndetailData="metaData.responseList[0]"
                             :type="typeList[detailData.demandType==1?0:1]"
-                            v-if="metaData && metaData.responseList.length>0">
+                            v-if="metaData && metaData.responseList && metaData.responseList.length>0">
                 </itenListModule>
                 <template v-if="false">
                     <header>

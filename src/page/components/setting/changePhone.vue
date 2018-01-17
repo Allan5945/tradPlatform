@@ -3,77 +3,85 @@
         <header>
             <p>更换手机 <span  class="iconfont closer" @click="closeThis">&#xe62c;</span></p>
         </header>
-        <template v-if="active<3">
-            <div class="process-navi">
-                <div class="process-img">
-                    <el-steps :active="active" align-center>
-                        <el-step title="输入密码">
-                            <i class="iconfont">&#xe62c;</i>
-                        </el-step>
-                        <el-step title="输入手机">
-                            <i class="iconfont">&#xe62c;</i>
-                        </el-step>
-                        <el-step title="手机验证">
-                            <i class="iconfont">&#xe62c;</i>
-                        </el-step>
-                        <el-step title="完成">
-                            <i class="iconfont">&#xe62c;</i>
-                        </el-step>
-                    </el-steps>
-                </div>
-            </div>
-            <div class="process-body">
-                <div class="process-main" v-show="active==0">
-                    <pwdInput :par="pasArg" v-on:reqMes="pasReqMes" v-on:entered="iptEnter()"></pwdInput>
-                </div>
-                <div class="process-main" v-show="active==1">
-                    <pwdInput :par="oArg" v-on:reqMes="phoneReqMes"></pwdInput>
-                    <validation v-if="active==1" v-on:validation="validPass" style="margin-top:30px;"></validation>
-                </div>
-                <div class="process-main" v-show="active==2">
-                    <p style="height:25px;color:#aaa;text-indent: 3px;">需要绑定的邮箱</p>
-                    <div class="full-btn">
-                        <input type="text" v-model="userData.phone" disabled placeholder="">
-                        <span class="success">&#xe61f;</span>
-                    </div>
-                    <span v-show="show.yzmTip" class="yzm-tip">短信验证码已发送，请注意查收</span>
-                    <div class="full-btn" style="margin-top: 40px;">
-                        <input type="text" v-model="userData.code" placeholder="">
-                        <span class="yzm" @click="getCode">{{ code.tipText }}</span>
+        <template v-if="show.self">
+            <template v-if="active<3">
+                <div class="process-navi">
+                    <div class="process-img">
+                        <el-steps :active="active" align-center>
+                            <el-step title="输入密码">
+                                <i class="iconfont">&#xe62c;</i>
+                            </el-step>
+                            <el-step title="输入手机">
+                                <i class="iconfont">&#xe62c;</i>
+                            </el-step>
+                            <el-step title="手机验证">
+                                <i class="iconfont">&#xe62c;</i>
+                            </el-step>
+                            <el-step title="完成">
+                                <i class="iconfont">&#xe62c;</i>
+                            </el-step>
+                        </el-steps>
                     </div>
                 </div>
-                <footer v-show="show.footer">
-                    <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==0">忘记密码？</span>&nbsp;</p>
-                    <div class="step-btn">
-                        <div class="btn" :class="{'btn-b':text.status,'btn-blk':!text.status}" @click="next()">{{ text.status?text.btnText1:text.btnText2 }}</div>
-                        <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
+                <div class="process-body">
+                    <div class="process-main" v-show="active==0">
+                        <pwdInput :par="pasArg" v-on:reqMes="pasReqMes" v-on:entered="iptEnter()"></pwdInput>
                     </div>
-                    <p class="lxkf">客服热线：0000-0000000</p>
+                    <div class="process-main" v-show="active==1">
+                        <pwdInput :par="oArg" v-on:reqMes="phoneReqMes"></pwdInput>
+                        <validation v-if="active==1" v-on:validation="validPass" style="margin-top:30px;"></validation>
+                    </div>
+                    <div class="process-main" v-show="active==2">
+                        <p style="height:25px;color:#aaa;text-indent: 3px;">需要绑定的邮箱</p>
+                        <div class="full-btn">
+                            <input type="text" v-model="userData.phone" disabled placeholder="">
+                            <span class="success">&#xe61f;</span>
+                        </div>
+                        <span v-show="show.yzmTip" class="yzm-tip">短信验证码已发送，请注意查收</span>
+                        <div class="full-btn" style="margin-top: 40px;">
+                            <input type="text" v-model="userData.code" placeholder="">
+                            <span class="yzm" @click="getCode">{{ code.tipText }}</span>
+                        </div>
+                    </div>
+                    <footer v-show="show.footer">
+                        <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==-1" @click="show.self=false">忘记密码？</span>&nbsp;</p>
+                        <div class="step-btn">
+                            <div class="btn" :class="{'btn-b':text.status,'btn-blk':!text.status}" @click="next()">{{ text.status?text.btnText1:text.btnText2 }}</div>
+                            <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
+                        </div>
+                        <p class="lxkf">客服热线：0000-0000000</p>
+                    </footer>
+                </div>
+            </template>
+            <div class="result" v-else>
+                <div class="overPage" v-if="result">
+                    <div>
+                        <h1>(*^__^*)更换手机成功</h1>
+                        <p>3秒后自动返回</p>
+                    </div>
+                </div>
+                <div class="overPage" v-else>
+                    <div>
+                        <h1>(⊙v⊙)更换手机失败</h1>
+                        <p>3秒后自动返回</p>
+                    </div>
+                </div>
+                <footer>
+                    客服热线：000-0000000
                 </footer>
             </div>
         </template>
-        <div class="result" v-else>
-            <div class="overPage" v-if="result">
-                <div>
-                    <h1>(*^__^*)更换手机成功</h1>
-                    <p>3秒后自动返回</p>
-                </div>
-            </div>
-            <div class="overPage" v-else>
-                <div>
-                    <h1>(⊙v⊙)更换手机失败</h1>
-                    <p>3秒后自动返回</p>
-                </div>
-            </div>
-            <footer>
-                客服热线：000-0000000
-            </footer>
+        <div class="result flex-center" v-else>
+            <backPwd
+                    v-on:openClass="closePwd"
+                    v-on:pasChange="pasChange"></backPwd>
         </div>
     </div>
 </template>
 <script>
     import inputControl from '$src/page/loginProcess/components/inputControl.vue';
     import validation from '$src/page/loginProcess/components/validation.vue';
+    import backPwd from '$src/page/loginProcess/loginStepsComponents/backPas.vue';
     import {Steps,Step,Loading} from 'element-ui';
 
     export default {
@@ -83,6 +91,7 @@
                 result: false,
                 tps:"",
                 show:{
+                    self: true,
                     footer: true,
                     yzmTip: false
                 },
@@ -131,6 +140,7 @@
         props: ['ud'],
         components:{
             validation,
+            backPwd,
             "inputControl": inputControl,
             "pwdInput": inputControl,
             "el-steps": Steps,
@@ -165,6 +175,16 @@
             }
         },
         methods:{
+            closePwd(){
+                this.show.self = true;
+            },
+            pasChange(ok){
+                if(ok){
+                    alert('修改成功');
+                }else{
+                    alert('修改失败')
+                }
+            },
             iptEnter(p){
                 this.next();
             },
@@ -354,6 +374,7 @@
             line-height: 50px;
             position: relative;
             box-shadow: 0 5px 15px $lightblue;
+            z-index: 1;
             p{
                 text-indent: 20px;
                 color: #999;
@@ -507,7 +528,6 @@
         }
     }
     .flex-center{
-        margin-top: 10px;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -65,7 +65,7 @@
                 </div>
 
                 <footer v-show="show.footer">
-                    <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==0">忘记密码？</span>&nbsp;</p>
+                    <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==-1">忘记密码？</span>&nbsp;</p>
                     <div class="step-btn">
                         <div class="btn" :class="{'btn-b':text.status,'btn-blk':!text.status}" @click="next()">{{ text.status?text.btnText1:text.btnText2 }}</div>
                         <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
@@ -365,6 +365,7 @@
             line-height: 50px;
             position: relative;
             box-shadow: 0 5px 15px $lightblue;
+            z-index: 1;
             p{
                 text-indent: 20px;
                 color: #999;

@@ -9,7 +9,7 @@
                 <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
             </div>
         </div>
-        <div class="set-newpas" v-if="newPas">
+        <div class="set-newpas" v-else>
             <userInput :par="newPas0" v-on:reqMes="reqnewPas0" :errs="errs0"></userInput>
             <userInput :par="newPas1" v-on:reqMes="reqnewPas1" style="margin-top:32px;" v-if="determine" :errs="errs1" :mandatoryJudge="mandatoryJudge1"></userInput>
             <errTip :arg="tiperr" :sh.sync="showtip" v-if="showtip"></errTip>
@@ -17,7 +17,7 @@
          <div class="step-btn">
              <div v-if="!newPas" :class="{'btn-b':process ,'step-btn-dis':!process}" class="btn" @click="bgyanz">确认</div>
              <div v-if="newPas" :class="{'btn-b':reeq ,'step-btn-dis':!reeq}" class="btn" @click="changePas">确认</div>
-             <div class="btn btn-w" @click="openReg">返回登录</div>
+             <div class="btn btn-w" @click="openReg">返回</div>
          </div>
          <div class="lxkf">联系客户：0000-0000000</div>
     </div>
@@ -50,7 +50,7 @@ export default {
                 isPrompt:false, // 是否密码显示功能 true、。false、
                 isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
                 tip:["请输入账号绑定的邮箱或手机号","请输入账号绑定的邮箱或手机号"], // 1，输入框的placeholder值。2，显示值
-                openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/],  // 输入正则判断              
+                openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/],  // 输入正则判断
             },
             showtip:false,
             codeYz:'',          // 验证码
@@ -88,7 +88,7 @@ export default {
             setTime:"",    // 移出事件延迟
         }
     },
-    peops:['loginErr'],
+    props:['loginErr'],
     watch:{
         emailOrPhone(){
             if(this.emailOrPhone != ""){

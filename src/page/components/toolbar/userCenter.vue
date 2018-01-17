@@ -1,10 +1,10 @@
 <template>
     <div class="tool popup">
-        <router-link :to="path.setting">
-            <span>&#xe60f;</span>
-            设置
-        </router-link>
-        <a @click="showSetting(true)">
+        <!--<router-link :to="path.setting">-->
+            <!--<span>&#xe60f;</span>-->
+            <!--设置-->
+        <!--</router-link>-->
+        <a @click="showSetting()">
             <span>&#xe647;</span>
             设置
         </a>
@@ -23,27 +23,20 @@
                 <span>&#xe60f;</span>
             </div>
         </a>
-        <setting v-if="show.setting"></setting>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
-    import setting from '$src/page/components/setting/container.vue'
 
     export default {
         data: ()=>{
             return {
                 path:{
                     defaultSubLink:'/index/userCenter',
-                    setting: '/index/setting'
                 },
-                show: {
-                    setting: false
-                }
             }
         },
-        components: {setting},
         computed: {
             ...vx.mapActions([
                 'close'
@@ -65,7 +58,8 @@
                     })
             },
             showSetting: function (flag) {
-                this.show.setting = flag;
+                this.$emit('showSet');
+//                this.show.setting = flag;
             },
             initDis(){
                 localCommunication.$emit('addChat',{id:null});

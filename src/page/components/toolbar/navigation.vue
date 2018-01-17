@@ -12,7 +12,7 @@
                 <span class="font-bold-x">个人中心</span>
                 <span class="icon-item icon-item1">&#xe605;</span>
             </div>
-            <userCenter v-if="userShow"></userCenter>
+            <userCenter v-if="userShow" v-on:showSet="showSetting"></userCenter>
         </div>
         <div @click="toolShow = !toolShow;userShow=false" class="nav3">
             <div class="nav-title">
@@ -28,26 +28,37 @@
                 发布
             </div>
         </div>
+        <setting v-if="settingsShow" v-on:closeSet="closeSetting"></setting>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tool from '../toolbar/tools.vue'
     import userCenter from '../toolbar/userCenter.vue'
+    import setting from '$src/page/components/setting/container.vue'
+
     export default {
         data() {
             return {
                 toolShow:false,
                 userShow:false,
+                settingsShow: false
             }
         },
         components: {
             tool,
             userCenter,
+            setting
         },
         methods:{
             toPublish:function() {
                 this.$emit("toShow");
+            },
+            showSetting(){
+                this.settingsShow = true;
+            },
+            closeSetting(){
+                this.settingsShow = false;
             }
         },
         watch:{
