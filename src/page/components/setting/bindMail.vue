@@ -65,7 +65,7 @@
                 </div>
 
                 <footer v-show="show.footer">
-                    <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==-1">忘记密码？</span>&nbsp;</p>
+                    <p class="wjmm"><span class="tips">{{ text.tipsText }}</span><span v-show="active==0" @click="closeThis(true)">忘记密码？</span>&nbsp;</p>
                     <div class="step-btn">
                         <div class="btn" :class="{'btn-b':text.status,'btn-blk':!text.status}" @click="next()">{{ text.status?text.btnText1:text.btnText2 }}</div>
                         <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
@@ -196,10 +196,11 @@
             pasReqMes1(p){
                 this.userData.mail = p.n;
             },
-            closeThis(){
+            closeThis(f){
                 this.$emit('subchange',{
                     name: 'bindMail'
                 })
+                this.ud.showBackPwd = f===true ? true: false;
             },
             delayClose(){
                 setTimeout(this.closeThis,3000)
