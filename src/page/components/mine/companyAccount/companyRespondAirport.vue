@@ -451,36 +451,64 @@
                         if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
                             this.editShow = false;
                         }
-                        //已撤回,意向征集和已落选,订单完成,订单关闭,交易完成/佣金支付，订单确认
+                        //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
                         let progress = this.planData.responseProgress;
                         if(progress == '2'){
                           this.editShow = false;
                           this.chatShow = false;
                           this.withdraw = true;
                           this.planState = "（已撤回）";
+                          this.footShow = true;
+                          this.orderComplete = false;
+                          this.confirmShow = false;
                         }else if(progress == '0'){
                             this.editShow = true;
                             this.chatShow = true;
                             this.withdraw = false;
                             this.planState = " ";
+                            this.footShow = true;
+                            this.orderComplete = false;
+                            this.confirmShow = false;
                         }else if(progress == '4'){
                             this.editShow = false;
                             this.chatShow = false;
                             this.footShow = false;
+                            this.withdraw = false;
                             this.planState = "（已落选）";
+                            this.orderComplete = false;
+                            this.confirmShow = false;
                         }else if(progress == '6'){
                             this.editShow = false;
                             this.footShow = false;
+                            this.chatShow = true;
+                            this.planState = " ";
+                            this.withdraw = false;
                             this.orderComplete = true;
+                            this.confirmShow = false;
                         }else if(progress == '3'){
                             this.editShow = false;
                             this.footShow = false;
                             this.chatShow = false;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.orderComplete = false;
+                             this.confirmShow = false;
                         }else if(progress == '5'||progress == '7'){
                             this.editShow = false;
                             this.footShow = false;
-                        }else if(progress == '2'){
+                            this.chatShow = true;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.orderComplete = false;
+                            this.confirmShow = false;
+                        }else if(progress == '1'){
                             this.confirmShow = true;
+                            this.editShow = false;
+                            this.footShow = true;
+                            this.chatShow = true;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.orderComplete = false;
                         }
 
 

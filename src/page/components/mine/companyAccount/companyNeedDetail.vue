@@ -84,7 +84,6 @@
  export default {
      data(){
          return{
-             getDetail:[],
              detailData:{},
              intentionCount:0,
              demandId:'',
@@ -202,9 +201,11 @@
                     this.detailData = response.data.data;
 
                     let progress = this.detailData.demandprogress;
-                     //需求发布、意向征集
-                    if(progress == '0'||progress == '1'){
+                     //需求发布、意向征集、订单确认
+                    if(progress == '0'||progress == '1'||progress == '2'){
                         this.inventBtnShow = true;
+                    }else{
+                        this.inventBtnShow = false;
                     }
 
                      if(response.data.isAlreadyCollect == true){
