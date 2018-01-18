@@ -1,6 +1,6 @@
 <template>
     <div class="extend-talbe">
-        <div class="table-form" v-if="thisType=='AriLineAirportDataListyunli'">
+        <div class="table-form" v-if="thisType=='yunli'">
             <div>
                 <div>联系人</div>
                 <div>{{extendData.contact||"-"}}</div>

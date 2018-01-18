@@ -1,6 +1,6 @@
 <template>
     <div class="plan-wrapper" >
-        <template v-if="type.indexOf('航线')>-1">
+        <template v-if="type && type.indexOf('航线')>-1">
             <header>
                 <div class="head-til" :title="ndetailData.title">{{ndetailData.title || "-"}}</div>
                 <div class="tips">
@@ -174,7 +174,7 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size: 16px;">
+                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size: 16px;" v-if="ndetailData.intendedAirlines">
                                 {{ndetailData.intendedAirlines[0].dptName||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
                                 {{ndetailData.intendedAirlines[0].pstName||"—"}}
@@ -221,8 +221,7 @@
                                     <extendPanel class="main-info"
                                                  v-show="extend.active===index"
                                                  :extendData="ndetailData"
-                                                 :thisType="'yunli'"
-                                    >
+                                                 :thisType="'yunli'">
                                     </extendPanel>
                                 </li>
                             </ul>
