@@ -59,11 +59,12 @@
     .demand{
         position: absolute;
         /*background-color: red;*/
-        height: 80%;
+        height: 100%;
     }
     .demandMin{
-        top: 40px;
-        left: 40px;
+        top: 0;
+        left: 0;
+        background-color: white;
     }
     .demandMax{
         top: 100px;

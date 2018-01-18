@@ -4,7 +4,10 @@ import _this from './../../../main'
 ln.$on('addChat', function (d)  { 
     let k1,k2,de = d.id,k,keys;
     if(de == null){
-        k = [_this.$store.getters.role.id];
+        k1 = _this.$store.getters.role.id;
+        k2 = 1;
+        de = null;
+        // k = [_this.$store.getters.role.id];
     }else{
         if(_this.$store.getters.role.id == 1){
             k1 = _this.$store.getters.role.id;
@@ -16,10 +19,9 @@ ln.$on('addChat', function (d)  {
         }else{
             k2 = d.employeeId;
         };
-        keys = (k1 < k2 ? k1 : k2)  + '-' + (k1 < k2 ? k2 : k1) + "-" + de;
-        k = keys.split("-");
     };
-    
+    keys = (k1 < k2 ? k1 : k2)  + '-' + (k1 < k2 ? k2 : k1) + "-" + de;
+    k = keys.split("-");
     if(!this.chat.chatData.hasOwnProperty(keys)){
         let __this = this;
         _this.$ajax({
@@ -31,7 +33,7 @@ ln.$on('addChat', function (d)  {
             params:{
                 fromNameId:k[0],
                 toNameId:k[1],
-                demandId:k[2],
+                demandId:k[2] == 'null' ? '' : k[2]  ,
             },
         })
             .then((response) => {
@@ -47,6 +49,7 @@ ln.$on('addChat', function (d)  {
                     response.data.data.forEach((v)=>{
                         __this.chat.chatData[v.chatFlag] = v
                     });
+                    this.chat.setChat = keys;
                     this.chat.shut = true;
                     this.chat.narrow = true;
                 }

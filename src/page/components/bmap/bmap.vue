@@ -52,7 +52,7 @@
                     "name": "routeNetwork",
                     "type": "lines",
                     "coordinateSystem": "bmap",
-                    "zlevel": 2,
+                    "zlevel": -1,
                     "lineStyle": {
                         "normal": {"color": "#336BEA", "width": 1, "opacity": 0.4, "curveness": 0.2}
                     },
@@ -220,6 +220,7 @@
                         "type": "scatter",
                         "coordinateSystem": "bmap",
                         "data": d,
+                        zlevel:11,
                         "symbolSize": 50,
                         "label": {
                             "normal": {
@@ -245,6 +246,7 @@
                         "coordinateSystem": "bmap",
                         "data": b,
                         "symbolSize": 500,
+                        zlevel:10,
                         "label": {
                             "normal": {
                                 "show": true,
@@ -310,12 +312,13 @@
                         params: {
                             itia: a.data.code,
                             page: 1,
+//                            type: 0,
                             type: type,
-                            itiaType: 2
+                            itiaType: 0
                         }
                     }).then((response) => {
                         if (response.data) {
-                            this.$store.dispatch('monoData', {v: response.data.list, t: 1}).then(() => {
+                            this.$store.dispatch('monoData', {v: response.data.list, t: 1,n:a.data.name}).then(() => {
                             });
                         }
                     })

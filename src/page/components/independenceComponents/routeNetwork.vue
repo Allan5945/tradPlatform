@@ -19,6 +19,7 @@
             change: function () {
                 this.ched = !this.ched;
                 tabulationBoxTrigger.$emit('routeNetwork',this.ched);
+                localStorage.setItem('ched',this.ched);
             }
         },
         computed:{
@@ -27,6 +28,11 @@
             ])
         },
         mounted:function () {
+            let mes = localStorage.getItem('ched');
+            if(mes != null){
+                this.ched = eval(mes);
+                tabulationBoxTrigger.$emit('routeNetwork',this.ched);
+            };
         }
     }
 </script>

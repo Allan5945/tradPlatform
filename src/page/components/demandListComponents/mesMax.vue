@@ -573,6 +573,7 @@
             align-items: center;
             line-height: 25px;
             cursor: pointer;
+            &:hover{ color: #3c78ff; }
         }
     }
 

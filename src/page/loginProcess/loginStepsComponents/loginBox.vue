@@ -124,16 +124,24 @@
                 setTimeout(()=>{this.loginTime = 0;},1000);
             },
             resMes2(data){
-                this.mes.u = data.i;
+                if(data.type == "entered"){
+
+                }else{
+                    this.mes.u = data.i;
+                };
             },
             resMes3(data){
-                this.mes.p = data.i;
+                if(data.type == "entered"){
+                    this.entered();
+                }else{
+                    this.mes.p = data.i;
+                };
             }
         },
         computed:{
             dis:function(){
                 let ty = false;
-                if(this.mes.p != "" && this.mes.u && this.loginTime < 3){ty = true}
+                if(this.mes.p != "" && this.mes.u != '' && this.loginTime < 3){ty = true}
                 return ty;
             },
             ...vx.mapGetters([
