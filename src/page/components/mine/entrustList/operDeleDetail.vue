@@ -96,7 +96,7 @@
                     <div>联系人</div>
                     <div>{{detailData.contact||'-'}}</div>
                 </div>
-                <div>
+                <div class="padding-item">
                     <div>联系方式</div>
                     <div>{{detailData.iHome||'-'}}</div>
                 </div>
@@ -104,7 +104,7 @@
                     <div>机型</div>
                     <div>{{detailData.aircrfttyp||'-'}}</div>
                 </div>
-                 <div>
+                 <div class="padding-item">
                     <div>座位布局</div>
                     <div>{{detailData.seating||'-'}}</div>
                 </div>
@@ -112,15 +112,15 @@
                     <div>运力归属</div>
                     <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                 </div>
-                 <div>
+                 <div class="padding-item">
                     <div>运力基地</div>
                     <div>{{detailData.dptNm||'-'}}</div>
                 </div>
-                <div >
+                <div>
                     <div>出港时刻</div>
                     <div>{{detailData.dptTime||'-'}}</div>
                 </div>
-                <div>
+                <div class="padding-item">
                     <div>班期</div>
                     <div>{{detailData.days||'-'}}</div>
                 </div>
@@ -140,7 +140,7 @@
                     <div>小时成本</div>
                     <div>{{detailData.hourscost||'-'}}万/小时</div>
                 </div>
-                <div style="margin:0 0 0 40px;">
+                <div class="padding-item">
                     <div>接受调度</div>
                     <div>{{detailData.schedulingStr||'-'}}</div>
                 </div>
@@ -159,13 +159,13 @@
             </div>
              <div class="son-need-list" v-if="sonListShow">
                 <div class="intent-form">
-                    <div>
+                    <div class="intent-head">
                         <div>发布时间
                           <span class="iconfont icon-up active">&#xe605;</span>
                           <span class="iconfont icon-down">&#xe605;</span>
                         </div>
                         <div>发布标题</div>
-                        <div>需求状态</div>
+                        <div class="need-til">需求状态</div>
                     </div>
                     <div class="intent-box" v-for="(val,index) in listSonDemands">
                          <div class="intent-item">
@@ -182,7 +182,7 @@
                 <div class="btn" v-if="orderShow">
                     <div class="test-btn" @click="order" v-if="orderOver">订单完成</div>
                     <div class="can-btn canOper" @click="cancelDele" v-if="orderOver">取消委托</div>
-                     <div class="can-btn canOper" @click="cancelDele" style="width:160px;" v-else>取消委托</div>
+                     <!-- <div class="can-btn canOper" @click="cancelDele" style="width:160px;" v-else>取消委托</div> -->
                 </div>
                 <div class="btn" v-else>
                     <div class="test-btn" @click="accept" v-if="!tipShow">接受委托</div>
@@ -415,9 +415,10 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                      //状态处理
                       if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'){//子需求需求发布/意向征集/子订单确认/子订单完成
                           this.orderShow = true;
+                          this.orderOver =true;
                       }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
                           this.orderShow = true;
-                          this.orderOver =false;
+                          this.isClose = false;
                       }else if(this.detailData.demandprogress == '9'){//处理中
                           this.orderShow = true;
                       }else if(this.detailData.demandprogress == '3'){//已关闭
@@ -608,8 +609,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
               width:160px;
           }
       }
-      >div:nth-of-type(odd){
-          margin-right:40px;
+      >div:nth-of-type(even){
+          padding-left:40px;
+          box-sizing:border-box;
       }
       >.note{
           width:520px;
@@ -646,8 +648,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
               width:160px;
           }
       }
-      >div:nth-of-type(odd){
-          margin-right:40px;
+      >.padding-item{
+          padding-left:40px;
+          box-sizing:border-box;
       }
       .note{
           width:520px;
@@ -700,7 +703,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
     }
 
      .intent-form{
-            >div:nth-of-type(1){
+            >.intent-head{
                 position:relative;
                 height:75px;
                 width:100%;
@@ -720,6 +723,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     position: absolute;
                     top: 33px;
                 }
+                .need-til{
+                    margin-left:53px;
+                }
             }
             .intent-box{
                  margin:0 20px 5px 20px;
@@ -732,26 +738,18 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 height:60px;
                 line-height: 60px;
                 .time{
-                    padding-left:20px;
-                    width:140px;
+                    margin:0 20px;
+                   flex:1;
                     overflow:hidden;
                 }
                 .title{
-                    width:140px;
-                    overflow:hidden;
+                    flex:2;
                 }
                 .progress{
-                    padding-left:40px;
-                    display:flex;
-                    width:200px;
-                    span{
-                        font-size:25px;
-                        margin-left:10px;
-                    }
-
+                    flex:1;
                 }
                 .detail{
-                    width:140px;
+                    flex:1;
                     color:#3C78FF;
                     cursor:pointer;
                 }

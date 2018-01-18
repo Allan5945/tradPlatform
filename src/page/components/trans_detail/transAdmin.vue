@@ -85,7 +85,7 @@
                               {{val.intentionCompanyName||'-'}}
                               <span class="iconfont" @click="chat(val)" v-if="isSelf">&#xe602;</span>
                             </div>
-                            <div>{{val.responseProgressStr}}</div>
+                            <div class="progress">{{val.responseProgressStr}}</div>
                             <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
                             <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
@@ -814,13 +814,13 @@
                 height:60px;
                 line-height: 60px;
                 .time{
-                    margin:0 40px 0 20px;
-                    width:80px;
+                    margin:0 20px;
+                   flex:1;
                     overflow:hidden;
                 }
                 .person{
                     display:flex;
-                    width:120px;
+                    flex:2;
                     span{
                         font-size:25px;
                         margin-left:10px;
@@ -828,9 +828,11 @@
                     }
 
                 }
+                .progress{
+                    flex:1;
+                }
                 .detail{
-                    width:60px;
-                    margin-left:175px;
+                    flex:1;
                     color:#3C78FF;
                     cursor:pointer;
                 }

@@ -44,7 +44,7 @@
                             {{val.title}}
                         </div>
                         <div class="list-d item">
-                          {{getProgress(val.demandProgress)}}
+                          {{getProgress(val.demandProgress,val.demandType)}}
                         </div>
                         <div class="list-e item" @click="chat(val)">
                             <span class="icon-item talk-icon">&#xe602;
@@ -112,7 +112,7 @@
             }
         },
         mounted() {
-            this.state = this.state1;
+            this.state = this.state2;
             this.getListData();
             if(this.role.role == 0){
                 this.type = this.type2;
@@ -206,8 +206,8 @@
                     return "运力委托";
                 }
             },
-            getProgress:function(val){
-                switch (val) {
+            getProgress:function(progress,demandType){
+                switch (progress) {
                          case "0":
                             return "需求发布";
                             break;
@@ -236,7 +236,7 @@
                             return "已接受";
                             break;
                         case "9":
-                            return "处理中";
+                            return  demandType == '2'? "测评中":"处理中";
                             break;
                         case "10":
                             return "已拒绝";

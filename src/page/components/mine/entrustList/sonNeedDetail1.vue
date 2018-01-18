@@ -4,10 +4,10 @@
             <header>
                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeIntent">&#xe62c;</span></div>
                <div class="head-til">{{detailData.title||'-'}}</div>
-               <div class="tips">
-                   <div style="width:156px;">创建于{{detailData.releasetime||'-'}}</div>
-                   <div style="width:110px;">状态：<span>{{detailData.demandprogressStr||'-'}}</span></div>
-                   <div style="width:237px;">关联需求：
+               <div class="head-tips">
+                   <div class="time">创建于{{detailData.releasetime||'-'}}</div>
+                   <div class="progress">状态：<span>{{detailData.demandprogressStr||'-'}}</span></div>
+                   <div class="link">关联需求：
                       <div class="back-link" @click="toBack">
                         <span class="til">{{title}}</span>
                         <span class="iconfont">&#xe679;</span>
@@ -184,7 +184,7 @@
                               {{val.intentionCompanyName||'-'}}
                               <span class="iconfont" @click="chat(val)">&#xe602;</span>
                             </div>
-                            <div>{{val.responseProgressStr}}</div>
+                            <div class="progress">{{val.responseProgressStr}}</div>
                             <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
                             <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
@@ -298,6 +298,8 @@
                                 <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
                                 <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
+                            <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
+                            <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
                         </div>
                     </div>
                 </div>
@@ -305,7 +307,8 @@
             </div>
             <footer v-show="footShow">
                 <div class="btn">
-                    <div class="col-btn" @click="closeNeed">结束需求</div>
+                    <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
+                    <div class="col-btn" @click="closeNeed" v-else>结束需求</div>
                 </div>
             </footer>
         </div>
@@ -330,6 +333,7 @@
              sureFormShow:false,
              dataFormShow:false,
              selected:false,
+             planComplete:false,
              detailData:{},
              planData:{},
              editData:{},
@@ -339,6 +343,7 @@
              footShow:true,
              selectBtnShow:true,
              transShow:false,
+             sureOderShow:false
          }
      },
      props:['sonId','title'],
@@ -421,6 +426,7 @@
           surePlan:function(){
               this.myFormShow = false;
               this.selected = true;
+              this.sureOderShow = true;
          },
           closeSureForm:function(){
               this.sureFormShow = false;
@@ -482,13 +488,30 @@
                     this.planData = response.data.responseList;
                     //判断状态
                     let progress = this.detailData.demandprogress;
-                    if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
+                     if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
                       this.rePublish == true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
+                      this.sureOderShow = false;
+                      this.planComplete = false;
                     }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
+                      this.rePublish == false;
                       this.footShow  = false;
                       this.selectBtnShow = false;
+                      this.sureOderShow = false;
+                      this.planComplete = true;
+                    }else if(progress == "2"){//2:订单确认
+                      this.rePublish == false;
+                      this.footShow  = true;
+                      this.selectBtnShow = true;
+                      this.sureOderShow = true;
+                      this.planComplete = false;
+                    }else{
+                        this.rePublish == false;
+                        this.footShow  = true;
+                        this.selectBtnShow = true;
+                        this.sureOderShow = false;
+                        this.planComplete = false;
                     }
                     //有意向方显示列表信息
                     if(this.planData){
@@ -641,7 +664,7 @@
           height:20px;
           line-height:20px;
         }
-        .tips{
+        .head-tips{
           position:relative;
           height:12px;
           line-height:12px;
@@ -649,12 +672,23 @@
           padding:20px 0 18px 40px;
           display:flex;
           >div{
-            margin-right:18px;
             overflow:hidden;
             display:flex;
           }
+          .time{
+            flex:1;
+          }
+          .progress{
+            flex:1;
+          }
+          .link{
+            flex:2;
+          }
           .back-link{
             display:flex;
+            .til{
+                border-bottom:1px solid #3c78ff;
+            }
           }
           span{
             color:#3c78ff;
@@ -844,18 +878,18 @@
                  overflow:hidden;
                  background-color:rgba(216,216,216,.2);
             }
-            .intent-item{
+             .intent-item{
                 display:flex;
                 height:60px;
                 line-height: 60px;
                 .time{
-                    margin:0 40px 0 20px;
-                    width:80px;
+                    margin:0 20px;
+                   flex:1;
                     overflow:hidden;
                 }
                 .person{
                     display:flex;
-                    width:120px;
+                    flex:2;
                     span{
                         font-size:25px;
                         margin-left:10px;
@@ -863,9 +897,11 @@
                     }
 
                 }
+                .progress{
+                    flex:1;
+                }
                 .detail{
-                    width:60px;
-                    margin-left:175px;
+                    flex:1;
                     color:#3C78FF;
                     cursor:pointer;
                 }

@@ -9,7 +9,8 @@
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>
                     <div>状态:
-                        <span v-if="testingShow" class="testing">{{detailData.demandprogressStr}}</span>
+                        <span v-if="testingShow" class="testing">
+                        {{detailData.demandprogressStr=="处理中"? "测评中" : detailData.demandprogressStr}}</span>
                         <span v-else class="refused">已拒绝</span>
                     </div>
                 </div>
@@ -219,13 +220,14 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   }
                 })
                 .then((response) => {
+                  if(response.data.opResult == '0'){
                     this.CpyNm = response.data.CpyNm;
                     this.detailData = response.data.demandDetail;
                     this.demandprogress =  this.detailData.demandprogress;
                       //状态处理
-                      if(this.detailData.demandprogress == '9'){
+                      if(this.detailData.demandprogress == '9'){//测评中
                           this.isTest = !this.isTest;
-                      }else if(this.detailData.demandprogress == '10'){
+                      }else if(this.detailData.demandprogress == '10'){//已拒绝
                           this.testingShow =false;
                           this.refuseText = this.detailData.rek;
                       }else if(this.detailData.demandprogress == '8'){//已接受
@@ -238,6 +240,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                           this.isAccept =false;
                           this.refuseText = this.detailData.rek;
                       }
+                  }else{
+
+                  }
                 })
                 .catch((error) => {
                         console.log(error);
