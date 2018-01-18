@@ -28,7 +28,7 @@
                 <span @click="openMax">&#xe618;</span>
             </div>
         </div>
-        <div class="popup tabulation" id="tabulation">
+        <div class="tabulation" id="tabulation">
             <div class="tabulation-head">
                 <div>
                     <div class="navSet">
@@ -101,8 +101,6 @@
             },
             lose: function () {
                 setTimeout(() => {
-                    console.log(this.searchText)
-                    console.log(this.airList)
                     if (this.$airMes(this.airList, this.searchText) == '' && this.$cityMes(this.cityList, this.searchText) == '') {
                         this.searchText = '';
                     }
@@ -160,7 +158,6 @@
                     this.bgqy = false;
                     this.bgqying = true;
                     this.bgqyed = false;
-
                     this.searchSet = true;
                     this.$ajax({
                         url: "/getDemandsForCurrentCheckedCity",
@@ -177,11 +174,9 @@
                     }).then((response) => {
                         if (response.data) {
                             let ar = response.data.list;
-
                             this.bgqy = false;
                             this.bgqying = false;
                             this.bgqyed = true;
-
                             if (ar.list == null) {
                                 ar.list = [];
                             }
@@ -237,7 +232,11 @@
                 this.openHisy = false;
                 this.screenHsShow = false;
                 this.closeSearch();
+            },
+            demandList:function () {
+                alert(66)
             }
+
         },
         mounted: function () {
             if (this.demandList.monoName != '') {
@@ -308,6 +307,9 @@
             align-items: center;
             line-height: 25px;
             cursor: pointer;
+            &:hover{
+                color: #3c78ff;
+            }
         }
     }
 

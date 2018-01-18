@@ -4,11 +4,11 @@
              <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
              <div class="head-til">{{detailData.title||'-'}}</div>
              <div class="tips">
-                 <div>创建于{{detailData.releasetime||'-'}}</div>
-                 <div>已有{{intentionCount||'0'}}位用户发起意向</div>
-                 <div>关联需求：
+                 <div style="width:156px;">创建于{{detailData.releasetime||'-'}}</div>
+                 <div style="width:120px;">状态：<span>{{detailData.demandprogressStr||'-'}}</span></div>
+                 <div style="width:237px;">关联需求：
                     <div class="back-link" @click="toBack">
-                      <span>{{title}}</span>
+                      <span class="til">{{title}}</span>
                       <span class="iconfont">&#xe679;</span>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                             </div>
                             <div>
                                 <div>运力归属</div>
-                                <div v-if="detailData.capacityCompany">{{val.capacityCompany.airlnCd||'-'}}</div>
+                                <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                             </div>
                              <div>
                                 <div>运力基地</div>
@@ -174,6 +174,7 @@
                         </div>
               </div>
         </div>
+        <myResponseList :responseData="responseData" :intentionCount="intentionCount" :detailData="detailData"></myResponseList>
         <footer v-if="btnShow">
             <div class="btn" @click="closeNeed">结束需求</div>
         </footer>
@@ -182,6 +183,7 @@
 <script>
   import ln from './../../../../public/js/tabulationBoxTrigger';
   import * as vx from 'vuex'
+  import myResponseList from './myResponseList'
 
     export default {
         data () {
@@ -190,7 +192,8 @@
               sonAirlineShow:false,
               sonTranShow:false,
               btnShow:true,
-              detailData:{}
+              detailData:{},
+              responseData:[]
             }
         },
         props:['sonId','title'],
@@ -198,6 +201,9 @@
          ...vx.mapGetters([
                 'role'
             ])
+        },
+        components: {
+          myResponseList
         },
         methods:{
              turnPolicyCode:function(val){
@@ -265,6 +271,7 @@
                     }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
+                    this.responseData = response.data.responseList;
 
                     if(this.detailData.demandtype == '0'){
                       this.sonAirlineShow = true;
@@ -359,7 +366,8 @@
           padding:20px 0 18px 40px;
           display:flex;
           >div{
-            margin-right:30px;
+            margin-right:18px;
+            overflow:hidden;
             display:flex;
           }
           .back-link{
@@ -502,6 +510,7 @@
           margin:0 auto;
           width:180px;
           height:40px;
+          margin-top:40px;
           line-height:40px;
           font-size:1.5rem;
           color:#605E7C;

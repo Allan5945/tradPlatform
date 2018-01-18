@@ -3,7 +3,7 @@
         <needDetail  v-show="detailShow" @transShow="transShow" @closeDetail= "closeDetail"></needDetail>
         <respondAirport v-show="respond" @responseShow="responShow" @responseClose="responClose" ></respondAirport>
         <myIntention v-show="intentShow" @closeIntent="intentShow = false"  @openIntent="openIntent"></myintention>
-        <transAdmin v-show="adminShow" @closeAdmin="adminShow = false"  @openAdmin="openAdmin" @formShow="formShow"></transAdmin>
+        <transAdmin v-show="adminShow" @closeAdmin="adminShow = false"  @openAdmin="openAdmin"></transAdmin>
     </div>
 </template>
 
@@ -23,9 +23,6 @@
             }
         },
         methods: {
-            formShow(){
-
-            },
             closeDetail(){
                 this.detailShow = false;
             },

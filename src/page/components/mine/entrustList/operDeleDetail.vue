@@ -181,8 +181,8 @@
                 <div class="foot-tips" v-if="tipShow">*拒绝原因：{{refuseText}}</div>
                 <div class="btn" v-if="orderShow">
                     <div class="test-btn" @click="order" v-if="orderOver">订单完成</div>
-                    <div class="can-btn" @click="cancelDele" v-if="orderOver">取消</div>
-                     <div class="can-btn" @click="cancelDele" style="width:160px;" v-else>取消</div>
+                    <div class="can-btn canOper" @click="cancelDele" v-if="orderOver">取消委托</div>
+                     <div class="can-btn canOper" @click="cancelDele" style="width:160px;" v-else>取消委托</div>
                 </div>
                 <div class="btn" v-else>
                     <div class="test-btn" @click="accept" v-if="!tipShow">接受委托</div>
@@ -202,7 +202,7 @@
 <script>
 import refuseDialog from './refuseDialog.vue';
 import operDeleForm from './operDeleForm.vue'
-import sonNeedDetail from './sonNeedDetail.vue'
+import sonNeedDetail from './sonNeedDetail1.vue'
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import ln from './../../../../public/js/tabulationBoxTrigger';
 
@@ -413,7 +413,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     this.detailData = response.data.demandDetail;
                     this.listSonDemands = response.data.listSonDemands;
                      //状态处理
-                      if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'){//子需求需求发布/需求征集/子订单确认/子订单完成
+                      if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'){//子需求需求发布/意向征集/子订单确认/子订单完成
                           this.orderShow = true;
                       }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
                           this.orderShow = true;
@@ -428,6 +428,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                           this.tipShow = true;
                           this.sonListShow = false;
                           this.refuseText = this.detailData.rek;
+                      }else if(this.detailData.demandprogress == '7'){//待处理
+                           this.sonListShow = false;
                       }
 
                       //显示运力或者航司详情
@@ -801,6 +803,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     color:#fff;
                     background-color: #3C78FF;
                   }
+              }
+              .canOper{
+                  width:100px;
               }
               .cancel-btn{
                   width:180px;

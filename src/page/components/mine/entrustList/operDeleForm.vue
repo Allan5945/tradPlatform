@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-    import transForm from './sonTransForm.vue'
+    import transForm from './sonTransForm1.vue'
     /*import transForm from './../transportForm.vue'*/
     import AirlineForm from './sonAirlineForm.vue'
     export default {

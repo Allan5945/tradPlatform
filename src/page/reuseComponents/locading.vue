@@ -1,13 +1,13 @@
 <template>
     <div class="loader">
         <div class="loader-inner ball-spin-fade-loader loading-c">
-            <div :style="{'background-color':arg == undefined ? '#3c78ff':'white'}" v-for="key in 8"></div>
+            <div :style="{'background-color':args == undefined ? '#3c78ff':'white'}" v-for="key in 8"></div>
         </div>
     </div>
 </template>
 <script>
     export default {
-        props:['arg']
+        props:['args']
     }
 </script>
 <style scoped lang="scss">

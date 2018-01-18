@@ -33,6 +33,7 @@
         mounted:function () {
             if(this.arg.inputMes != ""){
                 this.showPlaceholder = true;
+                this.staging = {t:true,c:"",i:this.arg.inputMes,steps:1}
             }
         },
         props: ['arg'],
@@ -204,7 +205,7 @@
         top: 12px;
         left: 15px;
         transition: all .3s ease;
-        pointer-events: none;
+        z-index: -1;
     }
 </style>
 

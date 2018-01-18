@@ -10,9 +10,14 @@
                             v-if="metaData">
                 </listModule>
                 <itenListModule
-                            :ndetailData="metaData.responseList[0]"
-                            :type="typeList[detailData.demandType==1?0:1]"
-                            v-if="metaData && metaData.responseList && metaData.responseList.length>0">
+                        :ndetailData="metaData.responseList[0]"
+                        :type="typeList[detailData.demandType==1?0:1]"
+                        v-if="metaData && metaData.responseList && metaData.responseList.length>0">
+                </itenListModule>
+                <itenListModule
+                        :ndetailData="metaData.listSonDemands[0]"
+                        :type="typeList[detailData.demandType==1?0:1]"
+                        v-if="metaData && metaData.listSonDemands && metaData.listSonDemands.length>0">
                 </itenListModule>
                 <template v-if="false">
                     <header>

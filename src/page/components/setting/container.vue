@@ -98,7 +98,6 @@
 </template>
 
 <script>
-    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger'
     import changePhone from './changePhone'
     import changePwd from './changePwd'
     import bindMail from './bindMail'
@@ -135,7 +134,6 @@
         watch: {
             "userData.showBackPwd": function (n,o) {
                 if(!n && this.userData.lastShow!==""){
-//                    this.show[this.userData.lastShow]=true;
                 }
             }
         },
@@ -253,12 +251,6 @@
         created: function () {
             this.getCurrentUser()
         },
-        mounted:function () {
-            tabulationBoxTrigger.hierarchy = true;
-        },
-        destroyed: function () {
-            tabulationBoxTrigger.hierarchy = false;
-        }
     }
 </script>
 

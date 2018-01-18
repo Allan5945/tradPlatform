@@ -1,6 +1,6 @@
 <template>
     <div class="plan-wrapper" >
-        <template v-if="type.indexOf('航线')>-1">
+        <template v-if="true || type.indexOf('航线')>-1">
             <header>
                 <div class="head-til">选定意向方</div>
             </header>
@@ -51,7 +51,7 @@
                         </div>
                         <div>
                             <div>联系方式</div>
-                            <div>{{ndetailData.iHome||"-"}}</div>
+                            <div>{{ndetailData.ihome||"-"}}</div>
                         </div>
                         <div>
                             <div>拟开时间</div>
