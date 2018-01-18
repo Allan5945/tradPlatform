@@ -3,17 +3,18 @@ import letterConversions from './../../static/js/letterConversions'
 function conversions(data) {
     let mes = [];
     data.forEach((val)=>{
-        let letter = letterConversions(val.airlnCd);
+        let letter = letterConversions(val.airlnCdName);
         mes.push({
-            airportName:val.airlnCd,  // 机场名字
+            cityName:val.airlnCdName,  // 机场名字
             pinyin:letter.allLetter,    // 机场全拼音
             py:letter.fllLetter,    // 机场首字母拼音
             code:val.iata,  // 三字码
             initial:letter.fllLetter.substring(0,1), // 第一个字母
-            airLvl:val.airLvl,  // 机场等级
+            airLvl:val.airfieldlvl,  // 机场等级airfieldlvl
             iaco:val.icao,
             cityCoordinateJ:val.cityCoordinateJ,
             cityCoordinateW:val.cityCoordinateW,
+            allData:val
         })
     });
     return mes;
@@ -34,4 +35,20 @@ function conversionsCity(data) {
     });
     return mes;
 }
-export {conversions,conversionsCity};
+function conversionsCompany(data) { //航司名称
+    let mes = [];
+    data.forEach((val)=>{
+        let letter = letterConversions(val.airlnCd);
+        mes.push({
+            companyName:val.airlnCd,  // 航司名字
+            pinyin:letter.allLetter,    // 航司全拼音
+            py:letter.fllLetter,    // 航司首字母拼音
+            companyIcao:val.icao,  // 三字码
+            companyIata:val.iata,  // 二字码
+            initial:letter.fllLetter.substring(0,1), // 第一个字母
+            id:val.id,          // 航司id
+        })
+    });
+    return mes;
+}
+export {conversions,conversionsCity,conversionsCompany};

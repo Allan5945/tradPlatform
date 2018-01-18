@@ -32,7 +32,6 @@
             ]),
         },
         mounted: function () {
-
             let ar = [];
             this.routeNetwork.forEach((v)=>{
                 let selAir = this.$airMes(this.airList,v.dptIata);
@@ -40,7 +39,7 @@
                 ar.push({
                     fromName:selAir.airportName,
                     toName:ourAir.airportName,
-                    coords:[[selAir.cityCoordinateW,selAir.cityCoordinateJ],[ourAir.cityCoordinateW,ourAir.cityCoordinateJ]]
+                    coords:[[selAir.cityCoordinateJ,selAir.cityCoordinateW],[ourAir.cityCoordinateJ,ourAir.cityCoordinateW]]
                 })
             });
 
@@ -60,14 +59,13 @@
                     "data": ar
                 };
 
-
             this.allDot.forEach((v) => {
-                let mes = this.$cityMes(this.cityList, v.dpt);
+                let mes = this.$airMes(this.airList, v.dpt);
                 let obj = v.obj.split(',');
                 let demandType = v.demandType == null ? [] : v.demandType.split(',');  // 需求类型数组
                 let quantity = '';
                 let cityIcao = mes.cityIcao;
-                let coor = mes.cityCoordinate.split(',');
+                let coor = [mes.cityCoordinateJ,mes.cityCoordinateW];
                 code = v.dpt;
                 let qfType = false;
                 let demand = {
@@ -166,14 +164,13 @@
                     }
                 }
             });
-
             this.myChart = echarts.init(document.getElementById('map-warp'));
             let option = {
                 "bmap": {
                     "center": ["110.47", "32.40"], //
                     "zoom": 6,
                     "color": "red",
-                    "roam": "move",
+                    "roam": "true",
                     "type": 'bmap',
                     "mapStyle": zs
                 },
@@ -287,7 +284,6 @@
             this.$bExample.setmap(this.myChart.getModel().getComponent('bmap').getBMap());
             this.$bExample.setallNum(a);
             this.$bExample.init();
-
             this.myChart.on('click', (a) => {
                 let type = 0; // 1 查询选择机场中由当前用户提出的需求 || 0 查询选择机场的所有需求
                 if (a.data.type == 3) {
@@ -295,15 +291,15 @@
                         type = 1;
                     } else {
                         type = null;
-                    }
+                    };
                     setTimeout(() => {
+                        tabulationBoxTrigger.$emit('tipBox',a.data.code);   
                         let infMesBox = document.getElementById('inf-mes-box');
                         infMesBox.style.left = `${a.event.offsetX + 30}px`;
                         infMesBox.style.top = `${a.event.offsetY}px`;
                         infMesBox.style.display = 'block';
                     }, 50);
-                }
-                ;
+                };
                 if (type != null) {
                     this.$ajax({
                         url: "/getDemandsForCurrentCheckedCity",

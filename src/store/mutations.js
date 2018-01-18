@@ -1,13 +1,3 @@
-import {
-    TEST,
-    CLOSE,
-    INITIALIZE,
-    HYBRIDDATA,
-    MONODATA,
-    ROLE,
-    TRANSDETAIL
-} from './types'
-import Vue from 'vue'
 import * as types from './types'
 import getters from './getters'
 import {state} from './state.js'
@@ -23,6 +13,7 @@ const mutations = {
     [types.INITIALIZE](state,vl) {
         state.airList = vl.airListData;
         state.cityList = vl.cityListData;
+        state.companyList = vl.companyListData;
     },
     [types.MONODATA](state,vl) {
         if(state.demandList.type){
@@ -63,10 +54,6 @@ const mutations = {
     },
     [types.ROLE](state,vl) {
         state.role = vl;
-    },
-    [TRANSDETAIL](state,vl){
-        state.transDetail.transShow = true;
-        state.transDetail.userData = vl;
     },
     [types.SUBSIDYPOLICY](state,vl) {
         if(state.demandList.conditions.subsidyPolicy.va[vl].s){
@@ -204,12 +191,13 @@ const mutations = {
             }
         })
     },
-    [types.TAGREAD](state,vl) {  // vl.t  0,表示取消收藏，1添加收藏
+    [types.TAGREAD](state,vl) {  // vl.t  false,表示取消收藏，true添加收藏
         vl.v.forEach((v)=>{
             let ar = (state.demandList.type ? state.demandList.hybridData.list : state.demandList.monoData.list);
             ar.forEach((v2,i)=>{
-                if(v2.id == v){
+                if(v2.id == v.key){
                     if(vl.t){
+                        ar[i].collectId = v.val;
                         ar[i].collectType = 1;
                     }else{
                         ar[i].collectType = 0;
@@ -220,6 +208,9 @@ const mutations = {
     },
     [types.CHANGEORDER](state,vl) {
         state.demandList.conditions.order = !state.demandList.conditions.order;
+    },
+    [types.SEARCHINFO](state,vl) {
+        state.searchInfo = vl;
     },
 };
 export default {

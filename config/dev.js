@@ -6,6 +6,7 @@ module.exports = {
     overlay:true,
     port:8080,
     openPage:"index.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
+    socket:'socket',
     proxy:{   // 代理请求
         // '**': {  // 本地请求的地址   localhost:8088/engineer/*
         //     target: 'www.baidu.com',  // 转发请求的地址  http://dws.XXXXX.com

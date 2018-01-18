@@ -1,7 +1,7 @@
 <template>
     <div class="tabulation-box" id="tabulationBox" :class="{tabulationBoxH:hidden,scroll:hidden}">
-        <div :class="{'tagRed':(key.data.renew == 0)}" v-for="(key,index) in renderData" @mouseover="drawLine(key,true)" @mouseout="drawLine('',false)">
-            <div class="tabulation-item" @click="getDetail(key)">
+        <div :class="{'tagRed':(key.data.renew == 0),'tabulation-box-set':seted == index}" @click="getDetail(key,index)" v-for="(key,index) in renderData" @mouseover="drawLine(key,true,key.type)" @mouseout="drawLine('',false,key.type)">
+            <div class="tabulation-item">
                 <img :src='key.img' alt="">
                 <div class="font-bold">
                     <div v-for="(item,d) in key.name">
@@ -39,7 +39,8 @@
         data() {
             return {
                 hidden: false,
-                set: ''
+                set: '',
+                seted:null
             }
         },
         mounted: function () {
@@ -104,6 +105,7 @@
         },
         methods: {
             resetWindow: function () {
+                if(this.renderData.length == 0)return;
                 let messageHead = 42;
                 let tabulationHead = 62;
                 let messageBox = document.getElementById('message-box').offsetHeight;
@@ -117,26 +119,27 @@
                     this.hidden = false;
                 }
             },
-            drawLine: function (key, t) {
+            drawLine: function (key, t ,s) {
+                if(s == 1)return;
                 let pots = [];
                 if (t) {
                     if (key.data.arrvCt != null && key.data.arrvCt != '') {
-                        let jw = this.$cityMes(this.cityList, key.data.arrvCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0], jw[1]))
+                        let jw = this.$airMes(this.airList, key.data.arrv);
+                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
                     }
                     if (key.data.dptCt != null && key.data.dptCt != '') {
-                        let jw = this.$cityMes(this.cityList, key.data.dptCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0], jw[1]))
+                        let jw = this.$airMes(this.airList, key.data.dpt);
+                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
                     }
                     if (key.data.pstCt != null && key.data.pstCt != '') {
-                        let jw = this.$cityMes(this.cityList, key.data.pstCt).cityCoordinate.split(',');
-                        pots.push(new BMap.Point(jw[0], jw[1]))
+                        let jw = this.$airMes(this.airList, key.data.pst);
+                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
                     }
                 }
                 this.$bExample.setLinesList(pots, t);
             },
-            getDetail: function (val) {
-                console.info(val)
+            getDetail: function (val,i) {
+                this.seted = i;
                 if(val.data.renew == 0){
                     this.$ajax({
                         method: 'post',
@@ -175,7 +178,8 @@
                 'role',
                 'close',
                 'conditionsOpen',
-                'cityList'
+                'cityList',
+                'airList'
             ]),
             renderData: function () {
                 let d, a = [], c = [];
@@ -185,16 +189,19 @@
                     d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;;
                 }
                 d.forEach((val) => {
-                    let img, tag;
+                    let img, tag,type;
 
                     switch (val.demandtype) {
                         case "0":
+                            type = 0;
                             img = ig0;
                             break;
                         case "1":
+                            type = 1;
                             img = ig1;
                             break;
                         case "2":
+                            type = 2;
                             img = ig2;
                             break;
                     }
@@ -214,6 +221,7 @@
                             break;
                     }
                     a.push({
+                        type:type,
                         img,
                         name:val.title.split('-'),
                         tag,
@@ -332,7 +340,7 @@
                 font-size: 1.2rem;
             }
             > div {
-                font-size: 1.3em;
+                font-size: 1.2em;
                 color: #605E7C;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -393,10 +401,13 @@
             border-bottom: 1px solid #f3f3f3;
             &:hover {
                 cursor: pointer;
-                background-color: rgba(229, 229, 229, .2);
+                background-color: rgba(229, 229, 229, .35);
                 border-radius: 7px;
             }
         }
+    }
+    .tabulation-box-set{
+        background-color: rgba(229, 229, 229, .2);
     }
     .colored{
         color:rgba(96,94,124,.6) !important;

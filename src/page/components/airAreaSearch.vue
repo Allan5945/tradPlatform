@@ -1,5 +1,5 @@
 <template>
-    <div class="area-container">
+    <div class="area-container" @click.stop>
         <ul class="area-classify">
             <li v-for="(item,index) in areaClassify" :class="{'tab-active':areaTab == item}" @click="showData(item)">{{item}}</li>
         </ul>
@@ -13,7 +13,8 @@
         data() {
             return {
                 active: false,
-                areaClassify: ['省份', '大区', '管辖区域', '国际热门'],
+//                areaClassify: ['省份', '大区', '管辖区域', '国际热门'],
+                areaClassify: ['省份', '大区', '管辖区域'], // 去掉国际热门
                 areaTab: '',
                 areaList: {},
                 areaDetail: [],
@@ -139,6 +140,7 @@
         list-style: none;
     }
     .tab-active {
+        color: $border-color;
         border-bottom: 4px solid $border-color;
     }
     .li-active {
@@ -160,13 +162,15 @@
 
     .area-classify {
         display: flex;
-        font-size: 1.2rem;
+        justify-content: space-around;
         > li {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 86px;
             height: 40px;
+            font-size: 1.4rem;
+            font-weight: bold;
             text-align: center;
             &:hover {
                 border-bottom: 4px solid $border-color;

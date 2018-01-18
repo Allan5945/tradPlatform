@@ -1,11 +1,13 @@
 var path = require('path')
 var webpack = require('webpack')
-
-
-var dev = require('./dev.js')
+var dev = require('./dev.js');
 
 module.exports = {
     entry: './src/main.js',
+    // entry: {
+    //     'babel-polyfill': 'babel-polyfill',
+    //     main: './src/main.js'
+    // },
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
@@ -55,7 +57,7 @@ module.exports = {
         // openPage:"index.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
         proxy: {   // 代理请求
             '**': {
-                target: 'http://127.0.0.1',
+                target: 'http://localhost',
                 changeOrigin: true,
                 secure: false,
                 bypass: function (req, res, proxyOptions) {
@@ -66,8 +68,7 @@ module.exports = {
                     var urls = req.url;
                     if (urls == '/' || urls.indexOf("html") != -1 || urls.indexOf("png") != -1 || urls.indexOf("jpg") != -1) {
                         return "/index.html"
-                    }
-                    ;
+                    };
                 }
             }
         }

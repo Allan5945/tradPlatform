@@ -1,36 +1,54 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueRouter from 'vue-router'
 import axios from 'axios'
-import {Radio } from 'element-ui'
+import echarts from 'echarts'
+import {Radio,Pagination,Message,Checkbox,pagination} from 'element-ui'
 
 import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
-import bmapExamples from './page/components/bmap/bmapExamples'
+import BmapExamples from './page/components/bmap/bmapExamples'
 
-
-import routerConfig from './router/routerConfig.js'
+import router from './router/routerConfig.js'
 import store from './store/'
 import './public/css/all.scss'
+import './public/css/specification.scss'
 import './static/css/animate.min.css'
-// import './public/js/console'
+
+
 Vue.prototype.$ajax = axios;        // 扩展axios 请求数据
 Vue.prototype.$airMes = airMes;   // 扩展机场转换方法
 Vue.prototype.$cityMes = cityMes;  // 扩展城市转换方法
 Vue.prototype.$jsonp = jsonp;    // 扩展jsonp请求方法
-Vue.prototype.$bExample = new bmapExamples();    // 挂载
+Vue.prototype.$bExample = new BmapExamples();    // 挂载
+Vue.prototype.$chatSocket = null;   // 扩展webscoket
+Vue.prototype.$echarts = echarts;
+Vue.prototype.$message = Message;
+
+
 
 Vue.use(Radio);
-Vue.use(VueRouter);
+Vue.use(Pagination);
+Vue.use(Checkbox);
 
-const router = new VueRouter({
-    routes: routerConfig.routes,
-    // mode: 'history'
-});
+axios.interceptors.response.use(
+    data => {
+        return data;
+    },
+    error => {
+        if(error.response.status === 403){  //返回403则重新登录
+            window.sessionStorage.clear();
+            return router.push('/login');
+        }
+        Message.error({
+            message: '加载失败'
+        });
+        return Promise.reject(error)
+    }
+);
 
-new Vue({
+export default new Vue({
+    el: '#app',
     router,
     store,
-    el: '#app',
     render: h => h(App)
-})
+});

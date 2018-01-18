@@ -1,20 +1,13 @@
 <template>
     <div class="loader">
         <div class="loader-inner ball-spin-fade-loader loading-c">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div :style="{'background-color':arg == undefined ? '#3c78ff':'white'}" v-for="key in 8"></div>
         </div>
     </div>
 </template>
 <script>
     export default {
-
+        props:['arg']
     }
 </script>
 <style scoped lang="scss">
@@ -90,7 +83,7 @@
         -webkit-animation: ball-spin-fade-loader 1s -0.12s infinite linear;
         animation: ball-spin-fade-loader 1s -0.12s infinite linear; }
     .ball-spin-fade-loader > div {
-        background-color: #3c78ff;
+        // background-color: #3c78ff;
         width: 15px;
         height: 15px;
         border-radius: 100%;

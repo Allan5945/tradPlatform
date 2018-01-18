@@ -1,28 +1,27 @@
 .tool {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  padding-left: 14px;
+  flex: 1;
+  display:flex;
+  flex-flow: column nowrap;
+  align-items: left;
   background-color: white;
   border-radius: 5px;
-  > div {
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    color: #605E7C;
+  overflow: hidden;
+  >a{
+    padding-left: 14px;
     font-size: 1rem;
-    > span {
-      font-family: iconfont;
-      font-size: 1.8rem;
-      margin-right: 5px;
+    height: 40px;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    width: 100%;
+    &:hover{
+      color: #3c78ff;
+      background-color: rgba(229, 229, 229, .2);
     }
-  }
-  > div:hover{
-    color: #446cea;
-  }
-  > div:active{
-    color: #446cea;
+    >span{
+          font-family: iconfont;
+          font-size: 1.8rem;
+          margin-right: 5px;
+    }
   }
 }

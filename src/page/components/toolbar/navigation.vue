@@ -1,8 +1,13 @@
 <template>
     <div class="nav-box popup" @click.stop>
-        <div class="font-bold-x nav1">新闻资讯</div>
+        <div class="font-bold-x nav1">
+            <router-link to="/index" class="a-click">首页</router-link>
+        </div>
+        <div class="font-bold-x nav1">
+            <router-link to="/index/opinion" class="a-click">新闻舆情</router-link>
+        </div>
         <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
-            <div>
+            <div class="nav-title">
                 <span class="icon-item">&#xe60f;</span>
                 <span class="font-bold-x">个人中心</span>
                 <span class="icon-item icon-item1">&#xe605;</span>
@@ -10,7 +15,7 @@
             <userCenter v-if="userShow"></userCenter>
         </div>
         <div @click="toolShow = !toolShow;userShow=false" class="nav3">
-            <div>
+            <div class="nav-title">
                 <span class="icon-item">&#xe601;</span>
                 <span class="font-bold-x">工具 &nbsp;</span>
                 <span class="icon-item icon-item1">&#xe605;</span>
@@ -18,7 +23,7 @@
             <tool v-if="toolShow"></tool>
         </div>
         <div>
-            <div id="posted-btn" class="btn btn-b" @click="toPublish">
+            <div id="posted-btn" class="btn btn-b nav-title" @click="toPublish">
                 <span class="icon-item icon-cl">&#xe606;</span>
                 发布
             </div>
@@ -27,8 +32,8 @@
 </template>
 <script>
     import * as vx from 'vuex'
-    import tool from './tools.vue'
-    import userCenter from './userCenter.vue'
+    import tool from '../toolbar/tools.vue'
+    import userCenter from '../toolbar/userCenter.vue'
     export default {
         data() {
             return {
@@ -73,42 +78,58 @@
     .nav2,.nav3{
         width: 126px;
     }
+    .a-click{
+        display: inline-flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+    .nav-title{
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding-left: 14px;
+    }
     .nav-box {
-        position: absolute;
+        position: fixed;
         right: 60px;
         top:40px;
-        z-index: 10;
+        z-index: 15;
         display: flex;
         color: #605E7C;
-        width: 480px;
+        width: 606px;
         font-size: 1.4rem;
+        height: 40px;
         @include user-select;
-        > div {
+        >div:last-of-type{
+            left: 506px;
+            width: 134px;
+            position: absolute;
             height: 40px;
-            line-height: 40px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-flow: row wrap;
-            cursor: pointer;
-            /*width: 120px;*/
-            color: #605E7C;
-            font-size:1.4rem;
         }
-        >div:last-of-type{
-            left: 380px;
-            width: 120px;
-            position: absolute;
+        > div{
+            &:hover{
+                color: #446cea;
+                cursor: pointer;
+                /*background-color: rgba(229, 229, 229, .2);*/
+            }
+            >a:hover {
+                color: #446cea;
+                background-color: rgba(229, 229, 229, .2);
+            }
         }
-        > div:hover {
-            color: #446cea;
+        > div{
+            &:active{
+                color: #446cea;
+                cursor: pointer;
+            }
+            >a:active {
+                color: #446cea;
+            }
         }
-        > div:active {
-            color: #446cea;
-        }
-    }
-    .user-center {
-
     }
     .icon-item {
         font-size: 1.6rem;
@@ -122,8 +143,10 @@
         border-radius: 15px;
         height: 30px;
         color: white;
+        box-shadow: 0px 2px 16px rgba(4, 7, 156,.4) !important;
+        padding-left: 40px;
+        justify-content: flex-start;
     }
-
     .icon-cl {
         color: white;
         display: inline-block;

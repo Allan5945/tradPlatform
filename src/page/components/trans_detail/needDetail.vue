@@ -1,82 +1,177 @@
 <template>
-    <div class="detail-wrapper">
-        <header>
-            <div class="top-til">需求详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-            <div class="head-til">{{detailData.title}}</div>
-            <div class="tips">
-                <span>创建于{{detailData.releasetime}}</span>
-                <span>已有{{intentionCount}}位用户发起意向</span>
+    <div>
+        <div class="detail-wrapper">
+            <header>
+                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
+                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+                <div class="tips">
+                    <span>创建于{{detailData.releasetime||'-'}}</span>
+                    <span>已有{{intentionCount||'0'}}位用户发起意向</span>
+                </div>
+            </header>
+            <div class="content">
+                <div>
+                    <div>机型</div>
+                    <div>{{detailData.aircrfttyp||'-'}}</div>
+                </div>
+                 <div>
+                    <div>座位布局</div>
+                    <div>{{detailData.seating||'-'}}</div>
+                </div>
+                <div>
+                    <div>运力归属</div>
+                    <div>***</div>
+                </div>
+                 <div>
+                    <div>运力基地</div>
+                    <div>{{detailData.dptNm||'-'}}</div>
+                </div>
+                <div >
+                    <div>出港时刻</div>
+                    <div>{{detailData.dptTime||'-'}}</div>
+                </div>
+                <div>
+                    <div>班期</div>
+                    <div>{{detailData.days||'-'}}</div>
+                </div>
+               <div class="intent-airline" v-if="detailData.intendedAirlines">
+                   <div>意向航线</div>
+                   <div class="i-line">
+                     {{detailData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                     {{detailData.intendedAirlines[0].arrvName||'-'}}
+                   </div>
+               </div>
+               <div class="intent-airline" v-else>
+                   <div>意向航线</div>
+                   <div class="i-line">-</div>
+               </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                </div>
+                <div style="margin:0 0 0 40px;">
+                    <div>接受调度</div>
+                    <div>{{detailData.schedulingStr||'-'}}</div>
+                </div>
+                <div>
+                    <div>有效期</div>
+                    <div>{{detailData.periodValidity||'-'}}</div>
+                </div>
             </div>
-        </header>
-        <div class="content">
-            <div >
-                <div>出港时刻</div>
-                <div>{{detailData.dptTime}}</div>
-            </div>
-            <div>
-                <div>班期</div>
-                <div>{{detailData.days}}</div>
-            </div>
-            <div>
-                <div>机型</div>
-                <div>{{detailData.aircrfttyp}}</div>
-            </div>
-             <div>
-                <div>运力基地</div>
-                <div>{{detailData.dptNm}}</div>
-            </div>
-            <div>
-                <div>运力归属</div>
-                <div>***</div>
-            </div>
-            <div>
-                <div>座位布局</div>
-                <div>{{detailData.seating}}</div>
-            </div>
-            <div>
-                <div>小时成本</div>
-                <div>{{detailData.hourscost}}万/小时</div>
-            </div>
-            <div>
-                <div>接受调度</div>
-                <div>{{detailData.schedulingStr}}</div>
-            </div>
-            <div>
-                <div>有效期</div>
-                <div>{{detailData.periodValidity}}</div>
-            </div>
+            <footer>
+                <div>*隐藏信息在提交意向后可查看</div>
+                <div class="btn">
+                    <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn" :class="{active: !inventBtnShow}"  @click="collect" v-else>收藏</div>
+                </div>
+            </footer>
         </div>
-        <footer>
-            <div>*隐藏信息在提交意向后可查看</div>
-            <div class="btn">
-                <div class="intent-btn" @click="haveInvent"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                <div class="col-btn">收藏</div>
-            </div>
-        </footer>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
+        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+        <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
     </div>
 </template>
 
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';
+ import intentForm from './intentForm.vue'
+ import transDialog from './transDialog.vue'
+ import paySuccess  from './paySuccess.vue'
+
  export default {
      data(){
          return{
              getDetail:[],
-             detailData:[],
+             detailData:{},
              intentionCount:0,
-             isIntentionMoney:false
+             demandId:'',
+             text:'已收藏',
+             isCollect:false,
+             intentFormShow:false,
+             dialog:false,
+             payDialog:false,
+             inventBtnShow:false
          }
      },
      methods:{
          closeDetail:function(){
-            this.$emit("closeDetail")
+            this.$emit('closeDetail');
          },
+         closeForm:function(){
+            this.intentFormShow = false;
+         },
+         closeDialog:function(){
+            this.dialog = false;
+         },
+         sureDialog:function(){
+            this.intentFormShow = false;
+            this.payDialog = true;
+         },
+         closePaySuccess:function(){
+            this.payDialog = false;
+            this.$emit('closeDetail');
+        },
          haveInvent:function(){
-            /* if(!this.isIntentionMoney){
-                this.$emit("formShow");
-             }*/
-             this.$emit("formShow");
+            this.intentFormShow = true;
+         },
+         collect:function(){
+             this.$ajax({
+                method: 'post',
+                url: '/addCollect',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandIds: this.demandId
+                }
+                })
+                .then((response) => {
+                  if(response.data.opResult == "0"){
+                      this.isCollect = true;
+                  }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+         },
+         cancelCollect:function(){
+            this.$ajax({
+                method: 'post',
+                url: '/delCollectByDemandId',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.demandId
+                  }
+                })
+                .then((response) => {
+                     if(response.data.opResult == "0"){
+                      this.isCollect = false;
+                  }else{
+                      this.$emit('closeDetail');
+                      this.$message({
+                          message: '数据错误，请稍后再试!',
+                          type: 'warning',
+                          duration:2000
+                      });
+                  }
+                })
+                .catch((error) => {
+                         console.log(error);
+                    }
+                );
+         },
+         changeText:function(i){
+          if(i == '1'){
+            this.text = "取消收藏";
+          }else{
+            this.text = "已收藏";
+          }
          }
      },
      computed: {
@@ -87,7 +182,8 @@
       mounted() {
         tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
             if(val.data.demandtype == 1 && this.role.role == 1){
-               console.log("demandtype"+val.data.demandtype);
+               //console.log("demandtype"+val.data.demandtype);
+                this.demandId = val.data.id;
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -95,22 +191,40 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: this.demandId
                 }
                 })
                 .then((response) => {
-                    this.isIntentionMoney = response.data.isIntentionMoney;
+                    if(response.data.opResult == "004"|| response.data.receiveIntention == null){
+                        this.$emit('transShow');
+                    }
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
+
+                    let progress = this.detailData.demandprogress;
+                     //需求发布、意向征集
+                    if(progress == '0'||progress == '1'){
+                        this.inventBtnShow = true;
+                    }
+
+                     if(response.data.isAlreadyCollect == true){
+                        this.isCollect = true;
+                    }else if(response.data.isAlreadyCollect == false){
+                        this.isCollect = false;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-            this.$emit("transShow");
             };
         });
      },
+      components: {
+            intentForm,
+            transDialog,
+            paySuccess
+        }
 }
 </script>
 
@@ -119,7 +233,7 @@
         position:absolute;
         top:0;
         right:0;
-        z-index: 12;
+        z-index: 16;
         width:600px;
         height:100%;
         min-height:600px;
@@ -205,6 +319,18 @@
       >div:nth-of-type(odd){
           margin-right:40px;
       }
+      .intent-airline{
+          width:100%;
+          .i-line{
+              width:440px;
+              margin-right:0;
+              display: flex;
+              .iconfont{
+                display:block;
+                margin:0 25px;
+              }
+          }
+      }
     }
     footer{
         >div:nth-of-type(1){
@@ -246,6 +372,18 @@
                   border-radius:100px;
                   cursor:pointer;
                   box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  &:hover{
+                      color:#fff;
+                      background-color:#3c78ff;
+                  }
+              }
+              >.cancel{
+                  color:#fff;
+                  background-color:#3c78ff;
+
+              }
+              >.active{
+                width:180px;
               }
           }
     }

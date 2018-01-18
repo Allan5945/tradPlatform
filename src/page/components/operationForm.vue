@@ -5,28 +5,29 @@
                 <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
             </div>
             <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact">
+                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
+                <div class="error" v-show="isError1" style="left:100px;top:158px;">*请填写联系人</div>
             </div>
             <div class="form-box" style="position:relative;">
                 <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                <div class="error" v-show="isError">*电话格式有误，请重新输入</div>
+                <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
             </div>
-            <div style="height:20px;width:100%;" v-if="isError"></div>
+            <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
         </div>
         <div class="t-optional">
+           <!--  <div class="form-box">
+               <div class="t-title">需求类型</div>
+               <div class="need-btn"  @click="showBox=!showBox">
+                   <div class="title" v-text="msg" :class="{selected:isSel}"></div>
+                   <span class="icon-item icon-item1">&#xe605;</span>
+                   <div class="selc-list dropDown popup" v-show="showBox">
+                       <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
+                   </div>
+               </div>
+           </div> -->
             <div class="form-box">
-                <div class="t-title">需求类型</div>
-                <div class="need-btn"  @click="showBox=!showBox">
-                    <div class="title" v-text="msg" :class="{selected:isSel}"></div>
-                    <span class="icon-item icon-item1">&#xe605;</span>
-                    <div class="selc-list dropDown popup" v-show="showBox">
-                        <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-box" style="position:relative;">
                 <div class="t-title">航班号</div>
-                <input type="text" placeholder="请输入" v-model="flightNum">
+                <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
                 <!-- <div class="num-list popup scroll" v-show="flightListShow">
                     <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
                 </div> -->
@@ -35,7 +36,7 @@
                     <div class="t-title">小时成本</div>
                     <div class="t-input">
                         <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                        <span>元</span>
+                        <span>万元</span>
                 </div>
             </div>
             <div class="form-box tips">
@@ -55,9 +56,10 @@
  export default {
         data () {
             return{
-                showBox: false,
+                //showBox: false,
                 isSel: false,
-                isError: false,
+                isError1: false,
+                isError2: false,
                 flightListShow:false,
                 contact:'',
                 hourcost:'',
@@ -65,20 +67,29 @@
                 phoneNum:'',
                 flightNum:'',
                 flightData:[],
-                msg:'选择需求类型',
-                needType:['运力投放','航线需求']
+                //msg:'选择需求类型',
+               // needType:['运力投放','航线需求']
             }
         },
         methods:{
-             getNeed: function(i) {
+            /* getNeed: function(i) {
                 this.msg = this.needType[i];
                 this.isSel = true;
+            },*/
+            verifyContact:function(){
+                 if(this.contact){
+                     this.isError1 = false;
+                }
+                this.contact = this.contact.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
             },
             verifyPhon: function () {
-                if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))){
-                    this.isError = true;
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum))){
+                    this.isError2 = true;
                 }else{
-                    this.isError = false;
+                    this.isError2 = false;
+                }
+                if(this.phoneNum == ''){
+                    this.isError2 = false;
                 }
             },
             submit:function(){
@@ -86,25 +97,44 @@
                 demandData.demandtype = "2";
                 demandData.contact = this.contact;
                 demandData.iHome = this.phoneNum;
-                demandData.demandtypeStr = this.msg;
-                //demandData.demandStateStr =
                 demandData.fltNbr  = this.flightNum;
-                demandData.hourcost = this.hourcost;
+                demandData.hourscost = this.hourcost;
                 demandData.remark = this.tip;
-                this.$ajax({
-                url:"/demandAdd",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: demandData
-                }) .then((response) => {
-                        //console.log(response.opResult);
-                }) .catch((error) => {
-                        console.log(error);
-                    });
+                //必填信息验证
+                if(!this.contact){
+                    this.isError1 = true;
+                }else if(this.phoneNum == ''){
+                    this.isError2 = true;
+                }else{
+                    if(!this.isError1 && !this.isError2){
+                            this.$ajax({
+                        url:"/demandAdd",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: demandData
+                        }) .then((response) => {
+                            if(response.data.opResult == "0"){
+                                this.$emit("closeForm");
+                                this.$message({
+                                  message: '发布成功!',
+                                  type: 'success',
+                                  duration:2000
+                                });
+                            }else{
+                                 this.$message({
+                                  message: '提交失败，请稍后再试!',
+                                  type: 'warning',
+                                  duration:2000
+                                });
+                            }
+                        }) .catch((error) => {
+                                console.log(error);
+                            });
 
-                 this.$emit("closeForm");
+                    }
+                }
             },
             cancel: function(){
                 this.$emit("closeForm");
@@ -207,7 +237,7 @@
             width:180px;
             border-bottom:1px solid rgba(151,151,151,.3);
             >input{
-                width:164px;
+                width:150px;
                 background-color: #FBFBFB;
                 border:0;
             }
@@ -252,25 +282,25 @@
                 left:0;
             }
        }
-      .dropDown {
-          width:180px;
-          background-color: #fff;
-          border-radius: 4px;
-          z-index:999;
-          >div {
-            width: 100%;
-            height:35px;
-            box-sizing: border-box;
-            line-height:35px;
-            padding-left: 14px;
-            color: #605E7C;
-            font-size: 1.2rem;
-            cursor:pointer;
-            &:hover{
-                background-color:rgba(235,235,235,.5);
-            }
-          }
-      }
+     /*  .dropDown {
+         width:180px;
+         background-color: #fff;
+         border-radius: 4px;
+         z-index:999;
+         >div {
+           width: 100%;
+           height:35px;
+           box-sizing: border-box;
+           line-height:35px;
+           padding-left: 14px;
+           color: #605E7C;
+           font-size: 1.2rem;
+           cursor:pointer;
+           &:hover{
+               background-color:rgba(235,235,235,.5);
+           }
+         }
+     } */
       .tips{
         width:100%;
         position:relative;
@@ -330,7 +360,7 @@
     }
     .agent-form .pad{
       height:26px;
-      padding:17px 0;
+      padding:27px 0;
     }
     .count {
         position:absolute;

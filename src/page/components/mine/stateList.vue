@@ -1,8 +1,6 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="item in state" @click="stateClickFn(item)">{{item}}</li>
-        </ul>
+    <div class="ul">
+        <div class="li" v-for="item in state" @click="stateClickFn(item)">{{item}}</div>
     </div>
 </template>
 <script>
@@ -26,7 +24,7 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
-    ul {
+    .ul {
         position: absolute;
         top: 40px;
         left: 0;
@@ -37,7 +35,7 @@
         box-shadow: 0 2px 11px $border-color;
         background: white;
         z-index: 2;
-        li {
+        .li {
             display: flex;
             align-items: center;
             padding-left: 17px;

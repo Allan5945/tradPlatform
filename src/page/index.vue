@@ -2,27 +2,20 @@
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
         <navigation @toShow="toShow"></navigation>
-        <toPublish v-show="show"></toPublish>
+        <toPublish v-show="publichShow"></toPublish>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
-        <transition name="dialog">
-            <transDialog v-show="dialog"  @cancel="dialog = false" @sure="sureDialog"></transDialog>
-        </transition>
-        <needDetail @formShow="formShow" v-show="detailShow" @transShow="transShow" @closeDetail="closeDetail"></needDetail>
-        <myPlan v-show="planShow" @showPlan="showPlan"></myplan>
-        <intentForm v-show="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm"></intentForm>
-        <myIntention @closeIntent="intentShow = false" v-show="intentShow" @formShow="formShow1" @openIntent="openIntent"></myintention>
-        <myIntentForm v-show="myFormShow" @closeMyForm="closeMyForm"></myIntentForm>
-         <infPanel></infPanel>
-        <paySuccess @cancel="payDialog = false" v-show="payDialog"></paySuccess>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='transShow2'  @closeThis="closeThis"></airlineDetailPayAfter>
-         <!--<myIndex></myIndex>-->
-        <routeNetwork></routeNetwork>
-         <!--<myIndexFzz></myIndexFzz>-->
+        <infPanel></infPanel>
+        <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
+        <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <routeNetwork v-if="role.role != '2'"></routeNetwork>
+        <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
+        <router-view></router-view>
+        <newsTip></newsTip>
     </div>
 </template>
-
 <script>
+    import Vue from 'vue'
     import * as vx from 'vuex'
     import index from './../page/index.vue'
     import bmap from './components/bmap/bmap.vue'
@@ -30,47 +23,37 @@
     import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './components/demandListComponents/mesBox.vue'
     import toPublish from './../page/components/toPublish.vue'
-    import needDetail from './../page/components/trans_detail/needDetail.vue'
-    import intentForm from './../page/components/trans_detail/intentForm.vue'
-    import myPlan from './../page/components/trans_detail/myPlan.vue'
-    import transDialog from './../page/components/trans_detail/dialog.vue'
-    import myIntention from './../page/components/trans_detail/myIntention.vue'
-    import myIntentForm from './../page/components/trans_detail/myIntentForm.vue'
-    import paySuccess  from './../page/components/trans_detail/paySuccess.vue'
-    import {conversionsCity,conversions} from './../public/js/conversions'
+    import {conversionsCity,conversions,conversionsCompany} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
-    import infPanel from './components/bmap/infPanel.vue'
-
-    import myIndex from './../page/components/mine/myIndex.vue'
-    import myIndexFzz from './../page/components/mine/myIndex-fzz.vue'
-    import myPublish from './../page/components/mine/myPublish.vue'
-    import myPurpose from './../page/components/mine/myPurpose.vue'
-
-
+    import infPanel from './components/independenceComponents/infPanel.vue'
+    import transIndex from './components/trans_detail/transIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
+    //test
+    import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
+    import newsTip from './components/toolbar/newsTip.vue';
+
+    import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
+    import ChatSocket from '$src/page/components/timelyCommunication/communicationConstructor.js';
+
     export default {
         data() {
             return {
                 test1:false,
                 renderComponent:false,
                 name: 1,
-                show: false,
-                dialog:false,
-                payDialog:false,
-                intentFormShow:false,
-                planShow:false,
-                intentShow:false,
-                myFormShow:false,
+                publichShow: false,
                 detailShow:false,
-                detailShow2: false,
+                detailShow2:false,
                 loadingData: {
                     airList: false,
                     demands: false,
                     cityList: false,
+                    companyList: false,
                     routeNetwork:false,
                     data: {
                         airListData: null,
                         cityListData: null,
+                        companyListData: null,
                     }
                 },
                 allDot: '',
@@ -83,45 +66,20 @@
                 'close',
                 'initialize'
             ]),
+            contactClient(){  // 联系客户
+
+            },
             toShow() {
-                this.show = !this.show;
-            },
-            formShow(){
-                this.intentFormShow = !this.intentFormShow;
-            },
-            formShow1(){
-                this.myFormShow = !this.myFormShow
-            },
-            openIntent() {
-                this.intentShow = true;
-            },
-            closeForm(){
-                this.intentFormShow = !this.intentFormShow;
-            },
-            closeMyForm(){
-                this.myFormShow = !this.myFormShow;
-            },
-            closeDetail(){
-                this.detailShow =false;
+                this.publichShow = !this.publichShow;
             },
              closeThis() {
                 this.detailShow2 = false;
             },
-            sureDialog(){
-                this.intentFormShow = false;
-                this.planShow = true;
-                this.payDialog = true;
-                this.detailShow = false;
-            },
-            showPlan:function(){
-                this.planShow = false;
-            },
-            transShow:function(){
+            closeAirline:function(){
                 this.detailShow = true;
                 this.detailShow2 = false;
-
             },
-            transShow2: function () {
+            closeTrans: function () {
                 this.detailShow2 = true;
                 this.detailShow = false;
             },
@@ -132,20 +90,22 @@
                     this.loadingData.demands &&
                     this.loadingData.routeNetwork &&
                     this.loadingData.data.airListData != null &&
-                    this.loadingData.data.cityListData != null
+                    this.loadingData.data.cityListData != null &&
+                    this.loadingData.data.companyListData != null
                 ) {
                     this.$store.dispatch('initialize', this.loadingData.data).then(() => {
                         this.renderComponent = true;
                     });
-
-                }
-                ;
+                };
             }
         },
         beforeMount: function () {
-            if (this.role == null) window.location.href = '#/login'
+
         },
         mounted: function () {
+            if(Vue.prototype.$chatSocket == null){
+                Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
+            };
             this.$ajax({
                 method: 'post',
                 url: '/airList',
@@ -178,7 +138,22 @@
                         console.log(error);
                     }
                 );
-
+            this.$ajax({
+                method: 'post',
+                url: '/airCompenyList',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then((response) => {
+                    this.loadingData.data.companyListData = conversionsCompany(response.data.list);
+                    this.loadingData.companyList = true;
+                    this.init();
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
             this.$ajax({
                 method: 'post',
                 url: '/getAllDemands',
@@ -220,51 +195,44 @@
                     if(response.data.list != null){
                         this.$store.dispatch('routeNetwork', response.data.list).then(() => {
                         });
-                        this.loadingData.routeNetwork = true;
-                        this.init();
                     }
+                    this.loadingData.routeNetwork = true;
+                    this.init();
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+//
         },
         computed: {
             ...vx.mapGetters([
                 'c_updated',
                 'airList',
-                'role'
-            ])
+                'role',
+            ]),
+            dis:function () {  // 计算聊天框是显示还是关闭
+                return {
+                    shut:localCommunication.chat.shut,
+                    narrow:localCommunication.chat.narrow
+                };
+            }
         },
         components: {
+            newsTip,
             bmap,
             navigation,
             tagIcon,
             messageBox,
             toPublish,
-            needDetail,
-            intentForm,
-            myPlan,
-            transDialog,
-            myIntention,
-            paySuccess,
             airlineDetailPayAfter,
+            transIndex,
             infPanel,
-            myIntentForm,
-            myIndex,
-            myIndexFzz,
-            myPublish,
-            myPurpose,
             routeNetwork,
+            timelyCommunication,
         }
     }
 </script>
 
 <style lang="scss">
-    .dialog-enter-active, .dialog-leave-active {
-     transition: opacity .3s;
-}
-.dialog-enter, .dialog-leave-to{
-    opacity: 0;
-}
 </style>

@@ -1,70 +1,112 @@
 <template>
     <div class="dialog">
         <div class="dialog-wrapper">
-            <div class="cancel"><span class="iconfont" @click="cancelEvent">&#xe62c;</span></div>
+            <div class="cancel" @click="cancelEvent"><span class="iconfont">&#xe62c;</span></div>
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
-            <div class="dialog-content">是否确认缴纳意向金***元</div>
+            <div class="dialog-content">是否确认缴纳意向金50000元</div>
             <div class="dialog-btns">
-                <div class=" btn sure-btn" @click="sureEvent" v-text="Btext">确认缴纳</div>
+                <div class="btn btn-b sure-btn" @click="sureEvent">
+                    <span v-text="Btext" v-if="!loadingShow"></span>
+                    <loading class="search-ing" :arg="false" v-if="loadingShow"></loading>
+                </div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>
-                <span class="iconfont" v-show="iconShow">&#xe620;</span>
             </div>
             <div class="note">
                 <div class="note1">*若交易失败，意向金将退回到您的账号</div>
                 <div class="note2"><a>申请代付意向金></a></div>
-
             </div>
         </div>
+        <transition-group name="fade">
+            <paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn" :key="1"></paySuccess>
+            <payFailOfBalance v-show="payFailOfBalanceShow" @cancel="closePayFailOfBalance" :key="2"></payFailOfBalance>
+        </transition-group>
     </div>
 </template>
 
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+    import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
+    import payFailOfBalance from '$src/page/components/trans_detail/payFailOfBalance.vue'
+    import loading from '$src/page/reuseComponents/locading.vue'
     export default {
         data(){
             return{
                 Btext: '确认缴纳',
-                iconShow:false,
-                sendData: {}
+                sendData: {},
+                paySuccessShow: false, // 支付成功
+                payFailOfBalanceShow: false, // 余额不足
+                loadingShow: false,
             }
         },
         created() {
-            // 接收airlineWrite.vue传来的参数
+            // 接收airlineDetailPayAfter.vue传来的参数
             tabulationBoxTrigger.$on('responseText',(val) => {
-                console.info('dialog接收airlineWrite:');
-                console.info(val);
-                this.sendData.id = val.Id;
-                this.sendData.employeeId = val.employeeId;
+//                console.info('dialog接收airlineDetailPayAfter:');
+//                console.info(val);
+                this.sendData.demandId = val;
+                this.loadingShow = false;
             })
         },
+        components: {
+            loading,
+            paySuccess,
+            payFailOfBalance
+        },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             cancelEvent(){
                 this.$emit('cancel');
             },
+            closePaySucssFn: function () { // 支付成功
+                this.$emit('cancel');
+                this.$emit('sure');
+                this.paySuccessShow = false;
+            },
+            closePayFailOfBalance: function () {  // 余额不足
+                this.$emit('cancel');
+                this.payFailOfBalanceShow = false;
+            },
             sureEvent(){
-                this.sendData.intentionStatu = '0';
-                console.info(this.sendData)
-                let that = this;
-                setTimeout(function(){
-                    that.$emit('cancel');
-                    that.$emit('sure');
-                },1000)
+                this.sendData.intentionStatu = '0'; //0：交钱，1：未交费
                 this.$ajax({
-                    url: "/changeIntentionMoneyStatusForResponse",
+                    url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: this.sendData
                 }).then((response) => {
-                    console.info(response.data)
+                    if(response.data.opResult === '0'){
+//                        alert('成功提交意向金！');
+                        this.open6(`成功提交意向金！`);
+                        this.paySuccessShow = true; //“缴纳完成”组件显示
+                        setTimeout(() => {
+                            this.closePaySucssFn();
+                        }, 1000)
+                    }else if(response.data.opResult === '4') { // 4: 余额不足
+                        this.payFailOfBalanceShow = true;
+                    }else{
+//                        alert('错误代码：' + response.data.opResult);
+                        this.open8(`错误代码：${response.data.opResult}`);
+                    }
                 }).catch((error) => {
                     console.log(error);
                 });
-                this.iconShow = true;
-                this.Btext = '';
-
-
+                this.loadingShow = true;
             }
         }
     }
@@ -140,14 +182,6 @@
                 color: #fff;
                 margin-right:8px;
             }
-            span{
-                 position:absolute;
-                 top:10px;
-                 left:194px;
-                 color:#ffffff;
-                 font-size:16px;
-                 cursor:pointer;
-            }
         }
     }
     .note{
@@ -175,9 +209,12 @@
         border:1px solid #c0ccda;
         cursor:pointer;
     }
-    @keyframes dialog {
-        from{
-            top: 15%;
-        }
+    .search-ing {
+        width: 23px;
+        height: 30px;
+        color: #3c78ff !important;
+        display: inline-block;
+        transform: scale(.25);
     }
+
 </style>

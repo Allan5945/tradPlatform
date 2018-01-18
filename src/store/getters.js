@@ -11,6 +11,9 @@ export default {
     ,cityList:(state)=>{
         return state.cityList;
     }
+    ,companyList:(state)=>{
+        return state.companyList;
+    }
     ,monoData:(state)=>{
         return state.demandList.monoData;
     }
@@ -20,14 +23,13 @@ export default {
     role:(state)=>{
         return state.role;
     },
-    transDetail:(state)=>{
-        return state.transDetail;
-    },
     conditionsOpen:(state)=>{
         return state.conditionsOpen;
     },
     routeNetwork:(state)=>{
         return state.routeNetwork;
-    }
-
+    },
+    searchInfo:(state)=>{
+        return state.searchInfo;
+    },
 }

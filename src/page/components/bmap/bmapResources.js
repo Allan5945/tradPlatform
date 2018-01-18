@@ -45,45 +45,46 @@ const sy = {
         }]
 };
 const zs = {
-    "styleJson": [{
-        "featureType": "water",  // 水
-        "elementType": "all",
-        "stylers": {
-            "color": "#d6d6d5",
-            "visibility": "on"
-        }
-    },
-        {
-            "featureType": "land",  // 陆地
+    "styleJson": [
+        { //海洋颜色
+            "featureType": "water",
             "elementType": "all",
             "stylers": {
-                "color": "#f6f6f6",
+                "color": "#bec8e1",
                 "visibility": "on"
             }
         },
-        {
-            "featureType": "boundary",  //边境线
+        {   // 陆地颜色
+            "featureType": "land",
             "elementType": "all",
             "stylers": {
-                "color": "#bdbdbd",
+                "color": "#ededed",
                 "visibility": "on"
             }
         },
-        {
+        {   //边境线
+            "featureType": "boundary",
+            "elementType": "all",
+            "stylers": {
+                "color": "#bfbfbf",
+                "visibility": "on"
+            }
+        },
+        {   //城市主路
             "featureType": "arterial",
             "elementType": "all",
             "stylers": {
                 "visibility": "off"
             }
         },
-        {
+        {   //高速公路
             "featureType": "highway",
             "elementType": "all",
             "stylers": {
                 "visibility": "off"
             }
         },
-        {
+        {  //行政标注
             "featureType": "label",
             "elementType": "all",
             "stylers": {
