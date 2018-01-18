@@ -815,6 +815,8 @@
                     return '待议';
                 }else if(index === '4') {
                     return '无补贴';
+                }else {
+                    return '-';
                 }
             },
             // 卡片新增功能：意向列表上添加状态信息
