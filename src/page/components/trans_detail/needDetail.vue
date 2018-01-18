@@ -84,7 +84,6 @@
  export default {
      data(){
          return{
-             getDetail:[],
              detailData:{},
              intentionCount:0,
              demandId:'',

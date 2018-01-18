@@ -1258,7 +1258,7 @@
             resData5: function (data) {
                 this.isSearch5 = false;
                 this.fifthArea = data.name;
-                this.qyCode5 = data.code;
+                this.qyCode5 = data.id;
             },
             resData6: function (data) {
                 this.isSearch6 = false;
@@ -1733,7 +1733,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 2;
+        z-index: 12;
     }
 
     .container {

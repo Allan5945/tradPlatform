@@ -2,16 +2,21 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
-                <div class="note">
-                    <span>创建于{{detailData.releasetime||'-'}}</span>
-                    <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
-                </div>
-                <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
+               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeIntent">&#xe62c;</span></div>
+               <div class="head-til">{{detailData.title||'-'}}</div>
+               <div class="tips">
+                   <div style="width:156px;">创建于{{detailData.releasetime||'-'}}</div>
+                   <div style="width:110px;">状态：<span>{{detailData.demandprogressStr||'-'}}</span></div>
+                   <div style="width:237px;">关联需求：
+                      <div class="back-link" @click="toBack">
+                        <span class="til">{{title}}</span>
+                        <span class="iconfont">&#xe679;</span>
+                      </div>
+                  </div>
+               </div>
             </header>
             <div class="content">
-                <div class="table-form">
+                <div class="table-form" v-if="transShow">
                     <div>
                         <div>机型</div>
                         <div>{{detailData.aircrfttyp||'-'}}</div>
@@ -65,12 +70,106 @@
                         <div>{{detailData.remark||'-'}}</div>
                      </div>
                 </div>
+                <div class="intent air-detail" style="margin-bottom:0;" v-else>
+                        <div class="airline" style="margin:40px 40px 0 40px;border:0;">
+                                <div class="airplace">
+                                    <div v-if="detailData.dptState =='0' ">始发机场</div>
+                                    <div v-else>始发区域</div>
+                                    <div>
+                                        <div v-if="detailData.dptState =='0' ">{{detailData.dptNm||'-'}}</div>
+                                        <div v-else>{{detailData.dpt||'-'}}</div>
+                                        <div v-if="detailData.dptState =='0' ">{{detailData.dptAcceptnearairportStr||'-'}}临近机场</div>
+                                    </div>
+                                    <div class="resouse" v-if="detailData.dptState =='0' ">
+                                        <div>出港资源</div>
+                                        <div v-if="detailData.dptTimeresources == '0'">{{detailData.dptTime||'-'}}</div>
+                                        <div v-else>{{detailData.dptTimeresourcesStr||'-'}}</div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                                <div class="airplace">
+                                    <div v-if="detailData.pstState =='0' ">经停机场</div>
+                                    <div v-else>经停区域</div>
+                                    <div>
+                                        <div v-if="detailData.pstState =='0' ">{{detailData.pstNm||'-'}}</div>
+                                        <div v-else>{{detailData.pst||'-'}}</div>
+                                         <div v-if="detailData.pstState =='0' ">{{detailData.pstAcceptnearairportStr||'-'}}临近机场</div>
+                                    </div>
+                                    <div class="resouse" v-if="detailData.pstState =='0' ">
+                                        <div>出港资源</div>
+                                        <div v-if="detailData.pstTimeresources == '0'">{{detailData.pstTime||'-'}}</div>
+                                        <div v-else>{{detailData.pstTimeresourcesStr||'-'}}</div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:58px;"><span class="iconfont">&#xe672;</span></div>
+                                <div class="airplace">
+                                    <div v-if="detailData.arrvState =='0' ">到达机场</div>
+                                    <div v-else>到达区域</div>
+                                    <div>
+                                        <div v-if="detailData.arrvState =='0' ">{{detailData.arrvNm||'-'}}</div>
+                                        <div v-else>{{detailData.arrv||'-'}}</div>
+                                        <div v-if="detailData.arrvState =='0' ">{{detailData.arrvAcceptnearairportStr||'-'}}临近机场</div>
+                                    </div>
+                                    <div class="resouse" v-if="detailData.arrvState =='0' ">
+                                        <div>出港资源</div>
+                                        <div v-if="detailData.arrvTimeresources == '0'">{{detailData.arrvTime||'-'}}</div>
+                                        <div v-else>{{detailData.arrvTimeresourcesStr||'-'}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="table-form" style="padding-left:40px;">
+                                <div>
+                                    <div>联系人</div>
+                                    <div>{{detailData.contact||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>联系方式</div>
+                                    <div>{{detailData.iHome||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>拟开时间</div>
+                                    <div>{{detailData.sailingtime||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>拟开班期</div>
+                                    <div>{{detailData.days||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>拟飞机型</div>
+                                    <div>{{detailData.aircrfttyp||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>座位数</div>
+                                    <div>{{detailData.seating||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>客量期望</div>
+                                    <div>{{detailData.avgguestexpect||'-'}}人/均班</div>
+                                </div>
+                                <div>
+                                    <div>客座率期望</div>
+                                    <div>{{detailData.loadfactorsexpect||'-'}}%</div>
+                                </div>
+                                <div>
+                                    <div>补贴政策</div>
+                                    <div>{{turnPolicyCode(detailData.subsidypolicy)||'-'}}</div>
+                                </div>
+                                <div>
+                                    <div>有效期</div>
+                                    <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
+                                </div>
+                                <div class="tips">
+                                    <div>其他说明</div>
+                                    <div>{{detailData.remark||'-'}}</div>
+                                </div>
+                        </div>
+                </div>
             <div class="intent">
                 <div class="intent-til">
                     <div>收到的意向</div>
                     <div>已有<span>{{this.intentionCount||'0' }}</span>位用户发起意向</div>
                 </div>
-                <div class="intent-form" v-if="this.isSign">
+                <div class="intent-form">
                     <div>
                         <div>收到时间
                           <span class="iconfont icon-up active">&#xe605;</span>
@@ -205,9 +304,7 @@
             </div>
             </div>
             <footer v-show="footShow">
-                <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
-                    <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
                     <div class="col-btn" @click="closeNeed">结束需求</div>
                 </div>
             </footer>
@@ -215,18 +312,15 @@
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
         <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
-         <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
-
 <script>
   import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
-  import myIntentForm from './myIntentForm.vue'
-  import sureForm from './sureForm1.vue'
-  import dataForm from './dataForm.vue'
-  import  signDialog from './signDialog.vue'
+  import myIntentForm from './../../trans_detail/myIntentForm.vue'
+  import sureForm from './../../trans_detail/sureForm1.vue'
+  import dataForm from './../../trans_detail/dataForm.vue'
  export default {
      data(){
          return{
@@ -235,19 +329,19 @@
              myFormShow:false,
              sureFormShow:false,
              dataFormShow:false,
-             dialogShow:false,
              selected:false,
              detailData:{},
              planData:{},
              editData:{},
              selectData:{},
              intentionCount:0,
-             isSign:false,
              rePublish:false,
              footShow:true,
-             selectBtnShow:true
+             selectBtnShow:true,
+             transShow:false,
          }
      },
+     props:['sonId','title'],
      methods:{
          chat:function (v) {
               let chatData = {};
@@ -263,7 +357,7 @@
              this.showDetailIndex = index;
          },
          closeIntent:function(){
-            this.$emit('closeIntent');
+            this.$emit('closeDetail');
          },
          toSelect:function(val){
             this.myFormShow = true;
@@ -287,7 +381,7 @@
                 .then((response) => {
                     if(response.data.opResult == "0"){
                     //alert("取消需求成功!")
-                     this.$emit('closeIntent');
+                     this.$emit('closeDetail');
                   }
                 })
                 .catch((error) => {
@@ -295,6 +389,9 @@
                     }
                 );
          },
+         toBack:function(){
+                this.$emit("toBack");
+            },
          cancelSel:function(val){
               this.selectData = val;
               this.selectData.releaseselected = '1';
@@ -369,10 +466,6 @@
 
       },
       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-
-            //console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && this.role.role == 0){
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -380,7 +473,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: this.sonId
                 }
                 })
                 .then((response) => {
@@ -411,22 +504,22 @@
                           }
                       }
                     }
-                    //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    //子需求发布详情判断
+                    if(this.detailData.demandtype == '1'){
+                        this.transShow = true;
+                    }else{
+                       this.transShow = false;
+                    }
+
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
-             this.$emit("openIntent");
-            };
-        });
-
 
      },
      components: {
             myIntentForm,
-            signDialog,
             sureForm,
             dataForm
         }
@@ -460,15 +553,70 @@
           height:100px;
         }
     }
-    header{
-        position:relative;
+   /*  header{
+       position:relative;
+       .top-til{
+         justify-content: space-between;
+         display: flex;
+         height:41px;
+         line-height:41px;
+         font-size:1.2rem;
+         color:rgba(96, 94, 124, 0.7);
+         background-color:#fff;
+         padding:0 15px 0 40px;
+         span{
+           display:block;
+           box-sizing:border-box;
+           margin-top:9px;
+           width:22px;
+           height:22px;
+           line-height:22px;
+           text-align:center;
+           color:#3C78FF;
+           border:1px solid #ededed;
+           border-radius:100%;
+           cursor:pointer;
+         }
+       }
+       .head-til{
+         font-size:2rem;
+         font-weight:bold;
+         margin-top:30px;
+         padding-left:40px;
+         height:20px;
+         line-height:20px;
+       }
+       .note{
+         height:12px;
+         line-height:12px;
+         color:rgba(96, 94, 124, 0.7);
+         padding:20px 0 18px 40px;
+         span{
+           margin-right:30px;
+         }
+       }
+       .rep-btn{
+           position:absolute;
+           right:15px;
+           top:60px;
+           width:100px;
+           height:20px;
+           line-height:20px;
+           color:#ffffff;
+           text-align:center;
+           background-color:#3c78ff;
+           border-radius:100px;
+           cursor:pointer;
+       }
+   } */
+     header{
         .top-til{
           justify-content: space-between;
           display: flex;
           height:41px;
           line-height:41px;
-          font-size:1.2rem;
           color:rgba(96, 94, 124, 0.7);
+          font-size:1.2rem;
           background-color:#fff;
           padding:0 15px 0 40px;
           span{
@@ -493,30 +641,30 @@
           height:20px;
           line-height:20px;
         }
-        .note{
+        .tips{
+          position:relative;
           height:12px;
           line-height:12px;
           color:rgba(96, 94, 124, 0.7);
           padding:20px 0 18px 40px;
+          display:flex;
+          >div{
+            margin-right:18px;
+            overflow:hidden;
+            display:flex;
+          }
+          .back-link{
+            display:flex;
+          }
           span{
-            margin-right:30px;
+            color:#3c78ff;
+            cursor:pointer;
+          }
+          .iconfont{
+            font-size:2.0rem;
           }
         }
-        .rep-btn{
-            position:absolute;
-            right:15px;
-            top:60px;
-            width:100px;
-            height:20px;
-            line-height:20px;
-            color:#ffffff;
-            text-align:center;
-            background-color:#3c78ff;
-            border-radius:100px;
-            cursor:pointer;
-        }
     }
-
     .table-form{
       width:100%;
       box-sizing:border-box;
@@ -763,3 +911,6 @@
           }
     }
 </style>
+
+
+

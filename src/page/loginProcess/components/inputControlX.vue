@@ -106,10 +106,10 @@
                         };
                         break;
                     case 100:   // 不验证
-                            t = true
+                        t = true
                         break;
                     default:
-                        // 执行报错
+                    // 执行报错
                 };
                 this.control({t,c,i:this.arg.inputMes,steps:0});
             },
@@ -204,7 +204,7 @@
         top: 12px;
         left: 15px;
         transition: all .3s ease;
-        pointer-events: none;
+        z-index: -1;
     }
 </style>
 

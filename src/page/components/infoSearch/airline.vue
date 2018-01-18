@@ -53,7 +53,7 @@
                 <div class="news">
                     <div class="n-til">
                         <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                        <div class="more">查看更多></div>
+                        <div class="more" @click="getMore">查看更多></div>
                     </div>
                     <div class="news-box" v-for="item in newsData">
                         <div class="box-pic">
@@ -153,6 +153,9 @@
              openWindow(src) {
                 window.open(src);
             },
+             getMore(){
+                 this.$router.push({ path: '/index/opinion'});
+            }
         },
         mounted() {
             this.qyCode = this.searchInfo.qyCode;

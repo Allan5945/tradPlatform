@@ -234,10 +234,10 @@
                 </div>
                 <div class="sidebar">
                     <ul class="sidebar-list">
-                        <li><span class="iconfont">&#xe627;</span>机场位置</li>
+                        <li><span class="point"></span><span class="iconfont">&#xe627;</span>机场位置</li>
                         <li><span class="iconfont">&#xe625;</span>地勤服务</li>
                         <li><span class="iconfont">&#xe629;</span>消防救援</li>
-                        <li><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</li>
+                        <li style="width:210px;"><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</li>
                         <li><span class="iconfont">&#xe626;</span>跑道特征</li>
                         <li><span class="iconfont">&#xe6ef;</span>进近灯光</li>
                         <li><span class="iconfont">&#xe669;</span>飞行程序</li>
@@ -445,21 +445,38 @@
         }
     }
     .sidebar{
-        width:250px;
+        width:240px;
         position:absolute;
         bottom:112px;
         right:0;
     }
     .sidebar-list{
         width:220px;
+        padding:0 10px;
+        border-left:1px solid #ccc;
         li{
             height:42px;
+            width:83px;
             line-height:42px;
             display:flex;
             font-size:1.3rem;
+            border-bottom:2px solid #3c78ff;
+            cursor:pointer;
+            position:relative;
             span{
                 font-size:2.2rem;
-                padding-left:10px;
+            }
+            .point{
+                color: #3c78ff;
+                position:absolute;
+                left:-13px;
+                bottom:-4px;
+                display:block;
+                width:5px;
+                height:5px;
+                line-height:2px;
+                border-radius:100%;
+                background-color: #3c78ff;
             }
         }
     }

@@ -413,7 +413,11 @@
                       }
                     }
                     //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    if(this.role.role == 2){
+                        this.isSign = true;
+                    }else{
+                        this.isSign = response.data.isSign;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
