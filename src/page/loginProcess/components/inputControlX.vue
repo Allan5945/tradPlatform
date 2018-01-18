@@ -33,6 +33,7 @@
         mounted:function () {
             if(this.arg.inputMes != ""){
                 this.showPlaceholder = true;
+                this.staging = {t:true,c:"",i:this.arg.inputMes,steps:1}
             }
         },
         props: ['arg'],
@@ -106,10 +107,10 @@
                         };
                         break;
                     case 100:   // 不验证
-                        t = true
+                            t = true
                         break;
                     default:
-                    // 执行报错
+                        // 执行报错
                 };
                 this.control({t,c,i:this.arg.inputMes,steps:0});
             },

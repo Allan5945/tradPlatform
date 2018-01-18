@@ -1,7 +1,7 @@
 <template>
   <div class="login-btn btn user-select" @click="login" :class="{'btn-b':dis,'step-btn-dis':!dis}">
     <span v-text="arg.text" v-if="!lodings"></span>
-    <loading class="search-ing" :arg="true" v-if="lodings"></loading>
+    <loading class="search-ing" :args="true" v-if="lodings"></loading>
   </div>
 </template>
 <script>
