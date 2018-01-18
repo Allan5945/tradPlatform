@@ -30,7 +30,7 @@
                         <div class="font-gray">航班号</div>
                     </div>
                     <div class="right item">
-                        <div class="item-height">{{myData.fltNbr}}</div>
+                        <div class="item-height">{{myData.fltNbr || '-'}}</div>
                     </div>
                 </div>
                 <div class="items">
@@ -38,7 +38,10 @@
                         <div class="font-gray">小时成本</div>
                     </div>
                     <div class="right item">
-                        <div class="item-height">{{myData.hourscost}}万/小时</div>
+                        <div class="item-height">
+                            <span v-if="myData.hourscost != null && myData.hourscost != ''">{{myData.hourscost}}万/小时</span>
+                            <span v-else>-</span>
+                        </div>
                     </div>
                 </div>
             </div>
