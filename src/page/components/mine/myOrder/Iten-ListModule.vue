@@ -51,7 +51,7 @@
                         </div>
                         <div>
                             <div>联系方式</div>
-                            <div>{{ndetailData.iHome||"-"}}</div>
+                            <div>{{ndetailData.ihome||"-"}}</div>
                         </div>
                         <div>
                             <div>拟开时间</div>

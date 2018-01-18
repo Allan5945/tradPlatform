@@ -6,7 +6,7 @@
                 <div class="tips">
                     <span>发布方 {{ ndetailData.cpnNm||"-" }}</span>
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ ndetailData.demandprogressStr||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -134,7 +134,7 @@
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ ndetailData.demandprogressStr||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">

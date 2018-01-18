@@ -37,7 +37,7 @@
                                 {{ ditem.releaseTime }}
                             </div>
                             <div class="list-b item">
-                                {{ type[ditem.demandType]}}
+                                {{ typeCheckList[ditem.demandType]}}
                             </div>
                             <div class="list-c item color">
                                 {{ ditem.title }}
@@ -89,10 +89,18 @@
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: {
+                    "t":'全部',
+                    "t0":'航线需求',
+                    "t1":'运力投放',
+                },
+                typeCheckList: {
                     "0":'航线需求',
                     "1":'运力投放',
+                    "3":'委托航线需求',
+                    "4":'委托运力投放',
                 },
                 progressState: {
+                    '0': '全部',
                     '3': '关闭',
                     '5': '交易完成',
                     '6': '订单完成',
@@ -106,13 +114,15 @@
                 detailsData: null,
                 superUser:{
                     typeList: {
-                        "0":'航线需求',
-                        "1":'运力投放',
-                        "3":'委托航线需求',
-                        "4":'委托运力投放',
+                        "t":'全部',
+                        "t0":'航线需求',
+                        "t1":'运力投放',
+                        "t3":'委托航线需求',
+                        "t4":'委托运力投放',
                     },
                     state: ['需求审核','需求发布','意向征集','订单确认','订单完成','佣金支付','交易完成','关闭'],
                     progressState: {
+                        '0': '全部',
                         '3': '关闭',
                         '5': '交易完成',
                         '6': '订单完成',
@@ -138,6 +148,9 @@
                 'role'
             ]),
         },
+        components: {
+            panel,
+        },
         methods: {
             delayChange: function () {  // 500ms延迟，防止快速切换状态
                 this.filterDelay = false;
@@ -152,6 +165,7 @@
                 this.stateShow = !this.stateShow;
             },
             typeClickFn: function (item,k) {
+                k=k.replace('t','');
                 if(this.filterDelay && k!==this.getParams.demandType){
                     this.typeWriting = item;
                     this.delayChange();
@@ -161,6 +175,7 @@
                 }
             },
             stateClickFn: function (item,k) {
+                k = k==="0"? "":k;
                 if(this.filterDelay && k!==this.getParams.demandProgress){
                     this.stateWriting = item;
                     this.delayChange();
@@ -204,24 +219,13 @@
                         that.pageControl.now = res.data.list.pageNo;
                         that.pageControl.totalData = res.data.list.totalCount;
                         return ;
-                        that.detailsData.list.map(item=>{
-                            if(that.superUser.progressState[item.demandProgress]){
-                                that.progressState[item.demandProgress] = that.superUser.progressState[item.demandProgress];
-                            }
-                            if(that.superUser.typeList[item.demandType]){
-                                that.type[item.demandType] = that.superUser.typeList[item.demandType];
-                            }
-                        })
                     }else{
                         that.detailsData = null;
-                        alert('暂无返回，请稍后重试。')
+                        alert('暂无返回，请重试。');
                     }
                 }).catch(err=>{
                     that.detailsPanel.show = false;
                 })
-            },
-            getSort : function () {
-
             },
             pageChange(p){
                 if(this.getParams.page !== p){
@@ -230,7 +234,6 @@
                 }
             },
             handleSizeChange(p){
-                console.log(p)
             }
         },
         mounted() {
@@ -240,12 +243,9 @@
                 this.type["3"] = '委托航线需求'
             }else if(this.role.role == "0"){//航司
                 this.type["4"] = '委托运力需求'
-                delete this.progressState["7"];
+                delete this.progressState["7"]; //隐藏佣金支付
             }
             this.getListData();
-        },
-        components: {
-            panel,
         }
     }
 </script>
