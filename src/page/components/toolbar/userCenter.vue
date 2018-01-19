@@ -1,21 +1,17 @@
 <template>
     <div class="tool popup">
-        <!--<router-link :to="path.setting">-->
-            <!--<span>&#xe60f;</span>-->
-            <!--设置-->
-        <!--</router-link>-->
         <a @click="showSetting()">
-            <span>&#xe647;</span>
+            <span>&#xe611;</span>
             设置
-        </a>
-        <a @click="logout">
-            <span>&#xe647;</span>
-            退出
         </a>
         <router-link :to="path.defaultSubLink">
             <span>&#xe60f;</span>
             个人中心
         </router-link>
+        <a @click="logout">
+            <span>&#xe647;</span>
+            退出
+        </a>
         <a>
             <div class="contact-client btn btn-b" @click="initDis">
                 <span v-if="role.role != '2'">联系客服</span>

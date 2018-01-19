@@ -125,7 +125,7 @@
         </template>
         <template v-else>
             <header>
-                <div class="head-til">选定意向方</div>
+                <div class="head-til">   选定意向方</div>
             </header>
             <p class="sub-title"><span>{{ ndetailData.responsedate }}</span><span>{{ ndetailData.intentionCompanyName }}</span></p>
             <div class="content">
@@ -260,7 +260,7 @@
                 }
             }
         },
-        props:["ndetailData","type"],
+        props:["ndetailData","type","roleType"],
     }
 </script>
 
@@ -284,7 +284,7 @@
         box-sizing: border-box;
         padding: 5px 40px 0 50px;
         .head-til{
-            font-size:20px;
+            font-size: 2rem;
             font-weight:bold;
             height: 80px;
             line-height: 80px;
@@ -362,7 +362,7 @@
                 margin-top:20px;
                 >div:nth-of-type(2){
                     height:45px;
-                    font-size:2rem;
+                    font-size:1.8rem;
                     font-weight:bold;
                     padding-top:15px;
                     >div:nth-of-type(2){
