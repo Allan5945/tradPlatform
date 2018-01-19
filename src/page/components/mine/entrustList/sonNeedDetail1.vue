@@ -296,10 +296,12 @@
                                     <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                                 </div>
                                 <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
-                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
+                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0'&&(val.responseProgress !== '2') ">选定</div>
                             </div>
-                            <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
-                            <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                            <div v-if="val.responseProgress !== '2'">
+                                <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
+                                <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                            </div>
                         </div>
                     </div>
                 </div>

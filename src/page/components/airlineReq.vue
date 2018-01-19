@@ -1282,7 +1282,7 @@
                 })
             },
             moreShowFn: function () { // 判断省略号是否显示
-//                console.info(this.$refs.littleLabelWrapper.offsetWidth)
+              console.info(this.$refs.littleLabelWrapper.offsetWidth)
                 if(this.$refs.littleLabelWrapper.offsetWidth >= 196) {
                     this.moreShow = true;
                 }else {
