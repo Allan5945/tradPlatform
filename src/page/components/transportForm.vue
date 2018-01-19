@@ -127,8 +127,8 @@
                  <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                  <div v-show="calendarShow" class="calendar-box popup">
                    <div class="selec-data">
-                     <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                     <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                     <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
+                     <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
                      <div class="confirm-btn btn" @click="getMyDate">确定</div>
                      <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                    </div>
@@ -218,9 +218,13 @@
                 moreDotShow:false,
                 contact: '',
                 intendedDpt:'',
+                intendedDpt1:'',
                 intendedPst:'',
+                intendedPst1:'',
                 intendedArrv:'',
+                intendedArrv1:'',
                 airplaneTyp:'',
+                airplaneTyp1:'',
                 airCompany:'',
                 airCompanyId:'',
                 dptState:[0,1],//运力基地：机场为0，地区为1
@@ -349,6 +353,7 @@
                 let that =this;
                setTimeout(function(){
                 that.dptSearch =false;
+                that.intendedDpt = (that.intendedDpt == ''||that.qyCode3 == ''? '':that.intendedDpt1);
                     if(that.qyCode3){
                      that.isError3 = false;
                     }
@@ -358,22 +363,25 @@
                 let that =this;
                setTimeout(function(){
                 that.pstSearch =false;
+                that.intendedPst = (that.intendedPst == ''||that.qyCode4 == ''? '':that.intendedPst1);
                 },200);
             },
              closeDialog3(){
                 let that =this;
                setTimeout(function(){
                 that.arrvSearch =false;
+                that.intendedArrv = (that.intendedArrv == ''||that.qyCode5 == ''? '':that.intendedArrv1);
                 },200);
             },
              closeDialog4(){
                 let that =this;
                setTimeout(function(){
                 that.airplTypShow =false;
-                    if(that.airplaneTyp){
-                     that.isError5 = false;
-                    }
-                },200);
+                that.airplaneTyp = (that.airplaneTyp == ''? '':that.airplaneTyp1);
+                if(that.airplaneTyp){
+                  that.isError5 = false;
+                }
+              },200);
             },
              closeDialog5(){
                 let that =this;
@@ -522,21 +530,25 @@
             },
             dptData: function (data) {
                 this.intendedDpt = data.name;
+                this.intendedDpt1 = data.name;
                 this.qyCode3 = data.code;
                 this.dptSearch = false;
             },
             pstData: function (data) {
                 this.intendedPst = data.name;
+                this.intendedPst1 = data.name;
                 this.qyCode4 = data.code;
                 this.pstSearch = false;
             },
             arrvData: function (data) {
                 this.intendedArrv = data.name;
+                this.intendedArrv1 = data.name;
                 this.qyCode5 = data.code;
                 this.arrvSearch = false;
             },
             getAirType: function(i){
                 this.airplaneTyp = this.airTypData[i];
+                this.airplaneTyp1 = this.airTypData[i];
                 this.airplTypShow = false;
             },
             airCompanyData: function(data){
