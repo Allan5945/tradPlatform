@@ -69,7 +69,7 @@
             </div>
         </div>
         <transition name="slidex-fade">
-            <panel v-if="detailsPanel.show" :detailData="detailsPanel.data" v-on:closeAll="turnDetailPanel"></panel>
+            <panel v-if="detailsPanel.show" :detailData="detailsPanel.data" :roleType="roleType" v-on:closeAll="turnDetailPanel"></panel>
         </transition>
     </div>
 </template>
@@ -81,11 +81,12 @@
     export default {
         data() {
             return {
-                filterDelay: true,
+                roleType: '', //角色
+                filterDelay: true,  //限制连续点击
                 sorted:null,    // Desc/Asc
                 typeShow: false,    //需求类型显示
-                stateShow: false,   //状态显示
                 typeWriting: '需求类型',
+                stateShow: false,   //状态显示
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: {
@@ -237,14 +238,16 @@
             }
         },
         mounted() {
-            if(this.role.role == "2") { // 太美
+            let role = this.role.role;
+            if(role == "2") { // 太美
                 this.type = this.superUser.typeList;
-            }else if(this.role.role == "1"){//机场
-                this.type["3"] = '委托航线需求'
-            }else if(this.role.role == "0"){//航司
-                this.type["4"] = '委托运力需求'
+            }else if(role == "1"){//机场
+                this.type["t3"] = '委托航线需求'
+            }else if(role == "0"){//航司
+                this.type["t4"] = '委托运力需求'
                 delete this.progressState["7"]; //隐藏佣金支付
             }
+            this.roleType = role;
             this.getListData();
         }
     }

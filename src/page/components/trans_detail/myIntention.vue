@@ -197,10 +197,12 @@
                                     <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                                 </div>
                                 <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
-                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
+                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0'&&(val.responseProgress !== '2') ">选定</div>
                             </div>
-                            <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
-                            <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                            <div v-if="val.responseProgress !== '2'">
+                                <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
+                                <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -396,25 +398,25 @@
                     //判断状态
                     let progress = this.detailData.demandprogress;
                     if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
-                      this.rePublish == true;
+                      this.rePublish = true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = false;
                     }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
-                      this.rePublish == false;
+                      this.rePublish = false;
                       this.footShow  = false;
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = true;
                     }else if(progress == "2"){//2:订单确认
-                      this.rePublish == false;
+                      this.rePublish = false;
                       this.footShow  = true;
                       this.selectBtnShow = true;
                       this.sureOderShow = true;
                       this.planComplete = false;
                     }else{
-                        this.rePublish == false;
+                        this.rePublish = false;
                         this.footShow  = true;
                         this.selectBtnShow = true;
                         this.sureOderShow = false;

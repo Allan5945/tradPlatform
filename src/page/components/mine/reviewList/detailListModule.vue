@@ -144,7 +144,7 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size:16px;">
+                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size:16px;" v-if="ndetailData.intendedAirlines && ndetailData.intendedAirlines.length>0">
                                 {{ndetailData.intendedAirlines[0].dptName||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
                                 {{ndetailData.intendedAirlines[0].pstName||"待定"}}

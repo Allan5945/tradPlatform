@@ -293,7 +293,7 @@
         box-sizing: border-box;
         padding: 5px 40px 0 50px;
         .head-til{
-            font-size:20px;
+            font-size: 2rem;
             font-weight:bold;
             margin-top:30px;
             height:20px;
@@ -362,7 +362,7 @@
                 margin-top:20px;
                 >div:nth-of-type(2){
                     height:45px;
-                    font-size:2rem;
+                    font-size: 1.8rem;
                     font-weight:bold;
                     padding-top:15px;
                     >div:nth-of-type(2){
