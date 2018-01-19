@@ -229,7 +229,7 @@
                                 <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
                             </div>
                             <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                            <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: 0;">
+                            <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                 <div class="selec-data">
                                     <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
                                     <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
@@ -686,6 +686,7 @@
                     this.space1ShowTitle = this.spaceList[0];
                     this.space1Fn(this.spaceList[0]);
                     this.firArea = this.acceptData.dpt;
+                    this.firAreaBus = this.acceptData.dpt;
                 }
                 // 判断经停类型（0：机场，1：区域）
                 if(this.acceptData.pstState === "0") {

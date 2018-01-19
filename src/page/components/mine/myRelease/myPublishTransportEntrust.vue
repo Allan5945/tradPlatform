@@ -17,7 +17,7 @@
                     <span style="height: 25px;">{{myData.title}}</span>
                 </div>
                 <div class="bottom">
-                    <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
+                    <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
                     <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
                     <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
@@ -122,7 +122,8 @@
                     if(response.data.opResult == 0) {
                         this.myData = response.data.data;
                         // 状态有误时显示的内容
-                        // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
+                        // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、
+                        //                  4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
                         // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
                         if(this.myData.demandstate == 2
                             || this.myData.demandstate == 3

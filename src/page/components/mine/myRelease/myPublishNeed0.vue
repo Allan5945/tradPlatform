@@ -519,11 +519,11 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div class="item-fifth" v-if="item.releaseselected === '1'">
-                                    <button class="btn btn-disable" v-if="btnDisableShow">选定</button>
-                                    <button class="btn btn-b" v-else @click="airlineAffirmFn(item,index)">选定</button>
+                                <div class="item-fifth" v-if="item.releaseselected === '1' && item.responseProgress !== '2'">
+                                    <!--<button class="btn btn-disable" v-if="btnDisableShow">选定</button>-->
+                                    <button class="btn btn-b" v-if="!btnDisableShow" @click="airlineAffirmFn(item,index)">选定</button>
                                 </div>
-                                <div class="item-sixth" v-else>
+                                <div class="item-sixth" v-if="item.releaseselected === '0'">
                                     <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编译）</button>
                                     <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
                                 </div>

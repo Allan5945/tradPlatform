@@ -1,5 +1,15 @@
 <template>
     <div class="container" id="airlineReq" @click="closeAll">
+        <!--<div class="simplify-msg">
+            <input class="magic-checkbox" type="checkbox" id="alqCheckBox1">
+            <label for="alqCheckBox1">展开填写完整需求订单</label>
+            <div class="check-box">
+
+            </div>
+            <div class="s-first"></div>
+            <div class="s-second"></div>
+            <div class="s-third"></div>
+        </div>-->
         <div class="bg-color must">
             <div class="right item-child">
                 <div style="display: flex;">
@@ -214,7 +224,7 @@
                             <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
                         </div>
                         <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                        <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: 0;">
+                        <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                             <div class="selec-data">
                                 <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
                                 <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
@@ -322,7 +332,7 @@
                         <div style="flex-grow: 1; text-align: center;">{{myDate2}}</div>
                     </div>
                     <div class="warn" v-show="warn7Show" style="position: absolute;top: 46px; left: 0;">*发布有效期不能为空</div>
-                    <div v-show="calendarShow2" class="calendar-box popup" style="left: 0; top: 47px;">
+                    <div v-show="calendarShow2" class="calendar-box popup" @click.stop style="left: 0; top: 47px;">
                         <div class="selec-data">
                             <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
                             <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
@@ -577,11 +587,13 @@
             },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
+                this.user = this.role.username;  // 联系人
+                this.phoneNum = this.role.phone; // 联系方式
                 this.airList.forEach((val) => {
                     if(val.code == this.role.airlineretrievalcondition) {
                         this.getEnterMsg = val.allData;
                     }
-                })
+                });
                 this.firArea = this.getEnterMsg.airlnCdName;
                 this.firAreaBus = this.getEnterMsg.airlnCdName;
                 this.qyCode1 = this.getEnterMsg.iata;
@@ -835,7 +847,7 @@
                 this.isSearch2 = false;
                 this.isSearch3 = false;
                 this.isSearch4 = false;
-//                this.directionPublicCityShow = true;  //定向发布小标签那一行
+                this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
                 this.warn8Show = false;
@@ -1316,6 +1328,47 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    /********↓↓↓↓↓↓新增样式↓↓↓↓↓↓↓********/
+    /******checkbox样式更改*****/
+    /*.magic-checkbox {
+        position: absolute;
+        display: none;
+    }
+    .magic-checkbox + label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        vertical-align: middle;
+        &::before {
+            padding-right: 5px;
+            font-family: iconfont;
+            font-size: 1.7rem;
+            color: $font-color;
+            content: '\e723';
+            border-radius: 50%;
+        }
+    }
+    .magic-checkbox:checked + label {
+        &::before {
+            content: '\e724';
+            color: $icon-color;
+            font-weight: bold;
+        }
+    }*/
+    /********/
+    /*.simplify-msg {
+        position: relative;
+        padding: 0 20px;
+        .check-box {
+            position: absolute;
+            top: 0;
+            right: 20px;
+        }
+        .s-first {}
+        .s-second {}
+        .s-third {}
+    }*/
+    /*************↑↑↑↑↑新增样式↑↑↑↑↑************/
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
