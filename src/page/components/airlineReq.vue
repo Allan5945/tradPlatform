@@ -626,10 +626,14 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-                this.directionPublicCity.forEach((val) => {
-                    this.directionalgoalArry.push(val.id);
-                });
-                this.directionalgoal = this.directionalgoalArry.join(',');
+                if(this.directionPublicCity.length != 0){
+                    this.directionPublicCity.forEach((val) => {
+                        this.directionalgoalArry.push(val.id);
+                    });
+                    this.directionalgoal = this.directionalgoalArry.join(',');
+                }else {
+                    this.directionalgoal = '';
+                }
                 this.sendData.directionalgoal = this.directionalgoal; // 定向发布
             },
             // 判断传值：始发、经停、到达

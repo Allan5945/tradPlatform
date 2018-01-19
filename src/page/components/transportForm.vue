@@ -127,15 +127,34 @@
             <div class="t-radio">
                 <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
             </div>
-            <div class="t-radio">
+            <div class="t-radio" style="margin-right:5px;">
                 <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
             </div>
-            <div class="direction t-radio" style="position:relative;">
-                <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" @focus="openSearch2" @blur="closeDialog8">
-                <div class="history" v-show="selecShow1" style="top:-5px;left:2px;line-height:26px;" @click="selecShow1 = false">
-                    <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
+           <!--  <div class="direction t-radio" style="position:relative;">
+              <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" @focus="openSearch2" @blur="closeDialog8">
+              <div class="history" v-show="selecShow1" style="top:-5px;left:2px;line-height:26px;" @click="selecShow1 = false">
+                  <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
+              </div>
+              <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS1>
+           </div> -->
+             <div class="choose-input" v-show="selecShow1">
+                <div class="choose-item-list" v-show="directionPublicShow" @click="searchDirect">
+                    <div class="choose-item" v-for="(item,index) in searchData1">
+                        {{item.name}}
+                        <span @click.stop="delItem1(index)" class="iconfont">&#xe62c;</span>
+                    </div>
                 </div>
-                <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS1>
+               <div @mouseover="selectListShow = true" @mouseout="selectListShow = false">
+                    <span>...</span>
+                    <div v-show="selectListShow">
+                        <span class="choose-item" v-for="(item,index) in searchData1">
+                            {{item.name}}
+                             <span @click.stop="delItem1(index)" class="iconfont">&#xe62c;</span>
+                        </span>
+                    </div>
+                </div>
+                <input type="text" v-model="directText" @click.stop="openSearch2">
+                <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:30px;"></airportS1>
             </div>
         </div>
         <div class="t-btn">
@@ -177,6 +196,8 @@
                 airCompanyShow:false,
                 btnShow:true,
                 selecShow1:true,
+                directionPublicShow:false,
+                selectListShow:false,
                 contact: '',
                 intendedDpt:'',
                 intendedPst:'',
@@ -431,9 +452,23 @@
                 this.dispatchSearch = false;
             },
             directData: function(data){
-                this.searchData1.push(data.name);
-                this.qyCode2 = data.code;
+                this.directText = '';
+                this.directionPublicShow = true;
+                if( this.searchData1.length < 5){
+                    this.searchData1.push({
+                        name: data.name,
+                        id: data.id,
+                    });
+                }
+                //this.qyCode2 = data.code;
                 this.directSearch = false;
+                this.directionPublicShow = true;
+            },
+            searchDirect:function(){
+                 this.$nextTick(() => {
+                    this.directionPublicShow = false;
+                    this.directSearch = true;
+                });
             },
             dptData: function (data) {
                 this.intendedDpt = data.name;
@@ -512,11 +547,12 @@
                         return false;
                     };
                 }
-                let demandData = {};
+                let demandData = {},
+                    time = (this.timeStart +'-'+ this.timeEnd) == '00:00-00:00'? "待定": (this.timeStart +'-'+ this.timeEnd);
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + '-'+ this.timeEnd):'无';
+                    demandData.dptTime = this.getTime == 'true'? time:'无';
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -689,7 +725,7 @@
         display: flex;
         margin: 40px 0 70px 0;
         .t-radio{
-            margin-right:20px;
+            margin-right:12px;
             height:26px;
             line-height:26px;
         }
@@ -905,32 +941,43 @@
             padding-left:8px;
         }
     }
-    .history{
-        position:absolute;
-        top:18px;
-        right:-15px;
+    .choose-input{
+        position:relative;
         width:180px;
-        height:300px;
+        height:30px;
         display:flex;
         align-content: flex-start;
-        .his-item{
+        .choose-item-list{
+          display:flex;
+          align-content: flex-start;
+          width:270px;
+          position:absolute;
+        }
+        input{
+            width:300px;
+            border-bottom:1px solid rgba(151,151,151,.3);
+        }
+        .choose-item{
             background-color:#f3f3f7;
             border-radius:100px;
             color:#3c78ff;
             font-weight:800;
+            width:120px;
             height:26px;
-            padding:0 6px;
+            line-height:26px;
+            padding-left: 6px;
             margin-right:3px;
             span{
                 display:inline-block;
                 width:12px;
                 height:12px;
-                line-height:10px;
+                line-height:12px;
                 text-align:center;
                 cursor:pointer;
                 background-color:#fff;
                 border-radius:100%;
-                margin:0 1px;
+                margin-left:1px;
+                font-size:1.2rem;
             }
         }
     }

@@ -601,8 +601,8 @@
                 let alRWopenAll = document.getElementById('alRWopenAll');
                 let alRWopenUser = document.getElementById('alRWopenUser');
                 let alRWopenOnly = document.getElementById('alRWopenOnly');
-                this.user = '';  // 联系人
-                this.phoneNum = ''; // 联系方式
+                this.user = this.acceptData.contact;  // 联系人
+                this.phoneNum = this.acceptData.iHome; // 联系方式
                 this.myDate1 = this.acceptData.sailingtime; // 拟开时间
                 this.myDate2 = this.acceptData.periodValidity; // 发布有效期
                 this.scheduleShow = this.acceptData.days; // 拟开班期
@@ -789,10 +789,14 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-                this.directionPublicCity.forEach((val) => {
-                    this.directionalgoalArry.push(val.id);
-                });
-                this.directionalgoal = this.directionalgoalArry.join(',');
+                if(this.directionPublicCity.length != 0){
+                    this.directionPublicCity.forEach((val) => {
+                        this.directionalgoalArry.push(val.id);
+                    });
+                    this.directionalgoal = this.directionalgoalArry.join(',');
+                }else {
+                    this.directionalgoal = '';
+                }
                 this.sendData.directionalgoal = this.directionalgoal; // 定向发布
             },
             // 判断传值：始发、经停、到达
@@ -993,7 +997,7 @@
                 this.isSearch2 = false;
                 this.isSearch3 = false;
                 this.isSearch4 = false;
-//                this.directionPublicCityShow = true;  //定向发布小标签那一行
+                this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
 //                this.secArea = this.secAreaBus;

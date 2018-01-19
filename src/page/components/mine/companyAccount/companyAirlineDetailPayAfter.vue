@@ -104,9 +104,12 @@
                             <div>补贴政策</div>
                         </div>
                         <div class="right item">
-                            <div class="item-a">{{myData.sailingtime}}</div>
-                            <div class="item-b">{{myData.aircrfttyp}}</div>
-                            <div class="item-c">{{myData.loadfactorsexpect || '-'}}人/均班</div>
+                            <div class="item-a">{{myData.sailingtime || '-'}}</div>
+                            <div class="item-b">{{myData.aircrfttyp || '-'}}</div>
+                            <div class="item-c">
+                                <span v-if="myData.avgguestexpect != null && myData.avgguestexpect != ''">{{myData.avgguestexpect}}人/均班</span>
+                                <span v-else>-</span>
+                            </div>
                             <div class="item-d">{{subsidypolicyFn(myData.subsidypolicy)}}</div>
                             <!--<div>有补贴</div>-->
                         </div>
@@ -119,9 +122,12 @@
                             <div>有效期</div>
                         </div>
                         <div class="right item">
-                            <div class="item-a">{{myData.days}}</div>
-                            <div class="item-b">{{myData.seating}}</div>
-                            <div class="item-c">{{myData.loadfactorsexpect}}%</div>
+                            <div class="item-a">{{myData.days || '-'}}</div>
+                            <div class="item-b">{{myData.seating || '-'}}</div>
+                            <div class="item-c">
+                                <span v-if="myData.loadfactorsexpect != null && myData.loadfactorsexpect != ''">{{myData.loadfactorsexpect}}%</span>
+                                <span v-else>-</span>
+                            </div>
                             <div class="item-d" style="display: flex; position: relative;">{{periodValidity1 || '-'}}止
                                 <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
                                 <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
@@ -242,42 +248,48 @@
                 <div class="table-form">
                     <div>
                         <div>联系人</div>
-                        <div>{{receiveIntention.contact}}</div>
+                        <div>{{receiveIntention.contact || '-'}}</div>
                         <!--<div>2017.11.11-2018.11.11</div>-->
                     </div>
                     <div>
                         <div>联系方式</div>
-                        <div>{{receiveIntention.ihome}}</div>
+                        <div>{{receiveIntention.ihome || '-'}}</div>
                         <!--<div>2017.11.11-2018.11.11</div>-->
                     </div>
                     <div>
                         <div>拟开时间</div>
-                        <div>{{receiveIntention.sailingtime}}</div>
+                        <div>{{receiveIntention.sailingtime || '-'}}</div>
                         <!--<div>2017.11.11-2018.11.11</div>-->
                     </div>
                     <div>
                         <div>拟开班期</div>
-                        <div>{{receiveIntention.days}}</div>
+                        <div>{{receiveIntention.days || '-'}}</div>
                         <!--<div>待定</div>-->
                     </div>
                     <div>
                         <div>拟开机型</div>
-                        <div>{{receiveIntention.aircrfttyp}}</div>
+                        <div>{{receiveIntention.aircrfttyp || '-'}}</div>
                         <!--<div>AA222</div>-->
                     </div>
                     <div>
                         <div>座位数</div>
-                        <div>{{receiveIntention.seating}}</div>
+                        <div>{{receiveIntention.seating || '-'}}</div>
                         <!--<div>180</div>-->
                     </div>
                     <div>
                         <div>客量预期</div>
-                        <div>{{receiveIntention.avgguestexpect || '-'}}人/均班</div>
+                        <div>
+                            <span v-if="receiveIntention.avgguestexpect != null && receiveIntention.avgguestexpect != ''">{{receiveIntention.avgguestexpect}}人/均班</span>
+                            <span v-else>-</span>
+                        </div>
                         <!--<div>80</div>-->
                     </div>
                     <div>
                         <div>客座率预期</div>
-                        <div>{{receiveIntention.loadfactorsexpect || '-'}}%</div>
+                        <div>
+                            <span v-if="receiveIntention.loadfactorsexpect != null && receiveIntention.loadfactorsexpect != ''">{{receiveIntention.loadfactorsexpect}}%</span>
+                            <span v-else>-</span>
+                        </div>
                         <!--<div>80%</div>-->
                     </div>
                     <div>
@@ -287,26 +299,36 @@
                     </div>
                     <div>
                         <div>小时成本</div>
-                        <div>{{receiveIntention.hourscost || '-'}}万元/小时</div>
+                        <div>
+                            <span v-if="receiveIntention.hourscost != null && receiveIntention.hourscost != ''">{{receiveIntention.hourscost}}万元/小时</span>
+                            <span v-else>-</span>
+                        </div>
                         <!--<div>8</div>-->
                     </div>
                     <div>
                         <div>运力归属</div>
                         <div>
-                            <span v-if="receiveIntention.capacityCompany != null">{{receiveIntention.capacityCompany.airlnCd}}</span>
+                            <span v-if="receiveIntention.capacityCompany != null && receiveIntention.capacityCompany != ''">{{receiveIntention.capacityCompany.airlnCd}}</span>
+                            <span v-else>-</span>
                         </div>
                         <!--<div>东方航空</div>-->
                     </div>
                     <div>
                         <div>运力基地</div>
-                        <div>{{receiveIntention.capacityBaseNm}}</div>
+                        <div>{{receiveIntention.capacityBaseNm || '-'}}</div>
                         <!--<div>成都双流</div>-->
                     </div>
                     <div>
                         <div>是否调度</div>
-                        <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">{{receiveIntention.airportForSchedulines[0].airlnCdName}}</div>
+                        <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">是</div>
                         <div v-else>否</div>
                         <!--<div>华北地区</div>-->
+                    </div>
+                    <div class="tips" v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">
+                        <div>调度机场</div>
+                        <div>
+                            <span v-for="item in receiveIntention.airportForSchedulines" style="margin-right: 10px;">{{item.airlnCdName}}</span>
+                        </div>
                     </div>
                     <div class="tips">
                         <div>其他说明</div>
@@ -320,8 +342,9 @@
                     <h2>收到的意向</h2>
                     <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
                 </div>
-                <div class="seventh item-container" v-show="secondButtonShow">
+                <div class="seventh item-container" v-show="secondButtonShow || myData.demandprogress == 3">
                     <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可查看详细列表</span>
+                    <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
                 </div>
             </div>
             <div class="tenth item-container danger" v-show="myData.demandstate == 5">
@@ -436,16 +459,20 @@
                                         <div>是否调度</div>
                                     </div>
                                     <div class="right item">
-                                        <div class="item-a item-height">{{item.contact}}</div>
-                                        <div class="item-a item-height">{{item.sailingtime}}</div>
-                                        <div class="item-b item-height">{{item.aircrfttyp}}</div>
-                                        <div class="item-c item-height">{{item.loadfactorsexpect || '-'}}人/均班</div>
+                                        <div class="item-a item-height">{{item.contact || '-'}}</div>
+                                        <div class="item-a item-height">{{item.sailingtime || '-'}}</div>
+                                        <div class="item-b item-height">{{item.aircrfttyp || '-'}}</div>
+                                        <div class="item-c item-height">
+                                            <span v-if="item.avgguestexpect != null && item.avgguestexpect != ''">{{item.avgguestexpect}}人/均班</span>
+                                            <span v-else>-</span>
+                                        </div>
                                         <div class="item-d item-height">{{subsidypolicyFn(item.subsidypolicy)}}</div>
                                         <div class="item-height">
-                                            <span v-if="item.capacityCompany != null">{{item.capacityCompany.airlnCd}}</span>
+                                            <span v-if="item.capacityCompany != null && item.capacityCompany != ''">{{item.capacityCompany.airlnCd}}</span>
+                                            <span v-else>-</span>
                                         </div>
                                         <div class="item-height">
-                                            <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">{{item.airportForSchedulines[0].airlnCdName}}</span>
+                                            <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">是</span>
                                             <span v-else>否</span>
                                         </div>
                                     </div>
@@ -460,21 +487,27 @@
                                         <div>运力基地</div>
                                     </div>
                                     <div class="right item">
-                                        <div class="item-height">{{item.ihome}}</div>
-                                        <div class="item-height">{{item.days}}</div>
-                                        <div class="item-height">{{item.seating}}</div>
-                                        <div class="item-height">{{item.loadfactorsexpect || '-'}}%</div>
-                                        <div class="item-height" style="display: flex;">{{item.hourscost || '-'}}万元/小时</div>
-                                        <div class="item-height">{{item.capacityBaseNm}}</div>
+                                        <div class="item-height">{{item.ihome || '-'}}</div>
+                                        <div class="item-height">{{item.days || '-'}}</div>
+                                        <div class="item-height">{{item.seating || '-'}}</div>
+                                        <div class="item-height">
+                                            <span v-if="item.loadfactorsexpect != null && item.loadfactorsexpect != ''">{{item.loadfactorsexpect}}%</span>
+                                            <span v-else>-</span>
+                                        </div>
+                                        <div class="item-height" style="display: flex;">
+                                            <span v-if="item.hourscost != null && item.hourscost != ''">{{item.hourscost}}万元/小时</span>
+                                            <span v-else>-</span>
+                                        </div>
+                                        <div class="item-height">{{item.capacityBaseNm || '-'}}</div>
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="item-seventh">
-                                <div class="left font-gray">调度范围</div>
+                            <div class="item-seventh" v-if="item.scheduling === '0' && item.airportForSchedulines != null">
+                                <div class="left font-gray">调度机场</div>
                                 <div class="right">
-                                    南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场 南京禄口国际机场
+                                    <span v-for="key in item.airportForSchedulines" style="margin-right: 10px;">{{key.airlnCdName}}</span>
                                 </div>
-                            </div>-->
+                            </div>
                             <div class="item-fourth">
                                 <div class="left font-gray">其他说明</div>
                                 <div class="right">
@@ -790,6 +823,8 @@
                     return '待议';
                 }else if(index === '4') {
                     return '无补贴';
+                }else {
+                    return '-';
                 }
             },
             // 卡片新增功能：意向列表上添加状态信息
@@ -870,7 +905,8 @@
                     },
 //                    params: this.recallData
                     params: {
-                        id: this.id
+                        id: this.id,
+                        closeReason: '下架'
                     }
                 }) .then((response) => {
 //                    console.info(response.data)
@@ -1084,6 +1120,7 @@
             },
             // 航司点击“取消意向”
             deleteClickFn: function () {
+                delete this.receiveIntention.airportForSchedulines;
                 this.$ajax({
                     url: "/ResponseDel", // 取消意向
                     method: 'POST',
@@ -1592,11 +1629,11 @@
             display: flex;
             >div{
                 width:240px;
-                height:40px;
+                min-height:40px;
                 display: flex;
                 >div{
                     margin-bottom:20px;
-                    height:20px;
+                    /*height:20px;*/
                     line-height:20px;
                 }
                 >div:nth-of-type(1){
@@ -1883,7 +1920,7 @@
             .item-seventh {
                 display: flex;
                 /*margin-bottom: 95px;*/
-                padding: 0 20px;
+                padding: 11px 20px 0 20px;
                 /*height: 80px;*/
                 .left {
                     flex-shrink: 0;

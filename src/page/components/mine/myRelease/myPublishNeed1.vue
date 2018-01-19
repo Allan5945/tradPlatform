@@ -85,7 +85,7 @@
                               {{val.intentionCompanyName||'-'}}
                               <span class="iconfont" @click="chat(val)">&#xe602;</span>
                             </div>
-                            <div>{{val.responseProgressStr}}</div>
+                            <div class="progress">{{val.responseProgressStr}}</div>
                             <div class="detail" @click="closeDetail" v-if="showDetailIndex === index">收起详情</div>
                             <div class="detail" @click="openDetail(index)" v-else>查看详情</div>
                         </div>
@@ -168,7 +168,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{turnPolicyCode(planData.subsidypolicy)||'-'}}</div>
+                                    <div>{{turnPolicyCode(val.subsidypolicy)||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -199,11 +199,12 @@
                                 <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
                                 <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
+                            <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
+                            <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
                         </div>
                     </div>
                 </div>
             </div>
-
             </div>
             <div style="position: absolute; bottom: 110px; width: 530px; padding-left: 40px; color: red;" v-show="detailData.demandstate == 5">
                 <span>拒绝原因：</span>
@@ -213,7 +214,8 @@
                 <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
                 <div class="btn">
                     <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
-                    <div class="col-btn" @click="closeNeed">结束需求</div>
+                    <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
+                    <div class="col-btn" @click="closeNeed" v-else>结束需求</div>
                 </div>
             </footer>
         </div>
@@ -242,6 +244,7 @@
              dataFormShow:false,
              dialogShow:false,
              selected:false,
+             planComplete:false,
              detailData:{},
              planData:{},
              editData:{},
@@ -250,7 +253,8 @@
              isSign:false,
              rePublish:false,
              footShow:true,
-             selectBtnShow:true
+             selectBtnShow:true,
+             sureOderShow:false
          }
      },
      methods:{
@@ -329,6 +333,7 @@
           surePlan:function(){
               this.myFormShow = false;
               this.selected = true;
+              this.sureOderShow = true;
          },
           closeSureForm:function(){
               this.sureFormShow = false;
@@ -394,13 +399,30 @@
                     this.planData = response.data.responseList;
                     //判断状态
                     let progress = this.detailData.demandprogress;
-                    if(progress == "3" || progress == "10"){//3.关闭（审核不通过、下架、过期）
-                      this.rePublish == true;
+                    if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
+                      this.rePublish = true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
+                      this.sureOderShow = false;
+                      this.planComplete = false;
                     }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
+                      this.rePublish = false;
                       this.footShow  = false;
                       this.selectBtnShow = false;
+                      this.sureOderShow = false;
+                      this.planComplete = true;
+                    }else if(progress == "2"){//2:订单确认
+                      this.rePublish = false;
+                      this.footShow  = true;
+                      this.selectBtnShow = true;
+                      this.sureOderShow = true;
+                      this.planComplete = false;
+                    }else{
+                        this.rePublish = false;
+                        this.footShow  = true;
+                        this.selectBtnShow = true;
+                        this.sureOderShow = false;
+                        this.planComplete = false;
                     }
                     //有意向方显示列表信息
                     if(this.planData){
@@ -417,11 +439,7 @@
                       }
                     }
                     //判断是否签约用户
-                    if(this.role.role == 2){
-                        this.isSign = true;
-                    }else{
-                        this.isSign = response.data.isSign;
-                    }
+                    this.isSign = response.data.isSign;
                 })
                 .catch((error) => {
                         console.log(error);
@@ -534,6 +552,7 @@
             cursor:pointer;
         }
     }
+
     .table-form{
       width:100%;
       box-sizing:border-box;
@@ -718,13 +737,13 @@
                 height:60px;
                 line-height: 60px;
                 .time{
-                    margin:0 40px 0 20px;
-                    width:80px;
+                    margin:0 20px;
+                   flex:1;
                     overflow:hidden;
                 }
                 .person{
                     display:flex;
-                    width:120px;
+                    flex:2;
                     span{
                         font-size:25px;
                         margin-left:10px;
@@ -732,13 +751,16 @@
                     }
 
                 }
+                .progress{
+                    flex:1;
+                }
                 .detail{
-                    width:60px;
-                    margin-left:175px;
+                    flex:1;
                     color:#3C78FF;
                     cursor:pointer;
                 }
             }
+
 
         }
     footer{

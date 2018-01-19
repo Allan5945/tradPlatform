@@ -1616,6 +1616,7 @@
         right: 0px;
         padding: 20px 20px 0 20px;
         width: 580px;
+        font-size:1.2rem;
         max-height: 630px;
         overflow-y: scroll;
         /*overflow-x: visible;*/

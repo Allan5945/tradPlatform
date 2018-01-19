@@ -6,7 +6,7 @@
             <div class="dialog-content">是否确认缴纳意向金50000元</div>
             <div class="dialog-btns">
                 <div class=" btn sure-btn" v-if="iconShow"><span class="iconfont">&#xe620;</span></div>
-                <div class=" btn sure-btn" @click="sureEvent" v-else>确认缴纳</div>
+                <div class=" btn sure-btn" @click.once="sureEvent" v-else>确认缴纳</div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>
             </div>
             <div class="note">
@@ -65,8 +65,21 @@
                                 that.$emit('sure');
                                 that.iconShow = false;
                             },1000);
+                         /*   that.$message({
+                                message: '发布成功!',
+                                type: 'success',
+                                duration:2000
+                            });*/
                         }else{
-                            that.iconShow = false;
+                            setTimeout(function(){
+                                that.$emit('cancel');
+                                that.iconShow = false;
+                                that.$message({
+                                    message: '缴纳失败，请稍后再试!',
+                                    type: 'warning'
+                                });
+                            },1000);
+
                         }
 
                 }).catch((error) => {

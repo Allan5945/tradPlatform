@@ -21,7 +21,7 @@
                             <div>
                                 <input class="input-num" type="text" v-model="inputNum" placeholder="最低提现金额 10000">元
                             </div>
-                            <div class="font-gray" v-if="noticeMsg" style="height: 25px;line-height: 25px;">*当前可提现金额： {{myAccountData.number}}元</div>
+                            <div class="font-gray" v-if="noticeMsg" style="height: 25px;line-height: 25px;" :class="{'warn': numberWarn}">*当前可提现金额： {{myAccountData.number}}元</div>
                             <div class="warn" v-else="noticeMsg" style="height: 25px;line-height: 25px;">*最低提现金额：10000</div>
                         </div>
                     </div>
@@ -31,7 +31,10 @@
                     </div>
                 </div>
                 <div class="button">
-                    <button class="btn btn-b" @click="sendData">确认</button>
+                    <div class="btn btn-b" @click="sendData" v-show="!loadingShow">确认</div>
+                    <div class="btn btn-b" v-show="loadingShow">
+                        <loading class="search-ing" :arg="false"></loading>
+                    </div>
                     <button class="btn btn-cancel" @click="closeThisFn">取消</button>
                 </div>
             </div>
@@ -40,6 +43,7 @@
 </template>
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+    import loading from '$src/page/reuseComponents/locading.vue'
     export default {
         props:['myCompanyAccountWithdraw'],
         data() {
@@ -49,6 +53,8 @@
                 myData: {},     //获取的数据
                 myAccountData: {},
                 myCardData: {},
+                numberWarn: false, // 可提现金额是否变红
+                loadingShow: false,
             }
         },
         created() {
@@ -58,28 +64,54 @@
             this.myCardData = val.card;
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // 点击“取消”按钮
             closeThisFn: function () {
                 this.$emit('closeThis');
                 tabulationBoxTrigger.hierarchy = false;
             },
+            // 点击关闭警告信息
+            closeAll: function () {
+                this.noticeMsg = true;
+                this.numberWarn = false;
+            },
             // 点击“联系客服”
             linkServiceClickFn: function () {
                 let chatObj = {};
                 chatObj.id = null;
-                console.info(chatObj);
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // 点击“确定”按钮
             sendData: function () {
-                this.myAccountData.withdrawNumber = this.inputNum;
-                // 判断输入的金额是否小于10000
-                if(this.inputNum < 10000) {
+                let replaceNum = this.inputNum.replace(/(^\s*)|(\s*$)/g,"");
+                if(/^[0-9]*$/g.test(replaceNum) == false) {
+                    this.open8(`请输入数字！`);
+                    return
+                }
+                if(replaceNum < 10000) { // 判断输入的金额是否小于10000
                     this.noticeMsg = false;
                     return
-                }else {
-                    this.noticeMsg = true;
                 }
+                if(replaceNum > this.myAccountData.number) { // 判断输入的金额是否大于可提现金额
+                    this.numberWarn = true;
+                    return
+                }
+                this.myAccountData.withdrawNumber = replaceNum;
+                this.loadingShow = true;
                 this.$ajax({
                     url:"/accountWithdraw",
                     method: 'post',
@@ -90,24 +122,31 @@
                 }) .then((response) => {
 //                    console.info(response)
                     if(response.data.opResult == '0') {
-                        alert('成功发送提现请求！')
+//                        alert('成功发送提现请求！')
+                        this.open6(`成功发送提现请求！`);
                         this.$emit('refresh');
                         this.closeThisFn();
                     }else {
-                        alert('无法请求到数据')
+//                        alert('无法请求到数据')
+                        this.open8(`无法请求到数据,代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);
                 });
             },
         },
-        components: {}
+        components: {
+            loading,
+        }
     }
 </script>
 <style lang="scss" scoped>
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
+    }
+    .font-gray {
+        color: rgba(96, 94, 124, 0.7);
     }
     .warn {
         color: #FF9393;
@@ -129,9 +168,6 @@
         &:active {
             background: #336bea;
         }
-    }
-    .font-gray {
-        color: rgba(96, 94, 124, 0.7);
     }
     .mcar-wrapper {
         position: fixed;
@@ -236,5 +272,12 @@
     }
     .account-bottom {
         margin-bottom: 68px;
+    }
+    .search-ing {
+        width: 23px;
+        height: 30px;
+        color: #3c78ff !important;
+        display: inline-block;
+        transform: scale(.25);
     }
 </style>
