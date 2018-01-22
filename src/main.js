@@ -8,6 +8,7 @@ import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
 import BmapExamples from './page/components/bmap/bmapExamples'
 
+import dft from './public/js/dataFormat'
 import router from './router/routerConfig.js'
 import store from './store/'
 import './public/css/all.scss'
@@ -45,6 +46,9 @@ axios.interceptors.response.use(
         return Promise.reject(error)
     }
 );
+
+// 注册数据过滤器
+Vue.filter('dft', dft);
 
 export default new Vue({
     el: '#app',

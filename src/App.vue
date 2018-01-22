@@ -9,7 +9,7 @@
         name: 'app',
         data() {
             return {
-
+                time:0/0,
             }
         },
         components: {
