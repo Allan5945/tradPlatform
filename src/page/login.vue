@@ -46,7 +46,7 @@
                             alpha: true,
                             logarithmicDepthBuffer: true
                         });
-                        renderer.setClearColor("red", 0.0);
+                        renderer.setClearColor("black", 1);
                         renderer.setPixelRatio(window.devicePixelRatio);
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         renderer.autoClear = false;
