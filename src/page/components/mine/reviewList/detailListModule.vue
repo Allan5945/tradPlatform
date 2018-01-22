@@ -83,7 +83,7 @@
                         </div>
                         <div>
                             <div>补贴政策</div>
-                            <div>{{subsidyList[ndetailData.subsidypolicy]||"-"}}</div>
+                            <div>{{ ndetailData.subsidypolicyStr || "-"}}</div>
 
                         </div>
                         <div>
@@ -144,7 +144,8 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size:16px;" v-if="ndetailData.intendedAirlines && ndetailData.intendedAirlines.length>0">
+                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size:16px;"
+                                 v-if="ndetailData.intendedAirlines && ndetailData.intendedAirlines.length>0">
                                 {{ndetailData.intendedAirlines[0].dptName||"待定"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
                                 {{ndetailData.intendedAirlines[0].pstName||"待定"}}
@@ -179,13 +180,11 @@
     export default {
         data(){
             return{
-                subsidyList:["定补","保底","人头补","无补贴"],
                 schedulingList: ["接受","不接受"],
                 airportAcept:{
                     "0":"接受临近机场",
                     "1":"不接受临近机场"
                 },
-                progressState: ["未处理","审核未通过","审核通过"]
             }
         },
         props:["ndetailData","type"],

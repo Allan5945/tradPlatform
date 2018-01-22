@@ -799,7 +799,7 @@
     .chat-function, .chat-detailed {
         background-color: #f6f6f6;
         width: 600px;
-        height: 100%;
+        height: 560px;
         /*padding: 0 30px;*/
         overflow-y: auto;
         > div {

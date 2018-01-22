@@ -157,7 +157,7 @@
                         </div>
                         <div>
                             <div>出港时刻</div>
-                            <div>{{timeresources[ndetailData.dptTimeresources]||"-"}}</div>
+                            <div>{{ ndetailData.dptTime||"-" }}</div>
                         </div>
                         <div>
                             <div>班期</div>
@@ -235,8 +235,6 @@
                     '6': '订单完成',
                     '7': '佣金支付'
                 },
-                //subsidyList:["定补","保底","人头补","无补贴"],
-                timeresources:["09:00-18:00",'待协调','充足'],
                 airportAcept:{
                     "0":"接受临近机场",
                     "1":"不接受临近机场"

@@ -33,7 +33,7 @@
                 </div>
                 <template v-if="detailsData">
                     <div class="list-container">
-                        <div class="list items"   v-for="ditem in detailsData.list">
+                        <div class="list items"   v-for="ditem in detailsData.list" @click="turnDetailPanel(ditem)">
                             <div class="list-a item">
                                 {{ ditem.releasetime }}
                             </div>
@@ -57,7 +57,7 @@
                                 </span>
                                 -->
                             </div>
-                            <div class="list-f item color" @click="turnDetailPanel(ditem)">
+                            <div class="list-f item color" @click.stop="turnDetailPanel(ditem)">
                                 查看详情<span class="icon-item">&#xe686;</span>
                             </div>
                         </div>
