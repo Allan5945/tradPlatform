@@ -24,68 +24,53 @@
                     </span>
                 </div>
             </div>
-            <div class="third item-container">
-                <div class="start item">
-                    <div class="item-a font-gray">始发<span v-if="myData.dptState == 1">区域</span><span v-else>机场</span>
-                    </div>
-                    <div class="item-b"><span v-if="myData.dptState == 1">{{myData.dpt}}</span><span v-else>{{myData.dptNm}}</span></div>
-                    <div class="item-c font-gray">{{myData.dptAcceptnearairportStr}}临近机场</div>
-                    <div class="item-d font-gray">出港资源</div>
-                    <div class="item-e">{{myData.dptTimeresourcesStr}}</div>
-                </div>
-                <div class="pass item" style="display: flex; align-items: center;">
-                    <span class="left-icon icon-item">&#xe6ad;</span>
-                    <div class="border-dashed"></div>
-                    <span class="right-icon icon-item">&#xe672;</span>
-                </div>
-                <div class="arrive item">
-                    <div class="item-a font-gray">到达<span v-if="myData.arrvState == 1">区域</span><span v-else>机场</span>
-                    </div>
-                    <div class="item-b"><span v-if="myData.arrvState == 1">{{myData.arrv}}</span><span v-else>{{myData.arrvNm}}</span></div>
-                    <!--下方有空格-->
-                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-e">&nbsp;<!--此处有空格--></div>
-                </div>
-            </div>
-            <div class="line"></div>
             <div class="fourth item-container">
                 <div class="items">
                     <div class="left item">
-                        <div class="font-gray">拟开时间</div>
-                        <div class="font-gray">拟飞机型</div>
-                        <div class="font-gray">客量期望</div>
-                        <div class="font-gray">补贴政策</div>
+                        <div class="font-gray">机型</div>
+                        <div class="font-gray">运力归属</div>
+                        <div class="font-gray">小时成本</div>
+                        <div class="font-gray">接受调度</div>
+                        <div class="font-gray">出港时刻</div>
                     </div>
                     <div class="right item">
-                        <div class="item-height">{{myData.sailingtime || '-'}}</div>
                         <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
                         <div class="item-height">
-                            <span v-if="myData.avgguestexpect != null && myData.avgguestexpect != ''">{{myData.avgguestexpect}}人/均班</span>
+                            <span v-if="myData.capacityCompany">{{myData.capacityCompany.airlnCd}}</span>
                             <span v-else>-</span>
                         </div>
-                        <div class="item-height">{{myData.subsidypolicyStr || '-'}}</div>
+                        <div class="item-height">
+                            <span>{{myData.hourscost || '-'}}万/小时</span>
+                        </div>
+                        <div class="item-height">{{myData.schedulingStr || '-'}}</div>
+                        <div class="item-height">{{myData.dptTime || '-'}}</div>
                     </div>
                 </div>
                 <div class="items">
                     <div class="left item">
-                        <div class="font-gray">拟开班期</div>
-                        <div class="font-gray">座位数</div>
-                        <div class="font-gray">客座率期望</div>
+                        <div class="font-gray">班期</div>
+                        <div class="font-gray">运力基地</div>
+                        <div class="font-gray">座位布局</div>
                         <div class="font-gray">有效期</div>
                     </div>
                     <div class="right item">
                         <div class="item-height">{{myData.days || '-'}}</div>
+                        <div class="item-height">{{myData.dptNm || '-'}}</div>
                         <div class="item-height">{{myData.seating || '-'}}</div>
-                        <div class="item-height">
-                            <span v-if="myData.loadfactorsexpect != null && myData.loadfactorsexpect != ''">{{myData.loadfactorsexpect}}%</span>
-                            <span v-else>-</span>
-                        </div>
-                        <div class="item-height">{{myData.periodValidity || '-'}}</div>
+                        <div class="item-height">{{periodValidity}}止</div>
                     </div>
                 </div>
             </div>
-            <div class="fifth item-container">
+            <div class="fifth item-container" style="height: 40px;">
+                <div class="left font-gray">意向航线</div>
+                <div class="right" v-if="myData.intendedAirlines">
+                    {{myData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                    {{myData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                    {{myData.intendedAirlines[0].arrvName||'-'}}
+                </div>
+                <div class="right" v-else>-</div>
+            </div>
+            <div class="fifth item-container" style="">
                 <div class="left font-gray">其他说明</div>
                 <div class="right">{{myData.remark}}</div>
             </div>
@@ -144,6 +129,7 @@
                 editAirlineDelegationShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
                 id: '',                 // 点击列表获取这条需求id
+                periodValidity: '',
             }
         },
         mounted() {
@@ -162,6 +148,7 @@
                 }) .then((response) => {
                     if(response.data.opResult == 0) {
                         this.myData = response.data.data;
+                        this.periodValidity = this.myData.periodValidity.split('-')[1];
                         // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
                         // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
                         if(this.myData.demandstate == 2

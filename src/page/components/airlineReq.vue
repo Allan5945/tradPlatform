@@ -1,15 +1,109 @@
 <template>
     <div class="container" id="airlineReq" @click="closeAll">
-        <!--<div class="simplify-msg">
-            <input class="magic-checkbox" type="checkbox" id="alqCheckBox1">
-            <label for="alqCheckBox1">展开填写完整需求订单</label>
+       <!-- <div class="simplify-msg">
+            &lt;!&ndash;<input class="magic-checkbox" type="checkbox" id="alqCheckBox1">&ndash;&gt;
+            &lt;!&ndash;<label for="alqCheckBox1">展开填写完整需求订单</label>&ndash;&gt;
             <div class="check-box">
-
+                <singleElection :single.sync="elect" class="checkbox-choose"></singleElection>
+                <span @click="checkboxClickFn" style="cursor:pointer;">展开填写完整需求订单</span>
             </div>
-            <div class="s-first"></div>
-            <div class="s-second"></div>
-            <div class="s-third"></div>
+            <div class="s-first first">
+                <span style="height: 20px; width: 70px; line-height: 18px; white-space: nowrap;">
+                    <span class="warn">* </span>意向航线
+                </span>
+                <div class="start item">
+                    <div class="bottom">
+                        <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1" @focus="airportFn1">
+                        <airportS class="aisx" v-on:resData="resData1" :searchText="firArea" v-show="isSearch1"></airportS>
+                    </div>
+                    <div class="warn" v-show="warn3Show">*始发地不能为空</div>
+                </div>
+                <div style="display: flex;flex-direction: column; justify-content: flex-end;">
+                    <span class="icon-item">&#xe672;</span>
+                    <span v-show="warn3Show" style="height: 20px">　</span>
+                </div>
+                <div class="pass item">
+                    <div class="bottom">
+                        <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" @focus="airportFn2" >
+                        <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
+                    </div>
+                </div>
+                <div style="display: flex;flex-direction: column; justify-content: flex-end;">
+                    <span class="icon-item">&#xe672;</span>
+                    <span v-show="warn3Show" style="height: 20px">　</span>
+                </div>
+                <div class="arrive item">
+                    <div class="bottom">
+                        <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
+                        <airportS class="aisx" style="left: -80px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
+                    </div>
+                </div>
+            </div>
+            <div class="s-second third items">
+                <div class="third-d item">
+                    <div class="right item-child" style="width: 100%;">
+                        <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
+                            <span class="warn">* </span>补贴政策
+                        </span>　
+                        <div style="display: flex;">
+                            <div class="vertical-center input-label">
+                                <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyYes" @click="subsidyClick0"/><label for="alRTopsubsidyYes" class="input-label">有补贴</label>
+                                <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
+                                    <span style="margin-left: 12px;">{{subsidyShow}}</span>
+                                    <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
+                                    <ul class="choose-type want-subsidy" v-show="subsidy">
+                                        <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="display: flex">
+                                <div class="vertical-center">
+                                    <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyNo" @click="subsidyClick1"/><label for="alRTopsubsidyNo" class="input-label">无补贴</label>
+                                </div>
+                                <div class="vertical-center">
+                                    <input type="radio" class="magic-radio" name="topSubsidy" checked id="alRTopsubsidyTalk" @click="subsidyClick2"/>
+                                    <label for="alRTopsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="s-third third items" style="margin-bottom: 50px;">
+                <div class="third-a item">
+                    <div class="right item-child" style="width: 240px;">
+                        <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
+                            <span class="warn">* </span>拟开时间
+                        </span>
+                        <div class="choose-time" @click.stop="clickClose10Fn " >
+                            <div class="choose-time-icon">
+                                <span class="icon-item">&#xe607;</span>
+                            </div>
+                            <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
+                        </div>
+                        <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
+                        <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
+                            <div class="selec-data">
+                                <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
+                                <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                <div class="confirm-btn btn" @click="getMyDate1">确定</div>
+                                <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                            </div>
+                            <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
+                                &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                            </calendar>
+                            <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
+                                &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                            </calendar>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>-->
+        <transition name="slidey-fade">
+            <div v-show="detailShow">
+            </div>
+        </transition>
         <div class="bg-color must">
             <div class="right item-child">
                 <div style="display: flex;">
@@ -80,7 +174,7 @@
                         </div>
                         <div class="bottom">
                             <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
-                            <airportS class="aisx" style="left: -60px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
+                            <airportS class="aisx" style="left: -63px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
                         </div>
                     </div>
                 </div>
@@ -288,7 +382,7 @@
                         <span>补贴政策</span>　
                         <div style="display: flex; flex-direction: column;">
                             <div class="vertical-center" style="margin-bottom: 10px;">
-                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" checked @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
+                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
                                 <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
                                     <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                     <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
@@ -302,7 +396,7 @@
                                     <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyNo" @click="subsidyClick1"/><label for="alRsubsidyNo" class="input-label">无补贴</label>
                                 </div>
                                 <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyTalk" @click="subsidyClick2"/>
+                                    <input type="radio" class="magic-radio" name="subsidy" checked id="alRsubsidyTalk" @click="subsidyClick2"/>
                                     <label for="alRsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
                                 </div>
                             </div>
@@ -359,9 +453,6 @@
                     <input type="radio" class="magic-radio" name="open-type" id="alRopenOnly" @change="publicwayFn3"/><label for="alRopenOnly" class="input-label">定向发布</label>
                 </div>
                 <div class="choose-input" v-show="directionPublicShow" style="position: relative;justify-content: flex-start;">
-
-
-
                     <div class="little-label-wrapper" v-show="directionPublicCityShow" ref="littleLabelWrapper" @click="labelWrapperClick">
                         <span class="little-label" v-for="(item,index) in directionPublicCity">
                             {{item.name}}
@@ -377,23 +468,19 @@
                             </span>
                         </div>
                     </span>
-
-
-
-
                     <input class="input-mes-a" type="text" v-model="fourthArea" @click.stop="airportFn4" >
                     <airCompanySearch class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airCompanySearch>
                 </div>
             </div>
-            <div class="sixth" v-if="submitData2Click == false">
-                <button class="btn-a btn-blue" @click="submitData2ClickFn" v-show="role.role != 2">委托代理</button>
-                <button class="btn-b btn-blue" @click.stop="submitData">确认发布</button>
-                <button class="btn-c btn-cancel" @click="closeThis">取消</button>
-            </div>
-            <div class="sixth" v-else>
-                <button class="btn-b btn-blue" @click.stop="submitData2">确认发布</button>
-                <button class="btn-c btn-cancel" @click="closeSubmitData2">取消</button>
-            </div>
+        </div>
+        <div class="sixth" v-if="submitData2Click == false">
+            <button class="btn-a btn-blue" @click="submitData2ClickFn" v-show="role.role != 2">委托代理</button>
+            <button class="btn-b btn-blue" @click.stop="submitData">确认发布</button>
+            <button class="btn-c btn-cancel" @click="closeThis">取消</button>
+        </div>
+        <div class="sixth" v-else>
+            <button class="btn-b btn-blue" @click.stop="submitData2">确认发布</button>
+            <button class="btn-c btn-cancel" @click="closeSubmitData2">取消</button>
         </div>
     </div>
 </template>
@@ -403,6 +490,7 @@
     import airportS from '../reuseComponents/airportSearch1.vue'
     import airCompanySearch from '../reuseComponents/airCompanySearch.vue'
     import calendar from './calendar'
+    import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
 
     export default {
         data() {
@@ -536,6 +624,11 @@
                 moreShow: false, // 定向发布长度是否超出显示范围
                 littleListWrapperShow: false, // 多条显示
                 submitData2Click: false,  // “委托代理”按钮是否已经被点击
+                /*新增表单内容*/
+                elect: {
+                    set: false
+                },
+                detailShow: false,
             }
         },
         components: {
@@ -543,6 +636,7 @@
             airportS,
             calendar,
             airCompanySearch,
+            singleElection,
         },
         watch: {
             typeChoose: function () {
@@ -570,6 +664,12 @@
             }*/
         },
         methods: {
+            /*新增表单内容*/
+            checkboxClickFn: function () {
+                this.elect.set = !this.elect.set;
+                this.detailShow = this.elect.set;
+            },
+
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
@@ -1330,7 +1430,7 @@
     $border-color: rgba(96,94,124,0.37);
     /********↓↓↓↓↓↓新增样式↓↓↓↓↓↓↓********/
     /******checkbox样式更改*****/
-    /*.magic-checkbox {
+    .magic-checkbox {
         position: absolute;
         display: none;
     }
@@ -1354,20 +1454,72 @@
             color: $icon-color;
             font-weight: bold;
         }
-    }*/
+    }
     /********/
-    /*.simplify-msg {
+    .simplify-msg {
         position: relative;
-        padding: 0 20px;
+        padding: 67px 0 0 0;
         .check-box {
             position: absolute;
             top: 0;
             right: 20px;
+            display: flex;
+            align-items: center;
+            .checkbox-choose {
+                margin-right: 5px;
+            }
         }
-        .s-first {}
-        .s-second {}
-        .s-third {}
-    }*/
+        .s-first,.first {
+            padding: 0 20px 23px 20px;
+            .start {
+                width: 142px;
+            }
+            .pass {
+                width: 142px;
+            }
+            .arrive {
+                width: 142px;
+            }
+        }
+        .s-second,.third {
+            margin: 0;
+            .item {
+                .item-child {
+                    justify-content: flex-start;
+                    width: 100%;
+                }
+            }
+            .third-d {
+                padding: 23px 0;
+                height: 26px;
+                .right {
+                    align-items: flex-start;
+                    .want-subsidy {
+                        top: 25px;
+                        left: -1px;
+                        width: 120px;
+                    }
+                }
+            }
+        }
+        .s-third,.third {
+            margin: 0;
+            .item {
+                .item-child {
+                    justify-content: flex-start;
+                    width: 240px;
+                }
+            }
+            .third-a {
+                padding: 23px 0 0 0;
+                height: 26px;
+                line-height: 26px;
+                .right {
+                    position: relative;
+                }
+            }
+        }
+    }
     /*************↑↑↑↑↑新增样式↑↑↑↑↑************/
     .icon-item {
         font-size: 1.6rem;
@@ -1998,6 +2150,8 @@
         display: flex;
         justify-content: flex-end;
         margin-bottom: 44px;
+        padding-top: 20px;
+        border-top: 1px solid $border-color;
         button {
             padding: 9px 20px;
             outline: none;

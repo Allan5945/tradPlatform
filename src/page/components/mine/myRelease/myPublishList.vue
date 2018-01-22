@@ -74,12 +74,11 @@
             </el-pagination>
         </div>
         <transition-group name="slidex-fade">
-            <!--<myPublish v-show="myPublishShow" @close-this="closeMyPublishShowFn" :key="1"></myPublish>-->
-            <myPublish0 v-show="myPublishShow0" @close-this="closeMyPublishShowFn0" :key="2"></myPublish0>
-            <myPublishNeed1 v-show="myPublishShow1" @close-this="closeMyPublishShowFn1" :key="3"></myPublishNeed1>
-            <!--<myPublishAirline v-show="myPublishAirlineShow" @close-this="closeMyPublishAirlineFn" :key="4"></myPublishAirline>-->
-            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeMyPublishTransportEntrustFn" :key="5"></myPublishTransportEntrust>
-            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeMyPublishAirLineEntrustFn" :key="6"></myPublishAirLineEntrust>
+            <myPublish0 v-show="myPublishShow0" @close-this="closeAllShowFn" :key="2"></myPublish0>
+            <myPublishNeed1 v-show="myPublishShow1" @close-this="closeAllShowFn" :key="3"></myPublishNeed1>
+            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
+            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
+            <myPublishAirLineEntrust1 v-show="myPublishAirLineEntrust1Show" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
         </transition-group>
     </div>
 </template>
@@ -91,6 +90,7 @@
     import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
+    import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
 
     export default {
         data() {
@@ -118,6 +118,7 @@
                 myPublishAirlineShow: false, // 航线详情是否显示
                 myPublishTransportEntrustShow: false, // myPublishEntrust（我的发布-发布的运力托管）是否显示
                 myPublishAirLineEntrustShow: false,   //myPublishAirLineEntrust（我的发布-发布的航线托管）是否显示
+                myPublishAirLineEntrust1Show: false,  //运力托管是否显示
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上
@@ -375,58 +376,53 @@
                     // 运营托管详情
                     this.myPublishTransportEntrustShow = true;
                     this.myPublishAirLineEntrustShow = false;
+                    this.myPublishAirLineEntrust1Show = false;
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
-                }if(item.demandtype == 3 || item.demandtype == 4){
+                }if(item.demandtype == 3){
                     // 航线委托详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = true;
+                    this.myPublishAirLineEntrust1Show = false;
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = false;
-                }if(item.demandtype == 1){
+                }if(item.demandtype == 4) {
+                    // 运力委托详情
+                    this.myPublishTransportEntrustShow = false;
+                    this.myPublishAirLineEntrustShow = false;
+                    this.myPublishAirLineEntrust1Show = true;
+                    this.myPublishShow0 = false;
+                    this.myPublishShow1 = false;
+                }
+                if(item.demandtype == 1){
                     //  运力需求详情
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
+                    this.myPublishAirLineEntrust1Show = false;
                     this.myPublishShow0 = false;
                     this.myPublishShow1 = true;
                 }if(item.demandtype == 0){
                     //  航线需求详情（机场发布，我写的）
                     this.myPublishTransportEntrustShow = false;
                     this.myPublishAirLineEntrustShow = false;
+                    this.myPublishAirLineEntrust1Show = false;
                     this.myPublishShow0 = true;
                     this.myPublishShow1 = false;
                 }
                 tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue...
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },
-            // 点击关闭:我的发布-航线详情
-            closeMyPublishShowFn0: function () {
+            // 关闭所有弹出页面
+            closeAllShowFn: function () {
                 this.myPublishShow0 = false;
-                this.listItemIndex = '';
-                tabulationBoxTrigger.hierarchy = false;
-                this.refreshFn();
-            },
-            // 点击关闭:我的发布-运力需求详情
-            closeMyPublishShowFn1: function () {
                 this.myPublishShow1 = false;
-                this.listItemIndex = '';
-                tabulationBoxTrigger.hierarchy = false;
-                this.refreshFn();
-            },
-            // 点击关闭:我的发布-发布的运力托管
-            closeMyPublishTransportEntrustFn: function () {
                 this.myPublishTransportEntrustShow = false;
+                this.myPublishAirLineEntrustShow = false;
+                this.myPublishAirLineEntrust1Show = false;
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
                 this.refreshFn();
             },
-            // 点击关闭:我的发布-发布的航线托管
-            closeMyPublishAirLineEntrustFn: function () {
-                this.myPublishAirLineEntrustShow = false;
-                this.listItemIndex = '';
-                tabulationBoxTrigger.hierarchy = false;
-                this.refreshFn();
-            }
         },
         components: {
             stateList,
@@ -435,7 +431,8 @@
             myPublishNeed1,
 //            myPublishAirline,
             myPublishTransportEntrust,
-            myPublishAirLineEntrust
+            myPublishAirLineEntrust,
+            myPublishAirLineEntrust1
         }
     }
 </script>
