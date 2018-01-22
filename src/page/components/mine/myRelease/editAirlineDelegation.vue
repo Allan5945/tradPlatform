@@ -75,7 +75,7 @@
                             </div>
                             <div class="bottom">
                                 <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
-                                <airportS class="aisx" style="left: -60px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
+                                <airportS class="aisx" style="left: -63px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
                             </div>
                         </div>
                     </div>

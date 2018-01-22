@@ -32,7 +32,7 @@
                         <validation v-if="active==1" v-on:validation="validPass" style="margin-top:30px;"></validation>
                     </div>
                     <div class="process-main" v-show="active==2">
-                        <p style="height:25px;color:#aaa;text-indent: 3px;">需要绑定的邮箱</p>
+                        <p style="height:25px;color:#aaa;text-indent: 3px;">输入新手机号</p>
                         <div class="full-btn">
                             <input type="text" v-model="userData.phone" disabled placeholder="">
                             <span class="success">&#xe61f;</span>
@@ -150,7 +150,6 @@
                     this.userData.code = '';
                     this.text.canelState = false;
                 }
-//                this.text.status = false;
             },
             'userData': {
                 deep: true,
@@ -181,9 +180,9 @@
             },
             closeThis(f){
                 this.$emit('subchange',{
-                    name: 'phone'
+                    name: 'phone',
+                    type: f===true ? 1:0
                 })
-                this.ud.showBackPwd = f===true ? true: false;
             },
             delayClose(){
                 setTimeout(this.closeThis,3000)
@@ -202,7 +201,7 @@
                 if(type === 0){ //密码校验
                     flag = true;
                 }else if(type === 1 ) { //手机校验
-                    let reg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                    let reg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
                     flag = reg.test(val);
                 }
                 return flag;
@@ -224,7 +223,9 @@
             },
             checkNewPhone(){    //手机验证
                 let that = this,flag = false;
-                if(!that.test(that.userData.phone,1))return that.openTips("*手机号格式有误，请重新输入");
+                if(!that.test(that.userData.phone,1)){
+                    return that.openTips("*手机号格式有误，请重新输入");
+                }
                 if(!that.validFlag){
                     return  that.openTips("*请通过验证");
                 }
@@ -289,16 +290,16 @@
                     }
                 }).then(res=>{
                     if(res.data.opResult === '0'){
-                        that.show.footer = false;
-                        that.active = 3;
                         that.result = true;
                         that.ud.phone = np;
                         that.delayClose();
                     }else{
+                        this.userData.code = '';
                         that.openTips("*短信验证码错误");
                     }
                 }).catch(err=>{
-                    that.openTips('不知道4##还是5##');
+                    that.openTips('*网络错误，不知道4##还是5##');
+                    that.delayClose();
                 })
                 if(flag){
                     that.show.footer = false;

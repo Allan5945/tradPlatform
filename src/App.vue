@@ -81,7 +81,7 @@
     }
     .slidey-fade-enter, .slidey-fade-leave-to
         /* .slide-fade-leave-active for below version 2.1.8 */ {
-        transform: translateY(30px);
+        transform: translateY(-30px);
         opacity: 0;
     }
     /* 左右劃入*/
