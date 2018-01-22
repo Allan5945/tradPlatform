@@ -153,41 +153,9 @@
                     <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
                 </div>
             </div>
-            <div class="post-type">
-                <div class="t-radio">
-                    <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
-                </div>
-                <div class="t-radio">
-                    <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
-                </div>
-                <div class="t-radio" style="margin-right:5px;">
-                    <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
-                </div>
-                 <div class="choose-input" v-show="post == '3' ">
-                    <div class="choose-item-list" v-show="directionPublicShow" @click="searchDirect">
-                        <div class="choose-item" v-for="(item,index) in searchData1">
-                            {{item.name}}
-                            <span @click.stop="delItem1(index)" class="iconfont">&#xe62c;</span>
-                        </div>
-                    </div>
-                   <div class="more" @mouseover="selectListShow = true" @mouseout="selectListShow = false">
-                        <span class="dot" v-show="moreSpanShow">...</span>
-                        <div  class="list-wrapper"  v-show="selectListShow">
-                            <div class="choose-item" v-for="(item,index) in searchData1">
-                                {{item.name}}
-                                 <span @click.stop="delItem1(index)" class="iconfont">&#xe62c;</span>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" v-model="directText" @click.stop="openSearch2" @blur="closeDialog8">
-                    <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:30px;"></airportS1>
-                </div>
-                <div class="error" v-show="isError10" style="left:230px;top:30px;">*请选择定向发布机场</div>
-            </div>
         </div>
         <div class="t-btn">
-            <div class="agent-btn " @click="confirm(4)" v-if="btnShow">委托代理</div>
-            <div class="confirm-btn " @click="confirm(1)">确认发布</div>
+            <div class="confirm-btn " @click="confirm(4)">确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
         </div>
     </div>
@@ -589,7 +557,7 @@
                     trans.scrollTop = 0;
                     return false;
                 }
-                if(this.getFlight =='true'&& this.msg == '选择班期类型'){//选择班期
+              /*  if(this.getFlight =='true'&& this.msg == '选择班期类型'){//选择班期
                     this.isError4 = true;
                     trans.scrollTop = 0;
                     return false;
@@ -599,11 +567,11 @@
                      trans.scrollTop = 0;
                     return false;
                 }
-               /* if(this.airplaneTyp == ''){//飞机类型
+                if(this.airplaneTyp == ''){//飞机类型
                     this.isError5 = true;
                     trans.scrollTop = 0;
                     return false;
-                }*/
+                }
                 if(this.searchText == ''){//运力基地
                     this.isError6 = true;
                     trans.scrollTop = 0;
@@ -616,25 +584,27 @@
                 if(this.myDate == '选择起始时间'){//有效时间
                     this.isError8 = true;
                     return false;
-                }
+                }*/
                 if(this.dispatch){       //接受调度
                     if(this.searchData.length == '0'){
                         this.isError9 = true;
                         return false;
                     };
                 }
-                if(this.post == '3'){       //定向发布
+              /*  if(this.post == '3'){       //定向发布
                     if(this.searchData1.length == '0'){
                         this.isError10 = true;
                         return false;
                     };
-                }
+                }*/
                 let demandData = {},
                     time = (this.timeStart +'-'+ this.timeEnd) == '00:00-00:00'? "待定": (this.timeStart +'-'+ this.timeEnd);
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     demandData.dptTime = this.getTime == 'true'? time:'无';
+
+                    this.msg = this.msg=="选择班期类型"? '':this.msg;
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -646,7 +616,7 @@
                     demandData.seating = this.seat;
                     demandData.hourscost = this.hourcost;
                     demandData.remark = this.tip;
-                    demandData.periodValidity = this.myDate;
+                    demandData.periodValidity = this.myDate == "选择起始时间"? '':this.myDate;
 
                     //调度机场
                     demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
@@ -663,7 +633,7 @@
                     if(this.dispatch){
                         demandData.schedulinePort  = this.schedulinePort;
                     }
-                    //定向发布
+                   /* //定向发布
                     demandData.publicway = this.post;
                     if(this.searchData1.length == '0'){
                          this.directionalgoal = '';
@@ -677,7 +647,7 @@
                      if(this.post == '3'){
                         demandData.directionalgoal = this.directionalgoal;
                     }
-
+*/
                     this.$ajax({
                         url:"/demandAdd",
                         method: 'post',

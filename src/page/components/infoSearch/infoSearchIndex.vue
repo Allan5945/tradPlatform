@@ -7,13 +7,13 @@
                         <div  @click="getType(index)" v-for="(value,index) in typeList" :class="{active:selcIndex == index}">{{value}}</div>
                 </div>
                 <div class="search-box">
-                    <input type="text" v-model="airportText" @focus="infoSearch" @blur="closeDialog" maxlength="20">
+                    <input type="text" v-model="airportText" @focus="infoSearch" @blur="closeDialog" maxlength="20" :placeholder="searchTip">
                    <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportShow"></airportS1>
                    <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData" v-else-if="selcIndex == '0' " v-show="cityShow"></cityS>
                     <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData"  v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
                 </div>
                 <div class="search-btn" @click="getInfo" v-if="search"><span class="iconfont">&#xe62e;</span></div>
-                <div class="search-btn" v-else><span class="iconfont">&#xe62e;</span></div>
+                <div class="no-search-btn" v-else><span class="iconfont">&#xe62e;</span></div>
             </div>
         </div>
         <div class="hots">
@@ -99,6 +99,7 @@ import myPic from '$src/static/img/airport1.png';
                 selcIndex:'0',
                 selcType:'城市',
                 typeList:['城市','航司','机场','时刻'],
+                searchTip:'请输入城市进行查询',
                 airlineShow:false,
                 airportShow:false,
                 cityShow:false,
@@ -113,11 +114,22 @@ import myPic from '$src/static/img/airport1.png';
         },
         watch:{
            'airportText':function(){
-            if(this.airportText){
-                this.search = true;
-            }else{
-                this.search = false;
-            }
+                if(this.airportText){
+                    this.search = true;
+                }else{
+                    this.search = false;
+                }
+           },
+           'selcType':function(val){
+                if(val == '城市'){
+                    this.searchTip = "请输入城市进行查询";
+                }else if(val == '航司'){
+                     this.searchTip = "请输入航司进行查询";
+                }else if(val == '机场'){
+                     this.searchTip = "请输入机场进行查询";
+                }else if(val == '时刻'){
+                     this.searchTip = "请输入机场进行查询";
+                }
            }
         },
         methods: {
@@ -152,6 +164,7 @@ import myPic from '$src/static/img/airport1.png';
             },
             getInfo(){
                 if(this.qyCode == ''){
+                    this.search = true;
                     return false;
                 }else{
                      this.$store.dispatch('searchInfo', {
@@ -160,8 +173,6 @@ import myPic from '$src/static/img/airport1.png';
                         searchText:this.airportText
                     });
                 }
-                this.airportText = '';
-                this.qyCode = '';
                  if(this.selcType == '机场'){
                     this.$router.push({ path: '/index/information/airport'});
                 }else if(this.selcType == '航司'){
@@ -171,6 +182,8 @@ import myPic from '$src/static/img/airport1.png';
                 }else if(this.selcType == '城市'){
                     this.$router.push({ path: '/index/information/city'});
                 }
+                this.airportText = '';
+                this.qyCode = '';
             },
             getAirCompany: function(){
                 this.airlineShow = true;
@@ -288,9 +301,31 @@ import myPic from '$src/static/img/airport1.png';
             text-align:center;
             line-height:40px;
             cursor: pointer;
+            color:#3c78ff;
+            box-shadow: 0px 2px 16px rgba(4, 7, 156, 0.4);
             .iconfont{
                 font-size:3.2rem;
-                color:#3c78ff;
+            }
+            &:hover{
+                 background-color:#c7d8ff;
+            }
+             &:active {
+                background-color: rgba(60,120,225,.9);
+                color: white;
+            }
+        }
+        .no-search-btn{
+            height:40px;
+            width:115px;
+            background-color:#ccc;
+            border-radius:5px;
+            text-align:center;
+            line-height:40px;
+            cursor: pointer;
+            color:rgba(256,256,256,.4);
+            box-shadow: 0px 2px 16px rgba(4, 7, 156, 0.4);
+            .iconfont{
+                font-size:3.2rem;
             }
         }
     }
