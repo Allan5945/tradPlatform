@@ -83,7 +83,7 @@
                         </div>
                         <div>
                             <div>补贴政策</div>
-                            <div>{{subsidyList[ndetailData.subsidypolicy]||"-"}}</div>
+                            <div>{{ndetailData.subsidypolicyStr||"-"}}</div>
 
                         </div>
                         <div>
@@ -244,7 +244,6 @@
                     '6': '订单完成',
                     '7': '佣金支付'
                 },
-                subsidyList:["定补","保底","人头补","无补贴"],
                 schedulingList: ["接受","不接受"],
                 airportAcept:{
                     "0":"接受临近机场",

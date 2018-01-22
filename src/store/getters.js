@@ -32,4 +32,7 @@ export default {
     searchInfo:(state)=>{
         return state.searchInfo;
     },
+    demandType:(state)=>{
+        return state.demandType;
+    },
 }

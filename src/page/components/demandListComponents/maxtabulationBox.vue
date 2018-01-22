@@ -1,8 +1,8 @@
 <template>
     <div class="demand-list">
         <div></div>
-        <div :class="{'tagRed':(key.data.renew == '0'),'already-read':(key.data.collectType != 0)}" class="mes-body-h popup" @click="getDetail(key)"
-             v-for="(key,i) in renderData" @mouseover="showPanel = true;iPanel = i" @mouseout="showPanel = false">
+        <div id="tabulationBox" :class="{'tagRed':(key.data.renew == '0')}" class="mes-body-h popup" @click="getDetail(key)"
+             v-for="(key,i) in renderData" >
             <div class="mes-body-i0" @click.stop>
                 <span @click="seted(key)" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':key.data.set}">&#xe723;</span>
                 <img :src="key.img" alt="">
@@ -17,14 +17,14 @@
             </div>
             <div class="mes-body-i2">{{key.data.releasetime}}</div>
             <div class="mes-body-i3"><img :src='key.tag' alt=""></div>
-            <div class="mes-body-i3">{{key.data.pstTime}}</div>
+            <!--<div class="mes-body-i3">{{key.data.pstTime}}</div>-->
             <div class="mes-body-i3">{{key.data.days}}</div>
             <div class="mes-body-i3">{{key.data.aircrfttyp}}</div>
             <div class="mes-body-i3">{{key.data.subsidypolicyStr}}</div>
             <div class="mes-body-i4">{{key.data.remark}}</div>
-            <div class="move-panel" v-if="showPanel && i == iPanel">
-                <div class="btn-w" v-if="(key.data.collectType == 0)" @click.stop="alreadyPanel(key,true)">添加收藏</div>
-                <div class="btn-w" v-if="(key.data.collectType != 0)" @click.stop="alreadyPanel(key,false)">取消收藏</div>
+            <div class="mes-body-i3 move-panel">
+                <div v-if="(key.data.collectType == 0)" @click.stop="alreadyPanel(key,true)" title="点击收藏">&#xe78c;</div>
+                <div v-if="(key.data.collectType != 0)" style="color:#fdbc22" @click.stop="alreadyPanel(key,false)" title="点击取消收藏">&#xe649;</div>
             </div>
         </div>
         <div v-if="(renderData.length == 0)" class="no-data">无数据!</div>
@@ -44,7 +44,7 @@
     export default {
         data() {
             return {
-                showPanel:false,
+                showPanel:true,
                 iPanel:0
             }
         },
@@ -134,7 +134,56 @@
             singleElection
         },
         mounted: function () {
-
+            let tabulationBox = document.getElementById('tabulationBox');
+            tabulationBox.addEventListener('scroll', (e) => {
+                let z = 70 * this.renderData.length;
+                let b = Number(tabulationBox.style.height.split('px')[0]);
+                let x = (z - b) / 1.2;
+                if (tabulationBox.scrollTop >= x) {
+                    let url = '/getOthersDemandListIndex';
+                    if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
+                    if (this.demandList.type && this.demandList.hybridPage < this.demandList.hybridData.pageCount) {  // 混合数据
+                        this.$store.dispatch('hybridData', {v: (this.demandList.hybridPage + 1), t: 1}).then(() => {
+                            this.$ajax({
+                                url:url,
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/x-www-form-urlencoded'
+                                },
+                                params: {
+                                    page: this.demandList.hybridPage
+                                }
+                            }).then((response) => {
+                                this.$store.dispatch('hybridData', {v: response.data.list.list, t: 2}).then(() => {
+                                });
+                            })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    } else if (!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount) { // 非混合数据
+                        this.$store.dispatch('monoData', {v: (this.demandList.monoPage + 1), t: 1}).then(() => {
+                            this.$ajax({
+                                url:url,
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/x-www-form-urlencoded'
+                                },
+                                params: {
+                                    page: this.demandList.monoPage,
+                                    code:this.demandList.monoName.code
+                                }
+                            }).then((response) => {
+                                this.$store.dispatch('monoData', {v: response.data.list.list, t: 2}).then(() => {
+                                });
+                            })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        });
+                    }
+                }
+            });
         },
         watch: {},
         computed: {
@@ -255,15 +304,12 @@
 </script>
 <style scoped lang="scss">
     .move-panel{
-        position: absolute;
-        right: 120px;
         >div{
-            border-radius: 15px;
-            margin-right: 13px;
-            padding: 0 10px;
             color: rgba(96, 94, 124, 0.65);
-            height: 20px;
             line-height: 20px;
+            font-family: iconfont;
+            font-size: 3rem;
+            transform: translate(-3px,0);
         }
     }
     .demand-list {

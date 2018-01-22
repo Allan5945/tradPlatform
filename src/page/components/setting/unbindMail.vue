@@ -95,9 +95,9 @@
             },
             closeThis(f){
                 this.$emit('subchange',{
-                    name: 'unbindMail'
+                    name: 'unbindMail',
+                    type: f===true ? 1:0
                 })
-                this.ud.showBackPwd = f===true ? true: false;
             },
             delayClose(){
                 setTimeout(this.closeThis,3000)

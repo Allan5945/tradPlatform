@@ -68,7 +68,7 @@
                        this.dis = true;
                         let num = 60;
                         let set = setInterval(()=>{
-                            this.num = num-- +"秒";
+                            this.num = num-- +"' 重新发送";
                             if(num == 0){
                                 this.num = "发送验证码";
                                 this.dis = false;

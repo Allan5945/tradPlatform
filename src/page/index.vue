@@ -38,6 +38,7 @@
     export default {
         data() {
             return {
+                mapCode:"",
                 test1:false,
                 renderComponent:false,
                 name: 1,
@@ -163,7 +164,7 @@
             })
                 .then((response) => {
                     let arr = [];
-                    response.data.data.forEach((val) => {
+                    response.data.dataNew.forEach((val) => {
                         if (
                             val.cityCoordinateJ != null &&
                             val.cityCoordinateW != null &&

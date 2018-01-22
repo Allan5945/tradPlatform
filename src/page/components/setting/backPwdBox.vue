@@ -45,7 +45,10 @@
                 setTimeout(this.closeThis,1500)
             },
             closeThis(){
-                this.ud.showBackPwd = false;
+                this.$emit('subchange',{
+                    name: 'backPwd',
+                    type : 2
+                })
             },
         }
     }

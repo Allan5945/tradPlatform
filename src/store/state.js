@@ -66,6 +66,7 @@ export const state = {
             },
         },
     },
+    demandType:true,  // 需求类型   ** true 代表市场需求，false 我发布的需求
     role: window.sessionStorage.getItem('role')? JSON.parse(window.sessionStorage.getItem('role')):null,// ** 用户角色信息
     routeNetwork:[], // ** 航线网络图数据
     searchInfo:{}//信息查询数据

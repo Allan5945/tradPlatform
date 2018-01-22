@@ -16,6 +16,8 @@ const CHANGERENEW  = 'CHANGERENEW';
 const TAGREAD  = 'TAGREAD';
 const CHANGEORDER  = 'CHANGEORDER';
 const SEARCHINFO  = 'SEARCHINFO';
+const DEMANDTYPE  = 'DEMANDTYPE';
+// const SETAIRCODE  = 'SETAIRCODE';
 
 export {
     TEST,
@@ -35,4 +37,6 @@ export {
     TAGREAD,
     CHANGEORDER,
     SEARCHINFO,
+    DEMANDTYPE,
+    // SETAIRCODE
 }

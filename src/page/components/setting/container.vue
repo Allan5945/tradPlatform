@@ -88,7 +88,7 @@
             <div class="swrapper flex-center" v-if="show.unbindMail">
                 <unbindMail v-on:subchange="turnOver" :ud="userData"></unbindMail>
             </div>
-            <div class="swrapper flex-center" v-if="userData.showBackPwd">
+            <div class="swrapper flex-center" v-if="show.backPwd">
                 <backPwdBox v-on:subchange="turnOver" :ud="userData"></backPwdBox>
             </div>
         </transition>
@@ -112,6 +112,7 @@
                     pwd:false,
                     bindMail: false,
                     unbindMail: false,
+                    backPwe: false
                 },
                 userData:{
                     phone: '',
@@ -151,8 +152,11 @@
             turnOver: function (d) {
                 let that = this;
                 that.show[d.name] = false;
-                if(d.name!=="backPwd"){
+                if(d.type===1){
                     that.userData.lastShow = d.name;
+                    that.show["backPwd"] = true;
+                }else if(d.type ===2 ){
+                    that.show[that.userData.lastShow] = true;
                 }
             },
             changeText(e,type){

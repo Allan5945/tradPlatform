@@ -48,7 +48,7 @@
                         </div>
                         <div class="list-e item" @click="chat(val)">
                             <span class="icon-item talk-icon">&#xe602;
-                                <span>1</span>
+                                <span v-show="newsPointShow">1</span>
                             </span>
                         </div>
                         <div class="list-f item color" @click="getDetail(val)">
@@ -91,13 +91,14 @@
                 agentShow:false,
                 deleShow:false,
                 sorted:true,
+                newsPointShow:false,
                 type: [],
                 type1:['航线委托'],
                 type2:['运力委托'],
                 type3:['需求类型','航线委托','运力委托','托管'],
                 state: [],
                 state1: ['状态','待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['状态','待处理','处理中','需求发布','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
+                state2: ['状态','待处理','处理中','已拒绝','已完成','已关闭'],
                 myList:null,
                 demandId:null,
                 totalCount:'',
@@ -105,7 +106,7 @@
                     page:1,
                     pageNo:4,
                     demandType: null,
-                    demandProgress:null,
+                    demandProgress:'',
                     releaseTime:"Desc"
                 },
                 chatData:{}
@@ -207,7 +208,7 @@
                 }
             },
             getProgress:function(progress,demandType){
-                switch (progress) {
+                /*switch (progress) {
                          case "0":
                             return "需求发布";
                             break;
@@ -235,6 +236,41 @@
                         case "10":
                             return "已拒绝";
                             break;
+                    }*/
+                    switch (progress) {
+                        case "0":
+                            return "处理中";
+                            break;
+                        case "1":
+                            return "处理中";
+                            break;
+                        case "2":
+                            return "处理中";
+                            break;
+                        case "4":
+                            return "处理中";
+                            break;
+                        case "5":
+                            return "处理中";
+                            break;
+                        case "3":
+                            return "已关闭";
+                            break;
+                        case "6":
+                            return "已完成";
+                            break;
+                        case "7":
+                            return "待处理";
+                            break;
+                        case "8":
+                            return "已接受";
+                            break;
+                        case "9":
+                            return  demandType == '2'? "测评中":"处理中";
+                            break;
+                        case "10":
+                            return "已拒绝";
+                            break;
                     }
             },
             turnProgress:function(val){
@@ -242,23 +278,8 @@
                         case "状态":
                             return null;
                             break;
-                        case "需求发布":
-                            return "0";
-                            break;
-                        case "需求征集":
-                            return "1";
-                            break;
-                        case "订单确认":
-                            return "2";
-                            break;
                         case "已关闭":
                             return "3";
-                            break;
-                        case "订单完成":
-                            return "4";
-                            break;
-                        case "佣金支付":
-                            return "5";
                             break;
                         case "已完成":
                             return "6";

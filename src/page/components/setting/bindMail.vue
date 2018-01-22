@@ -198,9 +198,9 @@
             },
             closeThis(f){
                 this.$emit('subchange',{
-                    name: 'bindMail'
+                    name: 'bindMail',
+                    type: f===true ? 1:0
                 })
-                this.ud.showBackPwd = f===true ? true: false;
             },
             delayClose(){
                 setTimeout(this.closeThis,3000)
@@ -303,12 +303,13 @@
                         that.result = true;
                         that.ud.mail = theMail;
                     }else{
-                        alert('error：接码，code:'+res.data.opResult);
+                        this.userData.code = '';
+                        that.openTips("*短信验证码错误");
                     }
                     that.delayClose();
                 }).catch(err=>{
                     that.active = 3;
-                    alert('不知道4##还是5##');
+                    that.openTips('*网络错误，不知道4##还是5##');
                     that.delayClose();
                 })
             },

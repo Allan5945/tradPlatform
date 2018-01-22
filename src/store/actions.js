@@ -52,4 +52,10 @@ export default {
     searchInfo:({commit},vl)=>{
         commit(types.SEARCHINFO,vl)
     },
+    demandType:({commit},t)=>{
+        commit(types.DEMANDTYPE,t)
+    },
+    // setaircode:({commit},val)=>{
+    //     commit(types.SETAIRCODE,val)
+    // }
 }

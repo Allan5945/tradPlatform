@@ -8,7 +8,7 @@
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
                     <div>创建于{{detailData.releasetime||'-'}}</div>
-                    <div><span>{{detailData.demandprogressStr||'-'}}</span></div>
+                    <div><span>{{getProgress(detailData.demandprogress)}}</span></div>
                 </div>
             </header>
             <div class="airline-content" v-if="isAirline">
@@ -385,6 +385,43 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     break;
             }
         },
+        getProgress:function(progress){
+            switch (progress) {
+                case "0":
+                    return "处理中";
+                    break;
+                case "1":
+                    return "处理中";
+                    break;
+                case "2":
+                    return "处理中";
+                    break;
+                case "4":
+                    return "处理中";
+                    break;
+                case "5":
+                    return "处理中";
+                    break;
+                case "3":
+                    return "已关闭";
+                    break;
+                case "6":
+                    return "已完成";
+                    break;
+                case "7":
+                    return "待处理";
+                    break;
+                case "8":
+                    return "已接受";
+                    break;
+                case "9":
+                    return "处理中";
+                    break;
+                case "10":
+                    return "已拒绝";
+                    break;
+                }
+            },
         getSonDetail(val){
           this.sonId = val.id;
           this.myShow = false;
@@ -413,7 +450,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     this.detailData = response.data.demandDetail;
                     this.listSonDemands = response.data.listSonDemands;
                      //状态处理
-                      if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'){//子需求需求发布/意向征集/子订单确认/子订单完成
+                      if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'||this.detailData.demandprogress == '5'){//子需求需求发布/意向征集/子订单确认/子订单完成/佣金支付
                           this.orderShow = true;
                           this.orderOver =true;
                       }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
