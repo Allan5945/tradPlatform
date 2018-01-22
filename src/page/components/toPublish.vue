@@ -18,7 +18,7 @@
 </template>
 <script>
     import transportForm from './transportForm.vue'
-    import agentTransForm from './agentTransForm.vue'
+    import agentTransForm from './agentTransForm1.vue'
     import operationForm from './operationForm.vue'
     import airlineReq from './airlineReq.vue'
     import airlineDelegation from './airlineDelegation.vue'

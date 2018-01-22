@@ -382,7 +382,8 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.detailData.id
+                    id:this.detailData.id,
+                    closeReason:'下架'
                 }
                 })
                 .then((response) => {

@@ -1,48 +1,50 @@
 <template>
     <div class="agent-form scroll popup">
-        <div class="t-must">
-            <div class="form-box post-til">
-                <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
-            </div>
-            <div class="form-box">
-                <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
-                <div class="error" v-show="isError1" style="left:100px;top:158px;">*请填写联系人</div>
-            </div>
-            <div class="form-box" style="position:relative;">
-                <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
-            </div>
-            <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
+        <div class="select-box">
+            <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
+            <div>展开填写完整需求订单</div>
         </div>
-        <div class="t-optional">
-           <!--  <div class="form-box">
-               <div class="t-title">需求类型</div>
-               <div class="need-btn"  @click="showBox=!showBox">
-                   <div class="title" v-text="msg" :class="{selected:isSel}"></div>
-                   <span class="icon-item icon-item1">&#xe605;</span>
-                   <div class="selc-list dropDown popup" v-show="showBox">
-                       <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
-                   </div>
-               </div>
-           </div> -->
+        <div class="t-part" v-show="!allFormShow">
             <div class="form-box">
-                <div class="t-title">航班号</div>
-                <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
-                <!-- <div class="num-list popup scroll" v-show="flightListShow">
-                    <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
-                </div> -->
+                <div class="t-title"><span style="color:red;padding-right:3px;">*</span>航班号</div>
+                <input type="text" placeholder="填写需要托管的航班号" v-model="flightNum" maxlength="10">
             </div>
-            <div class="form-box pad">
-                    <div class="t-title">小时成本</div>
-                    <div class="t-input">
-                        <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                        <span>万元</span>
+        </div>
+        <div class="t-all" v-show="allFormShow">
+            <div class="t-must">
+                <div class="form-box post-til">
+                    <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
                 </div>
+                <div class="form-box">
+                    <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
+                    <div class="error" v-show="isError1" style="left:60px;top:52px;">*请填写联系人</div>
+                </div>
+                <div class="form-box">
+                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
+                </div>
+                <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
-            <div class="form-box tips">
-                <div class="t-title">其他说明</div>
-                <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
-                <div class="count"><span >{{countNum}}</span>/35</div>
+            <div class="t-optional">
+                <div class="form-box">
+                    <div class="t-title">航班号</div>
+                    <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
+                    <!-- <div class="num-list popup scroll" v-show="flightListShow">
+                        <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
+                    </div> -->
+                </div>
+                <div class="form-box pad">
+                        <div class="t-title">小时成本</div>
+                        <div class="t-input">
+                            <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
+                            <span>元</span>
+                    </div>
+                </div>
+                <div class="form-box tips">
+                    <div class="t-title">其他说明</div>
+                    <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
+                    <div class="count"><span >{{countNum}}</span>/35</div>
+                </div>
             </div>
         </div>
         <div class="t-btn">
@@ -56,7 +58,7 @@
  export default {
         data () {
             return{
-                //showBox: false,
+                allFormShow:false,
                 isSel: false,
                 isError1: false,
                 isError2: false,
@@ -66,9 +68,7 @@
                 tip: '',
                 phoneNum:'',
                 flightNum:'',
-                flightData:[],
-                //msg:'选择需求类型',
-               // needType:['运力投放','航线需求']
+                flightData:[]
             }
         },
         methods:{
@@ -188,6 +188,7 @@
         box-sizing:border-box;
         padding-left:5px;
         border-bottom:1px solid rgba(151,151,151,.3);
+        background:transparent;
     }
     .agent-form{
         position:absolute;
@@ -199,7 +200,7 @@
         font-size:1.2rem;
         padding:20px;
         width:620px;
-        height:630px;
+        max-height:630px;
         color: #605E7C;
         border-radius:4px;
         background-color:#fff;
@@ -218,7 +219,31 @@
         }
 
     }
+     .select-box{
+        display:flex;
+        justify-content: flex-end;
+        >div{
+            height:26px;
+            margin-right:5px;
+            line-height:26px;
+        }
+        input{
+            display:block;
+            height:100%;
+        }
+    }
+    .t-part{
+        width:100%;
+        box-sizing:border-box;
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding:0 20px;
+        padding-bottom:20px;
+        border-bottom:1px solid rgba(151,151,151,.3);
+    }
     .form-box{
+        position:relative;
         width:240px;
         height:26px;
         line-height:26px;
@@ -231,7 +256,6 @@
         >input{
             width:180px;
             height:26px;
-            background-color: #FBFBFB;
         }
         .t-input{
             width:180px;
