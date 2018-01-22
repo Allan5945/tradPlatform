@@ -626,7 +626,7 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum == '' || this.warn2Show == true) {
+                }if(this.phoneNum.replace(/(^\s*)|(\s*$)/g,"") == '' || this.phoneNum == null || this.warn2Show == true) {
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return

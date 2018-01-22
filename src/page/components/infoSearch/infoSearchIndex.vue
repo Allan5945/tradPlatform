@@ -163,10 +163,7 @@ import myPic from '$src/static/img/airport1.png';
                 this.airlineShow = true;
             },
             getInfo(){
-                if(this.qyCode == ''){
-                    this.search = true;
-                    return false;
-                }else{
+                if(this.qyCode !== ''){
                      this.$store.dispatch('searchInfo', {
                         qyCode : this.qyCode,
                         selcType :this.selcType,

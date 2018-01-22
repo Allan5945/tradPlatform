@@ -222,7 +222,7 @@
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
         <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
-         <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
+        <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
 </template>
 
@@ -439,7 +439,11 @@
                       }
                     }
                     //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    if(this.role.role == 2){
+                        this.isSign = true;
+                    }else if(this.role.role == 0) {
+                        this.isSign = response.data.isSign;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
