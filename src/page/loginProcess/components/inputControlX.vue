@@ -83,6 +83,14 @@
                             c = "请输入正确的格式";
                         };
                         break;
+                    case 4:   // 电话
+                        reg = [/^1[34578]\d{9}$/];
+                        if (reg[0].test(this.arg.inputMes)) {
+                            t = true
+                        }else{
+                            c = "请输入正确的格式";
+                        };
+                        break;
                     case 1:   // 长度
                         if (this.arg.inputMes.length <= 16 && this.arg.inputMes.length >= 6 && this.arg.inputMes.indexOf(" ") == -1) {
                             t = true

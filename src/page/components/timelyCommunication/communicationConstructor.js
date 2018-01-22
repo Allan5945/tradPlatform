@@ -59,6 +59,7 @@ ln.$on('addChat', function (d)  {
                 }
             );
     }else{
+        this.chat.setChat = keys;
         this.chat.shut = true;
         this.chat.narrow = true;
     };
