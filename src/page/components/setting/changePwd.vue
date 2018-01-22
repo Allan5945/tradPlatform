@@ -125,7 +125,7 @@
                     defaultText:"",     // 默认的值
                     inputType:false,   // 输入框类型，true、text。false、password
                     isJudge:false,  // 是否显示正确的绿钩  true、显示。false、不显示
-                    isPrompt:false, // 是否密码显示功能 true、。false、
+                    isPrompt:true, // 是否密码显示功能 true、。false、
                     isshowErr:false, // 是否错误抖动 true、抖动。false、不抖动
                     tip:["确认新密码","确认密码"], // 1，输入框的placeholder值。2，显示值
                     openJudge:[],
@@ -164,9 +164,9 @@
             },
             closeThis(f){
                 this.$emit('subchange',{
-                    name: 'pwd'
+                    name: 'pwd',
+                    type: f===true ? 1:0
                 })
-                this.ud.showBackPwd = f===true ? true: false;
             },
             delayClose(){
                 setTimeout(this.closeThis,3000)

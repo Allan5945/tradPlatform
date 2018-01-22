@@ -20,7 +20,7 @@
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
-                                <div>{{ndetailData.dptTime||"待协调"}}</div>
+                                <div>{{ndetailData.dptTimeresourcesStr||"-"}}</div>
                             </div>
                         </div>
                         <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
-                                <div>{{ndetailData.pstTime||"待协调"}}</div>
+                                <div>{{ndetailData.pstTimeresourcesStr||"-"}}</div>
                             </div>
                         </div>
                         <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
@@ -44,7 +44,7 @@
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
-                                <div>{{ndetailData.arrvTime||"待协调"}}</div>
+                                <div>{{ndetailData.arrvTimeresourcesStr||"-"}}</div>
                             </div>
                         </div>
                     </div>
