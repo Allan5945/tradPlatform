@@ -44,7 +44,7 @@
                             {{val.title}}
                         </div>
                         <div class="list-d item">
-                          {{getProgress(val.demandProgress)}}
+                          {{getProgress(val.demandProgress,val.demandType)}}
                         </div>
                         <div class="list-e item" @click="chat(val)">
                             <span class="icon-item talk-icon">&#xe602;
@@ -97,7 +97,7 @@
                 type3:['需求类型','航线委托','运力委托','托管'],
                 state: [],
                 state1: ['状态','待处理','测评中','已接受','已拒绝','已关闭'],
-                state2: ['状态','待处理','处理中','需求发布','意向征集','订单确认','订单完成','佣金支付','已拒绝','已完成','已关闭'],
+                state2: ['状态','待处理','处理中','需求发布','需求征集','订单确认','订单完成','已拒绝','已完成','已关闭'],
                 myList:null,
                 demandId:null,
                 totalCount:'',
@@ -112,7 +112,7 @@
             }
         },
         mounted() {
-            this.state = this.state1;
+            this.state = this.state2;
             this.getListData();
             if(this.role.role == 0){
                 this.type = this.type2;
@@ -206,13 +206,13 @@
                     return "运力委托";
                 }
             },
-            getProgress:function(val){
-                switch (val) {
+            getProgress:function(progress,demandType){
+                switch (progress) {
                          case "0":
                             return "需求发布";
                             break;
                         case "1":
-                            return "意向征集";
+                            return "需求征集";
                             break;
                         case "2":
                             return "订单确认";
@@ -223,20 +223,14 @@
                         case "4":
                             return "订单完成";
                             break;
-                        case "5":
-                            return "佣金支付";
-                            break;
                         case "6":
                             return "已完成";
                             break;
                         case "7":
                             return "待处理";
                             break;
-                        case "8":
-                            return "已接受";
-                            break;
                         case "9":
-                            return "处理中";
+                            return  demandType == '2'? "测评中":"处理中";
                             break;
                         case "10":
                             return "已拒绝";
@@ -251,7 +245,7 @@
                         case "需求发布":
                             return "0";
                             break;
-                        case "意向征集":
+                        case "需求征集":
                             return "1";
                             break;
                         case "订单确认":

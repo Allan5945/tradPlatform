@@ -9,11 +9,18 @@
                             :type="typeList[detailData.demandType]"
                             v-if="metaData">
                 </listModule>
-                <itenListModule
-                            :ndetailData="metaData.responseList[0]"
-                            :type="typeList[detailData.demandType==1?0:1]"
-                            v-if="metaData && metaData.responseList && metaData.responseList.length>0">
-                </itenListModule>
+                <extendListModule
+                        :ndetailData="metaData.responseList[0]"
+                        :type="typeList[detailData.demandType==1?0:1]"
+                        :roleType="roleType"
+                        v-if="metaData && metaData.responseList && metaData.responseList.length>0">
+                </extendListModule>
+                <extendListModule
+                        :ndetailData="metaData.listSonDemands[0]"
+                        :type="typeList[detailData.demandType==1?0:1]"
+                        :roleType="roleType"
+                        v-if="metaData && metaData.listSonDemands && metaData.listSonDemands.length>0">
+                </extendListModule>
                 <template v-if="false">
                     <header>
                         <div class="head-til">收到的意向</div>
@@ -41,7 +48,7 @@
 
 <script>
     import listModule from './detailListModule.vue';
-    import itenListModule from './Iten-ListModule.vue';
+    import extendListModule from './Iten-ListModule.vue';
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 
     export default{
@@ -76,8 +83,8 @@
                 }
             }
         },
-        components: {listModule,itenListModule},
-        props: ["detailData"],
+        components: {listModule,extendListModule},
+        props: ["detailData","roleType"],
         watch:{
             reason:{
                 handler: function (val,oval) {

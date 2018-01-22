@@ -1,5 +1,5 @@
 <template>
-    <div class="t-form scroll popup" id="transForm">
+    <div class="t-form scroll popup" id="transForm" @click="closeDialog">
         <div class="t-must">
             <div class="form-box">
                 <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
@@ -91,11 +91,30 @@
                 <div class="t-checkbox">
                     <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
                 </div>
-                <input type="text" v-show="dispatch" v-model="dispatchText" @focus="openSearch1" @blur="closeDialog7" placeholder=" ">
+                <!-- <input type="text" v-show="dispatch" v-model="dispatchText" @focus="openSearch1" @blur="closeDialog7" placeholder=" ">
                 <airportS1 class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:50px;"></airportS1>
                 <div class="history" v-show="dispatch">
                     <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
-                </div>
+                </div> -->
+               <div class="choose-input" v-show="dispatch" style="width:170px;">
+                   <div class="choose-item-list" v-show="dispatchAirportShow" @click="searchDispatch" style="width:150px;">
+                       <div class="choose-item" v-for="(item,index) in searchData">
+                           {{item.name}}
+                           <span @click.stop="delItem(index)" class="iconfont">&#xe62c;</span>
+                       </div>
+                   </div>
+                  <div class="more" @mouseover="disListShow = true" @mouseout="disListShow = false" style="left:150px;">
+                       <span class="dot" v-show="moreDotShow">...</span>
+                       <div  class="list-wrapper"  v-show="disListShow" style="width:260px;left:-240px;">
+                           <div class="choose-item" v-for="(item,index) in searchData">
+                               {{item.name}}
+                                <span @click.stop="delItem(index)" class="iconfont">&#xe62c;</span>
+                           </div>
+                       </div>
+                   </div>
+                   <input type="text" v-model="dispatchText" @click.stop="openSearch1" @blur="closeDialog7" style=" background:transparent;">
+                   <airportS1 class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:30px;left:-68px;"></airportS1>
+               </div>
                 <div class="error" v-show="isError9" style="left:65px;top:53px;">*请选择调度机场</div>
             </div>
             <div class="form-box tips pad1">
@@ -108,8 +127,8 @@
                  <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                  <div v-show="calendarShow" class="calendar-box popup">
                    <div class="selec-data">
-                     <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                     <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                     <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
+                     <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
                      <div class="confirm-btn btn" @click="getMyDate">确定</div>
                      <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                    </div>
@@ -127,16 +146,29 @@
             <div class="t-radio">
                 <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
             </div>
-            <div class="t-radio">
+            <div class="t-radio" style="margin-right:5px;">
                 <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
             </div>
-            <div class="direction t-radio" style="position:relative;">
-                <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" @focus="openSearch2" @blur="closeDialog8">
-                <div class="history" v-show="selecShow1" style="top:-5px;left:2px;line-height:26px;" @click="selecShow1 = false">
-                    <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
+             <div class="choose-input" v-show="post == '3' ">
+                <div class="choose-item-list" v-show="directionPublicShow" @click="searchDirect">
+                    <div class="choose-item" v-for="(item,index) in searchData1">
+                        {{item.name}}
+                        <span @click.stop="delItem1(index)" class="iconfont">&#xe62c;</span>
+                    </div>
                 </div>
-                <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS1>
+               <div class="more" @mouseover="selectListShow = true" @mouseout="selectListShow = false">
+                    <span class="dot" v-show="moreSpanShow">...</span>
+                    <div  class="list-wrapper"  v-show="selectListShow">
+                        <div class="choose-item" v-for="(item,index) in searchData1">
+                            {{item.name}}
+                             <span @click.stop="delItem1(index)" class="iconfont">&#xe62c;</span>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" v-model="directText" @click.stop="openSearch2" @blur="closeDialog8">
+                <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:30px;"></airportS1>
             </div>
+            <div class="error" v-show="isError10" style="left:230px;top:30px;">*请选择定向发布机场</div>
         </div>
         <div class="t-btn">
             <div class="agent-btn " @click="confirm(4)" v-if="btnShow">委托代理</div>
@@ -167,6 +199,7 @@
                 isError7:false,
                 isError8:false,
                 isError9:false,
+                isError10:false,
                 phoneNum: '',
                 getFlight: 'true',
                 getTime: '',
@@ -177,11 +210,21 @@
                 airCompanyShow:false,
                 btnShow:true,
                 selecShow1:true,
+                directionPublicShow:false,
+                selectListShow:false,
+                moreSpanShow:false,
+                dispatchAirportShow:false,
+                disListShow:false,
+                moreDotShow:false,
                 contact: '',
                 intendedDpt:'',
+                intendedDpt1:'',
                 intendedPst:'',
+                intendedPst1:'',
                 intendedArrv:'',
+                intendedArrv1:'',
                 airplaneTyp:'',
+                airplaneTyp1:'',
                 airCompany:'',
                 airCompanyId:'',
                 dptState:[0,1],//运力基地：机场为0，地区为1
@@ -193,7 +236,7 @@
                 timeStartIndex:0,
                 timeEndIndex:0,
                 tip: '',
-                searchData:["双流机场","武当山机场"],
+                searchData:[],
                 searchData1:[],
                 msg:'选择班期类型',
                 stateType:['待定','满排','半排'],
@@ -220,6 +263,8 @@
                 qyCode4:'',
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
+                directionalgoal:'',
+                schedulinePort:''
             }
         },
         components:{
@@ -237,14 +282,22 @@
             }
         },
         watch:{
-            /*'dispatch' :function(val){
-                if(val){
-                    this.isError9 =true;
+            'searchData1':function(val){
+                if(val.length >1){
+                    this.moreSpanShow = true;
+                }else{
+                    this.moreSpanShow = false;
                 }
-            },*/
-            'qyCode1':function(val){
-                 if(val){
+                if(val.length >0){
+                    this.isError10 =false;
+                }
+            },
+             'searchData':function(val){
+                if(val.length >0){
+                    this.moreDotShow = true;
                     this.isError9 =false;
+                }else{
+                    this.moreDotShow = false;
                 }
             }
 
@@ -262,7 +315,7 @@
             },
             getMyDate: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
-                    this.myDate = this.calendarInitDay1 + " - " + this.calendarInitDay2;
+                    this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
                     this.$refs.timeDate.style.width = "213px";
                     this.$refs.timeForm.style.width = "579px";
@@ -300,6 +353,7 @@
                 let that =this;
                setTimeout(function(){
                 that.dptSearch =false;
+                that.intendedDpt = (that.intendedDpt == ''||that.qyCode3 == ''? '':that.intendedDpt1);
                     if(that.qyCode3){
                      that.isError3 = false;
                     }
@@ -309,22 +363,25 @@
                 let that =this;
                setTimeout(function(){
                 that.pstSearch =false;
+                that.intendedPst = (that.intendedPst == ''||that.qyCode4 == ''? '':that.intendedPst1);
                 },200);
             },
              closeDialog3(){
                 let that =this;
                setTimeout(function(){
                 that.arrvSearch =false;
+                that.intendedArrv = (that.intendedArrv == ''||that.qyCode5 == ''? '':that.intendedArrv1);
                 },200);
             },
              closeDialog4(){
                 let that =this;
                setTimeout(function(){
                 that.airplTypShow =false;
-                    if(that.airplaneTyp){
-                     that.isError5 = false;
-                    }
-                },200);
+                that.airplaneTyp = (that.airplaneTyp == ''? '':that.airplaneTyp1);
+                if(that.airplaneTyp){
+                  that.isError5 = false;
+                }
+              },200);
             },
              closeDialog5(){
                 let that =this;
@@ -346,15 +403,25 @@
             },
              closeDialog7(){
                 let that =this;
+                this.dispatchAirportShow= true;
+                this.dispatchText = '';
                setTimeout(function(){
                 that.dispatchSearch =false;
                 },200);
             },
              closeDialog8(){
                 let that =this;
+                this.directionPublicShow= true;
+                this.directText = '';
                setTimeout(function(){
                 that.directSearch =false;
                 },200);
+            },
+            closeDialog(){
+                 this.dispatchSearch = false;
+                 this.directSearch =false;
+                 this.directionPublicShow= true;
+                 this.dispatchAirportShow= true;
             },
             verifyContact:function(){
                  if(this.contact){
@@ -426,32 +493,62 @@
                 this.qyCode = data.code;
             },
             disData: function(data){
-                this.dispatchText = data.name;
-                this.qyCode1 = data.code;
+                this.dispatchText = '';
+                if( this.searchData.length < 5){
+                    this.searchData.push({
+                        name: data.name,
+                        id: data.id,
+                    });
+                }
+                //this.qyCode1 = data.code;
                 this.dispatchSearch = false;
+                this.dispatchAirportShow = true;
+            },
+            searchDispatch:function(){
+                 this.$nextTick(() => {
+                    this.dispatchAirportShow = false;
+                    this.dispatchSearch = true;
+                });
             },
             directData: function(data){
-                this.searchData1.push(data.name);
-                this.qyCode2 = data.code;
+                this.directText = '';
+                if( this.searchData1.length < 5){
+                    this.searchData1.push({
+                        name: data.name,
+                        id: data.id,
+                    });
+                }
+                //this.qyCode2 = data.code;
                 this.directSearch = false;
+                this.directionPublicShow = true;
+            },
+            searchDirect:function(){
+                 this.$nextTick(() => {
+                    this.directionPublicShow = false;
+                    this.directSearch = true;
+                });
             },
             dptData: function (data) {
                 this.intendedDpt = data.name;
+                this.intendedDpt1 = data.name;
                 this.qyCode3 = data.code;
                 this.dptSearch = false;
             },
             pstData: function (data) {
                 this.intendedPst = data.name;
+                this.intendedPst1 = data.name;
                 this.qyCode4 = data.code;
                 this.pstSearch = false;
             },
             arrvData: function (data) {
                 this.intendedArrv = data.name;
+                this.intendedArrv1 = data.name;
                 this.qyCode5 = data.code;
                 this.arrvSearch = false;
             },
             getAirType: function(i){
                 this.airplaneTyp = this.airTypData[i];
+                this.airplaneTyp1 = this.airTypData[i];
                 this.airplTypShow = false;
             },
             airCompanyData: function(data){
@@ -507,16 +604,23 @@
                     return false;
                 }
                 if(this.dispatch){       //接受调度
-                    if(this.qyCode1 == ''){
+                    if(this.searchData.length == '0'){
                         this.isError9 = true;
                         return false;
                     };
                 }
-                let demandData = {};
+                if(this.post == '3'){       //定向发布
+                    if(this.searchData1.length == '0'){
+                        this.isError10 = true;
+                        return false;
+                    };
+                }
+                let demandData = {},
+                    time = (this.timeStart +'-'+ this.timeEnd) == '00:00-00:00'? "待定": (this.timeStart +'-'+ this.timeEnd);
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + '-'+ this.timeEnd):'无';
+                    demandData.dptTime = this.getTime == 'true'? time:'无';
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -527,43 +631,65 @@
                     demandData.capacitycompany = this.airCompanyId;
                     demandData.seating = this.seat;
                     demandData.hourscost = this.hourcost;
-                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
-                    demandData.scheduling = this.dispatch == false? '1':'0';
-                    if(this.dispatch){
-                        demandData.schedulinePort  = this.qyCode1;
-                    }
                     demandData.remark = this.tip;
                     demandData.periodValidity = this.myDate;
-                    demandData.publicway = this.post;
-                     if(this.post == '3'){
-                        demandData.directionalgoal = this.qyCode2;
+
+                    //调度机场
+                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
+                    demandData.scheduling = this.dispatch == false? '1':'0';
+                    if(this.searchData.length == '0'){
+                         this.schedulinePort = '';
+                    }else {
+                        let array= [];
+                        this.searchData.forEach((val) => {
+                            array.push(val.id);
+                        });
+                        this.schedulinePort = array.join(',');
                     }
-                 this.$ajax({
-                url:"/demandAdd",
-                method: 'post',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                params: demandData
-            }) .then((response) => {
-                if(response.data.opResult == "0"){
-                   this.$emit("closeForm");
-                   this.$message({
-                        message: '发布成功!',
-                        type: 'success',
-                        duration:2000
-                    });
-                  }else{
-                    this.$message({
-                        message: '提交失败，请稍后再试!',
-                        type: 'warning',
-                        duration:2000
-                    });
-                 }
-            }) .catch((error) => {
-                    console.log(error);
-                });
-            }
+                    if(this.dispatch){
+                        demandData.schedulinePort  = this.schedulinePort;
+                    }
+                    //定向发布
+                    demandData.publicway = this.post;
+                    if(this.searchData1.length == '0'){
+                         this.directionalgoal = '';
+                    }else {
+                        let array= [];
+                        this.searchData1.forEach((val) => {
+                            array.push(val.id);
+                        });
+                        this.directionalgoal = array.join(',');
+                    }
+                     if(this.post == '3'){
+                        demandData.directionalgoal = this.directionalgoal;
+                    }
+
+                    this.$ajax({
+                        url:"/demandAdd",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: demandData
+                    }) .then((response) => {
+                        if(response.data.opResult == "0"){
+                           this.$emit("closeForm");
+                           this.$message({
+                                message: '发布成功!',
+                                type: 'success',
+                                duration:2000
+                            });
+                          }else{
+                            this.$message({
+                                message: '提交失败，请稍后再试!',
+                                type: 'warning',
+                                duration:2000
+                            });
+                         }
+                    }) .catch((error) => {
+                            console.log(error);
+                        });
+                    }
         },
         beforeMount:function () {
             if(this.role.role == 2){
@@ -686,10 +812,11 @@
         border-right:1px solid rgba(151,151,151,.3);
     }
     .post-type{
+        position: relative;
         display: flex;
         margin: 40px 0 70px 0;
         .t-radio{
-            margin-right:20px;
+            margin-right:12px;
             height:26px;
             line-height:26px;
         }
@@ -905,34 +1032,78 @@
             padding-left:8px;
         }
     }
-    .history{
-        position:absolute;
-        top:18px;
-        right:-15px;
-        width:180px;
-        height:300px;
+    .choose-input{
+        position:relative;
+        width:260px;
+        height:26px;
         display:flex;
         align-content: flex-start;
-        .his-item{
+        .choose-item-list{
+          /* display:flex;
+          align-content: flex-start; */
+          width:242px;
+          white-space: nowrap;
+          overflow:hidden;
+          position:absolute;
+          top:-3px;
+          left:5px;
+        }
+        input{
+            width:260px;
+            border-bottom:1px solid rgba(151,151,151,.3);
+        }
+        .more{
+            position:absolute;
+            left:240px;
+            top:-3px;
+            z-index:5;
+            .dot{
+                display:block;
+                height:30px;
+                width:30px;
+                text-align:center;
+                cursor:pointer;
+                color:#3c78ff;
+                //background-color:#fff;
+            }
+        }
+        .choose-item{
+            display:inline-block;
+            margin-bottom:5px;
             background-color:#f3f3f7;
             border-radius:100px;
             color:#3c78ff;
             font-weight:800;
             height:26px;
-            padding:0 6px;
-            margin-right:3px;
+            line-height:26px;
+            padding-left: 6px;
+            margin-right:6px;
             span{
                 display:inline-block;
                 width:12px;
                 height:12px;
-                line-height:10px;
+                line-height:12px;
                 text-align:center;
                 cursor:pointer;
                 background-color:#fff;
                 border-radius:100%;
-                margin:0 1px;
+                margin-right:5px;
+                font-size:1.2rem;
             }
         }
+        .list-wrapper {
+            position: absolute;
+            top: 30px;
+            left: -260px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            width: 270px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 11px rgba(96,94,124,0.37);
+            z-index: 3;
+    }
     }
     .airpl-typ{
         position:absolute;

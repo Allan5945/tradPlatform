@@ -1579,6 +1579,7 @@
         height: 100%;
         background: rgba(0, 0, 0, .4);
         z-index: 16;
+        font-size:1.2rem;
     }
 
     .container {

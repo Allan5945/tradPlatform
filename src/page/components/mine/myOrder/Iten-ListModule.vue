@@ -51,7 +51,7 @@
                         </div>
                         <div>
                             <div>联系方式</div>
-                            <div>{{ndetailData.iHome||"-"}}</div>
+                            <div>{{ndetailData.ihome||"-"}}</div>
                         </div>
                         <div>
                             <div>拟开时间</div>
@@ -125,7 +125,7 @@
         </template>
         <template v-else>
             <header>
-                <div class="head-til">选定意向方</div>
+                <div class="head-til">   选定意向方</div>
             </header>
             <p class="sub-title"><span>{{ ndetailData.responsedate }}</span><span>{{ ndetailData.intentionCompanyName }}</span></p>
             <div class="content">
@@ -157,7 +157,7 @@
                         </div>
                         <div>
                             <div>出港时刻</div>
-                            <div>{{timeresources[ndetailData.dptTimeresources]||"-"}}</div>
+                            <div>{{ ndetailData.dptTime||"-" }}</div>
                         </div>
                         <div>
                             <div>班期</div>
@@ -235,8 +235,6 @@
                     '6': '订单完成',
                     '7': '佣金支付'
                 },
-                //subsidyList:["定补","保底","人头补","无补贴"],
-                timeresources:["09:00-18:00",'待协调','充足'],
                 airportAcept:{
                     "0":"接受临近机场",
                     "1":"不接受临近机场"
@@ -260,7 +258,7 @@
                 }
             }
         },
-        props:["ndetailData","type"],
+        props:["ndetailData","type","roleType"],
     }
 </script>
 
@@ -284,7 +282,7 @@
         box-sizing: border-box;
         padding: 5px 40px 0 50px;
         .head-til{
-            font-size:20px;
+            font-size: 2rem;
             font-weight:bold;
             height: 80px;
             line-height: 80px;
@@ -362,7 +360,7 @@
                 margin-top:20px;
                 >div:nth-of-type(2){
                     height:45px;
-                    font-size:2rem;
+                    font-size:1.8rem;
                     font-weight:bold;
                     padding-top:15px;
                     >div:nth-of-type(2){

@@ -214,7 +214,7 @@
                             <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
                         </div>
                         <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                        <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: 0;">
+                        <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                             <div class="selec-data">
                                 <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
                                 <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
@@ -322,7 +322,7 @@
                         <div style="flex-grow: 1; text-align: center;">{{myDate2}}</div>
                     </div>
                     <div class="warn" v-show="warn7Show" style="position: absolute;top: 46px; left: 0;">*发布有效期不能为空</div>
-                    <div v-show="calendarShow2" class="calendar-box popup" style="left: 0; top: 47px;">
+                    <div v-show="calendarShow2" class="calendar-box popup" @click.stop style="left: 0; top: 47px;">
                         <div class="selec-data">
                             <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
                             <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
@@ -535,6 +535,8 @@
             },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
+                this.user = this.role.username;  // 联系人
+                this.phoneNum = this.role.phone; // 联系方式
                 this.airList.forEach((val) => {
                     if(val.code == this.role.airlineretrievalcondition) {
                         this.getEnterMsg = val.allData;

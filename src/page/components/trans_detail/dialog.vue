@@ -5,9 +5,11 @@
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
             <div class="dialog-content">是否确认缴纳意向金50000元</div>
             <div class="dialog-btns">
-                <div class="btn btn-b sure-btn" @click="sureEvent">
-                    <span v-text="Btext" v-if="!loadingShow"></span>
-                    <loading class="search-ing" :arg="false" v-if="loadingShow"></loading>
+                <div class="btn btn-b sure-btn" @click="sureEvent" v-show="!loadingShow">
+                    <span v-text="Btext"></span>
+                </div>
+                <div class="btn btn-b sure-btn" v-show="loadingShow">
+                    <loading class="search-ing" :arg="false"></loading>
                 </div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>
             </div>
@@ -82,6 +84,7 @@
             },
             sureEvent(){
                 this.sendData.intentionStatu = '0'; //0：交钱，1：未交费
+                this.loadingShow = true;
                 this.$ajax({
                     url: "/changeIntentionMoneyStatusForDemand", //机场向自己发的需求（查看意向）交意向金
                     method: 'post',
@@ -106,7 +109,6 @@
                 }).catch((error) => {
                     console.log(error);
                 });
-                this.loadingShow = true;
             }
         }
     }

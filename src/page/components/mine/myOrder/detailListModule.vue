@@ -6,7 +6,7 @@
                 <div class="tips">
                     <span>发布方 {{ ndetailData.cpnNm||"-" }}</span>
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ ndetailData.demandprogressStr||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -83,7 +83,7 @@
                         </div>
                         <div>
                             <div>补贴政策</div>
-                            <div>{{subsidyList[ndetailData.subsidypolicy]||"-"}}</div>
+                            <div>{{ndetailData.subsidypolicyStr||"-"}}</div>
 
                         </div>
                         <div>
@@ -134,7 +134,7 @@
                 <div class="tips">
                     <span>创建于{{ ndetailData.releasetime ? ndetailData.releasetime.substring(0,10):"-"}}</span>
                     <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                    <span>状态：<span style="color: #336BEA">{{ progressState[ndetailData.demandstate]||"未知状态" }}</span></span>
+                    <span>状态：<span style="color: #336BEA">{{ ndetailData.demandprogressStr||"未知状态" }}</span></span>
                 </div>
             </header>
             <div class="content">
@@ -244,7 +244,6 @@
                     '6': '订单完成',
                     '7': '佣金支付'
                 },
-                subsidyList:["定补","保底","人头补","无补贴"],
                 schedulingList: ["接受","不接受"],
                 airportAcept:{
                     "0":"接受临近机场",
@@ -293,7 +292,7 @@
         box-sizing: border-box;
         padding: 5px 40px 0 50px;
         .head-til{
-            font-size:20px;
+            font-size: 2rem;
             font-weight:bold;
             margin-top:30px;
             height:20px;
@@ -362,7 +361,7 @@
                 margin-top:20px;
                 >div:nth-of-type(2){
                     height:45px;
-                    font-size:2rem;
+                    font-size: 1.8rem;
                     font-weight:bold;
                     padding-top:15px;
                     >div:nth-of-type(2){

@@ -33,12 +33,12 @@
                 </div>
                 <template v-if="detailsData">
                     <div class="list-container">
-                        <div class="list items"   v-for="ditem in detailsData.list">
+                        <div class="list items"   v-for="ditem in detailsData.list" @click="turnDetailPanel(ditem)">
                             <div class="list-a item">
                                 {{ ditem.releasetime }}
                             </div>
                             <div class="list-b item">
-                                {{ type[ditem.demandtype]}}
+                                {{ typeShowList[ditem.demandtype] }}
                             </div>
                             <div class="list-p item">
                                 {{ ditem.employeeNm }}
@@ -57,7 +57,7 @@
                                 </span>
                                 -->
                             </div>
-                            <div class="list-f item color" @click="turnDetailPanel(ditem)">
+                            <div class="list-f item color" @click.stop="turnDetailPanel(ditem)">
                                 查看详情<span class="icon-item">&#xe686;</span>
                             </div>
                         </div>
@@ -92,8 +92,17 @@
                 typeWriting: '需求类型',
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
-                type: ['航线需求','运力投放'],
+                typeShowList: {
+                    "0": '航线需求',
+                    "1": '运力需求'
+                },
+                type:{
+                    "t": '全部',
+                    "t0": '航线需求',
+                    "t1": '运力需求'
+                },
                 progressState:{
+                    '0': '全部',
                     '4': '未处理',
                     '5': '审核未通过',
                     '6': '审核通过',
@@ -141,6 +150,7 @@
                 }
             },
             typeClickFn: function (item,k) {    //筛选-需求类型
+                k = k.replace('t','');
                 if(this.filterDelay && k!==this.getParams.demandType){
                     this.typeWriting = item;
                     this.delayChange();
@@ -150,6 +160,7 @@
                 }
             },
             stateClickFn: function (item,k) {   //筛选-状态
+                k= k=="0"?"":k;
                 if(this.filterDelay && k!==this.getParams.demandState){
                     this.stateWriting = item;
                     this.delayChange();
@@ -175,8 +186,6 @@
                         that.pageControl.totalPage = res.data.list.pageCount;
                         that.pageControl.now = res.data.list.pageNo;
                         that.pageControl.totalData = res.data.list.totalCount;
-
-
                     }else{
                         that.detailsData = null;
                         alert('暂无返回，请稍后重试。')

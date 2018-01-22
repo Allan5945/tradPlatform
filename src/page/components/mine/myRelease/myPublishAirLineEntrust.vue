@@ -17,7 +17,7 @@
                     <span style="height: 25px;">{{myData.title}}</span>
                 </div>
                 <div class="bottom">
-                    <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.employeeNm}}</span>
+                    <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
                     <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
                     <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
@@ -59,10 +59,13 @@
                         <div class="font-gray">补贴政策</div>
                     </div>
                     <div class="right item">
-                        <div class="item-height">{{myData.sailingtime}}</div>
-                        <div class="item-height">{{myData.aircrfttyp}}</div>
-                        <div class="item-height">{{myData.avgguestexpect}}人/均班</div>
-                        <div class="item-height">{{myData.subsidypolicyStr}}</div>
+                        <div class="item-height">{{myData.sailingtime || '-'}}</div>
+                        <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
+                        <div class="item-height">
+                            <span v-if="myData.avgguestexpect != null && myData.avgguestexpect != ''">{{myData.avgguestexpect}}人/均班</span>
+                            <span v-else>-</span>
+                        </div>
+                        <div class="item-height">{{myData.subsidypolicyStr || '-'}}</div>
                     </div>
                 </div>
                 <div class="items">
@@ -73,10 +76,13 @@
                         <div class="font-gray">有效期</div>
                     </div>
                     <div class="right item">
-                        <div class="item-height">{{myData.days}}</div>
-                        <div class="item-height">{{myData.seating}}</div>
-                        <div class="item-height">{{myData.loadfactorsexpect}}%</div>
-                        <div class="item-height">{{myData.periodValidity}}</div>
+                        <div class="item-height">{{myData.days || '-'}}</div>
+                        <div class="item-height">{{myData.seating || '-'}}</div>
+                        <div class="item-height">
+                            <span v-if="myData.loadfactorsexpect != null && myData.loadfactorsexpect != ''">{{myData.loadfactorsexpect}}%</span>
+                            <span v-else>-</span>
+                        </div>
+                        <div class="item-height">{{myData.periodValidity || '-'}}</div>
                     </div>
                 </div>
             </div>
