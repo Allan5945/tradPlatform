@@ -25,27 +25,70 @@
                 </div>
             </div>
             <div class="third item-container">
+
+
                 <div class="start item">
-                    <div class="item-a font-gray">始发<span v-if="myData.dptState == 1">区域</span><span v-else>机场</span>
+                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
+                    <div class="item-b">
+                        <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
+                        <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
                     </div>
-                    <div class="item-b"><span v-if="myData.dptState == 1">{{myData.dpt}}</span><span v-else>{{myData.dptNm}}</span></div>
-                    <div class="item-c font-gray">{{myData.dptAcceptnearairportStr}}临近机场</div>
-                    <div class="item-d font-gray">出港资源</div>
-                    <div class="item-e">{{myData.dptTimeresourcesStr}}</div>
+                    <div class="item-c font-gray" v-show="myData.dptState == 0 && myData.dptNm != null">
+                        <span v-if="myData.dptAcceptnearairport === '0'">接受</span>
+                        <span v-else>不接受</span>临近机场
+                    </div>
+                    <div class="item-d font-gray" v-show="myData.dptState == 0 && myData.dptNm != null">出港资源</div>
+                    <div class="item-e" v-show="myData.dptState == 0 && myData.dptNm != null">
+                        <span v-show="myData.dptTimeresources == 0">{{myData.dptTime}}</span>
+                        <span v-show="myData.dptTimeresources == 1">待协调</span>
+                        <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                    </div>
                 </div>
-                <div class="pass item" style="display: flex; align-items: center;">
+                <div class="item-icon" v-show="!passShow">
+                    <span class="icon-item">&#xe672;</span>
+                </div>
+                <div class="pass item" v-show="!passShow">
+                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
+                    <div class="item-b">
+                        <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
+                        <span v-show="myData.pstState == 1">{{myData.pst}}</span>
+                    </div>
+                    <div class="item-c font-gray" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
+                        <span v-if="myData.pstAcceptnearairport === '0'">接受</span>
+                        <span v-else>不接受</span>临近机场
+                    </div>
+                    <div class="item-d font-gray" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">出港资源</div>
+                    <div class="item-e" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
+                        <span v-show="myData.pstTimeresources == 0">{{myData.pstTime}}</span>
+                        <span v-show="myData.pstTimeresources == 1">待协调</span>
+                        <span v-show="myData.pstTimeresources == 2">时刻充足</span>
+                    </div>
+                </div>
+                <div class="item-icon" v-show="!passShow">
+                    <span class="icon-item">&#xe672;</span>
+                </div>
+                <div class="pass item" v-show="passShow" style="display: flex; align-items: center;">
                     <span class="left-icon icon-item">&#xe6ad;</span>
                     <div class="border-dashed"></div>
                     <span class="right-icon icon-item">&#xe672;</span>
                 </div>
+
                 <div class="arrive item">
-                    <div class="item-a font-gray">到达<span v-if="myData.arrvState == 1">区域</span><span v-else>机场</span>
+                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
+                    <div class="item-b">
+                        <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
+                        <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
                     </div>
-                    <div class="item-b"><span v-if="myData.arrvState == 1">{{myData.arrv}}</span><span v-else>{{myData.arrvNm}}</span></div>
-                    <!--下方有空格-->
-                    <div class="item-c font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-d font-gray">&nbsp;<!--此处有空格--></div>
-                    <div class="item-e">&nbsp;<!--此处有空格--></div>
+                    <div class="item-c font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null">
+                        <span v-if="myData.arrvAcceptnearairport === '0'">接受</span>
+                        <span v-else>不接受</span>临近机场
+                    </div>
+                    <div class="item-d font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null">出港资源</div>
+                    <div class="item-e" v-show="myData.arrvState == 0 && myData.arrvNm != null">
+                        <span v-show="myData.arrvTimeresources == 0">{{myData.arrvTime}}</span>
+                        <span v-show="myData.arrvTimeresources == 1">待协调</span>
+                        <span v-show="myData.arrvTimeresources == 2">时刻充足</span>
+                    </div>
                 </div>
             </div>
             <div class="line"></div>
@@ -144,6 +187,7 @@
                 editAirlineDelegationShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
                 id: '',                 // 点击列表获取这条需求id
+                passShow: false,        // 经停区域是否为空
             }
         },
         mounted() {
@@ -183,6 +227,12 @@
                             this.wrongShow();
                         }else{
                             this.show();
+                        }
+                        // 经停区域是否为空
+                        if(this.myData.pstNm == null || this.myData.pstNm == ''){
+                            this.passShow = true;
+                        }else {
+                            this.passShow = false;
                         }
                         //将创建时间顺序改变
                         let time1 = this.myData.releasetime.split('.');
@@ -419,7 +469,7 @@
         justify-content: space-between;
         margin-bottom: 22px;
         .item {
-            /*width: 140px;*/
+            width: 140px;
             height: 160px;
             .item-a {
                 margin: 25px 0 10px 0;
@@ -439,6 +489,15 @@
             }
             .item-e {
                 height: 15px;
+            }
+        }
+        .item-icon {
+            position: relative;
+            > span {
+                position: absolute;
+                top: 55px;
+                left: 50%;
+                margin-left: -8px;
             }
         }
         .pass {

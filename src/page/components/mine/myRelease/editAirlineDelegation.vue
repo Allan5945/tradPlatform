@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
-        <div class="container-top">
-            <span class="title">请填写完整方案</span>
-            <span class="close-icon" @click="closeThis">&times;</span>
-        </div>
         <div class="container" id="airlineReq" @click="closeAll">
+            <div class="container-top">
+                <span class="title">请填写完整方案</span>
+                <span class="close-icon" @click="closeThis">&times;</span>
+            </div>
             <div class="bg-color must">
                 <div class="right item-child">
                     <div style="display: flex;">

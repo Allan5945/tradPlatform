@@ -207,7 +207,7 @@
             },*/
             // 点击表单的“确认”后
             changeShowCodeFn: function () {
-                this.closeThisFn();
+//                this.closeThisFn();
                 this.editOperationFormShow = false;
             },
 

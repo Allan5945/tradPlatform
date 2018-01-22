@@ -826,7 +826,7 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum.replace(/(^\s*)|(\s*$)/g,"") == '' || this.warn2Show == true) { // 联系方式
+                }if(this.phoneNum.replace(/(^\s*)|(\s*$)/g,"") == '' || this.phoneNum == null || this.warn2Show == true) { // 联系方式
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
