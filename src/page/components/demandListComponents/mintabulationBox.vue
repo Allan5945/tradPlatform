@@ -61,10 +61,12 @@
                 let b = Number(tabulationBox.style.height.split('px')[0]);
                 let x = (z - b) / 1.2;
                 if (tabulationBox.scrollTop >= x) {
+                    let url = '/getOthersDemandListIndex';
+                    if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
                     if (this.demandList.type && this.demandList.hybridPage < this.demandList.hybridData.pageCount) {  // 混合数据
                         this.$store.dispatch('hybridData', {v: (this.demandList.hybridPage + 1), t: 1}).then(() => {
                             this.$ajax({
-                                url: "/getDemandsForCurrentEmployee",
+                                url:url,
                                 method: 'post',
                                 headers: {
                                     'Content-type': 'application/x-www-form-urlencoded'
@@ -83,13 +85,14 @@
                     } else if (!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount) { // 非混合数据
                         this.$store.dispatch('monoData', {v: (this.demandList.monoPage + 1), t: 1}).then(() => {
                             this.$ajax({
-                                url: "/getDemandsForCurrentCheckedAirport",
+                                url:url,
                                 method: 'post',
                                 headers: {
                                     'Content-type': 'application/x-www-form-urlencoded'
                                 },
                                 params: {
-                                    page: this.demandList.monoPage
+                                    page: this.demandList.monoPage,
+                                    code:this.demandList.monoName.code
                                 }
                             }).then((response) => {
                                 this.$store.dispatch('monoData', {v: response.data.list.list, t: 2}).then(() => {
@@ -125,15 +128,15 @@
                 if (t) {
                     if (key.data.arrvCt != null && key.data.arrvCt != '') {
                         let jw = this.$airMes(this.airList, key.data.arrv);
-                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
+                        pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
                     }
                     if (key.data.dptCt != null && key.data.dptCt != '') {
                         let jw = this.$airMes(this.airList, key.data.dpt);
-                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
+                        pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
                     }
                     if (key.data.pstCt != null && key.data.pstCt != '') {
                         let jw = this.$airMes(this.airList, key.data.pst);
-                        pots.push(new BMap.Point(jw.cityCoordinateW, jw.cityCoordinateJ))
+                        pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
                     }
                 }
                 this.$bExample.setLinesList(pots, t);

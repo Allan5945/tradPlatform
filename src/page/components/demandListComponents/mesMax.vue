@@ -2,10 +2,10 @@
     <div class="mes-max popup">
         <div class="mes-head">
             <div class="mes-head-s">
-                <div class="mes-head-t">需求列表</div>
+                <div class="mes-head-t"></div>
                 <div class="mes-head-c" @click.stop>
                     <div class="mes-cont-box" @mouseout="closeSearch" @click="screenHsShow = false">
-                        <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
+                        <div class="mes-cont" :class="{mesContSet:true}" @mouseout.stop>
                             <input id="close-input" :class="{'search-set':searchSet}" placeholder="搜索关键词" @blur="lose()"
                                    @input="openList('a')" type="text"
                                    @focus="history" :disabled="searchSet"
@@ -18,27 +18,16 @@
                         <airportS class="aisx" v-on:resData="resData" :searchText="searchText"
                                   v-show="isSearch"></airportS>
                     </div>
-                    <div class="screen">
-                        <span @click="openScreen">&#xe6a7;</span>
-                        <transition name="bounce">
-                            <screen class="screen-hs" v-if="screenHsShow" v-on:screenHs="screenHs"></screen>
-                        </transition>
-                    </div>
-                    <div class="amplification">
-                        <span @click="openMin">&#xe61a;</span>
-                    </div>
                 </div>
             </div>
             <div class="mes-head-list">
                 <div class="number-mes"><span>{{dataL}}</span>条需求对象</div>
                 <div class="match">
                     <singleElection :single.sync="match"></singleElection>
-                    <!--<span @click="matching" :class="{'elect':elect,'initialization':!elect}"></span>-->
                     只看与我匹配的
                 </div>
                 <div class="number-tag">
                     <div class="btn-w" @click="batchRed">标记为已读</div>
-                    <div class="btn-w" @click="tagRead">收藏</div>
                 </div>
             </div>
         </div>
@@ -49,17 +38,16 @@
                     类型
                 </div>
                 <div class="mes-body-i1">航点/匹配度
-                    <!--<order :order.sync="order" class="order-x"></order>-->
                 </div>
                 <div class="mes-body-i2">发布时间
                     <order :order="orderTime" v-on:order="orderTimeHandling" class="order-x"></order>
                 </div>
                 <div class="mes-body-i3">需求进度</div>
-                <div class="mes-body-i3">时刻</div>
                 <div class="mes-body-i3">班期</div>
                 <div class="mes-body-i3">机型</div>
                 <div class="mes-body-i3">补助</div>
                 <div class="mes-body-i4">其他说明</div>
+                <div class="mes-body-i3">收藏</div>
             </div>
             <tabulationBox class="mes-body-b scroll" v-on:renderDataLength="renderDataLength"
                            v-on:resetSingleSet="resetSingleSet" :singled="single"></tabulationBox>
@@ -75,6 +63,7 @@
     import order from '../../reuseComponents/order.vue'
     import loading from '$src/page/reuseComponents/locading.vue'
     import tabulationBox from './maxtabulationBox.vue'
+    import In from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
         data() {
@@ -203,6 +192,7 @@
                 this.bgqying = false;
                 this.bgqyed = false;
                 this.searchText = '';
+                this.qyCode = "";
                 this.$store.dispatch('hybridData', {v: '', t: 1}).then(() => {
                 });
             },
@@ -276,8 +266,10 @@
                     this.bgqying = true;
                     this.bgqyed = false;
                     this.searchSet = true;
+                    let url = '/getOthersDemandListIndex';
+                    if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
                     this.$ajax({
-                        url: "/getDemandsForCurrentCheckedCity",
+                        url,
                         method: 'post',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
@@ -285,29 +277,25 @@
                         params: {
                             itia: this.qyCode.code,
                             page: 1,
-                            type: 0,
-                            itiaType: this.qyCode.type
                         }
                     }).then((response) => {
+                        let ar = [];
+                        this.bgqy = false;
+                        this.bgqying = false;
+                        this.bgqyed = true;
                         if (response.data) {
-                            let ar = response.data.list;
-                            this.bgqy = false;
-                            this.bgqying = false;
-                            this.bgqyed = true;
-
-                            if (ar.list == null) {
-                                ar.list = [];
-                            }
-                            ;
-                            this.$store.dispatch('monoData', {v: ar, t: 1, n: this.qyCode.name}).then(() => {
-                            });
-                        }
+                            if(response.data.opResult == '0'){
+                                ar = response.data.list;
+                            };
+                        };
+                        this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode}).then(() => {
+                        });
                     })
                         .catch((error) => {
                             console.log(error);
                         });
                 } else {
-                    alert('空-错误');
+//                    alert('空-错误');
                 }
             },
             matching: function () {
@@ -323,18 +311,32 @@
                 'demandList',
                 'airList',
                 'cityList',
-                'conditionsOpen'
+                'conditionsOpen',
+                'demandType'
             ]),
             renderData: function () {
                 return this.demandList.hybridData.list.length;
             }
         },
         mounted: function () {
+            let _this = this;
+            In.$on('setCode',v => {
+                let mes = this.$airMes(this.airList, v);
+                _this.searchText = mes.cityName;
+                _this.qyCode = v;
+                _this.qyCode = {
+                    code: v,
+                    type: 0,
+                    name:mes.cityName
+                };
+                _this.query();
+            });
             if(this.demandList.conditions.order){
                 this.orderTime.set = false;
             }
             if (this.demandList.monoName != '') {
-                this.searchText = this.demandList.monoName;
+                this.searchText = this.demandList.monoName.name;
+                this.qyCode = this.demandList.monoName;
                 this.searchSet = true;
                 this.search = true;
                 this.bgqy = false;
@@ -343,13 +345,13 @@
             }
         },
         watch: {
-            single: function () {
-
-            },
             close: function () {
                 this.isSearch = false;
                 this.openHisy = false;
                 this.screenHsShow = false;
+            },
+            demandType:function () {
+                this.query();
             }
         },
         components: {
@@ -677,20 +679,17 @@
         color: #959595;
         white-space: nowrap;
     }
-
     .number-mes {
         color: #3c78ff;
     }
-
     .mes-cont-box {
-        width: 153px;
+        width: 200px;
         margin-left: 10px;
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-end;
         position: relative;
     }
-
     .mes-cont {
         position: relative;
         width: 30px;
@@ -718,7 +717,7 @@
 
     .mesContSet {
         background-color: #f4f4f4;
-        width: 153px;
+        width: 200px;
     }
 
     .tabulation-head {

@@ -212,6 +212,13 @@ const mutations = {
     [types.SEARCHINFO](state,vl) {
         state.searchInfo = vl;
     },
+    [types.DEMANDTYPE](state,t) {
+        state.demandType = t;
+    },
+    // [types.SETAIRCODE](state,val) {
+    //     state.setaircode = val;
+    // },
+
 };
 export default {
 	state,

@@ -4,7 +4,6 @@ class BmapExamples {
         this.allNum = allNum;
         this.linesList = ''; // 航线实例
         this.pointList = []; // 所有数字实例
-
         this.setLinesList = (v,t) => {
             if(t){
                 if(this.linesList != ''){
@@ -19,7 +18,6 @@ class BmapExamples {
                 this.linesList = '';
             }
         };
-
         this.setmap = (v) => {
             this.map = v;
         };

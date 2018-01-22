@@ -1,11 +1,11 @@
 <template>
     <div class="message-box" id="message-box">
-        <div class="message-head popup">
+        <div class="message-head">
             <div class="mes-tip">
                 <span class="number-mes">{{dataL}}</span>条需求对象
             </div>
             <div class="mes-cont-box" @click.stop="screenHsShow = false">
-                <div class="mes-cont" :class="{mesContSet:search}" @mouseout.stop>
+                <div class="mes-cont" :class="{mesContSet:true}" @mouseout.stop>
                     <input id="close-input" :class="{'search-set':searchSet}" placeholder="搜索关键词" @blur="lose()"
                            @input="openList('a')" type="text"
                            @focus="history" :disabled="searchSet"
@@ -17,15 +17,6 @@
                 </div>
                 <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
                 <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
-            </div>
-            <div class="screen" @click.stop>
-                <span @click="openScreen">&#xe6a7;</span>
-                <transition name="bounce">
-                    <screen class="screen-hs" v-if="screenHsShow" v-on:screenHs="screenHs"></screen>
-                </transition>
-            </div>
-            <div class="amplification">
-                <span @click="openMax">&#xe618;</span>
             </div>
         </div>
         <div class="tabulation" id="tabulation">
@@ -44,7 +35,6 @@
             </div>
             <tabulationBox v-on:renderDataLength="renderDataLength"></tabulationBox>
         </div>
-        <div></div>
     </div>
 </template>
 <script>
@@ -55,6 +45,7 @@
     import screen from './screen-hs.vue'
     import singleElection from './singleElection.vue'
     import loading from '$src/page/reuseComponents/locading.vue'
+    import In from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
         data() {
@@ -93,6 +84,7 @@
                 this.bgqying = false;
                 this.bgqyed = false;
                 this.searchText = '';
+                this.qyCode = "";
                 this.$store.dispatch('hybridData', {v: ''}).then(() => {
                 });
             },
@@ -159,8 +151,10 @@
                     this.bgqying = true;
                     this.bgqyed = false;
                     this.searchSet = true;
+                    let url = '/getOthersDemandListIndex';
+                    if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
                     this.$ajax({
-                        url: "/getDemandsForCurrentCheckedCity",
+                        url,
                         method: 'post',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
@@ -168,43 +162,34 @@
                         params: {
                             itia: this.qyCode.code,
                             page: 1,
-                            type: 0,
-                            itiaType: this.qyCode.type
                         }
                     }).then((response) => {
+                        let ar = [];
+                        this.bgqy = false;
+                        this.bgqying = false;
+                        this.bgqyed = true;
                         if (response.data) {
-                            let ar = response.data.list;
-                            this.bgqy = false;
-                            this.bgqying = false;
-                            this.bgqyed = true;
-                            if (ar.list == null) {
-                                ar.list = [];
-                            }
-                            ;
-                            this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode.name}).then(() => {
-                            });
-                        }
+                            if(response.data.opResult == '0'){
+                                ar = response.data.list;
+                            };
+                        };
+                        this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode}).then(() => {
+                        });
                     })
                         .catch((error) => {
                             console.log(error);
                         });
                 } else {
-                    alert('空-错误');
+//                    alert('空-错误');
                 }
             },
             resData: function (data) {
-                console.log(data)
                 this.isSearch = false;
                 this.searchText = data.name;
                 this.qyCode = data;
             },
             openSearch: function () {
                 this.search = true;
-            },
-            closeSearch: function () {
-                var input = document.getElementById("close-input");
-                input.blur();
-                this.screenHsShow = false;
             },
             setd: function (key, index) {
                 this.changeRed = index;
@@ -223,7 +208,8 @@
                 'close',
                 'demandList',
                 'airList',
-                'cityList'
+                'cityList',
+                'demandType'
             ])
         },
         watch: {
@@ -231,16 +217,27 @@
                 this.isSearch = false;
                 this.openHisy = false;
                 this.screenHsShow = false;
-                this.closeSearch();
             },
-            demandList:function () {
-                alert(66)
+            demandType:function () {
+                this.query();
             }
-
         },
         mounted: function () {
+            let _this = this;
+            In.$on('setCode',v => {
+                let mes = this.$airMes(this.airList, v);
+                _this.searchText = mes.cityName;
+                _this.qyCode = v;
+                _this.qyCode = {
+                    code: v,
+                    type: 0,
+                    name:mes.cityName
+                };
+                _this.query();
+            });
             if (this.demandList.monoName != '') {
-                this.searchText = this.demandList.monoName;
+                this.searchText = this.demandList.monoName.name;
+                this.qyCode = this.demandList.monoName;
                 this.searchSet = true;
                 this.search = true;
                 this.bgqy = false;
@@ -391,11 +388,14 @@
 
     .message-box {
         width: 340px;
-        height: 100%;
+        flex: 1;
+        display: flex;
+        flex-flow:column nowrap;
     }
 
     .tabulation {
         /*padding: 0 20px;*/
+        flex: 1;
     }
 
     .message-head {
@@ -419,7 +419,7 @@
     }
 
     .mes-cont-box {
-        width: 153px;
+        width: 200px;
         margin-left: 10px;
         display: flex;
         flex-flow: row nowrap;
@@ -447,14 +447,13 @@
             padding-right: 26px;
         }
     }
-
     .mes-cont-set {
         background-color: #f4f4f4;
     }
 
     .mesContSet {
         background-color: #f4f4f4;
-        width: 153px;
+        width: 200px;
     }
 
     .tabulation-head {
