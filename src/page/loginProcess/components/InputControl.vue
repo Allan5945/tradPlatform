@@ -7,7 +7,7 @@
         @input="changeTip()"
         @keyup="entered($event)"
         v-model="inputMes"
-    >
+        :maxlength="maxlength">
     <span @click="toview" class="user-toview" :class="{'show-color':showText}" v-html="showText ? '&#xe685;':'&#xe7d3;'" v-if="this.par.isPrompt">&#xe685;</span>
     <span class="user-judge" v-if="userJudge || mandatoryJudge">&#xe61f;</span>
     <span v-html="showTip ? par.tip[1] : par.tip[0]" class="user-tip" :class="{'user-tip-tran':showTip}"></span>
@@ -24,6 +24,7 @@ export default {
             showErrInput:false,  // 是否当前输入框格式错误
             inputeType:"",    // 输入框的类型值
             inputMes:"",     // 输入的内容
+            maxlength: 16
             // par:{
             //     defaultText:"",     // 默认的值
             //     inputType:true,   // 输入框类型，true、text。false、password
@@ -44,6 +45,7 @@ export default {
         },
         initInput(){  // 初始化输入框
             this.inputMes = this.par.defaultText;
+            this.maxlength = this.par.maxlength || 16;
             if(this.inputMes != ""){
                  this.showTip = true;
             };

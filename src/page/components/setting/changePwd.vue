@@ -11,7 +11,7 @@
                     <li>· 不允许空格</li>
                 </ul>
                 <div class="process-main" v-show="active==0">
-                    <pwdInput :par="pasArg" v-on:reqMes="pasReqMes0" v-on:entered="iptEnter"></pwdInput>
+                    <pwdInput :par="pasArg" v-on:reqMes="pasReqMes0" v-on:entered="iptEnter" v-if="active==0"></pwdInput>
                     <!--
                     <div class="full-btn">
                         <input :type="iptType.showpwd0" v-model="userData.pwd" placeholder="输入登录密码" maxlength="16">
@@ -291,6 +291,7 @@
     .registered-box{
         width:360px;
         height: 370px;
+        position: relative;
         border-radius: 8px;
         background-color: #fff;
         header{
@@ -403,9 +404,9 @@
             position: absolute;
             border-radius: 20px;
             top: 0;
-            bottom: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             text-indent: 10px;
             border: 1px solid #e9e9e9;
             &:focus{

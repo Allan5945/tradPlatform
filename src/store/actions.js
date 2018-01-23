@@ -55,6 +55,9 @@ export default {
     demandType:({commit},t)=>{
         commit(types.DEMANDTYPE,t)
     },
+    changeRole:({commit},t)=>{
+        commit(types.CHANGEROLE,t)
+    }
     // setaircode:({commit},val)=>{
     //     commit(types.SETAIRCODE,val)
     // }

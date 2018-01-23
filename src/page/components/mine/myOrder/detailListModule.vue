@@ -174,7 +174,7 @@
                         </div>
                         <div style="width: 100%;margin: 10px 0;">
                             <div>意向航线</div>
-                            <div style="width: 80%;line-height: 5px;text-indent: 10px;font-size: 16px;" v-if="ndetailData.intendedAirlines">
+                            <div style="width: 95%;line-height: 8px;" v-if="ndetailData.intendedAirlines">
                                 {{ndetailData.intendedAirlines[0].dptName||"—"}}
                                 <span class="iconfont flyicon">&#xe672;</span>
                                 {{ndetailData.intendedAirlines[0].pstName||"—"}}
@@ -318,8 +318,9 @@
         flex-wrap: wrap;
         display: flex;
         .flyicon{
-            font-size: 32px;
-            margin: 0 10px;
+            display: inline-block;
+            font-size: 25px;
+            margin: 0 20px;
         }
         >div{
             width:220px;

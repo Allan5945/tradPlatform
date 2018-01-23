@@ -27,6 +27,22 @@
                             <div v-else>{{detailData.dptTimeresourcesStr||'-'}}</div>
                        </div>
                     </div>
+                    <div style="padding:58px 30px 0 0;"><span class="iconfont" style="font-size:3rem;">&#xe672;</span></div>
+                    <div class="air-box">
+                        <div v-if="detailData.pstState =='0' ">经停机场</div>
+                        <div v-else>经停区域</div>
+                        <div  class="place">
+                            <div v-if="detailData.pstState =='0' ">{{detailData.pstNm||'-'}}</div>
+                            <div v-else>{{detailData.pst||'-'}}</div>
+                            <div v-if="detailData.pstState =='0' ">{{detailData.pstAcceptnearairportStr||'-'}}临近机场</div>
+                        </div>
+                        <div v-if="detailData.pstState =='0' ">
+                            <div>出港资源</div>
+                            <div v-if="detailData.pstTimeresources == '0'">{{detailData.pstTime||'-'}}</div>
+                            <div v-else>{{detailData.pstTimeresourcesStr||'-'}}</div>
+                       </div>
+                    </div>
+                    <div style="padding:58px 30px 0 0;"><span class="iconfont" style="font-size:3rem;">&#xe672;</span></div>
                     <div class="air-box">
                         <div v-if="detailData.arrvState =='0' ">到达机场</div>
                         <div v-else>到达区域</div>

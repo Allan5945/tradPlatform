@@ -103,14 +103,14 @@
                 </div>
             </div>
             <!--委托运力投放-->
-            <editAgentTransForm v-if="editAgentTransFormShow" :acceptData="myData" @close-this="closeEditAgentTransForm"></editAgentTransForm>
+            <editDataForm v-if="editDataFormShow" :acceptData="myData" @closeForm="closeEditDataForm"></editDataForm>
         </div>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editAgentTransForm from './editAgentTransForm.vue'
+    import editDataForm from './editDataForm.vue'
     export default {
         data() {
             return {
@@ -122,7 +122,7 @@
                 wrongTextShow: false,  // 错误提示是否显示
                 buttonShow: true,      // 按钮显示一个或两个
                 releasetime: '',        //创建时间
-                editAgentTransFormShow: false, //编辑需求表单
+                editDataFormShow: false, //编辑需求表单
                 editAirlineDelegationShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
                 id: '',                 // 点击列表获取这条需求id
@@ -152,8 +152,11 @@
                             || this.myData.demandstate == 3
                             || this.myData.demandstate == 5
                             || this.myData.demandprogress == 3
+                            || this.myData.demandprogress == 4
+                            || this.myData.demandprogress == 5
                             || this.myData.demandprogress == 6
                             || this.myData.demandprogress == 8
+                            || this.myData.demandprogress == 9
                             || this.myData.demandprogress == 10){
                             this.buttonShow = false;
                         }else {
@@ -176,7 +179,8 @@
                         }
                         this.releasetime = time2.join('.');
                     }else {
-                        alert(`错误代码：${response.data.opResult}`)
+//                        alert(`错误代码：${response.data.opResult}`)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
 
                 }).catch((error) => {
@@ -191,9 +195,24 @@
             ]),
         },
         components: {
-            editAgentTransForm, //委托运力投放
+            editDataForm, //委托运力投放
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // 格式无误时显示的内容
             show: function () {
                 this.linkServiceShow = true; // 上方“联系客服”按钮
@@ -226,15 +245,15 @@
                 this.wrongTextShow = false;
             },
             //关闭“编辑需求”表单
-            closeEditAgentTransForm: function () {
-                this.editAgentTransFormShow = false;
+            closeEditDataForm: function () {
+                this.editDataFormShow = false;
             },
             closeEditAirlineDelegation: function () {
                 this.editAirlineDelegationShow = false;
             },
             //点击“重新发布”
             anewPublishClickFn2: function () {
-                this.editAgentTransFormShow = true;
+                this.editDataFormShow = true;
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {
@@ -245,15 +264,18 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        id: this.myData.id
+                        id: this.myData.id,
+                        closeReason: '下架'
                     }
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('成功撤回该托管！');
+//                        alert('成功撤回该托管！');
+                        this.open6(`成功撤回该托管！`);
                         this.$emit('refresh');
                         this.closeThisFn();
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);

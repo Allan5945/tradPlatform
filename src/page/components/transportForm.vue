@@ -21,11 +21,11 @@
         <div class="t-all" v-show="allFormShow">
             <div class="t-must">
                 <div class="form-box">
-                    <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
+                    <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
                     <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
                     <div class="error" v-show="isError2" style="top:58px;right:36px;">*电话格式有误，请重新输入</div>
                 </div>
                 <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
@@ -38,9 +38,9 @@
                             <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
                         </div>
                         <div class="selected" v-if="this.getTime == 'true'">
-                            <div @click="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
+                            <div @click.stop="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
                             <span>-</span>
-                            <div @click="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
+                            <div @click.stop="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
                           <div class="time-table popup time-start" v-show="boxShow1">
                               <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
                           </div>
@@ -60,7 +60,8 @@
                             <input type="radio" class="magic-radio" id="flightYes" v-model="getFlight" value="true"><label for="flightYes">有&nbsp;</label>
                         </div>
                         <div class="selected border" @click="showBox=!showBox" v-show="this.getFlight == 'true'">
-                            <span class="fl-til" v-text="msg" :class="{selec:isSel}"></span>
+                            <!-- <span class="fl-til" v-text="msg" :class="{selec:isSel}"></span> -->
+                            <span class="fl-til selec" v-text="msg" ></span>
                             <span class="icon-item icon-item1">&#xe605;</span>
                             <div class="dropDown popup" v-show="showBox">
                                 <div @click="getNeed(index)" v-for="(value,index) in stateType">{{value}}</div>
@@ -73,7 +74,7 @@
                     <div class="error" v-show="isError4" style="left:0;top:60px;">*请选择班期</div>
                 </div>
                 <div class="form-box air-route">
-                    <div class="t-title">意向航线</div>
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>意向航线</div>
                     <input type="text" placeholder="起飞机场" v-model="intendedDpt" @focus="openSearch3" @blur="closeDialog1"><span class="icon-item ">&#xe672;</span>
                     <airportS1 class="aisx" v-on:resData="dptData" :searchText="intendedDpt" v-show="dptSearch" style="left:-17px;top:48px;"></airportS1>
                     <input type="text" placeholder="经停机场（可选填）" v-model="intendedPst" @focus="openSearch4" @blur="closeDialog2"><span class="icon-item ">&#xe672;</span>
@@ -83,30 +84,30 @@
                     <div class="error" v-show="isError3" style="left:58px;top:53px;">*请选择起飞机场</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">拟飞机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>拟飞机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
                     <div class="airpl-typ popup scroll" v-show="airplTypShow">
                         <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                     </div>
                     <div class="error" v-show="isError5" style="left:58px;top:53px;">*请选择机型</div>
                 </div>
-                <div class="form-box se-place" >
-                    <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
-                  <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
-                   <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
-                </div>
-                <div class="form-box reset">
-                    <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
-                    <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
-                    <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
-                </div>
-                <div class="form-box reset">
+                <div class="form-box">
                     <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
                 </div>
                 <div class="form-box pad1 taken">
                     <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
                     <span>w/h</span>
                 </div>
-                <div class="form-box  pad1 dispatch">
+                <div class="form-box pad1 taken">
+                    <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
+                    <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
+                    <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
+                </div>
+                <div class="form-box se-place" >
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
+                  <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
+                   <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
+                </div>
+                <div class="form-box  dispatch">
                     <div class="t-checkbox">
                         <input type="checkbox" name=" " id="dispatch" class="magic-radio" v-model="dispatch"><label for="dispatch">接受调度</label>
                     </div>
@@ -126,18 +127,25 @@
                                </div>
                            </div>
                        </div>
-                       <input type="text" v-model="dispatchText" @click.stop="openSearch1" @blur="closeDialog7">
+                       <input type="text" v-model="dispatchText" @click.stop="openSearch1" @blur="closeDialog7" placeholder="选择调度机场">
                        <airportS1 class="aisx"  :searchText="dispatchText" v-on:resData="disData" v-show="dispatchSearch" style="top:30px;left:-68px;"></airportS1>
                    </div>
                     <div class="error" v-show="isError9" style="left:65px;top:53px;">*请选择调度机场</div>
                 </div>
                 <div class="form-box tips pad1">
-                    <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
-                    <span class="num"><span >{{num}}</span>/35</span>
+                    <div class="t-title">其他说明</div>
+                    <!-- <input type="text" placeholder="可选填" v-model="tip" maxlength="35"> -->
+                    <textarea class="txtarea" v-model="tip" maxlength="200" placeholder="可选填"></textarea>
+                    <div class="tips-border"></div>
+                    <div class="tips-border" style="top:44px;"></div>
+                    <div class="tips-border" style="top:70px;"></div>
+                    <div class="tips-border" style="top:95px;"></div>
+                     <div class="tips-border" style="top:121px;"></div>
+                    <span class="num"><span >{{num}}</span>/200</span>
                 </div>
-                <div class="form-box get-time" ref="timeForm" @click="verifyDate">
-                    <div class="t-title" ref="timeTitle">发布有效期</div>
-                   <div class="calendar time-btn" ref="timeDate">
+                <div class="form-box get-time" ref="timeForm" @click="verifyDate" style="width:579px;">
+                    <div class="t-title" ref="timeTitle" style="width:60px;">发布有效期</div>
+                   <div class="calendar time-btn" ref="timeDate" style="width:213px;">
                      <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                      <div v-show="calendarShow" class="calendar-box popup">
                        <div class="selec-data">
@@ -218,7 +226,7 @@
                 isError10:false,
                 phoneNum: '',
                 getFlight: 'true',
-                getTime: '',
+                getTime: 'true',
                 dispatch:false,
                 pickStart:false,
                 pickEnd:false,
@@ -242,6 +250,7 @@
                 airplaneTyp:'',
                 airplaneTyp1:'',
                 airCompany:'',
+                airCompany1:'',
                 airCompanyId:'',
                 dptState:[0,1],//运力基地：机场为0，地区为1
                 seat:'',
@@ -254,7 +263,7 @@
                 tip: '',
                 searchData:[],
                 searchData1:[],
-                msg:'选择班期类型',
+                msg:'满排',
                 stateType:['待定','满排','半排'],
                 myDate:'选择起始时间',
                 calendarInitDay1: '',
@@ -265,6 +274,7 @@
                 timeShow: true,
                 isSearch: false,
                 searchText: '',
+                searchText1:'',
                 dispatchSearch:false,
                 dispatchText:'',
                 directSearch:false,
@@ -294,7 +304,7 @@
                 'role'
             ]),
             num: function(){
-                return this.tip.length <= 35? this.tip.length: 35;
+                return this.tip.length <= 200? this.tip.length: 200;
             }
         },
         watch:{
@@ -315,6 +325,15 @@
                 }else{
                     this.moreDotShow = false;
                 }
+            },
+            'tip':function(){
+                //this.filter();
+            },
+            'qyCode':function(){
+                if(!this.allFormShow){
+                    this.intendedDpt = this.searchText;
+                    this.qyCode3 = this.qyCode;
+                }
             }
 
         },
@@ -333,9 +352,9 @@
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
-                    this.$refs.timeDate.style.width = "213px";
+                   /* this.$refs.timeDate.style.width = "213px";
                     this.$refs.timeForm.style.width = "579px";
-                     this.$refs.timeTitle.style.width = "60px";
+                     this.$refs.timeTitle.style.width = "60px";*/
                 }else{
 
                 }
@@ -403,6 +422,7 @@
                 let that =this;
                setTimeout(function(){
                 that.isSearch =false;
+                that.searchText = (that.searchText == ''||that.qyCode == ''? '':that.searchText1);
                     if(that.qyCode){
                      that.isError6 = false;
                     }
@@ -412,6 +432,7 @@
                 let that =this;
                setTimeout(function(){
                 that.airCompanyShow =false;
+                that.airCompany = (that.airCompany == ''||that.airCompanyId == ''? '':that.airCompany1);
                     if(that.airCompanyId){
                      that.isError7 = false;
                     }
@@ -438,6 +459,8 @@
                  this.directSearch =false;
                  this.directionPublicShow= true;
                  this.dispatchAirportShow= true;
+                 this.boxShow1 = false;
+                 this.boxShow2 = false;
             },
             verifyContact:function(){
                  if(this.contact){
@@ -506,6 +529,7 @@
             resData: function (data) {
                 this.isSearch = false;
                 this.searchText = data.name;
+                this.searchText1 = data.name;
                 this.qyCode = data.code;
             },
             disData: function(data){
@@ -515,6 +539,7 @@
                         id: data.id,
                     });
                 }
+                this.searchData = this.unique(this.searchData);
                 //this.qyCode1 = data.code;
                 this.dispatchSearch = false;
                 this.dispatchAirportShow = true;
@@ -532,10 +557,29 @@
                         id: data.id,
                     });
                 }
+               /* if(this.searchData1.length > 3){
+                    this.searchData1 = this.unique(this.searchData1);
+                    alert(this.searchData1.length);
+                }*/
                 //this.qyCode2 = data.code;
                 this.directSearch = false;
                 this.directionPublicShow = true;
             },
+            //数组去重
+          /*  unique: function(arr) {
+              var ret = [],
+                  newArr = [];
+              arr.forEach((val) =>{
+                ret.push(val.id);
+              })
+              for (var i = 0; i < ret.length; i++) {
+                var item = ret[i];
+                if (ret.indexOf(item) === -1) {
+                  newArr.push(arr[i]);
+                }
+              }
+              return newArr;
+            },*/
             searchDirect:function(){
                  this.$nextTick(() => {
                     this.directionPublicShow = false;
@@ -567,6 +611,7 @@
             },
             airCompanyData: function(data){
                 this.airCompany = data.name;
+                this.airCompany1 = data.name;
                 this.airCompanyId = data.id;
                 this.airCompanyShow = false;
             },
@@ -630,7 +675,7 @@
                     };
                 }
                 let demandData = {},
-                    time = (this.timeStart +'-'+ this.timeEnd) == '00:00-00:00'? "待定": (this.timeStart +'-'+ this.timeEnd);
+                    time = (this.timeStart +'-'+ this.timeEnd) == '00:00-00:00'? "00:00": (this.timeStart +'-'+ this.timeEnd);
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
@@ -703,12 +748,56 @@
                     }) .catch((error) => {
                             console.log(error);
                         });
-                    }
+            },
+            //敏感字屏蔽
+            filter: function () {
+              // 多个敏感词，这里直接以数组的形式展示出来
+              var arrMg = ["fuck", "tmd", "妈的","毛泽东","老子"];
+
+              // 显示的内容--showContent
+              var showContent = this.tip;
+
+              // 正则表达式
+              // \d 匹配数字
+
+              for (var i = 0; i < arrMg.length; i++) {
+
+                // 创建一个正则表达式
+                var r = new RegExp(arrMg[i], "ig");
+
+                showContent = showContent.replace(r, "*");
+              }
+              // 显示的内容
+              this.tip = showContent;
+            },
+            initDate: function() {
+              //初始化
+                let today = new Date(),
+                day = today.getDate(), //号数
+                mon = today.getMonth() + 1, //月份
+                year = today.getFullYear(), //年份
+                date = today.setMonth(today.getMonth()+3), //三个月后的时间
+                mon2 =  today.getMonth(date) + 1,
+                year2 =  today.getFullYear(date),
+                day2 =  today.getDate(date);
+                if (mon < 10) mon = "0" + mon;
+                if (mon2 < 10) mon2 = "0" + mon2;
+                if (day < 10) day = "0" + day;
+                if (day2 < 10) day2 = "0" + day2;
+
+                this.calendarInitDay1 = year+"."+mon+"."+day;
+                this.calendarInitDay2 = year2+"."+mon2+"."+day2;
+            }
         },
         beforeMount:function () {
+            this.initDate();
+            this.getMyDate();
             if(this.role.role == 2){
                 this.btnShow = false;
             }
+            this.contact = this.role.username;
+            this.phoneNum = this.role.phone;
+            this.airCompany = this.role.companyName;
         }
 
     }
@@ -820,15 +909,42 @@
     .tips{
         position:relative;
         width:580px;
-        >input{
-            width:470px;
-        }
+        height:100px;
+       /*  >input{
+           width:470px;
+       } */
         .num{
             position:absolute;
             right:2px;
-            top:20px;
+            top:122px;
+        }
+        .tips-border{
+            width:472px;
+            height:26px;
+            box-sizing:border-box;
+            position:absolute;
+            left:60px;
+            top:18px;
+            z-index:1;
+            border-bottom:1px solid rgba(151,151,151,.3);
         }
     }
+    .txtarea{
+            resize:none;
+            display: inline-block;
+            position: absolute;
+            font-size:1.2rem;
+            left:60px;
+            right:0;
+            z-index:3;
+            width: 472px;
+            height: 130px;
+            line-height:26px;
+            border:0;
+            outline:none;
+            background:transparent;
+            //background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;
+        }
     .get-time .time-btn{
         box-sizing:border-box;
         position:relative;
@@ -1140,7 +1256,7 @@
             border-radius: 4px;
             box-shadow: 0 2px 11px rgba(96,94,124,0.37);
             z-index: 3;
-    }
+        }
     }
     .airpl-typ{
         position:absolute;

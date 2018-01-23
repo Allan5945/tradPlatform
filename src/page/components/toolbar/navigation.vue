@@ -1,34 +1,37 @@
 <template>
-    <div class="nav-box popup" @click.stop>
-        <div class="font-bold-x nav1">
-            <router-link to="/index" class="a-click">首页</router-link>
-        </div>
-        <div class="font-bold-x nav1">
-            <router-link to="/index/opinion" class="a-click">新闻舆情</router-link>
-        </div>
-        <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
-            <div class="nav-title">
-                <span class="icon-item">&#xe60f;</span>
-                <span class="font-bold-x">个人中心</span>
-                <span class="icon-item icon-item1">&#xe605;</span>
+    <div>
+        <div class="nav-box popup" @click.stop="colsePublish">
+            <div class="font-bold-x nav1">
+                <router-link to="/index" class="a-click">首页</router-link>
             </div>
-            <userCenter v-if="userShow" v-on:showSet="showSetting"></userCenter>
-        </div>
-        <div @click="toolShow = !toolShow;userShow=false" class="nav3">
-            <div class="nav-title">
-                <span class="icon-item">&#xe601;</span>
-                <span class="font-bold-x">工具 &nbsp;</span>
-                <span class="icon-item icon-item1">&#xe605;</span>
+            <div class="font-bold-x nav1">
+                <router-link to="/index/opinion" class="a-click">新闻舆情</router-link>
             </div>
-            <tool v-if="toolShow"></tool>
-        </div>
-        <div>
-            <div id="posted-btn" class="btn btn-b nav-title" @click="toPublish">
-                <span class="icon-item icon-cl">&#xe606;</span>
-                发布
+            <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
+                <div class="nav-title">
+                    <span class="icon-item">&#xe60f;</span>
+                    <span class="font-bold-x">个人中心</span>
+                    <span class="icon-item icon-item1">&#xe605;</span>
+                </div>
+                <userCenter v-if="userShow" v-on:showSet="showSetting"></userCenter>
             </div>
+            <div @click="toolShow = !toolShow;userShow=false" class="nav3">
+                <div class="nav-title">
+                    <span class="icon-item">&#xe601;</span>
+                    <span class="font-bold-x">工具 &nbsp;</span>
+                    <span class="icon-item icon-item1">&#xe605;</span>
+                </div>
+                <tool v-if="toolShow"></tool>
+            </div>
+            <div>
+                <div id="posted-btn" class="btn btn-b nav-title" @click.stop="toPublish">
+                    <span class="icon-item icon-cl">&#xe606;</span>
+                    发布
+                </div>
+            </div>
+            <setting v-if="settingsShow" v-on:closeSet="closeSetting"></setting>
         </div>
-        <setting v-if="settingsShow" v-on:closeSet="closeSetting"></setting>
+        <toPublish v-if="publichShow"></toPublish>
     </div>
 </template>
 <script>
@@ -36,23 +39,30 @@
     import tool from '../toolbar/tools.vue'
     import userCenter from '../toolbar/userCenter.vue'
     import setting from '$src/page/components/setting/container.vue'
-
+    import toPublish from '$src/page/components/toPublish.vue'
     export default {
         data() {
             return {
                 toolShow:false,
                 userShow:false,
-                settingsShow: false
+                settingsShow: false,
+                publichShow:false
             }
         },
         components: {
             tool,
             userCenter,
-            setting
+            setting,
+            toPublish
         },
         methods:{
-            toPublish:function() {
-                this.$emit("toShow");
+            toPublish() {
+                this.publichShow = true;
+                this.toolShow = false;
+                this.userShow = false;
+            },
+            colsePublish(){
+                this.publichShow = false;
             },
             showSetting(){
                 this.settingsShow = true;
