@@ -358,7 +358,6 @@
     .registered-box{
         width:360px;
         height: 470px;
-        position: absolute;
         overflow: hidden;
         border-radius: 8px;
         background-color: #fff;

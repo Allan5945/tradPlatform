@@ -157,7 +157,7 @@
                 this.userData.pwd = p.n;
             },
             pasReqMes1(p){
-                this.userData.npwd = p.n;
+                this.userData.npwd =  p.n;
             },
             pasReqMes2(p){
                 this.userData.vnpwd = p.n;
@@ -291,7 +291,6 @@
     .registered-box{
         width:360px;
         height: 370px;
-        position: absolute;
         border-radius: 8px;
         background-color: #fff;
         header{
