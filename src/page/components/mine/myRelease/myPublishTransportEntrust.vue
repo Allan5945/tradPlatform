@@ -81,7 +81,7 @@
                     <button class="btn btn-w" style="width: 100px;" @click="recallFn(),closeThisFn()">撤回该托管</button>
                 </div>-->
             </div>
-            <editOperationForm  v-if="editOperationFormShow" @close-this="changeShowCodeFn"></editOperationForm>
+            <editOperationForm v-if="editOperationFormShow" :acceptData="myData" @close-this="changeShowCodeFn"></editOperationForm>
         </div>
     </div>
 </template>

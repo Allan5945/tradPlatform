@@ -20,22 +20,9 @@
                 <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
             <div class="t-optional">
-               <!--  <div class="form-box">
-                   <div class="t-title">需求类型</div>
-                   <div class="need-btn"  @click="showBox=!showBox">
-                       <div class="title" v-text="msg" :class="{selected:isSel}"></div>
-                       <span class="icon-item icon-item1">&#xe605;</span>
-                       <div class="selc-list dropDown popup" v-show="showBox">
-                           <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
-                       </div>
-                   </div>
-               </div> -->
                 <div class="form-box">
                     <div class="t-title">航班号</div>
                     <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
-                    <!-- <div class="num-list popup scroll" v-show="flightListShow">
-                        <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
-                    </div> -->
                 </div>
                 <div class="form-box pad">
                         <div class="t-title">小时成本</div>
@@ -60,6 +47,7 @@
 
 <script>
  export default {
+     props: ['acceptData'],
         data () {
             return{
                 //showBox: false,
@@ -77,11 +65,21 @@
                // needType:['运力投放','航线需求']
             }
         },
+     mounted(){
+         this.acceptDataFn();
+     },
         methods:{
             /* getNeed: function(i) {
                 this.msg = this.needType[i];
                 this.isSel = true;
             },*/
+            acceptDataFn: function () { // 表单绑定数据
+                this.contact = this.acceptData.contact;
+                this.phoneNum = this.acceptData.iHome;
+                this.flightNum = this.acceptData.fltNbr;
+                this.hourcost = this.acceptData.hourscost;
+                this.tip = this.acceptData.remark;
+            },
             closeThis: function(){
                 this.$emit("close-this");
             },
@@ -386,7 +384,7 @@
           width:80px;
           color:rgba(96,94,124,.6);
           box-sizing:border-box;
-          opacity:40%;
+          opacity: 0.4;
           background-color:#fff;
           border: 1px solid rgba(96,94,124,.6);
         }
