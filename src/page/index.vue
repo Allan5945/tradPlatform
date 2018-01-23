@@ -1,8 +1,7 @@
 <template>
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
-        <navigation @toShow="toShow"></navigation>
-        <toPublish v-if="publichShow"></toPublish>
+        <navigation></navigation>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
         <infPanel></infPanel>
@@ -22,7 +21,6 @@
     import navigation from './components/toolbar/navigation.vue'
     import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './components/demandListComponents/mesBox.vue'
-    import toPublish from './../page/components/toPublish.vue'
     import {conversionsCity,conversions,conversionsCompany} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './components/independenceComponents/infPanel.vue'
@@ -69,9 +67,6 @@
             ]),
             contactClient(){  // 联系客户
 
-            },
-            toShow() {
-                this.publichShow = !this.publichShow;
             },
              closeThis() {
                 this.detailShow2 = false;
@@ -225,7 +220,6 @@
             navigation,
             tagIcon,
             messageBox,
-            toPublish,
             airlineDetailPayAfter,
             transIndex,
             infPanel,
