@@ -237,7 +237,7 @@
                         <div class="left item-child">
                             <span class="margin-right">拟开班期</span>　
                             <div class="choose-border" style="align-items: center;" @click.stop="clickClose11Fn ">
-                                <span style="margin-left: 3px;">{{scheduleShow}}</span>
+                                <span style="margin-left: 3px; height: 24px;">{{scheduleShow}}</span>
                                 <div class="triangle-big" style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
                                 <ul class="choose-type want-type" v-show="schedule">
                                     <li v-for="item in scheduleList" @click="scheduleListFn(item)">{{item}}</li>
@@ -541,6 +541,9 @@
             }
         },
         mounted() {
+            if(this.acceptData.chongXinWeiTuo == '1') {
+                this.submitData2ClickFn();
+            }
             this.space1Fn();
             this.space2Fn();
             this.space3Fn();
@@ -916,8 +919,12 @@
                 this.$emit('changeTitle');
             },
             closeSubmitData2: function () { // 点“委托发布”后的“取消”按钮
-                this.submitData2Click = false;
-                this.$emit('restoreTitle');
+                if(this.acceptData.chongXinWeiTuo == '1') {
+                    this.closeThis();
+                }else {
+                    this.submitData2Click = false;
+                    this.$emit('restoreTitle');
+                }
             },
             submitData2: function () {
                 this.sendStateMsgFn();

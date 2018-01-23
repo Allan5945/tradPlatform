@@ -116,9 +116,9 @@
                 myPublishShow0: false,       // myPublish(运力详情 + 航线详情)是否显示
                 myPublishShow1: false,       // 运力详情显示
                 myPublishAirlineShow: false, // 航线详情是否显示
-                myPublishTransportEntrustShow: false, // myPublishEntrust（我的发布-发布的运力托管）是否显示
-                myPublishAirLineEntrustShow: false,   //myPublishAirLineEntrust（我的发布-发布的航线托管）是否显示
-                myPublishAirLineEntrust1Show: false,  //运力托管是否显示
+                myPublishTransportEntrustShow: false, // myPublishEntrust（我的发布-发布的运营托管）是否显示
+                myPublishAirLineEntrustShow: false,   //myPublishAirLineEntrust（我的发布-发布的航线委托）是否显示
+                myPublishAirLineEntrust1Show: false,  //运力委托是否显示
                 myData: [],                 // 将获取的数据，渲染到页面上
                 myData0: [],                 // 航司能看到的数据，渲染到页面上
                 myData1: [],                 // 机场能看到的数据，渲染到页面上

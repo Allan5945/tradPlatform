@@ -160,18 +160,15 @@
                     <button class="btn btn-w" @click="recallFn">撤回该托管</button>
                 </div>
             </div>
-            <!--委托运力投放-->
-            <editAgentTransForm v-if="editAgentTransFormShow" @close-this="closeEditAgentTransForm" @change-showCode="changeShowCodeFn"></editAgentTransForm>
             <!--委托航线需求-->
-            <editAirlineDelegation v-if="editAirlineDelegationShow" @close-this="closeEditAirlineDelegation" @change-showCode="changeShowCodeFn"></editAirlineDelegation>
+            <airlineReqWrapper v-if="editAirlineDelegationShow" :acceptData="myData" @close-this="closeEditAirlineDelegation"></airlineReqWrapper>
         </div>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editAgentTransForm from './editAgentTransForm.vue'
-    import editAirlineDelegation from './editAirlineDelegation.vue'
+    import airlineReqWrapper from '$src/page/components/airlineReqWrapper.vue'
     export default {
         data() {
             return {
@@ -257,8 +254,7 @@
             ]),
         },
         components: {
-            editAgentTransForm, //委托航线需求
-            editAirlineDelegation //委托运力投放
+            airlineReqWrapper,  // 委托航线需求
         },
         methods: {
             // 格式无误时显示的内容
@@ -301,11 +297,8 @@
             },
             //点击“重新发布”
             anewPublishClickFn2: function () {
-                if(this.myData.demandtype == 3) {
-                    this.editAirlineDelegationShow = true;
-                }if(this.myData.demandtype == 4) {
-                    this.editAgentTransFormShow = true;
-                }
+                this.myData.chongXinWeiTuo = '1';  // “重新发布”，弹出airlineReqWrapper 0: 不是委托，1: 是委托
+                this.editAirlineDelegationShow = true;
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {

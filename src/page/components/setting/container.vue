@@ -1,102 +1,101 @@
 <template>
     <transition name="slidex-fade">
-    <section class="setting-wrap" @click.self="closeDetail">
-        <div class="box shadow">
-            <div class="setting-header">
-                <p class="mgr-l">个人设置<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
-            </div>
-            <div class="setting-body">
-                <ul class="flex-three">
-                    <li>
-                        <div>关联手机</div>
-                        <div>{{userData.phone}}</div>
-                        <div>
-                            <span class="tbtn"  @click="show.phone = true">修改手机</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>密码</div>
-                        <div>***********</div>
-                        <div>
-                            <span class="tbtn" @click="show.pwd = true">修改密码</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>邮箱</div>
-                        <div>{{ userData.mail }}</div>
-                        <div>
-                            <span class="tbtn" v-if="userData.mail" @click="show.unbindMail = true">解绑邮箱</span>
-                            <span class="tbtn" v-else @click="show.bindMail = true">绑定邮箱</span>
-                        </div>
+        <section class="setting-wrap" @click.self="closeDetail">
+            <div class="box shadow">
+                <div class="setting-header">
+                    <p class="mgr-l">个人设置<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
+                </div>
+                <div class="setting-body">
+                    <ul class="flex-three">
+                        <li>
+                            <div>关联手机</div>
+                            <div>{{userData.phone}}</div>
+                            <div>
+                                <span class="tbtn"  @click="show.phone = true">修改手机</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>密码</div>
+                            <div>***********</div>
+                            <div>
+                                <span class="tbtn" @click="show.pwd = true">修改密码</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>邮箱</div>
+                            <div>{{ userData.mail }}</div>
+                            <div>
+                                <span class="tbtn" v-if="userData.mail" @click="show.unbindMail = true">解绑邮箱</span>
+                                <span class="tbtn" v-else @click="show.bindMail = true">绑定邮箱</span>
+                            </div>
 
-                    </li>
-                </ul>
-                <ul class="flex-two">
-                    <li>
-                        <div>账号</div>
-                        <div>{{ userData.account }}</div>
-                    </li>
-                    <li>
-                        <div>姓名</div>
-                        <div class="text-line"
-                             :contenteditable="control.edit"
-                             :class="{'text-edit':control.edit}"
-                             @blur="changeText($event,0)">
-                            {{ userData.name }}
-                        </div>
-                    </li>
-                    <li>
-                        <div>公司</div>
-                        <div>{{userData.company}}</div>
-                    </li>
-                    <li>
-                        <div>部门</div>
-                        <div class="text-line"
-                             :contenteditable="control.edit"
-                             :class="{'text-edit':control.edit}"
-                             @blur="changeText($event,1)">
-                            {{ userData.department }}
-                        </div>
-                    </li>
-                    <li>
-                        <div>职务</div>
-                        <div class="text-line"
-                             :contenteditable="control.edit"
-                             :class="{'text-edit':control.edit}"
-                             @blur="changeText($event,2)">
-                            {{userData.post}}
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                    <ul class="flex-two">
+                        <li>
+                            <div>账号</div>
+                            <div>{{ userData.account }}</div>
+                        </li>
+                        <li>
+                            <div>姓名</div>
+                            <div class="text-line"
+                                 :contenteditable="control.edit"
+                                 :class="{'text-edit':control.edit}"
+                                 @blur="changeText($event,0)">
+                                {{ userData.name }}
+                            </div>
+                        </li>
+                        <li>
+                            <div>公司</div>
+                            <div>{{userData.company}}</div>
+                        </li>
+                        <li>
+                            <div>部门</div>
+                            <div class="text-line"
+                                 :contenteditable="control.edit"
+                                 :class="{'text-edit':control.edit}"
+                                 @blur="changeText($event,1)">
+                                {{ userData.department }}
+                            </div>
+                        </li>
+                        <li>
+                            <div>职务</div>
+                            <div class="text-line"
+                                 :contenteditable="control.edit"
+                                 :class="{'text-edit':control.edit}"
+                                 @blur="changeText($event,2)">
+                                {{userData.post}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="setting-footer flex-center">
+                    <span class="btn btn-prime" style="width: 150px;" @click="doEdit()">{{ control.edit?"保存修改":"修改" }}</span>
+                    <span class="btn btn-gray" @click="closeDetail">取消</span>
+                </div>
             </div>
-            <div class="setting-footer flex-center">
-                <span class="btn btn-prime" style="width: 150px;" @click="doEdit()">{{ control.edit?"保存修改":"修改" }}</span>
-                <span class="btn btn-gray" @click="closeDetail">取消</span>
-            </div>
-        </div>
 
-        <transition name="fade">
-            <div class="swrapper flex-center" v-if="show.phone">
-                <changePhone v-on:subchange="turnOver" :ud="userData"></changePhone>
-            </div>
-            <div class="swrapper flex-center" v-if="show.pwd">
-                <changePwd v-on:subchange="turnOver" :ud="userData"></changePwd>
-            </div>
-            <div class="swrapper flex-center" v-if="show.bindMail">
-                <bindMail v-on:subchange="turnOver" :ud="userData"></bindMail>
-            </div>
-            <div class="swrapper flex-center" v-if="show.unbindMail">
-                <unbindMail v-on:subchange="turnOver" :ud="userData"></unbindMail>
-            </div>
-            <div class="swrapper flex-center" v-if="show.backPwd">
-                <backPwdBox v-on:subchange="turnOver" :ud="userData"></backPwdBox>
-            </div>
-        </transition>
+            <transition name="fade">
+                <div class="swrapper flex-center" v-if="show.phone">
+                    <changePhone v-on:subchange="turnOver" :ud="userData"></changePhone>
+                </div>
+                <div class="swrapper flex-center" v-if="show.pwd">
+                    <changePwd v-on:subchange="turnOver" :ud="userData"></changePwd>
+                </div>
+                <div class="swrapper flex-center" v-if="show.bindMail">
+                    <bindMail v-on:subchange="turnOver" :ud="userData"></bindMail>
+                </div>
+                <div class="swrapper flex-center" v-if="show.unbindMail">
+                    <unbindMail v-on:subchange="turnOver" :ud="userData"></unbindMail>
+                </div>
+                <div class="swrapper flex-center" v-if="show.backPwd">
+                    <backPwdBox v-on:subchange="turnOver" :ud="userData"></backPwdBox>
+                </div>
+            </transition>
 
-    </section>
+        </section>
     </transition>
 </template>
-
 <script>
     import changePhone from './changePhone'
     import changePwd from './changePwd'
