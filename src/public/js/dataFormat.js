@@ -6,7 +6,7 @@ const format = ([tmp,alternative] = data)=> {
     }else if(!tmp && typeof(tmp) != 'undefined' && tmp != 0 && !isNaN(tmp)){
         type = null;
         t = false;
-    }else if(isNaN(tmp)){
+    }else if(isNaN(tmp)&& typeof tmp == Number){
         type = 'NaN';
         t = false;
     }
