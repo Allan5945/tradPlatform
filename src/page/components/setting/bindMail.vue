@@ -134,6 +134,7 @@
                     isshowErr:false, // 是否错误抖动 true、抖动。false、不抖动
                     tip:["输入需要绑定的邮箱","需要绑定的邮箱"], // 1，输入框的placeholder值。2，显示值
                     openJudge:[],
+                    maxlength: 30
                 },
             }
         },
