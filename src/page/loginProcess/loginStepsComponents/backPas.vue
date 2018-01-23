@@ -103,8 +103,33 @@
                 }
             },
             validaon() {
-                this.validationTag = false;
-                this.verCode = true;
+                this.$ajax({
+                    method: 'post',
+                    url: '/validPhone',
+                    params:{
+                        contactWay:this.collect.tel
+                    },
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then((response) => {
+                        if(response.data.opResult  == '0'){
+                            this.validationTag = false;
+                            this.verCode = true;
+                        }else{
+                            this.$message({
+                                showClose: true,
+                                message: "手机号不存在！",
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
+
             },
             setCode: function (code) {
                 if (code.length == 6) {
