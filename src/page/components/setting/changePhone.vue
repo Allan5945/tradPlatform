@@ -25,13 +25,13 @@
                 </div>
                 <div class="process-body">
                     <div class="process-main" v-show="active==0">
-                        <pwdInput :par="pasArg" v-on:reqMes="pasReqMes" v-on:entered="iptEnter()"></pwdInput>
+                        <pwdInput :par="pasArg" v-on:reqMes="pasReqMes" v-on:entered="iptEnter()" v-if="active==0"></pwdInput>
                     </div>
                     <div class="process-main" v-show="active==1">
-                        <pwdInput :par="oArg" v-on:reqMes="phoneReqMes"></pwdInput>
-                        <validation v-if="active==1" v-on:validation="validPass" style="margin-top:30px;"></validation>
+                        <pwdInput :par="oArg" v-on:reqMes="phoneReqMes" v-if="active==1"></pwdInput>
+                        <validation v-if="active==1 && valiUseFlag" v-on:validation="validPass" style="margin-top:30px;"></validation>
                     </div>
-                    <div class="process-main" v-show="active==2">
+                    <div class="process-main" v-show="active==2" style="margin-top: -25px;width: 230px;">
                         <p style="height:25px;color:#aaa;text-indent: 3px;">输入新手机号</p>
                         <div class="full-btn">
                             <input type="text" v-model="userData.phone" disabled placeholder="">
@@ -39,7 +39,7 @@
                         </div>
                         <span v-show="show.yzmTip" class="yzm-tip">短信验证码已发送，请注意查收</span>
                         <div class="full-btn" style="margin-top: 40px;">
-                            <input type="text" v-model="userData.code" placeholder="">
+                            <input type="text" v-model="userData.code" placeholder="" maxlength="6">
                             <span class="yzm" @click="getCode">{{ code.tipText }}</span>
                         </div>
                     </div>
@@ -131,6 +131,7 @@
                     tip:["输入登录密码","登录密码"], // 1，输入框的placeholder值。2，显示值
                     openJudge:[],
                 },
+                valiUseFlag: false
             }
         },
         props: ['ud'],
@@ -172,22 +173,31 @@
             iptEnter(p){
                 this.next();
             },
-            pasReqMes(p){
+            pasReqMes(p){//密码
                 this.userData.pwd = p.n;
             },
-            phoneReqMes(p){
+            phoneReqMes(p){//新手机号
+                let np = p.n;
                 this.userData.phone = p.n;
+                this.valiUseFlag = false;
+                this.validFlag = false;
+                if(np.length == 11){
+                    this.valiUseFlag = true;
+                }
             },
-            closeThis(f){
+            validPass(){//滑动验证通过
+                this.validFlag = true;
+            },
+            closeThis(f){//关闭
                 this.$emit('subchange',{
                     name: 'phone',
                     type: f===true ? 1:0
                 })
             },
-            delayClose(){
+            delayClose(){//延时关闭
                 setTimeout(this.closeThis,3000)
             },
-            openTips(txt){
+            openTips(txt){//错误提示
                 this.text.tipsText = txt;
                 setTimeout(()=>{
                     this.text.tipsText = '';
@@ -240,10 +250,7 @@
                     that.active = 2;
                 }
             },
-            validPass(){
-                this.validFlag = true;
-            },
-            calcTime(){
+            calcTime(){//60s倒计时
                 if(this.code.wait>1){
                     this.code.wait--;
                     this.code.tipText =  this.code.wait + "' 重新发送";
@@ -331,7 +338,7 @@
                     loading.close();
                 }, 500);
             },
-            canelClick(){
+            canelClick(){//取消按钮
                 if(this.text.canelState){
                     this.closeThis();
                 }else{
@@ -353,6 +360,7 @@
         width:360px;
         height: 470px;
         overflow: hidden;
+        position: relative;
         border-radius: 8px;
         background-color: #fff;
         header{
@@ -418,6 +426,9 @@
                 }
             }
             footer{
+                position: absolute;
+                width: 290px;
+                bottom: 0;
                 color: $blue;
                 .wjmm{
                     cursor: pointer;
@@ -462,7 +473,7 @@
     }
     .full-btn{
         position: relative;
-        width: 260px;
+        width: 240px;
         height: 40px;
         margin: 0 auto;
         line-height: 40px;
@@ -480,9 +491,9 @@
             position: absolute;
             border-radius: 20px;
             top: 0;
-            bottom: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             text-indent: 10px;
             &:focus{
                 border: 1px solid #4b78e0;

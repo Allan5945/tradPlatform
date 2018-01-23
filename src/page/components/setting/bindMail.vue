@@ -28,24 +28,10 @@
                               v-on:reqMes="pasReqMes0"
                               v-on:entered="iptEnter"
                               ></pwdInput>
-                    <!--
-                    <div class="full-btn">
-                        <input :type="showpwd" v-model="userData.pwd" placeholder="输入登录密码">
-                        <span v-show="userData.pwd.length>0 && showpwd==='password'" @click="showpwd ='text'">&#xe685;</span>
-                        <span v-show="userData.pwd.length>0 && showpwd==='text'" @click="showpwd = 'password'" style="line-height: 38px;">&#xe7d3;</span>
-                    </div>
-                    -->
                 </div>
                 <div class="process-main" v-show="active==1">
-
                     <pwdInput v-if="active===1" :par="pasArg1" v-on:reqMes="pasReqMes1"></pwdInput>
-                    <!--
-                    <div class="full-btn">
-                        <input type="text" v-model="userData.mail" placeholder="输入需要绑定的邮箱">
-                        <span class="suc"></span>
-                    </div>
-                    -->
-                    <validation style="width:245px;margin: 30px auto 0 auto" v-if="active==1" v-on:validation="validPass"></validation>
+                    <validation style="width:245px;margin: 30px auto 0 auto" v-if="active==1 && valiUseFlag" v-on:validation="validPass"></validation>
                 </div>
                 <div class="process-main" v-show="active==2">
                     <p style="height:25px;color:#aaa;text-indent: 3px;">需要绑定的邮箱</p>
@@ -121,6 +107,7 @@
                 },
                 showpwd: 'password',
                 validFlag: false,
+                valiUseFlag: false,
                 text:{
                     tipsText:'',
                     status: true,
@@ -194,7 +181,15 @@
                 this.userData.pwd = p.n;
             },
             pasReqMes1(p){
-                this.userData.mail = p.n;
+                let np = p.n;
+                this.userData.mail = np;
+                this.valiUseFlag = false;
+                this.validFlag = false;
+                if(this.test(np,1)){
+                    setTimeout(()=>{
+                        this.valiUseFlag = true;
+                    },0)
+                }
             },
             closeThis(f){
                 this.$emit('subchange',{
@@ -359,6 +354,7 @@
         width:360px;
         height: 470px;
         overflow: hidden;
+        position: relative;
         border-radius: 8px;
         background-color: #fff;
         header{
@@ -425,6 +421,9 @@
                 }
             }
             footer{
+                position: absolute;
+                width: 290px;
+                bottom: 0;
                 color: $blue;
                 .wjmm{
                     cursor: pointer;
@@ -487,9 +486,9 @@
             position: absolute;
             border-radius: 20px;
             top: 0;
-            bottom: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             text-indent: 10px;
             &:focus{
                 border: 1px solid #4b78e0;

@@ -64,6 +64,7 @@
         width:360px;
         height: 470px;
         overflow: hidden;
+        position: relative;
         border-radius: 8px;
         background-color: #fff;
         header{

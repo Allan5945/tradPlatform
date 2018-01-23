@@ -186,6 +186,7 @@
         width:360px;
         height: 370px;
         overflow: hidden;
+        position: relative;
         border-radius: 8px;
         background-color: #fff;
         header{
@@ -291,9 +292,9 @@
             position: absolute;
             border-radius: 20px;
             top: 0;
-            bottom: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             text-indent: 10px;
             &:focus{
                 border: 1px solid #4b78e0;
