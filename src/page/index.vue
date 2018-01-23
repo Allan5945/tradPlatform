@@ -6,8 +6,9 @@
         <tagIcon></tagIcon>
         <messageBox></messageBox>
         <infPanel></infPanel>
-        <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <detailed></detailed>
+        <!--<transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>-->
+        <!--<airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>-->
         <routeNetwork v-if="role.role != '2'"></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
@@ -28,6 +29,7 @@
     import infPanel from './components/independenceComponents/infPanel.vue'
     import transIndex from './components/trans_detail/transIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
+    import detailed from './components/detailedDemand/detailed.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
     import newsTip from './components/toolbar/newsTip.vue';
@@ -226,11 +228,10 @@
             tagIcon,
             messageBox,
             toPublish,
-            airlineDetailPayAfter,
-            transIndex,
             infPanel,
             routeNetwork,
             timelyCommunication,
+            detailed
         }
     }
 </script>

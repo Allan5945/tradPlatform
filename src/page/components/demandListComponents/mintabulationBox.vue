@@ -46,10 +46,6 @@
         mounted: function () {
             // 更改提示框高度
             window.onresize = () => {
-                if (this.set != '') {
-                    clearTimeout(this.set);
-                }
-                ;
                 this.set = setTimeout(() => {
                     this.resetWindow()
                 }, 100);
@@ -108,19 +104,8 @@
         },
         methods: {
             resetWindow: function () {
-                if(this.renderData.length == 0)return;
-                let messageHead = 42;
-                let tabulationHead = 62;
-                let messageBox = document.getElementById('message-box').offsetHeight;
-                let tabulation = document.getElementById('tabulation').offsetHeight;
-                if ((messageBox - messageHead) < tabulation + 10) {
-                    let zh = messageBox - messageHead - tabulationHead;
-                    document.getElementById('tabulationBox').style.height = zh + 'px';
-                    this.hidden = true;
-                } else {
-                    document.getElementById('tabulationBox').style.height = 'auto';
-                    this.hidden = false;
-                }
+                let h = document.getElementById("case").offsetHeight - 46 - 42 - 59;
+                document.getElementById('tabulationBox').style.height = h + 'px';
             },
             drawLine: function (key, t ,s) {
                 if(s == 1)return;
@@ -182,18 +167,18 @@
                 'close',
                 'conditionsOpen',
                 'cityList',
-                'airList'
+                'airList',
+                'demandType'
             ]),
             renderData: function () {
                 let d, a = [], c = [];
                 if (this.demandList.type) {
                     d = this.demandList.hybridData.list == null ? [] : this.demandList.hybridData.list;
                 } else {
-                    d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;;
+                    d = this.demandList.monoData.list == null ? [] : this.demandList.monoData.list;
                 }
                 d.forEach((val) => {
                     let img, tag,type;
-
                     switch (val.demandtype) {
                         case "0":
                             type = 0;
@@ -397,6 +382,7 @@
     .tabulation-box {
         padding: 0 20px;
         position: relative;
+        overflow-y: auto;
         > div {
             position: relative;
             height: 105px;
