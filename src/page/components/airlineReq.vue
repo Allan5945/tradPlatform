@@ -197,7 +197,7 @@
                                 <div class="vertical-center">
                                     <input type="radio" class="magic-radio" name="airport-a-res" id="alRairAResYes" checked @click="dptTimeresourcesFn0"><label for="alRairAResYes" class="input-label">有</label>
                                 </div>
-                                <div class="time-frame" @click.stop="clickClose4Fn ">
+                                <div class="time-frame" @click.stop="clickClose4Fn">
                                     <span>{{startTime1Show}}</span>
                                     <ul class="choose-type start-time time-style" v-show="startTime1">
                                         <li v-for="item in timeList" @click="startTime1Fn(item)">{{item}}</li>
@@ -785,7 +785,7 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum.replace(/(^\s*)|(\s*$)/g,"") == '' || this.phoneNum == null || this.warn2Show == true) { // 联系方式
+                }if(this.phoneNum == '' || this.phoneNum == null || this.warn2Show == true) { // 联系方式
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
@@ -876,7 +876,7 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum.replace(/(^\s*)|(\s*$)/g,"") == '' || this.phoneNum == null || this.warn2Show == true) {
+                }if(this.phoneNum || this.phoneNum == null || this.warn2Show == true) {
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
@@ -965,6 +965,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose2Fn: function () {
                 this.space2 = !this.space2;
@@ -974,6 +975,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose3Fn: function () {
                 this.space3 = !this.space3;
@@ -983,6 +985,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose4Fn: function () {
                 this.startTime1 = !this.startTime1;
@@ -991,6 +994,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose5Fn: function () {
                 this.endTime1 = !this.endTime1;
@@ -999,6 +1003,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose6Fn: function () {
                 this.startTime2 = !this.startTime2;
@@ -1007,6 +1012,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose7Fn: function () {
                 this.endTime2 = !this.endTime2;
@@ -1015,6 +1021,7 @@
                 this.startTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose8Fn: function () {
                 this.startTime3 = !this.startTime3;
@@ -1023,6 +1030,7 @@
                 this.startTime2 = false;
                 this.endTime2 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose9Fn: function () {
                 this.endTime3 = !this.endTime3;
@@ -1031,6 +1039,7 @@
                 this.startTime2 = false;
                 this.endTime2 = false;
                 this.startTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose10Fn: function () {
                 this.calendarShow1 = !this.calendarShow1;
@@ -1040,6 +1049,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose11Fn: function () {
                 this.schedule = !this.schedule;
@@ -1049,6 +1059,7 @@
                 this.calendarShow1 = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
                 this.subsidy = !this.subsidy;
@@ -1058,9 +1069,28 @@
                 this.calendarShow1 = false;
                 this.schedule = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose13Fn: function () {
                 this.calendarShow2 = !this.calendarShow2;
+                this.space1 = false;
+                this.space2 = false;
+                this.space3 = false;
+                this.calendarShow1 = false;
+                this.schedule = false;
+                this.subsidy = false;
+                this.closeTimeFrameFn();
+            },
+            closeTimeFrameFn: function () {
+                this.startTime1 = false;
+                this.endTime1 = false;
+                this.startTime2 = false;
+                this.endTime2 = false;
+                this.startTime3 = false;
+                this.endTime3 = false;
+            },
+            closeUnTimeFrameFn: function () {
+                this.calendarShow2 = false;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;

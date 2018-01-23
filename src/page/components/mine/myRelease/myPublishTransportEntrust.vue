@@ -152,7 +152,8 @@
                         }
                         this.releasetime = time2.join('.');
                     }else {
-                        alert(`错误代码：${response.data.opResult}`)
+//                        alert(`错误代码：${response.data.opResult}`)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
 
                 }).catch((error) => {
@@ -169,6 +170,21 @@
             editOperationForm
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // 格式无误时显示的内容
             show: function () {
                 this.linkServiceShow = true; // 上方“联系客服”按钮
@@ -227,15 +243,18 @@
                     },
 //                    params: this.recallData
                     params: {
-                        id: this.myData.id
+                        id: this.myData.id,
+                        closeReason: '下架'
                     }
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('成功撤回该托管！');
+//                        alert('成功撤回该托管！');
+                        this.open6(`成功撤回该托管！`);
                         this.$emit('refresh');
                         this.closeThisFn();
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);
