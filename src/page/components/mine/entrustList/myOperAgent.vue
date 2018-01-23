@@ -48,7 +48,7 @@
                         </div>
                         <div class="list-e item" @click="chat(val)">
                             <span class="icon-item talk-icon">&#xe602;
-                                <span v-show="newsPointShow">1</span>
+                                <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span>
                             </span>
                         </div>
                         <div class="list-f item color" @click="getDetail(val)">
@@ -91,7 +91,6 @@
                 agentShow:false,
                 deleShow:false,
                 sorted:true,
-                newsPointShow:false,
                 type: [],
                 type1:['航线委托'],
                 type2:['运力委托'],
@@ -105,7 +104,7 @@
                 sentData:{
                     page:1,
                     pageNo:4,
-                    demandType: null,
+                    demandType: '',
                     demandProgress:'',
                     releaseTime:"Desc"
                 },
@@ -169,7 +168,7 @@
                     this.sentData.demandType = "2";
                 }else if(item == '需求类型') {
                     this.state = this.state2;
-                    this.sentData.demandType = null;
+                    this.sentData.demandType = '';
                 }
             },
             stateClickFn: function (item) {
@@ -178,9 +177,11 @@
             },
             closeAgentDetail:function(){
                 this.agentShow = false;
+                this.getListData();
             },
             closeDeleDetail:function(){
                  this.deleShow = false;
+                 this.getListData();
             },
              timeSort:function(){
                 this.sorted = !this.sorted;
@@ -208,35 +209,6 @@
                 }
             },
             getProgress:function(progress,demandType){
-                /*switch (progress) {
-                         case "0":
-                            return "需求发布";
-                            break;
-                        case "1":
-                            return "需求征集";
-                            break;
-                        case "2":
-                            return "订单确认";
-                            break;
-                        case "3":
-                            return "已关闭";
-                            break;
-                        case "4":
-                            return "订单完成";
-                            break;
-                        case "6":
-                            return "已完成";
-                            break;
-                        case "7":
-                            return "待处理";
-                            break;
-                        case "9":
-                            return  demandType == '2'? "测评中":"处理中";
-                            break;
-                        case "10":
-                            return "已拒绝";
-                            break;
-                    }*/
                     switch (progress) {
                         case "0":
                             return "处理中";
@@ -276,7 +248,7 @@
             turnProgress:function(val){
                  switch (val) {
                         case "状态":
-                            return null;
+                            return '';
                             break;
                         case "已关闭":
                             return "3";

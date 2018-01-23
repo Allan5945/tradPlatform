@@ -134,6 +134,7 @@
                         "type": "scatter",
                         "coordinateSystem": "bmap",
                         "data": y,
+                        "zlevel": 10,
                         "symbolSize": 120,
                         "label": {
                             "normal": {

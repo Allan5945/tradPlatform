@@ -45,7 +45,7 @@
                         </div>
                         <div class="list-e item"  @click="chat(val)" v-if="val.wetherResponse">
                         <span class="icon-item talk-icon">&#xe602;
-                            <span>1</span>
+                           <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span>
                         </span>
                         </div>
                         <div class="list-e item" v-else></div>
@@ -244,6 +244,7 @@
             closeDetail(){
                 this.transShow = false;
                 this.airlineShow = false;
+                this.getListData();
             },
             showTrans(){
                 this.transShow = true;

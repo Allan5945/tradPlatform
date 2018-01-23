@@ -98,8 +98,8 @@
                     showText: false,  // 是否显示密码
                     showErrInput: false, // 是否显示框错误
                     showSucInput: false, // 是否显示框正确
-                    placeholderTip: ["联系方式（请输入电话或邮箱）", "联系方式（请输入电话或邮箱）"],
-                    validation: 0,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    placeholderTip: ["联系方式（请输入电话）", "联系方式（请输入电话）"],
+                    validation: 4,   // number,1、账号/邮箱，2、密码，3、..自己扩展
                 },
                 data4: {
                     inputeType: "text", // 输入框的类型

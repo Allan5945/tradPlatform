@@ -145,7 +145,6 @@
             };
         },
         mounted: function () {
-            console.log(ln)
             document.addEventListener("mousemove", e => {
                 if (this.dropData.switch) {
                     this.timelyBox.style.left = this.timelyBoxXY.x + (e.screenX - this.dropData.mouseCoordinate.x) + 'px';
@@ -155,6 +154,11 @@
             this.initBox();
         },
         watch: {},
+        filter:{
+            orders(data){
+                return data;
+            }
+        },
         computed: {
             ...vx.mapGetters(["role"]),
             setId: function () {
@@ -259,7 +263,7 @@
             },
             chatIng: function () {
                 if (ln.chat.change) ;
-                return [...ln.chat.chatData[this.setId].chatRcord.list].reverse();
+                return [...ln.chat.chatData[this.setId].chatRcord.list];
             },
             kfIng: function () {
                 return this.inData[this.setId].chatObjectList;

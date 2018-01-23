@@ -13,6 +13,14 @@
             <div class="content">
                 <div class="table-form">
                     <div>
+                        <div>联系人</div>
+                        <div>{{detailData.contact||'-'}}</div>
+                    </div>
+                     <div>
+                        <div>联系方式</div>
+                        <div>{{detailData.iHome||'-'}}</div>
+                    </div>
+                    <div>
                         <div>机型</div>
                         <div>{{detailData.aircrfttyp||'-'}}</div>
                     </div>
@@ -58,7 +66,7 @@
                     </div>
                     <div>
                         <div>有效期</div>
-                        <div>{{detailData.periodValidity||'-'}}</div>
+                        <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                     </div>
                      <div class="tips">
                         <div>其他说明</div>
@@ -438,7 +446,11 @@
                       }
                     }
                     //判断是否签约用户
-                    this.isSign = response.data.isSign;
+                    if(this.role.role == "2"){
+                        this.isSign = true;
+                    }else{
+                        this.isSign = response.data.isSign;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);

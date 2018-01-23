@@ -116,7 +116,7 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         mounted() {
             this.airportText = this.searchInfo.searchText;
             this.closeDialog();
-             //this.qyCode = this.searchInfo.qyCode;
+             this.qyCode = this.searchInfo.qyCode;
         },
         components:{
             airportS1,
@@ -189,9 +189,32 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
             text-align:center;
             line-height:40px;
             cursor: pointer;
+            color:#3c78ff;
+            box-shadow: 0px 2px 16px rgba(4, 7, 156, 0.4);
             .iconfont{
                 font-size:3.2rem;
-                color:#3c78ff;
+            }
+             &:hover{
+                 background-color:#c7d8ff;
+            }
+             &:active {
+                background-color: rgba(60,120,225,.9);
+                color: white;
+            }
+        }
+        .no-search-btn{
+            height:40px;
+            width:115px;
+            background-color:#ccc;
+            margin:46px 0 34px 5px;
+            border-radius:5px;
+            text-align:center;
+            line-height:40px;
+            cursor: pointer;
+            color:rgba(256,256,256,.4);
+            box-shadow: 0px 2px 16px rgba(4, 7, 156, 0.4);
+            .iconfont{
+                font-size:3.2rem;
             }
         }
     }

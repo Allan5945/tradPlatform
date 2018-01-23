@@ -1,5 +1,5 @@
 <template>
-    <div  class="wrapper">
+    <div  class="wrapper" >
         <searchHeader @search = "searchData"></searchHeader>
         <div class="content" v-if="showDetail">
             <div class="banner">

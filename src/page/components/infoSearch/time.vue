@@ -202,9 +202,9 @@
                 .then((response) => {
                     if(response.data.opResult == "0"){
                          this.showDetail= true;
-                        if(this.timeTableList.length == 0){
+                       /* if(this.timeTableList.length == 0){
                             this.showDetail= false;
-                        }
+                        }*/
                         this.timeTableList = response.data.list;
                         this.timeList = response.data.timeList;
                         this.inputData = this.timeList[0];
