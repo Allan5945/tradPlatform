@@ -41,6 +41,7 @@
                             <div class="text-line"
                                  :contenteditable="control.edit"
                                  :class="{'text-edit':control.edit}"
+                                 @keyup="formatterText($event)"
                                  @blur="changeText($event,0)">
                                 {{ userData.name }}
                             </div>
@@ -54,6 +55,7 @@
                             <div class="text-line"
                                  :contenteditable="control.edit"
                                  :class="{'text-edit':control.edit}"
+                                 @keyup="formatterText($event)"
                                  @blur="changeText($event,1)">
                                 {{ userData.department }}
                             </div>
@@ -63,6 +65,7 @@
                             <div class="text-line"
                                  :contenteditable="control.edit"
                                  :class="{'text-edit':control.edit}"
+                                 @keyup="formatterText($event)"
                                  @blur="changeText($event,2)">
                                 {{userData.post}}
                             </div>
@@ -126,15 +129,9 @@
                     lastShow: ''
                 },
                 control:{
-                    edit:false,
+                    edit:true,
                     isChange: false
                 },
-            }
-        },
-        watch: {
-            "userData.showBackPwd": function (n,o) {
-                if(!n && this.userData.lastShow!==""){
-                }
             }
         },
         components:{
@@ -159,7 +156,8 @@
                 }
             },
             changeText(e,type){
-                let txt = event.srcElement.innerText, changeFlag= false;
+                e = e.srcElement || e.originalTarget;
+                let txt = e.innerText.replace(/[\r\n]/g,""), changeFlag= false;
                 switch (type){
                     case 0:
                         if(this.userData.name != txt){
@@ -182,7 +180,19 @@
                 }
                 this.control.isChange = changeFlag;
             },
-            doEdit(){
+            formatterText(e){
+                e = e.srcElement || e.originalTarget;
+                let txt = e.innerText, reg = /[\r\n]/g;
+                if(reg.test(txt)){
+                    txt = txt.replace(reg,"");
+                    e.innerText = txt.replace(/ /g,"");
+                }
+                if(txt.length>20){
+                    txt = txt.substring(0,20);
+                    e.innerText = txt.replace(/ /g,"");
+                }
+            },
+            doEdit(){   //提交更改
                 let that = this,flag = that.control.edit,ud = that.userData;
                 if(flag && that.control.isChange){
                     this.$ajax({
@@ -190,20 +200,27 @@
                         url: '/updateEmployee',
                         params:{
                             id: ud.id,
-                            nickName: this.userData.name,
-                            department: this.userData.department,
-                            position: this.userData.post
+                            nickName: ud.name,
+                            department: ud.department,
+                            position: ud.post
                         }
                     }).then(res=>{
                         if(res.data.opResult === '0'){
-                            this.$message({
+                            //修改对应vuex
+                            that.$store.dispatch('changeRole',{
+                                nickName: ud.name,
+                                department: ud.department,
+                                position: ud.post
+                            })
+                            that.$message({
                                 showClose: true,
                                 message: "修改成功！",
                                 type: 'success',
                                 duration: 1500
                             });
+                            that.control.isChange = false;
                         }else{
-                            this.$message({
+                            that.$message({
                                 showClose: true,
                                 message: "修改失败，请稍后重试！",
                                 type: 'error',
@@ -211,7 +228,7 @@
                             });
                         }
                     }).catch(err=>{
-                        this.$message({
+                        that.$message({
                             showClose: true,
                             message: "网络错误，请稍后重试！",
                             type: 'error',
@@ -340,6 +357,8 @@
             cursor: pointer;
         }
         .text-line{
+            max-width: 272px;
+            overflow: hidden;
             height: 32px;
             margin-top: 4px;
             line-height: 32px;

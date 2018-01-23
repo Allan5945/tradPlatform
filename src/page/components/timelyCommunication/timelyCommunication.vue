@@ -45,7 +45,7 @@
                     <div class="chat-detailed-item" v-for="(val,index) in chatIng">
                         <div class="chat-detailed-title"><span v-text="val.title"></span>{{val.date}}</div>
                         <div class="chat-detailed-text popup" v-text="val.text"></div>
-                        <div class="chat-detailed-btn btn btn-b">查看详情</div>
+                        <div class="chat-detailed-btn btn btn-b" @click="queryDemod(val.demandId)">查看详情</div>
                     </div>
                 </div>
                 <div class="personal" v-if="!inData[setId].iskf">
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="personal-hy-btn btn btn-b" v-if="!ishs" @click="openhs"></div>
-                    <div class="view-btn btn-w" v-if="ishs">查看订单详情</div>
+                    <div class="view-btn btn-w" v-if="ishs" @click="queryDemod">查看订单详情</div>
                     <div class="personal-hy" v-if="!ishs">
                         <div class="none-personal-hy" v-if="inData[setId].modifyRcord.list.length == 0">无修改记录</div>
                         <div class="personal-hy-t" v-if="inData[setId].modifyRcord.list.length != 0">
@@ -162,7 +162,6 @@
         computed: {
             ...vx.mapGetters(["role"]),
             setId: function () {
-                console.log(ln.chat)
                 let url = "/updateState",
                     params = {},
                     id = ln.chat.setChat.split("-")
@@ -263,7 +262,7 @@
             },
             chatIng: function () {
                 if (ln.chat.change) ;
-                return [...ln.chat.chatData[this.setId].chatRcord.list];
+                return [...ln.chat.chatData[this.setId].chatRcord.list].reverse();
             },
             kfIng: function () {
                 return this.inData[this.setId].chatObjectList;
@@ -276,6 +275,11 @@
             }
         },
         methods: {
+            queryDemod(){
+                this.setId.split('-')[2];
+
+
+            },
             initBox: function () {
                 if (this.setId != "x-t-null") {
                     this.$refs.textarea.focus();

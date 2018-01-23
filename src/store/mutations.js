@@ -215,6 +215,11 @@ const mutations = {
     [types.DEMANDTYPE](state,t) {
         state.demandType = t;
     },
+    [types.CHANGEROLE](state,t){
+        for(let item in t){
+            state.role[item] = t[item];
+        }
+    }
     // [types.SETAIRCODE](state,val) {
     //     state.setaircode = val;
     // },
