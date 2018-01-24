@@ -1,7 +1,10 @@
 <template>
     <div>
-        <transIndex v-show="detailShow" @closeAirline="closeAirline"  :mes.sync="mes"></transIndex>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis" :mes.sync="mes"></airlineDetailPayAfter>
+        <!-- 航线详情-->
+        <airlineDetailPayAfter v-if="mes.demandType = 0" @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
+        <!--运力详情-->
+        <transIndex v-if="mes.demandType = 1" @closewindow="closewindow" :mes="mes"></transIndex>
+
     </div>
 </template>
 <script>
@@ -22,17 +25,10 @@
                 }
             },
         methods:{
-            closeAirline:function(){
-                this.detailShow = true;
-                this.detailShow2 = false;
-            },
-            closeTrans: function () {
-                this.detailShow2 = true;
-                this.detailShow = false;
-            },
-            closeThis() {
-                this.detailShow2 = false;
-            },
+            closewindow(){
+                this.mes.demandType = "";
+            }
+
         },
         mounted(){
             let _this = this;

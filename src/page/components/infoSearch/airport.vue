@@ -300,10 +300,10 @@
             }
         },
         mounted() {
-            this.qyCode = this.searchInfo.qyCode;
+            this.qyCode = this.$route.query.code != undefined ? this.$route.query.code.split('/')[0] :  this.searchInfo.qyCode ;
             if(this.qyCode == ''){
                 this.showDetail=false;
-            }
+            };
         },
         components:{
             searchHeader,

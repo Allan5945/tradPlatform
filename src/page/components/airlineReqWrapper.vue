@@ -236,7 +236,7 @@
                         </div>
                         <div class="left item-child">
                             <span class="margin-right">拟开班期</span>　
-                            <div class="choose-border" style="align-items: center;" @click.stop="clickClose11Fn ">
+                            <div class="choose-border" style="align-items: center; height: 24px;" @click.stop="clickClose11Fn ">
                                 <span style="margin-left: 3px; height: 24px;">{{scheduleShow}}</span>
                                 <div class="triangle-big" style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
                                 <ul class="choose-type want-type" v-show="schedule">
@@ -284,7 +284,7 @@
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
                                     <input type="radio" class="magic-radio" name="subsidy" id="alRWsubsidyYes" checked @click="subsidyClick0"/><label for="alRWsubsidyYes" class="input-label">有补贴</label>
-                                    <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
+                                    <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
                                         <ul class="choose-type want-subsidy" v-show="subsidy">
@@ -519,7 +519,7 @@
                 timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','按人头'],
+                subsidyList: ['保底','定补','按人头','其他'],
                 sendData: {},
                 directionalgoal: '', // 定向发布（id）
                 directionalgoalArry: [],
@@ -724,14 +724,17 @@
                     this.space3Fn(this.spaceList[0]);
                     this.thirdArea = this.acceptData.arrv;
                 }
-                // 补贴状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴。
+                // 补贴状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议5:无补贴
                 this.subsidyCode = this.acceptData.subsidypolicy;
-                if(this.acceptData.subsidypolicy === "0" || this.acceptData.subsidypolicy === "1" || this.acceptData.subsidypolicy === "2") {
+                if(this.acceptData.subsidypolicy === "0"
+                    || this.acceptData.subsidypolicy === "1"
+                    || this.acceptData.subsidypolicy === "2"
+                    || this.acceptData.subsidypolicy === "3") {
                     alRWsubsidyYes.checked = true;
                     this.subsidypolicyFn(this.acceptData.subsidypolicy);
-                }else if(this.acceptData.arrvTimeresources === "3") {
-                    alRWsubsidyTalk.checked = true;
                 }else if(this.acceptData.arrvTimeresources === "4") {
+                    alRWsubsidyTalk.checked = true;
+                }else if(this.acceptData.arrvTimeresources === "5") {
                     alRWsubsidyNo.checked = true;
                 }
                 // publicway 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
@@ -751,6 +754,8 @@
                     this.subsidyShow = '保底';
                 }else if(index === '2') {
                     this.subsidyShow = '人头补';
+                }else if(index === '3') {
+                    this.subsidyShow = '其他';
                 }
             },
             warn4Fn: function () {
@@ -1400,16 +1405,6 @@
                 this.scheduleShow = item;
                 this.warn5Show = false;
             },
-            subsidyListFn: function (item) {
-                this.subsidyShow = item;
-                if(item == '定补'){
-                    this.subsidyCode = 0;
-                }if(item == '保底'){
-                    this.subsidyCode = 1;
-                }if(item == '人头补'){
-                    this.subsidyCode = 2;
-                }
-            },
             // 点击删除小标签
             littleLabelClose: function (index) {
                 this.directionPublicCity.splice(index,1);
@@ -1454,12 +1449,23 @@
             subsidyClick0: function () {
                 this.subsidyCode = '';
             },
-            subsidyClick1: function () {
+            subsidyClick1: function () {  // 无补贴
+                this.subsidyCode = 5;
+            },
+            subsidyClick2: function () {  // 待议，可面谈
                 this.subsidyCode = 4;
             },
-            subsidyClick2: function () {
-                this.subsidyCode = 3;
-//                console.info('radio')
+            subsidyListFn: function (item) {
+                this.subsidyShow = item;
+                if(item == '定补'){
+                    this.subsidyCode = 0;
+                }if(item == '保底'){
+                    this.subsidyCode = 1;
+                }if(item == '人头补'){
+                    this.subsidyCode = 2;
+                }if(item == '其他'){
+                    this.subsidyCode = 3;
+                }
             },
             kemiantan: function () {
 //                console.info('label')

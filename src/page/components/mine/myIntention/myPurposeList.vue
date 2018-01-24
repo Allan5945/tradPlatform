@@ -66,7 +66,7 @@
             </el-pagination>
         </div>
         <transition-group name="slidex-fade">
-            <myPurpose v-if="myPurposeShow" :sendDataToMyPurpose="sendDataToMyPurpose" @close-this="closeThisFn" :key="5"></myPurpose>
+            <myPurpose v-if="myPurposeShow" :acceptData="sendDataToMyPurpose" @close-this="closeThisFn" :key="5"></myPurpose>
             <myPurpose1 v-show="myPurpose1Show" @close-this="closeThisFn" @responseShow="responShow" :key="6"></myPurpose1>
             <myPurpose2 v-show="myPurpose2Show" @close-this="closeThisFn" @transShow="transShow" :key="7"></myPurpose2>
         </transition-group>

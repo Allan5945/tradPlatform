@@ -89,6 +89,7 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import editOperationForm from './editOperationForm.vue'
     export default {
+        props: ['acceptData'],
         data() {
             return {
                 myData: {},             // 获取的数据渲染到页面上
@@ -106,9 +107,32 @@
             }
         },
         mounted() {
-            // 从myPublishList获取参数，并渲染到页面上
-            tabulationBoxTrigger.$on('sendDataToMyPublish',val => {
-                this.id = val.id;
+            this.id = this.acceptData.id;
+            this.getData();
+        },
+        computed: {
+        },
+        components: {
+            editOperationForm
+        },
+        methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    showClose: true,
+                    message: mes,
+                    type: 'error'
+                });
+            },
+            // ajax获取的数据，并渲染
+            getData: function () {
                 this.$ajax({
                     url:"/demandFind",
                     method: 'post',
@@ -116,7 +140,7 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        demandId: val.id //发布时间排序类型 0-倒序 1-正序
+                        demandId: this.id //发布时间排序类型 0-倒序 1-正序
                     }
                 }) .then((response) => {
                     if(response.data.opResult == 0) {
@@ -158,31 +182,6 @@
 
                 }).catch((error) => {
                     console.log(error);
-                });
-
-            });
-
-            //判断审核是否通过,“重新发布”是否显示
-        },
-        computed: {
-        },
-        components: {
-            editOperationForm
-        },
-        methods: {
-            // 改变alert弹出样式
-            open6(mes) {  // 成功弹出的提示
-                this.$message({
-                    showClose: true,
-                    message: mes,
-                    type: 'success'
-                });
-            },
-            open8(mes) {  // 错误弹出的提示
-                this.$message({
-                    showClose: true,
-                    message: mes,
-                    type: 'error'
                 });
             },
             // 格式无误时显示的内容

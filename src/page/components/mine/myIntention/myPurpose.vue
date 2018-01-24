@@ -98,30 +98,34 @@
                 <div class="fourth item-container">
                     <div class="items">
                         <div class="left item font-gray">
+                            <div v-show="contactMsgShow">联系人</div>
                             <div>拟开时间</div>
                             <div>拟飞机型</div>
                             <div>客量期望</div>
                             <div>补贴政策</div>
                         </div>
                         <div class="right item">
+                            <div class="item-a" v-show="contactMsgShow">{{myData.contact}}</div>
                             <div class="item-a">{{myData.sailingtime || '-'}}</div>
                             <div class="item-b">{{myData.aircrfttyp || '-'}}</div>
                             <div class="item-c">
                                 <span v-if="myData.avgguestexpect != null && myData.avgguestexpect != ''">{{myData.avgguestexpect}}人/均班</span>
                                 <span v-else>-</span>
                             </div>
-                            <div class="item-d">{{subsidypolicyFn(myData.subsidypolicy)}}</div>
+                            <div class="item-d">{{subsidypolicyFn(myData.subsidypolicyStr)}}</div>
                             <!--<div>有补贴</div>-->
                         </div>
                     </div>
                     <div class="items">
                         <div class="left item font-gray">
+                            <div v-show="contactMsgShow">联系方式</div>
                             <div>拟开班期</div>
                             <div>座位数</div>
                             <div>客座率期望</div>
                             <div>有效期</div>
                         </div>
                         <div class="right item">
+                            <div class="item-a" v-show="contactMsgShow">{{myData.iHome}}</div>
                             <div class="item-a">{{myData.days || '-'}}</div>
                             <div class="item-b">{{myData.seating || '-'}}</div>
                             <div class="item-c">
@@ -297,7 +301,7 @@
                 </div>
                 <div>
                     <div>补贴政策</div>
-                    <div>{{subsidypolicyFn(receiveIntention.subsidypolicy)}}</div>
+                    <div>{{subsidypolicyFn(receiveIntention.subsidypolicyStr)}}</div>
                     <!--<div>按人头</div>-->
                 </div>
                 <div>
@@ -469,7 +473,7 @@
                                         <span v-if="item.avgguestexpect != null && item.avgguestexpect != ''">{{item.avgguestexpect}}人/均班</span>
                                         <span v-else>-</span>
                                     </div>
-                                    <div class="item-d item-height">{{subsidypolicyFn(item.subsidypolicy)}}</div>
+                                    <div class="item-d item-height">{{subsidypolicyFn(item.subsidypolicyStr)}}</div>
                                     <div class="item-height">
                                         <span v-if="item.capacityCompany != null && item.capacityCompany != ''">{{item.capacityCompany.airlnCd}}</span>
                                         <span v-else>-</span>
@@ -610,7 +614,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
-        props:['sendDataToMyPurpose'],
+        props:['acceptData'],
         data() {
             return {
                 firstShow: false,
@@ -673,12 +677,12 @@
                 isAlreadyCollect: false, // 是否已收藏
                 btnDisableShow: false,       // 禁止点击按钮
                 btnDisableShowArry: [],    // 存储获取的releaseselected参数
+                contactMsgShow: false,     // 发布方联系人、联系方式是否显示
             }
         },
         created() {
-            let val = this.sendDataToMyPurpose;
-            this.id = val.demandId;
-            if (val.demand.demandtype == 0) {
+            this.id = this.acceptData.demandId;
+            if (this.acceptData.demand.demandtype == 0) {
                 this.getData();
             }
         },
@@ -729,21 +733,6 @@
 //                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
 //                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
                     this.periodValidity1 = this.myData.periodValidity.split('-')[1];
-                    if (this.myData.subsidypolicy == 0) {
-                        this.subsidypolicy = '定补'
-                    }
-                    if (this.myData.subsidypolicy == 1) {
-                        this.subsidypolicy = '保底'
-                    }
-                    if (this.myData.subsidypolicy == 2) {
-                        this.subsidypolicy = '人头补'
-                    }
-                    if (this.myData.subsidypolicy == 3) {
-                        this.subsidypolicy = '待议'
-                    }
-                    if (this.myData.subsidypolicy == 3) {
-                        this.subsidypolicy = '无补贴'
-                    }
                     // 修改this.showCode
                     if(this.myData.demandstate == 5
                         || this.myData.demandprogress == 10) {  // “关闭”状态
@@ -802,6 +791,15 @@
                             this.myplanBtnShow = false;
                             this.firstButtonShow = false;
                         }
+                        if(this.isSelf == true) {  //发布方联系人、联系方式是否显示
+                            this.contactMsgShow = true;
+                        }else {
+                            if(this.receiveIntention != null) {
+                                this.contactMsgShow = true;
+                            }else {
+                                this.contactMsgShow = false;
+                            }
+                        }
                     }
 //                    this.showCode = 5; // 模拟“关闭”状态
 
@@ -813,18 +811,10 @@
             },
             // 将补贴类型从数字变成汉字
             subsidypolicyFn: function (index) {
-                if(index === '0'){
-                    return '定补';
-                }else if(index === '1') {
-                    return '保底';
-                }else if(index === '2') {
-                    return '人头补';
-                }else if(index === '3') {
-                    return '待议';
-                }else if(index === '4') {
-                    return '无补贴';
-                }else {
+                if(index == '' || index == null){
                     return '-';
+                }else {
+                    return index;
                 }
             },
             // 卡片新增功能：意向列表上添加状态信息

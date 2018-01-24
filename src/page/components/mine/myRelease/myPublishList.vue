@@ -74,11 +74,11 @@
             </el-pagination>
         </div>
         <transition-group name="slidex-fade">
-            <myPublish0 v-show="myPublishShow0" @close-this="closeAllShowFn" :key="2"></myPublish0>
+            <myPublish0 v-if="myPublishShow0" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="2"></myPublish0>
             <myPublishNeed1 v-show="myPublishShow1" @close-this="closeAllShowFn" :key="3"></myPublishNeed1>
-            <myPublishTransportEntrust v-show="myPublishTransportEntrustShow" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
-            <myPublishAirLineEntrust v-show="myPublishAirLineEntrustShow" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
-            <myPublishAirLineEntrust1 v-show="myPublishAirLineEntrust1Show" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
+            <myPublishTransportEntrust v-if="myPublishTransportEntrustShow" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
+            <myPublishAirLineEntrust v-if="myPublishAirLineEntrustShow" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
+            <myPublishAirLineEntrust1 v-if="myPublishAirLineEntrust1Show" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
         </transition-group>
     </div>
 </template>
@@ -138,6 +138,7 @@
                 totalCount: 1,
                 pageCount: 1,
                 numPrePage: 1,
+                sendToMyPublishData: {},  // 向子组件传递的数据
             }
         },
         mounted() {
@@ -409,6 +410,7 @@
                     this.myPublishShow0 = true;
                     this.myPublishShow1 = false;
                 }
+                this.sendToMyPublishData = item;
                 tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue...
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },

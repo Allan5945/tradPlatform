@@ -41,6 +41,9 @@
             blused(){
                 if(this.staging.t){
                     this.showErrInputPerform = false;
+                    if(this.staging.i != "" && this.arg.syncPhone){
+                        this.$emit('resCodeSycn',this.staging.i);
+                    }
                 }else{
                     this.showErrInputPerform = true;
                     let mes = this.staging;
@@ -61,7 +64,7 @@
             },
             changePlaceholder(t) {  // 切换placeholder的值
                 if (this.arg.inputMes == "") {
-                    this.staging = {t:true};
+                    this.staging = {t:true,i:""};
                     this.showPlaceholder = t;
                 }else{
                     this.showPlaceholder = true;
