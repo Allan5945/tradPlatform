@@ -7,9 +7,11 @@
             </div>
             <div v-show="!elect.set">
                 <div class="s-first first">
-                <span style="height: 20px; width: 70px; line-height: 18px; white-space: nowrap;">
-                    <span class="warn">* </span>意向航线
-                </span>
+                    <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 0;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
+                    <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 0;">*始发地、经停地、到达地不能相同！</div>
+                    <span style="height: 20px; width: 70px; line-height: 18px; white-space: nowrap;">
+                        <span class="warn">* </span>意向航线
+                    </span>
                     <div class="start item">
                         <div class="bottom">
                             <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1" @focus="airportFn1">
@@ -39,14 +41,14 @@
                     </div>
                 </div>
                 <div class="s-second third items">
-                    <div class="third-d item">
+                    <div class="third-d item" style="position: relative;">
                         <div class="right item-child" style="width: 100%;">
-                        <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
-                            <span class="warn">* </span>补贴政策
-                        </span>　
+                            <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
+                                <span class="warn">* </span>补贴政策
+                            </span>　
                             <div style="display: flex;">
                                 <div class="vertical-center input-label">
-                                    <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyYes" @click="subsidyClick0"/><label for="alRTopsubsidyYes" class="input-label">有补贴</label>
+                                    <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyYes" :checked="subsidy1" @click="subsidyClick0"/><label for="alRTopsubsidyYes" class="input-label">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
@@ -57,15 +59,16 @@
                                 </div>
                                 <div style="display: flex">
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyNo" @click="subsidyClick1"/><label for="alRTopsubsidyNo" class="input-label">无补贴</label>
+                                        <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyNo" :checked="subsidy2" @click="subsidyClick1"/><label for="alRTopsubsidyNo" class="input-label">无补贴</label>
                                     </div>
                                     <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="topSubsidy" checked id="alRTopsubsidyTalk" @click="subsidyClick2"/>
+                                        <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyTalk" :checked="subsidy3" @click="subsidyClick2"/>
                                         <label for="alRTopsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
                     </div>
                 </div>
                 <div class="s-third third items" style="margin-bottom: 50px;">
@@ -375,12 +378,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="third-d item">
+                        <div class="third-d item" style="position: relative;">
                             <div class="right item-child">
                                 <span>补贴政策</span>　
                                 <div style="display: flex; flex-direction: column;">
                                     <div class="vertical-center" style="margin-bottom: 10px;">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
+                                        <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" :checked="subsidy1" @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
                                         <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
                                             <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                             <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
@@ -391,10 +394,10 @@
                                     </div>
                                     <div style="display: flex">
                                         <div class="vertical-center">
-                                            <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyNo" @click="subsidyClick1"/><label for="alRsubsidyNo" class="input-label">无补贴</label>
+                                            <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyNo" :checked="subsidy2" @click="subsidyClick1"/><label for="alRsubsidyNo" class="input-label">无补贴</label>
                                         </div>
                                         <div class="vertical-center">
-                                            <input type="radio" class="magic-radio" name="subsidy" checked id="alRsubsidyTalk" @click="subsidyClick2"/>
+                                            <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyTalk" :checked="subsidy3" @click="subsidyClick2"/>
                                             <label for="alRsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
                                         </div>
                                     </div>
@@ -406,6 +409,7 @@
                                     <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
                                 </div>
                             </div>
+                            <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
                         </div>
                     </div>
                     <div class="fourth items bg-color">
@@ -505,6 +509,7 @@
                 warn7Show: false,  //需求有效期警告
                 warn8Show: false,  //始发地为区域，经停、到达必须有一个为意向机场
                 warn9Show: false,  // 始发地、经停地、到达地不能相同
+                warn12Show: false,  //补贴政策警告
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -521,7 +526,7 @@
                 endTime3: false,
                 schedule: false,
                 subsidy: false,
-                subsidyCode: '',//补贴类型
+                subsidyCode: 4,//补贴类型
                 airAreaSearchShow1: false,
                 airAreaSearchShow2: false,
                 airAreaSearchShow3: false,
@@ -611,7 +616,7 @@
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
 
-                scheduleShow: '选择班期类型',
+                scheduleShow: '待定', //选择班期类型
                 subsidyShow: '选择补贴类型',
                 timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
                 spaceList: ['意向区域','意向机场'],
@@ -628,6 +633,9 @@
                 elect: {
                     set: false
                 },
+                subsidy1: false,
+                subsidy2: false,
+                subsidy3: true,
             }
         },
         components: {
@@ -719,7 +727,7 @@
                 this.sendData.arrvTime = this.arrvTime;
                 this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
                 this.sendData.days = this.scheduleShow;      //必填 班期
-                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
+                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议 5:无补贴
                 this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
                 this.sendData.periodValidity = this.myDate2; //必填 需求发布有效期
@@ -811,21 +819,22 @@
                         this.warn9Show = false;
                     }
                 }
+                if(this.subsidyCode === '') {
+                    this.warn12Show = true;
+                    req.scrollTop = 550;
+                    return
+                }
                 if(this.myDate1 == '选择起止时间') { // 拟开时间
                     this.warn6Show = true;
-                    req.scrollTop = 0;
+                    req.scrollTop = 100;
                     return
                 }if(this.scheduleShow == '选择班期类型') { //班期
                     this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') { // 机型
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
+                    req.scrollTop = 100;
                     return
                 }if(this.myDate2 == '选择起止时间') { // 发布有效期
                     this.warn7Show = true;
-                    req.scrollTop = 250;
+                    req.scrollTop = 550;
                     return
                 }
                 this.sendDataFn();
@@ -948,8 +957,18 @@
                 this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
+                this.warn1Show = false;
+                this.warn2Show = false;
+                this.warn3Show = false;
+                this.warn4Show = false;
+                this.warn5Show = false;
+                this.warn6Show = false;
+                this.warn7Show = false;
                 this.warn8Show = false;
                 this.warn9Show = false;
+                this.warn10Show = false;
+                this.warn11Show = false;
+                this.warn12Show = false;
                 // 始发、经停、到达中转站
                 this.firArea = this.firAreaBus;
 //                this.secArea = this.secAreaBus;
@@ -1060,7 +1079,9 @@
                 this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
-                this.subsidy = !this.subsidy;
+                if(this.subsidy1 == true) {
+                    this.subsidy = !this.subsidy;
+                }
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1383,12 +1404,22 @@
             //补贴点击，改变补贴码
             subsidyClick0: function () {
                 this.subsidyCode = '';
+                this.subsidyShow = '选择补贴类型';
+                this.subsidy1 = true;
+                this.subsidy2 = false;
+                this.subsidy3 = false;
             },
             subsidyClick1: function () {  // 无补贴
                 this.subsidyCode = 5;
+                this.subsidy1 = false;
+                this.subsidy2 = true;
+                this.subsidy3 = false;
             },
             subsidyClick2: function () {  // 待议，可面谈
                 this.subsidyCode = 4;
+                this.subsidy1 = false;
+                this.subsidy2 = false;
+                this.subsidy3 = true;
             },
             subsidyListFn: function (item) {
                 this.subsidyShow = item;
