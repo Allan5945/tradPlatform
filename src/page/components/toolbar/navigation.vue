@@ -24,7 +24,7 @@
                 <tool v-if="toolShow"></tool>
             </div>
             <div>
-                <div id="posted-btn" class="btn btn-b nav-title" @click.stop="toPublish">
+                <div id="posted-btn" class="btn btn-b nav-title" @click.stop="publish">
                     <span class="icon-item icon-cl">&#xe606;</span>
                     发布
                 </div>
@@ -56,8 +56,8 @@
             toPublish
         },
         methods:{
-            toPublish() {
-                this.publichShow = true;
+            publish() {
+                this.publichShow = !this.publichShow;
                 this.toolShow = false;
                 this.userShow = false;
             },

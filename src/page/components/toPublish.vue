@@ -1,8 +1,8 @@
 <template>
-    <div class="publish popup">
+    <div class="publish popup" @click.stop="showBox = false">
         <span class= "triangle"></span>
         <div class="p-til">发布需求</div>
-        <div class="need-btn"  @click="showBox=!showBox">
+        <div class="need-btn"  @click.stop="showBox=!showBox">
            <div class="title" v-text="msg" :class="{selected:isSel}"></div>
            <span class="icon-item icon-item1">&#xe605;</span>
            <div class="selc-list dropDown popup" v-show="showBox">
@@ -97,7 +97,7 @@
         background-color:#fff;
         border-radius:4px;
         padding: 0 40px;
-        z-index:100;
+        z-index:14;
         .need-btn,.p-til{
             float:left;
             font-size:1.3rem;

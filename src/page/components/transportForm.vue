@@ -308,6 +308,27 @@
             }
         },
         watch:{
+            'intendedDpt':function(val){
+                if(val){
+                    if(val == this.intendedPst||val == this.intendedArrv){
+                        this.intendedDpt = '';
+                    }
+                }
+            },
+            'intendedPst':function(val){
+                if(val){
+                    if(val == this.intendedDpt||val == this.intendedArrv){
+                        this.intendedPst = '';
+                    }
+                }
+            },
+            'intendedArrv':function(val){
+                if(val){
+                    if(val == this.intendedDpt||val == this.intendedPst){
+                        this.intendedArrv = '';
+                    }
+                }
+            },
             'searchData1':function(val){
                 if(val.length >1){
                     this.moreSpanShow = true;
@@ -327,7 +348,7 @@
                 }
             },
             'tip':function(){
-                //this.filter();
+                this.filter();
             },
             'qyCode':function(){
                 if(!this.allFormShow){
@@ -533,13 +554,21 @@
                 this.qyCode = data.code;
             },
             disData: function(data){
-                if( this.searchData.length < 5){
-                    this.searchData.push({
-                        name: data.name,
-                        id: data.id,
-                    });
+                let len = this.searchData.length,
+                    flag = true;
+                if( len < 5){
+                    for (let i = 0; i < len; i++) {
+                        if ( this.searchData[i].id === data.id) {
+                          flag = false;
+                        }
+                    }
+                    if(flag){
+                         this.searchData.push({
+                            name: data.name,
+                            id: data.id,
+                        });
+                    }
                 }
-                this.searchData = this.unique(this.searchData);
                 //this.qyCode1 = data.code;
                 this.dispatchSearch = false;
                 this.dispatchAirportShow = true;
@@ -551,35 +580,25 @@
                 });
             },
             directData: function(data){
-                if( this.searchData1.length < 5){
-                    this.searchData1.push({
-                        name: data.name,
-                        id: data.id,
-                    });
+                let len = this.searchData1.length,
+                    flag = true;
+                if( len < 5){
+                    for (let i = 0; i < len; i++) {
+                        if ( this.searchData1[i].id === data.id) {
+                          flag = false;
+                        }
+                    }
+                    if(flag){
+                         this.searchData1.push({
+                            name: data.name,
+                            id: data.id,
+                        });
+                    }
                 }
-               /* if(this.searchData1.length > 3){
-                    this.searchData1 = this.unique(this.searchData1);
-                    alert(this.searchData1.length);
-                }*/
                 //this.qyCode2 = data.code;
                 this.directSearch = false;
                 this.directionPublicShow = true;
             },
-            //数组去重
-          /*  unique: function(arr) {
-              var ret = [],
-                  newArr = [];
-              arr.forEach((val) =>{
-                ret.push(val.id);
-              })
-              for (var i = 0; i < ret.length; i++) {
-                var item = ret[i];
-                if (ret.indexOf(item) === -1) {
-                  newArr.push(arr[i]);
-                }
-              }
-              return newArr;
-            },*/
             searchDirect:function(){
                  this.$nextTick(() => {
                     this.directionPublicShow = false;
@@ -752,14 +771,13 @@
             //敏感字屏蔽
             filter: function () {
               // 多个敏感词，这里直接以数组的形式展示出来
-              var arrMg = ["fuck", "tmd", "妈的","毛泽东","老子"];
+              var arrMg = ["fuck", "tmd", "妈的","毛泽东","老子","党","革命","共产主义","屌","逼","傻","张","李","王"];
 
               // 显示的内容--showContent
               var showContent = this.tip;
 
               // 正则表达式
               // \d 匹配数字
-
               for (var i = 0; i < arrMg.length; i++) {
 
                 // 创建一个正则表达式
@@ -767,6 +785,9 @@
 
                 showContent = showContent.replace(r, "*");
               }
+              //匹配11位数字
+              var n = new RegExp(/\d{11}$/, "igm");
+                showContent = showContent.replace(n, "*");
               // 显示的内容
               this.tip = showContent;
             },

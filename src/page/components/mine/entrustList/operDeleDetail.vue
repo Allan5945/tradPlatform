@@ -275,8 +275,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   params: {
                     demandState:'0',
                     demandId:this.chatData.id,
-                    demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,
+                 /*   demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,*/
                     demandType:this.chatData.demandType
                   }
                 })
@@ -300,8 +300,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   params: {
                     demandState:'0',
                     demandId:this.chatData.id,
-                    demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,
+                   /* demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,*/
                     demandType:this.chatData.demandType
                   }
                 })
@@ -337,8 +337,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   params: {
                     demandState:'1',
                     demandId:this.chatData.id,
-                    demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,
+                    /*demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,*/
                     demandType:this.chatData.demandType,
                     rek:text
                   }
@@ -363,8 +363,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   params: {
                     demandState:'1',
                     demandId:this.chatData.id,
-                    demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,
+                   /* demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,*/
                     demandType:this.chatData.demandType,
                   }
                 })
@@ -761,7 +761,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 height:75px;
                 width:100%;
                 box-sizing:border-box;
-                padding: 30px 0 25px 40px;
+                padding: 30px 0 25px 55px;
                 >div{
                     display:inline-block;
                     width:80px;
@@ -777,7 +777,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     top: 33px;
                 }
                 .need-til{
-                    margin-left:53px;
+                    margin-left:73px;
                 }
             }
             .intent-box{
@@ -790,19 +790,20 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 display:flex;
                 height:60px;
                 line-height: 60px;
+                text-align:center;
                 .time{
-                    margin:0 20px;
-                   flex:1;
+                    margin-left:20px;
+                    width:100px;
                     overflow:hidden;
                 }
                 .title{
-                    flex:2;
+                     width:200px;
                 }
                 .progress{
-                    flex:1;
+                     width:160px;
                 }
                 .detail{
-                    flex:1;
+                    width:60px;
                     color:#3C78FF;
                     cursor:pointer;
                 }
