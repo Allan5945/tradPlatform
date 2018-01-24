@@ -9,7 +9,7 @@
                     <span v-text="Btext"></span>
                 </div>
                 <div class="btn btn-b sure-btn" v-show="loadingShow">
-                    <loading class="search-ing" :arg="false"></loading>
+                    <loading class="search-ing" :args="true"></loading>
                 </div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>
             </div>

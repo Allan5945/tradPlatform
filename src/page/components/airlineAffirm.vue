@@ -246,7 +246,7 @@
                         </div>
                         <div class="left item-child">
                             <span class="margin-right">拟开班期</span>　
-                            <div class="choose-border" style="align-items: center;" @click.stop="clickClose11Fn ">
+                            <div class="choose-border" style="align-items: center; height: 24px;" @click.stop="clickClose11Fn ">
                                 <span style="margin-left: 3px;">{{scheduleShow}}</span>
                                 <div class="triangle-big"
                                      style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
@@ -305,7 +305,7 @@
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
                                     <input type="radio" class="magic-radio" name="subsidy" id="alAsubsidyYes" checked @click="subsidyClick0"/><label for="alAsubsidyYes" class="input-label">有补贴</label>
-                                    <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
+                                    <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big"
                                              style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
@@ -767,14 +767,17 @@
                     this.fourArea = '';
                 }
                 this.qyCode4 = this.acceptData.capacityBase;
-                // 补贴状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴。
+                // 补贴状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议5:无补贴
                 this.subsidyCode = this.acceptData.subsidypolicy;
-                if(this.acceptData.subsidypolicy === "0" || this.acceptData.subsidypolicy === "1" || this.acceptData.subsidypolicy === "2") {
+                if(this.acceptData.subsidypolicy === "0"
+                    || this.acceptData.subsidypolicy === "1"
+                    || this.acceptData.subsidypolicy === "2"
+                    || this.acceptData.subsidypolicy === "3") {
                     alAsubsidyYes.checked = true;
                     this.subsidypolicyFn(this.acceptData.subsidypolicy);
-                }else if(this.acceptData.arrvTimeresources === "3") {
-                    alWsubsidyTalk.checked = true;
                 }else if(this.acceptData.arrvTimeresources === "4") {
+                    alWsubsidyTalk.checked = true;
+                }else if(this.acceptData.arrvTimeresources === "5") {
                     alWsubsidyNo.checked = true;
                 }
             },
@@ -786,6 +789,8 @@
                     this.subsidyShow = '保底';
                 }else if(index === '2') {
                     this.subsidyShow = '人头补';
+                }else if(index === '3') {
+                    this.subsidyShow = '其他';
                 }
             },
             warn4Fn: function () {
@@ -1471,18 +1476,6 @@
                 this.scheduleShow = item;
                 this.warn5Show = false;
             },
-            subsidyListFn: function (item) {
-                this.subsidyShow = item;
-                if (item == '定补') {
-                    this.subsidyCode = 0;
-                }
-                if (item == '保底') {
-                    this.subsidyCode = 1;
-                }
-                if (item == '人头补') {
-                    this.subsidyCode = 2;
-                }
-            },
             // 日历
             getDate1: function (d) {//获取组件返回的日期
                 this.calendarInitDay1 = d;
@@ -1508,11 +1501,23 @@
             subsidyClick0: function () {
                 this.subsidyCode = '';
             },
-            subsidyClick1: function () {
+            subsidyClick1: function () {  // 无补贴
+                this.subsidyCode = 5;
+            },
+            subsidyClick2: function () {  // 待议，可面谈
                 this.subsidyCode = 4;
             },
-            subsidyClick2: function () {
-                this.subsidyCode = 3;
+            subsidyListFn: function (item) {
+                this.subsidyShow = item;
+                if(item == '定补'){
+                    this.subsidyCode = 0;
+                }if(item == '保底'){
+                    this.subsidyCode = 1;
+                }if(item == '人头补'){
+                    this.subsidyCode = 2;
+                }if(item == '其他'){
+                    this.subsidyCode = 3;
+                }
             },
             //点击定向发布
             directionPublic: function () {

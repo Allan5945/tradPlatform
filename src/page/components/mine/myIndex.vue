@@ -178,7 +178,11 @@ import * as vx from 'vuex'
             height: 20px;
             line-height: 20px;
             .position {
-                margin: 0 120px 0 20px;
+                max-width: 250px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin: 0 10px 0 20px;
             }
             span {
                 color: #3c78ff;
