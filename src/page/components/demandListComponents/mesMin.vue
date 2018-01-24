@@ -390,9 +390,9 @@
 
     .message-box {
         width: 340px;
-        flex: 1;
-        display: flex;
-        flex-flow:column nowrap;
+        /*flex: 1;*/
+        /*display: flex;*/
+        /*flex-flow:column nowrap;*/
     }
 
     .tabulation {

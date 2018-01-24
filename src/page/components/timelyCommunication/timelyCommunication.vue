@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-function-input">
+                    <div class="chat-function-input" v-if="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '6'">
                         <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)"
                                   class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="personal-hy-btn btn btn-b" v-if="!ishs" @click="openhs"></div>
-                    <div class="view-btn btn-w" v-if="ishs" @click="queryDemod">查看订单详情</div>
+                    <div class="view-btn btn-w" v-if="ishs" @click="queryDemod('')">查看订单详情</div>
                     <div class="personal-hy" v-if="!ishs">
                         <div class="none-personal-hy" v-if="inData[setId].modifyRcord.list.length == 0">无修改记录</div>
                         <div class="personal-hy-t" v-if="inData[setId].modifyRcord.list.length != 0">
@@ -251,6 +251,7 @@
                         title: ln.chat.chatData[k].title,
                         demandState: ln.chat.chatData[k].demandState,
                         demandType: ln.chat.chatData[k].demandType,
+                        demandProgress: ln.chat.chatData[k].demandProgress,
                         chatRcord: ln.chat.chatData[k].chatRcord,
                         modifyRcord:
                             ln.chat.chatData[k].modifyRcord == null
@@ -278,11 +279,21 @@
         },
         methods: {
             queryDemod(val){
-                let a = this.inData[this.setId];
+                let demandState,demandType,demand;
+                if(val == ''){
+                    let a = this.inData[this.setId];
+                    demandState = Number(a.demandState);
+                    demandType = Number(a.demandType);
+                    demand = this.setId.split('-')[2];
+                }else{
+                    demandState = Number(val.demandState);
+                    demandType = Number(val.demandType);
+                    demand = Number(val.demandId);
+                }
                 let data = {
-                    demandState:a.demandState,
-                    demandType:a.demandType,
-                    demand:this.setId.split('-')[2]
+                    demandState,
+                    demandType,
+                    demand
                 };
                 ln.$emit('demandType',data);
             },

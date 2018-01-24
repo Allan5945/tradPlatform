@@ -169,8 +169,8 @@
         top: 0;
         left: 0;
         background-color: white;
-        display: flex;
-        flex-flow: column;
+        /*display: flex;*/
+        /*flex-flow: column;*/
     }
     .select-lis{
         width: 100%;

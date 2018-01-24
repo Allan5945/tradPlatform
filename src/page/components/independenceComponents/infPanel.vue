@@ -26,7 +26,11 @@
                 <div>消防等级</div>
                 <div>{{basicMes.xfdj}}</div>
             </div>
-            <div>更多详情</div>
+            <div>
+                <router-link :to="{ path: '/index/information/airport',query: { code: basicMes.airCode }}">
+                    更多详情
+                </router-link>
+            </div>
         </div>
         <div class="inf-associated">
             <div>关联航司</div>
@@ -59,7 +63,7 @@
                     isgj:false,
                     fxzdl:50,
                     xfdj:''
-                }
+                },
             }
         },
         computed:{
