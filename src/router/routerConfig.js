@@ -84,6 +84,7 @@ const router = new VueRouter({
                 {
                     path:'opinion',
                     component: opinion,
+                    name:'opinion'
                 },
                 {
                     path:'information',

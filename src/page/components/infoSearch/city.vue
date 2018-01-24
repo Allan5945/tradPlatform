@@ -1,139 +1,141 @@
 <template>
-    <div class="wrapper">
+    <div>
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="content" v-if="showDetail">
-            <div class="banner">
-                <div class="airport-img"><img :src="img" alt=""></div>
-                <div class="b-til">{{infoData.cityname || "-"}}</div>
-                <div class="sidebar">
-                    <div><span class="iconfont">&#xe603;</span>基本信息</div>
-                     <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                </div>
-            </div>
-            <div class="info">
-                <div class="i-til"><span class="iconfont">&#xe603;</span>基本信息</div>
-                <div class="i-content">
-                    <div class="info-box">
-                        <ul>
-                            <li><div>城市名称</div><div>{{infoData.cityname || "-"}}</div></li>
-                            <li><div>城市类型</div><div>{{infoData.citytype || "-"}}</div></li>
-                            <li><div>大型企业数量</div><div>{{infoData.largeenterprisenumber || "-"}}</div></li>
-                            <li><div>著名高校数量</div><div>{{infoData.famousuniversities || "-"}}</div></li>
-                            <li><div>4A景点数量</div><div>{{infoData.sitesnumber4a || "-"}}</div></li>
-                            <li><div>5A景点数量</div><div>{{infoData.sitesnumber5a || "-"}}</div></li>
-                        </ul>
-                    </div>
-                    <div class="info-box">
-                        <ul>
-                            <li><div>所在省份</div><div>{{infoData.provinces || "-"}}</div></li>
-                            <li><div>机场</div><div>{{infoData.airport || "-"}}</div></li>
-                            <li><div>企业枚举</div><div class="overflow-item">{{infoData.enterpriseenumeration || "-"}}</div></li>
-                            <li><div>高校枚举</div><div class="overflow-item">{{infoData.famousuniversitiesenumeration || "-"}}</div></li>
-                            <li><div>4A景点枚举</div><div class="overflow-item">{{infoData.sitesenumeration4a || "-"}}</div></li>
-                            <li><div>5A景点枚举</div><div class="overflow-item">{{infoData.sitesenumeration5a || "-"}}</div></li>
-                        </ul>
-                    </div>
-                    <div class="info-box">
-                        <ul>
-                            <li><div>行政区等级</div><div>{{infoData.citylvl || "-"}}</div></li>
-                        </ul>
+        <div class="wrapper">
+            <div class="content" v-if="showDetail">
+                <div class="banner">
+                    <div class="airport-img"><img :src="img" alt=""></div>
+                    <div class="b-til">{{infoData.cityname || "-"}}</div>
+                    <div class="sidebar">
+                        <div><span class="iconfont">&#xe603;</span>基本信息</div>
+                         <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
                     </div>
                 </div>
-                <div class="airport-policy" >
-                    <div class="policy-til">
-                        <div>补贴</div>
-                        <div style="color:#3c78ff;" v-if='infoData.policys'>共{{infoData.policys.length}}条</div>
-                    </div>
-                    <div class="policy-content">
-                        <div class="policy-content-item" v-for="item in infoData.policys">
-                            <div class="time">{{item.policyyear|| "--"}}</div>
-                            <div class="text">
-                                <div class="text-til">内容</div>
-                                <div class="text-tent">{{item.subsidypolicy|| "--"}}</div>
-                            </div>
+                <div class="info">
+                    <div class="i-til"><span class="iconfont">&#xe603;</span>基本信息</div>
+                    <div class="i-content">
+                        <div class="info-box">
+                            <ul>
+                                <li><div>城市名称</div><div>{{infoData.cityname || "-"}}</div></li>
+                                <li><div>城市类型</div><div>{{infoData.citytype || "-"}}</div></li>
+                                <li><div>大型企业数量</div><div>{{infoData.largeenterprisenumber || "-"}}</div></li>
+                                <li><div>著名高校数量</div><div>{{infoData.famousuniversities || "-"}}</div></li>
+                                <li><div>4A景点数量</div><div>{{infoData.sitesnumber4a || "-"}}</div></li>
+                                <li><div>5A景点数量</div><div>{{infoData.sitesnumber5a || "-"}}</div></li>
+                            </ul>
                         </div>
-                        <div class="policy-content-item" v-if="!infoData.policys">
-                           <div style="text-align:center;width:100%;color:red;">暂无内容</div>
+                        <div class="info-box">
+                            <ul>
+                                <li><div>所在省份</div><div>{{infoData.provinces || "-"}}</div></li>
+                                <li><div>机场</div><div>{{infoData.airport || "-"}}</div></li>
+                                <li><div>企业枚举</div><div class="overflow-item">{{infoData.enterpriseenumeration || "-"}}</div></li>
+                                <li><div>高校枚举</div><div class="overflow-item">{{infoData.famousuniversitiesenumeration || "-"}}</div></li>
+                                <li><div>4A景点枚举</div><div class="overflow-item">{{infoData.sitesenumeration4a || "-"}}</div></li>
+                                <li><div>5A景点枚举</div><div class="overflow-item">{{infoData.sitesenumeration5a || "-"}}</div></li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="i-echart">
-                    <div>
-                        <div class="t-til">旅游</div>
-                        <div id="myChart1"></div>
-                    </div>
-                    <div>
-                        <div class="t-til">经济</div>
-                        <div id="myChart2"></div>
-                    </div>
-                     <div>
-                        <div class="t-til">人口</div>
-                        <div id="myChart3"></div>
-                    </div>
-                </div>
-                <div class="traffic">
-                    <div class="t-til">
-                        <div>交通</div>
-                    </div>
-                    <div class="t-content">
-                        <div class="highway">
-                            <div class="c-til">
-                                <div>公路</div>
-                                <div v-if="infoData.highwayList" style="color:#3c78ff;">共{{infoData.highwayList.length}}条</div>
-                            </div>
-                            <div class="c-list-item" v-for="item in infoData.highwayList">
-                                <div><span>类型</span>{{item.roadType|| "--"}}</div>
-                                <div><span>代码</span>{{item.roadCode|| "--"}}</div>
-                                <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
-                            </div>
-                            <div class="c-list-item" v-if="!infoData.highwayList">
-                                <div style="text-align:center;width:100%;color:red;">暂无数据</div>
-                            </div>
-                        </div>
-                         <div class="railway">
-                            <div class="c-til">
-                                <div>铁路</div>
-                                <div v-if="infoData.railwayList" style="color:#3c78ff;">共{{infoData.railwayList.length}}条</div>
-                            </div>
-                             <div class="c-list-item" v-for="item in infoData.railwayList">
-                                <div><span>类型</span>{{item.roadType|| "--"}}</div>
-                                <div><span>代码</span>{{item.roadCode|| "--"}}</div>
-                                <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
-                            </div>
-                            <div class="c-list-item" v-if="!infoData.railwayList">
-                                <div style="text-align:center;width:100%;color:red;">暂无数据</div>
-                            </div>
+                        <div class="info-box">
+                            <ul>
+                                <li><div>行政区等级</div><div>{{infoData.citylvl || "-"}}</div></li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-                <div class="news">
-                    <div class="n-til">
-                        <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                        <div class="more">查看更多></div>
-                    </div>
-                    <div class="news-box" v-for="item in infoData.publicopinions">
-                        <div class="box-pic">
-                            <img :src="item.articleImage||noimg" alt="">
+                    <div class="airport-policy" >
+                        <div class="policy-til">
+                            <div>补贴</div>
+                            <div style="color:#3c78ff;" v-if='infoData.policys'>共{{infoData.policys.length}}条</div>
                         </div>
-                        <div class="box-content">
-                            <div class="box-til">
-                                <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
-                                <div class="type">
-                                    <div>{{item.articleType}}</div>
+                        <div class="policy-content">
+                            <div class="policy-content-item" v-for="item in infoData.policys">
+                                <div class="time">{{item.policyyear|| "--"}}</div>
+                                <div class="text">
+                                    <div class="text-til">内容</div>
+                                    <div class="text-tent">{{item.subsidypolicy|| "--"}}</div>
                                 </div>
                             </div>
-                            <div class="box-text">{{item.articleContent}}</div>
-                            <div class="box-foot">
-                                <div class="box-net">{{item.articleFrom}}</div>
-                                <div class="box-time">{{item.articleTime}}</div>
+                            <div class="policy-content-item" v-if="!infoData.policys">
+                               <div style="text-align:center;width:100%;color:red;">暂无内容</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="i-echart">
+                        <div>
+                            <div class="t-til">旅游</div>
+                            <div id="myChart1"></div>
+                        </div>
+                        <div>
+                            <div class="t-til">经济</div>
+                            <div id="myChart2"></div>
+                        </div>
+                         <div>
+                            <div class="t-til">人口</div>
+                            <div id="myChart3"></div>
+                        </div>
+                    </div>
+                    <div class="traffic">
+                        <div class="t-til">
+                            <div>交通</div>
+                        </div>
+                        <div class="t-content">
+                            <div class="highway">
+                                <div class="c-til">
+                                    <div>公路</div>
+                                    <div v-if="infoData.highwayList" style="color:#3c78ff;">共{{infoData.highwayList.length}}条</div>
+                                </div>
+                                <div class="c-list-item" v-for="item in infoData.highwayList">
+                                    <div><span>类型</span>{{item.roadType|| "--"}}</div>
+                                    <div><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                    <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
+                                </div>
+                                <div class="c-list-item" v-if="!infoData.highwayList">
+                                    <div style="text-align:center;width:100%;color:red;">暂无数据</div>
+                                </div>
+                            </div>
+                             <div class="railway">
+                                <div class="c-til">
+                                    <div>铁路</div>
+                                    <div v-if="infoData.railwayList" style="color:#3c78ff;">共{{infoData.railwayList.length}}条</div>
+                                </div>
+                                 <div class="c-list-item" v-for="item in infoData.railwayList">
+                                    <div><span>类型</span>{{item.roadType|| "--"}}</div>
+                                    <div><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                    <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
+                                </div>
+                                <div class="c-list-item" v-if="!infoData.railwayList">
+                                    <div style="text-align:center;width:100%;color:red;">暂无数据</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="news">
+                        <div class="n-til">
+                            <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
+                            <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.cityname}}">查看更多></router-link></div>
+                        </div>
+                        <div class="news-box" v-for="item in infoData.publicopinions">
+                            <div class="box-pic">
+                                <img :src="item.articleImage||noimg" alt="">
+                            </div>
+                            <div class="box-content">
+                                <div class="box-til">
+                                    <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
+                                    <div class="type">
+                                        <div>{{item.articleType}}</div>
+                                    </div>
+                                </div>
+                                <div class="box-text">{{item.articleContent}}</div>
+                                <div class="box-foot">
+                                    <div class="box-net">{{item.articleFrom}}</div>
+                                    <div class="box-time">{{item.articleTime}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
+            <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
     </div>
+</div>
 </template>
 
 <script>
@@ -388,22 +390,13 @@
     .wrapper{
         position: absolute;
         width: 100%;
-        min-height:100%;
+        height:100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;
         z-index: 12;
         color:#605e7c;
-        header{
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index:1;
-            height:120px;
-            width:100%;
-            background-color:#3c78ff;
-            display:flex;
-        }
+        overflow-y: scroll;
     }
     .content{
         width:1100px;

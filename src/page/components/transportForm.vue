@@ -694,7 +694,7 @@
                     };
                 }
                 let demandData = {},
-                    time = (this.timeStart +'-'+ this.timeEnd) == '00:00-00:00'? "00:00": (this.timeStart +'-'+ this.timeEnd);
+                    time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;

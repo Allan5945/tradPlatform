@@ -1,134 +1,136 @@
 <template>
-    <div class="wrapper">
+    <div>
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="content" v-if="showDetail">
-            <div class="banner">
-                <div class="airport-img"><img :src="img" alt=""></div>
-                <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
-                <div class="sidebar">
-                    <div><span class="iconfont">&#xe603;</span>基本信息</div>
-                     <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                </div>
-            </div>
-            <div class="info">
-                <div class="i-til"><span class="iconfont">&#xe603;</span>基本信息</div>
-                <div class="i-content">
-                    <div class="info-box">
-                        <ul>
-                            <li><div>机场名字</div><div>{{infoData.airlnCd || "-"}}</div></li>
-                            <li><div>所在城市</div><div>{{infoData.city || "-"}}</div></li>
-                            <li><div>所属机场集团</div><div class="shipgroup">{{infoData.membershipgroup || "-"}}</div></li>
-                            <li><div>机场类型</div><div>{{infoData.airpottype || "-"}}</div></li>
-                            <li><div>是否特殊机场</div><div>{{infoData.specialairport || "-"}}</div></li>
-                            <li><div>飞行区等级</div><div>{{infoData.airfieldlvl || "-"}}</div></li>
-                            <li><div>灯光条件</div><div>{{infoData.lightingconditions || "-"}}</div></li>
-                            <li><div>是否国际</div><div>{{infoData.inter || "-"}}</div></li>
-                            <li><div>国内在飞航点</div><div>{{infoData.domestic || "-"}}</div></li>
-                            <li><div>机场专线</div><div>{{infoData.airportshuttlemetro || "-"}}</div></li>
-                        </ul>
-                    </div>
-                    <div class="info-box">
-                        <ul>
-                            <li><div>三字码</div><div>{{infoData.iata || "-"}}</div></li>
-                            <li><div>所在区域</div><div>{{infoData.area || "-"}}</div></li>
-                            <li><div>通航时间</div><div>{{infoData.departuretime || "-"}}</div></li>
-                            <li><div>标高</div><div>{{infoData.airEle || "-"}}</div></li>
-                            <li><div>特殊机场构成原因</div><div>{{infoData.specialairportwhy || "-"}}</div></li>
-                            <li><div>消防等级</div><div>{{infoData.firelvl || "-"}}</div></li>
-                            <li><div>可起降机型</div><div class="fl-type">{{infoData.modelcanhandle || "-"}}</div></li>
-                            <li><div>放行准点率</div><div>{{infoData.releasepunctuality || "-"}}</div></li>
-                            <li><div>国内在飞航班数量</div><div>{{infoData.intheflight || "-"}}</div></li>
-                            <li><div>机场巴士</div><div>{{infoData.airportbus || "-"}}</div></li>
-                        </ul>
-                    </div>
-                    <div class="info-box">
-                        <ul>
-                            <li><div>四字码</div><div>{{infoData.icao || "-"}}</div></li>
-                            <li><div>所在战区</div><div>{{infoData.warzone || "-"}}</div></li>
-                            <li><div>高原机场</div><div>{{infoData.airpotcls || "-"}}</div></li>
-                            <li><div>机型数量</div><div>{{infoData.planepositionnumber || "-"}}</div></li>
-                            <li><div>国际在飞航点</div><div>{{infoData.international || "-"}}</div></li>
-                            <li><div>距离市区</div><div>{{infoData.distancefromdowntown || "-"}}</div></li>
-                        </ul>
-                    </div>
-                    <div class="airport-info" @click="airportInfo">机场情报></div>
-                </div>
-                <div class="i-echart">
-                    <div>
-                        <h5>旅客吞吐量</h5>
-                       <div id="myChart1"></div>
-                    </div>
-                    <div>
-                        <h5>货物吞吐量</h5>
-                       <div id="myChart2"></div>
-                    </div>
-                    <div>
-                        <h5>起降架次</h5>
-                       <div id="myChart3"></div>
+        <div class="wrapper">
+            <div class="content" v-if="showDetail">
+                <div class="banner">
+                    <div class="airport-img"><img :src="img" alt=""></div>
+                    <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
+                    <div class="sidebar">
+                        <div><span class="iconfont">&#xe603;</span>基本信息</div>
+                         <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
                     </div>
                 </div>
-                <div class="airport-track">
-                    <div class="track-til">
-                        <div>机场跑道数据</div>
-                        <div v-if="infoData.runwayList" style="color:#3c78ff;">共{{infoData.runwayList.length}}条</div>
-                    </div>
-                    <div class="track-content" v-for="(item,index) in infoData.runwayList">
-                        <div>跑道{{index+1}}</div>
-                        <div><span>编号</span>{{item.runwaynumber|| "-"}}</div>
-                        <div><span>等级</span>{{item.runwaylvl || "-"}}</div>
-                        <div><span>长度</span>{{item.runwaywidth|| "-"}}</div>
-                        <div><span>宽度</span>{{item.runwaylength|| "-"}}</div>
-                    </div>
-                    <div class="track-content" v-if="!infoData.runwayList">
-                        <div style="text-align:center;width:100%;color:red;">暂无内容</div>
-                    </div>
-                </div>
-                <div class="airport-policy" >
-                    <div class="policy-til">
-                        <div>相关政策</div>
-                        <div style="color:#3c78ff;" v-if='infoData.rewardPolicyList'>共{{infoData.rewardPolicyList.length}}条</div>
-                    </div>
-                    <div class="policy-content">
-                        <div class="policy-content-item" v-for="item in infoData.rewardPolicyList">
-                            <div class="time">{{item.rewardpolicydate|| "--"}}</div>
-                            <div class="text">
-                                <div class="text-til">内容</div>
-                                <div class="text-tent">{{item.rewardpolicytext|| "--"}}</div>
-                            </div>
+                <div class="info">
+                    <div class="i-til"><span class="iconfont">&#xe603;</span>基本信息</div>
+                    <div class="i-content">
+                        <div class="info-box">
+                            <ul>
+                                <li><div>机场名字</div><div>{{infoData.airlnCd || "-"}}</div></li>
+                                <li><div>所在城市</div><div>{{infoData.city || "-"}}</div></li>
+                                <li><div>所属机场集团</div><div class="shipgroup">{{infoData.membershipgroup || "-"}}</div></li>
+                                <li><div>机场类型</div><div>{{infoData.airpottype || "-"}}</div></li>
+                                <li><div>是否特殊机场</div><div>{{infoData.specialairport || "-"}}</div></li>
+                                <li><div>飞行区等级</div><div>{{infoData.airfieldlvl || "-"}}</div></li>
+                                <li><div>灯光条件</div><div>{{infoData.lightingconditions || "-"}}</div></li>
+                                <li><div>是否国际</div><div>{{infoData.inter || "-"}}</div></li>
+                                <li><div>国内在飞航点</div><div>{{infoData.domestic || "-"}}</div></li>
+                                <li><div>机场专线</div><div>{{infoData.airportshuttlemetro || "-"}}</div></li>
+                            </ul>
                         </div>
-                        <div class="policy-content-item" v-if="!infoData.rewardPolicyList">
-                           <div style="text-align:center;width:100%;color:red;">暂无内容</div>
+                        <div class="info-box">
+                            <ul>
+                                <li><div>三字码</div><div>{{infoData.iata || "-"}}</div></li>
+                                <li><div>所在区域</div><div>{{infoData.area || "-"}}</div></li>
+                                <li><div>通航时间</div><div>{{infoData.departuretime || "-"}}</div></li>
+                                <li><div>标高</div><div>{{infoData.airEle || "-"}}</div></li>
+                                <li><div>特殊机场构成原因</div><div>{{infoData.specialairportwhy || "-"}}</div></li>
+                                <li><div>消防等级</div><div>{{infoData.firelvl || "-"}}</div></li>
+                                <li><div>可起降机型</div><div class="fl-type">{{infoData.modelcanhandle || "-"}}</div></li>
+                                <li><div>放行准点率</div><div>{{infoData.releasepunctuality || "-"}}</div></li>
+                                <li><div>国内在飞航班数量</div><div>{{infoData.intheflight || "-"}}</div></li>
+                                <li><div>机场巴士</div><div>{{infoData.airportbus || "-"}}</div></li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <ul>
+                                <li><div>四字码</div><div>{{infoData.icao || "-"}}</div></li>
+                                <li><div>所在战区</div><div>{{infoData.warzone || "-"}}</div></li>
+                                <li><div>高原机场</div><div>{{infoData.airpotcls || "-"}}</div></li>
+                                <li><div>机型数量</div><div>{{infoData.planepositionnumber || "-"}}</div></li>
+                                <li><div>国际在飞航点</div><div>{{infoData.international || "-"}}</div></li>
+                                <li><div>距离市区</div><div>{{infoData.distancefromdowntown || "-"}}</div></li>
+                            </ul>
+                        </div>
+                        <div class="airport-info" @click="airportInfo">机场情报></div>
+                    </div>
+                    <div class="i-echart">
+                        <div>
+                            <h5>旅客吞吐量</h5>
+                           <div id="myChart1"></div>
+                        </div>
+                        <div>
+                            <h5>货物吞吐量</h5>
+                           <div id="myChart2"></div>
+                        </div>
+                        <div>
+                            <h5>起降架次</h5>
+                           <div id="myChart3"></div>
                         </div>
                     </div>
-                </div>
-                <div class="news">
-                    <div class="n-til">
-                        <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                        <div class="more" @click="getMore">查看更多></div>
-                    </div>
-                    <div class="news-box" v-for="item in infoData.opinions">
-                        <div class="box-pic">
-                            <img :src="item.articleImage||noimg" alt="">
+                    <div class="airport-track">
+                        <div class="track-til">
+                            <div>机场跑道数据</div>
+                            <div v-if="infoData.runwayList" style="color:#3c78ff;">共{{infoData.runwayList.length}}条</div>
                         </div>
-                        <div class="box-content">
-                            <div class="box-til">
-                                <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
-                                <div class="type">
-                                    <div>{{item.articleType}}</div>
+                        <div class="track-content" v-for="(item,index) in infoData.runwayList">
+                            <div>跑道{{index+1}}</div>
+                            <div><span>编号</span>{{item.runwaynumber|| "-"}}</div>
+                            <div><span>等级</span>{{item.runwaylvl || "-"}}</div>
+                            <div><span>长度</span>{{item.runwaywidth|| "-"}}</div>
+                            <div><span>宽度</span>{{item.runwaylength|| "-"}}</div>
+                        </div>
+                        <div class="track-content" v-if="!infoData.runwayList">
+                            <div style="text-align:center;width:100%;color:red;">暂无内容</div>
+                        </div>
+                    </div>
+                    <div class="airport-policy" >
+                        <div class="policy-til">
+                            <div>相关政策</div>
+                            <div style="color:#3c78ff;" v-if='infoData.rewardPolicyList'>共{{infoData.rewardPolicyList.length}}条</div>
+                        </div>
+                        <div class="policy-content">
+                            <div class="policy-content-item" v-for="item in infoData.rewardPolicyList">
+                                <div class="time">{{item.rewardpolicydate|| "--"}}</div>
+                                <div class="text">
+                                    <div class="text-til">内容</div>
+                                    <div class="text-tent">{{item.rewardpolicytext|| "--"}}</div>
                                 </div>
                             </div>
-                            <div class="box-text">{{item.articleContent}}</div>
-                            <div class="box-foot">
-                                <div class="box-net">{{item.articleFrom}}</div>
-                                <div class="box-time">{{item.articleTime}}</div>
+                            <div class="policy-content-item" v-if="!infoData.rewardPolicyList">
+                               <div style="text-align:center;width:100%;color:red;">暂无内容</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="news">
+                        <div class="n-til">
+                            <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
+                            <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.airlnCd}}">查看更多></router-link></div>
+                        </div>
+                        <div class="news-box" v-for="item in infoData.opinions">
+                            <div class="box-pic">
+                                <img :src="item.articleImage||noimg" alt="">
+                            </div>
+                            <div class="box-content">
+                                <div class="box-til">
+                                    <div class="name"><a @click="openWindow(item.articleUrl)">{{item.articleTitle}}</a></div>
+                                    <div class="type">
+                                        <div>{{item.articleType}}</div>
+                                    </div>
+                                </div>
+                                <div class="box-text">{{item.articleContent}}</div>
+                                <div class="box-foot">
+                                    <div class="box-net">{{item.articleFrom}}</div>
+                                    <div class="box-time">{{item.articleTime}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
+            <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
         </div>
-        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
-        <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
     </div>
 </template>
 
@@ -295,9 +297,6 @@
             },
             closeDetail(){
                 this.detailInfoShow = false;
-            },
-            getMore(){
-                 this.$router.push({ path: '/index/opinion'});
             }
         },
         mounted() {
@@ -305,9 +304,6 @@
             if(this.qyCode == ''){
                 this.showDetail=false;
             }
-        },
-        beforeDestory(){
-            tabulationBoxTrigger.$emit("moreNews",this.infoData.airlnCd);
         },
         components:{
             searchHeader,
@@ -329,22 +325,13 @@
     .wrapper{
         position: absolute;
         width: 100%;
-        min-height:100%;
+        height:100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;
         z-index: 12;
         color:#605e7c;
-        header{
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index:1;
-            height:120px;
-            width:100%;
-            background-color:#3c78ff;
-            display:flex;
-        }
+        overflow-y: scroll;
     }
     .content{
         width:1100px;
