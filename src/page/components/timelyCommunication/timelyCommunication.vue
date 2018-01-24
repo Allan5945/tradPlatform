@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-function-input" v-if="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '6'">
+                    <div class="chat-function-input" v-if="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '4'">{{inData[setId].demandProgress}}
                         <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)"
                                   class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
