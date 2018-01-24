@@ -1,6 +1,6 @@
 <template>
     <div class="back-pas-box">
-        <userObj :arg="data1" v-on:resMes="resMes1" v-if="!newPas"></userObj>
+        <userObj :arg="data1" v-on:resMes="resMes1" v-if="!newPas" v-on:resCodeSycn="resCodeSycn"></userObj>
         <validation v-on:validation="validaon" v-if="validationTag" style="width: 290px; margin-top: 30px"></validation>
         <verificationCode :mes="collect.tel" v-on:setCode="setCode" :verCode.sync="verCode" v-if="verCode"
                           style="margin-top:30px;width: 290px"></verificationCode>
@@ -34,6 +34,7 @@
                     showText: false,  // 是否显示密码
                     showErrInput: true, // 是否显示框错误
                     showSucInput: false, // 是否显示框正确
+                    syncPhone:true,     // 是否验证手机
                     placeholderTip: ["请输入账号绑定的邮箱或手机号", "请输入账号绑定的邮箱或手机号"],
                     validation: 3,   // number,1、账号/邮箱，2、密码，3、..自己扩展
                 },
@@ -80,6 +81,38 @@
                     this.showtip = true;
                 }
             },
+            resCodeSycn(p){
+                this.$ajax({
+                    method: 'post',
+                    url: '/validPhone',
+                    params:{
+                        phone:this.collect.tel,
+                        validType:1
+                    },
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then((response) => {
+                        if(response.data.opResult  == '0'){
+                            this.validationTag = true;
+                            this.verCode = false;
+                        }else{
+//                                this.$message({
+//                                    showClose: true,
+//                                    message: "手机号不存在！",
+//                                    type: 'error'
+//                                });
+                            this.validationTag = false;
+                            this.tiperr = '手机号码不存在';
+                            this.showtip = true;
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
+            },
             resMes2(data) {
                 if(data.t){
                     this.newpas.pas1 = data.i;
@@ -103,32 +136,9 @@
                 }
             },
             validaon() {
-                this.$ajax({
-                    method: 'post',
-                    url: '/validPhone',
-                    params:{
-                        contactWay:this.collect.tel
-                    },
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                    .then((response) => {
-                        if(response.data.opResult  == '0'){
-                            this.validationTag = false;
-                            this.verCode = true;
-                        }else{
-                            this.$message({
-                                showClose: true,
-                                message: "手机号不存在！",
-                                type: 'error'
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                            console.log(error);
-                        }
-                    );
+                this.validationTag = false;
+                this.verCode = true;
+
 
             },
             setCode: function (code) {

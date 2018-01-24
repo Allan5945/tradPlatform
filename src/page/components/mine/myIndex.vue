@@ -72,21 +72,6 @@ import * as vx from 'vuex'
             updateRouter(){
                 //权限判断
                 this.userStatus = this.role.role;
-                if(Number(this.role.role ) == 2){
-                    let arr = [
-                        {
-                            n: "审核列表",
-                            u: '/index/userCenter/reviewList'
-                        },
-                        {
-                            n: "委托/托管",
-                            u: '/index/userCenter/entrust'
-                        }
-                    ]
-                    this.myList = arr.concat(this.myList);
-                    arr = null;
-                };
-
                 //子路由刷新判断
                 let pathstr = this.$router.history.current.path;
                 if(pathstr == '/index/userCenter')this.$router.push(this.myList[0].u);
@@ -103,6 +88,20 @@ import * as vx from 'vuex'
             this.updateRouter();
         },
         created:function () {
+            if(Number(this.role.role ) == 2){
+                let arr = [
+                    {
+                        n: "审核列表",
+                        u: '/index/userCenter/reviewList'
+                    },
+                    {
+                        n: "委托/托管",
+                        u: '/index/userCenter/entrust'
+                    }
+                ]
+                this.myList = arr.concat(this.myList);
+                arr = null;
+            };
             this.updateRouter();
         },
         mounted:function () {

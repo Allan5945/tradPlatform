@@ -29,7 +29,7 @@
         data: ()=>{
             return {
                 path:{
-                    defaultSubLink:'/index/userCenter',
+                    defaultSubLink:'/index/userCenter/myRelease',
                 },
             }
         },
