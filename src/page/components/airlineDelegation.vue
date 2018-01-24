@@ -231,7 +231,7 @@
                     </div>
                     <div class="left item-child">
                         <span class="margin-right">拟开班期</span>　
-                        <div class="choose-border" style="align-items: center;" @click.stop="clickClose11Fn ">
+                        <div class="choose-border" style="align-items: center; height: 24px;" @click.stop="clickClose11Fn ">
                             <span style="margin-left: 3px;">{{scheduleShow}}</span>
                             <div class="triangle-big" style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
                             <ul class="choose-type want-type" v-show="schedule">
@@ -278,8 +278,8 @@
                         <span>补贴政策</span>　
                         <div style="display: flex; flex-direction: column;">
                             <div class="vertical-center" style="margin-bottom: 10px;">
-                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" checked/><label for="alRsubsidyYes" class="input-label">有补贴</label>
-                                <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
+                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" checked @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
+                                <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
                                     <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                     <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
                                     <ul class="choose-type want-subsidy" v-show="subsidy">
@@ -626,7 +626,7 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum || this.phoneNum == null || this.warn2Show == true) {
+                }if(this.phoneNum == '' || this.phoneNum == null || this.warn2Show == true) {
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
@@ -1081,16 +1081,6 @@
                 this.scheduleShow = item;
                 this.warn5Show = false;
             },
-            subsidyListFn: function (item) {
-                this.subsidyShow = item;
-                if(item == '定补'){
-                    this.subsidyCode = 0;
-                }if(item == '保底'){
-                    this.subsidyCode = 1;
-                }if(item == '人头补'){
-                    this.subsidyCode = 2;
-                }
-            },
             // 点击删除小标签
             littleLabelClose: function (index) {
                 this.directionPublicCity.splice(index,1);
@@ -1132,12 +1122,26 @@
                 }else{}
             },
             //补贴点击，改变补贴码
-            subsidyClick1: function () {
+            subsidyClick0: function () {
+                this.subsidyCode = '';
+            },
+            subsidyClick1: function () {  // 无补贴
+                this.subsidyCode = 5;
+            },
+            subsidyClick2: function () {  // 待议，可面谈
                 this.subsidyCode = 4;
             },
-            subsidyClick2: function () {
-                this.subsidyCode = 3;
-//                console.info('radio')
+            subsidyListFn: function (item) {
+                this.subsidyShow = item;
+                if(item == '定补'){
+                    this.subsidyCode = 0;
+                }if(item == '保底'){
+                    this.subsidyCode = 1;
+                }if(item == '人头补'){
+                    this.subsidyCode = 2;
+                }if(item == '其他'){
+                    this.subsidyCode = 3;
+                }
             },
             kemiantan: function () {
 //                console.info('label')

@@ -1,6 +1,6 @@
 <template>
     <div class="mcar-wrapper">
-        <div class="myCompanyAccountRecharge">
+        <div class="myCompanyAccountRecharge" @click="closeAll">
             <div class="top items">
                 <div class="left">
                     申请提现
@@ -22,7 +22,7 @@
                                 <input class="input-num" type="text" v-model="inputNum" placeholder="最低提现金额 10000">元
                             </div>
                             <div class="font-gray" v-if="noticeMsg" style="height: 25px;line-height: 25px;" :class="{'warn': numberWarn}">*当前可提现金额： {{myAccountData.number}}元</div>
-                            <div class="warn" v-else="noticeMsg" style="height: 25px;line-height: 25px;">*最低提现金额：10000</div>
+                            <div class="warn" v-else="noticeMsg" style="height: 25px;line-height: 25px;">*最低提现金额：10000元</div>
                         </div>
                     </div>
                     <div class="account-bottom account-item">
@@ -31,11 +31,11 @@
                     </div>
                 </div>
                 <div class="button">
-                    <div class="btn btn-b" @click="sendData" v-show="!loadingShow">确认</div>
+                    <div class="btn btn-b" @click.stop="sendData" v-show="!loadingShow">确认</div>
                     <div class="btn btn-b" v-show="loadingShow">
-                        <loading class="search-ing" :arg="false"></loading>
+                        <loading class="search-ing" :args="true"></loading>
                     </div>
-                    <button class="btn btn-cancel" @click="closeThisFn">取消</button>
+                    <button class="btn btn-cancel" @click.stop="closeThisFn">取消</button>
                 </div>
             </div>
         </div>
@@ -104,10 +104,12 @@
                 }
                 if(replaceNum < 10000) { // 判断输入的金额是否小于10000
                     this.noticeMsg = false;
+                    this.open8(`最低提现金额：10000元`);
                     return
                 }
                 if(replaceNum > this.myAccountData.number) { // 判断输入的金额是否大于可提现金额
                     this.numberWarn = true;
+                    this.open8(`当前可提现金额：${this.myAccountData.number}元`);
                     return
                 }
                 this.myAccountData.withdrawNumber = replaceNum;
