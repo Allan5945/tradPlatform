@@ -1,110 +1,107 @@
 <template>
-    <div class="wrapper" @click.self="closeThisFn">
-
-        <div class="ald-container">
-            <div class="first item-container">
-                <span>{{myData.demandtypeStr}}详情</span>
-                <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
-            </div>
-            <div class="second item-container">
-                <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
-                    联系客服 <span class="icon-item">&#xe720;</span>
-                </div>
-                <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
-                    重新发布
-                </div>
-                <div class="top">
-                    <span style="height: 25px;">{{myData.title}}</span>
-                </div>
-                <div class="bottom">
-                    <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
-                    <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
-                    <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
-                        <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
-                    </span>
-                </div>
-            </div>
-            <div class="fourth item-container">
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">机型</div>
-                        <div class="font-gray">运力归属</div>
-                        <div class="font-gray">小时成本</div>
-                        <div class="font-gray">接受调度</div>
-                        <div class="font-gray">出港时刻</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
-                        <div class="item-height">
-                            <span v-if="myData.capacityCompany">{{myData.capacityCompany.airlnCd}}</span>
-                            <span v-else>-</span>
-                        </div>
-                        <div class="item-height">
-                            <span>{{myData.hourscost || '-'}}万/小时</span>
-                        </div>
-                        <div class="item-height">{{myData.schedulingStr || '-'}}</div>
-                        <div class="item-height">{{myData.dptTime || '-'}}</div>
-                    </div>
-                </div>
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">班期</div>
-                        <div class="font-gray">运力基地</div>
-                        <div class="font-gray">座位布局</div>
-                        <div class="font-gray">有效期</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.days || '-'}}</div>
-                        <div class="item-height">{{myData.dptNm || '-'}}</div>
-                        <div class="item-height">{{myData.seating || '-'}}</div>
-                        <div class="item-height">{{periodValidity}}止</div>
-                    </div>
-                </div>
-            </div>
-            <div class="fifth item-container" style="height: 40px;">
-                <div class="left font-gray">意向航线</div>
-                <div class="right" v-if="myData.intendedAirlines">
-                    {{myData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
-                    {{myData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
-                    {{myData.intendedAirlines[0].arrvName||'-'}}
-                </div>
-                <div class="right" v-else>-</div>
-            </div>
-            <div class="fifth item-container" style="">
-                <div class="left font-gray">其他说明</div>
-                <div class="right">{{myData.remark}}</div>
-            </div>
-            <div class="line"></div>
-            <div class="sixth item-container">
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">联系人</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.contact}}</div>
-                    </div>
-                </div>
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">联系方式</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.iHome}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="seventh item-container">
-                <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
-            </div>
-            <div class="eighth">
-                <span class="line" style="position:absolute; top: 0px;"></span>
-                <div class="buttons" v-if="buttonShow">
-                    <button class="btn btn-w" @click="recallFn">撤回该托管</button>
-                </div>
-            </div>
-            <!--委托运力投放-->
-            <editDataForm v-if="editDataFormShow" :acceptData="myData" @closeForm="closeEditDataForm"></editDataForm>
+    <div class="ald-container">
+        <div class="first item-container">
+            <span>{{myData.demandtypeStr}}详情</span>
+            <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
+        <div class="second item-container">
+            <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
+                联系客服 <span class="icon-item">&#xe720;</span>
+            </div>
+            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
+                重新发布
+            </div>
+            <div class="top">
+                <span style="height: 25px;">{{myData.title}}</span>
+            </div>
+            <div class="bottom">
+                <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
+                <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
+                <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
+                    <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
+                </span>
+            </div>
+        </div>
+        <div class="fourth item-container">
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">机型</div>
+                    <div class="font-gray">运力归属</div>
+                    <div class="font-gray">小时成本</div>
+                    <div class="font-gray">接受调度</div>
+                    <div class="font-gray">出港时刻</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
+                    <div class="item-height">
+                        <span v-if="myData.capacityCompany">{{myData.capacityCompany.airlnCd}}</span>
+                        <span v-else>-</span>
+                    </div>
+                    <div class="item-height">
+                        <span>{{myData.hourscost || '-'}}万/小时</span>
+                    </div>
+                    <div class="item-height">{{myData.schedulingStr || '-'}}</div>
+                    <div class="item-height">{{myData.dptTime || '-'}}</div>
+                </div>
+            </div>
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">班期</div>
+                    <div class="font-gray">运力基地</div>
+                    <div class="font-gray">座位布局</div>
+                    <div class="font-gray">有效期</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.days || '-'}}</div>
+                    <div class="item-height">{{myData.dptNm || '-'}}</div>
+                    <div class="item-height">{{myData.seating || '-'}}</div>
+                    <div class="item-height">{{periodValidity}}止</div>
+                </div>
+            </div>
+        </div>
+        <div class="fifth item-container" style="height: 40px;">
+            <div class="left font-gray">意向航线</div>
+            <div class="right" v-if="myData.intendedAirlines">
+                {{myData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
+                {{myData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
+                {{myData.intendedAirlines[0].arrvName||'-'}}
+            </div>
+            <div class="right" v-else>-</div>
+        </div>
+        <div class="fifth item-container" style="">
+            <div class="left font-gray">其他说明</div>
+            <div class="right">{{myData.remark}}</div>
+        </div>
+        <div class="line"></div>
+        <div class="sixth item-container">
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">联系人</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.contact}}</div>
+                </div>
+            </div>
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">联系方式</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.iHome}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="seventh item-container">
+            <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
+        </div>
+        <div class="eighth">
+            <span class="line" style="position:absolute; top: 0px;"></span>
+            <div class="buttons" v-if="buttonShow">
+                <button class="btn btn-w" @click="recallFn">撤回该托管</button>
+            </div>
+        </div>
+        <!--委托运力投放-->
+        <editDataForm v-if="editDataFormShow" :acceptData="myData" @closeForm="closeEditDataForm"></editDataForm>
     </div>
 </template>
 <script>
@@ -112,7 +109,7 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import editDataForm from '$src/page/components/mine/myRelease/editDataForm.vue'
     export default {
-        props: ['acceptData'],
+        props: ['mes'],
         data() {
             return {
                 myData: {},             // 获取的数据渲染到页面上
@@ -130,10 +127,13 @@
                 periodValidity: '',
             }
         },
+        watch: {
+            'mes.demand': function () {
+                this.mountedFn();
+            }
+        },
         mounted() {
-            // 从myPublishList获取参数，并渲染到页面上
-            this.id = this.acceptData.id;
-            this.getData();
+            this.mountedFn();
         },
         computed: {
             ...vx.mapGetters([
@@ -158,6 +158,11 @@
                     message: mes,
                     type: 'error'
                 });
+            },
+            mountedFn: function () {
+                // 从myPublishList获取参数，并渲染到页面上
+                this.id = this.mes.demand;
+                this.getData();
             },
             // ajax获取的数据，并渲染
             getData: function () {
@@ -232,7 +237,9 @@
                 this.wrongTextShow = true;   //警告信息
             },
             closeThisFn: function () {
-                this.$emit('close-this');
+//                this.$emit('close-this');
+                this.mes.demandType = -1;
+                this.$emit('update:foo',this.mes);
             },
             // 点击“联系客服”
             linkServiceClickFn: function () {
@@ -344,7 +351,7 @@
         font-size: 1.2rem;
         background: white;
         overflow-y: scroll;
-        z-index: 12;
+        z-index: 17;
     }
     .ald-container::-webkit-scrollbar {
         width: 7px;

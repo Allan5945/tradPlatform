@@ -5,13 +5,23 @@
         <!--运力详情-->
         <transIndex v-if="mes.demandType === 1" @closewindow="closewindow" :mes="mes"></transIndex>
 
+
+        <!--航线委托详情-->
+        <detailMyPublishAirLineEntrust v-if="mes.demandType === 3 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust>
+        <!--运力委托详情-->
+        <detailMyPublishAirLineEntrust1 v-if="mes.demandType === 4 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust1>
+        <!--运营托管详情-->
+        <detailMyPublishTransportEntrust v-if="mes.demandType === 2 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishTransportEntrust>
     </div>
 </template>
 <script>
+    import * as vx from 'vuex'
     import airlineDetailPayAfter from './../../../page/components/airlineDetailPayAfter.vue'
     import transIndex from './../../components/trans_detail/transIndex.vue'
     import In from '$src/public/js/tabulationBoxTrigger.js'
-
+    import detailMyPublishAirLineEntrust from './detailMyPublishAirLineEntrust.vue'
+    import detailMyPublishAirLineEntrust1 from './detailMyPublishAirLineEntrust1.vue'
+    import detailMyPublishTransportEntrust from './detailMyPublishTransportEntrust.vue'
     export default {
             data(){
                 return{
@@ -37,9 +47,17 @@
                 _this.mes = data;
             });
         },
+        computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
         components:{
             airlineDetailPayAfter,
             transIndex,
+            detailMyPublishAirLineEntrust,
+            detailMyPublishAirLineEntrust1,
+            detailMyPublishTransportEntrust,
         }
     }
 </script>
