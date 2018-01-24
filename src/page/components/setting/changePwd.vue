@@ -21,9 +21,8 @@
                     -->
                 </div>
                 <div class="process-main" v-show="active==1">
-
-                    <pwdInput :par="npasArg" v-on:reqMes="pasReqMes1" @focus="show.pwdErr=false;"></pwdInput>
-                    <pwdInput :par="vnpasArg" v-on:reqMes="pasReqMes2" style="margin-top:30px;"></pwdInput>
+                    <pwdInput v-if="active==1" :par="npasArg" v-on:reqMes="pasReqMes1" @focus="show.pwdErr=false;"></pwdInput>
+                    <pwdInput v-if="active==1" :par="vnpasArg" v-on:reqMes="pasReqMes2" style="margin-top:30px;"></pwdInput>
                     <!--
                     <div class="full-btn">
                         <input :type="iptType.showpwd1" v-model.trim="userData.npwd" placeholder="输入新密码" @focus="show.pwdErr=false;">

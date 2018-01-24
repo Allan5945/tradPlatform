@@ -4,9 +4,9 @@
         :class="{'animated':showErr,'shake':showErr,'err-input':showErrInput || errs}"
         @blur="focusTip(true)"
         @focus="focusTip()"
-        @input="changeTip()"
+        @input="changeTip($event)"
         @keyup="entered($event)"
-        v-model="inputMes"
+           v-model="inputMes"
         :maxlength="maxlength">
     <span @click="toview" class="user-toview" :class="{'show-color':showText}" v-html="showText ? '&#xe685;':'&#xe7d3;'" v-if="this.par.isPrompt">&#xe685;</span>
     <span class="user-judge" v-if="userJudge || mandatoryJudge">&#xe61f;</span>
@@ -39,6 +39,7 @@ export default {
     props:['par','errs','mandatoryJudge'],
     methods:{ 
         entered(e){
+            e = e.srcElement || e.originalTarget;
             if(e.keyCode == 13){
                 this.$emit('entered');
             }
@@ -73,7 +74,16 @@ export default {
                 this.$emit('reqMes',{n:"",p:'请输入正确的格式',i:false});
             }
         },
-        changeTip(){
+        changeTip(e){
+            e = e.srcElement || e.originalTarget;
+            let txt = e.value || e.innerText,rs="";
+            txt = txt.replace(/ /g,'');
+            rs = txt.replace(/[^\x00-\xff]/g,'');
+            this.inputMes = rs;
+            this.$emit('reqMes',{n:rs, p:'',i:false});
+
+            return false;
+
             if(this.par.class0){
                 if(this.inputMes.length > 16 || this.inputMes.indexOf(" ") != -1){
                     this.showErrDelay = true;
@@ -85,7 +95,7 @@ export default {
                     this.$emit('reqMes',{n:this.inputMes,p:'',i:false});
                 }
             }else{
-                 let err = false;
+                let err = false;
                 if(this.par.openJudge.length > 0){
                     this.par.openJudge.forEach(element => {
                         if((element).test(this.inputMes)){
