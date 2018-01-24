@@ -679,7 +679,6 @@
             }
         },
         created() {
-            console.info(this.mes)
             this.id = this.mes.demand;
             if (this.mes.demandType == 0) {
                 this.getData();
@@ -884,7 +883,9 @@
             /*************/
 
             closeThisFn: function () {
-                this.$emit('closeThis')
+//                this.$emit('closeThis')
+                this.mes.demandType = -1;
+                this.$emit('update:foo',this.mes);
             },
             // 点击“结束需求”按钮
             endNeed: function () {
