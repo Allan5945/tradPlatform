@@ -193,8 +193,9 @@
                 this.bgqyed = false;
                 this.searchText = '';
                 this.qyCode = "";
-                this.$store.dispatch('hybridData', {v: '', t: 1}).then(() => {
-                });
+                this.$emit('serah');
+//                this.$store.dispatch('hybridData', {v: '', t: 1}).then(() => {
+//                });
             },
             openSearch: function () {
                 this.search = true;
@@ -266,8 +267,11 @@
                     this.bgqying = true;
                     this.bgqyed = false;
                     this.searchSet = true;
+
                     let url = '/getOthersDemandListIndex';
+                    let page = this.demandList.hybridPage;
                     if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
+                    if(!this.demandType)page = this.demandList.monoPage;
                     this.$ajax({
                         url,
                         method: 'post',
@@ -276,7 +280,7 @@
                         },
                         params: {
                             itia: this.qyCode.code,
-                            page: 1,
+                            page
                         }
                     }).then((response) => {
                         let ar = [];
@@ -291,9 +295,6 @@
                         this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode}).then(() => {
                         });
                     })
-                        .catch((error) => {
-                            console.log(error);
-                        });
                 } else {
 //                    alert('空-错误');
                 }
@@ -545,8 +546,8 @@
     }
 
     .mes-body-b {
-        flex: 1;
-        overflow-y: scroll;
+        /*flex: 1;*/
+        overflow-y: auto;
     }
 
     /*-------------------*/

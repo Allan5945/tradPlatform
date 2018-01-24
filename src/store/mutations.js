@@ -214,6 +214,8 @@ const mutations = {
     },
     [types.DEMANDTYPE](state,t) {
         state.demandType = t;
+        state.demandList.monoPage = 1;
+        state.demandList.hybridPage = 1;
     },
     [types.CHANGEROLE](state,t){
         for(let item in t){

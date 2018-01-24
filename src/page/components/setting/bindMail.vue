@@ -41,7 +41,7 @@
                     </div>
                     <span v-show="show.yzmTip" class="yzm-tip">邮箱验证码已发送，请注意查收</span>
                     <div class="full-btn" style="margin-top: 40px;">
-                        <input type="text" v-model="userData.code" placeholder="">
+                        <input type="text" v-model="userData.code" placeholder="" maxlength="6">
                         <span class="yzm" @click="getCode">{{ code.tipText }}</span>
                     </div>
                 </div>

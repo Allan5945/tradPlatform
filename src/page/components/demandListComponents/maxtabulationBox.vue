@@ -1,7 +1,7 @@
 <template>
-    <div class="demand-list">
+    <div class="demand-list" id="tabulationBox">
         <div></div>
-        <div id="tabulationBox" :class="{'tagRed':(key.data.renew == '0')}" class="mes-body-h popup" @click="getDetail(key)"
+        <div :class="{'tagRed':(key.data.renew == '0')}" class="mes-body-h popup" @click="getDetail(key)"
              v-for="(key,i) in renderData" >
             <div class="mes-body-i0" @click.stop>
                 <span @click="seted(key)" class="acquiescence mes-body-ix" :class="{'acquiescenceSet':key.data.set}">&#xe723;</span>
@@ -17,7 +17,6 @@
             </div>
             <div class="mes-body-i2">{{key.data.releasetime}}</div>
             <div class="mes-body-i3"><img :src='key.tag' alt=""></div>
-            <!--<div class="mes-body-i3">{{key.data.pstTime}}</div>-->
             <div class="mes-body-i3">{{key.data.days}}</div>
             <div class="mes-body-i3">{{key.data.aircrfttyp}}</div>
             <div class="mes-body-i3">{{key.data.subsidypolicyStr}}</div>
@@ -54,6 +53,10 @@
             }
         },
         methods: {
+            resetWindow: function () {
+                let h = document.getElementById("case").offsetHeight - 44 - 80 - 39 - 15;
+                document.getElementById('tabulationBox').style.height = h + 'px';
+            },
             alreadyPanel: function (key,t) {
                 let v = [key.data.id];
                 let v2 = [key.data.collectId];
@@ -134,6 +137,13 @@
             singleElection
         },
         mounted: function () {
+            // 更改提示框高度
+            window.onresize = () => {
+                this.set = setTimeout(() => {
+                    this.resetWindow()
+                }, 100);
+            };
+            this.resetWindow();
             let tabulationBox = document.getElementById('tabulationBox');
             tabulationBox.addEventListener('scroll', (e) => {
                 let z = 70 * this.renderData.length;
@@ -191,7 +201,8 @@
                 'demandList',
                 'role',
                 'close',
-                'conditionsOpen'
+                'conditionsOpen',
+                'demandType'
             ]),
             renderData: function () {
                 let d, a = [], c = [];
@@ -314,6 +325,7 @@
     }
     .demand-list {
         padding: 0 20px;
+        overflow-y: auto;
     }
 
     .no-data {
@@ -365,7 +377,7 @@
         display: flex;
         flex-flow: row nowrap;
         padding: 0;
-        height: 60px;
+        height: 75px;
         align-items: center;
         margin-bottom: 10px;
         box-shadow: 0 2px 11px rgba(85, 85, 85, .1);

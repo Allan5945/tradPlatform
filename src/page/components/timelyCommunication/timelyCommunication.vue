@@ -45,7 +45,7 @@
                     <div class="chat-detailed-item" v-for="(val,index) in chatIng">
                         <div class="chat-detailed-title"><span v-text="val.title"></span>{{val.date}}</div>
                         <div class="chat-detailed-text popup" v-text="val.text"></div>
-                        <div class="chat-detailed-btn btn btn-b" @click="queryDemod(val.demandId)">查看详情</div>
+                        <div class="chat-detailed-btn btn btn-b" @click="queryDemod(val)">查看详情</div>
                     </div>
                 </div>
                 <div class="personal" v-if="!inData[setId].iskf">
@@ -249,6 +249,8 @@
                         rightTableDown: ln.chat.chatData[k].rightTableDown,
                         rightTableUp: ln.chat.chatData[k].rightTableUp,
                         title: ln.chat.chatData[k].title,
+                        demandState: ln.chat.chatData[k].demandState,
+                        demandType: ln.chat.chatData[k].demandType,
                         chatRcord: ln.chat.chatData[k].chatRcord,
                         modifyRcord:
                             ln.chat.chatData[k].modifyRcord == null
@@ -275,10 +277,14 @@
             }
         },
         methods: {
-            queryDemod(){
-                this.setId.split('-')[2];
-
-
+            queryDemod(val){
+                let a = this.inData[this.setId];
+                let data = {
+                    demandState:a.demandState,
+                    demandType:a.demandType,
+                    demand:this.setId.split('-')[2]
+                };
+                ln.$emit('demandType',data);
             },
             initBox: function () {
                 if (this.setId != "x-t-null") {

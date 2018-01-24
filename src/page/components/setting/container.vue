@@ -355,6 +355,9 @@
             box-shadow: 0px 2px 10px rgba(60,120,255,.6);
             text-align: center;
             cursor: pointer;
+            &:hover{
+                background-color: #508bff;
+            }
         }
         .text-line{
             max-width: 272px;
@@ -414,8 +417,6 @@
             text-indent: 8px;
             flex: 3;
         }
-    }
-    .flex-three-item{
     }
 
     .setting-footer{
