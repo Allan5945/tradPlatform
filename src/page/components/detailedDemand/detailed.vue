@@ -1,9 +1,9 @@
 <template>
-    <div class="bbbbb">
+    <div>
         <!-- 航线详情-->
-        <airlineDetailPayAfter v-if="mes.demandType == 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
+        <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
         <!--运力详情-->
-        <transIndex v-if="mes.demandType == 1" @closewindow="closewindow" :mes="mes"></transIndex>
+        <transIndex v-if="mes.demandType === 1" @closewindow="closewindow" :mes="mes"></transIndex>
 
     </div>
 </template>
@@ -20,7 +20,7 @@
                     mes:{
                         demand:"",
                         demandState:"",
-                        demandType:-1
+                        demandType:""
                     },   //demand  , demandState 需求状态 ,demandType  需求类型
                 }
             },
@@ -33,6 +33,7 @@
         mounted(){
             let _this = this;
             In.$on('demandType',data=>{
+                console.log(data)
                 _this.mes = data;
             });
         },
