@@ -149,7 +149,11 @@
                             }
                         );
                 };
-                tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
+                tabulationBoxTrigger.$emit('demandType', {
+                    demandState:val.data.demandstate,
+                    demandType:val.data.demandtype,
+                    demand:val.data.id,
+                });
             }
         },
         updated: function () {
