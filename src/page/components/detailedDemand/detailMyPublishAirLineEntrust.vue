@@ -1,118 +1,173 @@
 <template>
-    <div class="wrapper" @click.self="closeThisFn">
-
-        <div class="ald-container">
-            <div class="first item-container">
-                <span>{{myData.demandtypeStr}}详情</span>
-                <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
-            </div>
-            <div class="second item-container">
-                <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
-                    联系客服 <span class="icon-item">&#xe720;</span>
-                </div>
-                <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
-                    重新发布
-                </div>
-                <div class="top">
-                    <span style="height: 25px;">{{myData.title}}</span>
-                </div>
-                <div class="bottom">
-                    <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
-                    <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
-                    <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
-                        <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
-                    </span>
-                </div>
-            </div>
-            <div class="fourth item-container">
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">机型</div>
-                        <div class="font-gray">运力归属</div>
-                        <div class="font-gray">小时成本</div>
-                        <div class="font-gray">接受调度</div>
-                        <div class="font-gray">出港时刻</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
-                        <div class="item-height">
-                            <span v-if="myData.capacityCompany">{{myData.capacityCompany.airlnCd}}</span>
-                            <span v-else>-</span>
-                        </div>
-                        <div class="item-height">
-                            <span>{{myData.hourscost || '-'}}万/小时</span>
-                        </div>
-                        <div class="item-height">{{myData.schedulingStr || '-'}}</div>
-                        <div class="item-height">{{myData.dptTime || '-'}}</div>
-                    </div>
-                </div>
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">班期</div>
-                        <div class="font-gray">运力基地</div>
-                        <div class="font-gray">座位布局</div>
-                        <div class="font-gray">有效期</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.days || '-'}}</div>
-                        <div class="item-height">{{myData.dptNm || '-'}}</div>
-                        <div class="item-height">{{myData.seating || '-'}}</div>
-                        <div class="item-height">{{periodValidity}}止</div>
-                    </div>
-                </div>
-            </div>
-            <div class="fifth item-container" style="height: 40px;">
-                <div class="left font-gray">意向航线</div>
-                <div class="right" v-if="myData.intendedAirlines">
-                    {{myData.intendedAirlines[0].dptName||'-'}}<span class="iconfont">&#xe672;</span>
-                    {{myData.intendedAirlines[0].pstName||'-'}}<span class="iconfont">&#xe672;</span>
-                    {{myData.intendedAirlines[0].arrvName||'-'}}
-                </div>
-                <div class="right" v-else>-</div>
-            </div>
-            <div class="fifth item-container" style="">
-                <div class="left font-gray">其他说明</div>
-                <div class="right">{{myData.remark}}</div>
-            </div>
-            <div class="line"></div>
-            <div class="sixth item-container">
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">联系人</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.contact}}</div>
-                    </div>
-                </div>
-                <div class="items">
-                    <div class="left item">
-                        <div class="font-gray">联系方式</div>
-                    </div>
-                    <div class="right item">
-                        <div class="item-height">{{myData.iHome}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="seventh item-container">
-                <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
-            </div>
-            <div class="eighth">
-                <span class="line" style="position:absolute; top: 0px;"></span>
-                <div class="buttons" v-if="buttonShow">
-                    <button class="btn btn-w" @click="recallFn">撤回该托管</button>
-                </div>
-            </div>
-            <!--委托运力投放-->
-            <editDataForm v-if="editDataFormShow" :acceptData="myData" @closeForm="closeEditDataForm"></editDataForm>
+    <div class="ald-container">
+        <div class="first item-container">
+            <span>{{myData.demandtypeStr}}详情</span>
+            <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
         </div>
+        <div class="second item-container">
+            <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
+                联系客服 <span class="icon-item">&#xe720;</span>
+            </div>
+            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
+                重新发布
+            </div>
+            <div class="top">
+                <span style="height: 25px;">{{myData.title}}</span>
+            </div>
+            <div class="bottom">
+                <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
+                <span class="font-gray" style="margin-right: 30px;">创建于{{releasetime}}</span>
+                <span class="font-gray">状态:　<span  v-if="demandStateText == true" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
+                    <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
+                </span>
+            </div>
+        </div>
+        <div class="third item-container">
+
+
+            <div class="start item">
+                <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
+                <div class="item-b">
+                    <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
+                    <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
+                </div>
+                <div class="item-c font-gray" v-show="myData.dptState == 0 && myData.dptNm != null">
+                    <span v-if="myData.dptAcceptnearairport === '0'">接受</span>
+                    <span v-else>不接受</span>临近机场
+                </div>
+                <div class="item-d font-gray" v-show="myData.dptState == 0 && myData.dptNm != null">出港资源</div>
+                <div class="item-e" v-show="myData.dptState == 0 && myData.dptNm != null">
+                    <span v-show="myData.dptTimeresources == 0">{{myData.dptTime}}</span>
+                    <span v-show="myData.dptTimeresources == 1">待协调</span>
+                    <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                </div>
+            </div>
+            <div class="item-icon" v-show="!passShow">
+                <span class="icon-item">&#xe672;</span>
+            </div>
+            <div class="pass item" v-show="!passShow">
+                <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
+                <div class="item-b">
+                    <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
+                    <span v-show="myData.pstState == 1">{{myData.pst}}</span>
+                </div>
+                <div class="item-c font-gray" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
+                    <span v-if="myData.pstAcceptnearairport === '0'">接受</span>
+                    <span v-else>不接受</span>临近机场
+                </div>
+                <div class="item-d font-gray" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">出港资源</div>
+                <div class="item-e" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
+                    <span v-show="myData.pstTimeresources == 0">{{myData.pstTime}}</span>
+                    <span v-show="myData.pstTimeresources == 1">待协调</span>
+                    <span v-show="myData.pstTimeresources == 2">时刻充足</span>
+                </div>
+            </div>
+            <div class="item-icon" v-show="!passShow">
+                <span class="icon-item">&#xe672;</span>
+            </div>
+            <div class="pass item" v-show="passShow" style="display: flex; align-items: center;">
+                <span class="left-icon icon-item">&#xe6ad;</span>
+                <div class="border-dashed"></div>
+                <span class="right-icon icon-item">&#xe672;</span>
+            </div>
+
+            <div class="arrive item">
+                <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
+                <div class="item-b">
+                    <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
+                    <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
+                </div>
+                <div class="item-c font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null">
+                    <span v-if="myData.arrvAcceptnearairport === '0'">接受</span>
+                    <span v-else>不接受</span>临近机场
+                </div>
+                <div class="item-d font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null">出港资源</div>
+                <div class="item-e" v-show="myData.arrvState == 0 && myData.arrvNm != null">
+                    <span v-show="myData.arrvTimeresources == 0">{{myData.arrvTime}}</span>
+                    <span v-show="myData.arrvTimeresources == 1">待协调</span>
+                    <span v-show="myData.arrvTimeresources == 2">时刻充足</span>
+                </div>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="fourth item-container">
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">拟开时间</div>
+                    <div class="font-gray">拟飞机型</div>
+                    <div class="font-gray">客量期望</div>
+                    <div class="font-gray">补贴政策</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.sailingtime || '-'}}</div>
+                    <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
+                    <div class="item-height">
+                        <span v-if="myData.avgguestexpect != null && myData.avgguestexpect != ''">{{myData.avgguestexpect}}人/均班</span>
+                        <span v-else>-</span>
+                    </div>
+                    <div class="item-height">{{myData.subsidypolicyStr || '-'}}</div>
+                </div>
+            </div>
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">拟开班期</div>
+                    <div class="font-gray">座位数</div>
+                    <div class="font-gray">客座率期望</div>
+                    <div class="font-gray">有效期</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.days || '-'}}</div>
+                    <div class="item-height">{{myData.seating || '-'}}</div>
+                    <div class="item-height">
+                        <span v-if="myData.loadfactorsexpect != null && myData.loadfactorsexpect != ''">{{myData.loadfactorsexpect}}%</span>
+                        <span v-else>-</span>
+                    </div>
+                    <div class="item-height">{{myData.periodValidity || '-'}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="fifth item-container">
+            <div class="left font-gray">其他说明</div>
+            <div class="right">{{myData.remark}}</div>
+        </div>
+        <div class="line"></div>
+        <div class="sixth item-container">
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">联系人</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.contact}}</div>
+                </div>
+            </div>
+            <div class="items">
+                <div class="left item">
+                    <div class="font-gray">联系方式</div>
+                </div>
+                <div class="right item">
+                    <div class="item-height">{{myData.iHome}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="seventh item-container">
+            <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
+        </div>
+        <div class="eighth">
+            <span class="line" style="position:absolute; top: 0px;"></span>
+            <div class="buttons" v-if="buttonShow">
+                <button class="btn btn-w" @click="recallFn">撤回该托管</button>
+            </div>
+        </div>
+        <!--委托航线需求表单-->
+        <airlineReqWrapper v-if="editAirlineDelegationShow" :acceptData="myData" @close-this="closeEditAirlineDelegation"></airlineReqWrapper>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editDataForm from '$src/page/components/mine/myRelease/editDataForm.vue'
+    import airlineReqWrapper from '$src/page/components/airlineReqWrapper.vue'
     export default {
-        props: ['acceptData'],
+        props: ['mes'],
         data() {
             return {
                 myData: {},             // 获取的数据渲染到页面上
@@ -123,17 +178,20 @@
                 wrongTextShow: false,  // 错误提示是否显示
                 buttonShow: true,      // 按钮显示一个或两个
                 releasetime: '',        //创建时间
-                editDataFormShow: false, //编辑需求表单
+                editAgentTransFormShow: false, //编辑需求表单
                 editAirlineDelegationShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
                 id: '',                 // 点击列表获取这条需求id
-                periodValidity: '',
+                passShow: false,        // 经停区域是否为空
+            }
+        },
+        watch: {
+            'mes.demand': function () {
+                this.mountedFn();
             }
         },
         mounted() {
-            // 从myPublishList获取参数，并渲染到页面上
-            this.id = this.acceptData.id;
-            this.getData();
+           this.mountedFn();
         },
         computed: {
             ...vx.mapGetters([
@@ -141,7 +199,7 @@
             ]),
         },
         components: {
-            editDataForm, //委托运力投放
+            airlineReqWrapper,  // 委托航线需求
         },
         methods: {
             // 改变alert弹出样式
@@ -159,6 +217,10 @@
                     type: 'error'
                 });
             },
+            mountedFn: function () {
+                this.id = this.mes.demand;
+                this.getData();
+            },
             // ajax获取的数据，并渲染
             getData: function () {
                 this.$ajax({
@@ -173,7 +235,6 @@
                 }) .then((response) => {
                     if(response.data.opResult == 0) {
                         this.myData = response.data.data;
-                        this.periodValidity = this.myData.periodValidity.split('-')[1];
                         // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
                         // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
                         if(this.myData.demandstate == 2
@@ -198,6 +259,12 @@
                             this.wrongShow();
                         }else{
                             this.show();
+                        }
+                        // 经停区域是否为空
+                        if(this.myData.pstNm == null || this.myData.pstNm == ''){
+                            this.passShow = true;
+                        }else {
+                            this.passShow = false;
                         }
                         //将创建时间顺序改变
                         let time1 = this.myData.releasetime.split('.');
@@ -232,7 +299,9 @@
                 this.wrongTextShow = true;   //警告信息
             },
             closeThisFn: function () {
-                this.$emit('close-this');
+//                this.$emit('close-this');
+                this.mes.demandType = -1;
+                this.$emit('update:foo',this.mes);
             },
             // 点击“联系客服”
             linkServiceClickFn: function () {
@@ -247,15 +316,16 @@
                 this.wrongTextShow = false;
             },
             //关闭“编辑需求”表单
-            closeEditDataForm: function () {
-                this.editDataFormShow = false;
+            closeEditAgentTransForm: function () {
+                this.editAgentTransFormShow = false;
             },
             closeEditAirlineDelegation: function () {
                 this.editAirlineDelegationShow = false;
             },
             //点击“重新发布”
             anewPublishClickFn2: function () {
-                this.editDataFormShow = true;
+                this.myData.chongXinWeiTuo = '1';  // “重新发布”，弹出airlineReqWrapper 0: 不是委托，1: 是委托
+                this.editAirlineDelegationShow = true;
             },
             // 撤回该托管,调用修改接口，传id和demandprogress = 3（关闭）
             recallFn: function () {
@@ -344,7 +414,7 @@
         font-size: 1.2rem;
         background: white;
         overflow-y: scroll;
-        z-index: 12;
+        z-index: 17;
     }
     .ald-container::-webkit-scrollbar {
         width: 7px;
@@ -422,7 +492,7 @@
         justify-content: space-between;
         margin-bottom: 22px;
         .item {
-            /*width: 140px;*/
+            width: 140px;
             height: 160px;
             .item-a {
                 margin: 25px 0 10px 0;
@@ -442,6 +512,15 @@
             }
             .item-e {
                 height: 15px;
+            }
+        }
+        .item-icon {
+            position: relative;
+            > span {
+                position: absolute;
+                top: 55px;
+                left: 50%;
+                margin-left: -8px;
             }
         }
         .pass {

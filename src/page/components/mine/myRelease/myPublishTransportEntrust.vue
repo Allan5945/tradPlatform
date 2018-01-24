@@ -87,7 +87,7 @@
 </template>
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    import editOperationForm from './editOperationForm.vue'
+    import editOperationForm from '$src/page/components/mine/myRelease/editOperationForm.vue'
     export default {
         props: ['acceptData'],
         data() {

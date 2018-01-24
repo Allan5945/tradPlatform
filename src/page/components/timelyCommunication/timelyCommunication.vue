@@ -35,13 +35,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-function-input" v-if="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '6'">
+                    <div class="chat-function-input" v-if="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '4'">{{inData[setId].demandProgress}}
                         <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)"
                                   class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
                     </div>
                 </div>
-                <div class="chat-detailed" v-else>
+                <div class="chat-detailed" @scroll="woListScroll($event)" v-else>
                     <div class="chat-detailed-item" v-for="(val,index) in chatIng">
                         <div class="chat-detailed-title"><span v-text="val.title"></span>{{val.date}}</div>
                         <div class="chat-detailed-text popup" v-text="val.text"></div>
@@ -55,6 +55,7 @@
                                 <img src="./../../../static/img/test/145.png"/>
                             </div>
                             <div class="personal-panel-name">
+                                <div class=""><span>{{kfIng.iata}}</span></div>
                                 <p>{{inData.company}}</p>
                                 <div class="">{{kfIng.department}}<span>{{kfIng.name}}</span></div>
                                 <div class="">{{kfIng.phone}}</div>
@@ -236,6 +237,9 @@
                             case "phone":
                                 chatObjectList["phone"] = v.val;
                                 break;
+                            case "iata":
+                                chatObjectList["iata"] = v.val;
+                                break;
                         }
                     });
                     let iskf = true;
@@ -399,6 +403,13 @@
                 }
                 ;
 
+            },
+            woListScroll(e){
+//                console.log(ln.chat.chatData[this.setId].chatRcord);
+//                if(0){
+//
+//                }
+//                console.log(e)
             }
         }
     };
@@ -667,7 +678,7 @@
     }
 
     .personal-panel-name {
-        padding: 15px 0 0 15px;
+        padding: 0 0 0 15px;
         > p {
             padding: 0;
             margin: 0;

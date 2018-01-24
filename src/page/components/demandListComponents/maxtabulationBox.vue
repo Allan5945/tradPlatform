@@ -125,7 +125,11 @@
                             }
                         );
                 };
-                tabulationBoxTrigger.$emit('tabulationBoxTrigger', val);
+                tabulationBoxTrigger.$emit('demandType', {
+                    demandState:Number(val.data.demandstate),
+                    demandType:Number(val.data.demandtype),
+                    demand:Number(val.data.id),
+                });
             },
             seted: function (v) {
                 this.$store.dispatch('setelect', {t: v, a: false}).then(() => {

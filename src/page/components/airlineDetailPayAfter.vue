@@ -612,6 +612,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
+        props:['mes'],
         data() {
             return {
                 firstShow: false,
@@ -677,14 +678,13 @@
                 contactMsgShow: false,     // 发布方联系人、联系方式是否显示
             }
         },
+        watch: {
+            'mes.demand': function () {
+                this.creatFn();
+            }
+        },
         created() {
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.id = val.data.id;
-                if (val.data.demandtype == 0) {
-                    this.getData();
-                    this.$emit('transShow');
-                }
-            });
+            this.creatFn();
         },
         computed: {
             ...vx.mapGetters([
@@ -706,6 +706,12 @@
                     message: mes,
                     type: 'error'
                 });
+            },
+            creatFn: function () {
+                this.id = this.mes.demand;
+                if (this.mes.demandType == 0) {
+                    this.getData();
+                }
             },
             // ajax获取的数据，并渲染
             getData: function () {
@@ -884,7 +890,9 @@
             /*************/
 
             closeThisFn: function () {
-                this.$emit('closeThis')
+//                this.$emit('closeThis')
+                this.mes.demandType = -1;
+                this.$emit('update:foo',this.mes);
             },
             // 点击“结束需求”按钮
             endNeed: function () {
