@@ -614,6 +614,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
+        props: ['acceptData'],
         data() {
             return {
                 firstShow: false,
@@ -679,14 +680,11 @@
                 contactMsgShow: false,     // 发布方联系人、联系方式是否显示
             }
         },
-        created() {
-            tabulationBoxTrigger.$on('sendDataToMyPublish', val => {
-                this.id = val.id;
-                if (val.demandtype == 0) {
-                    this.getData();
-                    this.$emit('transShow');
-                }
-            });
+        mounted() {
+            this.id = this.acceptData.id;
+            if (this.acceptData.demandtype == 0) {
+                this.getData();
+            }
         },
         computed: {
             ...vx.mapGetters([

@@ -614,7 +614,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
-        props:['sendDataToMyPurpose'],
+        props:['acceptData'],
         data() {
             return {
                 firstShow: false,
@@ -681,9 +681,8 @@
             }
         },
         created() {
-            let val = this.sendDataToMyPurpose;
-            this.id = val.demandId;
-            if (val.demand.demandtype == 0) {
+            this.id = this.acceptData.demandId;
+            if (this.acceptData.demand.demandtype == 0) {
                 this.getData();
             }
         },
