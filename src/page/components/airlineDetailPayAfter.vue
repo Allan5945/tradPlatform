@@ -612,6 +612,7 @@
     import calendar from '$src/page/components/calendar'
 
     export default {
+        props:['mes'],
         data() {
             return {
                 firstShow: false,
@@ -678,13 +679,12 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.id = val.data.id;
-                if (val.data.demandtype == 0) {
-                    this.getData();
-                    this.$emit('transShow');
-                }
-            });
+            console.info(this.mes)
+            this.id = this.mes.demand;
+            if (this.mes.demandType == 0) {
+                this.getData();
+                this.$emit('transShow');
+            }
         },
         computed: {
             ...vx.mapGetters([
