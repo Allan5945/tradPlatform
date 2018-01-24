@@ -33,7 +33,6 @@
         mounted(){
             let _this = this;
             In.$on('demandType',data=>{
-                console.log(data)
                 _this.mes = data;
             });
         },

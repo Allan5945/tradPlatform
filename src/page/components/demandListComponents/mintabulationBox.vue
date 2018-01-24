@@ -111,16 +111,16 @@
                 if(s == 1)return;
                 let pots = [];
                 if (t) {
-                    if (key.data.arrvCt != null && key.data.arrvCt != '') {
-                        let jw = this.$airMes(this.airList, key.data.arrv);
-                        pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
-                    }
                     if (key.data.dptCt != null && key.data.dptCt != '') {
                         let jw = this.$airMes(this.airList, key.data.dpt);
                         pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
                     }
                     if (key.data.pstCt != null && key.data.pstCt != '') {
                         let jw = this.$airMes(this.airList, key.data.pst);
+                        pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
+                    }
+                    if (key.data.arrvCt != null && key.data.arrvCt != '') {
+                        let jw = this.$airMes(this.airList, key.data.arrv);
                         pots.push(new BMap.Point(jw.cityCoordinateJ, jw.cityCoordinateW))
                     }
                 }
