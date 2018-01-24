@@ -1014,6 +1014,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose2Fn: function () {
                 this.space2 = !this.space2;
@@ -1026,6 +1027,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose3Fn: function () {
                 this.space3 = !this.space3;
@@ -1038,6 +1040,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose4Fn: function () {
                 this.startTime1 = !this.startTime1;
@@ -1046,6 +1049,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose5Fn: function () {
                 this.endTime1 = !this.endTime1;
@@ -1054,6 +1058,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose6Fn: function () {
                 this.startTime2 = !this.startTime2;
@@ -1062,6 +1067,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose7Fn: function () {
                 this.endTime2 = !this.endTime2;
@@ -1070,6 +1076,7 @@
                 this.startTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose8Fn: function () {
                 this.startTime3 = !this.startTime3;
@@ -1078,6 +1085,7 @@
                 this.startTime2 = false;
                 this.endTime2 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose9Fn: function () {
                 this.endTime3 = !this.endTime3;
@@ -1086,6 +1094,7 @@
                 this.startTime2 = false;
                 this.endTime2 = false;
                 this.startTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose10Fn: function () {
                 this.calendarShow1 = !this.calendarShow1;
@@ -1098,6 +1107,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose11Fn: function () {
                 this.schedule = !this.schedule;
@@ -1110,6 +1120,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
                 this.subsidy = !this.subsidy;
@@ -1122,6 +1133,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose13Fn: function () {
                 this.airTypeShow = true;
@@ -1134,6 +1146,7 @@
                 this.isSearch5 = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose14Fn: function () {
                 this.isSearch5 = true;
@@ -1146,6 +1159,7 @@
                 this.airTypeShow = false;
                 this.isSearch6 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose15Fn: function () {
                 this.isSearch6 = true;
@@ -1158,9 +1172,31 @@
                 this.airTypeShow = false;
                 this.isSearch5 = false;
                 this.isSearch4 = false;
+                this.closeTimeFrameFn();
             },
             clickClose16Fn: function () {
                 this.isSearch4 = true;
+                this.space1 = false;
+                this.space2 = false;
+                this.space3 = false;
+                this.calendarShow1 = false;
+                this.schedule = false;
+                this.subsidy = false;
+                this.airTypeShow = false;
+                this.isSearch5 = false;
+                this.isSearch6 = false;
+                this.closeTimeFrameFn();
+            },
+            closeTimeFrameFn: function () {
+                this.startTime1 = false;
+                this.endTime1 = false;
+                this.startTime2 = false;
+                this.endTime2 = false;
+                this.startTime3 = false;
+                this.endTime3 = false;
+            },
+            closeUnTimeFrameFn: function () {
+                this.isSearch4 = false;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;

@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper">
         <div class="t-form scroll popup" id="transForm">
-            <div class="container-top">
-                <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+            <div class="header">
+                <span class="title">填写表单</span>
+                <span class="close-icon iconfont" @click="cancel" style="color:#3c78ff;">&#xe62c;</span>
             </div>
             <div class="t-must">
                 <div class="form-box">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-box">
                     <div class="t-title">是否有班期</div>
-                    <div class="radio-box">
+                    <div class="radio-box" @click="verifyFlight">
                         <div class="t-radio">
                             <input type="radio" class="magic-radio" id="flightYes" v-model="getFlight" value="true"><label for="flightYes">有&nbsp;</label>
                         </div>
@@ -53,9 +53,10 @@
                             </div>
                         </div>
                         <div class="t-radio">
-                            <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="flase"><label for="flightNo">无</label>
+                            <input type="radio" class="magic-radio" id="flightNo" v-model="getFlight" value="false"><label for="flightNo">无</label>
                         </div>
                     </div>
+                    <div class="error" v-show="isError4" style="left:0;top:60px;">*请选择班期</div>
                 </div>
                 <div class="form-box air-route">
                     <div class="t-title">意向航线</div>
@@ -65,20 +66,24 @@
                     <airportS1 class="aisx" v-on:resData="pstData" :searchText="intendedPst" v-show="pstSearch" style="left:160px;top:48px;"></airportS1>
                     <input type="text" placeholder="目标机场（可选填）" v-model="intendedArrv" @focus="openSearch5" @blur="closeDialog3">
                     <airportS1 class="aisx" v-on:resData="arrvData" :searchText="intendedArrv" v-show="arrvSearch" style="left:300px;top:48px;"></airportS1>
+                    <div class="error" v-show="isError3" style="left:58px;top:53px;">*请选择起飞机场</div>
                 </div>
                 <div class="form-box">
                     <div class="t-title">机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
                     <div class="airpl-typ popup scroll" v-show="airplTypShow">
                         <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                     </div>
+                    <div class="error" v-show="isError5" style="left:58px;top:53px;">*请选择机型</div>
                 </div>
                 <div class="form-box se-place" >
                     <div class="t-title">运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
                   <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
+                   <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
                 </div>
                 <div class="form-box reset">
                     <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
                     <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
+                    <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
                 </div>
                 <div class="form-box reset">
                     <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
@@ -96,12 +101,13 @@
                     <div class="history" v-show="dispatch">
                         <div class="his-item" v-for="(name,index) in searchData">{{name}} <span @click="delItem(index)">x</span></div>
                     </div>
+                    <div class="error" v-show="isError9" style="left:65px;top:53px;">*请选择调度机场</div>
                 </div>
                 <div class="form-box tips pad1">
                     <div class="t-title">其他说明</div><input type="text" placeholder="可选填" v-model="tip" maxlength="35">
                     <span class="num"><span >{{num}}</span>/35</span>
                 </div>
-                <div class="form-box get-time" ref="timeForm">
+                <div class="form-box get-time" ref="timeForm" @click="verifyDate">
                     <div class="t-title" ref="timeTitle">发布有效期</div>
                    <div class="calendar time-btn" ref="timeDate">
                      <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
@@ -116,9 +122,30 @@
                        <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar>
                      </div>
                    </div>
+                    <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
+                </div>
+            </div>
+            <div class="post-type">
+                <div class="t-radio">
+                    <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
+                </div>
+                <div class="t-radio">
+                    <input type="radio" name="type" id="type2" class="magic-radio" v-model="post" value="1"><label for="type2">对认证用户公开</label>
+                </div>
+                <div class="t-radio">
+                    <input type="radio" name="type" id="type3" class="magic-radio" v-model="post" value="3"><label for="type3">定向发布</label>
+                </div>
+                <div class="direction t-radio" style="position:relative;">
+                    <input type="text" v-show="this.post == '3' " style="width:200px;" v-model="directText" @focus="openSearch2" @blur="closeDialog8">
+                    <div class="history" v-show="this.post == '3'" style="top:-5px;left:2px;line-height:26px;">
+                        <div class="his-item" v-for="(name,index) in searchData1">{{name}} <span @click="delItem1(index)">x</span></div>
+                    </div>
+                    <airportS1 class="aisx"  :searchText="directText" v-on:resData="directData" v-show="directSearch" style="top:25px;"></airportS1>
                 </div>
             </div>
             <div class="t-btn">
+                <!--<div class="agent-btn " @click="confirm(4)" v-if="btnShow">委托代理</div>-->
+                <!--<div class="confirm-btn " @click="confirm(1)">确认发布</div>-->
                 <div class="confirm-btn " @click="confirm(4)">确认发布</div>
                 <div class="cancel-btn " @click="cancel">取消</div>
             </div>
@@ -140,21 +167,29 @@
                 isSel: false,
                 isError1: false,
                 isError2: false,
+                isError3:false,
+                isError4:false,
+                isError5:false,
+                isError6:false,
+                isError7:false,
+                isError8:false,
+                isError9:false,
                 phoneNum: '',
-                getFlight: '',
+                getFlight: 'true',
                 getTime: '',
                 dispatch:false,
                 pickStart:false,
                 pickEnd:false,
                 airplTypShow:false,
                 airCompanyShow:false,
+                btnShow:true,
                 contact: '',
                 intendedDpt:'',
                 intendedPst:'',
                 intendedArrv:'',
                 airplaneTyp:'',
                 airCompany:'',
-                airCompanyId: '',
+                airCompanyId:'',
                 dptState:[0,1],//运力基地：机场为0，地区为1
                 seat:'',
                 hourcost:'',
@@ -193,6 +228,7 @@
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
             }
         },
+        props: ['acceptData'],
         components:{
             calendar,
             airportS,
@@ -200,13 +236,84 @@
             airCompanyS
         },
         computed:{
-         ...vx.mapGetters([
+            ...vx.mapGetters([
                 'role'
-            ])
+            ]),
+            num: function(){
+                return this.tip.length <= 35? this.tip.length: 35;
+            }
+        },
+        watch:{
+            /*'dispatch' :function(val){
+                if(val){
+                    this.isError9 =true;
+                }
+            },*/
+            'qyCode1':function(val){
+                 if(val){
+                    this.isError9 =false;
+                }
+            }
+
+        },
+        mounted() {
+            this.acceptDataFn();
         },
         methods:{
-            closeThis:function(){
-                this.$emit("close-this");
+            acceptDataFn:function(){
+                    this.contact = this.acceptData.contact;
+                    this.phoneNum = this.acceptData.iHome;
+                    this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
+                    if(this.acceptData.dptTime !== '无'){
+                        this.timeStart = this.acceptData.dptTime.split('-')[0];
+                        this.timeEnd =this.acceptData.dptTime.split('-')[1];
+                        this.pickStart = true;
+                        this.pickEnd = true;
+                    }
+                    this.getFlight = this.acceptData.days  == '无'? 'false':'true';
+                    if(this.acceptData.days  !== '无'){
+                        this.msg = this.acceptData.days;
+                        this.isSel = true;
+                    }
+                    if(this.acceptData.intendedAirlines){
+                        this.intendedDpt = this.acceptData.intendedAirlines[0].dptName;
+                        this.qyCode3 = this.acceptData.intendedAirlines[0].dpt;
+                        this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
+                        this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
+                        this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
+                        this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
+                    }
+                    this.airplaneTyp = this.acceptData.aircrfttyp;
+
+                    this.qyCode = this.acceptData.dpt;
+                    if(this.qyCode){
+                        this.searchText = this.acceptData.dptNm;
+                    }
+
+                    this.airCompanyId = this.acceptData.capacitycompany;
+                    if( this.airCompanyId){
+                        this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                    }
+
+                    this.seat = this.acceptData.seating;
+                    this.hourcost = this.acceptData.hourscost;
+
+                    this.dispatch = this.acceptData.scheduling == '0'? true:false ;
+                    if(this.dispatch){
+
+                    }
+
+                     this.tip = this.acceptData.remark;
+
+                    this.myDate = this.acceptData.periodValidity;
+                    this.$refs.timeDate.style.width = "213px";
+                    this.$refs.timeForm.style.width = "579px";
+                    this.$refs.timeTitle.style.width = "60px";
+
+                    this.post = this.acceptData.publicway;
+                     if(this.post == '3'){
+
+                    }
             },
              getNeed: function(i) {
                 this.msg = this.stateType[i];
@@ -258,6 +365,9 @@
                 let that =this;
                setTimeout(function(){
                 that.dptSearch =false;
+                    if(that.qyCode3){
+                     that.isError3 = false;
+                    }
                 },200);
             },
              closeDialog2(){
@@ -276,18 +386,27 @@
                 let that =this;
                setTimeout(function(){
                 that.airplTypShow =false;
+                    if(that.airplaneTyp){
+                     that.isError5 = false;
+                    }
                 },200);
             },
              closeDialog5(){
                 let that =this;
                setTimeout(function(){
                 that.isSearch =false;
+                    if(that.qyCode){
+                     that.isError6 = false;
+                    }
                 },200);
             },
              closeDialog6(){
                 let that =this;
                setTimeout(function(){
                 that.airCompanyShow =false;
+                    if(that.airCompanyId){
+                     that.isError7 = false;
+                    }
                 },200);
             },
              closeDialog7(){
@@ -302,13 +421,6 @@
                 that.directSearch =false;
                 },200);
             },
-          /*  verifyPhon:function(){
-                let pattern = /^0{0,1}(1[0-9][0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/;
-                if((!pattern.test(this.phoneNum)){
-                    this.isError = true;
-                }
-                this.isError = true;
-            },*/
             verifyContact:function(){
                  if(this.contact){
                      this.isError1 = false;
@@ -330,6 +442,22 @@
                 if(this.hourcost>100){
                     this.hourcost = '';
                 }
+            },
+            verifyFlight:function(){
+                let that =this;
+               setTimeout(function(){
+                    if(that.msg !== "选择班期类型"||that.getFlight == 'false'){
+                        that.isError4 = false;
+                    }
+                },100);
+            },
+            verifyDate:function(){
+                 let that =this;
+               setTimeout(function(){
+                    if(that.myDate !== '选择起始时间'){
+                        that.isError8 = false;
+                    }
+                },100);
             },
             pickTime1: function(i) {
                 this.timeStartIndex = i;
@@ -355,7 +483,7 @@
                 this.searchData1.splice(i,1);
             },
             cancel:function(){
-                this.closeThis();
+                this.$emit("closeForm");
             },
             resData: function (data) {
                 this.isSearch = false;
@@ -391,7 +519,7 @@
                 this.airplaneTyp = this.airTypData[i];
                 this.airplTypShow = false;
             },
-             airCompanyData: function(data){
+            airCompanyData: function(data){
                 this.airCompany = data.name;
                 this.airCompanyId = data.id;
                 this.airCompanyShow = false;
@@ -403,21 +531,58 @@
                 this.airCompanyShow = true;
             },
             confirm:function(type){
-                 let trans = document.getElementById('transForm');
+                let trans = document.getElementById('transForm');
                 //必填信息验证
-                if(this.contact ==''){
-                    this.isError1 = true;
-                    trans.scrollTop = 0;
+                if(this.contact == ''){//联系人
+                     this.isError1 = true;
+                     trans.scrollTop = 0;
+                     return false;
                 }
-                if(this.phoneNum == ''){
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum)) ){//联系方式
                     this.isError2 = true;
                     trans.scrollTop = 0;
+                    return false;
                 }
+                if(this.getFlight =='true'&& this.msg == '选择班期类型'){//选择班期
+                    this.isError4 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.intendedDpt == ''){//起始机场
+                    this.isError3 = true;
+                     trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.airplaneTyp == ''){//飞机类型
+                    this.isError5 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.searchText == ''){//运力基地
+                    this.isError6 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.airCompany == ''){//运力归属
+                    this.isError7 = true;
+                    return false;
+                }
+                if(this.myDate == '选择起始时间'){//有效时间
+                    this.isError8 = true;
+                    return false;
+                }
+                if(this.dispatch){       //接受调度
+                    if(this.qyCode1 == ''){
+                        this.isError9 = true;
+                        return false;
+                    };
+                }
+
                 let demandData = {};
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + ' - '+ this.timeEnd):'无';
+                    demandData.dptTime = this.getTime == 'true'? (this.timeStart + '-'+ this.timeEnd):'无';
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -434,49 +599,42 @@
                         demandData.schedulinePort  = this.qyCode1;
                     }
                     demandData.remark = this.tip;
-                    demandData.periodValidity = this.myDate == '选择起始时间'? '': this.myDate;
+                    demandData.periodValidity = this.myDate;
                     demandData.publicway = this.post;
-                    //demandData.directionalgoal = this.qyCode2;
-                    if(!this.isError1 && !this.isError2){
-                        this.$ajax({
-                        url:"/demandAdd",
-                        method: 'post',
-                        headers: {
-                            'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        params: demandData
-                    }) .then((response) => {
-                        if(response.data.opResult == "0"){
-                           this.closeThis();
-                           this.$message({
-                              message: '发布成功!',
-                              type: 'success',
-                              duration:2000
-                            });
-                        }else{
-                            this.$message({
-                                message: '提交失败，请稍后再试!',
-                                type: 'warning',
-                                duration:2000
-                            });
-                        }
-                    }) .catch((error) => {
-                            console.log(error);
-                        });
+                     if(this.post == '3'){
+                        demandData.directionalgoal = this.qyCode2;
                     }
+                 this.$ajax({
+                url:"/demandAdd",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: demandData
+            }) .then((response) => {
+                if(response.data.opResult == "0"){
+                   this.$emit("closeForm");
+                   this.$message({
+                        message: '发布成功!',
+                        type: 'success',
+                        duration:2000
+                    });
+                  }else{
+                    this.$message({
+                        message: '提交失败，请稍后再试!',
+                        type: 'warning',
+                        duration:2000
+                    });
+                 }
+            }) .catch((error) => {
+                    console.log(error);
+                });
             }
-        },
-        computed:{
-            num: function(){
-                return this.tip.length <= 35? this.tip.length: 35;
-            }
-        },
-        watch:{
-
-
         },
         beforeMount:function () {
-
+            if(this.role.role == 2){
+                this.btnShow = false;
+            }
         }
 
     }
@@ -502,9 +660,9 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 20;
+        z-index: 17;
     }
-    .container-top {
+     .header {
         position: relative;
         margin: 10px 0 30px 20px;
         .title {
@@ -528,10 +686,6 @@
         }
     }
     .t-form{
-        /*position:absolute;
-        top:65px;
-        left:0;
-        z-index:99;*/
         box-sizing:border-box;
         overflow-y: scroll;
         font-size:1.2rem;
@@ -628,13 +782,22 @@
         text-align:center;
         border-right:1px solid rgba(151,151,151,.3);
     }
+    .post-type{
+        display: flex;
+        margin: 40px 0 70px 0;
+        .t-radio{
+            margin-right:20px;
+            height:26px;
+            line-height:26px;
+        }
+    }
     .t-btn{
         font-size: 1.5rem;
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:40px 0 22px 0;
+        margin-bottom:22px;
         >div{
           height:40px;
           line-height:40px;
@@ -644,6 +807,10 @@
           background-color:#3c78ff;
           cursor:pointer;
 
+        }
+        .agent-btn{
+             width:100px;
+             box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
         }
         .confirm-btn{
           width:190px;
@@ -658,6 +825,12 @@
           background-color:#fff;
           border: 1px solid rgba(96,94,124,.6);
         }
+    }
+    .agent-btn:hover{
+          background-color: rgba(80, 139, 255,1);
+          color: white;
+          cursor: pointer;
+          box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
     }
     .confirm-btn:hover{
           background-color: rgba(80, 139, 255,1);

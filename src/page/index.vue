@@ -1,13 +1,13 @@
 <template>
     <div v-if="renderComponent">
         <bmap :allDot="allDot"></bmap>
-        <navigation @toShow="toShow"></navigation>
-        <toPublish v-if="publichShow"></toPublish>
+        <navigation></navigation>
         <tagIcon></tagIcon>
         <messageBox></messageBox>
         <infPanel></infPanel>
-        <transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>
-        <airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>
+        <detailed></detailed>
+        <!--<transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>-->
+        <!--<airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>-->
         <routeNetwork v-if="role.role != '2'"></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
@@ -22,12 +22,12 @@
     import navigation from './components/toolbar/navigation.vue'
     import tagIcon from './components/independenceComponents/tagIcon.vue'
     import messageBox from './components/demandListComponents/mesBox.vue'
-    import toPublish from './../page/components/toPublish.vue'
     import {conversionsCity,conversions,conversionsCompany} from './../public/js/conversions'
     import airlineDetailPayAfter from './../page/components/airlineDetailPayAfter.vue'
     import infPanel from './components/independenceComponents/infPanel.vue'
     import transIndex from './components/trans_detail/transIndex.vue'
     import routeNetwork from '$src/page/components/independenceComponents/routeNetwork.vue'
+    import detailed from './components/detailedDemand/detailed.vue'
     //test
     import timelyCommunication from './../page/components/timelyCommunication/timelyCommunication.vue'
     import newsTip from './components/toolbar/newsTip.vue';
@@ -69,9 +69,6 @@
             ]),
             contactClient(){  // 联系客户
 
-            },
-            toShow() {
-                this.publichShow = !this.publichShow;
             },
              closeThis() {
                 this.detailShow2 = false;
@@ -225,12 +222,10 @@
             navigation,
             tagIcon,
             messageBox,
-            toPublish,
-            airlineDetailPayAfter,
-            transIndex,
             infPanel,
             routeNetwork,
             timelyCommunication,
+            detailed
         }
     }
 </script>

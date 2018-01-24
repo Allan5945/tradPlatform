@@ -12,7 +12,7 @@
           </header>
           <div class="content">
               <div class="table-form">
-                   <div>
+                  <div>
                       <div>机型</div>
                       <div>{{detailData.aircrfttyp||'-'}}</div>
                   </div>
@@ -24,11 +24,18 @@
                       <div>运力归属</div>
                       <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                   </div>
+                  <div>
+                      <div>小时成本</div>
+                      <div>{{detailData.hourscost||'-'}}万/小时</div>
+                  </div>
                    <div>
                       <div>运力基地</div>
                       <div>{{detailData.dptNm||'-'}}</div>
                   </div>
-
+                  <div>
+                      <div>接受调度</div>
+                      <div>{{detailData.schedulingStr||'-'}}</div>
+                  </div>
                   <div >
                       <div>出港时刻</div>
                       <div>{{detailData.dptTime||'-'}}</div>
@@ -46,16 +53,8 @@
                       </div>
                   </div>
                   <div>
-                      <div>小时成本</div>
-                      <div>{{detailData.hourscost||'-'}}万/小时</div>
-                  </div>
-                  <div>
-                      <div style="margin:0 0 0 40px;">接受调度</div>
-                      <div>{{detailData.schedulingStr||'-'}}</div>
-                  </div>
-                  <div>
                       <div>有效期</div>
-                      <div>{{detailData.periodValidity||'-'}}</div>
+                      <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                   </div>
                   <div class="note">
                       <div>其他说明</div>
@@ -187,7 +186,7 @@
           </footer>
            <footer  v-else>
               <div class="btn">
-                  <div class="order" v-show="orderComplete">已生成订单，无法更改</div>
+                  <div class="order" v-show="orderComplete" style="margin-right:10px;">已生成订单，无法更改</div>
                   <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
                   @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
                   <div class="col-btn" @click="collect" v-else>收藏</div>

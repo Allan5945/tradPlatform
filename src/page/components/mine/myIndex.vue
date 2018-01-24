@@ -5,11 +5,11 @@
                 <div class="my-info">
                     <div class="my-pic">
                         <img :src='img' alt="头像">
-                        <span class="iconfont">&#xe645;</span>
+                        <!--<span class="iconfont">&#xe645;</span>-->
                     </div>
-                    <div class="name">张二狗</div>
+                    <div class="name" v-text="role.nickName"></div>
                     <div class="work-info">
-                        <div class="position">{{role.roleStr}}&nbsp;{{role.nickName}}</div>
+                        <div class="position">{{role.companyName}}&nbsp;{{role.department}}</div>
                         <div>成单量：<span>10</span></div>
                         <div>成单率：<span>50%</span></div>
                     </div>
@@ -69,35 +69,41 @@ import * as vx from 'vuex'
             }
         },
         methods: {
-        },
-        created:function () {
-            //权限判断
-            this.userStatus = this.role.role;
-            if(Number(this.role.role ) == 2){
-                let arr = [
-                    {
-                        n: "审核列表",
-                        u: '/index/userCenter/reviewList'
-                    },
-                    {
-                        n: "委托/托管",
-                        u: '/index/userCenter/entrust'
-                    }
-                ]
-                this.myList = arr.concat(this.myList);
-                arr = null;
-            };
+            updateRouter(){
+                //权限判断
+                this.userStatus = this.role.role;
+                if(Number(this.role.role ) == 2){
+                    let arr = [
+                        {
+                            n: "审核列表",
+                            u: '/index/userCenter/reviewList'
+                        },
+                        {
+                            n: "委托/托管",
+                            u: '/index/userCenter/entrust'
+                        }
+                    ]
+                    this.myList = arr.concat(this.myList);
+                    arr = null;
+                };
 
-            //子路由刷新判断
-            let pathstr = this.$router.history.current.path;
-            if(pathstr == '/index/userCenter')this.$router.push(this.myList[0].u);
-            if(pathstr.length>'/index/userCenter'.length){
-                for(let i in this.myList){
-                    if(this.myList[i].u == pathstr){
-                        return this.activeIndex = i;
+                //子路由刷新判断
+                let pathstr = this.$router.history.current.path;
+                if(pathstr == '/index/userCenter')this.$router.push(this.myList[0].u);
+                if(pathstr.length>'/index/userCenter'.length){
+                    for(let i in this.myList){
+                        if(this.myList[i].u == pathstr){
+                            return this.activeIndex = i;
+                        }
                     }
                 }
             }
+        },
+        beforeUpdate(){
+            this.updateRouter();
+        },
+        created:function () {
+            this.updateRouter();
         },
         mounted:function () {
         },

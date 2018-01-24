@@ -250,32 +250,32 @@
             <div class="table-form">
                 <div>
                     <div>联系人</div>
-                    <div>{{receiveIntention.contact}}</div>
+                    <div>{{receiveIntention.contact || '-'}}</div>
                     <!--<div>2017.11.11-2018.11.11</div>-->
                 </div>
                 <div>
                     <div>联系方式</div>
-                    <div>{{receiveIntention.ihome}}</div>
+                    <div>{{receiveIntention.ihome || '-'}}</div>
                     <!--<div>2017.11.11-2018.11.11</div>-->
                 </div>
                 <div>
                     <div>拟开时间</div>
-                    <div>{{receiveIntention.sailingtime}}</div>
+                    <div>{{receiveIntention.sailingtime || '-'}}</div>
                     <!--<div>2017.11.11-2018.11.11</div>-->
                 </div>
                 <div>
                     <div>拟开班期</div>
-                    <div>{{receiveIntention.days}}</div>
+                    <div>{{receiveIntention.days || '-'}}</div>
                     <!--<div>待定</div>-->
                 </div>
                 <div>
                     <div>拟开机型</div>
-                    <div>{{receiveIntention.aircrfttyp}}</div>
+                    <div>{{receiveIntention.aircrfttyp || '-'}}</div>
                     <!--<div>AA222</div>-->
                 </div>
                 <div>
                     <div>座位数</div>
-                    <div>{{receiveIntention.seating}}</div>
+                    <div>{{receiveIntention.seating || '-'}}</div>
                     <!--<div>180</div>-->
                 </div>
                 <div>
@@ -310,7 +310,8 @@
                 <div>
                     <div>运力归属</div>
                     <div>
-                        <span v-if="receiveIntention.capacityCompany != null">{{receiveIntention.capacityCompany.airlnCd}}</span>
+                        <span v-if="receiveIntention.capacityCompany != null && receiveIntention.capacityCompany != ''">{{receiveIntention.capacityCompany.airlnCd}}</span>
+                        <span v-else>-</span>
                     </div>
                     <!--<div>东方航空</div>-->
                 </div>
@@ -320,9 +321,9 @@
                     <!--<div>成都双流</div>-->
                 </div>
                 <div>
-                    <div>是否调度</div>
-                    <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">是</div>
-                    <div v-else>否</div>
+                    <div>接受调度</div>
+                    <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">接受</div>
+                    <div v-else>不接受</div>
                     <!--<div>华北地区</div>-->
                 </div>
                 <div class="tips" v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">
@@ -457,7 +458,7 @@
                                     <div>客量期望</div>
                                     <div>补贴政策</div>
                                     <div>运力归属</div>
-                                    <div>是否调度</div>
+                                    <div>接受调度</div>
                                 </div>
                                 <div class="right item">
                                     <div class="item-a item-height">{{item.contact || '-'}}</div>
@@ -473,8 +474,8 @@
                                         <span v-else>-</span>
                                     </div>
                                     <div class="item-height">
-                                        <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">是</span>
-                                        <span v-else>否</span>
+                                        <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">接受</span>
+                                        <span v-else>不接受</span>
                                     </div>
                                 </div>
                             </div>
@@ -538,8 +539,8 @@
             <span style="width: 560px;height: 1px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-b" v-else @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
+                <button class="btn btn-w" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                <button class="btn btn-b" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-show="secondButtonShow">

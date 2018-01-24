@@ -1,5 +1,5 @@
 <template>
-    <div class="mcar-wrapper" @click.self="closeThisFn">
+    <div class="mcar-wrapper">
         <div class="myCompanyAccountRecharge">
             <div class="top items">
                 <div class="left">

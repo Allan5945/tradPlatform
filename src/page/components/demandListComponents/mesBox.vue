@@ -18,8 +18,8 @@
                 <div v-if="!min"><span class="icon">&#xe61a;</span>收起列表</div>
             </div>
         </div>
-        <mesMinComponent v-on:openMax="open" v-if="min"></mesMinComponent>
-        <mesMaxComponent v-on:openMin="open" v-if="!min"></mesMaxComponent>
+        <mesMinComponent v-on:openMax="open" v-if="min" v-on:serah="serah"></mesMinComponent>
+        <mesMaxComponent v-on:openMin="open" v-if="!min" v-on:serah="serah"></mesMaxComponent>
     </div>
 </template>
 <script>
@@ -45,7 +45,9 @@
             },
             serah(){
                 let url = '/getOthersDemandListIndex';
+                let page = this.demandList.hybridPage;
                 if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
+                if(!this.demandType)page = this.demandList.monoPage;
                 this.$ajax({
                     url,
                     method: 'post',
@@ -53,12 +55,12 @@
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
                     params: {
-                        page: this.demandList.hybridPage
+                        page:1
                     }
                 }).then((response) => {
                     if (response.data.opResult != '1') {
                         this.$store.dispatch('hybridData', {v: response.data.list, t: 0}).then(() => {});
-                    }
+                    };
                 })
                     .catch((error) => {
                         console.log(error);

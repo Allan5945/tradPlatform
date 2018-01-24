@@ -10,7 +10,7 @@
                 </div>
             </header>
             <div class="content">
-                <div>
+               <div>
                     <div>机型</div>
                     <div>{{detailData.aircrfttyp||'-'}}</div>
                 </div>
@@ -22,9 +22,17 @@
                     <div>运力归属</div>
                     <div>***</div>
                 </div>
+                <div>
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                </div>
                  <div>
                     <div>运力基地</div>
                     <div>{{detailData.dptNm||'-'}}</div>
+                </div>
+                <div>
+                    <div>接受调度</div>
+                    <div>{{detailData.schedulingStr||'-'}}</div>
                 </div>
                 <div >
                     <div>出港时刻</div>
@@ -47,16 +55,8 @@
                    <div class="i-line">-</div>
                </div>
                 <div>
-                    <div>小时成本</div>
-                    <div>{{detailData.hourscost||'-'}}万/小时</div>
-                </div>
-                <div style="margin:0 0 0 40px;">
-                    <div>接受调度</div>
-                    <div>{{detailData.schedulingStr||'-'}}</div>
-                </div>
-                <div>
                     <div>有效期</div>
-                    <div>{{detailData.periodValidity||'-'}}</div>
+                    <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                 </div>
             </div>
             <footer>
