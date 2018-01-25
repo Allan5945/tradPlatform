@@ -155,7 +155,6 @@
                                         <li v-for="item in spaceList" @click="space2Fn(item)">{{item}}</li>
                                     </ul>
                                 </div>
-
                                 <div class="bottom">
                                     <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" @focus="airportFn2" >
                                     <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
@@ -726,11 +725,23 @@
                 this.sendData.pstTime = this.pstTime;
                 this.sendData.arrvTime = this.arrvTime;
                 this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
-                this.sendData.days = this.scheduleShow;      //必填 班期
+                if(this.myDate1 == '选择起止时间') { // 拟开时间
+                    this.sendData.sailingtime = '';      //必填 拟开行时间（起止时间）
+                }else {
+                    this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
+                }
+                if(this.scheduleShow == '选择班期类型') { //班期
+                    this.sendData.days = '';
+                }else {
+                    this.sendData.days = this.scheduleShow;      //必填 班期
+                }
+                if(this.myDate2 == '选择起止时间') { // 发布有效期
+                    this.sendData.periodValidity = '';
+                }else {
+                    this.sendData.periodValidity = this.myDate2; //必填 需求发布有效期
+                }
                 this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议 5:无补贴
-                this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
-                this.sendData.periodValidity = this.myDate2; //必填 需求发布有效期
 //                sendData.pst = this.secAreaCode;   //选填 经停地
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
 //                sendData.pstCt = this.secAreaCode; //不传
@@ -887,27 +898,7 @@
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
-                }/*if(this.firArea == '') {
-                    this.warn3Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate1 == '选择起止时间') {
-                    this.warn6Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.scheduleShow == '选择班期类型') {
-                    this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') {
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') {
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
-                    return
-                }*/
+                }
                 this.sendDataFn();
                 this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                 this.$ajax({
@@ -1454,7 +1445,7 @@
                 })
             },
             moreShowFn: function () { // 判断省略号是否显示
-              console.info(this.$refs.littleLabelWrapper.offsetWidth)
+//              console.info(this.$refs.littleLabelWrapper.offsetWidth)
                 if(this.$refs.littleLabelWrapper.offsetWidth >= 196) {
                     this.moreShow = true;
                 }else {
