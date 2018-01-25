@@ -272,6 +272,7 @@
              schedulListShow:false,
          }
      },
+     props:['demandId'],
      methods:{
          chat:function (v) {
               let chatData = {};
@@ -381,32 +382,16 @@
                     return "无补贴";
                     break;
             }
-        }
-
-
-
-     },
-      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
         },
-      watch: {
-
-      },
-      mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-
-            //console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && this.role.role == 0){
-                this.$ajax({
+        getDetail:function(){
+             this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: this.demandId
                 }
                 })
                 .then((response) => {
@@ -465,11 +450,22 @@
                         console.log(error);
                     }
                 );
-             this.$emit("openIntent");
-            };
-        });
 
+        }
 
+     },
+      computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
+      watch: {
+        "demandId":function(){
+            this.getDetail();
+        }
+      },
+      mounted() {
+          this.getDetail();
      },
      components: {
             myIntentForm,

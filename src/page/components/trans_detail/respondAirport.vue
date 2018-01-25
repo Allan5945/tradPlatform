@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div class="plan-wrapper scroll">
+      <div class="plan-wrapper scroll" v-if="responseShow">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
               <div class="head-til">{{detailData.title||'-'}}运力投放</div>
@@ -206,6 +206,7 @@
               </div>
           </footer>
       </div>
+     <needDetail  v-if="needShow"  @closeDetail= "closeDetail" :needData="needData" :demand="demandId"></needDetail>
     <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @closeForm="closeReForm" :acceptData = "planData"></reIntentForm>
     <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
@@ -224,9 +225,12 @@
  import intentForm from './intentForm.vue'
  import transDialog from './transDialog.vue'
  import paySuccess  from './paySuccess.vue'
+ import needDetail from './needDetail.vue'
+
  export default {
      data(){
          return{
+             needShow:false,
              planShow:true,
              isCollect:false,
              sureFormShow:false,
@@ -241,19 +245,29 @@
              chatShow:true,
              confirmShow:false,
              schedulListShow:false,
+             responseShow:false,
              planData:{},
              detailData:{},
              intentionCount:0,
              text:'已收藏',
-             planState:''
+             planState:'',
+             needData:{}
          }
      },
+     props:['demandId'],
       components: {
             sureForm,
             intentForm,
             transDialog,
             paySuccess,
-            reIntentForm
+            reIntentForm,
+            needDetail
+        },
+      watch:{
+          'demandId':function(){
+             console.log(this.demandId)
+             this.getNeedDetail();
+          }
         },
      methods:{
          toChat:function(){
@@ -435,34 +449,37 @@
                     return "无补贴";
                     break;
             }
-        }
-
-     },
-      computed:{
-         ...vx.mapGetters([
-                'role'
-            ])
-      },
-       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
-               //console.log("demandtype"+val.data.demandtype);
+        },
+        getNeedDetail(){
                 this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: val.data.id
-                }
+                    method: 'post',
+                    url: '/capacityRoutesDemandDetailFindById',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                      params: {
+                        demandId: this.demandId
+                    }
                 })
                 .then((response) => {
-                    if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
-                        this.$emit('responseShow');
-                        this.intentionCount = response.data.intentionCount;
-                        this.detailData = response.data.data;
-                        this.planData = response.data.receiveIntention;
+                    this.needData = response.data;
+                    if(response.data.receiveIntention == null){
+                          this.needShow = true;
+                          this.responseShow = false;
+                    }else if(response.data.receiveIntention !== null){
+                        this.responseShow = true;
+                        this.needShow = false;
+                        this.init();
+                    }
+                 })
+                .catch((error) => {
+                        console.log(error);
+                 });
+           },
+        init:function(){
+                        this.intentionCount = this.needData.intentionCount;
+                        this.detailData = this.needData.data;
+                        this.planData = this.needData.receiveIntention;
                         //选定状态无法编辑
                         if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
                             this.editShow = false;
@@ -527,27 +544,23 @@
                             this.orderComplete = false;
                         }
 
-
-
-
-
-
-                        if(response.data.isAlreadyCollect == true){
+                        //是否收藏
+                        if(this.needData.isAlreadyCollect == true){
                             this.isCollect = true;
-                        }else if(response.data.isAlreadyCollect == false){
+                        }else if(this.needData.isAlreadyCollect == false){
                            this.isCollect = false;
                         }
-                    }
 
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
+        }
 
-            };
-        });
-
+     },
+      computed:{
+         ...vx.mapGetters([
+                'role'
+            ])
+      },
+       mounted() {
+          this.getNeedDetail();
      },
 
 }

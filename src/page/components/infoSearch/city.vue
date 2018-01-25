@@ -16,27 +16,44 @@
                     <div class="i-content">
                         <div class="info-box">
                             <ul>
-                                <li><div>城市名称</div><div>{{infoData.cityname || "-"}}</div></li>
-                                <li><div>城市类型</div><div>{{infoData.citytype || "-"}}</div></li>
-                                <li><div>大型企业数量</div><div>{{infoData.largeenterprisenumber || "-"}}</div></li>
-                                <li><div>著名高校数量</div><div>{{infoData.famousuniversities || "-"}}</div></li>
-                                <li><div>4A景点数量</div><div>{{infoData.sitesnumber4a || "-"}}</div></li>
-                                <li><div>5A景点数量</div><div>{{infoData.sitesnumber5a || "-"}}</div></li>
+                                <li><div class="name">城市名称</div><div class="text">{{infoData.cityname || "-"}}</div></li>
+                                <li><div class="name">城市类型</div><div class="text">{{infoData.citytype || "-"}}</div></li>
+                                <li><div class="name">大型企业数量</div><div class="text">{{infoData.largeenterprisenumber || "-"}}</div></li>
+                                <li><div class="name">著名高校数量</div><div class="text">{{infoData.famousuniversities || "-"}}</div></li>
+                                <li><div class="name">4A景点数量</div><div class="text">{{infoData.sitesnumber4a || "-"}}</div></li>
+                                <li><div class="name">5A景点数量</div><div class="text">{{infoData.sitesnumber5a || "-"}}</div></li>
                             </ul>
                         </div>
                         <div class="info-box">
                             <ul>
-                                <li><div>所在省份</div><div>{{infoData.provinces || "-"}}</div></li>
-                                <li><div>机场</div><div>{{infoData.airport || "-"}}</div></li>
-                                <li><div>企业枚举</div><div class="overflow-item">{{infoData.enterpriseenumeration || "-"}}</div></li>
-                                <li><div>高校枚举</div><div class="overflow-item">{{infoData.famousuniversitiesenumeration || "-"}}</div></li>
-                                <li><div>4A景点枚举</div><div class="overflow-item">{{infoData.sitesenumeration4a || "-"}}</div></li>
-                                <li><div>5A景点枚举</div><div class="overflow-item">{{infoData.sitesenumeration5a || "-"}}</div></li>
+                                <li><div class="name">所在省份</div>
+                                <div class="text">{{infoData.provinces || "-"}}</div></li>
+                                <li><div class="name">机场</div><div class="text">{{infoData.airport || "-"}}</div></li>
+                                <li>
+                                    <div class="name">企业枚举</div>
+                                    <div class="overflow-item text"  @mouseover="enterpriseShow = true" @mouseout="enterpriseShow = false">{{infoData.enterpriseenumeration || "-"}}</div>
+                                    <div class="list-wrapper" v-show='enterpriseShow'>{{infoData.enterpriseenumeration || "-"}}</div>
+                                </li>
+                                <li>
+                                    <div class="name">高校枚举</div>
+                                    <div class="overflow-item text" @mouseover="collegeShow = true" @mouseout="collegeShow = false">{{infoData.famousuniversitiesenumeration || "-"}}</div>
+                                    <div class="list-wrapper" v-show='collegeShow'>{{infoData.famousuniversitiesenumeration || "-"}}</div>
+                                </li>
+                                <li>
+                                    <div class="name">4A景点枚举</div>
+                                    <div class="overflow-item text"  @mouseover="site4aShow = true" @mouseout="site4aShow = false">{{infoData.sitesenumeration4a || "-"}}</div>
+                                    <div class="list-wrapper" v-show='site4aShow'>{{infoData.sitesenumeration4a || "-"}}</div>
+                                </li>
+                                <li>
+                                    <div class="name">5A景点枚举</div>
+                                    <div class="overflow-item text"  @mouseover="site5aShow = true" @mouseout="site5aShow = false">{{infoData.sitesenumeration5a || "-"}}</div>
+                                    <div class="list-wrapper" v-show='site5aShow'>{{infoData.sitesenumeration5a || "-"}}</div>
+                                </li>
                             </ul>
                         </div>
                         <div class="info-box">
                             <ul>
-                                <li><div>行政区等级</div><div>{{infoData.citylvl || "-"}}</div></li>
+                                <li><div class="name">行政区等级</div><div class="text">{{infoData.citylvl || "-"}}</div></li>
                             </ul>
                         </div>
                     </div>
@@ -83,9 +100,13 @@
                                     <div v-if="infoData.highwayList" style="color:#3c78ff;">共{{infoData.highwayList.length}}条</div>
                                 </div>
                                 <div class="c-list-item" v-for="item in infoData.highwayList">
-                                    <div><span>类型</span>{{item.roadType|| "--"}}</div>
-                                    <div><span>代码</span>{{item.roadCode|| "--"}}</div>
-                                    <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
+                                    <div class="type"><span>类型</span>{{item.roadType|| "--"}}</div>
+                                    <div class="code"><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                    <div class="place">
+                                        <span>途径点</span>
+                                        <div class="over-flow" @mouseover="roadPointShow1 = true" @mouseout="roadPointShow1 = false">{{item.roadPoint|| "--"}}</div>
+                                        <div class="list-wrapper" v-show='roadPointShow1'>{{item.roadPoint|| "--"}}</div>
+                                    </div>
                                 </div>
                                 <div class="c-list-item" v-if="!infoData.highwayList">
                                     <div style="text-align:center;width:100%;color:red;">暂无数据</div>
@@ -97,9 +118,13 @@
                                     <div v-if="infoData.railwayList" style="color:#3c78ff;">共{{infoData.railwayList.length}}条</div>
                                 </div>
                                  <div class="c-list-item" v-for="item in infoData.railwayList">
-                                    <div><span>类型</span>{{item.roadType|| "--"}}</div>
-                                    <div><span>代码</span>{{item.roadCode|| "--"}}</div>
-                                    <div><span>途径点</span><div class="over-flow">{{item.roadPoint|| "--"}}</div></div>
+                                    <div class="type"><span>类型</span>{{item.roadType|| "--"}}</div>
+                                    <div class="code"><span>代码</span>{{item.roadCode|| "--"}}</div>
+                                    <div class="place">
+                                        <span>途径点</span>
+                                        <div class="over-flow" @mouseover="roadPointShow = true" @mouseout="roadPointShow = false">{{item.roadPoint|| "--"}}</div>
+                                        <div class="list-wrapper" v-show='roadPointShow'>{{item.roadPoint|| "--"}}</div>
+                                    </div>
                                 </div>
                                 <div class="c-list-item" v-if="!infoData.railwayList">
                                     <div style="text-align:center;width:100%;color:red;">暂无数据</div>
@@ -150,7 +175,13 @@
             return {
                 infoData:{},
                 qyCode:'',
-                showDetail:true
+                showDetail:true,
+                enterpriseShow:false,
+                collegeShow:false,
+                site4aShow:false,
+                site5aShow:false,
+                roadPointShow:false,
+                roadPointShow1:false
             }
         },
         watch: {
@@ -387,6 +418,17 @@
         padding:0;
         margin:0;
     }
+    /*多行省略号，兼容多个浏览器*/
+    @mixin line-clamp($lines, $line-height: 23px) {
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $lines; // number of lines to show
+        overflow: hidden;
+        line-height: $line-height;
+        max-height: $line-height * $lines;
+    }
+
     .wrapper{
         position: absolute;
         width: 100%;
@@ -473,15 +515,16 @@
         flex:1;
         li{
             display:flex;
-            >div{
+            position:relative;
+            >.name{
                 height:35px;
                 line-height:35px;
-            }
-            >div:first-of-type{
                 width:140px;
                 text-align:right;
             }
-            >div:last-of-type{
+            >.text{
+                height:35px;
+                line-height:35px;
                 text-align:left;
                 padding-left:18px;
                 font-size:1.4rem;
@@ -489,13 +532,26 @@
         }
          .overflow-item{
             width:250px;
-            overflow : hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
         }
 
+    }
+     .list-wrapper {
+        position: absolute;
+        top: 30px;
+        left: 140px;
+        display: flex;
+        padding: 10px;
+        width: 260px;
+        height:100px;
+        background: white;
+        border-radius: 4px;
+        //box-shadow: 0 2px 11px rgba(96,94,124,0.37);
+        z-index: 3;
+        border:1px solid #E3E3E3;
+        font-size:1.4rem;
     }
     .i-echart{
         margin:0 20px 20px 20px;
@@ -572,20 +628,34 @@
                     line-height:67px;
                     padding:0 26px;
                     border-top:1px solid #ccc;
-                    div{
-                        flex:1;
+                    .type{
+                        width:120px;
+                    }
+                    .code{
+                        width:120px;
+                    }
+                    .place{
+                        width:220px;
                         display:flex;
+                        position: relative;
                     }
                     span{
-                        padding-right:10px;
+                        padding-right:12px;
+                        font-size:1.2rem;
                     }
                     .over-flow{
-                        width:120px;
-                        overflow : hidden;
-                        text-overflow: ellipsis;
-                        display: -webkit-box;
-                        -webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
+                        display:inline-block;
+                        width:170px;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
+                    }
+                    .list-wrapper{
+                        top:45px;
+                        left:0;
+                        width:220px;
+                        height:80px;
+                        line-height:26px;
                     }
                 }
              }
@@ -629,11 +699,9 @@
              }
              .text-tent{
                 width:700px;
-                overflow:hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
              }
         }
     }
@@ -723,11 +791,8 @@
             padding-right:20px;
             height:46px;
             line-height:23px;
-            overflow:hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+           @include line-clamp(2);
+
         }
         .box-foot{
             margin-top:10px;

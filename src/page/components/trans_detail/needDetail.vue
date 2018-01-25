@@ -96,6 +96,7 @@
              intentionCount:0,
              demandId:'',
              text:'已收藏',
+             allShow:false,
              schedulListShow:false,
              isCollect:false,
              intentFormShow:false,
@@ -104,6 +105,13 @@
              inventBtnShow:false
          }
      },
+     props:['needData','demand'],
+     watch:{
+          'demand':function(){
+            console.log(this.demand)
+             this.init();
+          }
+        },
      methods:{
          closeDetail:function(){
             this.$emit('closeDetail');
@@ -180,6 +188,27 @@
           }else{
             this.text = "已收藏";
           }
+         },
+         init:function(){
+              this.intentionCount = this.needData.intentionCount;
+              this.detailData = this.needData.data;
+              this.demandId = this.detailData.demandId;
+
+              let progress = this.detailData.demandprogress;
+              //需求发布、意向征集、订单确认
+              if(progress == '0'||progress == '1'||progress == '2'){
+                  this.inventBtnShow = true;
+              }else{
+                  this.inventBtnShow = false;
+              }
+
+
+              if(this.needData.isAlreadyCollect == true){
+                  this.isCollect = true;
+              }else if(this.needData.isAlreadyCollect == false){
+                  this.isCollect = false;
+              }
+
          }
      },
      computed: {
@@ -188,47 +217,7 @@
             ])
         },
       mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-            if(val.data.demandtype == 1 && this.role.role == 1){
-               //console.log("demandtype"+val.data.demandtype);
-                this.demandId = val.data.id;
-                this.$ajax({
-                method: 'post',
-                url: '/capacityRoutesDemandDetailFindById',
-                headers: {
-                    'Content-type': 'application/x-www-form-urlencoded'
-                },
-                  params: {
-                    demandId: this.demandId
-                }
-                })
-                .then((response) => {
-                    if(response.data.opResult == "004"|| response.data.receiveIntention == null){
-                        this.$emit('transShow');
-                    }
-                    this.intentionCount = response.data.intentionCount;
-                    this.detailData = response.data.data;
-
-                    let progress = this.detailData.demandprogress;
-                     //需求发布、意向征集、订单确认
-                    if(progress == '0'||progress == '1'||progress == '2'){
-                        this.inventBtnShow = true;
-                    }else{
-                        this.inventBtnShow = false;
-                    }
-
-                     if(response.data.isAlreadyCollect == true){
-                        this.isCollect = true;
-                    }else if(response.data.isAlreadyCollect == false){
-                        this.isCollect = false;
-                    }
-                })
-                .catch((error) => {
-                        console.log(error);
-                    }
-                );
-            };
-        });
+        this.init();
      },
       components: {
             intentForm,

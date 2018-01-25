@@ -18,7 +18,11 @@
                             <ul>
                                 <li><div>航司名</div><div>{{infoData.airlnCd || "-"}}</div></li>
                                 <li><div>成立时间</div><div>{{infoData.establishtime || "-"}}</div></li>
-                                <li><div>基地分布</div><div class="basedistribution">{{infoData.basedistribution || "-"}}</div></li>
+                                <li>
+                                    <div>基地分布</div>
+                                    <div class="basedistribution"  @mouseover="basedistributionShow = true" @mouseout="basedistributionShow = false">{{infoData.basedistribution || "-"}}</div>
+                                    <div class="list-wrapper" v-show='basedistributionShow'>{{infoData.basedistribution || "-"}}</div>
+                                </li>
                                 <li><div>航空联盟</div><div>{{infoData.airlinealliance || "-"}}</div></li>
                             </ul>
                         </div>
@@ -95,7 +99,8 @@
                 infoData:{},
                 qyCode:'',
                 newsData:[],
-                showDetail:true
+                showDetail:true,
+                basedistributionShow:false
             }
         },
         watch: {
@@ -179,6 +184,7 @@
         padding:0;
         margin:0;
     }
+
     .wrapper{
         position: absolute;
         width: 100%;
@@ -265,6 +271,7 @@
         flex:1;
         li{
             display:flex;
+            position: relative;
             >div{
                 height:35px;
                 line-height:35px;
@@ -273,17 +280,30 @@
                 width:140px;
                 text-align:right;
             }
-            >div:last-of-type{
+            >div:nth-of-type(2){
                 text-align:left;
                 padding-left:18px;
                 font-size:1.4rem;
             }
             .basedistribution{
                 width:190px;
-                overflow:hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+            }
+            .list-wrapper {
+                position: absolute;
+                top: 30px;
+                left: 140px;
+                display: flex;
+                padding: 10px;
+                width: 260px;
+                height:180px;
+                background: white;
+                border-radius: 4px;
+                z-index: 3;
+                border:1px solid #E3E3E3;
+                font-size:1.4rem;
             }
         }
         .fl-type{
