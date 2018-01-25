@@ -10,7 +10,7 @@
             </div>
             <userObj :arg="data1" v-on:resMes="resMes1"></userObj>
             <userObj :arg="data2" v-on:resMes="resMes2"></userObj>
-            <userObj :arg="data3" v-on:resMes="resMes3"></userObj>
+            <userObj :arg="data3" v-on:resMes="resMes3" v-on:resCodeSycn="resCodeSycn"></userObj>
             <validation v-on:validation="validaon" v-if="validationTag"></validation>
             <verificationCode :mes="collect.tel" v-on:setCode="setCode" :verCode.sync="verCode" v-if="verCode"
                               style="margin-top:30px;"></verificationCode>
@@ -100,6 +100,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["联系方式（请输入电话）", "联系方式（请输入电话）"],
                     validation: 4,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    syncPhone:true,     // 是否验证手机
                 },
                 data4: {
                     inputeType: "text", // 输入框的类型
@@ -220,6 +221,38 @@
                     this.showtip = true;
 //                    this.setTime = setTimeout(()=>{this.showtip = false;},1500);
                 }
+            },
+            resCodeSycn(p){
+                this.$ajax({
+                    method: 'post',
+                    url: '/validPhone',
+                    params:{
+                        phone:this.collect.tel,
+                        validType:1
+                    },
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then((response) => {
+                        if(response.data.opResult  == '0'){
+                            this.validationTag = false;
+                            this.tiperr = '您的手机号码已经注册过！';
+                            this.showtip = true;
+                        }else{
+//                                this.$message({
+//                                    showClose: true,
+//                                    message: "手机号不存在！",
+//                                    type: 'error'
+//                                });
+                            this.validationTag = true;
+                            this.verCode = false;
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
             },
             resMes4(data) {
                 this.collect.department = data.i;

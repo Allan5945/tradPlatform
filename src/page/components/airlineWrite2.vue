@@ -231,8 +231,8 @@
                             <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
                             <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                 <div class="selec-data">
-                                    <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                                    <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                    <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
+                                    <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                     <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
@@ -388,9 +388,16 @@
             <div class="fourth items bg-color">
                 <div class="top item-child">
                     <span class="margin-right">其他说明</span>　
-                    <div class="choose-input">
-                        <input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg"
-                               maxlength="35" style="border: 0;"><span>{{num}}/35</span>
+                    <div class="choose-input" style="position: relative; border: none; height: auto;">
+                        <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
+                        <textarea class="text-area" v-model="remarkMsg" maxlength="200"></textarea>
+                        <span class="background-line" style="top: 26px;"></span>
+                        <span class="background-line" style="top: 52px;"></span>
+                        <span class="background-line" style="top: 78px;"></span>
+                        <span class="background-line" style="top: 104px;"></span>
+                        <span class="background-line" style="top: 130px;"></span>
+                        <span class="background-line" style="top: 156px;"></span>
+                        <span style="position: absolute; bottom: 0px; right: 0;">{{num}}/200</span>
                     </div>
                 </div>
             </div>
@@ -758,7 +765,7 @@
                     alWacceptDispatch.checked = true;
                     this.schedulingShow = true;
                     if(this.acceptData.airportForSchedulines != null
-                        || this.acceptData.airportForSchedulines.length != 0) {
+                        && this.acceptData.airportForSchedulines.length != 0) {
                         this.directionPublicCity = [];
                         this.acceptData.airportForSchedulines.forEach((val) => {
                             this.directionPublicCity.push({
@@ -1568,6 +1575,27 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96, 94, 124, 0.37);
+    /*其他说明*/
+    .text-area {
+        width: 475px;
+        height: 162px;
+        font-size: 12px;
+        line-height: 26px;
+        color: #605E7C;
+        background: transparent;
+        outline: none;
+        border: none;
+        resize: none;
+    }
+    .background-line {
+        position: absolute;
+        left: 0;
+        width: 475px;
+        height: 1px;
+        background: $border-color;
+    }
+
+
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
@@ -2245,9 +2273,7 @@
         margin-bottom: 10px;
         .item-child {
             display: flex;
-            align-items: center;
             flex-grow: 1;
-            height: 26px;
             line-height: 26px;
         }
         .top {
@@ -2255,6 +2281,7 @@
         }
         .bottom {
             position: relative;
+            align-items: center;
             padding: 20px 0 34px 0;
             width: 240px;
         }

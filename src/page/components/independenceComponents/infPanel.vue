@@ -27,22 +27,32 @@
                 <div>{{basicMes.xfdj}}</div>
             </div>
             <div>
-                <router-link :to="{ path: '/index/information/airport',query: { code: basicMes.airCode }}">
+                <router-link class="btn-w more" :to="{ path: '/index/information/airport',query: { code: basicMes.airCode }}">
                     更多详情
                 </router-link>
             </div>
         </div>
         <div class="inf-associated">
             <div>关联航司</div>
-            <div><img src="" alt=""></div>
+            <div>
+                <span v-for="(val,key) in glhs" v-text="val.iata" style="margin-right: 10px;"></span>
+            </div>
         </div>
-        <div class="inf-news">
+        <div class="inf-news" :class="{'gdyq':yq.length != 0}">
             <div>滚动舆情</div>
-            <div><img src="" alt=""></div>
+            <transition name="slide-fade">
+                <div v-for="(val,key) in yq" class="gdyq-item" v-if="key == setgd">
+                    <a :href="val.articleUrl"  v-text="val.articleContent"class="text-line"></a>
+                </div>
+            </transition>
         </div>
-        <div class="inf-news">
+        <div class="inf-news" :class="{'gdyq':zc.length != 0}">
             <div>最新政策</div>
-            <div><img src="" alt=""></div>
+            <transition name="slide-fade">
+                <div v-for="(val,key) in zc" class="gdyq-item" v-if="key == setzc">
+                    <a href=""  v-text="val.rewardpolicytext"class="text-line"></a>
+                </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -64,6 +74,13 @@
                     fxzdl:50,
                     xfdj:''
                 },
+                glhs:[],
+                yq:[],
+                setgd:0,
+                setIn:"",
+                zc:[],
+                setzc:0,
+                setInzc:"",
             }
         },
         computed:{
@@ -74,10 +91,80 @@
         methods:{
             clek:function(){
                 document.getElementById("inf-mes-box").style.display = "none";
+            },
+            setInl(){
+                if(this.setIn != "")clearInterval(this.setIn);
+                this.setgd = 0;
+                this.setIn = setInterval(()=>{
+                    if(this.setgd < this.yq.length-1){
+                        let setgd = this.setgd +1;
+                        this.setgd = 6666666;
+                        setTimeout(()=>{
+                            this.setgd = setgd;
+                        },1000)
+                    }else if(this.setgd == this.yq.length-1){
+                        this.setgd = 0;
+                    }
+                },5000);
+            },
+            setInlzcf(){
+                if(this.setInzc != "")clearInterval(this.setInzc);
+                this.setzc = 0;
+                this.setInzc = setInterval(()=>{
+                    if(this.setzc < this.zc.length-1){
+                        let setgds = this.setzc +1;
+                        this.setzc = 6666666;
+                        setTimeout(()=>{
+                            this.setzc = setgds;
+                        },1000)
+                    }else if(this.setzc == this.zc.length-1){
+                        this.setzc = 0;
+                    }
+                },5000);
             }
         },
         mounted:function(){
+            let _this = this;
             tabulationBoxTrigger.$on("tipBox",d => {
+                _this.yq = [];
+                _this.zc = [];
+                _this.glhs = [];
+
+                _this.$ajax({
+                    method: 'post',
+                    url: '/loadIndexAirportInfoByCode',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params:{
+                        itia:d
+                    },
+                })
+                    .then((response) => {
+                        if(response.data.opResult == '0'){
+                            if(response.data.obj.opinions != null){
+                                _this.yq = response.data.obj.opinions;
+                                _this.setInl();
+                            }else{
+                                _this.yq = []
+                            };
+                            if(response.data.obj.rewardPolicyList != null){
+                                _this.zc = response.data.obj.rewardPolicyList;
+                                _this.setInlzcf();
+                            }else{
+                                _this.zc = []
+                            }
+                            if(response.data.obj.compenys != null){
+                                _this.glhs = response.data.obj.compenys;
+                            }else{
+                                _this.glhs = []
+                            }
+                        }
+                    })
+                    .catch((error) => {
+                            console.log(error);
+                        }
+                    );
                 let mes = this.$airMes(this.airList,d).allData;
                 let obj = {
                     airName:mes.airlnCdName,
@@ -94,17 +181,38 @@
     }
 </script>
 <style lang="scss" scoped>
+    .slide-fade-enter-active {
+        transition: all .3s ease;
+    }
+    .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active for below version 2.1.8 */ {
+        transform: translateX(10px);
+        opacity: 0;
+    }
     .inf-box {
-        cursor: pointer;
         width: 300px;
-        height: 300px;
+        max-height: 600px;
         position: absolute;
         top: 300px;
         left: 500px;
         display: none;
+        overflow-y: auto;
+    }
+    .gdyq{
+        height: 85px;
         overflow: hidden;
     }
-
+    .gdyq-item{
+        height: 65px;
+        text-overflow: ellipsis;
+    }
+    .text-line{
+        text-decoration:underline;
+        line-height: 22px;
+    }
     .inf-head {
         height: 40px;
         background-color: #e7e7e7;
@@ -141,6 +249,11 @@
             border-radius: 50%;
         }
     }
+    .more{
+        border-radius: 15px;
+        display: inline-block;
+        padding: 5px 10px;
+    }
     .inf-mes{
         display: flex;
         flex-flow: row wrap;
@@ -148,7 +261,7 @@
         padding: 30px 20px 0 ;
         border-bottom: 1px solid #f3f3f3;
         >div{
-            width: 70px;
+            width: 84px;
             padding-bottom: 20px;
             > div:nth-child(1){
                 font-size: 12px;
