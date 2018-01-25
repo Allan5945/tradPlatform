@@ -21,7 +21,7 @@
             <div class="timely-content-body">
                 <div class="chat-function" v-if="setId != 'x-t-null'" @mousedown.stop @mouseup.stop>
                     <div class="chat-function-banner" id="chat-function-banner">
-                        <div class="scroll">
+                        <div class="scroll" @scroll="woListScroll($event)">
                             <div :class="{'modify-the-information':(val.textType == '1'),'oneself-news':(val.textType == '0' && val.fromNameId == role.id),'others-news':(val.textType == '0' && val.fromNameId != role.id)}"
                                  v-for="(val,index) in chatIng">
                                 <div class="head-portrait" v-if="(val.textType == '0')">
@@ -35,14 +35,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-function-input" v-if="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '4'">{{inData[setId].demandProgress}}
+                    <div class="chat-function-input" v-show="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '4'">
                         <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)"
                                   class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
                     </div>
                 </div>
                 <div class="chat-detailed" @scroll="woListScroll($event)" v-else>
-                    <div class="chat-detailed-item" v-for="(val,index) in chatIng">
+                    <div class="chat-detailed-item" v-for="(val,index) in chatIng.reverse()">
                         <div class="chat-detailed-title"><span v-text="val.title"></span>{{val.date}}</div>
                         <div class="chat-detailed-text popup" v-text="val.text"></div>
                         <div class="chat-detailed-btn btn btn-b" @click="queryDemod(val)">查看详情</div>
@@ -405,11 +405,63 @@
 
             },
             woListScroll(e){
-//                console.log(ln.chat.chatData[this.setId].chatRcord);
-//                if(0){
-//
-//                }
-//                console.log(e)
+                if(e.target.scrollTop > e.target.scrollHeight/2){
+//                    console.log(ln.chat.chatData[this.setId]);
+                    if(ln.chat.chatData[this.setId].chatRcord.pageNo < ln.chat.chatData[this.setId].chatRcord.pageCount){
+                        let num = Number(ln.chat.chatData[this.setId].chatRcord.pageNo) + 1;
+                        ln.chat.chatData[this.setId].chatRcord.pageNo = num;
+                        let url = '/openSystemChat';
+                        if(this.setId != 'x-t-null'){
+                            url = 'openNormalChat';
+                        }
+                        let params = {
+                            fromNameId:this.role.id,
+                            page:num
+                        };
+                        if(this.setId != 'x-t-null'){
+                            let sed = this.setId.split('-');
+                            url = {
+                                fromNameId:this.role.id,
+                                toNameId:sed[0] == this.role.id ? sed[1] : sed[0],
+                                page:num,
+                                demandId:sed[2] == 'null' ? "":sed[2]
+                            }
+                        }
+
+                        this.$ajax({
+                            method: 'post',
+                            url,
+                            headers: {
+                                'Content-type': 'application/x-www-form-urlencoded'
+                            },
+                            params,
+                        })
+                            .then((response) => {
+                                if(response.data.opResult == "0"){
+                                    ln.chat.chatData[this.setId].chatRcord.list = [...ln.chat.chatData[this.setId].chatRcord.list,...response.data.systemMessage.chatRcord.list]
+                                    ln.chat.change = !ln.chat.change;
+                                    console.log(ln.chat.chatData[this.setId])
+                                }else{
+                                    ln.chat.chatData[this.setId].chatRcord.pageNo = num - 1;
+                                    const h = this.$createElement;
+                                    let mes = response.data.msg;
+                                    this.$message({
+                                        showClose: true,
+                                        message: mes,
+                                        type: 'error'
+                                    });
+                                }
+                            })
+                            .catch((error) => {
+                                    console.log(error);
+                                }
+                            );
+                    }
+                }
+                if(this.setId){
+
+                }
+
             }
         }
     };
