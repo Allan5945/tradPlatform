@@ -73,7 +73,7 @@
                         <div>{{extendData.dptTime||"待协调"}}</div>
                     </div>
                 </div>
-                <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
                 <div class="airplace">
                     <div>经停机场</div>
                     <div>
@@ -85,7 +85,7 @@
                         <div>{{extendData.pstTime||"待协调"}}</div>
                     </div>
                 </div>
-                <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
+                <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
                 <div class="airplace">
                     <div>到达区域</div>
                     <div>
@@ -133,7 +133,7 @@
                 </div>
                 <div>
                     <div>补贴政策</div>
-                    <div>{{subsidyList[extendData.subsidypolicy]||"-"}}</div>
+                    <div>{{extendData.subsidypolicyStr||"-"}}</div>
 
                 </div>
                 <div>
@@ -207,15 +207,13 @@
     }
     .airline{
         display:flex;
-        padding:20px 0 0 10px;
-        margin: 0 10px;
         box-sizing:border-box;
         border-bottom:1px solid #ccc;
         >div:nth-of-type(odd){
             max-width:160px;
         }
         >div:nth-of-type(even){
-            width:60px;
+            width:100px;
             text-align: center;
         }
         .airplace{

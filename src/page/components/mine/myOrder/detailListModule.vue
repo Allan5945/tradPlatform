@@ -95,36 +95,6 @@
                             <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
-
-                    <template v-if="ndetailData.isWeituo">
-                        <header>
-                            <div class="head-til">收到的意向</div>
-                            <div class="tips">
-                                <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                            </div>
-                        </header>
-                        <div class="table-form-extend">
-                            <div class="table-header">
-                                <span class="item-a">收到时间</span><span class="item-b">意向方</span>
-                            </div>
-                            <ul class="table-body">
-                                <li v-for="(item, index) in extend.data">
-                                    <div class="list">
-                                        <span class="item-a">2017.12.19</span>
-                                        <span class="item-b">CTU</span>
-                                        <span v-show="extend.active!=index" @click="extend.active=index" class="item-c">查看详情</span>
-                                        <span v-show="extend.active===index" @click="extend.active=-1" class="item-c">收起详情</span>
-                                    </div>
-                                    <extendPanel class="main-info"
-                                                 v-show="extend.active===index"
-                                                 :extendData="ndetailData"
-                                                 :thisType="'yunli'"
-                                    >
-                                    </extendPanel>
-                                </li>
-                            </ul>
-                        </div>
-                    </template>
                 </div>
             </div>
         </template>
@@ -199,34 +169,6 @@
                             <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
-                    <template v-if="ndetailData.isWeituo">
-                        <header>
-                            <div class="head-til">收到的意向</div>
-                            <div class="tips">
-                                <span>已有{{ ndetailData.intentionCount||"0" }}位用户发起意向</span>
-                            </div>
-                        </header>
-                        <div class="table-form-extend">
-                            <div class="table-header">
-                                <span class="item-a">收到时间</span><span class="item-b">意向方</span>
-                            </div>
-                            <ul class="table-body">
-                                <li v-for="(item, index) in extend.data">
-                                    <div class="list">
-                                        <span class="item-a">2017.12.19</span>
-                                        <span class="item-b">CTU</span>
-                                        <span v-show="extend.active!=index" @click="extend.active=index" class="item-c">查看详情</span>
-                                        <span v-show="extend.active===index" @click="extend.active=-1" class="item-c">收起详情</span>
-                                    </div>
-                                    <extendPanel class="main-info"
-                                                 v-show="extend.active===index"
-                                                 :extendData="ndetailData"
-                                                 :thisType="'yunli'">
-                                    </extendPanel>
-                                </li>
-                            </ul>
-                        </div>
-                    </template>
                 </div>
             </div>
         </template>
@@ -234,7 +176,6 @@
 </template>
 
 <script>
-    import extendPanel from './extend.vue'
     export default {
         data(){
             return{
@@ -269,7 +210,6 @@
             }
         },
         props:["ndetailData","type"],
-        components:{extendPanel}
     }
 </script>
 
