@@ -107,13 +107,62 @@
                                   </div>
                                   <div class="content-box">
                                       <ul class="box-list" v-for="item in distrList1">
-                                          <li>{{item.monCnt}}</li>
-                                          <li>{{item.tuesCnt}}</li>
-                                          <li>{{item.wedCnt}}</li>
-                                          <li>{{item.thursCnt}}</li>
-                                          <li>{{item.friCnt}}</li>
-                                          <li>{{item.staCnt}}</li>
-                                          <li>{{item.sunCnt}}</li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.monCnt*0.8)) +',134)',
+                                                      'font-size': ((item.monCnt+1)/3.45 + 5 )+'px',
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.monCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.tuesCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.tuesCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.tuesCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.wedCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.wedCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.wedCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.thursCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.thursCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.thursCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.friCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.friCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.friCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.staCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.staCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.staCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.sunCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.sunCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.sunCnt">&#xe630;</span>
+                                          </li>
                                       </ul>
                                   </div>
                               </div>
