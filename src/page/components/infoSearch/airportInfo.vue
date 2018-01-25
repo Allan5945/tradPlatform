@@ -234,13 +234,13 @@
                 </div>
                 <div class="sidebar">
                     <ul class="sidebar-list">
-                        <li><span class="point"></span><span class="iconfont">&#xe627;</span>机场位置</li>
-                        <li><span class="iconfont">&#xe625;</span>地勤服务</li>
-                        <li><span class="iconfont">&#xe629;</span>消防救援</li>
-                        <li style="width:210px;"><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</li>
-                        <li><span class="iconfont">&#xe626;</span>跑道特征</li>
-                        <li><span class="iconfont">&#xe6ef;</span>进近灯光</li>
-                        <li><span class="iconfont">&#xe669;</span>飞行程序</li>
+                        <li :class="{active:step =='1'}"><span class="point"></span><span class="iconfont">&#xe627;</span>机场位置</li>
+                        <li :class="{active:step =='2'}"><span class="iconfont">&#xe625;</span>地勤服务</li>
+                        <li :class="{active:step =='3'}"><span class="iconfont">&#xe629;</span>消防救援</li>
+                        <li :class="{active:step =='4'}" style="width:210px;"><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</li>
+                        <li :class="{active:step =='5'}"><span class="iconfont">&#xe626;</span>跑道特征</li>
+                        <li :class="{active:step =='6'}"><span class="iconfont">&#xe6ef;</span>进近灯光</li>
+                        <li :class="{active:step =='7'}"><span class="iconfont">&#xe669;</span>飞行程序</li>
                     </ul>
                 </div>
             </div>
@@ -253,7 +253,8 @@
         data() {
             return {
                 infoData:{},
-                dataShow:false
+                dataShow:false,
+                step:'1'
             }
         },
         props:['myData'],
@@ -317,7 +318,7 @@
         top: 0;
         left: 0;
         background-color: rgba(0,0,0,.5);
-        z-index: 20;
+        z-index: 99;
         .airport-info{
             position:absolute;
             left:0;
@@ -460,7 +461,7 @@
             line-height:42px;
             display:flex;
             font-size:1.3rem;
-            border-bottom:2px solid #3c78ff;
+
             cursor:pointer;
             position:relative;
             span{
@@ -478,6 +479,9 @@
                 border-radius:100%;
                 background-color: #3c78ff;
             }
+        }
+        .active{
+             border-bottom:2px solid #3c78ff;
         }
     }
 </style>

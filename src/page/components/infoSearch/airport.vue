@@ -1,14 +1,14 @@
 <template>
     <div>
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="wrapper">
+        <div class="wrapper scroll" id="airport">
             <div class="content" v-if="showDetail">
                 <div class="banner">
                     <div class="airport-img"><img :src="img" alt=""></div>
                     <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
                     <div class="sidebar">
-                        <div><span class="iconfont">&#xe603;</span>基本信息</div>
-                         <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
+                        <div :class="{seleted:isInfo}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
+                        <div :class="{seleted:!isInfo}" @click="getNews"><span class="iconfont" >&#xe624;</span>新闻舆情</div>
                     </div>
                 </div>
                 <div class="info">
@@ -34,9 +34,17 @@
                                 <li><div>所在区域</div><div>{{infoData.area || "-"}}</div></li>
                                 <li><div>通航时间</div><div>{{infoData.departuretime || "-"}}</div></li>
                                 <li><div>标高</div><div>{{infoData.airEle || "-"}}</div></li>
-                                <li><div>特殊机场构成原因</div><div>{{infoData.specialairportwhy || "-"}}</div></li>
+                                <li>
+                                    <div>特殊机场构成原因</div>
+                                    <div  @mouseover="resonShow = true" @mouseout="resonShow = false">{{infoData.specialairportwhy || "-"}}</div>
+                                    <div class="list-wrapper" v-show='resonShow' v-if="infoData.specialairportwhy">{{infoData.specialairportwhy || "-"}}</div>
+                                </li>
                                 <li><div>消防等级</div><div>{{infoData.firelvl || "-"}}</div></li>
-                                <li><div>可起降机型</div><div class="fl-type">{{infoData.modelcanhandle || "-"}}</div></li>
+                                <li>
+                                    <div>可起降机型</div>
+                                    <div class="fl-type" @mouseover="flytypeShow = true" @mouseout="flytypeShow = false">{{infoData.modelcanhandle || "-"}}</div>
+                                    <div class="list-wrapper" v-show='flytypeShow' style="width:400px;height:300px;">{{infoData.modelcanhandle || "-"}}</div>
+                                </li>
                                 <li><div>放行准点率</div><div>{{infoData.releasepunctuality || "-"}}</div></li>
                                 <li><div>国内在飞航班数量</div><div>{{infoData.intheflight || "-"}}</div></li>
                                 <li><div>机场巴士</div><div>{{infoData.airportbus || "-"}}</div></li>
@@ -55,17 +63,20 @@
                         <div class="airport-info" @click="airportInfo">机场情报></div>
                     </div>
                     <div class="i-echart">
-                        <div>
+                        <div v-if="infoData.passengerThroughputs">
                             <h5>旅客吞吐量</h5>
                            <div id="myChart1"></div>
+                           <div class="no-data" v-if="infoData.passengerThroughputs.length == 0">暂无数据</div>
                         </div>
-                        <div>
+                        <div v-if="infoData.passengerThroughputs">
                             <h5>货物吞吐量</h5>
                            <div id="myChart2"></div>
+                           <div class="no-data" v-if="infoData.goodsThroughputs.length == 0 ">暂无数据</div>
                         </div>
-                        <div>
+                        <div v-if="infoData.passengerThroughputs">
                             <h5>起降架次</h5>
                            <div id="myChart3"></div>
+                           <div class="no-data" v-if="infoData.takeOffAndLandingFlights.length == 0">暂无数据</div>
                         </div>
                     </div>
                     <div class="airport-track">
@@ -102,7 +113,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="news">
+                    <div class="news" id="news">
                         <div class="n-til">
                             <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
                             <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.airlnCd}}">查看更多></router-link></div>
@@ -129,8 +140,8 @@
                 </div>
             </div>
             <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
-            <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
         </div>
+            <airportInfo v-if="detailInfoShow" @closeDetail="closeDetail" :myData="infoData"></airportInfo>
     </div>
 </template>
 
@@ -149,7 +160,11 @@
                 infoData:{},
                 qyCode:'',
                 detailInfoShow:false,
-                showDetail:true
+                showDetail:true,
+                resonShow:false,
+                flytypeShow:false,
+                isInfo:true
+
             }
         },
         watch: {
@@ -297,6 +312,19 @@
             },
             closeDetail(){
                 this.detailInfoShow = false;
+            },
+            getBaseInfo(){
+                let airport = document.getElementById('airport');
+                airport.scrollTop = 0;
+                this.isInfo = true;
+            },
+            getNews(){
+                let airport = document.getElementById('airport');
+
+                 //获取新闻定位点
+                let news = document.getElementById('news');
+                airport.scrollTop = news.offsetTop;
+                this.isInfo = false;
             }
         },
         mounted() {
@@ -365,9 +393,10 @@
         }
     }
     .sidebar{
-        position:absolute;
-        top:12px;
-        right:-100px;
+        position:fixed;
+        top:180px;
+        left:1350px;
+        z-index:999;
         >div{
             height:42px;
             line-height:42px;
@@ -381,11 +410,15 @@
                 font-size:2rem;
                 margin:0 6px 0 6px;
             }
-            &:hover{
-                color:#fff;
-                background-color:#3c78ff;
-            }
+           /*  &:hover{
+               color:#fff;
+               background-color:#3c78ff;
+           } */
         }
+         .seleted{
+              color:#fff;
+              background-color:#3c78ff;
+            }
     }
     .info{
          .i-til{
@@ -416,6 +449,7 @@
         flex:1;
         li{
             display:flex;
+            position: relative;
             >div{
                 height:35px;
                 line-height:35px;
@@ -424,18 +458,31 @@
                 width:140px;
                 text-align:right;
             }
-            >div:last-of-type{
+            >div:nth-of-type(2){
                 text-align:left;
                 padding-left:18px;
                 font-size:1.4rem;
             }
             .shipgroup,.fl-type{
                 width:208px;
-                overflow : hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+            }
+            .list-wrapper {
+                position: absolute;
+                top: 30px;
+                left: 140px;
+                display: flex;
+                padding: 10px;
+                width:260px;
+                height:160px;
+                line-height:20px;
+                font-size:1.2rem;
+                background: white;
+                border-radius: 4px;
+                z-index: 3;
+                border:1px solid #E3E3E3;
             }
         }
     }
@@ -449,6 +496,21 @@
             border:1px solid #ccc;
             box-sizing:border-box;
             margin-right:12px;
+            position:relative;
+            .no-data{
+                width:300px;
+                height:100px;
+                line-height:100px;
+                text-align:center;
+                position:absolute;
+                font-size:3rem;
+                color:#ccc;
+                left:0;
+                right:0;
+                top:0;
+                bottom:0;
+                margin:auto;
+            }
         }
          >div:last-of-type{
              margin-right:0;

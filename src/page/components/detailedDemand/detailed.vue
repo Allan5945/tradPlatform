@@ -12,6 +12,10 @@
         <detailMyPublishAirLineEntrust1 v-if="mes.demandType === 4 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust1>
         <!--运营托管详情-->
         <detailMyPublishTransportEntrust v-if="mes.demandType === 2 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishTransportEntrust>
+        <!--太美委托详情-->
+        <adminDeleDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminDeleDetail>
+          <!--太美运营托管详情 -->
+     <adminAgentDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminAgentDetail>
     </div>
 </template>
 <script>
@@ -22,6 +26,8 @@
     import detailMyPublishAirLineEntrust from './detailMyPublishAirLineEntrust.vue'
     import detailMyPublishAirLineEntrust1 from './detailMyPublishAirLineEntrust1.vue'
     import detailMyPublishTransportEntrust from './detailMyPublishTransportEntrust.vue'
+    import adminAgentDetail from './adminAgentDetail.vue'
+    import adminDeleDetail from './adminDeleDetail.vue'
     export default {
             data(){
                 return{
@@ -57,6 +63,8 @@
             detailMyPublishAirLineEntrust,
             detailMyPublishAirLineEntrust1,
             detailMyPublishTransportEntrust,
+            adminDeleDetail,
+            adminAgentDetail
         }
     }
 </script>

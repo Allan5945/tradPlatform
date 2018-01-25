@@ -654,7 +654,7 @@
             getAirCompany: function(){
                 this.airCompanyShow = true;
             },
-            confirm:function(type){
+            verifyForm(){
                 let trans = document.getElementById('transForm');
                 //必填信息验证
                 if(this.contact == ''){//联系人
@@ -707,6 +707,9 @@
                         return false;
                     };
                 }
+            },
+            confirm:function(type){
+                this.verifyForm();
                 let demandData = {},
                     time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;

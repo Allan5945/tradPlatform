@@ -1,14 +1,14 @@
 <template>
     <div>
         <searchHeader @search = "searchData"></searchHeader>
-        <div class="wrapper">
+        <div class="wrapper" id="city">
             <div class="content" v-if="showDetail">
                 <div class="banner">
                     <div class="airport-img"><img :src="img" alt=""></div>
                     <div class="b-til">{{infoData.cityname || "-"}}</div>
                     <div class="sidebar">
-                        <div><span class="iconfont">&#xe603;</span>基本信息</div>
-                         <div><span class="iconfont">&#xe624;</span>新闻舆情</div>
+                        <div :class="{seleted:isInfo}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
+                        <div :class="{seleted:!isInfo}" @click="getNews"><span class="iconfont" >&#xe624;</span>新闻舆情</div>
                     </div>
                 </div>
                 <div class="info">
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="news">
+                    <div class="news" id="news">
                         <div class="n-til">
                             <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
                             <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.cityname}}">查看更多></router-link></div>
@@ -181,7 +181,8 @@
                 site4aShow:false,
                 site5aShow:false,
                 roadPointShow:false,
-                roadPointShow1:false
+                roadPointShow1:false,
+                isInfo:true
             }
         },
         watch: {
@@ -394,6 +395,19 @@
                     newNum.push(item*100000 /(Math.pow(10,n+5)));
                 })
                 return newNum.reverse();
+            },
+             getBaseInfo(){
+                let city = document.getElementById('city');
+                city.scrollTop = 0;
+                this.isInfo = true;
+            },
+            getNews(){
+                let city = document.getElementById('city');
+
+                 //获取新闻定位点
+                let news = document.getElementById('news');
+                city.scrollTop = news.offsetTop;
+                this.isInfo = false;
             }
         },
         mounted() {
@@ -472,9 +486,9 @@
         }
     }
     .sidebar{
-        position:absolute;
-        top:12px;
-        right:-100px;
+        position:fixed;
+        top:180px;
+        left:1350px;
         >div{
             height:42px;
             line-height:42px;
@@ -488,10 +502,14 @@
                 font-size:2rem;
                 margin:0 6px 0 6px;
             }
-            &:hover{
-                color:#fff;
-                background-color:#3c78ff;
-            }
+          /*   &:hover{
+              color:#fff;
+              background-color:#3c78ff;
+          } */
+        }
+         .seleted{
+              color:#fff;
+              background-color:#3c78ff;
         }
     }
     .info{
@@ -516,6 +534,7 @@
         li{
             display:flex;
             position:relative;
+            margin-top:1px;
             >.name{
                 height:35px;
                 line-height:35px;

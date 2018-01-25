@@ -1,14 +1,14 @@
 <template>
     <div>
         <timeHeader @search = "searchData"></timeHeader>
-        <div class="wrapper">
+        <div class="wrapper" id="timeTable">
             <div class="content" v-if="showDetail">
                 <div class="banner">
                     <div class="airport-img"><img :src="img2" alt=""></div>
                     <div class="b-til">{{airportText}}</div>
                     <div class="sidebar">
-                        <div><span class="iconfont">&#xe621;</span>时刻表</div>
-                         <div><span class="iconfont">&#xe628;</span>时刻分布</div>
+                        <div :class="{seleted:isTime}" @click="getTimeTable"><span class="iconfont">&#xe621;</span>时刻表</div>
+                         <div :class="{seleted:!isTime}" @click="getclockTable"><span class="iconfont">&#xe628;</span>时刻分布</div>
                     </div>
                 </div>
                 <div class="time-table">
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="time-table">
+                <div class="time-table" id="clockTable">
                       <div class="table-til">
                           <div class="t-til"><span class="iconfont">&#xe628;</span>时刻分布</div>
                       </div>
@@ -147,7 +147,8 @@
                 sorted1:false,
                 sorted2:false,
                 sorted3:false,
-                showDetail:true
+                showDetail:true,
+                isTime:true
             }
         },
         watch: {
@@ -314,6 +315,19 @@
                  point.len = 34 * rate;
                 return point;
             },
+            getTimeTable(){
+                let timeTable = document.getElementById('timeTable');
+                timeTable.scrollTop = 0;
+                this.isTime = true;
+            },
+            getclockTable(){
+                let timeTable = document.getElementById('timeTable');
+
+                 //获取时刻分布
+                let clockTable = document.getElementById('clockTable');
+                timeTable.scrollTop = clockTable.offsetTop;
+                this.isTime = false;
+            }
         },
         mounted(){
             this.airportText = this.searchInfo.searchText;
@@ -385,9 +399,9 @@
         }
     }
     .sidebar{
-        position:absolute;
-        top:12px;
-        right:-100px;
+        position:fixed;
+        top:180px;
+        left:1350px;
         >div{
             height:42px;
             line-height:42px;
@@ -400,10 +414,14 @@
             span{
                 font-size:2.6rem;
             }
-            &:hover{
+            /* &:hover{
                 color:#fff;
                 background-color:#3c78ff;
-            }
+            } */
+        }
+         .seleted{
+              color:#fff;
+              background-color:#3c78ff;
         }
     }
     .table-til{
