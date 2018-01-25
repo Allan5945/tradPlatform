@@ -137,6 +137,16 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         margin:0;
     }
     header{
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index:30;
+        height:120px;
+        width:100%;
+        background-color:#3c78ff;
+        display:flex;
+    }
+    header{
         .search-box{
             position:relative;
             width:680px;

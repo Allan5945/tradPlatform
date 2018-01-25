@@ -62,16 +62,9 @@
             }
         },
         mounted: function () {
+            this.inputText = this.$route.params.key;
             this.resData();
-        },
-        created:function(){
-            tabulationBoxTrigger.$on("moreNews",val=>{
-                this.inputText = val;
-                alert(val)
-            });
-        },
-        beforeDestroy() {
-          /*this.tabulationBoxTrigger.$off('moreNews', this.handleMyEvent)*/
+
         },
         computed: {
             ...vx.mapGetters([
