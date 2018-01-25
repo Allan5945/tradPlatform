@@ -377,7 +377,7 @@
                             <div class="left">{{item.responsedate}}</div>
                             <div class="center-left">{{item.intentionCompanyName}}</div>
                             <div class="center-right" @click="chat(item)">
-                                <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="item.unreadNum != 0"></span></span>
+                                <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="item.unreadNum != 0 && item.unreadNum != null"></span></span>
                             </div>
                             <div style="width: 60px;margin-right: 80px;">{{responseProgressFn(item.responseProgress)}}</div>
                             <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
@@ -561,11 +561,13 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="buttons" v-if="receiveIntention.releaseselected == '0'">
+                    <div class="buttons" v-show="receiveIntention.releaseselected === '0'">
                         <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
                         <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
                     </div>
-                    <div class="buttons" v-else>
+                    <div class="buttons" v-show="receiveIntention.releaseselected !== '0' && (myData.demandprogress === '0'
+                        || myData.demandprogress == '1'
+                        || myData.demandprogress == '2')">
                         <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
                         <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
                         <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
@@ -1241,6 +1243,7 @@
             //点击“撤销选定”，showCode变成2状态
             airlineAffirmUnchooseFn: function (item,index) {
                 this.airlineAffirmUnchooseData = item;
+                delete this.airlineAffirmUnchooseData.airportForSchedulines;
                 this.airlineAffirmUnchooseData.releaseselected = 1;
                 this.airlineAffirmUnchooseData.responseselected = 1;
                 this.airlineAffirmUnchooseData.id = item.id;

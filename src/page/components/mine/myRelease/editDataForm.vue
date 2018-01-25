@@ -113,8 +113,8 @@
                      <div class="myslec"  @click="calendarShow=!calendarShow"><span class="icon-item ">&#xe607;</span>{{myDate}}</div>
                      <div v-show="calendarShow" class="calendar-box popup">
                        <div class="selec-data">
-                         <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                         <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                         <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
+                         <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                          <div class="confirm-btn btn" @click="getMyDate">确定</div>
                          <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                        </div>

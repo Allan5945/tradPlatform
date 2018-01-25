@@ -86,8 +86,8 @@
                             <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
                             <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                 <div class="selec-data">
-                                    <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                                    <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                    <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
+                                    <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                     <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
@@ -320,8 +320,8 @@
                                 <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
                                 <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                     <div class="selec-data">
-                                        <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                                        <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                        <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
+                                        <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                         <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                         <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                     </div>
@@ -414,8 +414,16 @@
                     <div class="fourth items bg-color">
                         <div class="top item-child">
                             <span class="margin-right">其他说明</span>　
-                            <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>
+                            <div class="choose-input" style="position: relative; border: none;">
+                                <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
+                                <textarea class="text-area" v-model="remarkMsg" maxlength="200"></textarea>
+                                <span class="background-line" style="top: 26px;"></span>
+                                <span class="background-line" style="top: 52px;"></span>
+                                <span class="background-line" style="top: 78px;"></span>
+                                <span class="background-line" style="top: 104px;"></span>
+                                <span class="background-line" style="top: 130px;"></span>
+                                <span class="background-line" style="top: 156px;"></span>
+                                <span style="position: absolute; bottom: 0px; right: 0;">{{num}}/200</span>
                             </div>
                         </div>
                         <div class="bottom item-child">
@@ -429,8 +437,8 @@
                             <div class="warn" v-show="warn7Show" style="position: absolute;top: 46px; left: 0;">*发布有效期不能为空</div>
                             <div v-show="calendarShow2" class="calendar-box popup" @click.stop style="left: 0; top: 47px;">
                                 <div class="selec-data">
-                                    <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
-                                    <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
+                                    <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay3"><span>-</span>
+                                    <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay4">
                                     <div class="confirm-btn btn" @click="getMyDate2">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow2 = !calendarShow2">取消</div>
                                 </div>
@@ -619,6 +627,7 @@
             this.space2Fn();
             this.space3Fn();
             this.getEnterMsgFn();
+            this.myDate2Fn();
         },
         computed: {
 
@@ -654,6 +663,24 @@
                     message: mes,
                     type: 'error'
                 });
+            },
+            // 设置发布有效期默认值（后延三个月）
+            myDate2Fn: function () {
+                let today = new Date(),
+                    day = today.getDate(), //号数
+                    mon = today.getMonth() + 1, //月份
+                    year = today.getFullYear(), //年份
+                    date = today.setMonth(today.getMonth()+3), //三个月后的时间
+                    mon2 =  today.getMonth(date) + 1,
+                    year2 =  today.getFullYear(date),
+                    day2 =  today.getDate(date);
+                if (mon < 10) mon = "0" + mon;
+                if (mon2 < 10) mon2 = "0" + mon2;
+                if (day < 10) day = "0" + day;
+                if (day2 < 10) day2 = "0" + day2;
+                this.calendarInitDay3 = year+"."+mon+"."+day;
+                this.calendarInitDay4 = year2+"."+mon2+"."+day2;
+                this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
             },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
@@ -1378,6 +1405,25 @@
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
     /********↓↓↓↓↓↓新增样式↓↓↓↓↓↓↓********/
+    /*其他说明*/
+    .text-area {
+        width: 475px;
+        height: 162px;
+        font-size: 12px;
+        line-height: 26px;
+        color: #605E7C;
+        background: transparent;
+        outline: none;
+        border: none;
+        resize: none;
+    }
+    .background-line {
+        position: absolute;
+        left: 0;
+        width: 475px;
+        height: 1px;
+        background: $border-color;
+    }
     /******checkbox样式更改*****/
     .magic-checkbox {
         position: absolute;
@@ -2068,9 +2114,7 @@
         margin-bottom: 10px;
         .item-child {
             display: flex;
-            align-items: center;
             flex-grow: 1;
-            height: 26px;
             line-height: 26px;
         }
         .top {
@@ -2078,6 +2122,7 @@
         }
         .bottom {
             position: relative;
+            align-items: center;
             padding: 20px 0 34px 0;
             width: 240px;
         }
