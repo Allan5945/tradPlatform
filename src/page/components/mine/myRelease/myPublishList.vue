@@ -46,13 +46,13 @@
                         <div class="list-e item">
                             <span class="icon-item talk-icon" @click.stop v-show="talkShowFn(item)"
                                   @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
-                                <span class="talk-num" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null">{{item.unreadMessageCount}}</span>
+                                <span class="talk-num" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true">{{item.unreadMessageCount}}</span>
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="(vl,i) in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl,i)">
                                         <div></div>
                                         <div style="position: relative;">{{vl.nickName}}
                                             <span class="talk-num" style="top: 0; right: -10px;" v-show="vl.chatNum != 0
-                                                && vl.chatNum != null && chatIndex.indexOf(i) != '-1'">{{vl.chatNum}}</span>
+                                                && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
                                         </div>
                                     </li>
                                 </ul>
@@ -141,6 +141,7 @@
                 numPrePage: 1,
                 sendToMyPublishData: {},  // 向子组件传递的数据
                 chatIndex: [],         // 聊天提醒
+                unreadMessageClick: true,  // 未读消息提示是否显示
             }
         },
         mounted() {
@@ -251,6 +252,7 @@
                         this.totalCount = response.data.list.totalCount;
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
+                        this.unreadMessageClick = true; // 未读消息提示是否显示
                         response.data.list.list.forEach((val) => {
                             this.myData2.push(val);
                             if(val.demandtype == 1 || val.demandtype == 4 ){
@@ -289,6 +291,7 @@
                 chatObj.employeeId = vl.id;
                 tabulationBoxTrigger.$emit('addChat',chatObj);
                 this.chatIndex.push(i);
+                this.unreadMessageClick = false; // 未读消息提示是否显示
             },
             typeShowFn: function () {
                 this.typeShow = !this.typeShow;

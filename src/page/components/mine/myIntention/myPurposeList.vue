@@ -45,7 +45,7 @@
                         </div>
                         <div class="list-e item">
                             <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
-                                <span v-show="talkNumShow">1</span>
+                                <span v-show="talkNumShow">{{item.unreadNum}}</span>
                             </span>
                         </div>
                         <div class="list-f item color">
@@ -208,6 +208,11 @@
                         this.totalCount = response.data.list.totalCount;
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
+                        if(response.data.unreadNum !== '0' && response.data.unreadNum != '' && response.data.unreadNum != null) {
+                            this.talkNumShow = true;
+                        }else {
+                            this.talkNumShow = false;
+                        }
                         response.data.list.list.forEach((val) => {
                             this.myData2.push(val);
                             if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
@@ -245,6 +250,7 @@
                 chatObj.id = item.demandId;
 //                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
+                this.talkNumShow = false;
             },
             // 不是我的，张帅的页面是否显示
             responShow: function () {
