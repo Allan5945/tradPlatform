@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" @click.self="closeDetail">
+    <div class="wrapper" @click.self="closeDetail" v-show="wrapperShow">
         <div class="detail-wrapper scroll" v-if="myShow">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
@@ -238,6 +238,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             orderOver:true,
             isAirline:true,
             myShow:true,
+            wrapperShow:true,
             listSonDemands:[],
             msg:'',
             refuseText:'',
@@ -458,46 +459,53 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.chatData.id
+                    id:this.chatData.id,
+                    orderType:'0'
+
                   }
                 })
                 .then((response) => {
-                    this.CpyNm = response.data.CpyNm;
-                    this.detailData = response.data.demandDetail;
-                    this.listSonDemands = response.data.listSonDemands;
-                     //状态处理
-                      if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'||this.detailData.demandprogress == '5'){//子需求需求发布/意向征集/子订单确认/子订单完成/佣金支付
-                          this.orderShow = true;
-                          this.orderOver =true;
-                      }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
-                          this.orderShow = true;
-                          this.isClose = false;
-                      }else if(this.detailData.demandprogress == '9'){//处理中
-                          this.orderShow = true;
-                      }else if(this.detailData.demandprogress == '3'){//已关闭
-                          this.isClose = false;
-                          this.sonListShow = false;
-                          //this.refuseText = this.detailData.rek;
-                      }else if(this.detailData.demandprogress == '10'){//已拒绝
-                          this.tipShow = true;
-                          this.sonListShow = false;
-                          this.refuseText = this.detailData.rek;
-                      }else if(this.detailData.demandprogress == '7'){//待处理
-                           this.sonListShow = false;
-                      }
+                    if(response.data.opResult == '0'){
+                        this.CpyNm = response.data.CpyNm;
+                        this.detailData = response.data.demandDetail;
+                        this.listSonDemands = response.data.listSonDemands;
+                         //状态处理
+                          if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'||this.detailData.demandprogress == '5'){//子需求需求发布/意向征集/子订单确认/子订单完成/佣金支付
+                              this.orderShow = true;
+                              this.orderOver =true;
+                          }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
+                              this.orderShow = true;
+                              this.isClose = false;
+                          }else if(this.detailData.demandprogress == '9'){//处理中
+                              this.orderShow = true;
+                          }else if(this.detailData.demandprogress == '3'){//已关闭
+                              this.isClose = false;
+                              this.sonListShow = false;
+                              //this.refuseText = this.detailData.rek;
+                          }else if(this.detailData.demandprogress == '10'){//已拒绝
+                              this.tipShow = true;
+                              this.sonListShow = false;
+                              this.refuseText = this.detailData.rek;
+                          }else if(this.detailData.demandprogress == '7'){//待处理
+                               this.sonListShow = false;
+                          }
 
-                      //显示运力或者航司详情
-                      this.demandType = this.chatData.demandType;
-                       if(this.demandType == '4'){
-                            this.isAirline = false;
-                        }else if(this.demandType == '3'){
-                            this.isAirline = true;
-                        }
+                          //显示运力或者航司详情
+                          this.demandType = this.chatData.demandType;
+                           if(this.demandType == '4'){
+                                this.isAirline = false;
+                            }else if(this.demandType == '3'){
+                                this.isAirline = true;
+                            }
+                    }else{
+                         this.wrapperShow = false;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);
                     }
                 );
+
      },
     destroyed: function () {
         tabulationBoxTrigger.hierarchy = false;

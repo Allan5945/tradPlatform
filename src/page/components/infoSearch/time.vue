@@ -1,127 +1,178 @@
 <template>
-    <div class="wrapper">
+    <div>
         <timeHeader @search = "searchData"></timeHeader>
-        <div class="content" v-if="showDetail">
-            <div class="banner">
-                <div class="airport-img"><img :src="img2" alt=""></div>
-                <div class="b-til">{{airportText}}</div>
-                <div class="sidebar">
-                    <div><span class="iconfont">&#xe621;</span>时刻表</div>
-                     <div><span class="iconfont">&#xe628;</span>时刻分布</div>
-                </div>
-            </div>
-            <div class="time-table">
-                <div class="table-til">
-                    <div class="t-til"><span class="iconfont">&#xe621;</span>时刻表</div>
-                    <div class="t-update" >
-                        <span>数据更新时间</span>
-                        <input type="text" v-model="inputData" readonly @click="showSelcList=!showSelcList">
-                        <span class="iconfont update-icon" @click="showSelcList=!showSelcList">&#xe605;</span>
-                        <div class="dropDown popup" v-show="showSelcList">
-                            <div @click="getTime(index)" v-for="(value,index) in timeList">{{value}}</div>
-                        </div>
+        <div class="wrapper">
+            <div class="content" v-if="showDetail">
+                <div class="banner">
+                    <div class="airport-img"><img :src="img2" alt=""></div>
+                    <div class="b-til">{{airportText}}</div>
+                    <div class="sidebar">
+                        <div><span class="iconfont">&#xe621;</span>时刻表</div>
+                         <div><span class="iconfont">&#xe628;</span>时刻分布</div>
                     </div>
                 </div>
-                <div class="table-box">
-                    <div class="box-head">
-                        <div class="name">{{this.airportText}}班期时刻表</div>
-                        <div class="export" @click="exportData"><span class="iconfont">&#xe654;</span>&nbsp;导出</div>
+                <div class="time-table">
+                    <div class="table-til">
+                        <div class="t-til"><span class="iconfont">&#xe621;</span>时刻表</div>
+                        <div class="t-update" >
+                            <span>数据更新时间</span>
+                            <input type="text" v-model="inputData" readonly @click="showSelcList=!showSelcList">
+                            <span class="iconfont update-icon" @click="showSelcList=!showSelcList">&#xe605;</span>
+                            <div class="dropDown popup" v-show="showSelcList">
+                                <div @click="getTime(index)" v-for="(value,index) in timeList">{{value}}</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="box-content">
-                        <div class="table-header">
-                            <div>出发地</div>
-                            <div>到达地</div>
-                            <div class="flight">航班号
-                                <div class="up-down" @click="flightSort">
-                                    <span class="iconfont icon-up" :class="{active:sorted1}">&#xe605;</span>
-                                    <span class="iconfont icon-down" :class="{active:!sorted1}">&#xe605;</span>
-                                </div>
-                            </div>
-                            <div>机型</div>
-                            <div class="start-time">出发时间
-                                <div class="up-down" @click="startTimeSort">
-                                    <span class="iconfont icon-up" :class="{active:sorted2}">&#xe605;</span>
-                                    <span class="iconfont icon-down" :class="{active:!sorted2}">&#xe605;</span>
-                                </div>
-                            </div>
-                            <div>出发机场</div>
-                            <div class="end-time">到达时间
-                                <div class="up-down" @click="endTimeSort">
-                                    <span class="iconfont icon-up" :class="{active:sorted3}">&#xe605;</span>
-                                    <span class="iconfont icon-down" :class="{active:!sorted3}">&#xe605;</span>
-                                </div>
-                            </div>
-                            <div>到达机场</div>
-                            <div>班期</div>
+                    <div class="table-box">
+                        <div class="box-head">
+                            <div class="name">{{this.airportText}}班期时刻表</div>
+                            <div class="export" @click="exportData"><span class="iconfont">&#xe654;</span>&nbsp;导出</div>
                         </div>
-                        <div class="scroll table-content">
-                            <ul class="table-list" v-for="item in timeTableList">
-                                <li>{{item.dptAirptCd}}</li>
-                                <li>{{item.arrvAirptCd}}</li>
-                                <li>{{item.fltNbr}}</li>
-                                <li class="air-type">{{item.aircrftTyp}}</li>
-                                <li>{{item.lclDptTm}}</li>
-                                <li>{{item.dptAirptPot}}</li>
-                                <li>{{item.lclArrvTm}}</li>
-                                <li>{{item.arrvAirptPot}}</li>
-                                <li>{{item.days}}</li>
-                            </ul>
-                        </div>
+                        <div class="box-content">
+                            <div class="table-header">
+                                <div>出发地</div>
+                                <div>到达地</div>
+                                <div class="flight">航班号
+                                    <div class="up-down" @click="flightSort">
+                                        <span class="iconfont icon-up" :class="{active:sorted1}">&#xe605;</span>
+                                        <span class="iconfont icon-down" :class="{active:!sorted1}">&#xe605;</span>
+                                    </div>
+                                </div>
+                                <div>机型</div>
+                                <div class="start-time">出发时间
+                                    <div class="up-down" @click="startTimeSort">
+                                        <span class="iconfont icon-up" :class="{active:sorted2}">&#xe605;</span>
+                                        <span class="iconfont icon-down" :class="{active:!sorted2}">&#xe605;</span>
+                                    </div>
+                                </div>
+                                <div>出发机场</div>
+                                <div class="end-time">到达时间
+                                    <div class="up-down" @click="endTimeSort">
+                                        <span class="iconfont icon-up" :class="{active:sorted3}">&#xe605;</span>
+                                        <span class="iconfont icon-down" :class="{active:!sorted3}">&#xe605;</span>
+                                    </div>
+                                </div>
+                                <div>到达机场</div>
+                                <div>班期</div>
+                            </div>
+                            <div class="scroll table-content">
+                                <ul class="table-list" v-for="item in timeTableList">
+                                    <li>{{item.dptAirptCd}}</li>
+                                    <li>{{item.arrvAirptCd}}</li>
+                                    <li>{{item.fltNbr}}</li>
+                                    <li class="air-type">{{item.aircrftTyp}}</li>
+                                    <li>{{item.lclDptTm}}</li>
+                                    <li>{{item.dptAirptPot}}</li>
+                                    <li>{{item.lclArrvTm}}</li>
+                                    <li>{{item.arrvAirptPot}}</li>
+                                    <li>{{item.days}}</li>
+                                </ul>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="time-table">
-                  <div class="table-til">
-                      <div class="t-til"><span class="iconfont">&#xe628;</span>时刻分布</div>
-                  </div>
-                  <div class="table-box">
-                      <div class="box-head">
-                          <div class="name">{{this.airportText}}班期时刻表</div>
-                          <!-- <div class="pointer"></div> -->
+                <div class="time-table">
+                      <div class="table-til">
+                          <div class="t-til"><span class="iconfont">&#xe628;</span>时刻分布</div>
                       </div>
-                      <div class="distr-content">
-                           <div class="distr-sidebar">
-                                  <div style="height:56px;"></div>
-                                  <div>周一</div>
-                                  <div>周二</div>
-                                  <div>周三</div>
-                                  <div>周四</div>
-                                  <div>周五</div>
-                                  <div>周六</div>
-                                  <div>周日</div>
-                            </div>
-                          <div class="distr-box">
-                              <div class="distr-header">
-                                  <div><span>06:00</span><span>07:00</span></div>
-                                  <div><span>08:00</span><span>09:00</span></div>
-                                  <div><span>10:00</span><span>11:00</span></div>
-                                  <div><span>12:00</span><span>13:00</span></div>
-                                  <div><span>14:00</span><span>15:00</span></div>
-                                  <div><span>16:00</span><span>17:00</span></div>
-                                  <div><span>18:00</span><span>19:00</span></div>
-                                  <div><span>20:00</span><span>21:00</span></div>
-                                  <div><span>22:00</span><span>23:00</span></div>
-                                  <div><span>24:00</span></div>
-                              </div>
-                              <div class="content-box">
-                                  <ul class="box-list" v-for="item in distrList1">
-                                      <li>{{item.monCnt}}</li>
-                                      <li>{{item.tuesCnt}}</li>
-                                      <li>{{item.wedCnt}}</li>
-                                      <li>{{item.thursCnt}}</li>
-                                      <li>{{item.friCnt}}</li>
-                                      <li>{{item.staCnt}}</li>
-                                      <li>{{item.sunCnt}}</li>
-                                  </ul>
+                      <div class="table-box">
+                          <div class="box-head">
+                              <div class="name">{{this.airportText}}班期时刻表</div>
+                              <!-- <div class="pointer"></div> -->
+                          </div>
+                          <div class="distr-content">
+                               <div class="distr-sidebar">
+                                      <div style="height:56px;"></div>
+                                      <div>周一</div>
+                                      <div>周二</div>
+                                      <div>周三</div>
+                                      <div>周四</div>
+                                      <div>周五</div>
+                                      <div>周六</div>
+                                      <div>周日</div>
+                                </div>
+                              <div class="distr-box">
+                                  <div class="distr-header">
+                                      <div><span>06:00</span><span>07:00</span></div>
+                                      <div><span>08:00</span><span>09:00</span></div>
+                                      <div><span>10:00</span><span>11:00</span></div>
+                                      <div><span>12:00</span><span>13:00</span></div>
+                                      <div><span>14:00</span><span>15:00</span></div>
+                                      <div><span>16:00</span><span>17:00</span></div>
+                                      <div><span>18:00</span><span>19:00</span></div>
+                                      <div><span>20:00</span><span>21:00</span></div>
+                                      <div><span>22:00</span><span>23:00</span></div>
+                                      <div><span>24:00</span></div>
+                                  </div>
+                                  <div class="content-box">
+                                      <ul class="box-list" v-for="item in distrList1">
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.monCnt*0.8)) +',134)',
+                                                      'font-size': ((item.monCnt+1)/3.45 + 5 )+'px',
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.monCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.tuesCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.tuesCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.tuesCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.wedCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.wedCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.wedCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.thursCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.thursCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.thursCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.friCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.friCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.friCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.staCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.staCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.staCnt">&#xe630;</span>
+                                          </li>
+                                          <li> <span
+                                                  :style="{
+                                                      'color': 'rgb(236,'+ (193-Math.ceil(item.sunCnt*0.8)) +',134)' ,
+                                                      'font-size': ((item.sunCnt+1)/3.45 + 5 )+'px' ,
+                                                      'font-family':'iconfont'
+                                                  }"
+                                                  :flag="item.sunCnt">&#xe630;</span>
+                                          </li>
+                                      </ul>
+                                  </div>
                               </div>
                           </div>
                       </div>
-                  </div>
-            </div>
+                </div>
 
+            </div>
+            <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
         </div>
-        <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
     </div>
 </template>
 
@@ -342,22 +393,13 @@
     .wrapper{
         position: absolute;
         width: 100%;
-        min-height:100%;
+        height:100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;
         z-index: 12;
         color:#605e7c;
-        header{
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index:1;
-            height:120px;
-            width:100%;
-            background-color:#3c78ff;
-            display:flex;
-        }
+        overflow-y: scroll;
     }
     .content{
         width:1100px;

@@ -24,6 +24,7 @@ ln.$on('addChat', function (d)  {
     k = keys.split("-");
     if(!this.chat.chatData.hasOwnProperty(keys)){
         let __this = this;
+        let id = _this.$store.getters.role.id;
         _this.$ajax({
             method: 'post',
             url: '/openChat',
@@ -31,13 +32,21 @@ ln.$on('addChat', function (d)  {
                 'Content-type': 'application/x-www-form-urlencoded'
             },
             params:{
-                fromNameId:k[0],
-                toNameId:k[1],
+                fromNameId:id,
+                toNameId:k[0] == id ? k[1] : k[0],
                 demandId:k[2] == 'null' ? '' : k[2]  ,
             },
         })
             .then((response) => {
-                if(response.data.opResult == "1"){
+                if(response.data.opResult == "0"){
+                    response.data.data.forEach((v)=>{
+                        __this.chat.chatData[v.chatFlag] = v
+                    });
+                    this.chat.setChat = keys;
+                    this.chat.shut = true;
+                    this.chat.narrow = true;
+
+                }else{
                     const h = this.$createElement;
                     let mes = response.data.msg;
                     _this.$message({
@@ -45,13 +54,6 @@ ln.$on('addChat', function (d)  {
                         message: mes,
                         type: 'error'
                     });
-                }else{
-                    response.data.data.forEach((v)=>{
-                        __this.chat.chatData[v.chatFlag] = v
-                    });
-                    this.chat.setChat = keys;
-                    this.chat.shut = true;
-                    this.chat.narrow = true;
                 }
             })
             .catch((error) => {

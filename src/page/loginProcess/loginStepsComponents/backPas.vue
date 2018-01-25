@@ -103,8 +103,13 @@
 //                                    message: "手机号不存在！",
 //                                    type: 'error'
 //                                });
+
+                            if(this.collect.tel.indexOf("@") == -1){
+                                this.tiperr = '手机号码不存在';
+                            }else{
+                                this.tiperr = '邮箱账号不正确';
+                            }
                             this.validationTag = false;
-                            this.tiperr = '手机号码不存在';
                             this.showtip = true;
                         }
                     })

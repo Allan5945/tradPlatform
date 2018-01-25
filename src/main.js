@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import echarts from 'echarts'
-import {Radio,Pagination,Message,Checkbox,pagination} from 'element-ui'
+import {Radio,Pagination,Message,Checkbox,pagination,TimePicker} from 'element-ui'
 
 import {airMes,cityMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
@@ -30,6 +30,7 @@ Vue.prototype.$message = Message;
 Vue.use(Radio);
 Vue.use(Pagination);
 Vue.use(Checkbox);
+Vue.use(TimePicker);
 
 axios.interceptors.response.use(
     data => {

@@ -15,29 +15,37 @@
                         :roleType="roleType"
                         v-if="metaData && metaData.responseList && metaData.responseList.length>0">
                 </extendListModule>
-                <extendListModule
-                        :ndetailData="metaData.listSonDemands[0]"
-                        :type="typeList[detailData.demandType==1?0:1]"
-                        :roleType="roleType"
-                        v-if="metaData && metaData.listSonDemands && metaData.listSonDemands.length>0">
-                </extendListModule>
-                <template v-if="false">
+                <template v-if="metaData && metaData.isWeituo && true">
                     <header>
-                        <div class="head-til">收到的意向</div>
+                        <div class="head-til">关联子需求</div>
                     </header>
                     <div class="table-form-extend">
                         <div class="table-header">
-                            <span class="item-a">收到时间</span><span class="item-b">意向方</span>
+                            <span class="item-a">发布时间</span><span class="item-b">标题</span><span class="item-c">需求状态</span>
                         </div>
                         <ul class="table-body">
-                            <li v-for="(item, index) in extend.data">
-                                <div class="list">
-                                    <span class="item-a">2017.12.19</span>
-                                    <span class="item-b">CTU</span>
-                                    <span v-show="extend.active!=index" @click="extend.active=index" class="item-c">查看详情</span>
-                                    <span v-show="extend.active===index" @click="extend.active=-1" class="item-c">收起详情</span>
-                                </div>
-                            </li>
+                            <template v-for="(item, eindex) in extendDemand.data">
+                                <li>
+                                    <div class="list">
+                                        <span class="item-a">2017.1.25</span>
+                                        <span class="item-b">模拟的数据</span>
+                                        <span class="item-c">完成</span>
+                                        <template v-if="roleType=='2' && false">
+                                            <span v-show="extendDemand.active!=eindex" @click="extendDemand.active=eindex" class="item-d">查看详情</span>
+                                            <span v-show="extendDemand.active===eindex" @click="extendDemand.active=-1" class="item-d">收起详情</span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="item-d"></span>
+                                        </template>
+                                    </div>
+                                </li>
+                                <extendPanel class="main-info"
+                                             v-if="roleType=='2' && item && false"
+                                             v-show="extendDemand.active===eindex"
+                                             :extendData="item"
+                                             :thisType="'hangxian'">
+                                </extendPanel>
+                            </template>
                         </ul>
                     </div>
                 </template>
@@ -48,7 +56,8 @@
 
 <script>
     import listModule from './detailListModule.vue';
-    import extendListModule from './Iten-ListModule.vue';
+    import extendPanel from './extend.vue';
+    import extendListModule from './iten-demand.vue';
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 
     export default{
@@ -64,7 +73,7 @@
                 metaData: null,
                 fatherScroll:true,
                 typeList: ['航线需求','运力投放 '],
-                extend:{
+                extendDemand:{
                     data:[
                         {
                             name: '1',
@@ -83,7 +92,7 @@
                 }
             }
         },
-        components: {listModule,extendListModule},
+        components: {listModule, extendListModule, extendPanel},
         props: ["detailData","roleType"],
         watch:{
             reason:{
@@ -175,10 +184,12 @@
                 url: '/seeMyOrderDetail',
                 params: {
                     id,
-                    responseId
+                    responseId,
+                    orderType: 0
                 }
             }).then(res=>{
                 that.metaData = res.data;
+                that.extendDemand.data = res.listSonDemands || that.extendDemand;
             }).catch(err=>{
             })
         },
@@ -220,8 +231,6 @@
         color: rgba(96,94,124,.7);
         box-shadow: 0px 5px 10px rgba(216, 216, 216, 0.9);
         z-index: 1;
-    }
-    .mgr-l{
     }
     .flex-center{
         display: flex;
@@ -388,15 +397,22 @@
     .table-form-extend{
         width: 100%;
         box-sizing: border-box;
-        padding: 40px 0;
+        padding: 0;
         .table-header{
-            padding: 0 50px;
+            width: 540px;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 20px;
+            margin-left: 30px;
             display: flex;
             .item-a{
-                flex:2;
+                flex:1;
             }
             .item-b{
-                flex:5;
+                flex:1;
+            }
+            .item-c{
+                flex:2;
             }
         }
         .table-body{
@@ -411,23 +427,28 @@
                     padding: 0 20px;
                     display: flex;
                     .item-a{
-                        flex:2;
+                        flex:1;
                     }
                     .item-b{
-                        flex:4;
+                        flex:1;
                     }
                     .item-c{
+                        flex:1;
+                    }
+                    .item-d{
                         flex:1;
                         color: #3c78ff;
                         cursor: pointer;
                     }
                 }
-                .main-info{
-                    box-sizing: border-box;
-                    width: 100%;
-                    padding: 0 20px;
-                    border-top: 2px solid #000;
-                }
+            }
+            .main-info{
+                box-sizing: border-box;
+                width: 100%;
+                padding: 0 20px;
+                background-color: #eee;
+                margin-top: -10px;
+                border-top: 1px solid #fff;
             }
         }
     }

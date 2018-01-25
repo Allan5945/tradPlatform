@@ -28,23 +28,23 @@ export const state = {
                         {v: '1A', s: false},
                         {v: '2A', s: false},
                         {v: '3A', s: false},
-                        {v: '4A', s: false},
+                        {v: '4C', s: false},
                     ],
                     [
                         {v: '1B', s: false},
                         {v: '2B', s: false},
                         {v: '3B', s: false},
-                        {v: '4B', s: false},
+                        {v: '4D', s: false},
                     ],
                     [
                         {v: '1C', s: false},
                         {v: '2C', s: false},
                         {v: '3C', s: false},
-                        {v: '4C', s: false}
+                        {v: '4E', s: false}
                     ],
                     [
                         {v: '3D', s: false},
-                        {v: '4D', s: false}
+                        {v: '4F', s: false}
                     ]
                 ],
                 s: []  // 选中列表

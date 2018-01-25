@@ -249,14 +249,15 @@
                             (v.data.arrvFltLvl != null && v.data.arrvFltLvl != '' && flyGrade.indexOf(v.data.arrvFltLvl) != -1) ||
                             (v.data.pstFltLvl != null && v.data.pstFltLvl != '' && flyGrade.indexOf(v.data.pstFltLvl) != -1)
                         ) {
-                            sr.city = true;
+                            sr.flyGrade = true;
                         }
                     } else {
                         sr.flyGrade = true;
                     }
 
                     let airType = v.data.aircrfttyp;
-                    if (airType != null && this.demandList.conditions.airType != '' && airType != this.demandList.conditions.airType) {
+                    let airts = this.demandList.conditions.airType == "全选" ? '' : this.demandList.conditions.airType;
+                    if (airType != null && airts != '' && airType != airts) {
                         sr.airType = false;
                     }
                     let subsidyPolicy = this.demandList.conditions.subsidyPolicy.s;
@@ -267,6 +268,7 @@
                     if (sr.flyGrade && sr.airType && sr.city && sr.subsidyPolicy) {
                         c.push(v);
                     }
+
                 });
                 if (this.conditionsOpen) {
                     this.$emit('renderDataLength', c.length);

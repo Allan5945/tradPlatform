@@ -76,7 +76,7 @@
                         {text: 'B757', value: 'B757'},
                         {text: 'B747', value: 'B747'},
                         {text: 'ARJ21', value: 'ARJ21'},
-                        {text: '', value: ''}
+                        {text: '全选', value: '全选'}
                     ]
                 },
                 searchText: '',
