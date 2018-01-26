@@ -184,8 +184,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   params: {
                     demandState:'1',
                     demandId:this.chatData.id,
-                    demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,
+                   /* demandEmployeeId:this.chatData.demandEmployeeId,
+                    title:this.chatData.title,*/
                     demandType:this.chatData.demandType,
                     //rek: text
                   }
@@ -216,7 +216,8 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.chatData.id
+                    id:this.chatData.id,
+                    orderType:'0'
                   }
                 })
                 .then((response) => {

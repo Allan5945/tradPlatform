@@ -1,6 +1,6 @@
 <template>
     <div class="t-form scroll popup" id="transForm" @click="closeDialog">
-        <div class="select-box">
+        <div class="select-box" v-show="formFinish">
             <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
             <div>展开填写完整需求订单</div>
         </div>
@@ -175,7 +175,7 @@
                     <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
                 </div>
             </div>
-            <div class="post-type">
+            <div class="post-type" v-show="!isAgent">
                 <div class="t-radio">
                     <input type="radio" name="type" id="type1" class="magic-radio" v-model="post" value="0"><label for="type1">对所有人公开</label>
                 </div>
@@ -208,9 +208,12 @@
             </div>
         </div>
         <div class="t-btn">
-            <div class="agent-btn " @click="confirm(4)" v-if="btnShow">委托代理</div>
-            <div class="confirm-btn " @click="confirm(1)">确认发布</div>
+            <div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>
+            <div class="confirm-btn " @click="agentConfirm(4)" v-if="isAgent">确认发布</div>
+            <div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
+            <p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>
+            <span class= "triangle" v-show="agentTipsShow"></span>
         </div>
     </div>
 </template>
@@ -223,6 +226,7 @@
     export default {
         data () {
             return{
+                formFinish:true,
                 allFormShow:false,
                 showBox: false,
                 boxShow1: false,
@@ -254,6 +258,7 @@
                 dispatchAirportShow:false,
                 disListShow:false,
                 moreDotShow:false,
+                agentTipsShow:false,
                 contact: '',
                 intendedDpt:'',
                 intendedDpt1:'',
@@ -296,6 +301,7 @@
                 dptSearch:false,
                 pstSearch:false,
                 arrvSearch:false,
+                isAgent:false,
                 qyCode: '',
                 qyCode1:'',
                 qyCode2:'',
@@ -322,6 +328,11 @@
             }
         },
         watch:{
+            'allFormShow':function(val){
+                if(val){
+                    this.formFinish =false;
+                }
+            },
             'intendedDpt':function(val){
                 if(val){
                     if(val == this.intendedPst||val == this.intendedArrv){
@@ -677,11 +688,11 @@
                      trans.scrollTop = 0;
                     return false;
                 }
-               /* if(this.airplaneTyp == ''){//飞机类型
+                if(this.airplaneTyp == ''){//飞机类型
                     this.isError5 = true;
                     trans.scrollTop = 0;
                     return false;
-                }*/
+                }
                 if(this.searchText == ''){//运力基地
                     this.isError6 = true;
                     trans.scrollTop = 0;
@@ -708,8 +719,145 @@
                     };
                 }
             },
+            agentConfirm:function(type){
+                 let trans = document.getElementById('transForm');
+                //必填信息验证
+                if(this.contact == ''){//联系人
+                     this.isError1 = true;
+                     trans.scrollTop = 0;
+                     return false;
+                }
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum)) ){//联系方式
+                    this.isError2 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.airplaneTyp == ''){//飞机类型
+                    this.isError5 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.searchText == ''){//运力基地
+                    this.isError6 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                let demandData = {},
+                    time = this.timeStart +'-'+ this.timeEnd;
+                    demandData.demandtype = type;
+                    demandData.contact = this.contact;
+                    demandData.iHome = this.phoneNum;
+                    demandData.dptTime = this.getTime == 'true'? time:'无';
+                    demandData.days   = this.getFlight =='true'? this.msg: '无';
+                    demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
+                    demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
+                    demandData.intendedArrv = this.intendedArrv == '' ? '': this.qyCode5;
+                    demandData.aircrfttyp = this.airplaneTyp;
+                    demandData.dpt = this.qyCode;
+                    demandData.dptState = this.dptState[0];
+                    demandData.capacitycompany = this.airCompanyId;
+                    demandData.seating = this.seat;
+                    demandData.hourscost = this.hourcost;
+                    demandData.remark = this.tip;
+                    demandData.periodValidity = this.myDate;
+
+                    //调度机场
+                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
+                    demandData.scheduling = this.dispatch == false? '1':'0';
+                    if(this.searchData.length == '0'){
+                         this.schedulinePort = '';
+                    }else {
+                        let array= [];
+                        this.searchData.forEach((val) => {
+                            array.push(val.id);
+                        });
+                        this.schedulinePort = array.join(',');
+                    }
+                    if(this.dispatch){
+                        demandData.schedulinePort  = this.schedulinePort;
+                    }
+
+                    this.$ajax({
+                        url:"/demandAdd",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: demandData
+                    }) .then((response) => {
+                        if(response.data.opResult == "0"){
+                           this.$emit("closeForm");
+                           this.$message({
+                                message: '发布成功!',
+                                type: 'success',
+                                duration:2000
+                            });
+                          }else{
+                            this.$message({
+                                message: '提交失败，请稍后再试!',
+                                type: 'warning',
+                                duration:2000
+                            });
+                         }
+                    }) .catch((error) => {
+                            console.log(error);
+                        });
+
+            },
             confirm:function(type){
-                this.verifyForm();
+                 let trans = document.getElementById('transForm');
+                //必填信息验证
+                if(this.contact == ''){//联系人
+                     this.isError1 = true;
+                     trans.scrollTop = 0;
+                     return false;
+                }
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum)) ){//联系方式
+                    this.isError2 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.getFlight =='true'&& this.msg == '选择班期类型'){//选择班期
+                    this.isError4 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.airplaneTyp == ''){//飞机类型
+                    this.isError5 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.searchText == ''){//运力基地
+                    this.isError6 = true;
+                    trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.intendedDpt == ''){//起始机场
+                    this.isError3 = true;
+                     trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.airCompany == ''){//运力归属
+                    this.isError7 = true;
+                    return false;
+                }
+                if(this.myDate == '选择起始时间'){//有效时间
+                    this.isError8 = true;
+                    return false;
+                }
+                if(this.dispatch){       //接受调度
+                    if(this.searchData.length == '0'){
+                        this.isError9 = true;
+                        return false;
+                    };
+                }
+                if(this.post == '3'){       //定向发布
+                    if(this.searchData1.length == '0'){
+                        this.isError10 = true;
+                        return false;
+                    };
+                }
+
                 let demandData = {},
                     time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;
@@ -825,6 +973,14 @@
 
                 this.calendarInitDay1 = year+"."+mon+"."+day;
                 this.calendarInitDay2 = year2+"."+mon2+"."+day2;
+            },
+            toAgentForm:function(){
+                this.isAgent = true;
+                this.btnShow = false;
+                this.agentTipsShow = false;
+                this.$emit('changeType');
+                let trans = document.getElementById('transForm');
+                trans.scrollTop = 0;
             }
         },
         beforeMount:function () {
@@ -1019,6 +1175,7 @@
         justify-content: flex-end;
         align-items: center;
         margin:20px 0;
+        position:relative;
         >div{
           height:40px;
           line-height:40px;
@@ -1045,6 +1202,29 @@
           opacity:40%;
           background-color:#fff;
           border: 1px solid rgba(96,94,124,.6);
+        }
+        .agent-tips{
+            position:absolute;
+            left:190px;
+            top:-40px;
+            font-size:1.2rem;
+            width:120px;
+            height:30px;
+            line-height:30px;
+            padding:0 10px;
+            border-radius:4px;
+            color:#ffffff;
+            background-color:#3c78ff;
+            box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
+        }
+        .triangle{
+            position: absolute;
+            top:-10px;
+            left:210px;
+            width:0;
+            height:0;
+            border:5px solid transparent;
+            border-top: 6px solid #3c78ff;
         }
     }
     .agent-btn:hover{
