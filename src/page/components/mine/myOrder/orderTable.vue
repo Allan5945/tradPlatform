@@ -219,10 +219,6 @@
                         that.pageControl.totalPage = res.data.list.pageCount;
                         that.pageControl.now = res.data.list.pageNo;
                         that.pageControl.totalData = res.data.list.totalCount;
-                        return ;
-                    }else{
-                        that.detailsData = null;
-                        alert('暂无返回，请重试。');
                     }
                 }).catch(err=>{
                     that.detailsPanel.show = false;
