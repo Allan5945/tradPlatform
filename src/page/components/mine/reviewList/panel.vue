@@ -89,13 +89,6 @@
                             rek: rsk
                         }
                     }).then(res=>{
-                        /*
-                         opResult : 有0,1,2,3这几个值。
-                         0-成功，返回list;
-                         1-失败
-                         2-查询列表后台抛出异常；
-                         传入的参数为空
-                         */
                         if(res.data.opResult==0){
                             resolve(res.data.opResult);
                         }else{
@@ -111,9 +104,15 @@
                 that.changeState(0).then((val)=>{
                     that.detailData.demandstate = "6";
                     that.metaData.demandStateStr = "审核通过";
-                    alert("success:审核通过");
+                    this.$message({
+                        message: "审核通过成功",
+                        type: 'success'
+                    });
                 },(err)=>{
-                    alert("faild:审核通过");
+                    this.$message({
+                        message: "审核通过失败，请重试",
+                        type: 'error'
+                    });
                 });
             },
             postReason:function () {//拒绝 提交
@@ -124,10 +123,15 @@
                     that.detailData.demandstate = "5";
                     that.metaData.rek = that.reason.text;
                     that.metaData.demandStateStr = "审核未通过";
-                    alert("success:审核未通过");
-
+                    this.$message({
+                        message: "审核修改成功",
+                        type: 'success'
+                    });
                 },(err)=>{
-                    alert("faild:审核未通过");
+                    this.$message({
+                        message: "审核修改失败，请重试",
+                        type: 'error'
+                    });
                 });
             },
             closeReason: function () {//取消
@@ -147,6 +151,10 @@
             }).then(res=>{
                 that.metaData = res.data.data;
             }).catch(err=>{
+                this.$message({
+                    message: "审核修改失败，请重试",
+                    type: 'error'
+                });
             })
         },
         mounted:function () {

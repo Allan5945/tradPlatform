@@ -26,14 +26,19 @@ Vue.prototype.$echarts = echarts;
 Vue.prototype.$message = Message;
 
 
-
 Vue.use(Radio);
 Vue.use(Pagination);
 Vue.use(Checkbox);
 Vue.use(TimePicker);
 
+//axios拦截器
 axios.interceptors.response.use(
     data => {
+        if(data.data.opResult && data.data.opResult != 0){
+            Message.error({
+                message: '查询错误，请稍后重试',
+            });
+        }
         return data;
     },
     error => {
@@ -42,7 +47,7 @@ axios.interceptors.response.use(
             return router.push('/login');
         }
         Message.error({
-            message: '加载失败'
+            message: '网络错误，请稍后重试'
         });
         return Promise.reject(error)
     }
