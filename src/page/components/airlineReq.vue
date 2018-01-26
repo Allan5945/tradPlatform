@@ -600,7 +600,7 @@
                 endTime3Show: '00:00',
                 space1Show: '请先选择始发点类型',
                 space2Show: '请先选择经停点类型（选填）',
-                space3Show: '请先选择到达点类型',
+                space3Show: '请先选择到达点类型（选填）',
                 publicwayStrCode: 0,//公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
 
                 calendarInitDay1: '', //日历
@@ -1366,7 +1366,7 @@
                 this.secArea = '';
 //                this.secAreaBus = '';
                 if(item == '意向区域') {
-                    this.space2Show = '请输入意向区域';
+                    this.space2Show = '请输入意向区域（选填）';
                     this.isSearchCode2 = 0;
                     this.second2Show = false;
                     this.isSearch1 = false;
@@ -1374,7 +1374,7 @@
                     this.isSearch3 = false;
                     this.pstState = 1;
                 }if(item == '意向机场') {
-                    this.space2Show = '请输入意向机场';
+                    this.space2Show = '请输入意向机场（选填）';
                     this.secondShow = true;
                     this.second2Show = true;
                     this.isSearchCode2 = 1;
@@ -1391,7 +1391,7 @@
                 this.thirdArea = '';
 //                this.thirdAreaBus = '';
                 if(item == '意向区域') {
-                    this.space3Show = '请输入意向区域';
+                    this.space3Show = '请输入意向区域（选填）';
                     this.isSearchCode3 = 0;
                     this.second3Show = false;
                     this.isSearch1 = false;
@@ -1399,7 +1399,7 @@
                     this.isSearch3 = false;
                     this.arrvState = 1;
                 }if(item == '意向机场') {
-                    this.space3Show = '请输入意向机场';
+                    this.space3Show = '请输入意向机场（选填）';
                     this.secondShow = true;
                     this.second3Show = true;
                     this.isSearchCode3 = 1;

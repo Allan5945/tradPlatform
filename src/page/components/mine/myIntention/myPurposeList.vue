@@ -31,6 +31,7 @@
                 <div class="lists-containt">
                     <!--点击列表，展示意向详情-->
                     <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
+                        <span class="reminder" v-show="item.unreadNum != 0 && item.unreadNum != null"></span>
                         <div class="list-a item">
                             {{item.releasetime}}
                         </div>
@@ -389,6 +390,16 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    .reminder {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        margin-top: -5px;
+        width: 10px;
+        height: 10px;
+        background: red;
+        border-radius: 100%;
+    }
     .pagination {
         display: flex;
         justify-content: center;
@@ -462,6 +473,7 @@
         }*/
     }
     .items {
+        position: relative;
         display: flex;
         margin-bottom: 10px;
         padding: 0 40px;
