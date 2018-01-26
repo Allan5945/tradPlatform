@@ -31,6 +31,7 @@
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
                     <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
+                        <span class="reminder" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true"></span>
                         <div class="list-a item">
                             {{item.releasetime}}
                         </div>
@@ -51,8 +52,8 @@
                                     <li v-for="(vl,i) in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl,i)">
                                         <div></div>
                                         <div style="position: relative;">{{vl.nickName}}
-                                            <span class="talk-num" style="top: 0; right: -10px;" v-show="vl.chatNum != 0
-                                                && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
+                                            <span class="talk-num" style="top: 0; right: -10px;"
+                                                  v-show="vl.chatNum != 0 && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
                                         </div>
                                     </li>
                                 </ul>
@@ -253,6 +254,7 @@
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
                         this.unreadMessageClick = true; // 未读消息提示是否显示
+                        this.chatIndex = [];
                         response.data.list.list.forEach((val) => {
                             this.myData2.push(val);
                             if(val.demandtype == 1 || val.demandtype == 4 ){
@@ -447,6 +449,16 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    .reminder {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        margin-top: -5px;
+        width: 10px;
+        height: 10px;
+        background: red;
+        border-radius: 100%;
+    }
     /*element-ui分页组件*/
     .pagination {
         display: flex;
@@ -560,6 +572,7 @@
         }*/
     }
     .items {
+        position: relative;
         display: flex;
         margin-bottom: 10px;
         padding: 0 40px;

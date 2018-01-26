@@ -6,7 +6,7 @@
         </div>
         <div class="t-part" v-show="!allFormShow">
             <div class="form-box">
-                <div class="t-title"><span style="color:red;padding-right:3px;">*</span>拟飞机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
+                <div class="t-title"><span style="color:red;padding-right:3px;">*</span>拟飞机型</div><input type="text" placeholder="输入选择机型" readonly="readonly" v-model="airplaneTyp"  @focus="getAirplaneTyp" @blur="closeDialog4">
                 <div class="airpl-typ popup scroll" v-show="airplTypShow">
                     <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                 </div>

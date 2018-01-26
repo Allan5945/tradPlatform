@@ -184,8 +184,6 @@
                     infMesBox.style.top = `${a.event.offsetY}px`;
                     infMesBox.style.display = 'block';
                 }, 50);
-
-
                 tabulationBoxTrigger.$emit('setCode',a.data.mes.code);
             })
         }

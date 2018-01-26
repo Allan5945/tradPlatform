@@ -349,8 +349,10 @@
                 <h2>收到的意向</h2>
                 <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
             </div>
-            <div class="seventh item-container" v-show="secondButtonShow || myData.demandprogress == 3">
+            <div class="seventh item-container" v-show="secondButtonShow && myData.demandprogress != 3">
                 <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可查看详细列表</span>
+            </div>
+            <div class="seventh item-container" v-show="isSelf && myData.demandprogress == 3">
                 <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
             </div>
         </div>
