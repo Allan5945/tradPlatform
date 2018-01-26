@@ -196,7 +196,7 @@
                                     <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
                                     <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                                 </div>
-                                <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
+                                <div class="sure-btn" @click="toSelect(val)" v-show="!selected&&(val.responseProgress !== '2')" v-else>选定</div>
                                 <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
                         </div>
@@ -264,6 +264,7 @@
              isSelf:false
          }
      },
+     props:["demand"],
      methods:{
          chat:function (v) {
               let chatData = {};
@@ -452,22 +453,8 @@
                     }
                 );
          },
-
-
-     },
-      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },
-      watch: {
-
-      },
-      mounted() {
-        tabulationBoxTrigger.$on('tabulationBoxTrigger', val => {
-                this.demandId = val.data.id;
-            //console.log("demandtype"+val.data.demandtype);
-            if(val.data.demandtype == 1 && this.role.role == 2){
+         init(){
+                this.demandId = this.demand;
                 this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
@@ -475,7 +462,7 @@
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    demandId: val.data.id
+                    demandId: this.demandId
                 }
                 })
                 .then((response) => {
@@ -522,10 +509,22 @@
                         console.log(error);
                     }
                 );
-             this.$emit("openAdmin");
-            };
-        });
+         }
 
+
+     },
+      computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
+      watch: {
+        'demand':function(){
+           this.init();
+        }
+      },
+      mounted() {
+        this.init();
 
      },
      components: {

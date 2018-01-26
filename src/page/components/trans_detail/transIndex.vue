@@ -2,8 +2,8 @@
     <div>
         <needDetail  v-if="detailShow"  @closeDetail= "closeDetail" :needData="data" :demand="mes.demand"></needDetail>
         <respondAirport v-if="respond"  @responseClose="responClose" :demandId="mes.demand"></respondAirport>
-        <myIntention v-if="intentShow" @closeIntent="intentShow = false" :demandId="mes.demand"></myintention>
-        <transAdmin v-if="adminShow" @closeAdmin="adminShow = false"  @openAdmin="openAdmin"></transAdmin>
+        <myIntention v-if="intentShow" @closeIntent="closeDetail" :demandId="mes.demand"></myintention>
+        <transAdmin v-if="adminShow" @closeAdmin="closeDetail"  @openAdmin="openAdmin" :demand="mes.demand"></transAdmin>
     </div>
 </template>
 
@@ -35,32 +35,29 @@
         },
         methods: {
             closeDetail(){
-                this.detailShow = false;
+                this.$emit('closewindow');
             },
             openIntent() {
                 this.intentShow = true;
                 this.detailShow = false;
                 this.respond = false;
-                //this.$emit('closewindow');
+
             },
             openAdmin() {
                 this.adminShow = true;
-                //this.$emit('closewindow');
             },
             responShow(){
                 this.respond = true;
                 this.detailShow = false;
                 this.intentShow = false;
-                //this.$emit('closewindow');
             },
             responClose(){
-                this.respond = false;
+                this.$emit('closewindow');
             },
             transShow(){
                 this.detailShow = true;
                 this.respond = false;
                 this.intentShow = false;
-                //this.$emit('closewindow');
             },
            /* getNeedDetail(){
                 this.$ajax({
@@ -92,8 +89,10 @@
             if( this.role.role == 1){
                 //console.log(this.mes.demandType)
                 this.respond = true;
-            }else if( this.role.role == 0){
+            }else if( this.role.role == 0 ){
                 this.openIntent();
+            }else if( this.role.role == 2 ){
+                this.openAdmin();
             }
         },
         components: {

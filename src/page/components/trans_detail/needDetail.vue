@@ -108,7 +108,7 @@
      props:['needData','demand'],
      watch:{
           'demand':function(){
-            console.log(this.demand)
+            //console.log(this.demand)
              this.init();
           }
         },

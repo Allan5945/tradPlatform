@@ -359,6 +359,7 @@
                                 <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-show="isSearch4"
                                           style="top:15px; left: -55px;"></airportS>
                             </div>
+                            <div class="warn" v-show="warn9Show" style="position: absolute;top: 26px; left: 0;">*运力基地不能为空</div>
                         </div>
                     </div>
                     <div class="third-f item">
@@ -407,7 +408,7 @@
                 warn6Show: false,  //拟开航时间警告
                 warn7Show: false,  //需求有效期警告
                 warn8Show: false,  //运力归属警告
-
+                warn9Show:false,  //
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
                 second2Show: false,//显示“是否接受临近机场”
@@ -673,38 +674,52 @@
                 //表单验证（部分）
                 if(this.user == '') {
                     this.warn1Show = true;
+                    setTimeout(()=>{this.warn1Show = false;},1500);
                     req.scrollTop = 0;
                     return
                 }if(this.phoneNum == '' || this.warn2Show == true) {
                     this.warn2Show = true;
+                    setTimeout(()=>{this.warn2Show = false;},1500);
                     req.scrollTop = 0;
                     return
                 }if(this.firArea == '') {
                     this.warn3Show = true;
+                    setTimeout(()=>{this.warn3Show = false;},1500);
                     req.scrollTop = 0;
                     return
                 }if(this.myDate1 == '选择起止时间') {
                     this.warn6Show = true;
+                    setTimeout(()=>{this.warn6Show = false;},1500);
                     req.scrollTop = 0;
                     return
                 }if(this.scheduleShow == '选择班期类型') {
                     this.warn5Show = true;
+                    setTimeout(()=>{this.warn5Show = false;},1500);
                     req.scrollTop = 0;
                     return
                 }if(this.typeChoose == '') {
                     this.warn4Show = true;
+                    setTimeout(()=>{this.warn4Show = false;},1500);
                     req.scrollTop = 0;
                     return
                 }if(this.myDate2 == '选择起止时间') {
                     this.warn7Show = true;
+                    setTimeout(()=>{this.warn7Show = false;},1500);
                     req.scrollTop = 250;
                     return
                 }if(this.airCompany == '') {
                     this.warn8Show = true;
+                    setTimeout(()=>{this.warn8Show = false;},1500);
                     req.scrollTop = 250;
                     return
                 }
-
+                if(this.fourArea == '') {
+                    debugger
+                    this.warn9Show = true;
+                    setTimeout(()=>{this.warn9Show = false;},1500);
+                    req.scrollTop = 250;
+                    return
+                }
                 this.sendData.demandtype = '1';
                       //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
                 this.sendData.demandId = this.acceptData.id;

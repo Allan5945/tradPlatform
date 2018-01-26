@@ -265,7 +265,7 @@
         },
       watch:{
           'demandId':function(){
-             console.log(this.demandId)
+             //console.log(this.demandId)
              this.getNeedDetail();
           }
         },

@@ -216,6 +216,9 @@
                     that.openErrTips();
                     return that.openTips("*请输入正确的密码格式");
                 }
+                if(pwd== that.ud.pwd){
+                    return that.openTips("*新旧密码不能相同");
+                }
                 //发送至后台
                 if(pwd===vpwd){
                     let opt = {

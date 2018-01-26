@@ -188,7 +188,6 @@
                         that.pageControl.totalData = res.data.list.totalCount;
                     }else{
                         that.detailsData = null;
-                        alert('暂无返回，请稍后重试。')
                     }
                 }).catch(err=>{
                     that.detailsPanel.show = false;
