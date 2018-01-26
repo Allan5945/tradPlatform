@@ -110,7 +110,10 @@ import myPic from '$src/static/img/airport1.png';
          computed:{
             img:function(){
                 return myPic;
-            }
+            },
+             ...vx.mapGetters([
+                 'airList'
+             ])
         },
         watch:{
            'airportText':function(){
@@ -192,7 +195,15 @@ import myPic from '$src/static/img/airport1.png';
             }
         },
         mounted() {
-
+            let a;
+            if(this.$route.query.code != undefined){
+                a = this.$route.query.code.split('/')[0];
+                let b = this.$airMes(this.airList,a);
+                this.qyCode = b.code;
+                this.selcType = "机场";
+                this.airportText = b.cityName;
+                this.getInfo();
+            };
         },
         components:{
             airportS1,

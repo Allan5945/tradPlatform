@@ -27,7 +27,7 @@
                 <div>{{basicMes.xfdj}}</div>
             </div>
             <div>
-                <router-link class="btn-w more" :to="{ path: '/index/information/airport',query: { code: basicMes.airCode }}">
+                <router-link class="btn-w more" :to="{ path: '/index/information',query: { code: basicMes.airCode }}">
                     更多详情
                 </router-link>
             </div>

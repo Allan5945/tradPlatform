@@ -328,10 +328,13 @@
             }
         },
         mounted() {
-            this.qyCode = this.$route.query.code != undefined ? this.$route.query.code.split('/')[0] :  this.searchInfo.qyCode ;
+            this.qyCode = this.searchInfo.qyCode ;
             if(this.qyCode == ''){
                 this.showDetail=false;
+            }else{
+                this.getData();
             };
+
         },
         components:{
             searchHeader,
