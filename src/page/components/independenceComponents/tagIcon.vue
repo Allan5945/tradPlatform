@@ -1,6 +1,6 @@
 <template>
     <div class="iconList">
-        <div class="iconList-item" v-for="key in roleData"><img v-bind:src="key.iconUrl" alt="">{{key.name}}</div>
+        <!--<div class="iconList-item" v-for="key in roleData"><img v-bind:src="key.iconUrl" alt="">{{key.name}}</div>-->
     </div>
 </template>
 <script>
