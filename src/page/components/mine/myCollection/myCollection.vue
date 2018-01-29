@@ -58,8 +58,6 @@
                    class="pagination"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
-                   :current-page="1"
-                   :page-sizes="[3,4]"
                    :page-size="numPrePage"
                    layout="prev, pager, next, jumper, total"
                    :total="totalCount">
@@ -102,7 +100,7 @@
                 pageCount: 1,
                 sentData:{
                     page: 1,
-                    pageNo:4,
+                    pageNo:5,
                     demandType:'',
                     demandProgress:null,
                     releaseTime:"Desc"

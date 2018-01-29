@@ -12,11 +12,11 @@
           </header>
           <div class="content">
               <div class="table-form">
-                    <div>
+                    <div v-if="!withdraw">
                         <div>联系人</div>
                         <div>{{detailData.contact||'-'}}</div>
                     </div>
-                    <div>
+                    <div v-if="!withdraw">
                         <div>联系方式</div>
                         <div>{{detailData.iHome||'-'}}</div>
                   </div>
@@ -28,7 +28,11 @@
                       <div>座位布局</div>
                       <div>{{detailData.seating||'-'}}</div>
                   </div>
-                  <div>
+                  <div v-if="withdraw">
+                      <div>运力归属</div>
+                      <div >***</div>
+                  </div>
+                  <div v-else>
                       <div>运力归属</div>
                       <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                   </div>
@@ -72,7 +76,7 @@
                       <div>有效期</div>
                       <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                   </div>
-                  <div class="note">
+                  <div class="note" v-if="!withdraw">
                       <div>其他说明</div>
                       <div>{{detailData.remark||'-'}}</div>
                   </div>
@@ -206,8 +210,8 @@
               </div>
           </footer>
       </div>
-     <needDetail  v-if="needShow"  @closeDetail= "closeDetail" :needData="needData" :demand="demandId"></needDetail>
-    <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
+     <needDetail  v-if="needShow"  @closeDetail= "closeDetail" :needData="needData"></needDetail>
+    <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @closeForm="closeReForm" :acceptData = "planData"></reIntentForm>
     <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
     <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
@@ -220,7 +224,8 @@
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
  import ln from '$src/public/js/tabulationBoxTrigger'
- import sureForm from './sureForm1.vue'
+ /*import sureForm from './sureForm1.vue'*/
+ import sureForm from './../mine/myIntention/myPurposeEdit.vue'
  import reIntentForm from './reIntentForm.vue'
  import intentForm from './intentForm.vue'
  import transDialog from './transDialog.vue'
@@ -285,6 +290,12 @@
          },
         closeSureForm(){
           this.sureFormShow = false;
+          this.responseShow =false;
+          this.$nextTick(() => {
+             this.responseShow =true;
+             this.getNeedDetail();
+          });
+
         },
          cancelIntent:function(){
           this.$ajax({
@@ -462,15 +473,20 @@
                     }
                 })
                 .then((response) => {
-                    this.needData = response.data;
-                    if(response.data.receiveIntention == null){
-                          this.needShow = true;
-                          this.responseShow = false;
-                    }else if(response.data.receiveIntention !== null){
-                        this.responseShow = true;
-                        this.needShow = false;
-                        this.init();
-                    }
+                  if(response.data.opResult == '0'){
+                      this.needData = response.data;
+                      if(response.data.receiveIntention == null){
+                            this.needShow = false;
+                            this.responseShow = false;
+                            this.$nextTick(() => {
+                             this.needShow = true;
+                            });
+                      }else if(response.data.receiveIntention !== null){
+                          this.responseShow = true;
+                          this.needShow = false;
+                          this.init();
+                      }
+                  }
                  })
                 .catch((error) => {
                         console.log(error);

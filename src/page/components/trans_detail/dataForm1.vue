@@ -224,12 +224,11 @@
     </div>
 </template>
 <script>
- import calendar from './../../calendar'
+ import calendar from './../calendar'
  import * as vx from 'vuex'
- import airportS from './../../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
- import airportS1 from './../../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
- import airCompanyS from './../../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
- import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+ import airportS from '../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
+ import airportS1 from '../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
     export default {
         data () {
             return{

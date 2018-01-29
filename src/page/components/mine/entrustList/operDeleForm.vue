@@ -14,14 +14,14 @@
                     </div>
                 </div>
             </header>
-            <transForm @closeForm="closeForm" v-show="showType == '0' "></transForm>
+            <!-- <transForm @closeForm="closeForm" v-show="showType == '0' " :acceptData ="detailData"></transForm> -->
+            <transForm @closeForm="closeForm" v-show="showType == '0' " ></transForm>
             <AirlineForm @closeForm="closeForm" v-show="showType == '1'"></AirlineForm>
         </div>
     </div>
 </template>
 <script>
     import transForm from './sonTransForm1.vue'
-    /*import transForm from './../transportForm.vue'*/
     import AirlineForm from './sonAirlineForm.vue'
     export default {
         data() {
@@ -34,6 +34,7 @@
                 needType:['运力投放','航线需求'],
             }
         },
+        props:['detailData'],
         methods: {
             getNeed: function(i){
                 this.showType = this.myShow[i];

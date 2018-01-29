@@ -9,7 +9,7 @@
                <div @click="getNeed(index)" v-for="(value,index) in needType">{{value}}</div>
            </div>
         </div>
-        <transportForm v-if="showType== 1" @closeForm="closeForm"></transportForm>
+        <transportForm v-if="showType== 1" @closeForm="closeForm" @changeType="changeType"></transportForm>
         <agentTransForm v-else-if="showType== 2" @closeForm="closeForm"></agentTransForm>
         <airlineReq v-else-if="showType== 3" @closeForm="closeForm" @changeTitle="changeTitleFn" @restoreTitle="restoreTitleFn"></airlineReq>
         <airlineDelegation v-else-if="showType== 4" @closeForm="closeForm"></airlineDelegation>
@@ -18,7 +18,7 @@
 </template>
 <script>
     import transportForm from './transportForm.vue'
-    import agentTransForm from './agentTransForm1.vue'
+    import agentTransForm from './agentTransForm.vue'
     import operationForm from './operationForm.vue'
     import airlineReq from './airlineReq.vue'
     import airlineDelegation from './airlineDelegation.vue'
@@ -65,7 +65,11 @@
                 if(this.role.role == 1){ //角色为机场
                     this.showType = this.myShow[i+2];
                 }else if(this.role.role == 0){//角色为航司
-                    this.showType = this.myShow[i];
+                    this.showType =" ";
+                    this.$nextTick(() => {
+                     this.showType = this.myShow[i];
+                    });
+
                 }else if(this.role.role == 2){//角色为太美
                     this.showType = this.myShow1[i];
                 }
@@ -78,6 +82,9 @@
             },
             changeTitleFn: function () {
                 this.msg = "委托航线需求";
+            },
+            changeType:function(){
+                 this.msg = "委托运力投放";
             },
             restoreTitleFn: function () {
                 this.msg = "航线需求";
