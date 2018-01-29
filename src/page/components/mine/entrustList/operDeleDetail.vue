@@ -209,7 +209,7 @@
                <div class="foot-tips" >*取消原因：{{refuseText}}</div>
            </footer> -->
         </div>
-        <operDeleForm v-show="formShow" @closeForm="closeForm" ></operDeleForm>
+        <operDeleForm v-show="formShow" @closeForm="closeForm" :detailData="detailData"></operDeleForm>
         <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>

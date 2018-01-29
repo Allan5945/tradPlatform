@@ -652,7 +652,7 @@
                     return false;
                 }
                 let demandData = {},
-                    time = this.timeStart +'-'+ this.timeEnd;
+                    time = this.timeStart +','+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;

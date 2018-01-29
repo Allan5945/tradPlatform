@@ -399,8 +399,8 @@
                     this.phoneNum = this.acceptData.iHome;
                     this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
                     if(this.acceptData.dptTime !== '无'){
-                        this.timeStart = this.acceptData.dptTime.split('-')[0];
-                        this.timeEnd =this.acceptData.dptTime.split('-')[1];
+                        this.timeStart = this.acceptData.dptTime.split(',')[0];
+                        this.timeEnd =this.acceptData.dptTime.split(',')[1];
                         this.pickStart = true;
                         this.pickEnd = true;
                     }
@@ -817,7 +817,7 @@
                     return false;
                 }
                 let demandData = {},
-                    time = this.timeStart +'-'+ this.timeEnd;
+                    time = this.timeStart +','+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
