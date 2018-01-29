@@ -242,7 +242,7 @@
   import * as vx from 'vuex'
   import myIntentForm from '$src/page/components/trans_detail/myIntentForm.vue'
   import sureForm from '$src/page/components/trans_detail/sureForm1.vue'
-  import dataForm from '$src/page/components/trans_detail/dataForm.vue'
+  import dataForm from '$src/page/components/trans_detail/dataForm1.vue'
   import  signDialog from '$src/page/components/trans_detail/signDialog.vue'
  export default {
      data(){

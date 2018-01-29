@@ -52,7 +52,7 @@ export const state = {
             city: {
                 s:[]
             },     //选择
-            airType: '',  // 机型
+            airType: '全选',  // 机型
             subsidyPolicy: {  // 补贴政策
                 va: [
                     {v: '定补', s: false},

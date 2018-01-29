@@ -1,40 +1,52 @@
 <template>
     <div class="wrapper">
         <div class="agent-form scroll popup">
-            <div class="container-top">
-                <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+            <div class="select-box">
+                <singleElection :single.sync="elect" class="checkbox-choose"></singleElection>
+                <!--<div class="check-box"><input type="checkbox" v-model="allFormShow"></div>-->
+                <div @click="checkboxClickFn" style="cursor:pointer;">展开填写完整需求订单</div>
             </div>
-            <div class="t-must">
-                <div class="form-box post-til">
-                    <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
-                </div>
+            <div class="t-part" v-show="!elect.set">
                 <div class="form-box">
-                    <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
-                    <div class="error" v-show="isError1" style="left:60px;top:53px;">*请填写联系人</div>
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>航班号</div>
+                    <input type="text" placeholder="填写需要托管的航班号" v-model="flightNum" maxlength="10">
                 </div>
-                <div class="form-box" style="position:relative;">
-                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                    <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
-                </div>
-                <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
-            <div class="t-optional">
-                <div class="form-box">
-                    <div class="t-title">航班号</div>
-                    <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
-                </div>
-                <div class="form-box pad">
-                        <div class="t-title">小时成本</div>
-                        <div class="t-input">
-                            <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                            <span>万元</span>
+            <div class="t-all" v-show="elect.set">
+                <div class="t-must">
+                    <div class="form-box post-til">
+                        <div class="t-title">发布标题<span style="color:red;padding-left:3px;">*</span></div><input type="text" readonly="readonly" placeholder="标题会根据您的内容自动生成">
                     </div>
+                    <div class="form-box">
+                        <div class="t-title">联系人<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
+                        <div class="error" v-show="isError1" style="left:60px;top:52px;">*请填写联系人</div>
+                    </div>
+                    <div class="form-box">
+                        <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                        <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
+                    </div>
+                    <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
                 </div>
-                <div class="form-box tips">
-                    <div class="t-title">其他说明</div>
-                    <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
-                    <div class="count"><span >{{countNum}}</span>/35</div>
+                <div class="t-optional">
+                    <div class="form-box">
+                        <div class="t-title">航班号</div>
+                        <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
+                        <!-- <div class="num-list popup scroll" v-show="flightListShow">
+                            <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
+                        </div> -->
+                    </div>
+                    <div class="form-box pad">
+                            <div class="t-title">小时成本</div>
+                            <div class="t-input">
+                                <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
+                                <span>元</span>
+                        </div>
+                    </div>
+                    <div class="form-box tips">
+                        <div class="t-title">其他说明</div>
+                        <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
+                        <div class="count"><span >{{countNum}}</span>/35</div>
+                    </div>
                 </div>
             </div>
             <div class="t-btn">
@@ -46,11 +58,12 @@
 </template>
 
 <script>
+    import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
  export default {
      props: ['acceptData'],
         data () {
             return{
-                //showBox: false,
+                allFormShow:false,
                 isSel: false,
                 isError1: false,
                 isError2: false,
@@ -61,14 +74,23 @@
                 phoneNum:'',
                 flightNum:'',
                 flightData:[],
-                //msg:'选择需求类型',
-               // needType:['运力投放','航线需求']
+                /*新增表单内容*/
+                elect: {
+                    set: false
+                },
             }
         },
      mounted(){
          this.acceptDataFn();
      },
+     components: {
+         singleElection,
+     },
         methods:{
+            // 新增内容（我的，不删）
+            checkboxClickFn: function () {
+                this.elect.set = !this.elect.set;
+            },
             /* getNeed: function(i) {
                 this.msg = this.needType[i];
                 this.isSel = true;
@@ -79,9 +101,6 @@
                 this.flightNum = this.acceptData.fltNbr;
                 this.hourcost = this.acceptData.hourscost;
                 this.tip = this.acceptData.remark;
-            },
-            closeThis: function(){
-                this.$emit("close-this");
             },
             verifyContact:function(){
                  if(this.contact){
@@ -123,7 +142,7 @@
                         params: demandData
                         }) .then((response) => {
                             if(response.data.opResult == "0"){
-                                this.closeThis();
+                                this.cancel();
                                 this.$message({
                                   message: '发布成功!',
                                   type: 'success',
@@ -144,7 +163,7 @@
                 }
             },
             cancel: function(){
-                this.closeThis();
+                this.$emit("close-this");
             },
             getflight: function(i){
                 this.flightNum = this.flightData[i];
@@ -187,15 +206,6 @@
 </script>
 
 <style scoped lang="scss">
-    input {
-        outline:none;
-        border: 0;
-        font-size:1.2rem;
-        color: #605E7C;
-        box-sizing:border-box;
-        padding-left:5px;
-        border-bottom:1px solid rgba(151,151,151,.3);
-    }
     .wrapper {
         position: fixed;
         top: 0;
@@ -208,28 +218,15 @@
         background: rgba(0, 0, 0, .4);
         z-index: 20;
     }
-    .container-top {
-        position: relative;
-        margin: 10px 0 30px 20px;
-        .title {
-            width: 140px;
-            height: 20px;
-            line-height: 20px;
-            font-size: 16px;
-        }
-        .close-icon {
-            position: absolute;
-            top: -2px;
-            right: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            border: 1px solid gray;
-            border-radius: 100%;
-            cursor: pointer;
-        }
+    input {
+        outline:none;
+        border: 0;
+        font-size:1.2rem;
+        color: #605E7C;
+        box-sizing:border-box;
+        padding-left:5px;
+        border-bottom:1px solid rgba(151,151,151,.3);
+        background:transparent;
     }
     .agent-form{
         /*position:absolute;
@@ -241,7 +238,7 @@
         font-size:1.2rem;
         padding:20px;
         width:620px;
-        height:630px;
+        max-height:630px;
         color: #605E7C;
         border-radius:4px;
         background-color:#fff;
@@ -260,8 +257,35 @@
         }
 
     }
+     .select-box{
+        display:flex;
+        justify-content: flex-end;
+         align-items: center;
+        >div{
+            height:26px;
+            margin-right:5px;
+            line-height:26px;
+        }
+        input{
+            display:block;
+            height:100%;
+        }
+         .checkbox-choose {
+             margin-right: 5px;
+         }
+    }
+    .t-part{
+        width:100%;
+        box-sizing:border-box;
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding:0 20px;
+        padding-bottom:20px;
+        border-bottom:1px solid rgba(151,151,151,.3);
+    }
     .form-box{
-        position: relative;
+        position:relative;
         width:240px;
         height:26px;
         line-height:26px;
@@ -274,7 +298,6 @@
         >input{
             width:180px;
             height:26px;
-            background-color: #FBFBFB;
         }
         .t-input{
             width:180px;

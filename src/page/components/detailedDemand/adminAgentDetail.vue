@@ -214,7 +214,8 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.mes.demand
+                    id:this.mes.demand,
+                    orderType:'0'
                   }
                 })
                 .then((response) => {
