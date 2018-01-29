@@ -38,7 +38,7 @@
                       <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
                     </div>
                     <div v-else>不接受</div>
-                    <div class="list-wrapper" v-show="schedulListShow">
+                    <div class="list-wrapper" v-show="schedulListShow"  v-if="detailData.scheduling == '0'">
                         <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}/</span>
                     </div>
                 </div>

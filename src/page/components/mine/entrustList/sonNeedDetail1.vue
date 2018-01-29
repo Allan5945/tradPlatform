@@ -37,9 +37,25 @@
                         <div>运力归属</div>
                         <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                     </div>
+                     <div>
+                        <div>小时成本</div>
+                        <div>{{detailData.hourscost||'-'}}万/小时</div>
+                    </div>
                     <div>
                         <div>运力基地</div>
                         <div>{{detailData.dptNm||'-'}}</div>
+                    </div>
+                    <div>
+                        <div>接受调度</div>
+                        <div class="schedul-airpot" style="width:120px;"
+                            v-if="detailData.scheduling == '0'"
+                          @mouseover="schedulListShow = true" @mouseout="schedulListShow = false">
+                            <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                        </div>
+                        <div v-else>不接受</div>
+                        <div class="list-wrapper" v-show="schedulListShow">
+                            <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}/</span>
+                        </div>
                     </div>
                     <div>
                         <div>出港时刻</div>
@@ -61,14 +77,6 @@
                        <div>意向航线</div>
                        <div class="i-line">-</div>
                    </div>
-                    <div>
-                        <div>小时成本</div>
-                        <div>{{detailData.hourscost||'-'}}万/小时</div>
-                    </div>
-                    <div style="margin:0 0 0 40px;">
-                        <div>接受调度</div>
-                        <div>{{detailData.schedulingStr||'-'}}</div>
-                    </div>
                     <div>
                         <div>有效期</div>
                         <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
@@ -353,7 +361,8 @@
              footShow:true,
              selectBtnShow:true,
              transShow:false,
-             sureOderShow:false
+             sureOderShow:false,
+             schedulListShow:false
          }
      },
      props:['sonId','title'],
@@ -515,7 +524,7 @@
                       this.rePublish == false;
                       this.footShow  = true;
                       this.selectBtnShow = true;
-                      this.sureOderShow = true;
+                      this.sureOderShow = false;
                       this.planComplete = false;
                     }else{
                         this.rePublish == false;
@@ -728,6 +737,7 @@
           width:240px;
           height:40px;
           display: flex;
+          position:relative;
           >div{
               margin-bottom:20px;
               height:20px;
@@ -739,6 +749,28 @@
           }
           >div:nth-of-type(2){
               width:160px;
+          }
+         .schedul-airpot{
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          span{
+            margin-right:10px;
+          }
+          .list-wrapper {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            width: 200px;
+            height:50px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 11px rgba(96,94,124,0.37);
+            z-index: 3;
           }
       }
       >div:nth-of-type(odd){
