@@ -28,7 +28,6 @@
                 this.setpes = t ? 0 : 2;
             },
             initGLMap(){
-                    console.log(6)
                     let camera = null;
                     let renderer = null;
                     let scene = null;
