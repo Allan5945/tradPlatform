@@ -62,9 +62,7 @@
             }
         },
         mounted: function () {
-            this.inputText = this.$route.params.key;
             this.resData();
-
         },
         computed: {
             ...vx.mapGetters([
@@ -115,11 +113,6 @@
                             })
                         });
                         this.list = arr;
-//                        if (this.list.length == 0) {
-//                            this.list = arr;
-//                        } else {
-//                            this.list = this.list.concat(arr);
-//                        }
                     }
                 }else if(data.opResult == "1"){
                     this.list = [];

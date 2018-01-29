@@ -287,6 +287,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    .iconfont {
+        margin: 0 25px;
+    }
     /*多行省略号，兼容多个浏览器*/
     @mixin line-clamp($lines, $line-height: 20px) {
         text-overflow: ellipsis;

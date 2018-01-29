@@ -31,6 +31,7 @@
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
                     <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
+                        <span class="reminder" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true"></span>
                         <div class="list-a item">
                             {{item.releasetime}}
                         </div>
@@ -51,8 +52,8 @@
                                     <li v-for="(vl,i) in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl,i)">
                                         <div></div>
                                         <div style="position: relative;">{{vl.nickName}}
-                                            <span class="talk-num" style="top: 0; right: -10px;" v-show="vl.chatNum != 0
-                                                && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
+                                            <span class="talk-num" style="top: 0; right: -10px;"
+                                                  v-show="vl.chatNum != 0 && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
                                         </div>
                                     </li>
                                 </ul>
@@ -75,11 +76,14 @@
             </el-pagination>
         </div>
         <transition-group name="slidex-fade">
-            <myPublish0 v-if="myPublishShow0" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="2"></myPublish0>
-            <myPublishNeed1 v-show="myPublishShow1" @close-this="closeAllShowFn" :key="3"></myPublishNeed1>
-            <myPublishTransportEntrust v-if="myPublishTransportEntrustShow" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
-            <myPublishAirLineEntrust v-if="myPublishAirLineEntrustShow" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
-            <myPublishAirLineEntrust1 v-if="myPublishAirLineEntrust1Show" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
+            <myPublish0 v-if="mes.demandType === '0'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="2"></myPublish0>
+            <!--<myPublishNeed1 v-show="myPublishShow1" @close-this="closeAllShowFn" :key="3"></myPublishNeed1>-->
+            <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
+                <transIndex :mes="mes" @closewindow="closeAllShowFn"></transIndex>
+            </div>
+            <myPublishTransportEntrust v-if="mes.demandType === '2'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
+            <myPublishAirLineEntrust v-if="mes.demandType === '3'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
+            <myPublishAirLineEntrust1 v-if="mes.demandType === '4'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
         </transition-group>
     </div>
 </template>
@@ -92,6 +96,7 @@
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
     import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
+    import transIndex from '$src/page/components/trans_detail/transIndex.vue'
 
     export default {
         data() {
@@ -142,6 +147,11 @@
                 sendToMyPublishData: {},  // 向子组件传递的数据
                 chatIndex: [],         // 聊天提醒
                 unreadMessageClick: true,  // 未读消息提示是否显示
+                mes:{       //demand  , demandState 需求状态 ,demandType  需求类型
+                    demand:"",
+                    demandState:"",
+                    demandType:""
+                },
             }
         },
         mounted() {
@@ -253,6 +263,7 @@
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
                         this.unreadMessageClick = true; // 未读消息提示是否显示
+                        this.chatIndex = [];
                         response.data.list.list.forEach((val) => {
                             this.myData2.push(val);
                             if(val.demandtype == 1 || val.demandtype == 4 ){
@@ -374,58 +385,16 @@
             // 点击列表(list)，变成active状态, 确定哪个显示; 向myPublish.vue传参数
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
-
-                //['运力投放','运力委托','航线需求','航线委托','运营托管'],
-//                响应的需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
-//                 除去0和1两种状态, 其他状态不再地图上呈现，仅在太美角色个人中心的委托列表中呈现。
-                if(item.demandtype == 2){
-                    // 运营托管详情
-                    this.myPublishTransportEntrustShow = true;
-                    this.myPublishAirLineEntrustShow = false;
-                    this.myPublishAirLineEntrust1Show = false;
-                    this.myPublishShow0 = false;
-                    this.myPublishShow1 = false;
-                }if(item.demandtype == 3){
-                    // 航线委托详情
-                    this.myPublishTransportEntrustShow = false;
-                    this.myPublishAirLineEntrustShow = true;
-                    this.myPublishAirLineEntrust1Show = false;
-                    this.myPublishShow0 = false;
-                    this.myPublishShow1 = false;
-                }if(item.demandtype == 4) {
-                    // 运力委托详情
-                    this.myPublishTransportEntrustShow = false;
-                    this.myPublishAirLineEntrustShow = false;
-                    this.myPublishAirLineEntrust1Show = true;
-                    this.myPublishShow0 = false;
-                    this.myPublishShow1 = false;
-                }
-                if(item.demandtype == 1){
-                    //  运力需求详情
-                    this.myPublishTransportEntrustShow = false;
-                    this.myPublishAirLineEntrustShow = false;
-                    this.myPublishAirLineEntrust1Show = false;
-                    this.myPublishShow0 = false;
-                    this.myPublishShow1 = true;
-                }if(item.demandtype == 0){
-                    //  航线需求详情（机场发布，我写的）
-                    this.myPublishTransportEntrustShow = false;
-                    this.myPublishAirLineEntrustShow = false;
-                    this.myPublishAirLineEntrust1Show = false;
-                    this.myPublishShow0 = true;
-                    this.myPublishShow1 = false;
-                }
+                this.mes.demand = item.id;
+                this.mes.demandState = item.demandstate;
+                this.mes.demandType = item.demandtype;
                 this.sendToMyPublishData = item;
                 tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue...
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },
             // 关闭所有弹出页面
             closeAllShowFn: function () {
-                this.myPublishShow0 = false;
-                this.myPublishShow1 = false;
-                this.myPublishTransportEntrustShow = false;
-                this.myPublishAirLineEntrustShow = false;
-                this.myPublishAirLineEntrust1Show = false;
+                this.mes.demandType = '-1';
                 this.listItemIndex = '';
                 tabulationBoxTrigger.hierarchy = false;
                 this.refreshFn();
@@ -439,7 +408,8 @@
 //            myPublishAirline,
             myPublishTransportEntrust,
             myPublishAirLineEntrust,
-            myPublishAirLineEntrust1
+            myPublishAirLineEntrust1,
+            transIndex,
         }
     }
 </script>
@@ -447,6 +417,25 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    .trans-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
+    }
+    .reminder {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        margin-top: -5px;
+        width: 10px;
+        height: 10px;
+        background: red;
+        border-radius: 100%;
+    }
     /*element-ui分页组件*/
     .pagination {
         display: flex;
@@ -560,6 +549,7 @@
         }*/
     }
     .items {
+        position: relative;
         display: flex;
         margin-bottom: 10px;
         padding: 0 40px;
@@ -642,7 +632,7 @@
                 .talk-num {
                     position: absolute;
                     top: -1px;
-                    right: -1px;
+                    left: 20px;
                     display: flex;
                     justify-content: center;
                     align-items: center;

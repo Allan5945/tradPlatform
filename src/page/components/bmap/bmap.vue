@@ -33,7 +33,7 @@
             ]),
         },
         mounted: function () {
-            let ar = [];
+            let ar = [],point= [];
             this.routeNetwork.forEach((v)=>{
                 let selAir = this.$airMes(this.airList,v.dptIata);
                 let ourAir = this.$airMes(this.airList,v.arrvIata);
@@ -41,6 +41,15 @@
                     fromName:selAir.cityName,
                     toName:ourAir.cityName,
                     coords:[[selAir.cityCoordinateJ,selAir.cityCoordinateW],[ourAir.cityCoordinateJ,ourAir.cityCoordinateW]]
+                })
+            });
+            this.airList.forEach(data =>{
+                point.push( {
+                    name: data.cityName,
+                    value: [data.cityCoordinateJ,data.cityCoordinateW],
+                    symbol: 'circle',
+                    symbolSize: 4,
+                    symbolOffset: [0, 0]
                 })
             });
             let a = [], // 航线需求列表
@@ -58,7 +67,23 @@
                         "normal": {"color": "#336BEA", "width": 1, "opacity": 0.4, "curveness": 0.2}
                     },
                     "data": ar
-                };
+                },
+                allPoint = {
+                    "name": "allPoint",
+                    "type": "scatter",
+                    "coordinateSystem": "bmap",
+                    "zlevel": 10,
+                    itemStyle:{
+                        normal:{
+                            color:"#90aae3"
+                        }
+                    },
+                    hoverAnimation:false,
+                    cursor:"default",
+                    "data": point
+                }
+            ;
+
             this.allDot.forEach((v) => {
                 let mes = this.$airMes(this.airList, v.dpt);
                 y.push({
@@ -114,13 +139,14 @@
                 },
                 legend: {
                     show:false,
-                    data: ['routeNetwork'],
+                    data: ['routeNetwork','allPoint'],
                     textStyle: {
                         color: '#fff'
                     },
                     selectedMode: 'multiple',
                     selected:{
-                        'routeNetwork':false
+                        'routeNetwork':false,
+                        'allPoint':false
                     }
                 },
                 "tooltip": {
@@ -155,7 +181,8 @@
 
                         }
                     },
-                    network
+                    network,
+                    allPoint
                 ]
             };
             this.myChart.setOption(option);
@@ -173,6 +200,19 @@
                     })
                 }
             });
+            tabulationBoxTrigger.$on('allPoint',function (v) {
+                if(!v){  // 打开航线网络图
+                    _this.myChart.dispatchAction({
+                        type: 'legendSelect',
+                        name:"allPoint"
+                    })
+                }else{
+                    _this.myChart.dispatchAction({
+                        type: 'legendUnSelect',
+                        name:"allPoint"
+                    })
+                }
+            });
             this.$bExample.setmap(this.myChart.getModel().getComponent('bmap').getBMap());
             this.$bExample.setallNum(a);
             this.$bExample.init();
@@ -184,8 +224,6 @@
                     infMesBox.style.top = `${a.event.offsetY}px`;
                     infMesBox.style.display = 'block';
                 }, 50);
-
-
                 tabulationBoxTrigger.$emit('setCode',a.data.mes.code);
             })
         }

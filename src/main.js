@@ -35,9 +35,9 @@ Vue.use(TimePicker);
 axios.interceptors.response.use(
     data => {
         if(data.data.opResult && data.data.opResult != 0){
-            Message.error({
-                message: '查询错误，请稍后重试',
-            });
+            // Message.error({
+            //     message: '查询错误，请稍后重试',
+            // });
         }
         return data;
     },
