@@ -1,6 +1,6 @@
 <template>
     <div class="content-box">
-        <div class="gl-ifm" id="WebGL-output"></div>
+        <div class="gl-ifm" id="WebGL-output" @resize="initGLMap"></div>
         <bannersPanel v-on:steps="steps"></bannersPanel>
         <transition name="fade">
             <loginSteps v-if="stepOff" :stepOff.sync="stepOff" :setpes.sync="setpes"></loginSteps>
@@ -28,17 +28,18 @@
                 this.setpes = t ? 0 : 2;
             },
             initGLMap(){
-                    var camera = null;
-                    var renderer = null;
-                    var scene = null;
-                    var blurScene = null;
-                    var blurMaskScene = null;
-                    var blurComposer = null;
-                    var sceneComposer = null;
-                    var earthMaterial = null;
-                    var earthGlow = null;
-                    var startTime = new Date().getTime();
-                    var Initialize = function() {
+                    console.log(6)
+                    let camera = null;
+                    let renderer = null;
+                    let scene = null;
+                    let blurScene = null;
+                    let blurMaskScene = null;
+                    let blurComposer = null;
+                    let sceneComposer = null;
+                    let earthMaterial = null;
+                    let earthGlow = null;
+                    let startTime = new Date().getTime();
+                    let Initialize = function() {
                         camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 2000);
                         camera.position.z = 150;
                         camera.position.y = -80;
@@ -50,33 +51,36 @@
                         renderer.setPixelRatio(window.devicePixelRatio);
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         renderer.autoClear = false;
+                        if(document.getElementById("WebGL-output").childNodes.length !=  0){
+                            document.getElementById("WebGL-output").removeChild(document.getElementById("WebGL-output").childNodes[0]);
+                        }
                         document.getElementById("WebGL-output").appendChild(renderer.domElement);
                         scene = new THREE.Scene();
                         blurScene = new THREE.Scene();
                         blurMaskScene = new THREE.Scene();
 
-                        var renderTargetParameters = {
+                        let renderTargetParameters = {
                             minFilter: THREE.LinearFilter,
                             magFilter: THREE.LinearFilter,
                             format: THREE.RGBAFormat,
                             stencilBufer: true
                         };
-                        var blurRenderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
+                        let blurRenderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
 
                         blurComposer = new THREE.EffectComposer(renderer, blurRenderTarget);
                         sceneComposer = new THREE.EffectComposer(renderer);
                     }
-                    var PopulateScenes = function(earthTexture, cloudTexture) {
+                    let PopulateScenes = function(earthTexture, cloudTexture) {
                         earthMaterial = CreateEarthMaterial(earthTexture, cloudTexture);
-                        var earthPos = new THREE.Vector3(40, -100, 0);
+                        let earthPos = new THREE.Vector3(40, -100, 0);
 
-                        var earth = CreateEarth({
+                        let earth = CreateEarth({
                             size: 50,
                             color: 0xFFFFFF,
                             material: earthMaterial,
                             position: earthPos
                         });
-                        var earthObstruction = CreateEarth({
+                        let earthObstruction = CreateEarth({
                             size: 49,
                             color: 0xFFFFFF,
                             opacity: 0.0,
@@ -90,14 +94,14 @@
                             color: 0x397ebe,
                             position: earthPos
                         });
-                        var glowCubeMask = CreateEarth({
+                        let glowCubeMask = CreateEarth({
                             size: 65,
                             color: 0xFFFFFF,
                             position: earthPos
                         });
-                        var light = new THREE.PointLight(0xff0000, 1, 1000);
+                        let light = new THREE.PointLight(0xff0000, 1, 1000);
                         light.position.set(50, 50, 50);
-                        var blurLight = new THREE.PointLight(0xff0000, 1, 1000);
+                        let blurLight = new THREE.PointLight(0xff0000, 1, 1000);
                         blurLight.position.set(50, 50, 50);
                         scene.add(earth);
                         scene.add(new THREE.AmbientLight(0xFFFFFF));
@@ -107,7 +111,7 @@
                         blurScene.add(earthObstruction);
                         blurMaskScene.add(glowCubeMask);
                     }
-                    var CreateEarthMaterial = function(earthMap, cloudMap) {
+                    let CreateEarthMaterial = function(earthMap, cloudMap) {
                         cloudMap.wrapS = cloudMap.wrapT = THREE.RepeatWrapping;
                         earthMap.wrapS = earthMap.wrapT = THREE.RepeatWrapping;
 
@@ -129,9 +133,9 @@
 
                     }
 
-                    var CreateEarth = function(params) {
-                        var earthGeometry = new THREE.SphereGeometry(params.size, 50, 50);
-                        var material = params.material != undefined ? params.material : new THREE.MeshLambertMaterial({
+                    let CreateEarth = function(params) {
+                        let earthGeometry = new THREE.SphereGeometry(params.size, 50, 50);
+                        let material = params.material != undefined ? params.material : new THREE.MeshLambertMaterial({
                             color: params.color,
                             opacity: params.opacity != undefined ? params.opacity : 1.0,
                             transparent: false,
@@ -139,23 +143,23 @@
                             shading: THREE.SmoothShading
                         });
 
-                        var earth = new THREE.Mesh(earthGeometry, material);
+                        let earth = new THREE.Mesh(earthGeometry, material);
 
                         if (params.position != undefined)
                             earth.position.copy(params.position);
 
                         return earth;
                     };
-                    var SetupComposers = function() {
-                        var blur1Passes = CreateBlurShaderPasses(window.innerWidth, window.innerHeight, 8);
-                        var blur2Passes = CreateBlurShaderPasses(window.innerWidth, window.innerHeight, 2);
+                    let SetupComposers = function() {
+                        let blur1Passes = CreateBlurShaderPasses(window.innerWidth, window.innerHeight, 8);
+                        let blur2Passes = CreateBlurShaderPasses(window.innerWidth, window.innerHeight, 2);
 
-                        var blurPass = new THREE.RenderPass(blurScene, camera);
+                        let blurPass = new THREE.RenderPass(blurScene, camera);
                         blurPass.clear = true;
                         blurPass.clearAlpha = 0.0;
 
-                        var maskPass = new THREE.MaskPass(blurMaskScene, camera);
-                        var clearMaskPass = new THREE.ClearMaskPass();
+                        let maskPass = new THREE.MaskPass(blurMaskScene, camera);
+                        let clearMaskPass = new THREE.ClearMaskPass();
 
                         blurComposer.addPass(blurPass);
                         blurComposer.addPass(maskPass);
@@ -165,7 +169,7 @@
                         blurComposer.addPass(blur2Passes.verticalPass);
                         blurComposer.addPass(clearMaskPass);
 
-                        var overlayShader = {
+                        let overlayShader = {
                             uniforms: {
                                 tDiffuse: {
                                     type: "t",
@@ -183,18 +187,18 @@
                             fragmentShader: overlayFrag
                         };
 
-                        var scenePass = new THREE.RenderPass(scene, camera);
+                        let scenePass = new THREE.RenderPass(scene, camera);
                         scenePass.clear = true;
 
                         overlayShader.uniforms["tOverlay"].value = blurComposer.renderTarget2;
-                        var overlayPass = new THREE.ShaderPass(overlayShader);
+                        let overlayPass = new THREE.ShaderPass(overlayShader);
                         overlayPass.renderToScreen = true;
 
                         sceneComposer.addPass(scenePass);
                         sceneComposer.addPass(overlayPass);
                     }
-                    var CreateBlurShaderPasses = function(h, v, blurriness) {
-                        var HBlurShader = {
+                    let CreateBlurShaderPasses = function(h, v, blurriness) {
+                        let HBlurShader = {
                             uniforms: {
                                 tDiffuse: {
                                     type: "t",
@@ -209,7 +213,7 @@
                             fragmentShader: horizontalBlurFrag
                         };
 
-                        var VBlurShader = {
+                        let VBlurShader = {
                             uniforms: {
                                 tDiffuse: {
                                     type: "t",
@@ -224,16 +228,16 @@
                             fragmentShader: verticalBlurFrag
                         };
 
-                        var HBlur = new THREE.ShaderPass(HBlurShader);
-                        var VBlur = new THREE.ShaderPass(VBlurShader);
+                        let HBlur = new THREE.ShaderPass(HBlurShader);
+                        let VBlur = new THREE.ShaderPass(VBlurShader);
                         return {
                             horizontalPass: HBlur,
                             verticalPass: VBlur
                         };
                     }
 
-                    var RenderGlowScene = function() {
-                        var ticks = new Date().getTime() - startTime;
+                    let RenderGlowScene = function() {
+                        let ticks = new Date().getTime() - startTime;
                         earthMaterial.uniforms.fTime.value = ticks / 70000.0;
                         blurComposer.render();
                         sceneComposer.render();
@@ -243,7 +247,7 @@
                         RenderGlowScene();
                     };
                     Initialize();
-                    var loader = new THREE.TextureLoader();
+                    let loader = new THREE.TextureLoader();
                     loader.crossOrigin = '';
                     loader.load(i1,
                         function(cloudTexture) {
@@ -258,6 +262,9 @@
         },
         mounted:function () {
             this.initGLMap();
+            window.onresize = () => {
+                this.initGLMap();
+            }
         },
         created: function () {
 
@@ -287,7 +294,7 @@
         height: 100%;
         position: fixed;
         top:0;
-        z-index: -1;
+        z-index: 1;
     }
     .WebGL-output{
         >canvas{
