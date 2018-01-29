@@ -895,8 +895,8 @@
 
             closeThisFn: function () {
 //                this.$emit('closeThis')
-                this.mes.demandType = -1;
-                this.$emit('update:foo',this.mes);
+//                this.mes.demandType = -1;
+                this.$emit('closewindow');
             },
             // 点击“结束需求”按钮
             endNeed: function () {

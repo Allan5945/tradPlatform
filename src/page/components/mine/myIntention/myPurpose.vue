@@ -686,7 +686,7 @@
         },
         created() {
             this.id = this.acceptData.demandId;
-            if (this.acceptData.demand.demandtype == 0) {
+            if (this.acceptData.demandtype == 0) {
                 this.getData();
             }
         },

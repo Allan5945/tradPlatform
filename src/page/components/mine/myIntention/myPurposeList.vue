@@ -31,18 +31,18 @@
                 <div class="lists-containt">
                     <!--点击列表，展示意向详情-->
                     <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
-                        <span class="reminder" v-show="item.unreadNum != 0 && item.unreadNum != null"></span>
+                        <span class="reminder" v-show="talkNumShow"></span>
                         <div class="list-a item">
                             {{item.releasetime}}
                         </div>
                         <div class="list-b item">
-                            {{item.demandtype}}
+                            {{item.demandtypeStr}}
                         </div>
                         <div class="list-c item color">
                             <span>{{item.title}}</span>
                         </div>
                         <div class="list-d item">
-                            {{item.responseProgress}}
+                            {{item.responseProgressStr}}
                         </div>
                         <div class="list-e item">
                             <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
@@ -68,8 +68,10 @@
         </div>
         <transition-group name="slidex-fade">
             <myPurpose v-if="myPurposeShow" :acceptData="sendDataToMyPurpose" @close-this="closeThisFn" :key="5"></myPurpose>
-            <myPurpose1 v-show="myPurpose1Show" @close-this="closeThisFn" @responseShow="responShow" :key="6"></myPurpose1>
-            <myPurpose2 v-show="myPurpose2Show" @close-this="closeThisFn" @transShow="transShow" :key="7"></myPurpose2>
+            <!--运力详情-->
+            <div class="trans-wrapper" v-if="myPurpose1Show" @click.self="closeThisFn" :key="6">
+                <transIndex :mes="mes" @closewindow="closeThisFn"></transIndex>
+            </div>
         </transition-group>
     </div>
 </template>
@@ -78,6 +80,7 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
     import myPurpose from './myPurpose.vue'
+    import transIndex from '$src/page/components/trans_detail/transIndex.vue'
     import myPurpose1 from './myPurpose1.vue'
     import myPurpose2 from './myPurpose2.vue'
 
@@ -117,6 +120,11 @@
                 totalCount: 1,
                 pageCount: 1,
                 numPrePage: 1,
+                mes:{       //demand  , demandState 需求状态 ,demandType  需求类型
+                    demand:"",
+                    demandState:"",
+                    demandType:""
+                },
             }
         },
         watch:{
@@ -216,10 +224,10 @@
                         }
                         response.data.list.list.forEach((val) => {
                             this.myData2.push(val);
-                            if (val.demandtype == '运力需求' || val.demandtype == '运力投放') {
+                            if (val.demandtype == '1') {
                                 this.myData0.push(val);
                             }
-                            if (val.demandtype == '航线需求') {
+                            if (val.demandtype == '0') {
                                 this.myData1.push(val);
                             }
                         });
@@ -252,15 +260,6 @@
 //                console.info(chatObj)
                 tabulationBoxTrigger.$emit('addChat',chatObj);
                 this.talkNumShow = false;
-            },
-            // 不是我的，张帅的页面是否显示
-            responShow: function () {
-                this.myPurpose1Show = true;
-                this.myPurpose2Show = false;
-            },
-            transShow: function () {
-                this.myPurpose1Show = false;
-                this.myPurpose2Show = true;
             },
             //*******************
             typeShowFn: function () {
@@ -324,44 +323,18 @@
             },
             // 点击列表(list)，展示详情
             listClickFn: function (item,index) {
-//                console.info('purposeItem:')
-//                console.info(item)
-                this.$ajax({
-                    url:"/getResponseDetails",
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: {
-                        responseId: item.id //发布时间排序类型 0-倒序 1-正序
-                    }
-                }) .then((response) => {
-//                    console.info('我的意向详情:')
-//                    console.info(response.data.obj)
-                    if(response.data.opResult == 0){
-                        this.listItemIndex = index; //变成active状态
-                        if(this.role.role == 0) { //0：航司 1：机场 2：太美
-                            this.myPurposeShow = true;
-                        }else if(this.role.role == 1) { //1：机场
-//                            this.myPurpose1Show = true;
-                            tabulationBoxTrigger.$emit('sendDataToMyPurpose12', response.data.obj);
-                        }else if(this.role.role == 2) { //2：太美
-                            if(response.data.obj.demandtype === '0') { //demandtype：（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
-                                this.myPurposeShow = true;
-                            }else if(response.data.obj.demandtype === '1') { //demandtype：（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
-                                tabulationBoxTrigger.$emit('sendDataToMyPurpose12', response.data.obj);
-                            }
-                        }
-                        this.sendDataToMyPurpose = response.data.obj;  //将item的参数传递给myPurpose.vue
-                        tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
-                    }else {
-//                        alert('错误代码response.data.opResult：' + response.data.opResult)
-                        this.open8(`错误代码：${response.data.opResult}`);
-                    }
-
-                }).catch((error) => {
-                    console.log(error);
-                });
+                this.listItemIndex = index; //变成active状态
+                if(item.demandtype == '0') {
+                    this.myPurposeShow = true;
+                    this.sendDataToMyPurpose = item;  //将item的参数传递给myPurpose.vue
+                    tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
+                }else if(item.demandtype == '1') { //demand  , demandState 需求状态 ,demandType  需求类型
+                    this.myPurpose1Show = true;
+                    this.mes.demand = item.demandId;
+                    this.mes.demandState = item.demandstate;
+                    this.mes.demandType = item.demandtype;
+                    tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
+                }
             },
             // 点击关闭详情
             closeThisFn: function () {
@@ -383,6 +356,7 @@
             myPurpose,
             myPurpose1,
             myPurpose2,
+            transIndex,
         }
     }
 </script>
@@ -390,6 +364,15 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    .trans-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
+    }
     .reminder {
         position: absolute;
         top: 50%;
@@ -554,7 +537,7 @@
                 >span {
                     position: absolute;
                     top: -1px;
-                    right: -1px;
+                    left: 20px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
