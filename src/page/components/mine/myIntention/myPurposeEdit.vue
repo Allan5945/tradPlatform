@@ -401,7 +401,7 @@
                     <span class="margin-right">其他说明</span>　
                     <div class="choose-input" style="position: relative; border: none; height: auto;">
                         <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
-                        <textarea class="text-area" v-model="remarkMsg" maxlength="200"></textarea>
+                        <textarea class="text-area" v-model="remarkMsg" maxlength="200" @keydown.enter.prevent></textarea>
                         <span class="background-line" style="top: 26px;"></span>
                         <span class="background-line" style="top: 52px;"></span>
                         <span class="background-line" style="top: 78px;"></span>
@@ -632,14 +632,12 @@
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'success'
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'error'
                 });
@@ -1036,7 +1034,7 @@
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
                 this.warn1Show = false;
-                this.warn2Show = false;
+//                this.warn2Show = false;
                 this.warn3Show = false;
                 this.warn4Show = false;
                 this.warn5Show = false;

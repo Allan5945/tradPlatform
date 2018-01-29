@@ -147,14 +147,12 @@
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'success'
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'error'
                 });
@@ -287,6 +285,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    .iconfont {
+        margin: 0 25px;
+    }
     /*多行省略号，兼容多个浏览器*/
     @mixin line-clamp($lines, $line-height: 20px) {
         text-overflow: ellipsis;

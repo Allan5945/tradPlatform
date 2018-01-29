@@ -126,17 +126,29 @@
                             <div>座位布局</div>
                             <div>{{ndetailData.seating||"-"}}</div>
                         </div>
-                        <div>
-                            <div>运力归属</div>
-                            <div>{{ndetailData.capacitycompany||"-"}}</div>
-                        </div>
-                        <div>
-                            <div>运力基地</div>
-                            <div>{{ndetailData.dpt||"-"}}</div>
-                        </div>
+                        <template v-if="ndetailData.capacityCompany">
+                            <div>
+                                <div>运力归属</div>
+                                <div>{{ndetailData.capacityCompany.airlnCd || "-"}}</div>
+                            </div>
+                            <div>
+                                <div>运力基地</div>
+                                <div>{{ ndetailData.dptNm ||"-"}}</div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div>
+                                <div>运力归属</div>
+                                <div>-</div>
+                            </div>
+                            <div>
+                                <div>运力基地</div>
+                                <div>-</div>
+                            </div>
+                        </template>
                         <div>
                             <div>出港时刻</div>
-                            <div>{{ ndetailData.dptTime||"-"}}</div>
+                            <div>{{ ndetailData.dptTimeresourcesStr||"-"}}</div>
                         </div>
                         <div>
                             <div>班期</div>
