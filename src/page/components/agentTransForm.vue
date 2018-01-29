@@ -183,7 +183,7 @@
     </div>
 </template>
 <script>
- import calendar from './calendar'
+ import calendar from './publicTools/calendar/calendar'
  import * as vx from 'vuex'
  import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索

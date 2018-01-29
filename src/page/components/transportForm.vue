@@ -168,8 +168,8 @@
                          <div class="confirm-btn btn" @click="getMyDate">确定</div>
                          <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                        </div>
-                       <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1"></calendar>
-                       <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar>
+                       <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1" :dis="false"></calendar>
+                       <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2" :dis="false"></calendar>
                      </div>
                    </div>
                     <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
@@ -218,7 +218,7 @@
     </div>
 </template>
 <script>
- import calendar from './calendar'
+ import calendar from './publicTools/calendar/calendar'
  import * as vx from 'vuex'
  import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
