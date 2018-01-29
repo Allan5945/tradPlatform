@@ -29,7 +29,7 @@
                     <div class="list-e item"></div>
                     <div class="list-f item"></div>
                 </div>
-                <div v-if="myList">
+                <div class="lists-containt" v-if="myList">
                     <div class="list items" v-for="val in myList">
                         <div class="list-a item">
                             {{val.releaseTime}}
@@ -57,12 +57,14 @@
                     </div>
                 </div>
             </div>
-            <div  style="float:right;padding-right:120px;">
+            <div>
               <el-pagination
-                background
-                layout="prev, pager, next"
+                 class="pagination"
+                @size-change="handleSizeChange"
                 @current-change="pageChange"
-                :total="totalCount*2">
+                :page-size="numPrePage"
+                layout="prev, pager, next, jumper, total"
+                :total="totalCount">
               </el-pagination>
             </div>
         </div>
@@ -100,10 +102,11 @@
                 state2: ['状态','待处理','处理中','已拒绝','已完成','已关闭'],
                 myList:null,
                 demandId:null,
-                totalCount:'',
+                totalCount:0,
+                numPrePage:1,
                 sentData:{
                     page:1,
-                    pageNo:4,
+                    pageNo:5,
                     demandType: '',
                     demandProgress:'',
                     releaseTime:"Desc"
@@ -142,6 +145,9 @@
             pageChange(page){
                 this.sentData.page = page;
                 this.getListData();
+            },
+            handleSizeChange(val) {
+//            console.log(`每页 ${val} 条`);
             },
             chat:function (v) {
                 v.employeeId = this.role.id;
@@ -282,7 +288,8 @@
                 }).then(res => {
                     if(res && res.data.opResult == 0){
                         that.myList = res.data.list.list;
-                        this.totalCount = res.data.list.totalCount;
+                        that.totalCount = res.data.list.totalCount;
+                        that.numPrePage = res.data.list.numPrePage;
                     }else{
                         that.myList = null;
                     }
@@ -348,11 +355,23 @@
         padding-top: 40px;
         width: 1000px;
         height: 340px;
-        &::after {
-            display: block;
-            height: 60px;
-            content: '';
+        .lists-containt {
+            height: 280px;
+            overflow-y: scroll;
         }
+        .lists-containt::-webkit-scrollbar {
+            width: 7px;
+        }
+        .lists-containt::-webkit-scrollbar-thumb {
+            height: 56px;
+            background: #D8D8D8;
+            border-radius: 4px;
+        }
+       /*  &::after {
+           display: block;
+           height: 60px;
+           content: '';
+       } */
     }
     .items {
         display: flex;
@@ -458,5 +477,9 @@
         .list-f {
             cursor: pointer;
         }
+    }
+    .pagination{
+        text-align:center;
+        padding-bottom:20px;
     }
 </style>

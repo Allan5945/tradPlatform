@@ -40,9 +40,17 @@
                       <div>运力基地</div>
                       <div>{{detailData.dptNm||'-'}}</div>
                   </div>
-                  <div>
+                   <div>
                       <div>接受调度</div>
-                      <div>{{detailData.schedulingStr||'-'}}</div>
+                      <div class="schedul-airpot" style="width:120px;"
+                            v-if="detailData.scheduling == '0'"
+                          @mouseover="schedulListShow = true" @mouseout="schedulListShow = false">
+                          <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                      </div>
+                      <div v-else>不接受</div>
+                      <div class="list-wrapper" v-show="schedulListShow" v-if="detailData.scheduling == '0'">
+                          <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}/</span>
+                      </div>
                   </div>
                   <div >
                       <div>出港时刻</div>
@@ -232,6 +240,7 @@
              orderComplete:false,
              chatShow:true,
              confirmShow:false,
+             schedulListShow:false,
              planData:{},
              detailData:{},
              intentionCount:0,
@@ -605,6 +614,7 @@
           width:240px;
           height:40px;
           display: flex;
+          position:relative;
           >div{
               margin-bottom:20px;
               height:20px;
@@ -616,6 +626,28 @@
           }
           >div:nth-of-type(2){
               width:160px;
+          }
+          .schedul-airpot{
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          span{
+            margin-right:10px;
+          }
+          .list-wrapper {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            width: 200px;
+            height:50px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 11px rgba(96,94,124,0.37);
+            z-index: 3;
           }
       }
       >div:nth-of-type(odd){

@@ -416,7 +416,7 @@
                             <span class="margin-right" style="flex-shrink: 0">其他说明</span>　
                             <div class="choose-input" style="position: relative; border: none;">
                                 <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
-                                <textarea class="text-area" v-model="remarkMsg" maxlength="200"></textarea>
+                                <textarea class="text-area" v-model="remarkMsg" maxlength="200" @keydown.enter.prevent></textarea>
                                 <span class="background-line" style="top: 26px;"></span>
                                 <span class="background-line" style="top: 52px;"></span>
                                 <span class="background-line" style="top: 78px;"></span>
@@ -696,14 +696,12 @@
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'success'
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'error'
                 });
@@ -866,6 +864,14 @@
                     req.scrollTop = 550;
                     return
                 }
+                // 输入必须为数字的判断
+                /*// seatingNum：座位数；avgguestExpect: 均班客量期望；loadfactorsExpect: 客座率期望；blockbidPrice: 拦标价格；
+                let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
+                if(seatingNum != '' && /^[0-9]+.?[0-9]*$/.test(seatingNum) == false) {
+                    this.open8('false');
+                    return
+                }*/
+
                 this.sendDataFn();
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
@@ -985,7 +991,7 @@
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
                 this.warn1Show = false;
-                this.warn2Show = false;
+//                this.warn2Show = false;
                 this.warn3Show = false;
                 this.warn4Show = false;
                 this.warn5Show = false;
@@ -996,10 +1002,7 @@
                 this.warn10Show = false;
                 this.warn11Show = false;
                 this.warn12Show = false;
-                // 始发、经停、到达中转站
                 this.firArea = this.firAreaBus;
-//                this.secArea = this.secAreaBus;
-//                this.thirdArea = this.thirdAreaBus;
             },
             clickClose1Fn: function () {
                 this.space1 = !this.space1;

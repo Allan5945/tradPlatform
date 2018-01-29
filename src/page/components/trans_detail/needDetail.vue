@@ -38,7 +38,7 @@
                       <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
                     </div>
                     <div v-else>不接受</div>
-                    <div class="list-wrapper" v-show="schedulListShow">
+                    <div class="list-wrapper" v-show="schedulListShow"  v-if="detailData.scheduling == '0'">
                         <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}/</span>
                     </div>
                 </div>
@@ -105,13 +105,7 @@
              inventBtnShow:false
          }
      },
-     props:['needData','demand'],
-     watch:{
-          'demand':function(){
-            //console.log(this.demand)
-             this.init();
-          }
-        },
+     props:['needData'],
      methods:{
          closeDetail:function(){
             this.$emit('closeDetail');
@@ -192,8 +186,7 @@
          init:function(){
               this.intentionCount = this.needData.intentionCount;
               this.detailData = this.needData.data;
-              this.demandId = this.detailData.demandId;
-
+              this.demandId = this.detailData.id;
               let progress = this.detailData.demandprogress;
               //需求发布、意向征集、订单确认
               if(progress == '0'||progress == '1'||progress == '2'){

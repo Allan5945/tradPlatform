@@ -62,6 +62,9 @@
             }
         },
         mounted: function () {
+            if(this.$route.params.key){
+                this.inputText = this.$route.params.key;
+            }
             this.resData();
         },
         computed: {

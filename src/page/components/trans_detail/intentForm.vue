@@ -976,7 +976,7 @@
             },
             // 电话号码验证
             verifyPhon: function () {
-                if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.phoneNum))) {
+                if (!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum))) {
                     this.warn2Show = true;
                 } else {
                     this.warn2Show = false;

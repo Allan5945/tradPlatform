@@ -233,8 +233,8 @@
                 </div>
             </footer>
         </div>
-        <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
-        <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
+        <!-- <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm> -->
+        <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
         <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
     </div>
@@ -245,7 +245,8 @@
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
   import myIntentForm from './myIntentForm.vue'
-  import sureForm from './sureForm1.vue'
+  /*import sureForm from './sureForm1.vue'*/
+  import sureForm from './../airlineAffirm.vue'
   import dataForm from './dataForm.vue'
   import  signDialog from './signDialog.vue'
  export default {
@@ -291,12 +292,15 @@
             this.$emit('closeIntent');
          },
          toSelect:function(val){
-            this.myFormShow = true;
-            this.selectData = val;
+            /*this.myFormShow = true;*/
+            this.sureFormShow = true;
+            this.editData = val;
+            this.editData.stateNum = '1';
          },
          toEdit:function(val,index){
-            this.editData = val;
             this.sureFormShow = true;
+            this.editData = val;
+            this.editData.stateNum = '2';
          },
          closeNeed:function(){
                this.$ajax({
@@ -322,8 +326,13 @@
                 );
          },
          cancelSel:function(val){
-              this.selectData = val;
+              this.selectData.id = val.id;
+              this.selectData.employeeId = val.employeeId;
+              this.selectData.demandId = val.demandId;
               this.selectData.releaseselected = '1';
+
+              //this.selectData.capacityCompany = null;
+              //this.selectData.airportForSchedulines = null;
               this.$ajax({
                     method: 'post',
                     url: '/selectedResponse',
@@ -335,7 +344,7 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                           //alert("撤销选定成功!")
-                          this.selected = false;
+                          this.getDetail();
                          }
                     })
                     .catch((error) => {
@@ -354,6 +363,7 @@
          },
           closeSureForm:function(){
               this.sureFormShow = false;
+              this.getDetail();
          },
          closeDataForm:function(){
             this.dataFormShow = false;
@@ -563,7 +573,7 @@
     .table-form{
       width:100%;
       box-sizing:border-box;
-      padding:60px 0 60px 40px;
+      padding:60px 0 95px 40px;
       flex-wrap: wrap;
       display: flex;
       >div{

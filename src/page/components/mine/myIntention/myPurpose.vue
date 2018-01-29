@@ -365,9 +365,9 @@
                 <div class="left font-gray">
                     收到时间
                 </div>
-                <div class="up-down">
-                    <span class="icon-item icon-up active">&#xe605;</span>
-                    <span class="icon-item icon-down">&#xe605;</span>
+                <div class="up-down" @click="timeUpDownClick">
+                    <span class="icon-item icon-up" :class="{active: timeUpDown == true}">&#xe605;</span>
+                    <span class="icon-item icon-down" :class="{active: timeUpDown == false}">&#xe605;</span>
                 </div>
                 <div class="right font-gray">
                     意向方
@@ -682,12 +682,20 @@
                 btnDisableShow: false,       // 禁止点击按钮
                 btnDisableShowArry: [],    // 存储获取的releaseselected参数
                 contactMsgShow: false,     // 发布方联系人、联系方式是否显示
+                timeUpDown: true,          // 按时间排序样式
+                timeUpDownOrderType: 0,    // 按时间排序传参  0:降序；1:升序
             }
         },
         created() {
             this.id = this.acceptData.demandId;
-            if (this.acceptData.demand.demandtype == 0) {
+            if (this.acceptData.demandtype == 0) {
                 this.getData();
+            }
+        },
+        watch: {
+            timeUpDown: function () {
+                this.timeUpDownOrderType = this.timeUpDown ? 0 : 1;
+                this.timeUpDownAjax();
             }
         },
         computed: {
@@ -696,17 +704,40 @@
             ])
         },
         methods: {
+            // 通过“发布时间”排序
+            timeUpDownAjax: function () {
+                this.$ajax({
+                    url: "/responseListOrder",
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        demandId: this.id,
+                        orderType: this.timeUpDownOrderType,  // 按时间排序传参  0:降序；1:升序
+                    }
+                }) .then((response) => {
+                    if(response.data.opResult == 0) {
+                        this.listData = response.data.responseList;   //获取意向列表
+                    }else {
+                        this.open8(`错误代码：${response.data.opResult}`);
+                    }
+                }) .catch((error) => {
+                    console.log(error);
+                });
+            },
+            timeUpDownClick: function () {
+                this.timeUpDown = !this.timeUpDown;
+            },
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'success'
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'error'
                 });
@@ -893,7 +924,7 @@
             // 点击“结束需求”按钮
             endNeed: function () {
                 this.$ajax({
-                    url: "closeDemandById",
+                    url: "/closeDemandById",
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
@@ -1802,7 +1833,11 @@
             position: relative;
             margin-right: 40px;
             width: 20px;
-            /*user-select:none;*/
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: pointer;
             .active {
                 color: $icon-color;
             }

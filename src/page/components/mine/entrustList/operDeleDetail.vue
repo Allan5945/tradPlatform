@@ -128,9 +128,25 @@
                     <div>运力归属</div>
                     <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                 </div>
-                 <div class="padding-item">
+                <div class="padding-item">
+                    <div>小时成本</div>
+                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                </div>
+                 <div>
                     <div>运力基地</div>
                     <div>{{detailData.dptNm||'-'}}</div>
+                </div>
+                <div class="padding-item">
+                    <div>接受调度</div>
+                    <div class="schedul-airpot" style="width:120px;"
+                      v-if="detailData.scheduling == '0'"
+                    @mouseover="schedulListShow = true" @mouseout="schedulListShow = false">
+                      <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                    </div>
+                    <div v-else>不接受</div>
+                    <div class="list-wrapper" v-show="schedulListShow"  v-if="detailData.scheduling == '0'">
+                        <span v-for=" item in detailData.airportForSchedulines">{{item.airlnCd||'-'}}/</span>
+                    </div>
                 </div>
                 <div>
                     <div>出港时刻</div>
@@ -152,14 +168,6 @@
                    <div>意向航线</div>
                    <div class="i-line">-</div>
                </div>
-                <div>
-                    <div>小时成本</div>
-                    <div>{{detailData.hourscost||'-'}}万/小时</div>
-                </div>
-                <div class="padding-item">
-                    <div>接受调度</div>
-                    <div>{{detailData.schedulingStr||'-'}}</div>
-                </div>
                 <div>
                     <div>有效期</div>
                     <div>{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
@@ -209,7 +217,7 @@
                <div class="foot-tips" >*取消原因：{{refuseText}}</div>
            </footer> -->
         </div>
-        <operDeleForm v-show="formShow" @closeForm="closeForm" ></operDeleForm>
+        <operDeleForm v-show="formShow" @closeForm="closeForm" :detailData="detailData"></operDeleForm>
         <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
@@ -239,6 +247,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
             isAirline:true,
             myShow:true,
             wrapperShow:true,
+            schedulListShow:false,
             listSonDemands:[],
             msg:'',
             refuseText:'',
@@ -696,6 +705,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           width:240px;
           height:40px;
           display: flex;
+          position:relative;
           >div{
               margin-bottom:20px;
               height:20px;
@@ -707,6 +717,28 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           }
           >div:nth-of-type(2){
               width:160px;
+          }
+           .schedul-airpot{
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          span{
+            margin-right:10px;
+          }
+          .list-wrapper {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            width: 200px;
+            height:50px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 11px rgba(96,94,124,0.37);
+            z-index: 3;
           }
       }
       >.padding-item{
