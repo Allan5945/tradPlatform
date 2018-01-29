@@ -865,12 +865,12 @@
                     return
                 }
                 // 输入必须为数字的判断
-                // seatingNum：座位数；avgguestExpect: 均班客量期望；loadfactorsExpect: 客座率期望；blockbidPrice: 拦标价格；
+                /*// seatingNum：座位数；avgguestExpect: 均班客量期望；loadfactorsExpect: 客座率期望；blockbidPrice: 拦标价格；
                 let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
                 if(seatingNum != '' && /^[0-9]+.?[0-9]*$/.test(seatingNum) == false) {
                     this.open8('false');
                     return
-                }
+                }*/
 
                 this.sendDataFn();
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
