@@ -131,21 +131,17 @@
                                 <div>运力归属</div>
                                 <div>{{ndetailData.capacityCompany.airlnCd || "-"}}</div>
                             </div>
-                            <div>
-                                <div>运力基地</div>
-                                <div>{{ ndetailData.dptNm ||"-"}}</div>
-                            </div>
                         </template>
                         <template v-else>
                             <div>
                                 <div>运力归属</div>
                                 <div>-</div>
                             </div>
+                        </template>
                             <div>
                                 <div>运力基地</div>
-                                <div>-</div>
+                                <div>{{ ndetailData.dptNm ||"-"}}</div>
                             </div>
-                        </template>
                         <div>
                             <div>出港时刻</div>
                             <div>{{ ndetailData.dptTimeresourcesStr||"-" }}</div>
