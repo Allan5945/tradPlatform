@@ -194,14 +194,12 @@
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'success'
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'error'
                 });
@@ -564,6 +562,10 @@
                 position: relative;
                 width: 20px;
                 cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
                 .active {
                     color: $icon-color;
                 }
