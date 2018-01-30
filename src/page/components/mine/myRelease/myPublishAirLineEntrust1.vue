@@ -343,6 +343,7 @@
         min-height: 900px;
         /*min-height: 700px;*/
         font-size: 1.2rem;
+        color: #605e7c;
         background: white;
         overflow-y: scroll;
         z-index: 12;
@@ -413,6 +414,7 @@
             display: flex;
             margin: 30px 0 15px 0;
             font-size: 20px;
+            font-weight: bold;
         }
         .bottom {
             margin-left: 3px;

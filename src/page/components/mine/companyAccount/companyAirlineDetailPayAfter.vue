@@ -688,10 +688,7 @@
         },
         watch: {
             sendToCompany: function () {
-                this.id = this.sendToCompany.demandId;
-                if (this.sendToCompany.demandType == '航线需求') {
-                    this.getData();
-                }
+                this.createdFn();
             },
             timeUpDown: function () {
                 this.timeUpDownOrderType = this.timeUpDown ? 0 : 1;
@@ -699,11 +696,7 @@
             }
         },
         created() {
-            this.id = this.sendToCompany.demandId;
-            if (this.sendToCompany.demandType == '航线需求') {
-                this.getData();
-                this.$emit('transShow');
-            }
+            this.createdFn();
         },
         computed: {
             ...vx.mapGetters([
@@ -711,6 +704,11 @@
             ])
         },
         methods: {
+            createdFn: function () {
+                this.id = this.sendToCompany.demandId;
+                this.getData();
+                this.$emit('transShow');
+            },
             // 通过“发布时间”排序
             timeUpDownAjax: function () {
                 this.$ajax({

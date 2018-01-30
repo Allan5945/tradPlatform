@@ -84,19 +84,20 @@
                                 <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
                             </div>
                             <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                            <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
+                            <div v-if="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                 <div class="selec-data">
                                     <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
                                     <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                     <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
-                                <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                    <!-- 可传入初始值 -->
+                                <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
+                               <!-- <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
+                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
                                 </calendar>
                                 <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
+                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                                </calendar>-->
                             </div>
                         </div>
                     </div>
@@ -318,19 +319,20 @@
                                     <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
                                 </div>
                                 <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                                <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
+                                <div v-if="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                     <div class="selec-data">
                                         <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
                                         <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                         <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                         <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                     </div>
-                                    <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                        <!-- 可传入初始值 -->
+                                    <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
+                                    <!--<calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
+                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
                                     </calendar>
                                     <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                        <!-- 可传入初始值 -->
-                                    </calendar>
+                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                                    </calendar>-->
                                 </div>
                             </div>
                             <div class="left item-child">
@@ -435,19 +437,20 @@
                                 <div style="flex-grow: 1; text-align: center;">{{myDate2}}</div>
                             </div>
                             <div class="warn" v-show="warn7Show" style="position: absolute;top: 46px; left: 0;">*发布有效期不能为空</div>
-                            <div v-show="calendarShow2" class="calendar-box popup" @click.stop style="left: 0; top: 47px;">
+                            <div v-if="calendarShow2" class="calendar-box popup" @click.stop style="left: 0; top: 48px;">
                                 <div class="selec-data">
                                     <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay3"><span>-</span>
                                     <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay4">
                                     <div class="confirm-btn btn" @click="getMyDate2">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow2 = !calendarShow2">取消</div>
                                 </div>
-                                <calendar v-on:changeDate="getDate3" :initDay="calendarInitDay3">
-                                    <!-- 可传入初始值 -->
+                                <calendarCP :initOpt="opt" @changeRangeDate="getDateRange"></calendarCP>
+                                <!--<calendar v-on:changeDate="getDate3" :initDay="calendarInitDay3">
+                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
                                 </calendar>
                                 <calendar v-on:changeDate="getDate4" :initDay="calendarInitDay4">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
+                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                                </calendar>-->
                             </div>
                         </div>
                     </div>
@@ -466,6 +469,7 @@
     import airportS from '../reuseComponents/airportSearch1.vue'
     import airCompanySearch from '../reuseComponents/airCompanySearch.vue'
     import calendar from './calendar'
+    import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
     import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
 
     export default {
@@ -590,10 +594,10 @@
 
                 scheduleShow: '待定',
                 subsidyShow: '选择补贴类型',
-                timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
+                timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','按人头','其他'],
+                subsidyList: ['保底','定补','人头补','其他'],
                 sendData: {},
                 directionalgoal: '', // 定向发布（id）
                 directionalgoalArry: [],
@@ -617,6 +621,17 @@
                 time31Checked: true,
                 time32Checked: false,
                 time33Checked: false,
+                opt: {      //发布有效期
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
+                opt0: {     //拟开时间
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
+                calendarInitDay: '',
             }
         },
         components: {
@@ -625,11 +640,24 @@
             calendar,
             airCompanySearch,
             singleElection,
+            calendarCP,
         },
         watch: {
             typeChoose: function () {
                 this.warn4Show = false;
-            }
+            },
+            calendarInitDay1: function () {
+                this.setOptFn0();
+            },
+            calendarInitDay2: function () {
+                this.setOptFn0();
+            },
+            calendarInitDay3: function () {
+                this.setOptFn();
+            },
+            calendarInitDay4: function () {
+                this.setOptFn();
+            },
         },
         mounted() {
             this.space1Fn();
@@ -637,6 +665,8 @@
             this.space3Fn();
             this.getEnterMsgFn();
             this.myDate2Fn();
+            this.setOptFn();
+            this.setOptFn0();
         },
         computed: {
 
@@ -654,7 +684,25 @@
             }*/
         },
         methods: {
-	    /*新增表单内容*/
+            /*双日历*/
+            getDateRange0: function (rd) {  // 拟开时间
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
+            },
+            setOptFn0: function () {
+                this.opt0.start = this.calendarInitDay1;
+                this.opt0.end = this.calendarInitDay2;
+            },
+            getDateRange: function (rd) {  // 发布有效期
+//                this.calendarInitDay = rd;
+                this.calendarInitDay3 = rd[0];
+                this.calendarInitDay4 = rd[1];
+            },
+            setOptFn: function () {
+                this.opt.start = this.calendarInitDay3;
+                this.opt.end = this.calendarInitDay4;
+            },
+            /*新增表单内容*/
             checkboxClickFn: function () {
                 this.elect.set = !this.elect.set;
             },
@@ -670,24 +718,6 @@
                     message: mes,
                     type: 'error'
                 });
-            },
-            // 设置发布有效期默认值（后延三个月）
-            myDate2Fn: function () {
-                let today = new Date(),
-                    day = today.getDate(), //号数
-                    mon = today.getMonth() + 1, //月份
-                    year = today.getFullYear(), //年份
-                    date = today.setMonth(today.getMonth()+3), //三个月后的时间
-                    mon2 =  today.getMonth(date) + 1,
-                    year2 =  today.getFullYear(date),
-                    day2 =  today.getDate(date);
-                if (mon < 10) mon = "0" + mon;
-                if (mon2 < 10) mon2 = "0" + mon2;
-                if (day < 10) day = "0" + day;
-                if (day2 < 10) day2 = "0" + day2;
-                this.calendarInitDay3 = year+"."+mon+"."+day;
-                this.calendarInitDay4 = year2+"."+mon2+"."+day2;
-                this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
             },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
@@ -852,6 +882,24 @@
             },
             closeThis: function () {
                 this.$emit("closeForm");
+            },
+            // 设置发布有效期默认值（后延三个月）
+            myDate2Fn: function () {
+                let today = new Date(),
+                    day = today.getDate(), //号数
+                    mon = today.getMonth() + 1, //月份
+                    year = today.getFullYear(), //年份
+                    date = today.setMonth(today.getMonth()+3), //三个月后的时间
+                    mon2 =  today.getMonth(date) + 1,
+                    year2 =  today.getFullYear(date),
+                    day2 =  today.getDate(date);
+                if (mon < 10) mon = "0" + mon;
+                if (mon2 < 10) mon2 = "0" + mon2;
+                if (day < 10) day = "0" + day;
+                if (day2 < 10) day2 = "0" + day2;
+                this.calendarInitDay1 = this.calendarInitDay2 = this.calendarInitDay3 = year+"."+mon+"."+day;
+                this.calendarInitDay4 = year2+"."+mon2+"."+day2;
+                this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
             },
             //点击关闭所有下拉
             closeAll: function () {
