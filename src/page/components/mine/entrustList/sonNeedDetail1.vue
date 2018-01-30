@@ -14,6 +14,7 @@
                       </div>
                   </div>
                </div>
+              <!--  <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div> -->
             </header>
             <div class="content">
                 <div class="table-form" v-if="transShow">
@@ -168,7 +169,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{turnPolicyCode(detailData.subsidypolicy)||'-'}}</div>
+                                    <div>{{detailData.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>有效期</div>
@@ -283,7 +284,7 @@
                                 </div>
                                 <div>
                                     <div>补贴政策</div>
-                                    <div>{{turnPolicyCode(val.subsidypolicy)||'-'}}</div>
+                                    <div>{{val.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
                                     <div>小时成本</div>
@@ -323,16 +324,20 @@
                 </div>
             </div>
             </div>
+
             <footer v-show="footShow">
+                <span class="foot-tips" v-if='!isIntentionMoney'>*您还未缴纳意向金，缴纳后可查看详细列表</span>
                 <div class="btn">
+                    <div class="col-btn" style="margin-right:10px;" @click="airlinePayFn" v-if='!isIntentionMoney'>点击此处缴纳意向金</div>
                     <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
                     <div class="col-btn" @click="closeNeed" v-else>结束需求</div>
                 </div>
             </footer>
         </div>
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
-        <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "editData"></sureForm>
+        <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
         <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
+        <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
     </div>
 </template>
 <script>
@@ -340,8 +345,9 @@
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
   import myIntentForm from './../../trans_detail/myIntentForm.vue'
-  import sureForm from './../../trans_detail/sureForm1.vue'
+  import sureForm from './../../airlineAffirm.vue'
   import dataForm from './../../trans_detail/dataForm.vue'
+  import airlinePay from '$src/page/components/trans_detail/dialog.vue'
  export default {
      data(){
          return{
@@ -362,7 +368,9 @@
              selectBtnShow:true,
              transShow:false,
              sureOderShow:false,
-             schedulListShow:false
+             schedulListShow:false,
+             airlinePayShow:false,
+             isIntentionMoney:true
          }
      },
      props:['sonId','title'],
@@ -384,12 +392,14 @@
             this.$emit('closeDetail');
          },
          toSelect:function(val){
-            this.myFormShow = true;
-            this.selectData = val;
-         },
-         toEdit:function(val,index){
-            this.editData = val;
             this.sureFormShow = true;
+            this.editData = val;
+            this.editData.stateNum = '1';
+        },
+         toEdit:function(val,index){
+            this.sureFormShow = true;
+            this.editData = val;
+            this.editData.stateNum = '2';
          },
          closeNeed:function(){
                this.$ajax({
@@ -418,7 +428,9 @@
                 this.$emit("toBack");
             },
          cancelSel:function(val){
-              this.selectData = val;
+               this.selectData.id = val.id;
+              this.selectData.employeeId = val.employeeId;
+              this.selectData.demandId = val.demandId;
               this.selectData.releaseselected = '1';
               this.$ajax({
                     method: 'post',
@@ -431,7 +443,7 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                           //alert("撤销选定成功!")
-                          this.selected = false;
+                          this.init();
                          }
                     })
                     .catch((error) => {
@@ -450,6 +462,7 @@
          },
           closeSureForm:function(){
               this.sureFormShow = false;
+              this.init();
          },
          closeDataForm:function(){
             this.dataFormShow = false;
@@ -460,39 +473,18 @@
          toPublish:function(){
             this.dataFormShow = true;
          },
-         turnPolicyCode:function(val){
-            switch (val) {
-                case "0":
-                    return "定补";
-                    break;
-                case "1":
-                    return "保底";
-                    break;
-                case "2":
-                    return "人头补";
-                    break;
-                case "3":
-                    return "待议";
-                    break;
-                case "4":
-                    return "无补贴";
-                    break;
-            }
-        }
-
-
-
-     },
-      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
+          airlinePayFn: function () {
+            this.airlinePayShow = true;
+            tabulationBoxTrigger.$emit('responseText',this.detailData.id)//向dialog.vue传入响应Id
         },
-      watch: {
-
-      },
-      mounted() {
-                this.$ajax({
+        closeAlPayFn: function () {
+            this.airlinePayShow = false;
+        },
+         changeShowCodeP: function () {
+            this.init();
+        },
+        init:function(){
+            this.$ajax({
                 method: 'post',
                 url: '/capacityRoutesDemandDetailFindById',
                 headers: {
@@ -506,6 +498,9 @@
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                     this.planData = response.data.responseList;
+                    if(this.detailData.demandtype == '0'){
+                        this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
+                    }
                     //判断状态
                     let progress = this.detailData.demandprogress;
                      if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
@@ -538,7 +533,7 @@
                       this.intentListShow = true;
                     }
                     //是否有选定
-                    if(this.planData !== {}){
+                    if(this.planData && this.planData !== []){
                       let len = this.planData.length;
                       this.selected = false;
                       for(let i =0;i<len;i++){
@@ -559,12 +554,26 @@
                         console.log(error);
                     }
                 );
+        }
+
+     },
+      computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
+      watch: {
+
+      },
+      mounted() {
+            this.init();
 
      },
      components: {
             myIntentForm,
             sureForm,
-            dataForm
+            dataForm,
+            airlinePay
         }
 }
 </script>
@@ -653,6 +662,20 @@
        }
    } */
      header{
+        position:relative;
+        .rep-btn{
+            position:absolute;
+            right:15px;
+            top:60px;
+            width:100px;
+            height:20px;
+            line-height:20px;
+            color:#ffffff;
+            text-align:center;
+            background-color:#3c78ff;
+            border-radius:100px;
+            cursor:pointer;
+        }
         .top-til{
           justify-content: space-between;
           display: flex;
@@ -965,7 +988,7 @@
           .foot-tips{
             color:red;
             position:absolute;
-            top:-30px;
+            top:-20px;
             left:40px;
           }
           .btn{

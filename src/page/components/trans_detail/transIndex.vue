@@ -18,6 +18,7 @@
                 adminShow:false,
                 respond:false,
                 intentShow:false,
+                isSelf:false
             }
         },
         props:['mes'],
@@ -27,12 +28,50 @@
                 ])
           },
         watch:{
-
+            'mes.demand':function(){
+                if(this.role.role == 2 ){
+                    this.init();
+                }
+            }
         },
         methods: {
             closeDetail(){
                 this.$emit('closewindow');
             },
+            init(){
+                this.$ajax({
+                method: 'post',
+                url: '/capacityRoutesDemandDetailFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId: this.mes.demand
+                }
+                })
+                .then((response) => {
+                    //是否太美发布
+                    this.isSelf = response.data.isSelf;
+                     if(this.isSelf == true){
+                        this.respond = false;
+                        this.intentShow = false;
+                         this.$nextTick(() => {
+                             this.intentShow = true;
+                          });
+
+                     }else{
+                        this.respond = false;
+                        this.intentShow = false;
+                        this.$nextTick(() => {
+                             this.respond = true;
+                        });
+                        }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+            }
         },
         mounted: function () {
             if( this.role.role == 1){
@@ -40,7 +79,7 @@
             }else if( this.role.role == 0 ){
                this.intentShow = true;
             }else if( this.role.role == 2 ){
-                this.adminShow = true;
+                this.init();
             }
         },
         components: {

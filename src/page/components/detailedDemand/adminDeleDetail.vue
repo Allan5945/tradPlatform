@@ -85,7 +85,7 @@
                     </div>
                     <div>
                         <div>补贴政策</div>
-                        <div>{{turnPolicyCode(detailData.subsidypolicy)||'-' }}</div>
+                        <div>{{detailData.subsidypolicyStr||'-' }}</div>
                     </div>
                     <div>
                         <div>有效期</div>
@@ -388,7 +388,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
           this.formShow =false;
           this.sonListShow = true;
         },
-        turnPolicyCode(val){
+        /*turnPolicyCode(val){
             switch (val) {
                 case "0":
                     return "定补";
@@ -406,7 +406,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                     return "无补贴";
                     break;
             }
-        },
+        },*/
         getProgress:function(progress){
             switch (progress) {
                 case "0":

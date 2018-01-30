@@ -85,7 +85,7 @@
                     </div>
                     <div>
                         <div>补贴政策</div>
-                        <div>{{turnPolicyCode(detailData.subsidypolicy)||'-' }}</div>
+                        <div>{{detailData.subsidypolicyStr||'-' }}</div>
                     </div>
                     <div>
                         <div>有效期</div>
@@ -317,7 +317,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                    this.$emit("close");
+                    this.init();
                   }
                 })
                 .catch((error) => {
@@ -355,7 +355,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                   this.$emit("close");
+                    this.init();
                   }
                 })
                 .catch((error) => {
@@ -380,7 +380,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                   this.$emit("close");
+                   this.init();
                   }
                 })
                 .catch((error) => {
@@ -391,8 +391,10 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         closeForm(){
           this.formShow =false;
           this.sonListShow = true;
+          this.init();
+
         },
-        turnPolicyCode(val){
+       /* turnPolicyCode(val){
             switch (val) {
                 case "0":
                     return "定补";
@@ -410,7 +412,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                     return "无补贴";
                     break;
             }
-        },
+        },*/
         getProgress:function(progress){
             switch (progress) {
                 case "0":
@@ -456,12 +458,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         toBack(){
           this.myShow = true;
           this.sondetailShow = false;
-        }
-     },
-      mounted() {
-          tabulationBoxTrigger.$emit('getSonId', this.chatData.id);
-          tabulationBoxTrigger.hierarchy = true;
-          this.$ajax({
+        },
+        init(){
+            this.$ajax({
                 method: 'post',
                 url: '/getCommissionedAndCustodyDemandDetails',
                 headers: {
@@ -514,6 +513,12 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                         console.log(error);
                     }
                 );
+        }
+     },
+      mounted() {
+          tabulationBoxTrigger.$emit('getSonId', this.chatData.id);
+          tabulationBoxTrigger.hierarchy = true;
+          this.init();
 
      },
     destroyed: function () {
