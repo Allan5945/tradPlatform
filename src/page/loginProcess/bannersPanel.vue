@@ -299,6 +299,7 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         display: flex;
         flex-flow: column nowrap;
         transition: top .8s linear;
+        z-index: 2;
     }
     .banner-item{
         flex: 1;
