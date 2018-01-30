@@ -12,11 +12,11 @@
           </header>
           <div class="content">
               <div class="table-form">
-                    <div v-if="!withdraw">
+                    <div>
                         <div>联系人</div>
                         <div>{{detailData.contact||'-'}}</div>
                     </div>
-                    <div v-if="!withdraw">
+                    <div>
                         <div>联系方式</div>
                         <div>{{detailData.iHome||'-'}}</div>
                   </div>
@@ -28,11 +28,7 @@
                       <div>座位布局</div>
                       <div>{{detailData.seating||'-'}}</div>
                   </div>
-                  <div v-if="withdraw">
-                      <div>运力归属</div>
-                      <div >***</div>
-                  </div>
-                  <div v-else>
+                  <div>
                       <div>运力归属</div>
                       <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
                   </div>
@@ -76,7 +72,7 @@
                       <div>有效期</div>
                       <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                   </div>
-                  <div class="note" v-if="!withdraw">
+                  <div class="note">
                       <div>其他说明</div>
                       <div>{{detailData.remark||'-'}}</div>
                   </div>
@@ -164,7 +160,7 @@
                       </div>
                       <div>
                           <div>补贴政策</div>
-                          <div>{{turnPolicyCode(planData.subsidypolicy)||'-'}}</div>
+                          <div>{{planData.subsidypolicyStr||'-'}}</div>
                       </div>
                       <div>
                           <div>小时成本</div>
@@ -442,7 +438,7 @@
             this.payDialog = false;
             this.$emit('responseClose');
         },
-        turnPolicyCode:function(val){
+       /* turnPolicyCode:function(val){
             switch (val) {
                 case "0":
                     return "定补";
@@ -460,7 +456,7 @@
                     return "无补贴";
                     break;
             }
-        },
+        },*/
         getNeedDetail(){
                 this.$ajax({
                     method: 'post',

@@ -2,6 +2,7 @@
     <div class="t-form scroll popup" id="transForm" @click="closeDialog">
         <div class="select-box" v-show="formFinish">
             <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
+            <!-- <singleElection :single.sync="elect" class="checkbox-choose"></singleElection> -->
             <div>展开填写完整需求订单</div>
         </div>
         <div class="t-part" v-show="!allFormShow">
@@ -25,7 +26,7 @@
                     <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum" maxlength="11">
                     <div class="error" v-show="isError2" style="top:58px;right:36px;">*电话格式有误，请重新输入</div>
                 </div>
                 <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
@@ -98,14 +99,14 @@
                     <div class="error" v-show="isError3" style="left:58px;top:53px;">*请选择起飞机场</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>拟飞机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4">
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>拟飞机型</div><input type="text" placeholder="输入选择机型" v-model="airplaneTyp" @focus="getAirplaneTyp" @blur="closeDialog4" readonly="readonly">
                     <div class="airpl-typ popup scroll" v-show="airplTypShow">
                         <div v-for="(item,index) in airTypData" @click="getAirType(index)">{{item}}</div>
                     </div>
                     <div class="error" v-show="isError5" style="left:58px;top:53px;">*请选择机型</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
+                    <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat" maxlength="10">
                 </div>
                 <div class="form-box pad1 taken">
                     <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
@@ -223,6 +224,8 @@
  import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
  import airCompanyS from '../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
+ import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
+
     export default {
         data () {
             return{
@@ -328,11 +331,14 @@
             }
         },
         watch:{
-            'allFormShow':function(val){
+            'seat':function(val){
+                this.seat = val.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
+            },
+            /*'allFormShow':function(val){
                 if(val){
                     this.formFinish =false;
                 }
-            },
+            },*/
             'intendedDpt':function(val){
                 if(val){
                     if(val == this.intendedPst||val == this.intendedArrv){
@@ -1129,7 +1135,7 @@
             position: absolute;
             font-size:1.2rem;
             left:60px;
-            right:0;
+            top:19px;
             z-index:3;
             width: 472px;
             height: 130px;

@@ -203,7 +203,6 @@
         beforeCreate(){
         },
         created: function() {
-            debugger;
             let d = this.initDay;
             d = d.replace(/-/g, "/");
             d = d.replace(/\./g, "/");

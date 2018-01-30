@@ -201,7 +201,7 @@
                 }
                 })
                 .then((response) => {
-                    if(response.data.opResult == "004"|| response.data.receiveIntention == null){
+                    if(response.data.receiveIntention == null){
                         this.myShow1 = true;
                         this.intentionCount = response.data.intentionCount;
                         this.detailData = response.data.data;
@@ -214,7 +214,7 @@
                             this.inventBtnShow = false;
                         }
 
-                    }else if(response.data.opResult == "003"&& response.data.receiveIntention !== null){
+                    }else if( response.data.receiveIntention !== null){
                         this.myShow2 = true;
                         this.resData = response.data;
                     }

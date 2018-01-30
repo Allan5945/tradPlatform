@@ -108,6 +108,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                   }
                 })
                 .then((response) => {
+                  if(response.data.opResult == '0'){
+                   this.init();
+                  }
                 })
                 .catch((error) => {
                         console.log(error);
@@ -140,7 +143,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 })
                 .then((response) => {
                    if(response.data.opResult == '0'){
-                   this.$emit("close");
+                   this.init();
                   }
                 })
                 .catch((error) => {
@@ -162,7 +165,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 })
                 .then((response) => {
                    if(response.data.opResult == '0'){
-                   this.$emit("close");
+                   this.init();
                   }
                 })
                 .catch((error) => {
@@ -192,7 +195,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                 })
                 .then((response) => {
                    if(response.data.opResult == '0'){
-                     this.$emit("close");
+                     this.init();
                     }
                 })
                 .catch((error) => {
@@ -202,14 +205,9 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         },
         cancelDialog(){
           this.dialogShow = false;
-        }
-     },
-     computed: {
-
         },
-      mounted() {
-          tabulationBoxTrigger.hierarchy = true;
-          this.$ajax({
+        init(){
+            this.$ajax({
                 method: 'post',
                 url: '/getCommissionedAndCustodyDemandDetails',
                 headers: {
@@ -249,6 +247,14 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
                         console.log(error);
                     }
                 );
+        }
+     },
+     computed: {
+
+        },
+      mounted() {
+          tabulationBoxTrigger.hierarchy = true;
+          this.init();
 
      },
     destroyed: function () {
