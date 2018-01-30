@@ -27,7 +27,7 @@
                         </div>
                         <div class="item-b item">
                             <span v-if="item.demandId === '' || item.demandId === null">{{item.discription1}}</span>
-                            <span v-else>{{item.discription1}} <span style="color: #3c78ff; cursor:pointer;" @click.stop="needDetailClickFn(item)">{{item.demandTitle}}{{item.demandType}}</span></span>
+                            <span v-else>{{item.discription1}} <span style="color: #3c78ff; cursor:pointer;" @click.stop="needDetailClickFn(item)">{{item.demandTitle}}{{item.demandTypeStr}}</span></span>
                         </div>
                         <div class="item-c item">{{item.discription2}}</div>
                     </div>
@@ -39,12 +39,12 @@
             <myCompanyAccountWithdraw v-if="myCompanyAccountWithdrawShow" @closeThis="closeWithdrawFn" :myCompanyAccountWithdraw="myData" @refresh="refreshFn" :key="1"></myCompanyAccountWithdraw>
         </transition-group>
         <transition-group name="slidex-fade">
-            <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAccountRechargeDetailFn" :key="0"></AccountRechargeDetail>
-            <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAccountWithdrawDetailFn" :key="1"></AccountWithdrawDetail>
-            <companyAirlineDetailPayAfter v-show="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeCompanyAirlineDetailPayAfterFn" :key="2"></companyAirlineDetailPayAfter>
-            <companyMyIntention v-show="companyMyIntentionShow" @closeThis="closeCompanyMyIntentionFn" @openIntent="openIntent" :key="3"></companyMyIntention>
-            <companyNeedDetail v-show="companyNeedDetailShow" @closeThis="closeCompanyMyIntentionFn" @transShow="transShow" :key="4"></companyNeedDetail>
-            <companyRespondAirport v-show="companyRespondAirportShow" @closeThis="closeCompanyMyIntentionFn" @responseShow="responShow" :key="5"></companyRespondAirport>
+            <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAllFn" :key="2"></AccountRechargeDetail>
+            <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAllFn" :key="3"></AccountWithdrawDetail>
+            <companyAirlineDetailPayAfter v-if="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeAllFn" :key="4"></companyAirlineDetailPayAfter>
+            <div class="trans-wrapper" v-if="companyTransIndexShow" @click.self="closeAllFn" :key="5">
+                <transIndex :mes="mes" @closewindow="closeAllFn"></transIndex>
+            </div>
         </transition-group>
     </div>
 </template>
@@ -56,9 +56,7 @@
     import AccountRechargeDetail from './AccountRechargeDetail.vue'
     import AccountWithdrawDetail from './AccountWithdrawDetail.vue'
     import companyAirlineDetailPayAfter from './companyAirlineDetailPayAfter.vue'
-    import companyMyIntention from './companyMyIntention.vue'
-    import companyNeedDetail from './companyNeedDetail.vue'
-    import companyRespondAirport from './companyRespondAirport.vue'
+    import transIndex from '$src/page/components/trans_detail/transIndex.vue'
     export default {
         data() {
             return {
@@ -67,9 +65,6 @@
                 AccountRechargeDetailShow: false,    // 机场、航司充值详情
                 AccountWithdrawDetailShow: false,    // 提现详情
                 companyAirlineDetailPayAfterShow: false, // 航线详情是否显示
-                companyMyIntentionShow: false,           // 运力详情是否显示
-                companyNeedDetailShow: false,            // 运力详情是否显示
-                companyRespondAirportShow: false,        // 运力详情是否显示
                 myData: {},     //获取的数据
                 myListData: [], // 获取的列表数据
                 myAccountData: {},
@@ -78,6 +73,12 @@
                 listItemIndex: '',
                 demandIdShow: false, // 列表数据中没有demandId时，不显示
                 sendToCompany: {},   // 向companyAirlineDetailPayAfter传数据
+                companyTransIndexShow: false,  // 运力详情是否显示
+                mes:{       //demand  , demandState 需求状态 ,demandType  需求类型
+                    demand:"",
+                    demandState:"",
+                    demandType:""
+                },
             }
         },
         created() {
@@ -114,22 +115,6 @@
                     console.log(error);
                 });
             },
-            // 张帅的运力详情页面，不是我的
-            openIntent() {
-                this.companyMyIntentionShow = true;
-                this.companyNeedDetailShow = false;
-                this.companyRespondAirportShow = false;
-            },
-            transShow(){
-                this.companyMyIntentionShow = false;
-                this.companyNeedDetailShow = true;
-                this.companyRespondAirportShow = false;
-            },
-            responShow(){
-                this.companyMyIntentionShow = false;
-                this.companyNeedDetailShow = false;
-                this.companyRespondAirportShow = true;
-            },
             //***************************
             // 点击“充值”
             rechargeFn: function () {
@@ -160,7 +145,6 @@
             WithdrawFn: function () {
                 this.myCompanyAccountWithdrawShow = true;
                 tabulationBoxTrigger.hierarchy = true;
-//                tabulationBoxTrigger.$emit('myCompanyAccountWithdraw',this.myData) //向myCompanyAccountWithdraw.vue传数据
             },
             // 关闭“申请提现”
             closeWithdrawFn: function () {
@@ -185,44 +169,33 @@
                 }
                 tabulationBoxTrigger.hierarchy = true;
             },
-            // 关闭“充值详情”
-            closeAccountRechargeDetailFn: function () {
-                this.AccountRechargeDetailShow = false;
-                this.listItemIndex = '';
-                this.refreshFn();
-            },
-            // 关闭“提现详情”
-            closeAccountWithdrawDetailFn: function () {
-                this.AccountWithdrawDetailShow = false;
-                this.listItemIndex = '';
-                this.refreshFn();
-            },
             // 点击展示（航线、运力）详情
             needDetailClickFn: function (item) {
                 //0：航司、 1：机场、 2：太美
 //                tabulationBoxTrigger.$emit('sendToCompany',item) // 向companyAirlineDetailPayAfter、companyMyIntention传数据
                 this.sendToCompany = item;
                 tabulationBoxTrigger.hierarchy = true;
-                if(item.demandType == '航线需求'){
-                    this.companyMyIntentionShow = false;
+                if(item.demandType == '0'){  //（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                     this.companyAirlineDetailPayAfterShow = true;
-                }if(item.demandType == '运力需求' || item.demandType == '运力投放'){
-//                    this.companyMyIntentionShow = true;
-                    this.companyAirlineDetailPayAfterShow = false;
-                    tabulationBoxTrigger.$emit('sendToCompany', item);
+                }if(item.demandType == '1'){
+                    this.companyTransIndexShow = true;
+                    /*
+                    mes:{       //demand  , demandState 需求状态 ,demandType  需求类型
+                        demand:"",
+                        demandState:"",
+                        demandType:""
+                    },*/
+                    this.mes.demand = item.demandId;
+                    this.mes.demandState = item.demandstate;
+                    this.mes.demandType = item.demandType;
                 }
             },
-            // 关闭“航线详情”
-            closeCompanyAirlineDetailPayAfterFn: function () {
+            closeAllFn: function () {
+                this.AccountRechargeDetailShow = false;
+                this.AccountWithdrawDetailShow = false;
+                this.listItemIndex = '';
                 this.companyAirlineDetailPayAfterShow = false;
-                tabulationBoxTrigger.hierarchy = false;
-                this.refreshFn();
-            },
-            // 关闭“运力详情”
-            closeCompanyMyIntentionFn: function () {
-                this.companyMyIntentionShow = false;
-                this.companyNeedDetailShow = false;
-                this.companyRespondAirportShow = false;
+                this.companyTransIndexShow = false;
                 tabulationBoxTrigger.hierarchy = false;
                 this.refreshFn();
             },
@@ -233,9 +206,7 @@
             AccountRechargeDetail,
             AccountWithdrawDetail,
             companyAirlineDetailPayAfter,
-            companyMyIntention,
-            companyNeedDetail,
-            companyRespondAirport,
+            transIndex,
         }
     }
 </script>
@@ -243,6 +214,15 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    .trans-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 30;
+    }
     ul {
         position: absolute;
         margin: 0;
