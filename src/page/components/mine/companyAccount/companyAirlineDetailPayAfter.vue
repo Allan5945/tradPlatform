@@ -134,19 +134,14 @@
                             </div>
                             <div class="item-d" style="display: flex; position: relative;">{{periodValidity1 || '-'}}止
                                 <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
-                                <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
+                                <div v-if="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
                                     <div class="selec-data">
-                                        <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                                        <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
+                                        <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
+                                        <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
                                         <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                         <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                     </div>
-                                    <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                        <!-- 可传入初始值 -->
-                                    </calendar>
-                                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                        <!-- 可传入初始值 -->
-                                    </calendar>
+				    <calendarCP :initOpt="opt" @changeRangeDate="getDateRange"></calendarCP>
                                 </div>
                             </div>
                         </div>
@@ -326,9 +321,9 @@
                         <!--<div>成都双流</div>-->
                     </div>
                     <div>
-                        <div>是否调度</div>
-                        <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">是</div>
-                        <div v-else>否</div>
+                        <div>接受调度</div>
+                        <div v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">接受</div>
+                        <div v-else>不接受</div>
                         <!--<div>华北地区</div>-->
                     </div>
                     <div class="tips" v-if="receiveIntention.scheduling === '0' && receiveIntention.airportForSchedulines != null">
@@ -465,7 +460,7 @@
                                         <div>客量期望</div>
                                         <div>补贴政策</div>
                                         <div>运力归属</div>
-                                        <div>是否调度</div>
+                                        <div>接受调度</div>
                                     </div>
                                     <div class="right item">
                                         <div class="item-a item-height">{{item.contact || '-'}}</div>
@@ -481,8 +476,8 @@
                                             <span v-else>-</span>
                                         </div>
                                         <div class="item-height">
-                                            <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">是</span>
-                                            <span v-else>否</span>
+                                            <span v-if="item.scheduling === '0' && item.airportForSchedulines != null">接受</span>
+                                            <span v-else>不接受</span>
                                         </div>
                                     </div>
                                 </div>
@@ -615,7 +610,7 @@
 
     import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
     import airlinePay from '$src/page/components/trans_detail/dialog.vue'
-    import calendar from '$src/page/components/calendar'
+    import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
 
     export default {
         props: ['sendToCompany'],
@@ -669,8 +664,6 @@
                 checkDetailIndex: '', //点击“查看详情”对应的展开
                 airlineAffirmUnchooseData: {}, //“撤销选定”发的对象
                 /*日历*/
-                calendarInitDay1: '', //日历
-                calendarInitDay2: '',
                 calendarShow1: false,
                 myDate1: '',
                 demandState5: false, //"审核未通过"是否显示 demandState 0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过
@@ -684,26 +677,32 @@
                 contactMsgShow: false,     // 发布方联系人、联系方式是否显示
                 timeUpDown: true,          // 按时间排序样式
                 timeUpDownOrderType: 0,    // 按时间排序传参  0:降序；1:升序
+                opt: {          //发布有效期
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
+                calendarInitDay3: '',
+                calendarInitDay4: '',
             }
         },
         watch: {
             sendToCompany: function () {
-                this.id = this.sendToCompany.demandId;
-                if (this.sendToCompany.demandType == '航线需求') {
-                    this.getData();
-                }
+                this.createdFn();
             },
             timeUpDown: function () {
                 this.timeUpDownOrderType = this.timeUpDown ? 0 : 1;
                 this.timeUpDownAjax();
-            }
+            },
+            calendarInitDay3: function () {
+                this.setOptFn();
+            },
+            calendarInitDay4: function () {
+                this.setOptFn();
+            },
         },
         created() {
-            this.id = this.sendToCompany.demandId;
-            if (this.sendToCompany.demandType == '航线需求') {
-                this.getData();
-                this.$emit('transShow');
-            }
+            this.createdFn();
         },
         computed: {
             ...vx.mapGetters([
@@ -711,6 +710,33 @@
             ])
         },
         methods: {
+	     // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'error'
+                });
+            },
+            createdFn: function () {
+                this.id = this.sendToCompany.demandId;
+                this.getData();
+                this.setOptFn();
+            },
+	    /*双日历组件*/
+            getDateRange: function (rd) {  // 发布有效期
+                this.calendarInitDay3 = rd[0];
+                this.calendarInitDay4 = rd[1];
+            },
+            setOptFn: function () {
+                this.opt.start = this.calendarInitDay3;
+                this.opt.end = this.calendarInitDay4;
+            },
             // 通过“发布时间”排序
             timeUpDownAjax: function () {
                 this.$ajax({
@@ -736,19 +762,6 @@
             timeUpDownClick: function () {
                 this.timeUpDown = !this.timeUpDown;
             },
-            // 改变alert弹出样式
-            open6(mes) {  // 成功弹出的提示
-                this.$message({
-                    message: mes,
-                    type: 'success'
-                });
-            },
-            open8(mes) {  // 错误弹出的提示
-                this.$message({
-                    message: mes,
-                    type: 'error'
-                });
-            },
             // ajax获取的数据，并渲染
             getData: function () {
                 this.$ajax({
@@ -770,11 +783,9 @@
                     this.myData = response.data.data;
                     this.releaseTime = this.myData.releasetime.split(" ")[0];
                     this.dptTime0 = this.myData.dptTime;
-//                    this.pstTime0 = this.myData.pstTime.split(',')[0];
-//                    this.pstTime1 = this.myData.pstTime.split(',')[1];
-//                    this.sailingtime0 = this.myData.sailingtime.split(',')[0];
-//                    this.sailingtime1 = this.myData.sailingtime.split(',')[1];
                     this.periodValidity1 = this.myData.periodValidity.split('-')[1];
+                    this.calendarInitDay3 = this.myData.periodValidity.split('-')[0];
+                    this.calendarInitDay4 = this.myData.periodValidity.split('-')[1];
                     // 修改this.showCode
                     if(this.myData.demandstate == 5
                         || this.myData.demandprogress == 10) {  // “关闭”状态
@@ -1047,15 +1058,9 @@
             editCalendarFn: function () {
                 this.calendarShow1 = !this.calendarShow1;
             },
-            getDate1: function (d) {//获取组件返回的日期
-                this.calendarInitDay1 = d.split('-').join('.');
-            },
-            getDate2: function (d) {
-                this.calendarInitDay2 = d.split('-').join('.');
-            },
             getMyDate1: function () {//我发布的需求，修改有效期
-                if (this.calendarInitDay1 && this.calendarInitDay2) {
-                    this.periodValidity0 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                if (this.calendarInitDay3 && this.calendarInitDay4) {
+                    this.periodValidity0 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
                     this.calendarShow1 = false;
                     let editDate = {};
                     editDate.id = this.id;
@@ -1068,13 +1073,10 @@
                         },
                         params: editDate
                     }) .then((response) => {
-//                        console.info('1response:')
-//                        console.info(response)
                         if(response.data.opResult === '0'){
-//                            alert('有效期修改成功！')
                             this.open6(`有效期修改成功！`);
+                            this.refreshFn();
                         }else{
-//                            alert('错误代码：' + response.data.opResult)
                             this.open8(`错误代码：${response.data.opResult}`);
                         }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
@@ -1347,9 +1349,9 @@
             airlineAffirm,
             paySuccess,
             airlinePay,
-            calendar,
             myPurposeEdit,
             airlineReqWrapper,
+            calendarCP,
         }
     }
 </script>

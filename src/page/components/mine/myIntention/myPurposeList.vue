@@ -81,8 +81,6 @@
     import stateList from '../stateList.vue'
     import myPurpose from './myPurpose.vue'
     import transIndex from '$src/page/components/trans_detail/transIndex.vue'
-    import myPurpose1 from './myPurpose1.vue'
-    import myPurpose2 from './myPurpose2.vue'
 
     export default {
         data() {
@@ -352,8 +350,6 @@
         components: {
             stateList,
             myPurpose,
-            myPurpose1,
-            myPurpose2,
             transIndex,
         }
     }

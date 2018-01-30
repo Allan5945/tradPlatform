@@ -7,7 +7,8 @@
         <div class="t-part" v-show="!allFormShow">
             <div class="form-box">
                 <div class="t-title"><span style="color:red;padding-right:3px;">*</span>航班号</div>
-                <input type="text" placeholder="填写需要托管的航班号" v-model="flightNum" maxlength="10">
+                <input type="text" placeholder="填写需要托管的航班号" v-model="flightNum" maxlength="10" v-on:keyup="verifyFlightNum" @blur="verifyFlightNum">
+                 <div class="error" v-show="isError3" style="left:60px;top:55px;">*请填写航班号</div>
             </div>
         </div>
         <div class="t-all" v-show="allFormShow">
@@ -20,15 +21,17 @@
                     <div class="error" v-show="isError1" style="left:60px;top:52px;">*请填写联系人</div>
                 </div>
                 <div class="form-box">
-                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                    <div class="t-title">联系方式<span style="color:red;padding-left:3px;">*</span></div>
+                    <input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum" maxlength="11">
                     <div class="error" v-show="isError2">*电话格式有误，请重新输入</div>
                 </div>
                 <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
             <div class="t-optional">
                 <div class="form-box">
-                    <div class="t-title">航班号</div>
+                    <div class="t-title">航班号<span style="color:red;padding-left:3px;">*</span></div>
                     <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
+                    <div class="error" v-show="isError3" style="left:60px;top:55px;">*请填写航班号</div>
                     <!-- <div class="num-list popup scroll" v-show="flightListShow">
                         <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
                     </div> -->
@@ -37,13 +40,18 @@
                         <div class="t-title">小时成本</div>
                         <div class="t-input">
                             <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                            <span>元</span>
+                            <span>万元</span>
                     </div>
                 </div>
                 <div class="form-box tips">
                     <div class="t-title">其他说明</div>
-                    <input type="text" placeholder="可选填" v-model="tip" maxlength="35">
-                    <div class="count"><span >{{countNum}}</span>/35</div>
+                    <textarea class="txtarea" v-model="tip" maxlength="200" placeholder="可选填"></textarea>
+                    <div class="count"><span >{{countNum}}</span>/200</div>
+                    <div class="tips-border"></div>
+                    <div class="tips-border" style="top:44px;"></div>
+                    <div class="tips-border" style="top:70px;"></div>
+                    <div class="tips-border" style="top:95px;"></div>
+                     <div class="tips-border" style="top:121px;"></div>
                 </div>
             </div>
         </div>
@@ -55,6 +63,9 @@
 </template>
 
 <script>
+ import * as vx from 'vuex'
+
+
  export default {
         data () {
             return{
@@ -62,6 +73,7 @@
                 isSel: false,
                 isError1: false,
                 isError2: false,
+                isError3:false,
                 flightListShow:false,
                 contact:'',
                 hourcost:'',
@@ -92,6 +104,12 @@
                     this.isError2 = false;
                 }
             },
+            verifyFlightNum:function(){
+                 if(this.flightNum){
+                     this.isError3 = false;
+                }
+                this.flightNum = this.flightNum.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'');
+            },
             submit:function(){
                 let demandData = { };
                 demandData.demandtype = "2";
@@ -105,8 +123,10 @@
                     this.isError1 = true;
                 }else if(this.phoneNum == ''){
                     this.isError2 = true;
+                }else if(this.flightNum == ''){
+                    this.isError3 = true;
                 }else{
-                    if(!this.isError1 && !this.isError2){
+                    if(!this.isError1 && !this.isError2 && !this.isError3){
                             this.$ajax({
                         url:"/demandAdd",
                         method: 'post',
@@ -162,18 +182,46 @@
                 });
                 this.flightListShow = true;
             },
+            //敏感字屏蔽
+            filter: function () {
+              // 多个敏感词，这里直接以数组的形式展示出来
+              var arrMg = ["fuck", "tmd", "妈的","毛泽东","老子","党","革命","共产主义","屌","逼","傻","张","李","王"];
+
+              // 显示的内容--showContent
+              var showContent = this.tip;
+
+              // 正则表达式
+              // \d 匹配数字
+              for (var i = 0; i < arrMg.length; i++) {
+
+                // 创建一个正则表达式
+                var r = new RegExp(arrMg[i], "ig");
+
+                showContent = showContent.replace(r, "*");
+              }
+              //匹配11位数字
+              var n = new RegExp(/\d{11}$/, "igm");
+                showContent = showContent.replace(n, "*");
+              // 显示的内容
+              this.tip = showContent;
+            },
         },
         computed:{
+             ...vx.mapGetters([
+                'role'
+            ]),
             countNum: function(){
-                return this.tip.length <= 35? this.tip.length: 35;
+                return this.tip.length <= 200? this.tip.length: 200;
             }
         },
         watch:{
-            /*flightNum: function(val){
-                if(!val){
-                    this.flightListShow = !this.flightListShow;
-                }
-            }*/
+            'tip':function(){
+                this.filter();
+            }
+        },
+        beforeMount:function () {
+            this.contact = this.role.username;
+            this.phoneNum = this.role.phone;
         }
 
     }
@@ -326,12 +374,35 @@
          }
      } */
       .tips{
-        width:100%;
         position:relative;
+        width:580px;
+        height:140px;
         padding:17px 0 20px 0;
-        input{
-          width:473px;
-
+        .tips-border{
+            width:472px;
+            height:26px;
+            box-sizing:border-box;
+            position:absolute;
+            left:60px;
+            top:18px;
+            z-index:1;
+            border-bottom:1px solid rgba(151,151,151,.3);
+        }
+        .txtarea{
+            resize:none;
+            display: inline-block;
+            position: absolute;
+            font-size:1.2rem;
+            left:60px;
+            top:16px;
+            z-index:3;
+            width: 472px;
+            height: 130px;
+            line-height:26px;
+            border:0;
+            outline:none;
+            background:transparent;
+            //background:url(http://www.w3dev.cn/eg/linebg.gif) repeat;
         }
       }
       .error{
@@ -388,7 +459,7 @@
     }
     .count {
         position:absolute;
-        top:18px;
+        top:120px;
         right:0;
     }
     .num-list{

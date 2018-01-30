@@ -91,7 +91,7 @@
         width: 100%;
         height: 100%;
         position: relative;
-        border:solid;
+        /*border:solid;*/
         display: flex;
     }
 </style>

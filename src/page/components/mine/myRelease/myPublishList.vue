@@ -77,7 +77,6 @@
         </div>
         <transition-group name="slidex-fade">
             <myPublish0 v-if="mes.demandType === '0'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="2"></myPublish0>
-            <!--<myPublishNeed1 v-show="myPublishShow1" @close-this="closeAllShowFn" :key="3"></myPublishNeed1>-->
             <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
                 <transIndex :mes="mes" @closewindow="closeAllShowFn"></transIndex>
             </div>
@@ -92,7 +91,6 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
     import myPublish0 from './myPublishNeed0.vue' // 航线需求详情
-    import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
     import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
@@ -400,10 +398,7 @@
         },
         components: {
             stateList,
-//            myPublish,
             myPublish0,
-            myPublishNeed1,
-//            myPublishAirline,
             myPublishTransportEntrust,
             myPublishAirLineEntrust,
             myPublishAirLineEntrust1,
