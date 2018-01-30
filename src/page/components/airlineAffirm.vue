@@ -229,19 +229,15 @@
                                 <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
                             </div>
                             <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                            <div v-show="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
+                            <div v-if="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
                                 <div class="selec-data">
                                     <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
                                     <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                     <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
-                                <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
-                                <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
+ 				<calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
+                                
                             </div>
                         </div>
                         <div class="left item-child">
@@ -387,7 +383,7 @@
             </div>
             <div class="fourth items bg-color">
                 <div class="top item-child">
-                    <span class="margin-right">其他说明</span>　
+                    <span class="margin-right" style="flex-shrink: 0;">其他说明</span>　
                     <div class="choose-input" style="position: relative; border: none; height: auto;">
                         <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
                         <textarea class="text-area" v-model="remarkMsg" maxlength="200" @keydown.enter.prevent></textarea>
@@ -415,6 +411,7 @@
     import airportS from '$src/page/reuseComponents/airportSearch1.vue'
     import airCompanySearch from '$src/page/reuseComponents/airCompanySearch.vue'
     import calendar from '$src/page/components/calendar'
+    import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
     import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
 
     export default {
@@ -544,7 +541,7 @@
                 timeList: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'],
                 spaceList: ['意向区域', '意向机场'],
                 scheduleList: ['待定', '满排', '半排'],
-                subsidyList: ['保底', '定补', '按人头','其他'],
+                subsidyList: ['保底', '定补', '人头补','其他'],
 //                sendData: {},
                 responseId: '',
                 airCompany: '',//运力归属
@@ -576,18 +573,33 @@
                 time31Checked: true,
                 time32Checked: false,
                 time33Checked: false,
+                
+                opt0: {     //拟开时间
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
+                
             }
         },
         components: {
             airAreaSearch,
             airportS,
             calendar,
-            airCompanySearch
+            airCompanySearch,
+	    calendarCP,
         },
         watch: {
             typeChoose: function () {
                 this.warn4Show = false;
-            }
+            },
+            calendarInitDay1: function () {
+                this.setOptFn0();
+            },
+            calendarInitDay2: function () {
+                this.setOptFn0();
+            },
+            
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
@@ -609,9 +621,20 @@
             this.space1Fn();
             this.space2Fn();
             this.space3Fn();
+            this.myDate2Fn();
+            this.setOptFn0();
             this.acceptDataFn();
         },
         methods: {
+	 /*双日历*/
+            getDateRange0: function (rd) {  // 拟开时间
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
+            },
+            setOptFn0: function () {
+                this.opt0.start = this.calendarInitDay1;
+                this.opt0.end = this.calendarInitDay2;
+            },
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
@@ -651,6 +674,8 @@
                 this.user = this.acceptData.contact;  // 联系人
                 this.phoneNum = this.acceptData.ihome; // 联系方式
                 this.myDate1 = this.acceptData.sailingtime; // 拟开时间
+                this.calendarInitDay1 = this.acceptData.sailingtime.split('-')[0];
+                this.calendarInitDay2 = this.acceptData.sailingtime.split('-')[1];
                 this.scheduleShow = this.acceptData.days; // 拟开班期
                 this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
                 this.seatingNum = this.acceptData.seating; // 座位数
@@ -997,6 +1022,22 @@
             },
             closeThis: function () {
                 this.$emit('close-this');
+            },
+	    // 设置发布有效期默认值（后延三个月）
+            myDate2Fn: function () {
+                let today = new Date(),
+                    day = today.getDate(), //号数
+                    mon = today.getMonth() + 1, //月份
+                    year = today.getFullYear(), //年份
+                    date = today.setMonth(today.getMonth()+3), //三个月后的时间
+                    mon2 =  today.getMonth(date) + 1,
+                    year2 =  today.getFullYear(date),
+                    day2 =  today.getDate(date);
+                if (mon < 10) mon = "0" + mon;
+                if (mon2 < 10) mon2 = "0" + mon2;
+                if (day < 10) day = "0" + day;
+                if (day2 < 10) day2 = "0" + day2;
+                this.calendarInitDay1 = this.calendarInitDay2 = year+"."+mon+"."+day;
             },
             //点击关闭所有下拉
             closeAll: function () {
