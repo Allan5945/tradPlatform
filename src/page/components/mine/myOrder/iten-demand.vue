@@ -80,11 +80,22 @@
                         <div>
                             <div>补贴政策</div>
                             <div>{{ ndetailData.subsidypolicyStr ||"-"}}</div>
-
                         </div>
                         <div>
-                            <div>有效期</div>
-                            <div>{{ ndetailData.sailingtime? ndetailData.sailingtime.substr(-10)+" 止" :"-" }}</div>
+                            <div>小时成本</div>
+                            <div>{{ ndetailData.hourscost? ndetailData.hourscost+"万元/小时" :"-" }}</div>
+                        </div>
+                        <div>
+                            <div>运力归属</div>
+                            <div>{{ ndetailData.capacityCompany.airlnCd ||"-"}}</div>
+                        </div>
+                        <div>
+                            <div>运力基地</div>
+                            <div>{{ ndetailData.dptNm || "-" }}</div>
+                        </div>
+                        <div>
+                            <div>是否调度</div>
+                            <div>{{ ndetailData.schedulingStr || "-" }}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>其他说明</div>

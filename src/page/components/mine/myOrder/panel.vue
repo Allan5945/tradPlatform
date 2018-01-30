@@ -15,7 +15,7 @@
                         :roleType="roleType"
                         v-if="metaData && metaData.responseList && metaData.responseList.length>0">
                 </extendListModule>
-                <template v-if="metaData && metaData.isWeituo && true">
+                <template v-if="metaData && metaData.isWeituo && metaData.listSonDemands">
                     <header>
                         <div class="head-til">关联子需求</div>
                     </header>
@@ -24,27 +24,20 @@
                             <span class="item-a">发布时间</span><span class="item-b">标题</span><span class="item-c">需求状态</span>
                         </div>
                         <ul class="table-body">
-                            <template v-for="(item, eindex) in extendDemand.data">
+                            <template v-for="(item, eindex) in metaData.listSonDemands">
                                 <li>
                                     <div class="list">
-                                        <span class="item-a">2017.1.25</span>
-                                        <span class="item-b">模拟的数据</span>
-                                        <span class="item-c">完成</span>
-                                        <template v-if="roleType=='2' && false">
-                                            <span v-show="extendDemand.active!=eindex" @click="extendDemand.active=eindex" class="item-d">查看详情</span>
-                                            <span v-show="extendDemand.active===eindex" @click="extendDemand.active=-1" class="item-d">收起详情</span>
+                                        <span class="item-a">{{ item.releasetime }}</span>
+                                        <span class="item-b">{{ item.title }}</span>
+                                        <span class="item-c">{{ item.demandprogressStr }}</span>
+                                        <template v-if="roleType=='2'">
+                                            <span @click="" class="item-d">查看详情</span>
                                         </template>
                                         <template v-else>
                                             <span class="item-d"></span>
                                         </template>
                                     </div>
                                 </li>
-                                <extendPanel class="main-info"
-                                             v-if="roleType=='2' && item && false"
-                                             v-show="extendDemand.active===eindex"
-                                             :extendData="item"
-                                             :thisType="'hangxian'">
-                                </extendPanel>
                             </template>
                         </ul>
                     </div>
@@ -58,7 +51,7 @@
     import listModule from './detailListModule.vue';
     import extendPanel from './extend.vue';
     import extendListModule from './iten-demand.vue';
-    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
     export default{
         data(){
@@ -73,23 +66,6 @@
                 metaData: null,
                 fatherScroll:true,
                 typeList: ['航线需求','运力投放 '],
-                extendDemand:{
-                    data:[
-                        {
-                            name: '1',
-                            age:'2'
-                        },
-                        {
-                            name: '3',
-                            age:'4'
-                        },
-                        {
-                            name: '5',
-                            age:'6'
-                        },
-                    ],
-                    active: -1
-                }
             }
         },
         components: {listModule, extendListModule, extendPanel},
