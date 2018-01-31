@@ -307,17 +307,23 @@
                                     <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
-                            <div v-if="selectBtnShow" v-show="val.responseProgress !== '2'">
-                                <div class="btns" v-if="val.releaseselected == '0' ">
-                                    <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
-                                    <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                            <span class="selc-tips" v-if="!isIntentionMoney">*您还未缴纳意向金，缴纳后即可选定该意向</span>
+                            <div v-if="isIntentionMoney">
+                                <div v-if="selectBtnShow" v-show="val.responseProgress !== '2'">
+                                    <div class="btns" v-if="val.releaseselected == '0' ">
+                                        <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
+                                        <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                                    </div>
+                                    <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
+                                    <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                                 </div>
-                                <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
-                                <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
+                                <div v-if="val.responseProgress !== '2'">
+                                    <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
+                                    <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                                </div>
                             </div>
-                            <div v-if="val.responseProgress !== '2'">
-                                <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
-                                <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                            <div v-else>
+                                 <div class="sure-btn" style="backgroundColor:#ccc;color:#fff;">选定</div>
                             </div>
                         </div>
                     </div>
@@ -326,7 +332,6 @@
             </div>
 
             <footer v-show="footShow">
-                <span class="foot-tips" v-if='!isIntentionMoney'>*您还未缴纳意向金，缴纳后可查看详细列表</span>
                 <div class="btn">
                     <div class="col-btn" style="margin-right:10px;" @click="airlinePayFn" v-if='!isIntentionMoney'>点击此处缴纳意向金</div>
                     <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
@@ -843,6 +848,7 @@
           }
         }
         .intent-detail{
+            position:relative;
             .sure-btn{
                 height:28px;
                 line-height:28px;
@@ -982,15 +988,16 @@
             }
 
         }
+         .selc-tips{
+            color:red;
+            position:absolute;
+            bottom:40px;
+            left:20px;
+          }
     footer{
         border-top: 1px solid #ccc;
         position:relative;
-          .foot-tips{
-            color:red;
-            position:absolute;
-            top:-20px;
-            left:40px;
-          }
+
           .btn{
               height:40px;
               margin-top:28px;
