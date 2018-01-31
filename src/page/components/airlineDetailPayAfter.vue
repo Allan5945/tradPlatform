@@ -1466,6 +1466,7 @@
         height: 41px;
         font-size: 12px;
         background: white;
+        box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
         z-index: 10;
         .close-icon {
             position: absolute;
