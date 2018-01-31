@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div class="plan-wrapper scroll">
+      <div class="plan-wrapper scroll" v-if="responseShow">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
               <div class="head-til">{{detailData.title||'-'}}运力投放</div>
@@ -174,9 +174,12 @@
                           <div>运力基地</div>
                           <div>{{planData.capacityBaseNm||'-'}}</div>
                       </div>
-                       <div>
+                       <div  class="note">
                           <div>是否调度</div>
-                          <div>{{planData.schedulingStr||'-'}}</div>
+                          <div v-if="planData.scheduling == '0' ">
+                          <span v-for=" item in planData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                          </div>
+                          <div v-else>不接受</div>
                       </div>
                       <div class="note">
                           <div>其他说明</div>
@@ -209,8 +212,8 @@
               </div>
           </footer>
       </div>
-    <sureForm v-if="sureFormShow" @closeForm="closeSureForm" :acceptData = "planData"></sureForm>
-    <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @closeForm="closeReForm" :acceptData = "planData"></reIntentForm>
+    <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
+    <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @close-this="closeReForm" :acceptData = "planData"></reIntentForm>
     <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
     <paySuccess v-show="payDialog" @cancel="closePaySuccess" ></paySuccess>
     </div>
@@ -220,13 +223,14 @@
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
  import ln from '$src/public/js/tabulationBoxTrigger'
- import sureForm from '$src/page/components/trans_detail/sureForm1.vue'
+ import sureForm from './../myIntention/myPurposeEdit.vue'
  import reIntentForm from '$src/page/components/trans_detail/reIntentForm.vue'
  import transDialog from '$src/page/components/trans_detail/transDialog.vue'
  import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue'
  export default {
      data(){
          return{
+             responseShow:true,
              planShow:true,
              isCollect:false,
              sureFormShow:false,
@@ -271,6 +275,14 @@
          },
         closeSureForm(){
           this.sureFormShow = false;
+        },
+        refresh:function(){
+           this.$emit('responseClose');
+             /*this.responseShow =false;
+          this.$nextTick(() => {
+            this.update();
+            this.responseShow =true;
+          })*/
         },
          cancelIntent:function(){
           this.$ajax({
@@ -415,25 +427,101 @@
             this.payDialog = false;
             this.$emit('responseClose');
         },
-         /*turnPolicyCode:function(val){
-            switch (val) {
-                case "0":
-                    return "定补";
-                    break;
-                case "1":
-                    return "保底";
-                    break;
-                case "2":
-                    return "人头补";
-                    break;
-                case "3":
-                    return "待议";
-                    break;
-                case "4":
-                    return "无补贴";
-                    break;
-            }
-        }*/
+        update(){
+             this.$ajax({
+                method: 'post',
+                url: '/capacityRoutesDemandDetailFindById',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId: this.planData.demandId
+                }
+                })
+                .then((response) => {
+                   this.intentionCount = this.response.data.intentionCount;
+          this.detailData = this.response.data.data;
+          this.planData = this.response.data.receiveIntention;
+
+           //选定状态无法编辑
+          if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
+              this.editShow = false;
+          }
+            //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
+                        let progress = this.planData.responseProgress;
+                        if(progress == '2'){
+                          this.editShow = false;
+                          this.chatShow = false;
+                          this.withdraw = true;
+                          this.planState = "（已撤回）";
+                          this.footShow = true;
+                          this.orderComplete = false;
+                          this.confirmShow = false;
+                        }else if(progress == '0'){
+                            this.editShow = true;
+                            this.chatShow = true;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.footShow = true;
+                            this.orderComplete = false;
+                            this.confirmShow = false;
+                        }else if(progress == '4'){
+                            this.editShow = false;
+                            this.chatShow = false;
+                            this.footShow = false;
+                            this.withdraw = false;
+                            this.planState = "（已落选）";
+                            this.orderComplete = false;
+                            this.confirmShow = false;
+                        }else if(progress == '6'){
+                            this.editShow = false;
+                            this.footShow = false;
+                            this.chatShow = true;
+                            this.planState = " ";
+                            this.withdraw = false;
+                            this.orderComplete = true;
+                            this.confirmShow = false;
+                        }else if(progress == '3'){
+                            this.editShow = false;
+                            this.footShow = false;
+                            this.chatShow = false;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.orderComplete = false;
+                             this.confirmShow = false;
+                        }else if(progress == '5'||progress == '7'){
+                            this.editShow = false;
+                            this.footShow = false;
+                            this.chatShow = true;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.orderComplete = false;
+                            this.confirmShow = false;
+                        }else if(progress == '1'){
+                            this.confirmShow = true;
+                            this.editShow = false;
+                            this.footShow = true;
+                            this.chatShow = true;
+                            this.withdraw = false;
+                            this.planState = " ";
+                            this.orderComplete = false;
+                        }
+
+
+
+         if(this.response.data.isAlreadyCollect == true){
+              this.isCollect = true;
+         }else if(this.response.data.isAlreadyCollect == false){
+              this.isCollect = false;
+          }
+
+
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+        }
 
      },
       computed:{

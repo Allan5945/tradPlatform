@@ -102,7 +102,7 @@
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';
- import intentForm from './intentForm.vue'
+ import intentForm from './intentForm1.vue'
  import transDialog from './transDialog.vue'
  import paySuccess  from './paySuccess.vue'
 
