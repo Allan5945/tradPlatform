@@ -11,7 +11,7 @@
         </div>
         <transportForm v-if="showType== 1" @closeForm="closeForm" @changeType="changeType"></transportForm>
         <agentTransForm v-else-if="showType== 2" @closeForm="closeForm"></agentTransForm>
-        <airlineReq v-else-if="showType== 3" @closeForm="closeForm" @changeTitle="changeTitleFn" @restoreTitle="restoreTitleFn"></airlineReq>
+        <airlineReq v-else-if="showType== 3" @closeForm="closeForm" @changeTitle="changeTitleFn"></airlineReq>
         <airlineDelegation v-else-if="showType== 4" @closeForm="closeForm"></airlineDelegation>
         <operationForm v-else-if="showType== 5" @closeForm="closeForm"></operationForm>
     </div>
@@ -63,7 +63,10 @@
         methods:{
              getNeed: function(i){
                 if(this.role.role == 1){ //角色为机场
-                    this.showType = this.myShow[i+2];
+                    this.showType = '';
+                    this.$nextTick(() => {
+                        this.showType = this.myShow[i+2];
+                    });
                 }else if(this.role.role == 0){//角色为航司
                     this.showType =" ";
                     this.$nextTick(() => {
@@ -85,9 +88,6 @@
             },
             changeType:function(){
                  this.msg = "委托运力投放";
-            },
-            restoreTitleFn: function () {
-                this.msg = "航线需求";
             },
         }
     }

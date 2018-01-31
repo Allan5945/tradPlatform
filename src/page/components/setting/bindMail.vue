@@ -274,11 +274,19 @@
                         }
                     }).then(res=>{
                         if(res.data.opResult === '0'){
+                            that.calcTime();
                         }else{
-                            alert('error：接码，code:'+res.data.opResult);
+                            let valt = window.localStorage.getItem("validCodeTime"), nowt = (new Date()).getTime();
+                            nowt = nowt - valt;
+                            if( nowt < 60000 ){
+                                that.openTips("*验证码发送间隔不能小于1分钟");
+                                that.code.wait = Math.ceil(nowt/1000);
+                                that.calcTime();
+                            }else{
+                                that.openTips('*网络错误，不知道4##还是5##');
+                            }
                         }
                     }).catch(err=>{
-                        alert('不知道4##还是5##');
                     })
                 }
             },
@@ -293,13 +301,13 @@
                         validStr: that.userData.code
                     }
                 }).then(res=>{
-                    that.active = 3;
                     if(res.data.opResult === '0'){
+                        that.active = 3;
                         that.show.footer = false;
                         that.result = true;
                         that.ud.mail = theMail;
                     }else{
-                        this.userData.code = '';
+                        //this.userData.code = '';
                         that.openTips("*短信验证码错误");
                     }
                     that.delayClose();
@@ -339,6 +347,8 @@
                     this.closeThis();
                 }else{
                     this.active--;
+                    this.code.wait = 60;
+                    this.code.tipText =  "获取验证码";
                 }
             }
         }

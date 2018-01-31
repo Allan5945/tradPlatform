@@ -466,7 +466,7 @@
             </div>
             <div class="sixth" v-else>
                 <button class="btn-b btn-blue" @click.stop="submitData2">确认发布</button>
-                <button class="btn-c btn-cancel" @click="closeSubmitData2">取消</button>
+                <button class="btn-c btn-cancel" @click="closeThis">取消</button>
             </div>
         </div>
     </div>
