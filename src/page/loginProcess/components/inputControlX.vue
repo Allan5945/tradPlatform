@@ -6,6 +6,7 @@
                @blur="changePlaceholder(false);blused();"
                @focus="changePlaceholder(true)"
                @keyup="entered($event)"
+               :maxlength="maxL"
                v-model="arg.inputMes"
         >
         <!--密码可见-->
@@ -34,6 +35,11 @@
             if(this.arg.inputMes != ""){
                 this.showPlaceholder = true;
                 this.staging = {t:true,c:"",i:this.arg.inputMes,steps:1}
+            }
+        },
+        computed:{
+            maxL(){
+                return this.arg.maxLenght != undefined ? this.arg.maxLenght : 1000;
             }
         },
         props: ['arg'],
@@ -76,6 +82,9 @@
                     this.judgePlaceholder = false;
                     return;
                 };
+                this.arg.inputMes = this.arg.inputMes.replace(/ /g,'');
+                this.arg.inputMes = this.arg.inputMes.replace(/[\u4e00-\u9fa5]/g,'');
+
                 let t = false, c = "",reg; //  t,表示验证是否通过，c 代表具体内容
                 switch (this.arg.validation) {
                     case 0:   // 账号
