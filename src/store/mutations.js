@@ -113,7 +113,7 @@ const mutations = {
                     city: {
                         s:[]
                     },
-                    airType: '',
+                    airType: '全选',  // 机型
                     subsidyPolicy: {
                         va: [
                             {v: '定补', s: false},
