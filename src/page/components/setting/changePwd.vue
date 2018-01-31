@@ -268,6 +268,7 @@
                     this.closeThis();
                 }else{
                     this.active--;
+                    this.vbpasErrorFlag = 'false';
                 }
             }
         }
