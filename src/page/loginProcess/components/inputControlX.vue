@@ -29,9 +29,11 @@
                 showPlaceholder: false,   // 是否开启输入框placeholder
                 judgePlaceholder:false,   //  是否打开绿×
                 showTextPlaceholder:false,
+                nowArg:{}
             }
         },
         mounted:function () {
+            this.nowArg = Object.assign({},this.arg);
             if(this.arg.inputMes != ""){
                 this.showPlaceholder = true;
                 this.staging = {t:true,c:"",i:this.arg.inputMes,steps:1}

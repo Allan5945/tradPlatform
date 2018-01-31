@@ -68,6 +68,22 @@
                 showtip: false,
             }
         },
+        watch:{
+            'newpas.pas1'(){
+                if(this.newpas.pas1 == ""){
+                    this.data3 = {
+                        inputeType: "password", // 输入框的类型
+                            inputMes: "",     // 输入框的值
+                            showText: true,  // 是否显示密码
+                            showErrInput: true, // 是否显示框错误
+                            showSucInput: false, // 是否显示框正确
+                            maxLenght:15,
+                            placeholderTip: ["确认新密码", "确认新密码"],
+                            validation: 1,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    }
+                }
+            }
+        },
         methods:{
             resMes1(data) {
                 this.verCode = false;
