@@ -198,9 +198,12 @@
                                     <div>运力基地</div>
                                     <div>{{val.capacityBaseNm||'-'}}</div>
                                 </div>
-                                <div>
+                                <div class="tips">
                                     <div>是否调度</div>
-                                    <div>{{val.schedulingStr||'-'}}</div>
+                                     <div v-if="val.scheduling == '0' ">
+                                        <span v-for=" item in val.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                                    </div>
+                                    <div v-else>不接受</div>
                                 </div>
                                 <div class="tips">
                                     <div>其他说明</div>
