@@ -74,9 +74,9 @@
                 <div class="s-third third items" style="margin-bottom: 50px;">
                     <div class="third-a item">
                         <div class="right item-child" style="width: 240px;">
-                        <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
-                            <span class="warn">* </span>拟开时间
-                        </span>
+                            <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
+                                <span class="warn">* </span>拟开时间
+                            </span>
                             <div class="choose-time" @click.stop="clickClose10Fn " >
                                 <div class="choose-time-icon">
                                     <span class="icon-item">&#xe607;</span>
@@ -92,12 +92,6 @@
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
                                 <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
-                               <!-- <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                </calendar>
-                                <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                </calendar>-->
                             </div>
                         </div>
                     </div>
@@ -327,12 +321,6 @@
                                         <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                     </div>
                                     <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
-                                    <!--<calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                    </calendar>
-                                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                    </calendar>-->
                                 </div>
                             </div>
                             <div class="left item-child">

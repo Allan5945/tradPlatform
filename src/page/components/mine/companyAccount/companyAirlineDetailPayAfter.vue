@@ -613,7 +613,7 @@
     import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
 
     export default {
-        props: ['sendToCompany'],
+        props: ['acceptData'],
         data() {
             return {
                 firstShow: false,
@@ -687,9 +687,6 @@
             }
         },
         watch: {
-            sendToCompany: function () {
-                this.createdFn();
-            },
             timeUpDown: function () {
                 this.timeUpDownOrderType = this.timeUpDown ? 0 : 1;
                 this.timeUpDownAjax();
@@ -724,7 +721,7 @@
                 });
             },
             createdFn: function () {
-                this.id = this.sendToCompany.demandId;
+                this.id = this.acceptData.demand;
                 this.getData();
                 this.setOptFn();
             },
@@ -937,7 +934,7 @@
             /*************/
 
             closeThisFn: function () {
-                this.$emit('closeThis')
+                this.$emit('close-this')
             },
             // 点击“结束需求”按钮
             endNeed: function () {
@@ -1494,7 +1491,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-        font-size: 1.2rem;
         background: rgba(0, 0, 0, .4);
         z-index: 30;
     }
