@@ -14,27 +14,41 @@
                     </div>
                 </div>
             </header>
-            <!-- <transForm @closeForm="closeForm" v-show="showType == '0' " :acceptData ="detailData"></transForm> -->
-            <transForm @closeForm="closeForm" v-show="showType == '0' " ></transForm>
-            <AirlineForm @closeForm="closeForm" v-show="showType == '1'"></AirlineForm>
+            <transForm @closeForm="closeForm" v-if="showType == '0' " :acceptData ="acceptData"></transForm>
+            <AirlineForm @close-this="closeForm" v-if="showType == '1'" :acceptData ="AirlineData"></AirlineForm>
         </div>
     </div>
 </template>
 <script>
-    import transForm from './sonTransForm1.vue'
+    /*import transForm from '$src/page/components/trans_detail/dataForm.vue'*/
+    import transForm from './sonTransForm.vue'
     import AirlineForm from './sonAirlineForm.vue'
     export default {
         data() {
             return {
                 showBox: false,
-                isSel: false,
+                isSel: true,
                 showType:'0',
                 myShow:[0,1],
                 msg:'选择需求类型',
                 needType:['运力投放','航线需求'],
+                AirlineData:{}
             }
         },
-        props:['detailData'],
+        props:['acceptData'],
+        mounted() {
+            this.AirlineData = this.acceptData;
+            this.AirlineData.chongXinWeiTuo = '0';
+
+            let demandType = this.acceptData.demandtype;
+            if( demandType == '3'){
+                this.showType = '1';
+                this.msg = this.needType[1];
+            }else if(demandType == '4'){
+                 this.showType = '0';
+                 this.msg = this.needType[0];
+            }
+        },
         methods: {
             getNeed: function(i){
                 this.showType = this.myShow[i];

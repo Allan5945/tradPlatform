@@ -211,7 +211,7 @@
       </div>
      <needDetail  v-if="needShow"  @closeDetail= "closeDetail" :needData="needData"></needDetail>
     <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
-    <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @closeForm="closeReForm" :acceptData = "planData"></reIntentForm>
+    <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @close-this="closeReForm" :acceptData = "planData"></reIntentForm>
     <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
     <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
     <paySuccess v-show="payDialog" @cancel="closePaySuccess" ></paySuccess>

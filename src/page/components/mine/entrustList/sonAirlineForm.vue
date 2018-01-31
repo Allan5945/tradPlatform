@@ -1,373 +1,372 @@
 <template>
-    <div class="container" id="airlineReq" @click="closeAll">
-        <div class="bg-color must">
-            <div class="right item-child">
-                <div style="display: flex;">
-                    <span>联系人<span class="warn"> *</span>　</span>
-                    <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user" @keyup="warn1Show=false">
-                </div>
-                <div class="warn" v-show="warn1Show">*请填写联系人</div>
-            </div>
-            <div class="left item-child">
-                <div style="display: flex;">
-                    <span>联系方式<span class="warn"> *</span>　</span>
-                    <input class="input-mes" type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
-                </div>
-                <div class="warn" v-show="warn2Show">*电话格式有误，请重新输入</div>
-            </div>
-        </div>
-        <div class="choose">
-            <div class="items bg-color" style="position: relative; padding-bottom: 20px;">
-                <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
-                <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地、经停地、到达地不能相同！</div>
-                <div class="first">
-                    <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1" @li-click="getArea1" style="left: 0;"></airAreaSearch>
-                    <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow2" @li-click="getArea2" style="left: 70px;"></airAreaSearch>
-                    <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow3" @li-click="getArea3" style="right: 0;"></airAreaSearch>
-                    <div class="start item">
-                        <div class="top" @click.stop="clickClose1Fn">
-                            <span>{{space1ShowTitle}}</span>&nbsp;
-                            <div class="triangle-little"></div>
-                            <ul class="choose-type want-space" v-show="space1">
-                                <li v-for="item in spaceList" @click="space1Fn(item)">{{item}}</li>
-                            </ul>
+    <div class="wrapper  scroll">
+        <div class="container" id="airlineReq" @click="closeAll">
+            <transition name="slidey-fade">
+                <div>
+                    <div class="bg-color must">
+                        <div class="right item-child">
+                            <div style="display: flex;">
+                                <span>联系人<span class="warn"> *</span>　</span>
+                                <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user" @keyup="warn1Show=false">
+                            </div>
+                            <div class="warn" v-show="warn1Show">*请填写联系人</div>
                         </div>
-                        <div class="bottom">
-                            <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1" @focus="airportFn1">
-                            <airportS class="aisx" v-on:resData="resData1" :searchText="firArea" v-show="isSearch1"></airportS>
+                        <div class="left item-child">
+                            <div style="display: flex;">
+                                <span>联系方式<span class="warn"> *</span>　</span>
+                                <input class="input-mes" type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                            </div>
+                            <div class="warn" v-show="warn2Show">*电话格式有误，请重新输入</div>
                         </div>
-                        <div class="warn" v-show="warn3Show">*始发地不能为空</div>
                     </div>
-                    <div style="display: flex;flex-direction: column; justify-content: flex-end;">
-                        <span class="icon-item">&#xe672;</span>
-                        <span v-show="warn3Show" style="height: 20px">　</span>
-                    </div>
-                    <div class="pass item">
-                        <div class="top" @click.stop="clickClose2Fn ">
-                            <span>{{space2ShowTitle}}</span>&nbsp;
-                            <div class="triangle-little"></div>
-                            <ul class="choose-type want-space" v-show="space2">
-                                <li v-for="item in spaceList" @click="space2Fn(item)">{{item}}</li>
-                            </ul>
+                    <div class="choose">
+                        <div class="items bg-color" style="position: relative; padding-bottom: 20px;">
+                            <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
+                            <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地、经停地、到达地不能相同！</div>
+                            <div class="first">
+                                <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1" @li-click="getArea1" style="left: 0;"></airAreaSearch>
+                                <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow2" @li-click="getArea2" style="left: 70px;"></airAreaSearch>
+                                <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow3" @li-click="getArea3" style="right: 0;"></airAreaSearch>
+                                <div class="start item">
+                                    <div class="top" @click.stop="clickClose1Fn">
+                                        <span>{{space1ShowTitle}}</span>&nbsp;
+                                        <div class="triangle-little"></div>
+                                        <ul class="choose-type want-space" v-show="space1">
+                                            <li v-for="item in spaceList" @click="space1Fn(item)">{{item}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bottom">
+                                        <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1" @focus="airportFn1">
+                                        <airportS class="aisx" v-on:resData="resData1" :searchText="firArea" v-show="isSearch1"></airportS>
+                                    </div>
+                                    <div class="warn" v-show="warn3Show">*始发地不能为空</div>
+                                </div>
+                                <div style="display: flex;flex-direction: column; justify-content: flex-end;">
+                                    <span class="icon-item">&#xe672;</span>
+                                    <span v-show="warn3Show" style="height: 20px">　</span>
+                                </div>
+                                <div class="pass item">
+                                    <div class="top" @click.stop="clickClose2Fn ">
+                                        <span>{{space2ShowTitle}}</span>&nbsp;
+                                        <div class="triangle-little"></div>
+                                        <ul class="choose-type want-space" v-show="space2">
+                                            <li v-for="item in spaceList" @click="space2Fn(item)">{{item}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bottom">
+                                        <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" @focus="airportFn2" >
+                                        <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
+                                    </div>
+                                </div>
+                                <div style="display: flex;flex-direction: column; justify-content: flex-end;">
+                                    <span class="icon-item">&#xe672;</span>
+                                    <span v-show="warn3Show" style="height: 20px">　</span>
+                                </div>
+                                <div class="arrive item">
+                                    <div class="top" @click.stop="clickClose3Fn ">
+                                        <span>{{space3ShowTitle}}</span>&nbsp;
+                                        <div class="triangle-little"></div>
+                                        <ul class="choose-type want-space" v-show="space3">
+                                            <li v-for="item in spaceList" @click="space3Fn(item)">{{item}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bottom">
+                                        <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
+                                        <airportS class="aisx" style="left: -63px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="second" v-show="secondShow">
+                                <div class="start item" v-show="second1Show">
+                                    <div class="sec-accept">
+                                        <div class="top">是否接受临近机场</div>
+                                        <div class="bottom">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-a" id="alRWairAYes" @change="dptAcceptnearairport = 0"><label for="alRWairAYes" class="input-label">是</label>
+                                            </div>
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-a" id="alRWairANo" checked @change="dptAcceptnearairport = 1" autocomplete="off"><label for="alRWairANo" class="input-label">否</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sec-resource">
+                                        <div class="top">出港资源</div>
+                                        <div class="resource-time">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-a-res" id="alRWairAResYes" :checked="time11Checked" @click="dptTimeresourcesFn0"><label for="alRWairAResYes" class="input-label">有</label>
+                                            </div>
+                                            <div class="time-frame" @click.stop="clickClose4Fn">
+                                                <span>{{startTime1Show}}</span>
+                                                <ul class="choose-type start-time time-style" v-show="startTime1 && time11Checked">
+                                                    <li v-for="item in timeList" @click="startTime1Fn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                            <span></span>
+                                            <div class="time-frame" @click.stop="clickClose5Fn ">
+                                                <span>{{endTime1Show}}</span>
+                                                <ul class="choose-type end-time time-style" v-show="endTime1 && time11Checked">
+                                                    <li v-for="item in timeList" @click="endTime1Fn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="resource-others">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-a-res" id="alRWairAWait" :checked="time12Checked" @click="dptTimeresourcesFn1"><label for="alRWairAWait" class="input-label">待协调</label>
+                                            </div>
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-a-res" id="alRWairAEnough" :checked="time13Checked" @click="dptTimeresourcesFn2"><label for="alRWairAEnough" class="input-label">时刻充足</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pass item" v-show="second2Show">
+                                    <div class="sec-accept">
+                                        <div class="top">是否接受临近机场</div>
+                                        <div class="bottom">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-b" id="alRWairBYes"@change="pstAcceptnearairport = 0"><label for="alRWairBYes" class="input-label">是</label>
+                                            </div>
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-b" id="alRWairBNo" checked @change="pstAcceptnearairport = 1"><label for="alRWairBNo" class="input-label">否</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sec-resource">
+                                        <div class="top">出港资源</div>
+                                        <div class="resource-time">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-b-res" id="alRWairBResYes" :checked="time21Checked" @click="pstTimeresourcesFn0"><label for="alRWairBResYes" class="input-label">有</label>
+                                            </div>
+                                            <div class="time-frame" @click.stop="clickClose6Fn ">
+                                                <span>{{startTime2Show}}</span>
+                                                <ul class="choose-type start-time time-style" v-show="startTime2 && time21Checked">
+                                                    <li v-for="item in timeList" @click="startTime2Fn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                            <span></span>
+                                            <div class="time-frame" @click.stop="clickClose7Fn ">
+                                                <span>{{endTime2Show}}</span>
+                                                <ul class="choose-type end-time time-style" v-show="endTime2 && time21Checked">
+                                                    <li v-for="item in timeList" @click="endTime2Fn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="resource-others">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-b-res" id="alRWairBWait" :checked="time22Checked" @click="pstTimeresourcesFn1"><label for="alRWairBWait" class="input-label">待协调</label>
+                                            </div>
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-b-res" id="alRWairBEnough" :checked="time23Checked" @click="pstTimeresourcesFn2"><label for="alRWairBEnough" class="input-label">时刻充足</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="arrive item" v-show="second3Show">
+                                    <div class="sec-accept">
+                                        <div class="top">是否接受临近机场</div>
+                                        <div class="bottom">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-c" id="alRWairCYes" @change="arrvAcceptnearairport = 0"><label for="alRWairCYes" class="input-label">是</label>
+                                            </div>
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-c" id="alRWairCNo" checked @change="arrvAcceptnearairport = 1"><label for="alRWairCNo" class="input-label">否</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sec-resource">
+                                        <div class="top">出港资源</div>
+                                        <div class="resource-time">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-c-res" id="alRWairCResYes" :checked="time31Checked" @click="arrvTimeresourcesFn0"><label for="alRWairCResYes" class="input-label">有</label>
+                                            </div>
+                                            <div class="time-frame" @click.stop="clickClose8Fn ">
+                                                <span>{{startTime3Show}}</span>
+                                                <ul class="choose-type start-time time-style" v-show="startTime3 && time31Checked">
+                                                    <li v-for="item in timeList" @click="startTime3Fn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                            <span></span>
+                                            <div class="time-frame" @click.stop="clickClose9Fn ">
+                                                <span>{{endTime3Show}}</span>
+                                                <ul class="choose-type end-time time-style" v-show="endTime3 && time31Checked">
+                                                    <li v-for="item in timeList" @click="endTime3Fn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="resource-others">
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-c-res" id="alRWairCWait" :checked="time32Checked" @click="arrvTimeresourcesFn1"><label for="alRWairCWait" class="input-label">待协调</label>
+                                            </div>
+                                            <div class="vertical-center">
+                                                <input type="radio" class="magic-radio" name="airport-c-res" id="alRWairCEnough" :checked="time33Checked" @click="arrvTimeresourcesFn2"><label for="alRWairCEnough">时刻充足</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <div class="third items bg-color">
+                            <div class="third-a item">
+                                <div class="right item-child">
+                                    <span class="margin-right">拟开时间</span>
+                                    <div class="choose-time" @click.stop="clickClose10Fn " >
+                                        <div class="choose-time-icon">
+                                            <span class="icon-item">&#xe607;</span>
+                                        </div>
+                                        <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
+                                    </div>
+                                    <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
+                                    <div v-if="calendarShow1" class="calendar-box popup" @click.stop style="top: 26px; left: 0;">
+                                        <div class="selec-data">
+                                            <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
+                                            <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
+                                            <div class="confirm-btn btn" @click="getMyDate1">确定</div>
+                                            <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                                        </div>
+                                        <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
+                                    </div>
+                                </div>
+                                <div class="left item-child">
+                                    <span class="margin-right">拟开班期</span>　
+                                    <div class="choose-border" style="align-items: center; height: 24px;" @click.stop="clickClose11Fn ">
+                                        <span style="margin-left: 3px;height: 24px;">{{scheduleShow}}</span>
+                                        <div class="triangle-big" style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
+                                        <ul class="choose-type want-type" v-show="schedule">
+                                            <li v-for="item in scheduleList" @click="scheduleListFn(item)">{{item}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="warn" v-show="warn5Show" style="position: absolute;top: 26px; left: 0;">*班期不能为空</div>
+                                </div>
+                            </div>
+                            <div class="third-b item">
+                                <div class="right item-child">
+                                    <span class="margin-right">拟飞机型</span>　
+                                    <div class="choose-input">
+                                        <input class="input-mes" type="text" readonly placeholder="输入选择机型" style="border: 0; line-height: 24px;" @click.stop="getAirType" v-model="typeChoose">
+                                    </div>
+                                    <ul class="choose-type air-type" v-show="airTypeShow">
+                                        <li v-for="item in airType" @click="chooseAirType(item)">{{item}}</li>
+                                    </ul>
+                                    <div class="warn" v-show="warn4Show" style="position: absolute; top: 26px; left: 0;">*机型不能为空</div>
+                                </div>
+                                <div class="left item-child">
+                                    <span class="margin-right">座位数</span>　
+                                    <div class="choose-input" style="width: 180px;">
+                                        <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" style="border: 0;"><span>人</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="third-c item">
+                                <div class="right item-child">
+                                    <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
+                                    <div class="choose-input">
+                                        <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" style="border: 0;width: 136px;"><span>人</span>
+                                    </div>
+                                </div>
+                                <div class="left item-child">
+                                    <span>客座率期望</span>　
+                                    <div class="choose-input">
+                                        <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" style="border: 0;"><span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="third-d item" style="position: relative;">
+                                <div class="right item-child" style="justify-content: flex-start;">
+                                    <span style="margin-right: 10px; width: 72px;">合作方式</span>
+                                        <div class="vertical-center" style="margin-bottom: 10px;">
+                                            <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
+                                                <span style="margin-left: 12px;">{{subsidyShow}}</span>
+                                                <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
+                                                <ul class="choose-type want-subsidy" v-show="subsidy">
+                                                    <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="left item-child">
+                                    <span class="margin-right">拦标价格</span>　
+                                    <div class="choose-input">
+                                        <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
+                                    </div>
+                                </div>
+                                <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
+                            </div>
+                        </div>
+                        <div class="fourth items bg-color">
+                            <div class="top item-child">
+                                <span class="margin-right" style="flex-shrink: 0">其他说明</span>　
+                                <div class="choose-input" style="position: relative; border: none;">
+                                    <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
+                                    <textarea class="text-area" v-model="remarkMsg" maxlength="200" @keydown.enter.prevent></textarea>
+                                    <span class="background-line" style="top: 26px;"></span>
+                                    <span class="background-line" style="top: 52px;"></span>
+                                    <span class="background-line" style="top: 78px;"></span>
+                                    <span class="background-line" style="top: 104px;"></span>
+                                    <span class="background-line" style="top: 130px;"></span>
+                                    <span class="background-line" style="top: 156px;"></span>
+                                    <span style="position: absolute; bottom: 0px; right: 0;">{{num}}/200</span>
+                                </div>
+                            </div>
+                            <div class="bottom item-child">
+                                <span class="margin-right">发布有效期</span>　
+                                <div class="choose-time" @click.stop="clickClose13Fn ">
+                                    <div class="choose-time-icon">
+                                        <span class="icon-item">&#xe607;</span>
+                                    </div>
+                                    <div style="flex-grow: 1; text-align: center;">{{myDate2}}</div>
+                                </div>
+                                <div class="warn" v-show="warn7Show" style="position: absolute;top: 46px; left: 0;">*发布有效期不能为空</div>
+                                <div v-if="calendarShow2" class="calendar-box popup" @click.stop style="left: 0; top: 48px;">
+                                    <div class="selec-data">
+                                        <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay3"><span>-</span>
+                                        <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay4">
+                                        <div class="confirm-btn btn" @click="getMyDate2">确定</div>
+                                        <div class="cancel-btn btn" @click="calendarShow2 = !calendarShow2">取消</div>
+                                    </div>
+                                    <calendarCP :initOpt="opt" @changeRangeDate="getDateRange"></calendarCP>
+                                    <!--<calendar v-on:changeDate="getDate3" :initDay="calendarInitDay3">
+                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                                    </calendar>
+                                    <calendar v-on:changeDate="getDate4" :initDay="calendarInitDay4">
+                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
+                                    </calendar>-->
 
-                        <div class="bottom">
-                            <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" @focus="airportFn2" >
-                            <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
-                        </div>
-                    </div>
-                    <div style="display: flex;flex-direction: column; justify-content: flex-end;">
-                        <span class="icon-item">&#xe672;</span>
-                        <span v-show="warn3Show" style="height: 20px">　</span>
-                    </div>
-                    <div class="arrive item">
-                        <div class="top" @click.stop="clickClose3Fn ">
-                            <span>{{space3ShowTitle}}</span>&nbsp;
-                            <div class="triangle-little"></div>
-                            <ul class="choose-type want-space" v-show="space3">
-                                <li v-for="item in spaceList" @click="space3Fn(item)">{{item}}</li>
-                            </ul>
-                        </div>
-                        <div class="bottom">
-                            <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
-                            <airportS class="aisx" style="left: -63px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
-                        </div>
-                    </div>
-                </div>
-                <div class="second" v-show="secondShow">
-                    <div class="start item" v-show="second1Show">
-                        <div class="sec-accept">
-                            <div class="top">是否接受临近机场</div>
-                            <div class="bottom">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-a" id="alRairAYes" @change="dptAcceptnearairport = 0"><label for="alRairAYes" class="input-label">是</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-a" id="alRairANo" checked @change="dptAcceptnearairport = 1" autocomplete="off"><label for="alRairANo" class="input-label">否</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="sec-resource">
-                            <div class="top">出港资源</div>
-                            <div class="resource-time">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-a-res" id="alRairAResYes" checked @click="dptTimeresourcesFn0"><label for="alRairAResYes" class="input-label">有</label>
-                                </div>
-                                <div class="time-frame" @click.stop="clickClose4Fn ">
-                                    <span>{{startTime1Show}}</span>
-                                    <ul class="choose-type start-time time-style" v-show="startTime1">
-                                        <li v-for="item in timeList" @click="startTime1Fn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
-                                <span></span>
-                                <div class="time-frame" @click.stop="clickClose5Fn ">
-                                    <span>{{endTime1Show}}</span>
-                                    <ul class="choose-type end-time time-style" v-show="endTime1">
-                                        <li v-for="item in timeList" @click="endTime1Fn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
+                        <div class="fifth" v-show="submitData2Click == false">
+                            <div class="vertical-center">
+                                <input type="radio" class="magic-radio" name="open-type" id="alRWopenAll" checked @change="publicwayFn0"/><label for="alRWopenAll" class="input-label">对所有人公开</label>
                             </div>
-                            <div class="resource-others">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-a-res" id="alRairAWait" @click="dptTimeresourcesFn1"><label for="alRairAWait" class="input-label">待协调</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-a-res" id="alRairAEnough" @click="dptTimeresourcesFn2"><label for="alRairAEnough" class="input-label">时刻充足</label>
-                                </div>
+                            <div class="vertical-center">
+                                <input type="radio" class="magic-radio" name="open-type" id="alRWopenUser" @change="publicwayFn1"/><label for="alRWopenUser" class="input-label">对认证用户公开</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="pass item" v-show="second2Show">
-                        <div class="sec-accept">
-                            <div class="top">是否接受临近机场</div>
-                            <div class="bottom">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-b" id="alRairBYes"@change="pstAcceptnearairport = 0"><label for="alRairBYes" class="input-label">是</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-b" id="alRairBNo" checked @change="pstAcceptnearairport = 1"><label for="alRairBNo" class="input-label">否</label>
-                                </div>
+                            <div class="vertical-center" style="margin-right: 0;">
+                                <input type="radio" class="magic-radio" name="open-type" id="alRWopenOnly" @change="publicwayFn3"/><label for="alRWopenOnly" class="input-label">定向发布</label>
                             </div>
-                        </div>
-                        <div class="sec-resource">
-                            <div class="top">出港资源</div>
-                            <div class="resource-time">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-b-res" id="alRairBResYes" checked @click="pstTimeresourcesFn0"><label for="alRairBResYes" class="input-label">有</label>
+                            <div class="choose-input" v-show="directionPublicShow" style="position: relative;justify-content: flex-start;">
+                                <div class="little-label-wrapper" v-show="directionPublicCityShow" ref="littleLabelWrapper" @click="labelWrapperClick">
+                                    <span class="little-label" v-for="(item,index) in directionPublicCity">
+                                        {{item.name}}
+                                        <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
+                                    </span>
                                 </div>
-                                <div class="time-frame" @click.stop="clickClose6Fn ">
-                                    <span>{{startTime2Show}}</span>
-                                    <ul class="choose-type start-time time-style" v-show="startTime2">
-                                        <li v-for="item in timeList" @click="startTime2Fn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
-                                <span></span>
-                                <div class="time-frame" @click.stop="clickClose7Fn ">
-                                    <span>{{endTime2Show}}</span>
-                                    <ul class="choose-type end-time time-style" v-show="endTime2">
-                                        <li v-for="item in timeList" @click="endTime2Fn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="resource-others">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-b-res" id="alRairBWait" @click="pstTimeresourcesFn1"><label for="alRairBWait" class="input-label">待协调</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-b-res" id="alRairBEnough" @click="pstTimeresourcesFn2"><label for="alRairBEnough" class="input-label">时刻充足</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="arrive item" v-show="second3Show">
-                        <div class="sec-accept">
-                            <div class="top">是否接受临近机场</div>
-                            <div class="bottom">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-c" id="alRairCYes" @change="arrvAcceptnearairport = 0"><label for="alRairCYes" class="input-label">是</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-c" id="alRairCNo" checked @change="arrvAcceptnearairport = 1"><label for="alRairCNo" class="input-label">否</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sec-resource">
-                            <div class="top">出港资源</div>
-                            <div class="resource-time">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-c-res" id="alRairCResYes" checked @click="arrvTimeresourcesFn0"><label for="alRairCResYes" class="input-label">有</label>
-                                </div>
-                                <div class="time-frame" @click.stop="clickClose8Fn ">
-                                    <span>{{startTime3Show}}</span>
-                                    <ul class="choose-type start-time time-style" v-show="startTime3">
-                                        <li v-for="item in timeList" @click="startTime3Fn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
-                                <span></span>
-                                <div class="time-frame" @click.stop="clickClose9Fn ">
-                                    <span>{{endTime3Show}}</span>
-                                    <ul class="choose-type end-time time-style" v-show="endTime3">
-                                        <li v-for="item in timeList" @click="endTime3Fn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="resource-others">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-c-res" id="alRairCWait" @click="arrvTimeresourcesFn1"><label for="alRairCWait" class="input-label">待协调</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="airport-c-res" id="alRairCEnough" @click="arrvTimeresourcesFn2"><label for="alRairCEnough">时刻充足</label>
-                                </div>
+                                <span class="more-show" v-show="moreShow" @mouseover="littleListWrapperShow = true" @mouseout="littleListWrapperShow = false">
+                                    <span class="dot">...</span>
+                                    <div class="little-list-wrapper" v-show="littleListWrapperShow">
+                                        <span class="little-label" v-for="(item,index) in directionPublicCity">
+                                            {{item.name}}
+                                            <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
+                                        </span>
+                                    </div>
+                                </span>
+                                <input class="input-mes-a" type="text" v-model="fourthArea" @click.stop="airportFn4" >
+                                <airCompanySearch class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airCompanySearch>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="third items bg-color">
-                <div class="third-a item">
-                    <div class="right item-child">
-                        <span class="margin-right">拟开时间</span>
-                        <div class="choose-time" @click.stop="clickClose10Fn " >
-                            <div class="choose-time-icon">
-                                <span class="icon-item">&#xe607;</span>
-                            </div>
-                            <div style="flex-grow: 1; text-align: center;">{{myDate1}}</div>
-                        </div>
-                        <div class="warn" v-show="warn6Show" style="position: absolute;top: 26px; left: 0;">*拟开时间不能为空</div>
-                        <div v-show="calendarShow1" class="calendar-box popup" style="top: 26px; left: 0;">
-                            <div class="selec-data">
-                                <input type="text" placeholder="开始时间" v-model="calendarInitDay1"><span>-</span>
-                                <input type="text" placeholder="结束时间" v-model="calendarInitDay2">
-                                <div class="confirm-btn btn" @click="getMyDate1">确定</div>
-                                <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
-                            </div>
-                            <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                <!-- 可传入初始值 -->
-                            </calendar>
-                            <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                <!-- 可传入初始值 -->
-                            </calendar>
-                        </div>
-                    </div>
-                    <div class="left item-child">
-                        <span class="margin-right">拟开班期</span>　
-                        <div class="choose-border" style="align-items: center;" @click.stop="clickClose11Fn ">
-                            <span style="margin-left: 3px;">{{scheduleShow}}</span>
-                            <div class="triangle-big" style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
-                            <ul class="choose-type want-type" v-show="schedule">
-                                <li v-for="item in scheduleList" @click="scheduleListFn(item)">{{item}}</li>
-                            </ul>
-                        </div>
-                        <div class="warn" v-show="warn5Show" style="position: absolute;top: 26px; left: 0;">*班期不能为空</div>
-                    </div>
-                </div>
-                <div class="third-b item">
-                    <div class="right item-child">
-                        <span class="margin-right">拟飞机型</span>　
-                        <div class="choose-input">
-                            <input class="input-mes" type="text" readonly placeholder="输入选择机型" style="border: 0; line-height: 24px;" @click.stop="getAirType" v-model="typeChoose">
-                        </div>
-                        <ul class="choose-type air-type" v-show="airTypeShow">
-                            <li v-for="item in airType" @click="chooseAirType(item)">{{item}}</li>
-                        </ul>
-                        <div class="warn" v-show="warn4Show" style="position: absolute; top: 26px; left: 0;">*机型不能为空</div>
-                    </div>
-                    <div class="left item-child">
-                        <span class="margin-right">座位数</span>　
-                        <div class="choose-input" style="width: 180px;">
-                            <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" style="border: 0;"><span>人</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="third-c item">
-                    <div class="right item-child">
-                        <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
-                        <div class="choose-input">
-                            <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" style="border: 0;width: 136px;"><span>人</span>
-                        </div>
-                    </div>
-                    <div class="left item-child">
-                        <span>客座率期望</span>　
-                        <div class="choose-input">
-                            <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" style="border: 0;"><span>%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="third-d item">
-                    <div class="right item-child">
-                        <span>补贴政策</span>　
-                        <div style="display: flex; flex-direction: column;">
-                            <div class="vertical-center" style="margin-bottom: 10px;">
-                                <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" checked @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
-                                <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
-                                    <span style="margin-left: 12px;">{{subsidyShow}}</span>
-                                    <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
-                                    <ul class="choose-type want-subsidy" v-show="subsidy">
-                                        <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div style="display: flex">
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyNo" @click="subsidyClick1"/><label for="alRsubsidyNo" class="input-label">无补贴</label>
-                                </div>
-                                <div class="vertical-center">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyTalk" @click="subsidyClick2"/>
-                                    <label for="alRsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="left item-child">
-                        <span class="margin-right">拦标价格</span>　
-                        <div class="choose-input">
-                            <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="fourth items bg-color">
-                <div class="top item-child">
-                    <span class="margin-right">其他说明</span>　
-                    <div class="choose-input">
-                        <input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>
-                    </div>
-                </div>
-                <div class="bottom item-child">
-                    <span class="margin-right">发布有效期</span>　
-                    <div class="choose-time" @click.stop="clickClose13Fn ">
-                        <div class="choose-time-icon">
-                            <span class="icon-item">&#xe607;</span>
-                        </div>
-                        <div style="flex-grow: 1; text-align: center;">{{myDate2}}</div>
-                    </div>
-                    <div class="warn" v-show="warn7Show" style="position: absolute;top: 46px; left: 0;">*发布有效期不能为空</div>
-                    <div v-show="calendarShow2" class="calendar-box popup" style="left: 0; top: 47px;">
-                        <div class="selec-data">
-                            <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
-                            <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
-                            <div class="confirm-btn btn" @click="getMyDate2">确定</div>
-                            <div class="cancel-btn btn" @click="calendarShow2 = !calendarShow2">取消</div>
-                        </div>
-                        <calendar v-on:changeDate="getDate3" :initDay="calendarInitDay3">
-                            <!-- 可传入初始值 -->
-                        </calendar>
-                        <calendar v-on:changeDate="getDate4" :initDay="calendarInitDay4">
-                            <!-- 可传入初始值 -->
-                        </calendar>
-                    </div>
-                </div>
-            </div>
-            <div class="fifth" v-show="submitData2Click == false">
-                <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="alRopenAll" checked @change="publicwayFn0"/><label for="alRopenAll" class="input-label">对所有人公开</label>
-                </div>
-                <div class="vertical-center">
-                    <input type="radio" class="magic-radio" name="open-type" id="alRopenUser" @change="publicwayFn1"/><label for="alRopenUser" class="input-label">对认证用户公开</label>
-                </div>
-                <div class="vertical-center" style="margin-right: 0;">
-                    <input type="radio" class="magic-radio" name="open-type" id="alRopenOnly" @change="publicwayFn3"/><label for="alRopenOnly" class="input-label">定向发布</label>
-                </div>
-                <div class="choose-input" v-show="directionPublicShow" style="position: relative;justify-content: flex-start;">
-                    <div class="little-label-wrapper" v-show="directionPublicCityShow" ref="littleLabelWrapper" @click="labelWrapperClick">
-                        <span class="little-label" v-for="(item,index) in directionPublicCity">
-                            {{item.name}}
-                            <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
-                        </span>
-                    </div>
-                    <span class="more-show" v-show="moreShow" @mouseover="littleListWrapperShow = true" @mouseout="littleListWrapperShow = false">
-                        <span class="dot">...</span>
-                        <div class="little-list-wrapper" v-show="littleListWrapperShow">
-                            <span class="little-label" v-for="(item,index) in directionPublicCity">
-                                {{item.name}}
-                                <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
-                            </span>
-                        </div>
-                    </span>
-                    <input class="input-mes-a" type="text" v-model="fourthArea" @click.stop="airportFn4" >
-                    <airCompanySearch class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airCompanySearch>
-                </div>
-            </div>
+            </transition>
             <div class="sixth" v-if="submitData2Click == false">
                 <button class="btn-a btn-blue" @click="submitData2ClickFn" v-show="role.role != 2">委托代理</button>
                 <button class="btn-b btn-blue" @click.stop="submitData">确认发布</button>
@@ -383,12 +382,14 @@
 <script>
     import * as vx from 'vuex'
     import airAreaSearch from './../../airAreaSearch.vue'
-    import airportS from './../../../reuseComponents/airportSearch1.vue'
-    import airCompanySearch from './../../../reuseComponents/airCompanySearch.vue'
-    import calendar from './../../calendar'
-    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+    import airportS from './../../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+    import airCompanySearch from './../../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
+    import calendar from '$src/page/components/publicTools/calendar/calendar'
+    import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
+    import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
 
     export default {
+        props: ['acceptData'],
         data() {
             return {
                 thisShow: true,
@@ -401,6 +402,7 @@
                 warn7Show: false,  //需求有效期警告
                 warn8Show: false,  //始发地为区域，经停、到达必须有一个为意向机场
                 warn9Show: false,  // 始发地、经停地、到达地不能相同
+                warn12Show: false,  //补贴政策警告
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -484,7 +486,7 @@
                 endTime3Show: '00:00',
                 space1Show: '请先选择始发点类型',
                 space2Show: '请先选择经停点类型（选填）',
-                space3Show: '请先选择到达点类型',
+                space3Show: '请先选择到达点类型（选填）',
                 publicwayStrCode: 0,//公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
 
                 calendarInitDay1: '', //日历
@@ -507,12 +509,12 @@
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
 
-                scheduleShow: '选择班期类型',
-                subsidyShow: '选择补贴类型',
-                timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','00:00'],
+                scheduleShow: '待定', //选择班期类型
+                subsidyShow: '选择合作方式',
+                timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','按人头'],
+                subsidyList: ['保底','定补','人头补','无补贴','其他'],
                 sendData: {},
                 directionalgoal: '', // 定向发布（id）
                 directionalgoalArry: [],
@@ -520,7 +522,33 @@
                 moreShow: false, // 定向发布长度是否超出显示范围
                 littleListWrapperShow: false, // 多条显示
                 submitData2Click: false,  // “委托代理”按钮是否已经被点击
-                demandId:''
+                /*新增表单内容*/
+                elect: {
+                    set: false
+                },
+                subsidy1: false,  // 补贴政策单选按钮
+                subsidy2: false,
+                subsidy3: true,
+                time11Checked: true,  // 出港资源单选按钮
+                time12Checked: false,
+                time13Checked: false,
+                time21Checked: true,
+                time22Checked: false,
+                time23Checked: false,
+                time31Checked: true,
+                time32Checked: false,
+                time33Checked: false,
+                opt: {      //发布有效期
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
+                opt0: {     //拟开时间
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
+                calendarInitDay: '',
             }
         },
         components: {
@@ -528,28 +556,48 @@
             airportS,
             calendar,
             airCompanySearch,
+            singleElection,
+            calendarCP,
         },
         watch: {
             typeChoose: function () {
                 this.warn4Show = false;
-            }
+            },
+            calendarInitDay1: function () {
+                this.setOptFn0();
+            },
+            calendarInitDay2: function () {
+                this.setOptFn0();
+            },
+            calendarInitDay3: function () {
+                this.setOptFn();
+            },
+            calendarInitDay4: function () {
+                this.setOptFn();
+            },
         },
         mounted() {
-            tabulationBoxTrigger.$on('getSonId', val => {
-                    this.demandId = val;
+            this.user = this.role.username;  // 联系人
+            this.phoneNum = this.role.phone; // 联系电话
 
-                });
+            if(this.acceptData.chongXinWeiTuo == '1') {
+                this.submitData2ClickFn();
+            }
             this.space1Fn();
             this.space2Fn();
             this.space3Fn();
-            this.getEnterMsgFn();
+            this.myDate2Fn();
+//            this.getEnterMsgFn();
+            this.setOptFn();
+            this.setOptFn0();
+            this.acceptDataFn();
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
             ...vx.mapGetters([
-                'role','airList'
+                'role','airList','companyList'
             ])
             /*sailingtime: function () {
                 return this.calendarInitDay1 + ',' +this.calendarInitDay2;
@@ -559,16 +607,246 @@
             }*/
         },
         methods: {
+            /*双日历*/
+            getDateRange0: function (rd) {  // 拟开时间
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
+            },
+            setOptFn0: function () {
+                this.opt0.start = this.calendarInitDay1;
+                this.opt0.end = this.calendarInitDay2;
+            },
+            getDateRange: function (rd) {  // 发布有效期
+//                this.calendarInitDay = rd;
+                this.calendarInitDay3 = rd[0];
+                this.calendarInitDay4 = rd[1];
+            },
+            setOptFn: function () {
+                this.opt.start = this.calendarInitDay3;
+                this.opt.end = this.calendarInitDay4;
+            },
+            /*新增表单内容*/
+            /*checkboxClickFn: function () {
+                this.elect.set = !this.elect.set;
+            },
+*/
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'success'
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'error'
+                });
+            },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
+                this.user = this.role.username;  // 联系人
+                this.phoneNum = this.role.phone; // 联系方式
                 this.airList.forEach((val) => {
                     if(val.code == this.role.airlineretrievalcondition) {
                         this.getEnterMsg = val.allData;
                     }
-                })
+                });
                 this.firArea = this.getEnterMsg.airlnCdName;
                 this.firAreaBus = this.getEnterMsg.airlnCdName;
                 this.qyCode1 = this.getEnterMsg.iata;
+            },
+            // 从父组件接受数据,并绑定到表单上
+            acceptDataFn: function () {
+                /*单选按钮是否选定*/
+                let alRWairAYes = document.getElementById('alRWairAYes');
+                let alRWairANo = document.getElementById('alRWairANo');
+                let alRWairAResYes = document.getElementById('alRWairAResYes');
+                let alRWairAWait = document.getElementById('alRWairAWait');
+                let alRWairAEnough = document.getElementById('alRWairAEnough');
+                let alRWairBYes = document.getElementById('alRWairBYes');
+                let alRWairBNo = document.getElementById('alRWairBNo');
+                let alRWairBResYes = document.getElementById('alRWairBResYes');
+                let alRWairBWait = document.getElementById('alRWairBWait');
+                let alRWairBEnough = document.getElementById('alRWairBEnough');
+                let alRWairCYes = document.getElementById('alRWairCYes');
+                let alRWairCNo = document.getElementById('alRWairCNo');
+                let alRWairCResYes = document.getElementById('alRWairCResYes');
+                let alRWairCWait = document.getElementById('alRWairCWait');
+                let alRWairCEnough = document.getElementById('alRWairCEnough');
+                let alRWsubsidyYes = document.getElementById('alRWsubsidyYes');
+                let alRWsubsidyNo = document.getElementById('alRWsubsidyNo');
+                let alRWsubsidyTalk = document.getElementById('alRWsubsidyTalk');
+                let alRWopenAll = document.getElementById('alRWopenAll');
+                let alRWopenUser = document.getElementById('alRWopenUser');
+                let alRWopenOnly = document.getElementById('alRWopenOnly');
+                /*this.user = this.acceptData.contact;  // 联系人
+                this.phoneNum = this.acceptData.iHome; // 联系方式*/
+                if(this.acceptData.sailingtime){
+                    this.myDate1 = this.acceptData.sailingtime; // 拟开时间
+                    this.calendarInitDay1 = this.acceptData.sailingtime.split('-')[0];
+                    this.calendarInitDay2 = this.acceptData.sailingtime.split('-')[1];
+                }
+               /* this.myDate2 = this.acceptData.periodValidity; // 发布有效期
+                this.calendarInitDay3 = this.acceptData.periodValidity.split('-')[0];
+                this.calendarInitDay4 = this.acceptData.periodValidity.split('-')[1];*/
+
+                this.scheduleShow = this.acceptData.days; // 拟开班期
+                this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
+                this.seatingNum = this.acceptData.seating; // 座位数
+                this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
+                this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期望
+                this.remarkMsg = this.acceptData.remark; // 其他说明
+                this.blockbidPrice = this.acceptData.blockbidprice; // 拦标价格
+                // 判断始发类型（0：机场，1：区域）
+                // 机场传三字码，区域和省份传汉字
+                this.dptAcceptnearairport = this.acceptData.dptAcceptnearairport;
+                this.pstAcceptnearairport = this.acceptData.pstAcceptnearairport;
+                this.arrvAcceptnearairport = this.acceptData.arrvAcceptnearairport;
+                this.dptTimeresources = this.acceptData.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.pstTimeresources = this.acceptData.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.arrvTimeresources = this.acceptData.arrvTimeresources;        //选填 到达地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
+                this.dptTime = this.acceptData.dptTime;
+                this.pstTime = this.acceptData.pstTime;
+                this.arrvTime = this.acceptData.arrvTime;
+                this.publicwayStrCode = this.acceptData.publicway;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
+                if(this.acceptData.dptState === "0") {
+                    this.space1ShowTitle = this.spaceList[1];
+                    this.space1Fn(this.spaceList[1]);
+                    if(this.acceptData.dptNm != null) {
+                        this.firArea = this.acceptData.dptNm;
+                        this.firAreaBus = this.acceptData.dptNm;
+                    }
+                    this.qyCode1 = this.acceptData.dpt;
+                    this.dptTimeresources = this.acceptData.dptTimeresources;
+                    this.dptAcceptnearairport = this.acceptData.dptAcceptnearairport;
+                    /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
+                    if(this.acceptData.dptAcceptnearairport === "0") {
+                        alRWairAYes.checked = true;
+                    }else if(this.acceptData.dptAcceptnearairport === "1") {
+                        alRWairANo.checked = true;
+                    }
+                    /*单选按钮：时刻资源 0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值，
+                        1:待协调，2:时刻充足。*/
+                    if(this.acceptData.dptTimeresources === "0") {
+                        alRWairAResYes.checked = true;
+                        this.startTime1Show = this.acceptData.dptTime.split(',')[0];
+                        this.endTime1Show = this.acceptData.dptTime.split(',')[1];
+                    }else if(this.acceptData.dptTimeresources === "1") {
+                        alRWairAWait.checked = true;
+                    }else if(this.acceptData.dptTimeresources === "2") {
+                        alRWairAEnough.checked = true;
+                    }
+                }else if(this.acceptData.dptState === "1") {
+                    this.space1ShowTitle = this.spaceList[0];
+                    this.space1Fn(this.spaceList[0]);
+                    this.firArea = this.acceptData.dpt;
+                    this.firAreaBus = this.acceptData.dpt;
+                }
+                // 判断经停类型（0：机场，1：区域）
+                if(this.acceptData.pstState === "0") {
+                    this.space2ShowTitle = this.spaceList[1];
+                    this.space2Fn(this.spaceList[1]);
+                    if(this.acceptData.pstNm != null) {
+                        this.secArea = this.acceptData.pstNm;
+                    }
+                    this.qyCode2 = this.acceptData.pst;
+                    this.pstTimeresources = this.acceptData.pstTimeresources;
+                    this.pstAcceptnearairport = this.acceptData.pstAcceptnearairport;
+                    /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
+                    if(this.acceptData.pstAcceptnearairport === "0") {
+                        alRWairBYes.checked = true;
+                    }else if(this.acceptData.pstAcceptnearairport === "1") {
+                        alRWairBNo.checked = true;
+                    }
+                    /*单选按钮：时刻资源 0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值，
+                        1:待协调，2:时刻充足。*/
+                    if(this.acceptData.pstTimeresources === "0") {
+                        alRWairBResYes.checked = true;
+                        this.startTime2Show = this.acceptData.pstTime.split(',')[0];
+                        this.endTime2Show = this.acceptData.pstTime.split(',')[1];
+                    }else if(this.acceptData.pstTimeresources === "1") {
+                        alRWairBWait.checked = true;
+                    }else if(this.acceptData.pstTimeresources === "2") {
+                        alRWairBEnough.checked = true;
+                    }
+                }else if(this.acceptData.pstState === "1") {
+                    this.space2ShowTitle = this.spaceList[0];
+                    this.space2Fn(this.spaceList[0]);
+                    this.secArea = this.acceptData.pst;
+                }
+                // 判断到达类型（0：机场，1：区域）
+                if(this.acceptData.arrvState === "0") {
+                    this.space3ShowTitle = this.spaceList[1];
+                    this.space3Fn(this.spaceList[1]);
+                    if(this.acceptData.arrvNm != null) {
+                        this.thirdArea = this.acceptData.arrvNm;
+                    }
+                    this.qyCode3 = this.acceptData.arrv;
+                    this.arrvTimeresources = this.acceptData.arrvTimeresources;
+                    this.arrvAcceptnearairport = this.acceptData.arrvAcceptnearairport;
+                    /*单选按钮：是否接受邻近机场 0:接收,1:不接收*/
+                    if(this.acceptData.arrvAcceptnearairport === "0") {
+                        alRWairCYes.checked = true;
+                    }else if(this.acceptData.arrvAcceptnearairport === "1") {
+                        alRWairCNo.checked = true;
+                    }
+                    /*单选按钮：时刻资源 0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值，
+                        1:待协调，2:时刻充足。*/
+                    if(this.acceptData.arrvTimeresources === "0") {
+                        alRWairCResYes.checked = true;
+                        this.startTime3Show = this.acceptData.arrvTime.split(',')[0];
+                        this.endTime3Show = this.acceptData.arrvTime.split(',')[1];
+                    }else if(this.acceptData.arrvTimeresources === "1") {
+                        alRWairCWait.checked = true;
+                    }else if(this.acceptData.arrvTimeresources === "2") {
+                        alRWairCEnough.checked = true;
+                    }
+                }else if(this.acceptData.arrvState === "1") {
+                    this.space3ShowTitle = this.spaceList[0];
+                    this.space3Fn(this.spaceList[0]);
+                    this.thirdArea = this.acceptData.arrv;
+                }
+                // 补贴状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议5:无补贴
+                this.subsidyCode = this.acceptData.subsidypolicy;
+                this.subsidypolicyFn(this.acceptData.subsidypolicy);
+
+                // publicway 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
+                if(this.acceptData.publicway === "0") {
+                    alRWopenAll.checked = true;
+                }else if(this.acceptData.publicway === "1") {
+                    alRWopenUser.checked = true;
+                }else if(this.acceptData.publicway === "2" || this.acceptData.publicway === "3") {
+                    alRWopenOnly.checked = true;
+                    this.directionPublicShow = true;
+                    this.directionalgoalChangeFn();
+                }
+            },
+            // 将航司id转换成汉字
+            directionalgoalChangeFn: function () {
+                this.directionPublicCity = [];
+                this.companyList.forEach((val) => {
+                    if(this.acceptData.directionalgoal.indexOf(val.id) != '-1') {
+                        this.directionPublicCity.push({
+                            name: val.companyName,
+                            id: val.id,
+                        });
+                    }
+                });
+            },
+            // 将补贴类型从数字变成汉字
+            subsidypolicyFn: function (index) {
+                if(index === '0'){
+                    this.subsidyShow = '定补';
+                }else if(index === '1') {
+                    this.subsidyShow = '保底';
+                }else if(index === '2') {
+                    this.subsidyShow = '人头补';
+                }else if(index === '3') {
+                    this.subsidyShow = '其他';
+                }else if(index === '5') {
+                    this.subsidyShow = '无补贴';
+                }
             },
             warn4Fn: function () {
 //                console.info(4)
@@ -576,7 +854,7 @@
             },
             // 传送的数据
             sendDataFn: function () {
-                this.sendData.demandId = this.demandId;
+                this.sendData.demandId = this.acceptData.id;
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.iHome = this.phoneNum;//必填 联系方式
 //                sendData.dpt = this.firAreaCode;
@@ -593,11 +871,23 @@
                 this.sendData.pstTime = this.pstTime;
                 this.sendData.arrvTime = this.arrvTime;
                 this.sendData.aircrfttyp = this.typeChoose;  //必填 机型
-                this.sendData.days = this.scheduleShow;      //必填 班期
-                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补）3:待议4:无补贴
-                this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
+                if(this.myDate1 == '选择起止时间') { // 拟开时间
+                    this.sendData.sailingtime = '';      //必填 拟开行时间（起止时间）
+                }else {
+                    this.sendData.sailingtime = this.myDate1;      //必填 拟开行时间（起止时间）
+                }
+                if(this.scheduleShow == '选择班期类型') { //班期
+                    this.sendData.days = '';
+                }else {
+                    this.sendData.days = this.scheduleShow;      //必填 班期
+                }
+                if(this.myDate2 == '选择起止时间') { // 发布有效期
+                    this.sendData.periodValidity = '';
+                }else {
+                    this.sendData.periodValidity = this.myDate2; //必填 需求发布有效期
+                }
+                this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议 5:无补贴
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
-                this.sendData.periodValidity = this.myDate2; //必填 需求发布有效期
 //                sendData.pst = this.secAreaCode;   //选填 经停地
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
 //                sendData.pstCt = this.secAreaCode; //不传
@@ -611,10 +901,14 @@
                 this.sendData.avgguestexpect = this.avgguestExpect; // 选填 均班客座期望
                 this.sendData.seating = this.seatingNum;            // 选填 座位数
                 this.sendData.remark = this.remarkMsg;              // 选填 备注说明
-                this.directionPublicCity.forEach((val) => {
-                    this.directionalgoalArry.push(val.id);
-                });
-                this.directionalgoal = this.directionalgoalArry.join(',');
+                if(this.directionPublicCity.length != 0){
+                    this.directionPublicCity.forEach((val) => {
+                        this.directionalgoalArry.push(val.id);
+                    });
+                    this.directionalgoal = this.directionalgoalArry.join(',');
+                }else {
+                    this.directionalgoal = '';
+                }
                 this.sendData.directionalgoal = this.directionalgoal; // 定向发布
             },
             // 判断传值：始发、经停、到达
@@ -654,7 +948,7 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum == '' || this.warn2Show == true) { // 联系方式
+                }if(this.phoneNum == '' || this.phoneNum == null || this.warn2Show == true) { // 联系方式
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
@@ -682,21 +976,22 @@
                         this.warn9Show = false;
                     }
                 }
+                if(this.subsidyCode === '') {
+                    this.warn12Show = true;
+                    req.scrollTop = 550;
+                    return
+                }
                 if(this.myDate1 == '选择起止时间') { // 拟开时间
                     this.warn6Show = true;
-                    req.scrollTop = 0;
+                    req.scrollTop = 100;
                     return
                 }if(this.scheduleShow == '选择班期类型') { //班期
                     this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') { // 机型
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
+                    req.scrollTop = 100;
                     return
                 }if(this.myDate2 == '选择起止时间') { // 发布有效期
                     this.warn7Show = true;
-                    req.scrollTop = 250;
+                    req.scrollTop = 550;
                     return
                 }
                 this.sendDataFn();
@@ -712,10 +1007,12 @@
                     params: this.sendData
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('成功发布！')
-                        this.$emit("closeForm");
+//                        alert('成功发布！')
+                        this.open6(`成功发布！`)
+                        this.$emit("close-this");
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -732,8 +1029,11 @@
                 this.$emit('changeTitle');
             },
             closeSubmitData2: function () { // 点“委托发布”后的“取消”按钮
-                this.submitData2Click = false;
-                this.$emit('restoreTitle');
+                if(this.acceptData.chongXinWeiTuo == '1') {
+                    this.closeThis();
+                }else {
+                    this.submitData2Click = false;
+                }
             },
             submitData2: function () {
                 this.sendStateMsgFn();
@@ -743,31 +1043,11 @@
                     this.warn1Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.phoneNum == '' || this.warn2Show == true) {
+                }if(this.phoneNum == '' || this.phoneNum == null || this.warn2Show == true) {
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
-                }/*if(this.firArea == '') {
-                    this.warn3Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate1 == '选择起止时间') {
-                    this.warn6Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.scheduleShow == '选择班期类型') {
-                    this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') {
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.myDate2 == '选择起止时间') {
-                    this.warn7Show = true;
-                    req.scrollTop = 250;
-                    return
-                }*/
+                }
                 this.sendDataFn();
                 this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                 this.$ajax({
@@ -779,17 +1059,37 @@
                     params: this.sendData
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-                        alert('成功委托！')
-                        this.$emit("closeForm");
+//                        alert('成功委托！')
+                        this.open6(`成功委托！`);
+                        this.$emit("close-this");
                     }else{
-                        alert('错误代码：' + response.data.opResult)
+//                        alert('错误代码：' + response.data.opResult)
+                        this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
                     console.log(error);
                 });
             },
             closeThis: function () {
-                this.$emit("closeForm");
+                this.$emit("close-this");
+            },
+            // 设置发布有效期默认值（后延三个月）
+            myDate2Fn: function () {
+                let today = new Date(),
+                    day = today.getDate(), //号数
+                    mon = today.getMonth() + 1, //月份
+                    year = today.getFullYear(), //年份
+                    date = today.setMonth(today.getMonth()+3), //三个月后的时间
+                    mon2 =  today.getMonth(date) + 1,
+                    year2 =  today.getFullYear(date),
+                    day2 =  today.getDate(date);
+                if (mon < 10) mon = "0" + mon;
+                if (mon2 < 10) mon2 = "0" + mon2;
+                if (day < 10) day = "0" + day;
+                if (day2 < 10) day2 = "0" + day2;
+                this.calendarInitDay1 = this.calendarInitDay2 = this.calendarInitDay3 = year+"."+mon+"."+day;
+                this.calendarInitDay4 = year2+"."+mon2+"."+day2;
+                this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
             },
             //点击关闭所有下拉
             closeAll: function () {
@@ -815,8 +1115,18 @@
                 this.directionPublicCityShow = true;  //定向发布小标签那一行
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
+                this.warn1Show = false;
+//                this.warn2Show = false;
+                this.warn3Show = false;
+                this.warn4Show = false;
+                this.warn5Show = false;
+                this.warn6Show = false;
+                this.warn7Show = false;
                 this.warn8Show = false;
                 this.warn9Show = false;
+                this.warn10Show = false;
+                this.warn11Show = false;
+                this.warn12Show = false;
                 // 始发、经停、到达中转站
                 this.firArea = this.firAreaBus;
 //                this.secArea = this.secAreaBus;
@@ -830,6 +1140,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose2Fn: function () {
                 this.space2 = !this.space2;
@@ -839,6 +1150,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose3Fn: function () {
                 this.space3 = !this.space3;
@@ -848,6 +1160,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose4Fn: function () {
                 this.startTime1 = !this.startTime1;
@@ -856,6 +1169,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose5Fn: function () {
                 this.endTime1 = !this.endTime1;
@@ -864,6 +1178,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose6Fn: function () {
                 this.startTime2 = !this.startTime2;
@@ -872,6 +1187,7 @@
                 this.endTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose7Fn: function () {
                 this.endTime2 = !this.endTime2;
@@ -880,6 +1196,7 @@
                 this.startTime2 = false;
                 this.startTime3 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose8Fn: function () {
                 this.startTime3 = !this.startTime3;
@@ -888,6 +1205,7 @@
                 this.startTime2 = false;
                 this.endTime2 = false;
                 this.endTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose9Fn: function () {
                 this.endTime3 = !this.endTime3;
@@ -896,6 +1214,7 @@
                 this.startTime2 = false;
                 this.endTime2 = false;
                 this.startTime3 = false;
+                this.closeUnTimeFrameFn();
             },
             clickClose10Fn: function () {
                 this.calendarShow1 = !this.calendarShow1;
@@ -905,6 +1224,7 @@
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose11Fn: function () {
                 this.schedule = !this.schedule;
@@ -914,6 +1234,7 @@
                 this.calendarShow1 = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
                 this.subsidy = !this.subsidy;
@@ -923,9 +1244,28 @@
                 this.calendarShow1 = false;
                 this.schedule = false;
                 this.calendarShow2 = false;
+                this.closeTimeFrameFn();
             },
             clickClose13Fn: function () {
                 this.calendarShow2 = !this.calendarShow2;
+                this.space1 = false;
+                this.space2 = false;
+                this.space3 = false;
+                this.calendarShow1 = false;
+                this.schedule = false;
+                this.subsidy = false;
+                this.closeTimeFrameFn();
+            },
+            closeTimeFrameFn: function () {
+                this.startTime1 = false;
+                this.endTime1 = false;
+                this.startTime2 = false;
+                this.endTime2 = false;
+                this.startTime3 = false;
+                this.endTime3 = false;
+            },
+            closeUnTimeFrameFn: function () {
+                this.calendarShow2 = false;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -970,36 +1310,63 @@
             //时刻资源
             dptTimeresourcesFn0: function () {
                 this.dptTimeresources = 0;
+                this.time11Checked = true;
+                this.time12Checked = false;
+                this.time13Checked = false;
             },
             dptTimeresourcesFn1: function () {
                 this.dptTimeresources = 1;
                 this.dptTime = '';
+                this.time11Checked = false;
+                this.time12Checked = true;
+                this.time13Checked = false;
             },
             dptTimeresourcesFn2: function () {
                 this.dptTimeresources = 2;
                 this.dptTime = '';
+                this.time11Checked = false;
+                this.time12Checked = false;
+                this.time13Checked = true;
             },
             pstTimeresourcesFn0: function () {
                 this.pstTimeresources = 0;
+                this.time21Checked = true;
+                this.time22Checked = false;
+                this.time23Checked = false;
             },
             pstTimeresourcesFn1: function () {
                 this.pstTimeresources = 1;
                 this.pstTime = '';
+                this.time21Checked = false;
+                this.time22Checked = true;
+                this.time23Checked = false;
             },
             pstTimeresourcesFn2: function () {
                 this.pstTimeresources = 2;
                 this.pstTime = '';
+                this.time21Checked = false;
+                this.time22Checked = false;
+                this.time23Checked = true;
             },
             arrvTimeresourcesFn0: function () {
                 this.arrvTimeresources = 0;
+                this.time31Checked = true;
+                this.time32Checked = false;
+                this.time33Checked = false;
             },
             arrvTimeresourcesFn1: function () {
                 this.arrvTimeresources = 1;
                 this.arrvTime = '';
+                this.time31Checked = false;
+                this.time32Checked = true;
+                this.time33Checked = false;
             },
             arrvTimeresourcesFn2: function () {
                 this.arrvTimeresources = 2;
                 this.arrvTime = '';
+                this.time31Checked = false;
+                this.time32Checked = false;
+                this.time33Checked = true;
             },
 
             // 获取机型数据
@@ -1128,7 +1495,7 @@
                 this.secArea = '';
 //                this.secAreaBus = '';
                 if(item == '意向区域') {
-                    this.space2Show = '请输入意向区域';
+                    this.space2Show = '请输入意向区域（选填）';
                     this.isSearchCode2 = 0;
                     this.second2Show = false;
                     this.isSearch1 = false;
@@ -1136,7 +1503,7 @@
                     this.isSearch3 = false;
                     this.pstState = 1;
                 }if(item == '意向机场') {
-                    this.space2Show = '请输入意向机场';
+                    this.space2Show = '请输入意向机场（选填）';
                     this.secondShow = true;
                     this.second2Show = true;
                     this.isSearchCode2 = 1;
@@ -1153,7 +1520,7 @@
                 this.thirdArea = '';
 //                this.thirdAreaBus = '';
                 if(item == '意向区域') {
-                    this.space3Show = '请输入意向区域';
+                    this.space3Show = '请输入意向区域（选填）';
                     this.isSearchCode3 = 0;
                     this.second3Show = false;
                     this.isSearch1 = false;
@@ -1161,7 +1528,7 @@
                     this.isSearch3 = false;
                     this.arrvState = 1;
                 }if(item == '意向机场') {
-                    this.space3Show = '请输入意向机场';
+                    this.space3Show = '请输入意向机场（选填）';
                     this.secondShow = true;
                     this.second3Show = true;
                     this.isSearchCode3 = 1;
@@ -1191,12 +1558,12 @@
                 });
             },
             // 日历
-            getDate1: function(d){//获取组件返回的日期
+            /*getDate1: function(d){//获取组件返回的日期
                 this.calendarInitDay1 = d;
             },
             getDate2: function(d){
                 this.calendarInitDay2 = d;
-            },
+            },*/
             getMyDate1: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate1 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
@@ -1204,12 +1571,12 @@
                     this.warn6Show = false;
                 }else{}
             },
-            getDate3: function(d){
+            /*getDate3: function(d){
                 this.calendarInitDay3 = d;
             },
             getDate4: function(d){
                 this.calendarInitDay4 = d;
-            },
+            },*/
             getMyDate2: function(){//获取起始的日期
                 if(this.calendarInitDay3 && this.calendarInitDay4){
                     this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
@@ -1218,16 +1585,6 @@
                 }else{}
             },
             //补贴点击，改变补贴码
-            subsidyClick0: function () {
-                this.subsidyCode = '';
-            },
-            subsidyClick1: function () {
-                this.subsidyCode = 4;
-            },
-            subsidyClick2: function () {
-                this.subsidyCode = 3;
-//                console.info('radio')
-            },
             subsidyListFn: function (item) {
                 this.subsidyShow = item;
                 if(item == '定补'){
@@ -1236,6 +1593,10 @@
                     this.subsidyCode = 1;
                 }if(item == '人头补'){
                     this.subsidyCode = 2;
+                }if(item == '其他'){
+                    this.subsidyCode = 3;
+                }if(item == '无补贴'){
+                    this.subsidyCode = 5;
                 }
             },
             kemiantan: function () {
@@ -1259,8 +1620,8 @@
                 })
             },
             moreShowFn: function () { // 判断省略号是否显示
-//                console.info(this.$refs.littleLabelWrapper.offsetWidth)
-                if(this.$refs.littleLabelWrapper.offsetWidth >= 196) {
+//                console.info(this.$refs.littleLabelWrapper.offsetWidth);
+                if(this.$refs.littleLabelWrapper.offsetWidth >= 195) {
                     this.moreShow = true;
                 }else {
                     this.moreShow = false;
@@ -1293,6 +1654,118 @@
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     $border-color: rgba(96,94,124,0.37);
+    /********↓↓↓↓↓↓新增样式↓↓↓↓↓↓↓********/
+    /*其他说明*/
+    .text-area {
+        width: 475px;
+        height: 162px;
+        font-size: 12px;
+        line-height: 26px;
+        color: #605E7C;
+        background: transparent;
+        outline: none;
+        border: none;
+        resize: none;
+    }
+    .background-line {
+        position: absolute;
+        left: 0;
+        width: 475px;
+        height: 1px;
+        background: $border-color;
+    }
+    /******checkbox样式更改*****/
+    .magic-checkbox {
+        position: absolute;
+        display: none;
+    }
+    .magic-checkbox + label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        vertical-align: middle;
+        &::before {
+            padding-right: 5px;
+            font-family: iconfont;
+            font-size: 1.7rem;
+            color: $font-color;
+            content: '\e723';
+            border-radius: 50%;
+        }
+    }
+    .magic-checkbox:checked + label {
+        &::before {
+            content: '\e724';
+            color: $icon-color;
+            font-weight: bold;
+        }
+    }
+    /********/
+    .simplify-msg {
+        position: relative;
+        padding: 67px 0 0 0;
+        .check-box {
+            position: absolute;
+            top: 0;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            .checkbox-choose {
+                margin-right: 5px;
+            }
+        }
+        .s-first,.first {
+            padding: 0 20px 23px 20px;
+            .start {
+                width: 142px;
+            }
+            .pass {
+                width: 142px;
+            }
+            .arrive {
+                width: 142px;
+            }
+        }
+        .s-second,.third {
+            margin: 0;
+            .item {
+                .item-child {
+                    justify-content: flex-start;
+                    width: 100%;
+                }
+            }
+            .third-d {
+                padding: 23px 0;
+                height: 26px;
+                .right {
+                    align-items: flex-start;
+                    .want-subsidy {
+                        top: 25px;
+                        left: -1px;
+                        width: 120px;
+                    }
+                }
+            }
+        }
+        .s-third,.third {
+            margin: 0;
+            .item {
+                .item-child {
+                    justify-content: flex-start;
+                    width: 240px;
+                }
+            }
+            .third-a {
+                padding: 23px 0 0 0;
+                height: 26px;
+                line-height: 26px;
+                .right {
+                    position: relative;
+                }
+            }
+        }
+    }
+    /*************↑↑↑↑↑新增样式↑↑↑↑↑************/
     .icon-item {
         font-size: 1.6rem;
         font-family: iconfont;
@@ -1610,20 +2083,32 @@
         box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
     }
     /*********/
+   /*  .wrapper {
+       position: fixed;
+       top: 0;
+       left: 0;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       width: 100%;
+       height: 100%;
+       background: rgba(0, 0, 0, .4);
+       z-index: 12;
+   } */
     .container {
-        position: absolute;
-        top: 65px;
-        right: 0px;
         padding: 20px 20px 0 20px;
-        width: 580px;
-        font-size:1.2rem;
-        max-height: 630px;
+        box-sizing:border-box;
+        position:absolute;
+        top:65px;
+        left:0;
+        z-index:99;
         overflow-y: scroll;
-        /*overflow-x: visible;*/
-        border-radius: 4px;
-        box-shadow: 0 2px 11px rgba(85,85,85,0.1);
-        background: white;
-        z-index: 2;
+        font-size:1.2rem;
+        width:620px;
+        max-height:630px;
+        color: #605E7C;
+        border-radius:4px;
+        background-color:#fff;
         .items {
             border-radius: 4px;
         }
@@ -1634,6 +2119,29 @@
     .container::-webkit-scrollbar-thumb {
         background: #D8D8D8;
         border-radius: 4px;
+    }
+    .container-top {
+        position: relative;
+        margin: 10px 0 30px 20px;
+        .title {
+            width: 140px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+        }
+        .close-icon {
+            position: absolute;
+            top: -2px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border: 1px solid gray;
+            border-radius: 100%;
+            cursor: pointer;
+        }
     }
 
     .bg-color {
@@ -1873,7 +2381,7 @@
         }
         .third-d {
             padding: 17px 0 21px 0;
-            height: 62px;
+            /*height: 62px;*/
             .right {
                 align-items: flex-start;
                 .want-subsidy {
@@ -1892,9 +2400,7 @@
         margin-bottom: 10px;
         .item-child {
             display: flex;
-            align-items: center;
             flex-grow: 1;
-            height: 26px;
             line-height: 26px;
         }
         .top {
@@ -1902,6 +2408,7 @@
         }
         .bottom {
             position: relative;
+            align-items: center;
             padding: 20px 0 34px 0;
             width: 240px;
         }
@@ -1923,6 +2430,8 @@
         display: flex;
         justify-content: flex-end;
         margin-bottom: 44px;
+        padding-top: 20px;
+        border-top: 1px solid $border-color;
         button {
             padding: 9px 20px;
             outline: none;

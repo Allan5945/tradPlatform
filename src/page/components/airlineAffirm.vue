@@ -975,15 +975,11 @@
                     },
                     params: this.sendData
                 }).then((response) => {
-//                    console.info('response:')
-//                    console.info(response)
                     if(response.data.opResult === '0'){
-//                        alert(this.alertMsg)
                         this.open6(this.alertMsg);
                         this.$emit('change-showCode');
                         this.closeThis();
                     }else{
-//                        alert('错误代码：' + response.data.opResult)
                         this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {

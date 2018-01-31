@@ -31,7 +31,7 @@
                         <pwdInput :par="oArg" v-on:reqMes="phoneReqMes" v-if="active==1"></pwdInput>
                         <validation v-if="active==1 && valiUseFlag" v-on:validation="validPass" style="margin-top:30px;"></validation>
                     </div>
-                    <div class="process-main" v-show="active==2" style="margin-top: -25px;width: 230px;">
+                    <div class="process-main" v-if="active==2" style="margin-top: -25px;width: 230px;">
                         <p style="height:25px;color:#aaa;text-indent: 3px;">输入新手机号</p>
                         <div class="full-btn">
                             <input type="text" v-model="userData.phone" disabled placeholder="">
@@ -277,10 +277,14 @@
                             that.show.yzmTip = true;
                             that.calcTime();
                         }else{
-                            alert('error：接码，code:'+res.data.opResult);
+                            let valt = window.localStorage.getItem("validCodeTime"), nowt = (new Date()).getTime();
+                            nowt = nowt - valt;
+                            if( nowt < 60000 ){
+                                that.openTips("*验证码发送间隔不能小于1分钟");
+                                that.code.wait = Math.ceil(nowt/1000);
+                                that.calcTime();
+                            }
                         }
-                    }).catch(err=>{
-                        alert('不知道4##还是5##');
                     })
                 }
             },
@@ -297,21 +301,20 @@
                     }
                 }).then(res=>{
                     if(res.data.opResult === '0'){
-                        that.result = true;
                         that.ud.phone = np;
                         that.delayClose();
+                        that.result = true;
+                        that.show.footer = false;
+                        that.active = 3;
                     }else{
                         this.userData.code = '';
                         that.openTips("*短信验证码错误");
                     }
                 }).catch(err=>{
-                    that.openTips('*网络错误，不知道4##还是5##');
-                    that.delayClose();
-                })
-                if(flag){
+                    that.result = false;
                     that.show.footer = false;
                     that.active = 3;
-                }
+                })
             },
             next() {
                 let that = this;
@@ -343,6 +346,8 @@
                     this.closeThis();
                 }else{
                     this.active--;
+                    this.code.wait = 60;
+                    this.code.tipText =  "获取验证码";
                     this.validFlag = false;
                 }
             }
@@ -467,7 +472,7 @@
     .yzm-tip{
         display: inline-block;
         position: absolute;
-        bottom: 37%;
+        bottom: 43%;
         left: 18%;
         color: #aaa;
     }

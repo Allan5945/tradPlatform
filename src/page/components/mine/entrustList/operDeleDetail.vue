@@ -217,18 +217,18 @@
                <div class="foot-tips" >*取消原因：{{refuseText}}</div>
            </footer> -->
         </div>
-        <operDeleForm v-show="formShow" @closeForm="closeForm" :detailData="detailData"></operDeleForm>
+        <operDeleForm v-if="formShow" @closeForm="closeForm" :acceptData="detailData"></operDeleForm>
         <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
 
 <script>
-import refuseDialog from './refuseDialog.vue';
-import operDeleForm from './operDeleForm.vue'
-import sonNeedDetail from './sonNeedDetail1.vue'
-import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-import ln from './../../../../public/js/tabulationBoxTrigger';
+    import refuseDialog from './refuseDialog.vue';
+    import operDeleForm from './operDeleForm.vue'
+    import sonNeedDetail from './sonNeedDetail1.vue'
+    import ln from './../../../../public/js/tabulationBoxTrigger'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 
  export default {
      data(){
@@ -394,25 +394,6 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           this.init();
 
         },
-       /* turnPolicyCode(val){
-            switch (val) {
-                case "0":
-                    return "定补";
-                    break;
-                case "1":
-                    return "保底";
-                    break;
-                case "2":
-                    return "人头补";
-                    break;
-                case "3":
-                    return "待议";
-                    break;
-                case "4":
-                    return "无补贴";
-                    break;
-            }
-        },*/
         getProgress:function(progress){
             switch (progress) {
                 case "0":
@@ -516,7 +497,6 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
         }
      },
       mounted() {
-          tabulationBoxTrigger.$emit('getSonId', this.chatData.id);
           tabulationBoxTrigger.hierarchy = true;
           this.init();
 

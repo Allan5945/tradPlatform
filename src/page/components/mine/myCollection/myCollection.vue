@@ -67,7 +67,7 @@
             <transDetail v-if="transShow" @closeDetail="closeDetail" @showDetail="showTrans" :needData="needData"></transDetail>
         </transition>
         <transition name="slidex-fade">
-           <airlineDetail v-if="airlineShow" @close-this="closeDetail" :needData="needData"></airlineDetail>
+           <airlineDetail v-if="airlineShow" @closeDetail="closeDetail" :needData="needData"></airlineDetail>
         </transition>
 
     </div>
