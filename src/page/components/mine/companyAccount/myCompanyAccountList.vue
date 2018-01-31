@@ -35,13 +35,13 @@
             </div>
         </div>
         <transition-group name="fade">
-            <myCompanyAccountRecharge v-show="myCompanyAccountRechargeShow" @closeThis="closeRechargeFn" :key="0"></myCompanyAccountRecharge>
+            <myCompanyAccountRecharge v-if="myCompanyAccountRechargeShow" :acceptData="sendToMyCompanyAccountRecharge" @closeThis="closeRechargeFn" :key="0"></myCompanyAccountRecharge>
             <myCompanyAccountWithdraw v-if="myCompanyAccountWithdrawShow" @closeThis="closeWithdrawFn" :myCompanyAccountWithdraw="myData" @refresh="refreshFn" :key="1"></myCompanyAccountWithdraw>
         </transition-group>
         <transition-group name="slidex-fade">
-            <AccountRechargeDetail v-show="AccountRechargeDetailShow" @closeThis="closeAllFn" :key="2"></AccountRechargeDetail>
-            <AccountWithdrawDetail v-show="AccountWithdrawDetailShow" @closeThis="closeAllFn" :key="3"></AccountWithdrawDetail>
-            <companyAirlineDetailPayAfter v-if="companyAirlineDetailPayAfterShow" :sendToCompany="sendToCompany" @closeThis="closeAllFn" :key="4"></companyAirlineDetailPayAfter>
+            <AccountRechargeDetail v-if="AccountRechargeDetailShow" :acceptData="sendToAccountWithdrawDetail" @closeThis="closeAllFn" :key="2"></AccountRechargeDetail>
+            <AccountWithdrawDetail v-if="AccountWithdrawDetailShow" :acceptData="sendToAccountWithdrawDetail" @closeThis="closeAllFn" :key="3"></AccountWithdrawDetail>
+            <companyAirlineDetailPayAfter v-if="companyAirlineDetailPayAfterShow" :acceptData="mes" @close-this="closeAllFn" :key="4"></companyAirlineDetailPayAfter>
             <div class="trans-wrapper" v-if="companyTransIndexShow" @click.self="closeAllFn" :key="5">
                 <transIndex :mes="mes" @closewindow="closeAllFn"></transIndex>
             </div>
@@ -72,13 +72,14 @@
                 sendData: {}, // ajax传递的参数
                 listItemIndex: '',
                 demandIdShow: false, // 列表数据中没有demandId时，不显示
-                sendToCompany: {},   // 向companyAirlineDetailPayAfter传数据
                 companyTransIndexShow: false,  // 运力详情是否显示
                 mes:{       //demand  , demandState 需求状态 ,demandType  需求类型
                     demand:"",
                     demandState:"",
                     demandType:""
                 },
+                sendToAccountWithdrawDetail: {}, //向AccountWithdrawDetail、AccountRechargeDetail传数据
+                sendToMyCompanyAccountRecharge: {}, //向myCompanyAccountRecharge.vue传数据
             }
         },
         created() {
@@ -129,7 +130,8 @@
                     if(response.status === 200) {
                         this.myCompanyAccountRechargeShow = true;
                         tabulationBoxTrigger.hierarchy = true;
-                        tabulationBoxTrigger.$emit('sendToMyCompanyAccountRecharge',response.data.card) //向myCompanyAccountRecharge.vue传数据
+                        this.sendToMyCompanyAccountRecharge = response.data.card;
+//                        tabulationBoxTrigger.$emit('sendToMyCompanyAccountRecharge',response.data.card) //向myCompanyAccountRecharge.vue传数据
                     }else {
                         alert('无法请求到数据')
                     }
@@ -163,7 +165,7 @@
                     }else{
                         this.AccountRechargeDetailShow = true; // 充值详情显示
                     }
-                    tabulationBoxTrigger.$emit('sendToAccountWithdrawDetail',item) //向AccountWithdrawDetail、AccountRechargeDetail传数据
+                    this.sendToAccountWithdrawDetail = item;
                 }else {
                     return
                 }
@@ -172,22 +174,14 @@
             // 点击展示（航线、运力）详情
             needDetailClickFn: function (item) {
                 //0：航司、 1：机场、 2：太美
-//                tabulationBoxTrigger.$emit('sendToCompany',item) // 向companyAirlineDetailPayAfter、companyMyIntention传数据
-                this.sendToCompany = item;
+                this.mes.demand = item.demandId;
+                this.mes.demandState = item.demandstate;
+                this.mes.demandType = item.demandType;
                 tabulationBoxTrigger.hierarchy = true;
                 if(item.demandType == '0'){  //（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                     this.companyAirlineDetailPayAfterShow = true;
                 }if(item.demandType == '1'){
                     this.companyTransIndexShow = true;
-                    /*
-                    mes:{       //demand  , demandState 需求状态 ,demandType  需求类型
-                        demand:"",
-                        demandState:"",
-                        demandType:""
-                    },*/
-                    this.mes.demand = item.demandId;
-                    this.mes.demandState = item.demandstate;
-                    this.mes.demandType = item.demandType;
                 }
             },
             closeAllFn: function () {

@@ -67,7 +67,7 @@
             </el-pagination>
         </div>
         <transition-group name="slidex-fade">
-            <myPurpose v-if="myPurposeShow" :acceptData="sendDataToMyPurpose" @close-this="closeThisFn" :key="5"></myPurpose>
+            <myPurpose v-if="myPurposeShow" :acceptData="mes" @close-this="closeThisFn" :key="5"></myPurpose>
             <!--运力详情-->
             <div class="trans-wrapper" v-if="myPurpose1Show" @click.self="closeThisFn" :key="6">
                 <transIndex :mes="mes" @closewindow="closeThisFn"></transIndex>
@@ -79,7 +79,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
-    import myPurpose from './myPurpose.vue'
+    import myPurpose from '$src/page/components/mine/companyAccount/companyAirlineDetailPayAfter.vue'
     import transIndex from '$src/page/components/trans_detail/transIndex.vue'
 
     export default {
@@ -320,15 +320,14 @@
             // 点击列表(list)，展示详情
             listClickFn: function (item,index) {
                 this.listItemIndex = index; //变成active状态
+                this.mes.demand = item.demandId;
+                this.mes.demandState = item.demandstate;
+                this.mes.demandType = item.demandtype;
                 if(item.demandtype == '0') {
                     this.myPurposeShow = true;
-                    this.sendDataToMyPurpose = item;  //将item的参数传递给myPurpose.vue
                     tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                 }else if(item.demandtype == '1') { //demand  , demandState 需求状态 ,demandType  需求类型
                     this.myPurpose1Show = true;
-                    this.mes.demand = item.demandId;
-                    this.mes.demandState = item.demandstate;
-                    this.mes.demandType = item.demandtype;
                     tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                 }
             },
