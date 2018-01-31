@@ -43,8 +43,6 @@
         created() {
             // 接收airlineDetailPayAfter.vue传来的参数
             tabulationBoxTrigger.$on('responseText',(val) => {
-//                console.info('dialog接收airlineDetailPayAfter:');
-//                console.info(val);
                 this.sendData.demandId = val;
                 this.loadingShow = false;
             })
@@ -94,7 +92,6 @@
                     params: this.sendData
                 }).then((response) => {
                     if(response.data.opResult === '0'){
-//                        alert('成功提交意向金！');
                         this.open6(`成功提交意向金！`);
                         this.paySuccessShow = true; //“缴纳完成”组件显示
                         setTimeout(() => {
@@ -103,7 +100,6 @@
                     }else if(response.data.opResult === '4') { // 4: 余额不足
                         this.payFailOfBalanceShow = true;
                     }else{
-//                        alert('错误代码：' + response.data.opResult);
                         this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {

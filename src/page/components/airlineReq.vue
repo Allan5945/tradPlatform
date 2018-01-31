@@ -460,7 +460,7 @@
         </div>
         <div class="sixth" v-else>
             <button class="btn-b btn-blue" @click.stop="submitData2">确认发布</button>
-            <button class="btn-c btn-cancel" @click="closeSubmitData2">取消</button>
+            <button class="btn-c btn-cancel" @click="closeThis">取消</button>
         </div>
     </div>
 </template>
@@ -740,9 +740,7 @@
             sendDataFn: function () {
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.iHome = this.phoneNum;//必填 联系方式
-//                sendData.dpt = this.firAreaCode;
                 this.sendData.dptState = this.dptState;         //始发地类型（0：机场，1：区域）
-//                sendData.dptCt = this.firAreaCode; //不传
                 this.sendData.dptAcceptnearairport = this.dptAcceptnearairport; //必填 始发地是否接收临近机场(0:接收,1:不接收)
                 this.sendData.dptTimeresources = this.dptTimeresources;        //选填 始发地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 this.sendData.pstTimeresources = this.pstTimeresources;        //选填 经停地时刻资源(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
@@ -771,13 +769,9 @@
                 }
                 this.sendData.subsidypolicy = this.subsidyCode;   //必填 补贴有种状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议 5:无补贴
                 this.sendData.publicway = this.publicwayStrCode;   //必填 公开方式(0:对所有人公开,1:对认证用户公开,2:定向航司,3:定向机场), 3和4定位目标在下一个字段
-//                sendData.pst = this.secAreaCode;   //选填 经停地
                 this.sendData.pstState = this.pstState;         //经停地类型（0：机场，1：区域）
-//                sendData.pstCt = this.secAreaCode; //不传
                 this.sendData.pstAcceptnearairport = this.pstAcceptnearairport; //选填 经停地是否接收临近机场(0:接收,1:不接受)
-//                sendData.arrv = this.thirdAreaCode;//选填 到达地
                 this.sendData.arrvState = this.arrvState;         //到达地类型（0：机场，1：区域）
-//                sendData.arrvCt = this.thirdAreaCode; //不传
                 this.sendData.arrvAcceptnearairport = this.arrvAcceptnearairport; //选填 到达地是否接收临近机场(0:接收,1:不接受)
                 this.sendData.blockbidprice = this.blockbidPrice; //选填 拦标价格
                 this.sendData.loadfactorsexpect = this.loadfactorsExpect; //选填 客座率期望
@@ -918,10 +912,6 @@
                 this.warn6Show = false;
                 this.warn7Show = false;
                 this.$emit('changeTitle');
-            },
-            closeSubmitData2: function () { // 点“委托发布”后的“取消”按钮
-                this.submitData2Click = false;
-                this.$emit('restoreTitle');
             },
             submitData2: function () {
                 this.sendStateMsgFn();
