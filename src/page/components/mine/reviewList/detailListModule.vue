@@ -18,7 +18,7 @@
                                 <div>{{ndetailData.dptNm||"—"}}</div>
                                 <div>{{ airportAcept[ndetailData.dptAcceptnearairport] || '-' }}</div>
                             </div>
-                            <div class="resouse">
+                            <div class="resouse" v-show="ndetailData.dptNm">
                                 <div>出港资源</div>
                                 <div>{{ndetailData.dptTimeresourcesStr||"-"}}</div>
                             </div>
@@ -28,9 +28,9 @@
                             <div>经停机场</div>
                             <div>
                                 <div>{{ndetailData.pstNm||"—"}}</div>
-                                <div>{{ airportAcept[ndetailData.pstAcceptnearairport] || '-' }}</div>
+                                <div v-show="ndetailData.arrvNm">{{ airportAcept[ndetailData.pstAcceptnearairport] || '-' }}</div>
                             </div>
-                            <div class="resouse">
+                            <div class="resouse" v-show="ndetailData.pstNm">
                                 <div>出港资源</div>
                                 <div>{{ndetailData.pstTimeresourcesStr||"-"}}</div>
                             </div>
@@ -40,9 +40,9 @@
                             <div>到达区域</div>
                             <div>
                                 <div>{{ndetailData.arrvNm||"—"}}</div>
-                                <div>{{ airportAcept[ndetailData.arrvAcceptnearairport] || '-' }}</div>
+                                <div v-show="ndetailData.arrvNm">{{ airportAcept[ndetailData.arrvAcceptnearairport] || '-' }}</div>
                             </div>
-                            <div class="resouse">
+                            <div class="resouse" v-show="ndetailData.arrvNm">
                                 <div>出港资源</div>
                                 <div>{{ndetailData.arrvTimeresourcesStr||"-"}}</div>
                             </div>

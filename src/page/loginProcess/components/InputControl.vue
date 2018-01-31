@@ -1,7 +1,7 @@
 <template>
   <div class="user-input-box">
     <input :type="inputeType" class="user-input"
-        :class="{'animated':showErr,'shake':showErr,'err-input':showErrInput || errs}"
+        :class="{'animated':showErrInput,'shake':showErrInput,'err-input':showErrInput || errs}"
         @blur="focusTip(true)"
         @focus="focusTip()"
         @input="changeTip($event)"
@@ -25,18 +25,9 @@ export default {
             inputeType:"",    // 输入框的类型值
             inputMes:"",     // 输入的内容
             maxlength: 16
-            // par:{
-            //     defaultText:"",     // 默认的值
-            //     inputType:true,   // 输入框类型，true、text。false、password
-            //     isJudge:true,  // 是否显示正确的绿钩  true、显示。false、不显示
-            //     isPrompt:true, // 是否密码显示功能 true、。false、
-            //     isshowErr:true, // 是否错误抖动 true、抖动。false、不抖动
-            //     tip:["请输入账号、手机号或者邮箱","账号"], // 1，输入框的placeholder值。2，显示值
-            //     openJudge:[/^1[34578]\d{9}$/,/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/],                   // 输入正则判断
-            // },
         }
     },
-    props:['par','errs','mandatoryJudge'],
+    props:['par','errs','mandatoryJudge','errorFlag'],
     methods:{ 
         entered(e){
             e = e.srcElement || e.originalTarget;
@@ -132,6 +123,11 @@ export default {
             });
             return ty;
         }
+    },
+    watch:{
+        errorFlag:function (v,ov) {
+            this.showErrInput = v==='same'? true:false ;
+        },
     }
 }
 </script>

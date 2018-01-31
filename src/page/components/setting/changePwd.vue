@@ -12,30 +12,10 @@
                 </ul>
                 <div class="process-main" v-show="active==0">
                     <pwdInput :par="pasArg" v-on:reqMes="pasReqMes0" v-on:entered="iptEnter" v-if="active==0"></pwdInput>
-                    <!--
-                    <div class="full-btn">
-                        <input :type="iptType.showpwd0" v-model="userData.pwd" placeholder="输入登录密码" maxlength="16">
-                        <span v-show="userData.pwd.length>0 && iptType.showpwd0==='password'" @click="iptType.showpwd0 ='text'">&#xe685;</span>
-                        <span v-show="userData.pwd.length>0 && iptType.showpwd0==='text'" @click="iptType.showpwd0 = 'password'" style="line-height: 38px;">&#xe7d3;</span>
-                    </div>
-                    -->
                 </div>
                 <div class="process-main" v-show="active==1">
                     <pwdInput v-if="active==1" :par="npasArg" v-on:reqMes="pasReqMes1" @focus="show.pwdErr=false;"></pwdInput>
-                    <pwdInput v-if="active==1" :par="vnpasArg" v-on:reqMes="pasReqMes2" style="margin-top:30px;"></pwdInput>
-                    <!--
-                    <div class="full-btn">
-                        <input :type="iptType.showpwd1" v-model.trim="userData.npwd" placeholder="输入新密码" @focus="show.pwdErr=false;">
-                        <span v-show="userData.npwd.length>0 && iptType.showpwd1==='password'" @click="iptType.showpwd1 ='text'">&#xe685;</span>
-                        <span v-show="userData.npwd.length>0 && iptType.showpwd1==='text'" @click="iptType.showpwd1 = 'password'" style="line-height: 38px;">&#xe7d3;</span>
-                    </div>
-
-                    <div class="full-btn" style="margin-top: 30px;">
-                        <input :type="iptType.showpwd2" v-model.trim="userData.vnpwd" placeholder="确认密码" @focus="show.pwdErr=false;">
-                        <span v-show="userData.vnpwd.length>0 && userData.vnpwd.length===userData.npwd.length && userData.vnpwd===userData.npwd.replace(/ /g,'')"
-                              style="pointer-events: none;color: rgb(125,220,13);">&#xe61f;</span>
-                    </div>
-                    -->
+                    <pwdInput v-if="active==1" :par="vnpasArg" :errorFlag="vbpasErrorFlag" v-on:reqMes="pasReqMes2" style="margin-top:30px;"></pwdInput>
                 </div>
                 <div class="pwd-tips">
 
@@ -129,6 +109,7 @@
                     tip:["确认新密码","确认密码"], // 1，输入框的placeholder值。2，显示值
                     openJudge:[],
                 },
+                vbpasErrorFlag: false
             }
         },
         props: ['ud'],
@@ -162,6 +143,14 @@
                 this.userData.vnpwd = p.n;
             },
             closeThis(f){
+                let that = this;
+                that.$ajax.post('logout')
+                    .then((res)=>{
+                        if(res.data.opResult == 0){//修改成功后
+                            that.$chatSocket.ws.close();
+                        }
+                    })
+                return;
                 this.$emit('subchange',{
                     name: 'pwd',
                     type: f===true ? 1:0
@@ -248,8 +237,9 @@
                         that.delayClose();
                     })
                 }else{
-                    that.openErrTips();
-                    that.openTips("*两次密码输入不一致，请重新输入")
+                    //that.openErrTips();
+                    that.vbpasErrorFlag = 'same';
+                    that.openTips("*两次密码输入不一致，请重新输入");
                 }
             },
             next() {

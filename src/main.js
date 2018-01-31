@@ -34,10 +34,11 @@ Vue.use(TimePicker);
 //axios拦截器
 axios.interceptors.response.use(
     data => {
-        if(data.data.opResult && data.data.opResult != 0){
-            // Message.error({
-            //     message: '查询错误，请稍后重试',
-            // });
+        if(data.config.url == "/getValidCode"){  //每次接收到验证码后记录时间戳
+            if(data.data.opResult && data.data.opResult == 0){
+                let time = (new Date()).getTime();
+                window.localStorage.setItem("validCodeTime",time);
+            }
         }
         return data;
     },
