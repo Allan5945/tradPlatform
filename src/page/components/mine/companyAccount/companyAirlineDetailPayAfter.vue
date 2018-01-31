@@ -344,9 +344,6 @@
                     <h2>收到的意向</h2>
                     <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
                 </div>
-                <div class="seventh item-container" v-show="secondButtonShow && myData.demandprogress != 3">
-                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可查看详细列表</span>
-                </div>
                 <div class="seventh item-container" v-show="isSelf && myData.demandprogress == 3">
                     <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
                 </div>
@@ -525,11 +522,14 @@
                             </div>
                             <div v-else>
                                 <div class="item-fifth" v-if="item.releaseselected === '1' && item.responseProgress !== '2'">
-                                    <!--<button class="btn btn-disable" v-if="btnDisableShow">选定</button>-->
-                                    <button class="btn btn-b" v-if="!btnDisableShow" @click="airlineAffirmFn(item,index)">选定</button>
+				    <div v-show="secondButtonShow && myData.demandprogress != 3" style="position: absolute; left: -130px; bottom: 50px;">
+                                        <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后即可选定该意向</span>
+                                    </div>
+                                    <button class="btn btn-disable" v-show="unPayMoneyShow">选定</button>
+                                    <button class="btn btn-b" v-show="!btnDisableShow && !unPayMoneyShow" @click="airlineAffirmFn(item,index)">选定</button>
                                 </div>
                                 <div class="item-sixth" v-if="item.releaseselected === '0'">
-                                    <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编译）</button>
+                                    <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编辑）</button>
                                     <button class="btn btn-w btn-revocation" @click="airlineAffirmUnchooseFn(item,index)">撤销选定</button>
                                 </div>
                             </div>
@@ -643,7 +643,7 @@
                 airlinePayShow: false,   //组件“缴纳意向金”显示
                 paySuccessShow: false,    //组件“缴纳完成”显示
                 dialogShow: false,        //组件“缴纳意向金”显示
-                showCode: '', //0,1,2,3对应firstShow，secondShow，thirdShow，fourthShow
+                showCode: '',
 
                 userNum: '',  //发起意向的用户数量
                 myData: {},  //获取的数据
@@ -684,6 +684,7 @@
                 },
                 calendarInitDay3: '',
                 calendarInitDay4: '',
+                unPayMoneyShow: false,  // 未缴纳意向金时显示的无法点击的“选定”按钮
             }
         },
         watch: {
@@ -785,7 +786,8 @@
                     this.calendarInitDay4 = this.myData.periodValidity.split('-')[1];
                     // 修改this.showCode
                     if(this.myData.demandstate == 5
-                        || this.myData.demandprogress == 10) {  // “关闭”状态
+                        || this.myData.demandprogress == 10
+                        || this.myData.demandprogress == 3) {  // “关闭”状态
                         this.showCode = 5;
                         this.show();
                     }else {
@@ -793,10 +795,13 @@
 //                                console.info('payAfter:' + 1)
                             this.showCode = 1;
                             this.show();
+                            this.listData = response.data.responseList;   //获取意向列表
+                            this.unPayMoneyShow = true;
                         }if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
                             this.showCode = 3;
                             this.show();
+                            this.unPayMoneyShow = false;
                             if(this.myData.demandprogress == 4
                             || this.myData.demandprogress == 5
                             || this.myData.demandprogress == 6) { // 判断“结束需求”按钮是否显示
@@ -818,11 +823,9 @@
                                 this.btnDisableShow = true;  // 不显示“选定”按钮
                             }
                         }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
-//                        console.info('000000')
                             this.showCode = 0;
                             this.show();
                         }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
-//                        console.info('payAfter:' + 4)
                             this.showCode = 4;
                             this.show();
                         }
@@ -831,15 +834,6 @@
                             this.demandState6 = true;
                         }else {
                             this.demandState6 = false;
-                        }
-                        if(this.myData.demandprogress == 3) {  // 判断当“需求关闭”状态时，还需要显示
-                            this.demandState5 = true;
-                            this.userNumShow = false;
-                            this.firstShow = true;
-                            this.secondButtonShow = false;
-                            this.fifthButtonShow = false;
-                            this.myplanBtnShow = false;
-                            this.firstButtonShow = false;
                         }
                         if(this.isSelf == true) {  //发布方联系人、联系方式是否显示
                             this.contactMsgShow = true;
@@ -851,8 +845,6 @@
                             }
                         }
                     }
-//                    this.showCode = 5; // 模拟“关闭”状态
-
                 })
                 .catch((error) => {
                         console.log(error);
@@ -952,11 +944,9 @@
                 }) .then((response) => {
 //                    console.info(response.data)
                     if(response.data.opResult === '0'){
-//                        alert('成功结束该需求！')
                         this.open6(`成功结束该需求！`);
                         this.closeThisFn();
                     }else{
-//                        alert('错误代码：' + response.data.opResult)
                         this.open8(`错误代码：${response.data.opResult}`);
                     }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
@@ -965,90 +955,41 @@
                 });
             },
             show: function () {
-                if (this.showCode == 0) {
-                    this.demandState5 = false;
+                this.demandState5 = false;
+                this.userNumShow = false;
+                this.firstShow = false;
+                this.secondShow = false;
+                this.thirdShow = false;
+                this.firstButtonShow = false;
+                this.secondButtonShow = false;
+                this.fifthButtonShow = false;
+                this.checkDetailIndex = ''; // 列表收起来
+                this.myplanBtnShow = false;
+                this.myplanShow = false;
+                if (this.showCode == 0) {  //我发出的方案为空，即没有发出方案
                     this.userNumShow = true;
                     this.firstShow = true;
-                    this.secondShow = false;
-                    this.thirdShow = false;
                     this.firstButtonShow = true;
-                    this.secondButtonShow = false;
-//                    this.thirdButtonShow = false;
-//                    this.fourthButtonShow = false;
-                    this.fifthButtonShow = false;
-                    this.checkDetailIndex = ''; // 列表收起来
-                    this.myplanBtnShow = false;
-                    this.myplanShow = false;
-                }if (this.showCode == 1) {
-                    this.demandState5 = false;
+                }if (this.showCode == 1) {  // 是自己发布 + 未缴纳意向金
                     this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
-                    this.thirdShow = false;
-                    this.firstButtonShow = false;
                     this.secondButtonShow = true;
-//                    this.thirdButtonShow = false;
-//                    this.fourthButtonShow = false;
-                    this.fifthButtonShow = false;
-                    this.checkDetailIndex = ''; // 列表收起来
-                    this.myplanBtnShow = false;
-                    this.myplanShow = false;
-                }if (this.showCode == 2) {
-                    this.demandState5 = false;
+                    this.thirdShow = true;
+                }if (this.showCode == 3) {  // 是自己发布 + 已经缴纳意向金
                     this.userNumShow = true;
                     this.firstShow = true;
                     this.secondShow = true;
                     this.thirdShow = true;
-                    this.firstButtonShow = false;
-                    this.secondButtonShow = false;
-//                    this.thirdButtonShow = true;
-//                    this.fourthButtonShow = false;
                     this.fifthButtonShow = true;
-                    this.checkDetailIndex = ''; // 列表收起来
-                    this.myplanBtnShow = false;
-                    this.myplanShow = false;
-                }if (this.showCode == 3) {
-                    this.demandState5 = false;
-                    this.userNumShow = true;
-                    this.firstShow = true;
-                    this.secondShow = true;
-                    this.thirdShow = true;
-                    this.firstButtonShow = false;
-                    this.secondButtonShow = false;
-//                    this.thirdButtonShow = false;
-//                    this.fourthButtonShow = true;
-                    this.fifthButtonShow = true;
-                    this.checkDetailIndex = ''; // 列表收起来
-                    this.myplanBtnShow = false;
-                    this.myplanShow = false;
                 }if (this.showCode == 4) {     // 我发出的方案部分
-                    this.demandState5 = false;
                     this.userNumShow = true;
                     this.firstShow = true;
-                    this.secondShow = false;
-                    this.thirdShow = false;
-                    this.firstButtonShow = false;
-                    this.secondButtonShow = false;
-//                    this.thirdButtonShow = false;
-//                    this.fourthButtonShow = true;
-                    this.fifthButtonShow = false;
-                    this.checkDetailIndex = ''; // 列表收起来
                     this.myplanBtnShow = true;
                     this.myplanShow = true;
-                }if (this.showCode == 5) {     // 审核未通过展示的内容
+                }if (this.showCode == 5) {     // 审核未通过展示的内容  “审核不通过”+“已拒绝”状态
                     this.demandState5 = true;
-                    this.userNumShow = false;
                     this.firstShow = true;
-                    this.secondShow = false;
-                    this.thirdShow = false;
-                    this.firstButtonShow = false;
-                    this.secondButtonShow = false;
-//                    this.thirdButtonShow = false;
-//                    this.fourthButtonShow = true;
-                    this.fifthButtonShow = false;
-                    this.checkDetailIndex = ''; // 列表收起来
-                    this.myplanBtnShow = false;
-                    this.myplanShow = false;
                 }
             },
             // 日历
@@ -1160,14 +1101,10 @@
                     },
                     params: this.receiveIntention
                 }).then((response) => {
-//                    console.info('response:')
-//                    console.info(response)
                     if(response.data.opResult === '0'){
-//                        alert('成功取消该意向！')
                         this.open6(`成功取消该意向！`);
                         this.closeThisFn();
                     }else{
-//                        alert('错误代码：' + response.data.opResult)
                         this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }).catch((error) => {
@@ -1187,11 +1124,9 @@
                     }
                 }) .then((response) => {
                     if(response.data.opResult === '0'){
-//                        alert('收藏成功！')
                         this.open6(`收藏成功！`);
                         this.refreshFn();
                     }else{
-//                        alert('错误代码：'+ response.data.opResult)
                         this.open8(`错误代码：${response.data.opResult}`);
                     }
                 }) .catch((error) => {
@@ -1212,11 +1147,9 @@
                 })
                     .then((response) => {
                         if(response.data.opResult === '0'){
-//                            alert('取消收藏成功！');
                             this.open6(`取消收藏成功！`);
                             this.refreshFn();
                         }else{
-//                            alert('错误代码：'+ response.data.opResult)
                             this.open8(`错误代码：${response.data.opResult}`);
                         }
                     })
@@ -1239,8 +1172,6 @@
             },
             //点击“请填写完整方案”里的“提交意向”，this.showCode变成1
             changeShowCodeW: function () {
-//                this.showCode = 1;
-//                this.show();
                 this.refreshFn(); // 重新获取、渲染数据
             },
             //点击“缴纳意向金”，组件“缴纳意向金”显示
@@ -1275,8 +1206,6 @@
             },
             //点击弹出框“请确认以下方案”里的“确认选定该意向”，this.showCode变成3
             changeShowCodeA: function (index) {//发布者是否已选定 0:表示选定,1:表示未选定,确定显示的按钮是一个还是两个
-                this.showCode = 3;
-                this.show();
                 this.refreshFn(); // 重新获取数据
             },
             //点击“撤销选定”，showCode变成2状态
@@ -1297,19 +1226,13 @@
                     },
                     params:  this.airlineAffirmUnchooseData
                 }) .then((response) => {
-//                    console.info(response)
                     if(response.data.opResult === '0'){
-//                        alert('成功撤销选定!');
                         this.open6(`成功撤销选定!`);
-                        this.showCode = 2;
-                        this.show();
-                        this.btnDisableShow = false;
+//                        this.btnDisableShow = false;
                         this.refreshFn();
                     }else{
-//                        alert('错误代码：' + response.data.opResult);
                         this.open8(`错误代码：${response.data.opResult}`);
                     }
-//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
                     console.log(error);
                 });
@@ -1543,6 +1466,7 @@
         height: 41px;
         font-size: 12px;
         background: white;
+        box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
         z-index: 10;
         .close-icon {
             position: absolute;
@@ -1895,6 +1819,8 @@
                 }
                 .right {
                     width: 60px;
+                    height: 58px;
+                    line-height: 58px;
                 }
             }
             .item-second {
