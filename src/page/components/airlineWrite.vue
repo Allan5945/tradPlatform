@@ -5,93 +5,6 @@
                 <span class="title">请填写完整方案</span>
                 <span class="close-icon" @click="closeThis">&times;</span>
             </div>
-            <!--<div class="simplify-msg">
-                <div class="check-box">
-                    <singleElection :single.sync="elect" class="checkbox-choose"></singleElection>
-                    <span @click="checkboxClickFn" style="cursor:pointer;">展开填写完整需求订单</span>
-                </div>
-                <div v-show="!elect.set">
-                    <div class="s-first first">
-                        <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 0;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
-                        <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 0;">*始发地、经停地、到达地不能相同！</div>
-                        <span style="height: 20px; width: 70px; line-height: 18px; white-space: nowrap;">
-                            <span class="warn">* </span>意向航线
-                        </span>
-                        <div class="start item">
-                            <div class="bottom">
-                                <input type="text" class="input-mes-a" :placeholder="space1Show" v-model="firArea" @click.stop="airportFn1" @focus="airportFn1">
-                                <airportS class="aisx" v-on:resData="resData1" :searchText="firArea" v-show="isSearch1"></airportS>
-                            </div>
-                            <div class="warn" v-show="warn3Show">*始发地不能为空</div>
-                        </div>
-                        <div style="display: flex;flex-direction: column; justify-content: flex-end;">
-                            <span class="icon-item">&#xe672;</span>
-                            <span v-show="warn3Show" style="height: 20px">　</span>
-                        </div>
-                        <div class="pass item">
-                            <div class="bottom">
-                                <input class="input-mes-a" type="text" :placeholder="space2Show" v-model="secArea" @click.stop="airportFn2" @focus="airportFn2" >
-                                <airportS class="aisx" v-on:resData="resData2" :searchText="secArea" v-show="isSearch2"></airportS>
-                            </div>
-                        </div>
-                        <div style="display: flex;flex-direction: column; justify-content: flex-end;">
-                            <span class="icon-item">&#xe672;</span>
-                            <span v-show="warn3Show" style="height: 20px">　</span>
-                        </div>
-                        <div class="arrive item">
-                            <div class="bottom">
-                                <input class="input-mes-a" type="text" :placeholder="space3Show" v-model="thirdArea" @click.stop="airportFn3" @focus="airportFn3">
-                                <airportS class="aisx" style="left: -80px;" v-on:resData="resData3" :searchText="thirdArea" v-show="isSearch3"></airportS>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <div class="s-second third items">
-                            <div class="third-d item" style="position: relative;">
-                                <div class="left item-child">
-                                <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
-                                    <span class="warn">* </span>拟开班期
-                                </span>　
-                                    <div class="choose-border" style="align-items: center; height: 24px;" @click.stop="clickClose11Fn ">
-                                        <span style="margin-left: 3px;">{{scheduleShow}}</span>
-                                        <div class="triangle-big"
-                                             style="position: absolute; top: 50%; right: 14px; margin-top: -3.5px;"></div>
-                                        <ul class="choose-type want-type" v-show="schedule">
-                                            <li v-for="item in scheduleList" @click="scheduleListFn(item)">{{item}}</li>
-                                        </ul>
-                                    </div>
-                                    <div class="warn" v-show="warn5Show" style="position: absolute;top: 26px; left: 0;">
-                                        *班期不能为空
-                                    </div>
-                                </div>
-                                <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
-                            </div>
-                        </div>
-                        <div class="s-third third items" style="margin-bottom: 50px;">
-                            <div class="third-b item">
-                                <div class="right item-child" style="width: 240px;">
-                                <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
-                                    <span class="warn">* </span>拟飞机型
-                                </span>
-                                    <div class="choose-input">
-                                        <input class="input-mes" type="text" placeholder="输入选择机型"
-                                               style="border: 0; line-height: 24px;" @click.stop="clickClose13Fn" readonly
-                                               v-model="typeChoose">
-                                    </div>
-                                    <ul class="choose-type air-type" v-show="airTypeShow">
-                                        <li v-for="item in airType" @click="chooseAirType(item)">{{item}}</li>
-                                    </ul>
-                                    <div class="warn" v-show="warn4Show" style="position: absolute; top: 26px; left: 0;">
-                                        *机型不能为空
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-            <!--<transition name="slidey-fade">
-                <div v-show="elect.set">-->
             <div class="bg-color must">
                 <div class="right item-child">
                     <div style="display: flex;">
@@ -387,11 +300,10 @@
                         </div>
                     </div>
                     <div class="third-d item" style="position: relative;">
-                        <div class="right item-child">
-                            <span>补贴政策</span>　
+                        <div class="right item-child" style="justify-content: flex-start;">
+                            <span style="margin-right: 10px; width: 72px;">合作方式</span>　
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyYes" :checked="subsidy1" @click="subsidyClick0"/><label for="alWsubsidyYes" class="input-label">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big"
@@ -399,14 +311,6 @@
                                         <ul class="choose-type want-subsidy" v-show="subsidy">
                                             <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
                                         </ul>
-                                    </div>
-                                </div>
-                                <div style="display: flex">
-                                    <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyNo" :checked="subsidy2" @click="subsidyClick1"/><label for="alWsubsidyNo" class="input-label">无补贴</label>
-                                    </div>
-                                    <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyTalk" :checked="subsidy3" @click="subsidyClick2"/><label for="alWsubsidyTalk" class="input-label">可面谈</label>
                                     </div>
                                 </div>
                             </div>
@@ -438,7 +342,7 @@
                                           style="top: 25px;left: -73px;"></airportS>
                             </div>
                         </div>
-                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
+                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
                     </div>
                     <div class="third-e item">
                         <div class="right item-child">
@@ -474,23 +378,20 @@
                 </div>
             </div>
             <div class="fourth items bg-color">
-                        <div class="top item-child">
-                            <span class="margin-right" style="flex-shrink: 0;">其他说明</span>　
-                            <div class="choose-input" style="position: relative; border: none; height: auto;">
-                                <!--<input class="input-mes" type="text" placeholder="可选填" v-model="remarkMsg" maxlength="35" style="border: 0;"><span>{{num}}/35</span>-->
-                                <textarea class="text-area" v-model="remarkMsg" maxlength="200" @keydown.enter.prevent></textarea>
-                                <span class="background-line" style="top: 26px;"></span>
-                                <span class="background-line" style="top: 52px;"></span>
-                                <span class="background-line" style="top: 78px;"></span>
-                                <span class="background-line" style="top: 104px;"></span>
-                                <span class="background-line" style="top: 130px;"></span>
-                                <span class="background-line" style="top: 156px;"></span>
-                                <span style="position: absolute; bottom: 0px; right: 0;">{{num}}/200</span>
-                            </div>
-                        </div>
+                <div class="top item-child">
+                    <span class="margin-right" style="flex-shrink: 0;">其他说明</span>　
+                    <div class="choose-input" style="position: relative; border: none; height: auto;">
+                        <textarea class="text-area" v-model="remarkMsg" maxlength="200" @keydown.enter.prevent></textarea>
+                        <span class="background-line" style="top: 26px;"></span>
+                        <span class="background-line" style="top: 52px;"></span>
+                        <span class="background-line" style="top: 78px;"></span>
+                        <span class="background-line" style="top: 104px;"></span>
+                        <span class="background-line" style="top: 130px;"></span>
+                        <span class="background-line" style="top: 156px;"></span>
+                        <span style="position: absolute; bottom: 0px; right: 0;">{{num}}/200</span>
                     </div>
-                <!--</div>
-            </transition>-->
+                </div>
+            </div>
             <div class="sixth">
                 <button class="btn-b" @click.stop="submitData">提交意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
@@ -540,7 +441,7 @@
                 endTime3: false,
                 schedule: false,
                 subsidy: false,
-                subsidyCode: 4,//补贴类型
+                subsidyCode: '',//补贴类型
                 airAreaSearchShow1: false,
                 airAreaSearchShow2: false,
                 airAreaSearchShow3: false,
@@ -634,11 +535,11 @@
                 space3ShowTitle: '意向机场',
 
                 scheduleShow: '待定',
-                subsidyShow: '选择补贴类型',
+                subsidyShow: '选择合作方式',
                 timeList: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'],
                 spaceList: ['意向区域', '意向机场'],
                 scheduleList: ['待定', '满排', '半排'],
-                subsidyList: ['保底', '定补', '人头补','其他'],
+                subsidyList: ['保底', '定补', '人头补','无补贴','其他'],
 //                sendData: {},
                 responseId: '',
                 airCompany: '',//运力归属
@@ -932,26 +833,7 @@
                 this.qyCode4 = this.acceptData.capacityBase;
                 // 补贴状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议5:无补贴
                 this.subsidyCode = this.acceptData.subsidypolicy;
-                if(this.acceptData.subsidypolicy === "0"
-                    || this.acceptData.subsidypolicy === "1"
-                    || this.acceptData.subsidypolicy === "2"
-                    || this.acceptData.subsidypolicy === "3") {
-//                    alWsubsidyYes.checked = true;
-                    this.subsidy1 = true;
-                    this.subsidy2 = false;
-                    this.subsidy3 = false;
-                    this.subsidypolicyFn(this.acceptData.subsidypolicy);
-                }else if(this.acceptData.subsidypolicy === "4") {
-//                    alWsubsidyTalk.checked = true;
-                    this.subsidy1 = false;
-                    this.subsidy2 = false;
-                    this.subsidy3 = true;
-                }else if(this.acceptData.subsidypolicy === "5") {
-//                    alWsubsidyNo.checked = true;
-                    this.subsidy1 = false;
-                    this.subsidy2 = true;
-                    this.subsidy3 = false;
-                }
+                this.subsidypolicyFn(this.acceptData.subsidypolicy);
             },
             // 将补贴类型从数字变成汉字
             subsidypolicyFn: function (index) {
@@ -963,6 +845,8 @@
                     this.subsidyShow = '人头补';
                 }else if(index === '3') {
                     this.subsidyShow = '其他';
+                }else if(index === '5') {
+                    this.subsidyShow = '无补贴';
                 }
             },
             warn4Fn: function () {
@@ -1038,23 +922,19 @@
                 }
                 if(this.myDate1 == '选择起止时间') { // 拟开时间
                     this.warn6Show = true;
-                    req.scrollTop = 0;
+                    req.scrollTop = 150;
                     return
                 }if(this.scheduleShow == '选择班期类型') { //班期
                     this.warn5Show = true;
-                    req.scrollTop = 0;
-                    return
-                }if(this.typeChoose == '') { // 机型
-                    this.warn4Show = true;
-                    req.scrollTop = 0;
+                    req.scrollTop = 150;
                     return
                 }if(this.airCompany.replace(/(^\s*)|(\s*$)/g,"") == '') {
                     this.warn10Show = true;
-                    req.scrollTop = 250;
+                    req.scrollTop = 550;
                     return
                 }if(this.fourArea.replace(/(^\s*)|(\s*$)/g,"") == '') {
                     this.warn11Show = true;
-                    req.scrollTop = 250;
+                    req.scrollTop = 550;
                     return
                 }
                 delete this.sendData.airportForSchedulines;
@@ -1313,9 +1193,7 @@
                 this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
-                if(this.subsidy1 == true) {
-                    this.subsidy = !this.subsidy;
-                }
+                this.subsidy = !this.subsidy;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1731,25 +1609,6 @@
                 this.calendarInitDay4 = d;
             },
             //补贴点击，改变补贴码
-            subsidyClick0: function () {
-                this.subsidyCode = '';
-                this.subsidyShow = '选择补贴类型';
-                this.subsidy1 = true;
-                this.subsidy2 = false;
-                this.subsidy3 = false;
-            },
-            subsidyClick1: function () {  // 无补贴
-                this.subsidyCode = 5;
-                this.subsidy1 = false;
-                this.subsidy2 = true;
-                this.subsidy3 = false;
-            },
-            subsidyClick2: function () {  // 待议，可面谈
-                this.subsidyCode = 4;
-                this.subsidy1 = false;
-                this.subsidy2 = false;
-                this.subsidy3 = true;
-            },
             subsidyListFn: function (item) {
                 this.subsidyShow = item;
                 if(item == '定补'){
@@ -1760,6 +1619,8 @@
                     this.subsidyCode = 2;
                 }if(item == '其他'){
                     this.subsidyCode = 3;
+                }if(item == '无补贴'){
+                    this.subsidyCode = 5;
                 }
             },
             //点击定向发布
@@ -2540,7 +2401,7 @@
         }
         .third-d {
             padding: 17px 0 21px 0;
-            height: 62px;
+            /*height: 62px;*/
             .right {
                 align-items: flex-start;
                 .want-subsidy {
