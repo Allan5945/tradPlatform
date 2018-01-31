@@ -54,17 +54,17 @@
                     this.isSelf = response.data.isSelf;
                      if(this.isSelf == true){
                         this.respond = false;
-                        this.intentShow = false;
-                         this.$nextTick(() => {
+                         this.intentShow = true;
+                         /*this.$nextTick(() => {
                              this.intentShow = true;
-                          });
+                          });*/
 
                      }else{
-                        this.respond = false;
+                         this.respond = true;
                         this.intentShow = false;
-                        this.$nextTick(() => {
+                     /*   this.$nextTick(() => {
                              this.respond = true;
-                        });
+                        });*/
                         }
                 })
                 .catch((error) => {

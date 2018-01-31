@@ -174,9 +174,12 @@
                           <div>运力基地</div>
                           <div>{{planData.capacityBaseNm||'-'}}</div>
                       </div>
-                       <div>
+                       <div class="note">
                           <div>是否调度</div>
-                          <div>{{planData.schedulingStr||'-'}}</div>
+                          <div v-if="planData.scheduling == '0' ">
+                          <span v-for=" item in planData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                          </div>
+                          <div v-else>不接受</div>
                       </div>
                       <div class="note">
                           <div>其他说明</div>
@@ -207,7 +210,7 @@
           </footer>
       </div>
      <needDetail  v-if="needShow"  @closeDetail= "closeDetail" :needData="needData"></needDetail>
-    <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData"></sureForm>
+    <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @closeForm="closeReForm" :acceptData = "planData"></reIntentForm>
     <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
     <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
@@ -286,12 +289,14 @@
          },
         closeSureForm(){
           this.sureFormShow = false;
+        },
+        refresh(){
+          this.sureFormShow = false;
           this.responseShow =false;
           this.$nextTick(() => {
              this.responseShow =true;
              this.getNeedDetail();
           });
-
         },
          cancelIntent:function(){
           this.$ajax({
@@ -438,25 +443,6 @@
             this.payDialog = false;
             this.$emit('responseClose');
         },
-       /* turnPolicyCode:function(val){
-            switch (val) {
-                case "0":
-                    return "定补";
-                    break;
-                case "1":
-                    return "保底";
-                    break;
-                case "2":
-                    return "人头补";
-                    break;
-                case "3":
-                    return "待议";
-                    break;
-                case "4":
-                    return "无补贴";
-                    break;
-            }
-        },*/
         getNeedDetail(){
                 this.$ajax({
                     method: 'post',

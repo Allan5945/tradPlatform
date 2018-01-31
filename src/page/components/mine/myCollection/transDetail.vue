@@ -10,6 +10,14 @@
                 </div>
             </header>
             <div class="content">
+              <div v-if="role.role == 2">
+                  <div>联系人</div>
+                  <div>{{detailData.contact||'-'}}</div>
+              </div>
+              <div v-if="role.role == 2">
+                    <div>联系方式</div>
+                    <div>{{detailData.iHome||'-'}}</div>
+              </div>
                <div>
                     <div>机型</div>
                     <div>{{detailData.aircrfttyp||'-'}}</div>
@@ -18,7 +26,11 @@
                     <div>座位布局</div>
                     <div>{{detailData.seating||'-'}}</div>
                 </div>
-                <div>
+               <div v-if="role.role == 2">
+                    <div>运力归属</div>
+                    <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
+                </div>
+                <div v-else>
                     <div>运力归属</div>
                     <div>***</div>
                 </div>
@@ -66,9 +78,14 @@
                     <div>有效期</div>
                     <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                 </div>
+                 <div class="note" v-if="role.role == 2">
+                    <div>其他说明</div>
+                    <div>{{detailData.remark||'-'}}</div>
+                </div>
             </div>
             <footer>
-                <div>*隐藏信息在提交意向后可查看</div>
+                <div v-if="role.role == 2"></div>
+                <div v-else>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
                     <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
                      <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
@@ -77,7 +94,7 @@
             </footer>
         </div>
         <myResponse v-if="myShow2" @responseClose="closeDetail" :resData="resData"></myResponse>
-        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :demandId="demandId"></intentForm>
+        <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
         <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
     </div>
@@ -86,7 +103,7 @@
 <script>
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
  import * as vx from 'vuex';
- import intentForm from '$src/page/components/trans_detail/intentForm.vue'
+ import intentForm from '$src/page/components/trans_detail/intentForm1.vue'
  import transDialog from '$src/page/components/trans_detail/transDialog.vue'
  import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue';
  import myResponse from './myResponse.vue'
@@ -174,21 +191,14 @@
                 );
          },
          changeText:function(i){
-          if(i == '1'){
-            this.text = "取消收藏";
-          }else{
-            this.text = "已收藏";
-          }
-         }
-     },
-     computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },
-      mounted() {
-            tabulationBoxTrigger.hierarchy = true;
-            if(this.needData.demandType == 1){
+              if(i == '1'){
+                this.text = "取消收藏";
+              }else{
+                this.text = "已收藏";
+              }
+         },
+         init:function(){
+              if(this.needData.demandType == 1){
                 this.demandId = this.needData.id;
                 this.$ajax({
                 method: 'post',
@@ -230,6 +240,16 @@
                     }
                 );
             };
+         }
+     },
+     computed: {
+            ...vx.mapGetters([
+                'role'
+            ])
+        },
+      mounted() {
+            tabulationBoxTrigger.hierarchy = true;
+            this.init();
      },
     destroyed: function () {
         tabulationBoxTrigger.hierarchy = false;
@@ -376,6 +396,12 @@
                 display:block;
                 margin:0 25px;
               }
+          }
+      }
+      .note{
+          width:100%;
+          >div:nth-of-type(2){
+              width:440px;
           }
       }
     }

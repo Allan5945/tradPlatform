@@ -38,6 +38,7 @@
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     export default {
+        props:['acceptData'],
         data() {
             return {
                 myCardData: {},
@@ -46,11 +47,9 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('sendToMyCompanyAccountRecharge',(val) => { //从myCompanyAccountList.vue接受数据
-                this.myCardData = val;
-                this.id = val.id;
-                this.employeeId = val.employeeId;
-            })
+            this.myCardData = this.acceptData;
+            this.id = this.acceptData.id;
+            this.employeeId = this.acceptData.employeeId;
         },
         methods: {
             closeThisFn: function () {
