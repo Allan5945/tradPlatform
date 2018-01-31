@@ -52,6 +52,7 @@
     import certificateImg from './certificateImg.vue'
 
     export default {
+        props:['acceptData'],
         data() {
             return {
                 withdrawFlowCode: '', // 传给流水详情的参数(0、1、2、00)
@@ -68,21 +69,21 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('sendToAccountWithdrawDetail',(val) => { //从myCompanyAccountList接受数据
-//                this.withdrawFlowCode = val.phase; // 传给流水详情的参数(0、1、2、00)
-                this.wetherJpg = val.wetherJpg;    // 电子凭证图片
-                this.id = val.id;
-                this.type = val.type;
-                this.myData = val;
-//                console.info('phase:');
-//                console.info(val.phase);
-                if(val.phase == 2){ // 判断页面显示的内容
+            this.acceptDataFn();
+        },
+        methods: {
+            acceptDataFn: function () {
+                this.wetherJpg = this.acceptData.wetherJpg;    // 电子凭证图片
+                this.id = this.acceptData.id;
+                this.type = this.acceptData.type;
+                this.myData = this.acceptData;
+                if(this.acceptData.phase == 2){ // 判断页面显示的内容
                     this.showCode = 1;
                     this.withdrawFlowCode = 2;
-                }else if(val.phase == '00'){
+                }else if(this.acceptData.phase == '00'){
                     this.showCode = 1;
                     this.withdrawFlowCode = 2;
-                }else if(val.phase == 1){
+                }else if(this.acceptData.phase == 1){
                     this.showCode = 0;
                     this.withdrawFlowCode = 1;
                 }else {
@@ -94,9 +95,7 @@
                     this.getWetherJpg();
                 }
                 this.show();
-            })
-        },
-        methods: {
+            },
             getWetherJpg: function () { // 获取电子凭证
                 this.src = `/seeTransactionRecordJpg?id=${this.id}&type=${this.type}`;
             },

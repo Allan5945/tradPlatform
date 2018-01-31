@@ -44,11 +44,10 @@
                     <div class="third-d item" style="position: relative;">
                         <div class="right item-child" style="width: 100%;">
                             <span style="height: 26px; width: 70px; line-height: 26px; white-space: nowrap;">
-                                <span class="warn">* </span>补贴政策
+                                <span class="warn">* </span>合作方式
                             </span>　
                             <div style="display: flex;">
                                 <div class="vertical-center input-label">
-                                    <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyYes" :checked="subsidy1" @click="subsidyClick0"/><label for="alRTopsubsidyYes" class="input-label">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
@@ -57,18 +56,9 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div style="display: flex">
-                                    <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyNo" :checked="subsidy2" @click="subsidyClick1"/><label for="alRTopsubsidyNo" class="input-label">无补贴</label>
-                                    </div>
-                                    <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="topSubsidy" id="alRTopsubsidyTalk" :checked="subsidy3" @click="subsidyClick2"/>
-                                        <label for="alRTopsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
+                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
                     </div>
                 </div>
                 <div class="s-third third items" style="margin-bottom: 50px;">
@@ -92,12 +82,6 @@
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
                                 <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
-                               <!-- <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                </calendar>
-                                <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                    &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                </calendar>-->
                             </div>
                         </div>
                     </div>
@@ -327,12 +311,6 @@
                                         <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                     </div>
                                     <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
-                                    <!--<calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                    </calendar>
-                                    <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                        &lt;!&ndash; 可传入初始值 &ndash;&gt;
-                                    </calendar>-->
                                 </div>
                             </div>
                             <div class="left item-child">
@@ -380,27 +358,15 @@
                             </div>
                         </div>
                         <div class="third-d item" style="position: relative;">
-                            <div class="right item-child">
-                                <span>补贴政策</span>　
-                                <div style="display: flex; flex-direction: column;">
-                                    <div class="vertical-center" style="margin-bottom: 10px;">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyYes" :checked="subsidy1" @click="subsidyClick0"/><label for="alRsubsidyYes" class="input-label">有补贴</label>
-                                        <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
-                                            <span style="margin-left: 12px;">{{subsidyShow}}</span>
-                                            <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
-                                            <ul class="choose-type want-subsidy" v-show="subsidy">
-                                                <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex">
-                                        <div class="vertical-center">
-                                            <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyNo" :checked="subsidy2" @click="subsidyClick1"/><label for="alRsubsidyNo" class="input-label">无补贴</label>
-                                        </div>
-                                        <div class="vertical-center">
-                                            <input type="radio" class="magic-radio" name="subsidy" id="alRsubsidyTalk" :checked="subsidy3" @click="subsidyClick2"/>
-                                            <label for="alRsubsidyTalk" class="input-label" @click="kemiantan">可面谈</label>
-                                        </div>
+                            <div class="right item-child" style="justify-content: flex-start;">
+                                <span style="margin-right: 10px; width: 72px;">合作方式</span>
+                                <div class="vertical-center" style="margin-bottom: 10px;">
+                                    <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
+                                        <span style="margin-left: 12px;">{{subsidyShow}}</span>
+                                        <div class="triangle-big" style="position: absolute; top: 50%; right: 11px; margin-top: -3.5px;"></div>
+                                        <ul class="choose-type want-subsidy" v-show="subsidy">
+                                            <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -410,7 +376,7 @@
                                     <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
                                 </div>
                             </div>
-                    <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
+                            <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
                         </div>
                     </div>
                     <div class="fourth items bg-color">
@@ -502,7 +468,7 @@
                 endTime3: false,
                 schedule: false,
                 subsidy: false,
-                subsidyCode: 4,//补贴类型
+                subsidyCode: '',//补贴类型
                 airAreaSearchShow1: false,
                 airAreaSearchShow2: false,
                 airAreaSearchShow3: false,
@@ -592,12 +558,12 @@
 //                sailingtime: '选择起止时间',//开航时间
 //                periodValidity: '选择起止时间',//发布有效期
 
-                scheduleShow: '待定',
-                subsidyShow: '选择补贴类型',
+                scheduleShow: '待定', //选择班期类型
+                subsidyShow: '选择合作方式',
                 timeList: ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
                 spaceList: ['意向区域','意向机场'],
                 scheduleList: ['待定','满排','半排'],
-                subsidyList: ['保底','定补','人头补','其他'],
+                subsidyList: ['保底','定补','人头补','无补贴','其他'],
                 sendData: {},
                 directionalgoal: '', // 定向发布（id）
                 directionalgoalArry: [],
@@ -1047,9 +1013,7 @@
                 this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
-                if(this.subsidy1 == true) {
-                    this.subsidy = !this.subsidy;
-                }
+                this.subsidy = !this.subsidy;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1373,12 +1337,12 @@
                 });
             },
             // 日历
-            getDate1: function(d){//获取组件返回的日期
+            /*getDate1: function(d){//获取组件返回的日期
                 this.calendarInitDay1 = d;
             },
             getDate2: function(d){
                 this.calendarInitDay2 = d;
-            },
+            },*/
             getMyDate1: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate1 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
@@ -1386,12 +1350,12 @@
                     this.warn6Show = false;
                 }else{}
             },
-            getDate3: function(d){
+            /*getDate3: function(d){
                 this.calendarInitDay3 = d;
             },
             getDate4: function(d){
                 this.calendarInitDay4 = d;
-            },
+            },*/
             getMyDate2: function(){//获取起始的日期
                 if(this.calendarInitDay3 && this.calendarInitDay4){
                     this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
@@ -1400,25 +1364,6 @@
                 }else{}
             },
             //补贴点击，改变补贴码
-            subsidyClick0: function () {
-                this.subsidyCode = '';
-                this.subsidyShow = '选择补贴类型';
-                this.subsidy1 = true;
-                this.subsidy2 = false;
-                this.subsidy3 = false;
-            },
-            subsidyClick1: function () {  // 无补贴
-                this.subsidyCode = 5;
-                this.subsidy1 = false;
-                this.subsidy2 = true;
-                this.subsidy3 = false;
-            },
-            subsidyClick2: function () {  // 待议，可面谈
-                this.subsidyCode = 4;
-                this.subsidy1 = false;
-                this.subsidy2 = false;
-                this.subsidy3 = true;
-            },
             subsidyListFn: function (item) {
                 this.subsidyShow = item;
                 if(item == '定补'){
@@ -1429,6 +1374,8 @@
                     this.subsidyCode = 2;
                 }if(item == '其他'){
                     this.subsidyCode = 3;
+                }if(item == '无补贴'){
+                    this.subsidyCode = 5;
                 }
             },
             kemiantan: function () {
@@ -2177,7 +2124,7 @@
         }
         .third-d {
             padding: 17px 0 21px 0;
-            height: 62px;
+            /*height: 62px;*/
             .right {
                 align-items: flex-start;
                 .want-subsidy {

@@ -76,8 +76,7 @@
             </el-pagination>
         </div>
         <transition-group name="slidex-fade">
-            <myPublish0 v-if="mes.demandType === '0'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="2"></myPublish0>
-            <!--<myPublishNeed1 v-show="myPublishShow1" @close-this="closeAllShowFn" :key="3"></myPublishNeed1>-->
+            <myPublish0 v-if="mes.demandType === '0'" :acceptData="mes" @close-this="closeAllShowFn" :key="2"></myPublish0>
             <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
                 <transIndex :mes="mes" @closewindow="closeAllShowFn"></transIndex>
             </div>
@@ -91,8 +90,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
-    import myPublish0 from './myPublishNeed0.vue' // 航线需求详情
-    import myPublishNeed1 from './myPublishNeed1.vue' // 运力需求详情
+    import myPublish0 from '$src/page/components/mine/companyAccount/companyAirlineDetailPayAfter.vue' // 航线需求详情
     import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
     import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
@@ -386,8 +384,6 @@
                 this.mes.demand = item.id;
                 this.mes.demandState = item.demandstate;
                 this.mes.demandType = item.demandtype;
-                this.sendToMyPublishData = item;
-                tabulationBoxTrigger.$emit('sendDataToMyPublish',item); //将item的参数传递给myPurposeNeed/myPurposeNeed2.vue...
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },
             // 关闭所有弹出页面
@@ -400,10 +396,7 @@
         },
         components: {
             stateList,
-//            myPublish,
             myPublish0,
-            myPublishNeed1,
-//            myPublishAirline,
             myPublishTransportEntrust,
             myPublishAirLineEntrust,
             myPublishAirLineEntrust1,

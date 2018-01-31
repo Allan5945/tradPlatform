@@ -33,6 +33,7 @@
     import * as vx from 'vuex'
 
     export default {
+        props:['acceptData'],
         data() {
             return {
                 showCode: '',
@@ -42,25 +43,26 @@
             }
         },
         created() {
-            tabulationBoxTrigger.$on('sendToAccountWithdrawDetail',(val) => { //从myCompanyAccountList接受数据
-                this.myData = val;
+            this.acceptDataFn();
+        },
+        methods: {
+            acceptDataFn: function () {
+                this.myData = this.acceptData;
                 //type 交易类型:01-充值、0301-冻结(查看意向)、0302-冻结(响应需求)、
                 //              0401-解冻(撤回意向)、0402-解冻(需求下架)、05-转入、06-支付
-                if(val.type == '01') {
+                if(this.acceptData.type == '01') {
                     this.showCode = 1;
-                }if(val.type == '0301' || val.type == '0302') {
+                }if(this.acceptData.type == '0301' || this.acceptData.type == '0302') {
                     this.showCode = 2;
-                }if(val.type == '0401' || val.type == '0402') {
+                }if(this.acceptData.type == '0401' || this.acceptData.type == '0402') {
                     this.showCode = 3;
-                }if(val.type == '06') {
+                }if(this.acceptData.type == '06') {
                     this.showCode = 4;
-                }if(val.type == '05') {
+                }if(this.acceptData.type == '05') {
                     this.showCode = 5;
                 }
                 this.show();
-            })
-        },
-        methods: {
+            },
             show: function () {
                 if(this.showCode == 1) { // 充值完成
                     this.addOrSub = '+';
