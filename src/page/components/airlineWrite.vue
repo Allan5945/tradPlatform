@@ -571,7 +571,7 @@
                 time31Checked: true,
                 time32Checked: false,
                 time33Checked: false,
-               
+
                 opt0: {     //拟开时间
                     start: '',
                     end: '',

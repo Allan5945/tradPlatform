@@ -120,7 +120,14 @@
                         });
                     } else if (i - week < sumDay) {
                         if(this.lockDay){
-                            if(!this.dateCompare(this.formatDate(y, m, i - week + 1),this.lockDay)){
+                            if(!this.dateCompare(this.formatDate(y, m, i - week + 1))){
+                                this.days.push({
+                                    //本月
+                                    num: i - week + 1,
+                                    date: this.formatDate(y, m, i - week + 1),
+                                    otherMonth: true
+                                });
+                            }else if(!this.dateCompare(this.formatDate(y, m, i - week + 1),this.lockDay)){
                                 this.days.push({
                                     //本月
                                     num: i - week + 1,
@@ -154,6 +161,7 @@
                 }
             },
             dateCompare: function(da,db) {
+                db = db || this.today;
                 if(new Date(da).getTime() < new Date(db).getTime()){
                     return false
                 }
@@ -167,6 +175,9 @@
                     if(!this.dateCompare(date,bor)){
                         return false;
                     }
+                }
+                if(!this.dateCompare(date)){
+                    return false;
                 }
                 this.checkDay = date;
                 let cur = new Date(date),
@@ -199,8 +210,6 @@
                 d = d.replace(/\//g, ".");
                 this.$emit("changeDate", d);
             }
-        },
-        beforeCreate(){
         },
         created: function() {
             let d = this.initDay;

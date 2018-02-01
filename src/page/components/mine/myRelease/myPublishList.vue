@@ -31,7 +31,7 @@
                 <div class="lists-containt">
                     <!--点击列表展示发布详情-->
                     <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
-                        <span class="reminder" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true"></span>
+                        <!--<span class="reminder" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true"></span>-->
                         <div class="list-a item">
                             {{item.releasetime}}
                         </div>
@@ -45,15 +45,15 @@
                             {{item.demandprogress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" @click.stop v-show="talkShowFn(item)"
+                            <span class="icon-item talk-icon" @click.stop v-if="talkShowFn(item)"
                                   @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
-                                <span class="talk-num" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true">{{item.unreadMessageCount}}</span>
+                                <!--<span class="talk-num" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true">{{item.unreadMessageCount}}</span>-->
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="(vl,i) in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl,i)">
                                         <div></div>
                                         <div style="position: relative;">{{vl.nickName}}
-                                            <span class="talk-num" style="top: 0; right: -10px;"
-                                                  v-show="vl.chatNum != 0 && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
+                                            <!--<span class="talk-num" style="top: 0; left: auto; right: -10px;"
+                                                  v-show="vl.chatNum != 0 && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>-->
                                         </div>
                                     </li>
                                 </ul>
@@ -384,6 +384,7 @@
                 this.mes.demand = item.id;
                 this.mes.demandState = item.demandstate;
                 this.mes.demandType = item.demandtype;
+                this.sendToMyPublishData = item;
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },
             // 关闭所有弹出页面

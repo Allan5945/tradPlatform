@@ -4,7 +4,14 @@
             <div class="til">请填写{{msg}}原因</div>
             <div class="content">
                 <div class="reson">{{msg}}原因</div>
-                <div class="r-input"><input type="text"  v-model="refuseText" placeholder="必填"></div>
+                <div class="r-input">
+                    <textarea class="txtarea" v-model="refuseText" maxlength="100" placeholder="必填"></textarea>
+                    <div class="tips-border"></div>
+                    <div class="tips-border" style="top:22px;"></div>
+                    <div class="tips-border" style="top:44px;"></div>
+                    <div class="tips-border" style="top:66px;"></div>
+                    <span class="num"><span >{{num}}</span>/100</span>
+                </div>
             </div>
             <div class="btns">
                 <div class="sure-btn active" @click="sure" v-if="isSend">确认</div>
@@ -30,6 +37,11 @@
                 }else{
                     this.isSend =false;
                 }
+            }
+        },
+        computed:{
+            num: function(){
+                return this.refuseText.length <= 100? this.refuseText.length: 100;
             }
         },
         props:['msg'],
@@ -89,18 +101,40 @@
         .reson{
             width:60px;
             padding-right:20px;
+            margin-top:2px;
             font-size:1.2rem;
         }
-        .r-input{
-            width:460px;
-            input{
+      .r-input{
+          width:460px;
+          position:relative;
+           .txtarea{
+                resize:none;
+                display: inline-block;
+                position: relative;
+                font-size:1.2rem;
+                z-index:3;
+                width: 100%;
+                height: 100px;
+                line-height:22px;
                 border:0;
                 outline:none;
-                width:100%;
                 background:transparent;
+            }
+            .tips-border{
+                width:100%;
+                height:22px;
+                box-sizing:border-box;
+                position:absolute;
+                left:0;
+                top:0;
+                z-index:1;
                 border-bottom:1px solid rgba(151,151,151,.3);
             }
-
+            .num{
+                position:absolute;
+                right:2px;
+                top:68px;
+            }
         }
     }
     .btns{

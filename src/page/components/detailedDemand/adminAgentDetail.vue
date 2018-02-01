@@ -1,9 +1,9 @@
 <template>
-    <div class="wrapper" @click.self="closeDetail">
+    <div>
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title}}</div>
+                <div class="head-til">{{CpyNm+"的运营托管"}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
@@ -83,9 +83,18 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
          }
      },
       props:['mes'],
+      watch:{
+          'mes.demand':function(){
+             this.init();
+          }
+        },
      methods:{
         chat:function () {
-                //ln.$emit('addChat',this.chatData);
+           /* let chatData = {};
+              chatData.id = this.detailData.id;
+              chatData.employeeId = this.detailData.employeeId;
+              chatData.demandEmployeeId = this.detailData.employeeId;
+              ln.$emit('addChat',chatData);*/
             },
         closeDetail:function(){
           this.$emit("closewindow");
@@ -402,7 +411,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
     }
     footer{
           .foot-tips{
-            height:40px;
+            height:50px;
             margin:0 20px;
             border-bottom:1px solid #ccc;
             color: rgba(96, 94, 124, 0.7);
