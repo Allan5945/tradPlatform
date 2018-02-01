@@ -62,7 +62,7 @@
                     "name": "routeNetwork",
                     "type": "lines",
                     "coordinateSystem": "bmap",
-                    "zlevel": 10,
+                    "zlevel": 8,
                     "lineStyle": {
                         "normal": {"color": "#336BEA", "width": 1, "opacity": 0.4, "curveness": 0.2}
                     },
@@ -72,7 +72,7 @@
                     "name": "allPoint",
                     "type": "scatter",
                     "coordinateSystem": "bmap",
-                    "zlevel": 10,
+                    "zlevel": 8,
                     itemStyle:{
                         normal:{
                             color:"#90aae3"

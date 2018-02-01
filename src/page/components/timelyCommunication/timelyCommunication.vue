@@ -69,11 +69,11 @@
                             <div>
                                 <div v-for="(key,i) in rightTableUp">
                                     <div>{{key.key}}</div>
-                                    <div>{{key.val}}</div>
+                                    <div :title="[key.val] | dft">{{[key.val] | dft}}</div>
                                 </div>
                                 <div v-for="(key,i) in rightTableDown">
                                     <div>{{key.key}}</div>
-                                    <div>{{key.val}}</div>
+                                    <div :title="[key.val] | dft">{{[key.val] | dft}}</div>
                                 </div>
                             </div>
                         </div>
