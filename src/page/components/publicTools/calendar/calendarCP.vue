@@ -60,7 +60,7 @@
             getDatea: function(d){//开始日期
                 this.endOption.dis = d;
                 this.outDate.s = d;
-                if(this.dateCompare(d,this.outDate.e)){  //重置结束日期
+                if(this.dateCompare(d,this.outDate.e||this.endOption.day)){  //重置结束日期
                     this.endOption.day = this.outDate.e = this.getDateByDate(d,1);
                 }
                 this.outPut();
@@ -70,7 +70,7 @@
                 this.outPut();
             },
             outPut: function (){//传出
-                let date = [this.outDate.s, this.outDate.e];
+                let date = [this.outDate.s || this.startOption.day , this.outDate.e || this.endOption.day];
                 this.$emit("changeRangeDate",date);
             }
         },
@@ -78,8 +78,10 @@
             this.startOption.day= this.initOpt.start;
             this.endOption.day= this.initOpt.end;
             if(this.initOpt.isDis){
-                this.startOption.dis = this.outDate.s = this.initOpt.start;
-                this.endOption.dis = this.outDate.e = this.initOpt.end;
+                this.startOption.dis = this.initOpt.start;
+                this.outDate.s = this.initOpt.start;
+                this.endOption.dis = this.initOpt.end;
+                this.outDate.e = this.initOpt.end;
             }
         },
     };
