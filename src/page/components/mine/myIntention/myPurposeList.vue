@@ -31,7 +31,7 @@
                 <div class="lists-containt">
                     <!--点击列表，展示意向详情-->
                     <div class="list items" v-for="(item,index) in myData" :class="{'list-active': listItemIndex === index}" @click="listClickFn(item,index)">
-                        <span class="reminder" v-show="talkNumShow"></span>
+                        <!--<span class="reminder" v-show="talkNumShow"></span>-->
                         <div class="list-a item">
                             {{item.releasetime}}
                         </div>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="list-e item">
                             <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
-                                <span v-show="talkNumShow">{{item.unreadNum}}</span>
+                                <!--<span v-show="talkNumShow">{{item.unreadNum}}</span>-->
                             </span>
                         </div>
                         <div class="list-f item color">
