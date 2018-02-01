@@ -1730,14 +1730,14 @@
     }
     .fifth {
         padding-top: 20px;
-        height: 80px;
+        height: 120px;
         .left {
             flex-shrink: 0;
             width: 80px;
             line-height: 20px;
         }
         .right {
-            @include line-clamp(3);
+            @include line-clamp(6);
         }
     }
 

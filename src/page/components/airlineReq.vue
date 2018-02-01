@@ -554,8 +554,6 @@
                 isSearchCode3: -1,
                 /****************/
 
-                inputRadio: '&#xe622;',
-
                 dptTimeresources: 0,//始发地时刻资源，(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 pstTimeresources: 0,//经停地时刻资源，(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
                 arrvTimeresources: 0,//到达地时刻资源，(时刻资源三种状态0:有时刻（直接呈现时刻）dpt_time字段存放具体时刻值， 1:待协调， 2:时刻充足。)
@@ -676,12 +674,6 @@
             ...vx.mapGetters([
                 'role','airList'
             ])
-            /*sailingtime: function () {
-                return this.calendarInitDay1 + ',' +this.calendarInitDay2;
-            },
-            periodValidity: function () {
-                return this.calendarInitDay3 + ',' +this.calendarInitDay4;
-            }*/
         },
         methods: {
             /*双日历*/
@@ -1273,26 +1265,18 @@
             airportFn2: function () {
                 this.closeAll();
                 if(this.isSearchCode2 == 1){
-//                    this.isSearch1 = false;
                     this.isSearch2 = true;
-//                    this.isSearch3 = false;
                 }
                 if(this.isSearchCode2 == 0){
-//                    this.airAreaSearchShow1 = false;
                     this.airAreaSearchShow2 = true;
-//                    this.airAreaSearchShow3 = false;
                 }
             },
             airportFn3: function () {
                 this.closeAll();
                 if(this.isSearchCode3 == 1){
-//                    this.isSearch1 = false;
-//                    this.isSearch2 = false;
                     this.isSearch3 = true;
                 }
                 if(this.isSearchCode3 == 0){
-//                    this.airAreaSearchShow1 = false;
-//                    this.airAreaSearchShow2 = false;
                     this.airAreaSearchShow3 = true;
                 }
             },
@@ -1304,13 +1288,11 @@
             resData1: function (data) {
                 this.isSearch1 = false;
                 this.firAreaBus = data.name;
-//                this.firArea = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;
             },
             resData2: function (data) {
                 this.isSearch2 = false;
-//                this.secAreaBus = data.name;
                 this.secArea = data.name;
                 this.qyCode2 = data.code;
                 this.warn8Show = false;
@@ -1318,7 +1300,6 @@
             },
             resData3: function (data) {
                 this.isSearch3 = false;
-//                this.thirdAreaBus = data.name;
                 this.thirdArea = data.name;
                 this.qyCode3 = data.code;
                 this.warn8Show = false;
@@ -1326,9 +1307,7 @@
             },
             resData4: function (data) { // 定向发布，点击下拉选择定向航司
                 this.isSearch4 = false;
-//                this.fourthArea = data.name;
                 this.fourthArea = ''; // 讲定向发布输入框置空
-//                this.directionalgoal = data.id;
                 this.directionPublicCityShow = true;
                 if(this.directionPublicCity.length < 5) {
                     this.directionPublicCity.push({
@@ -1395,7 +1374,6 @@
             space3Fn: function (item = '意向机场') {
                 this.space3ShowTitle = item;
                 this.thirdArea = '';
-//                this.thirdAreaBus = '';
                 if(item == '意向区域') {
                     this.space3Show = '请输入意向区域（选填）';
                     this.isSearchCode3 = 0;
@@ -1435,12 +1413,6 @@
                 });
             },
             // 日历
-            /*getDate1: function(d){//获取组件返回的日期
-                this.calendarInitDay1 = d;
-            },
-            getDate2: function(d){
-                this.calendarInitDay2 = d;
-            },*/
             getMyDate1: function(){//获取起始的日期
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate1 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
@@ -1448,12 +1420,6 @@
                     this.warn6Show = false;
                 }else{}
             },
-            /*getDate3: function(d){
-                this.calendarInitDay3 = d;
-            },
-            getDate4: function(d){
-                this.calendarInitDay4 = d;
-            },*/
             getMyDate2: function(){//获取起始的日期
                 if(this.calendarInitDay3 && this.calendarInitDay4){
                     this.myDate2 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
