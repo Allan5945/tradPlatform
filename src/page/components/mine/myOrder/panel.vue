@@ -28,9 +28,9 @@
                                 <li>
                                     <div class="list">
                                         <span class="item-a">{{ item.releasetime }}</span>
-                                        <span class="item-b">{{ item.title }}</span>
+                                        <span class="item-b"><span>{{ item.title }}</span></span>
                                         <span class="item-c">{{ item.demandprogressStr }}</span>
-                                        <template v-if="roleType=='2'">
+                                        <template v-if="roleType=='2' && false">
                                             <span @click="" class="item-d">查看详情</span>
                                         </template>
                                         <template v-else>
@@ -388,6 +388,7 @@
                 flex:1;
             }
             .item-c{
+                text-indent: 15px;
                 flex:2;
             }
         }
@@ -406,9 +407,19 @@
                         flex:1;
                     }
                     .item-b{
+                        overflow: hidden;
                         flex:1;
+                        span{
+                            white-space:nowrap;
+                            display: inline-block;
+                            transition: all 5s linear;
+                        }
+                        span:hover{
+                            transform: translateX(-300px);
+                        }
                     }
                     .item-c{
+                        text-indent: 15px;
                         flex:1;
                     }
                     .item-d{

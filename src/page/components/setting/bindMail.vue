@@ -306,11 +306,11 @@
                         that.show.footer = false;
                         that.result = true;
                         that.ud.mail = theMail;
+                        that.delayClose();
                     }else{
                         //this.userData.code = '';
                         that.openTips("*短信验证码错误");
                     }
-                    that.delayClose();
                 }).catch(err=>{
                     that.active = 3;
                     that.openTips('*网络错误，不知道4##还是5##');
