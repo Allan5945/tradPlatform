@@ -3,7 +3,7 @@
         <div class="detail-wrapper scroll" v-if="myShow">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
@@ -84,7 +84,7 @@
                         <div>{{detailData.loadfactorsexpect||'-'}}%</div>
                     </div>
                     <div>
-                        <div>补贴政策</div>
+                        <div>合作方式</div>
                         <div>{{detailData.subsidypolicyStr||'-' }}</div>
                     </div>
                     <div>
@@ -670,7 +670,7 @@
       }
       >.note{
           width:520px;
-          height:60px;
+          height:120px;
           .note-text{
             width:440px;
           }
@@ -732,7 +732,7 @@
       }
       .note{
           width:520px;
-          height:60px;
+          height:120px;
           .note-text{
              width:440px;
           }

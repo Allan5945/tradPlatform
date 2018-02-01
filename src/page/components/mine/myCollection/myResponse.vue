@@ -159,7 +159,7 @@
                           <div>{{planData.loadfactorsexpect||'-'}}%</div>
                       </div>
                       <div>
-                          <div>补贴政策</div>
+                          <div>合作方式</div>
                           <div>{{planData.subsidypolicyStr||'-'}}</div>
                       </div>
                       <div>
@@ -695,7 +695,7 @@
     .table-form{
       width:100%;
       box-sizing:border-box;
-      padding:60px 0 40px 40px;
+      padding:60px 0 90px 40px;
       flex-wrap: wrap;
       display: flex;
       >div{
@@ -808,7 +808,7 @@
 
         }
         .table-form{
-            padding:40px 0 0 40px;
+            padding:40px 0 60px 40px;
         }
     }
     .airplace{

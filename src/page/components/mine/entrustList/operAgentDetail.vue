@@ -3,7 +3,7 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title}}</div>
+                <div class="head-til">{{CpyNm+"的运营托管"}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
@@ -405,7 +405,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
     }
     footer{
           .foot-tips{
-            height:40px;
+            height:50px;
             margin:0 20px;
             border-bottom:1px solid #ccc;
             color: rgba(96, 94, 124, 0.7);

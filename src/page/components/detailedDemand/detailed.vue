@@ -13,7 +13,7 @@
         <!--运营托管详情-->
         <detailMyPublishTransportEntrust v-if="mes.demandType === 2 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishTransportEntrust>
         <!--太美委托详情-->
-        <adminDeleDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminDeleDetail>
+        <adminDeleDetail v-if="(mes.demandType === 3||mes.demandType === 4) && role.role == 2" @closewindow="closewindow" :mes="mes"></adminDeleDetail>
           <!--太美运营托管详情 -->
      <adminAgentDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminAgentDetail>
     </div>

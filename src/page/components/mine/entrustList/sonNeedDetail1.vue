@@ -168,7 +168,7 @@
                                     <div>{{detailData.loadfactorsexpect||'-'}}%</div>
                                 </div>
                                 <div>
-                                    <div>补贴政策</div>
+                                    <div>合作方式</div>
                                     <div>{{detailData.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
@@ -283,7 +283,7 @@
                                     <div>{{val.loadfactorsexpect||'-'}}%</div>
                                 </div>
                                 <div>
-                                    <div>补贴政策</div>
+                                    <div>合作方式</div>
                                     <div>{{val.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
@@ -298,20 +298,23 @@
                                     <div>运力基地</div>
                                     <div>{{val.capacityBaseNm||'-'}}</div>
                                 </div>
-                                <div>
-                                    <div>是否调度</div>
-                                    <div>{{val.schedulingStr||'-'}}</div>
-                                </div>
+                                 <div  class="tips" style="height:40px;">
+                                      <div>是否调度</div>
+                                      <div v-if="val.scheduling == '0' ">
+                                      <span v-for=" item in val.airportForSchedulines">{{item.airlnCd||'-'}}</span>
+                                      </div>
+                                      <div v-else>不接受</div>
+                                  </div>
                                 <div class="tips">
                                     <div>其他说明</div>
                                     <div>{{val.remark||'-'}}</div>
                                 </div>
                             </div>
-                            <span class="selc-tips" v-if="!isIntentionMoney">*您还未缴纳意向金，缴纳后即可选定该意向</span>
+                            <span class="selc-tips" v-if="!isIntentionMoney" v-show="(val.responseProgress !== '2')||(val.responseProgress !== '3')">*您还未缴纳意向金，缴纳后即可选定该意向</span>
                             <div v-if="isIntentionMoney">
                                 <div v-if="selectBtnShow" v-show="val.responseProgress !== '2'">
                                     <div class="btns" v-if="val.releaseselected == '0' ">
-                                        <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
+                                        <div class="sel-btn" @click="toEdit(val)">已选定（点击此处可再次编辑）</div>
                                         <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                                     </div>
                                     <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
@@ -610,62 +613,6 @@
           height:100px;
         }
     }
-   /*  header{
-       position:relative;
-       .top-til{
-         justify-content: space-between;
-         display: flex;
-         height:41px;
-         line-height:41px;
-         font-size:1.2rem;
-         color:rgba(96, 94, 124, 0.7);
-         background-color:#fff;
-         padding:0 15px 0 40px;
-         span{
-           display:block;
-           box-sizing:border-box;
-           margin-top:9px;
-           width:22px;
-           height:22px;
-           line-height:22px;
-           text-align:center;
-           color:#3C78FF;
-           border:1px solid #ededed;
-           border-radius:100%;
-           cursor:pointer;
-         }
-       }
-       .head-til{
-         font-size:2rem;
-         font-weight:bold;
-         margin-top:30px;
-         padding-left:40px;
-         height:20px;
-         line-height:20px;
-       }
-       .note{
-         height:12px;
-         line-height:12px;
-         color:rgba(96, 94, 124, 0.7);
-         padding:20px 0 18px 40px;
-         span{
-           margin-right:30px;
-         }
-       }
-       .rep-btn{
-           position:absolute;
-           right:15px;
-           top:60px;
-           width:100px;
-           height:20px;
-           line-height:20px;
-           color:#ffffff;
-           text-align:center;
-           background-color:#3c78ff;
-           border-radius:100px;
-           cursor:pointer;
-       }
-   } */
      header{
         position:relative;
         .rep-btn{
@@ -758,7 +705,7 @@
     .table-form{
       width:100%;
       box-sizing:border-box;
-      padding:60px 0 60px 40px;
+      padding:60px 0 90px 40px;
       flex-wrap: wrap;
       display: flex;
       >div{
@@ -808,6 +755,7 @@
         width:100%;
         >div:nth-of-type(2){
          width:440px;
+         word-wrap: break-word;
         }
     }
       .intent-airline{
@@ -907,9 +855,10 @@
             padding:40px 0 20px 20px;
             .tips{
                 width:100%;
-                height:60px;
+                height:100px;
                 >div:nth-of-type(2){
                     width:440px;
+                    word-wrap: break-word;
                 }
             }
         }

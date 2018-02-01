@@ -37,4 +37,24 @@ const cityMes = function (data,field = '$%') {
     };
     return '';
 };
-export {cityMes,airMes};
+
+/**
+ * 航司转换信息 方法
+ * @param data{list}城市信息列表 field{string}传入信息
+ * @author  2017/11
+ * @version  1.0.1
+ * */
+
+const companyMes = function (data,field = '$%') {
+    for(let i = 0;i < data.length;i ++){
+        if(data[i].companyIata != null && data[i].companyIata == field){
+            return data[i];
+        }else if(data[i].companyIcao != null && data[i].companyIcao == field){
+            return data[i];
+        }else if(data[i].companyName != null && data[i].companyName == field){
+            return data[i];
+        };
+    };
+    return '';
+};
+export {cityMes,airMes,companyMes};

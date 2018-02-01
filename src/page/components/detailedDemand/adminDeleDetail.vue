@@ -1,9 +1,9 @@
 <template>
-    <div class="wrapper" @click.self="closeDetail" v-show="wrapperShow">
+    <div v-show="wrapperShow">
         <div class="detail-wrapper scroll" v-if="myShow">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
+                <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
@@ -84,7 +84,7 @@
                         <div>{{detailData.loadfactorsexpect||'-'}}%</div>
                     </div>
                     <div>
-                        <div>补贴政策</div>
+                        <div>合作方式</div>
                         <div>{{detailData.subsidypolicyStr||'-' }}</div>
                     </div>
                     <div>
@@ -217,18 +217,18 @@
                <div class="foot-tips" >*取消原因：{{refuseText}}</div>
            </footer> -->
         </div>
-        <operDeleForm v-show="formShow" @closeForm="closeForm" ></operDeleForm>
+        <operDeleForm v-if="formShow" @closeForm="closeForm" :acceptData="detailData"></operDeleForm>
         <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
 
 <script>
-import refuseDialog from './../mine/entrustList/refuseDialog.vue';
-import operDeleForm from './../mine/entrustList/operDeleForm.vue'
-import sonNeedDetail from './../mine/entrustList/sonNeedDetail1.vue'
-import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-import ln from '$src/public/js/tabulationBoxTrigger.js'
+    import refuseDialog from './../mine/entrustList/refuseDialog.vue';
+    import operDeleForm from './../mine/entrustList/operDeleForm.vue'
+    import sonNeedDetail from './../mine/entrustList/sonNeedDetail1.vue'
+    import ln from '$src/public/js/tabulationBoxTrigger.js'
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 
  export default {
      data(){
@@ -256,10 +256,19 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
 
          }
      },
-      props:['mes'],
+    props:['mes'],
+    watch:{
+          'mes.demand':function(){
+             this.init();
+          }
+    },
      methods:{
         chat:function () {
-            //ln.$emit('addChat',this.chatData);
+            /* let chatData = {};
+              chatData.id = this.detailData.id;
+              chatData.employeeId = this.detailData.employeeId;
+              chatData.demandEmployeeId = this.detailData.employeeId;
+              ln.$emit('addChat',chatData);*/
         },
         closeDetail(){
           this.$emit("closewindow");
@@ -285,8 +294,6 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                   params: {
                     demandState:'0',
                     demandId:this.mes.demand,
-                 /*   demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,*/
                     demandType:this.mes.demandType
                   }
                 })
@@ -315,7 +322,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                    this.$emit("closewindow");
+                    this.init();
                   }
                 })
                 .catch((error) => {
@@ -344,14 +351,14 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                 },
                   params: {
                     demandState:'1',
-                    demandId:this.mes.demand,
+                    demandId:this.mes.id,
                     demandType:this.mes.demandType,
                     rek:text
                   }
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                   this.$emit("closewindow");
+                    this.init();
                   }
                 })
                 .catch((error) => {
@@ -369,14 +376,12 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                   params: {
                     demandState:'1',
                     demandId:this.mes.demand,
-                   /* demandEmployeeId:this.chatData.demandEmployeeId,
-                    title:this.chatData.title,*/
                     demandType:this.mes.demandType,
                   }
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                   this.$emit("closewindow");
+                   this.init();
                   }
                 })
                 .catch((error) => {
@@ -387,26 +392,9 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
         closeForm(){
           this.formShow =false;
           this.sonListShow = true;
+          this.init();
+
         },
-        /*turnPolicyCode(val){
-            switch (val) {
-                case "0":
-                    return "定补";
-                    break;
-                case "1":
-                    return "保底";
-                    break;
-                case "2":
-                    return "人头补";
-                    break;
-                case "3":
-                    return "待议";
-                    break;
-                case "4":
-                    return "无补贴";
-                    break;
-            }
-        },*/
         getProgress:function(progress){
             switch (progress) {
                 case "0":
@@ -452,12 +440,9 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
         toBack(){
           this.myShow = true;
           this.sondetailShow = false;
-        }
-     },
-      mounted() {
-          tabulationBoxTrigger.$emit('getSonId', this.mes.demand);
-          tabulationBoxTrigger.hierarchy = true;
-          this.$ajax({
+        },
+        init(){
+            this.$ajax({
                 method: 'post',
                 url: '/getCommissionedAndCustodyDemandDetails',
                 headers: {
@@ -510,6 +495,11 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                         console.log(error);
                     }
                 );
+        }
+     },
+      mounted() {
+          tabulationBoxTrigger.hierarchy = true;
+          this.init();
 
      },
     destroyed: function () {
@@ -534,7 +524,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
         top: 0;
         left: 0;
         background-color: rgba(0, 0, 0, 0.2);
-        z-index: 11;
+        z-index: 33;
     }
     .detail-wrapper{
         position:absolute;
@@ -681,7 +671,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
       }
       >.note{
           width:520px;
-          height:60px;
+          height:120px;
           .note-text{
             width:440px;
           }
@@ -743,7 +733,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
       }
       .note{
           width:520px;
-          height:60px;
+          height:120px;
           .note-text{
              width:440px;
           }
