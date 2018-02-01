@@ -101,7 +101,7 @@
                         <div>拟开时间</div>
                         <div>拟飞机型</div>
                         <div>客量期望</div>
-                        <div>补贴政策</div>
+                        <div>合作方式</div>
                     </div>
                     <div class="right item">
                         <div class="item-a" v-show="contactMsgShow">{{myData.contact}}</div>
@@ -294,7 +294,7 @@
                     <!--<div>80%</div>-->
                 </div>
                 <div>
-                    <div>补贴政策</div>
+                    <div>合作方式</div>
                     <div>{{subsidypolicyFn(receiveIntention.subsidypolicyStr)}}</div>
                     <!--<div>按人头</div>-->
                 </div>
@@ -338,7 +338,7 @@
                 </div>
             </div>
         </div>
-        <div class="second-show" v-show="secondShow">
+        <div class="second-show" v-if="secondShow">
             <div class="sixth item-container">
                 <h2>收到的意向</h2>
                 <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
@@ -347,11 +347,11 @@
                 <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
             </div>
         </div>
-        <div class="tenth item-container danger" v-show="myData.demandstate == 5">
+        <div class="tenth item-container danger" v-if="myData.demandstate == 5 || myData.demandProgress == 10">
             <span>拒绝原因：</span>
             <span>{{myData.rek}}</span>
         </div>
-        <div class="third-show" v-show="thirdShow">
+        <div class="third-show" v-if="thirdShow">
             <div class="eighth item-container">
                 <div class="left font-gray">
                     收到时间
@@ -454,7 +454,7 @@
                                     <div>拟开时间</div>
                                     <div>拟飞机型</div>
                                     <div>客量期望</div>
-                                    <div>补贴政策</div>
+                                    <div>合作方式</div>
                                     <div>运力归属</div>
                                     <div>接受调度</div>
                                 </div>
@@ -536,7 +536,7 @@
                 </div>
             </div>
         </div>
-        <div class="first-button" v-show="firstButtonShow">
+        <div class="first-button" v-if="firstButtonShow">
             <span style="width: 560px;height: 1px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
@@ -544,26 +544,25 @@
                 <button class="btn btn-b" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
             </div>
         </div>
-        <div class="second-button" v-show="secondButtonShow">
+        <div class="second-button" v-if="secondButtonShow">
             <div class="buttons">
                 <button class="btn btn-b" @click="airlinePayFn" v-show="demandState6">点击此处缴纳意向金</button>
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4">
+            <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
             <div v-if="receiveIntention.responseselected == '0'">
                 <div class="buttons">
                     <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
                 </div>
             </div>
             <div v-else>
-                <div class="buttons" v-show="receiveIntention.releaseselected === '0'">
+                <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
                     <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
                     <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
                 </div>
-                <div class="buttons" v-show="receiveIntention.releaseselected !== '0' && (myData.demandprogress === '0'
-                        || myData.demandprogress == '1'
-                        || myData.demandprogress == '2')">
+                <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
+                        && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
                     <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
                     <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
                     <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
@@ -571,7 +570,7 @@
                 </div>
             </div>
         </div>
-        <div class="bottom" v-show="fifthButtonShow">
+        <div class="bottom" v-if="fifthButtonShow">
             <div class="buttons">
                 <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
@@ -593,7 +592,7 @@
         <airlineReqWrapper v-if="airlineReqWrapperShow" :acceptData="myData" @refresh="refreshFn" @close-this="closeAirlineReqWrapper"></airlineReqWrapper>
 
         <!--<paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>-->
-        <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
+        <airlinePay v-if="airlinePayShow" :airlinePayId="airlinePayId" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
     </div>
 </template>
 <script>
@@ -656,7 +655,7 @@
                 periodValidity1: '',
                 isIntentionMoney: '',
                 isSelf: '', // 是否是自己发布（我写的航线详情，只能机场发布，所以可以同过isSelf判断是哪个用户登陆）
-                subsidypolicy: '',//补贴政策
+                subsidypolicy: '',//合作方式
                 listData: [],    //下方的列表详情
                 id: '',
                 checkDetailIndex: '', //点击“查看详情”对应的展开
@@ -683,6 +682,7 @@
                 calendarInitDay3: '',
                 calendarInitDay4: '',
                 unPayMoneyShow: false,  // 未缴纳意向金时显示的无法点击的“选定”按钮
+                airlinePayId: '',
             }
         },
         watch: {
@@ -788,8 +788,7 @@
                     this.calendarInitDay4 = this.myData.periodValidity.split('-')[1];
                     // 修改this.showCode
                     if(this.myData.demandstate == 5
-                        || this.myData.demandprogress == 10
-                        || this.myData.demandprogress == 3) {  // “关闭”状态
+                        || this.myData.demandprogress == 10) {  // “关闭”状态
                         this.showCode = 5;
                         this.show();
                     }else {
@@ -845,6 +844,11 @@
                             }else {
                                 this.contactMsgShow = false;
                             }
+                        }
+                        //  this.myData.demandprogress == 3  关闭（审核不通过、下架、过期）
+                        if(this.myData.demandprogress == 3 && this.isSelf == true) {
+                            this.thirdShow = false;
+                            this.secondButtonShow = false;
                         }
                     }
                 })
@@ -1181,7 +1185,7 @@
             //点击“缴纳意向金”，组件“缴纳意向金”显示
             airlinePayFn: function () {
                 this.airlinePayShow = true;
-                tabulationBoxTrigger.$emit('responseText',this.id)//向dialog.vue传入响应Id
+                this.airlinePayId = this.id;
             },
             //点击“确认缴纳”，this.showCode变成2
             changeShowCodeP: function () {

@@ -305,6 +305,9 @@
         max-height: $line-height * $lines;
     }
     /**************************/
+    .iconfont {
+        margin: 0 25px;
+    }
     /*虚线，弧线*/
     .border-dashed {
         width: 155px;
@@ -371,6 +374,7 @@
         align-items: center;
         height: 41px;
         font-size: 12px;
+        box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
         .close-icon {
             position: absolute;
             right: 12px;

@@ -157,7 +157,7 @@
             <div class="eighth">
                 <span class="line" style="position:absolute; top: 0px;"></span>
                 <div class="buttons" v-if="buttonShow">
-                    <button class="btn btn-w" @click="recallFn">撤回该托管</button>
+                    <button class="btn btn-w" @click="recallFn">撤回该委托</button>
                 </div>
             </div>
             <!--委托航线需求-->
@@ -426,6 +426,7 @@
         align-items: center;
         height: 41px;
         font-size: 12px;
+        box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
         .close-icon {
             position: absolute;
             right: 12px;

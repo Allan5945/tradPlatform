@@ -323,6 +323,7 @@
         align-items: center;
         height: 41px;
         font-size: 12px;
+        box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
         .close-icon {
             position: absolute;
             right: 12px;

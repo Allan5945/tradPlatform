@@ -31,6 +31,7 @@
     import payFailOfBalance from '$src/page/components/trans_detail/payFailOfBalance.vue'
     import loading from '$src/page/reuseComponents/locading.vue'
     export default {
+        props: ['airlinePayId'],
         data(){
             return{
                 Btext: '确认缴纳',
@@ -42,10 +43,8 @@
         },
         created() {
             // 接收airlineDetailPayAfter.vue传来的参数
-            tabulationBoxTrigger.$on('responseText',(val) => {
-                this.sendData.demandId = val;
-                this.loadingShow = false;
-            })
+            this.sendData.demandId = this.airlinePayId;
+            this.loadingShow = false;
         },
         components: {
             loading,

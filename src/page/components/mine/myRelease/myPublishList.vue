@@ -384,6 +384,7 @@
                 this.mes.demand = item.id;
                 this.mes.demandState = item.demandstate;
                 this.mes.demandType = item.demandtype;
+                this.sendToMyPublishData = item;
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
             },
             // 关闭所有弹出页面
