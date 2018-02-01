@@ -45,14 +45,14 @@
                             {{item.demandprogress}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" @click.stop v-show="talkShowFn(item)"
+                            <span class="icon-item talk-icon" @click.stop v-if="talkShowFn(item)"
                                   @mouseover="responseEmployeesIndex = index;" @mouseout="responseEmployeesIndex = '';">&#xe602;
                                 <span class="talk-num" v-show="item.unreadMessageCount != 0 && item.unreadMessageCount != null && unreadMessageClick == true">{{item.unreadMessageCount}}</span>
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="(vl,i) in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl,i)">
                                         <div></div>
                                         <div style="position: relative;">{{vl.nickName}}
-                                            <span class="talk-num" style="top: 0; right: -10px;"
+                                            <span class="talk-num" style="top: 0; left: auto; right: -10px;"
                                                   v-show="vl.chatNum != 0 && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>
                                         </div>
                                     </li>

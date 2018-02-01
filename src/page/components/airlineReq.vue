@@ -905,6 +905,8 @@
             },
             // 委托发布
             submitData2ClickFn: function () { // 点击“委托发布”
+                let req = document.getElementById('airlineReq'); //控制滚动条的位置
+                req.scrollTop = 0;
                 this.submitData2Click = true; // “委托发布”按钮是否已经点击，false：还未点击，true：已点击
                 this.warn3Show = false;
                 this.warn4Show = false;

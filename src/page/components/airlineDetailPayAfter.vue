@@ -13,7 +13,7 @@
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
                     <span style="margin-right: 30px;" v-show="userNumShow">已有{{userNum}}位用户发起意向</span>
                     <span class="font-gray">状态:　
-                        <span  v-if="demandState5" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
+                        <span v-if="demandState5" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
                     <div class="anew-publish btn-b" v-show="demandState5 && isSelf == true" @click="anewPublishClickFn">
@@ -849,6 +849,7 @@
                         if(this.myData.demandprogress == 3 && this.isSelf == true) {
                             this.thirdShow = false;
                             this.secondButtonShow = false;
+                            this.demandState5 = true;
                         }
                     }
                 })

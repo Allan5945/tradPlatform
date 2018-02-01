@@ -847,6 +847,7 @@
                         if(this.myData.demandprogress == 3 && this.isSelf == true) {
                             this.thirdShow = false;
                             this.secondButtonShow = false;
+                            this.demandState5 = true;
                         }
                     }
                 })
