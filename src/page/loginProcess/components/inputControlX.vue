@@ -60,7 +60,7 @@
                 }
             },
             entered(e) {   // 触发enter按键
-                if (e.keyCode == 13) this.$emit('resMes', {type: 'entered'});
+                if (e.keyCode == 13) this.$emit('entered', {type: 'entered'});
             },
             toview() {   // 切换密码是否显示
                 this.showTextPlaceholder = !this.showTextPlaceholder;

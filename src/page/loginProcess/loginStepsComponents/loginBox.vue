@@ -1,7 +1,7 @@
 <template>
     <div class="login-box">
         <userObj :arg="data2" v-on:resMes="resMes2"></userObj>
-        <userObj :arg="data3" v-on:resMes="resMes3" style="margin-top: 30px"></userObj>
+        <userObj :arg="data3" v-on:resMes="resMes3" style="margin-top: 30px" @entered="entered"></userObj>
         <div class="operation">
             <el-checkbox v-model="mes.checked">记住密码</el-checkbox>
             <button class="forget-pas" @click="openReg(1)">忘记密码?</button>
@@ -124,18 +124,10 @@
                 setTimeout(()=>{this.loginTime = 0;},1000);
             },
             resMes2(data){
-                if(data.type == "entered"){
-
-                }else{
-                    this.mes.u = data.i;
-                };
+                this.mes.u = data.i;
             },
             resMes3(data){
-                if(data.type == "entered"){
-                    this.entered();
-                }else{
-                    this.mes.p = data.i;
-                };
+                this.mes.p = data.i;
             }
         },
         computed:{

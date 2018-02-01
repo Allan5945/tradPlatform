@@ -89,7 +89,7 @@
                              @mouseover="viewHsy(true,i)"
                              @mouseout="viewHsy(false,i)"
                              v-for="(key,i) in inData[setId].modifyRcord.list">
-                            <div>{{inData[setId].chatObjectList.name}}{{key.text}}</div>
+                            <div>{{key.date}}{{key.text}}</div>
                             <span v-if="(i == selectModifyHistory)">&#xe686;</span>
                         </div>
                     </div>

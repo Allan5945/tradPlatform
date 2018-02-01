@@ -3,7 +3,7 @@
         <div>
             <div class="opinion-head">
                 <div class="opinion-input">
-                    <input type="text" v-model="inputText" @keydown="quResData($event)">
+                    <input type="text" v-model="inputText" @keydown="quResData($event)" maxlength="30">
                     <button @click="quResData()">&#xe6c3;</button>
                 </div>
             </div>
