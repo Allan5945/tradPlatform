@@ -144,13 +144,6 @@
             },
             closeThis(f){
                 let that = this;
-                that.$ajax.post('logout')
-                    .then((res)=>{
-                        if(res.data.opResult == 0){//修改成功后
-                            that.$chatSocket.ws.close();
-                        }
-                    })
-                return;
                 this.$emit('subchange',{
                     name: 'pwd',
                     type: f===true ? 1:0
@@ -226,6 +219,12 @@
                             that.active = 2;
                             that.result = true;
                             that.ud.pwd = pwd;
+                            that.$ajax.post('logout')
+                                .then((res)=>{
+                                    if(res.data.opResult == 0){//修改成功后
+                                        that.$chatSocket.ws.close();
+                                    }
+                            })
                         }else if( res.data.opResult === '2' ){
                             that.active = 2;
                             that.result = false;
