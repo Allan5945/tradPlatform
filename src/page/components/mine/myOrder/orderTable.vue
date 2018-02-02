@@ -46,7 +46,7 @@
                                 {{ progressState[ditem.demandProgress] || "未知状态" }}
                             </div>
                             <div class="list-e item">
-                                <span class="icon-item talk-icon" @click.stop="openChat(ditem)" v-if="ditem.unreadNum>0">
+                                <span class="icon-item talk-icon" @click.stop="openChat(ditem)" v-if="ditem.responseEmployeeId">
                                     &#xe602;
                                     <!--<span>&nbsp;</span>-->
                                 </span>

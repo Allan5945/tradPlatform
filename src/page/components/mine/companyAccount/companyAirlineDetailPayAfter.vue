@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper"@click.self="closeThisFn">
+    <div class="wrapper"@click.self="closeThisFn" v-cloak>
         <div class="ald-container">
             <div class="first-show" v-show="firstShow">
                 <div class="first item-container">
@@ -1281,6 +1281,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    [v-cloak] {
+        display: none;
+    }
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     /*多行省略号，兼容多个浏览器*/

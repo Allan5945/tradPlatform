@@ -222,7 +222,11 @@
                                 if(response.data.opResult == "0"){
                                     this.newPas = true;
                                     this.$emit('pasChange',true,1)
-                                }else{
+                                }else if(response.data.opResult == "4"){
+                                    this.tiperr = '新旧密码不能旧密码相同';
+                                    this.showtip = true;
+                                    this.$emit('pasChange',false)
+                                } else{
                                     this.$emit('pasChange',false)
                                 }
                             })

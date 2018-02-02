@@ -263,6 +263,14 @@
             getCode(e) {//获取验证码
                 let that = this;
                 if(that.code.wait === 60){
+                    let valt = window.localStorage.getItem("validCodeTime"), nowt = (new Date()).getTime();
+                    nowt = nowt - valt;
+                    if( nowt < 60000 ){  //预处理时间
+                        that.openTips("*验证码发送间隔不能小于1分钟");
+                        that.code.wait = Math.ceil(nowt/1000);
+                        return that.calcTime();
+                    }
+
                     let ud = that.ud, nm = that.userData.mail;
                     that.show.yzmTip = true;
                     that.calcTime();
@@ -273,21 +281,13 @@
                             contactWay: nm
                         }
                     }).then(res=>{
-                        if(res.data.opResult === '0'){
-                            that.calcTime();
-                        }else{
-                            let valt = window.localStorage.getItem("validCodeTime"), nowt = (new Date()).getTime();
-                            nowt = nowt - valt;
-                            if( nowt < 60000 ){
-                                that.openTips("*验证码发送间隔不能小于1分钟");
-                                that.code.wait = Math.ceil(nowt/1000);
-                                that.calcTime();
-                            }else{
-                                that.openTips('*网络错误，不知道4##还是5##');
-                            }
+                        if(res.data.opResult != '0'){
+                            that.openTips('*网络错误，不知道4##还是5##');
                         }
                     }).catch(err=>{
                     })
+                }else{
+                    return false
                 }
             },
             checkCode(){    //验证码判断
@@ -347,6 +347,10 @@
                     this.closeThis();
                 }else{
                     this.active--;
+                    this.validFlag = false;
+                    setTimeout(()=>{
+                        this.valiUseFlag = false;
+                    },100)
                     this.code.wait = 60;
                     this.code.tipText =  "获取验证码";
                 }

@@ -62,7 +62,7 @@
                     "name": "routeNetwork",
                     "type": "lines",
                     "coordinateSystem": "bmap",
-                    "zlevel": 10,
+                    "zlevel": 8,
                     "lineStyle": {
                         "normal": {"color": "#336BEA", "width": 1, "opacity": 0.4, "curveness": 0.2}
                     },
@@ -72,7 +72,7 @@
                     "name": "allPoint",
                     "type": "scatter",
                     "coordinateSystem": "bmap",
-                    "zlevel": 10,
+                    "zlevel": 8,
                     itemStyle:{
                         normal:{
                             color:"#90aae3"
@@ -220,9 +220,18 @@
                 setTimeout(() => {  // 展开机场信息列表
                     tabulationBoxTrigger.$emit('tipBox',a.data.mes.code);
                     let infMesBox = document.getElementById('inf-mes-box');
+                    let caseBox = document.getElementById('case');
                     infMesBox.style.left = `${a.event.offsetX + 30}px`;
                     infMesBox.style.top = `${a.event.offsetY}px`;
                     infMesBox.style.display = 'block';
+                    let lf = caseBox.clientWidth - infMesBox.clientWidth - 50;
+                    if(a.event.offsetX > lf){
+                        infMesBox.style.left = `${lf}px`;
+                    };
+                    let tp = caseBox.clientHeight - infMesBox.clientHeight - 100;
+                    if(a.event.offsetY > tp){
+                        infMesBox.style.top = `${tp}px`;
+                    };
                 }, 50);
                 tabulationBoxTrigger.$emit('setCode',a.data.mes.code);
             })
