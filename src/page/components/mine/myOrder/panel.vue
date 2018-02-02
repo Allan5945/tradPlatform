@@ -28,7 +28,7 @@
                                 <li>
                                     <div class="list">
                                         <span class="item-a">{{ item.releasetime }}</span>
-                                        <span class="item-b"><span>{{ item.title }}</span></span>
+                                        <span class="item-b"><lonSpan :txt="item.title"></lonSpan></span>
                                         <span class="item-c">{{ item.demandprogressStr }}</span>
                                         <template v-if="roleType=='2' && false">
                                             <span @click="" class="item-d">查看详情</span>
@@ -52,6 +52,7 @@
     import extendPanel from './extend.vue';
     import extendListModule from './iten-demand.vue';
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
     export default{
         data(){
@@ -68,7 +69,7 @@
                 typeList: ['航线需求','运力投放 '],
             }
         },
-        components: {listModule, extendListModule, extendPanel},
+        components: { listModule, extendListModule, extendPanel, lonSpan },
         props: ["detailData","roleType"],
         watch:{
             reason:{
@@ -409,14 +410,15 @@
                     .item-b{
                         overflow: hidden;
                         flex:1;
+                        /*
                         span{
                             white-space:nowrap;
                             display: inline-block;
-                            transition: all 5s linear;
+                            transition: all 2s linear;
                         }
                         span:hover{
-                            transform: translateX(-300px);
-                        }
+                            transform: translateX(-100px);
+                        }*/
                     }
                     .item-c{
                         text-indent: 15px;
