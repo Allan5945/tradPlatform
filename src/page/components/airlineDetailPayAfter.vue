@@ -1,5 +1,5 @@
 <template>
-    <div class="ald-container">
+    <div class="ald-container" v-cloak>
         <div class="first-show" v-show="firstShow">
             <div class="first item-container">
                 <span class="font-gray">需求详情</span>
@@ -1285,6 +1285,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    [v-cloak] {
+        display: none;
+    }
     $icon-color: #3c78ff;
     $font-color: #605e7c;
     /*多行省略号，兼容多个浏览器*/

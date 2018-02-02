@@ -1,6 +1,5 @@
 <template>
-    <div class="wrapper" @click.self="closeThisFn">
-
+    <div class="wrapper" @click.self="closeThisFn" v-cloak>
         <div class="ald-container">
             <div class="first item-container">
                 <span>{{myData.demandtypeStr}}详情</span>
@@ -71,9 +70,9 @@
             <div class="seventh item-container">
                 <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
             </div>
-            <span class="line" style="position:absolute; left: 20px; bottom: 100px;"></span>
-            <div class="eighth">
-                <div class="buttons" v-if="buttonShow">
+            <div class="eighth" v-if="buttonShow">
+                <span class="line" style="position:absolute; top: 0px;"></span>
+                <div class="buttons">
                     <button class="btn btn-w" @click="recallFn">撤回该托管</button>
                 </div>
                 <!--<div class="buttons" v-else>
@@ -261,6 +260,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    [v-cloak] {
+        display: none;
+    }
     /*多行省略号，兼容多个浏览器*/
     @mixin line-clamp($lines, $line-height: 20px) {
         text-overflow: ellipsis;
@@ -404,14 +406,14 @@
     .add-item {
         display: flex;
         margin-top: 15px;
-        height: 80px;
+        height: 120px;
         .left {
             flex-shrink: 0;
             width: 80px;
             line-height: 20px;
         }
         .right {
-            @include line-clamp(3);
+            @include line-clamp(6);
         }
     }
     .fifth {
@@ -440,15 +442,10 @@
     }
     .seventh {
         position: absolute;
-        bottom: 125px;
+        bottom: 100px;
     }
     .line {
-        /*position: absolute;
-        left: 20px;
-        bottom: 110px;*/
         margin: 0 auto;
-        margin-top: 30px;
-        margin-bottom: 20px;
         width: 560px;
         height: 2px;
         background: #f3f3f3;
