@@ -1,6 +1,6 @@
 <template>
     <div class="popup-x1 scroll">
-        <div v-for="(key,index) in list" class="item" @click="reqD(key,index)">
+        <div v-for="(key,index) in list" class="item" @click.stop="reqD(key,index)">
             <div class="item-imm" v-html="key.testName"></div>
             <div class="item-dynamics" v-html="key.testCode"></div>
         </div>
@@ -18,7 +18,7 @@
         watch:{
             searchText:function () {
                 this.build();
-                if(this.list.length == '1'){
+                /*if(this.list.length == '1'){
                     let code = this.list[0].code,
                         name = this.list[0].name;
                     this.$store.dispatch('searchInfo', {
@@ -32,7 +32,7 @@
                       searchText:'',
                       selcType :''
                     });
-                }
+                }*/
             }
         },
         methods:{

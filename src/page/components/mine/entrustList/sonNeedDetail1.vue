@@ -345,7 +345,7 @@
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
         <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
-        <airlinePay v-show="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
+        <airlinePay v-if="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP" :airlinePayId="detailData.id"></airlinePay>
     </div>
 </template>
 <script>

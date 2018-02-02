@@ -5,6 +5,7 @@ import echarts from 'echarts'
 import {Radio,Pagination,Message,Checkbox,pagination,TimePicker} from 'element-ui'
 
 import {airMes,cityMes,companyMes} from './static/js/airMes'
+import {local} from './static/js/function'
 import jsonp from './static/js/extension'
 import BmapExamples from './page/components/bmap/bmapExamples'
 
@@ -25,7 +26,7 @@ Vue.prototype.$bExample = new BmapExamples();    // 挂载
 Vue.prototype.$chatSocket = null;   // 扩展webscoket
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$message = Message;
-
+Vue.prototype.$local = local;    // 信息查询信息缓存
 
 Vue.use(Radio);
 Vue.use(Pagination);

@@ -2,7 +2,10 @@
     <div>
         <div class="plan-wrapper scroll">
             <header>
-                <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span class="iconfont" @click="closeIntent">&#xe62c;</span></div>
+                <div class="top-til">
+                  <span class="t-name">{{detailData.demandtypeStr||'-'}}详情</span>
+                  <span class="iconfont" @click="closeIntent">&#xe62c;</span>
+                </div>
                 <div class="head-til">{{detailData.title||'-'}}运力投放</div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
@@ -72,9 +75,21 @@
                        <div>意向航线</div>
                        <div class="i-line">-</div>
                    </div>
-                    <div>
+                    <div style="position:relative;">
                         <div>有效期</div>
-                        <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
+                        <div v-if="detailData.periodValidity" style="display:flex;">
+                        {{detailData.periodValidity.split('-')[1]||'-'}}止
+                        <span class="iconfont" style="font-size:1.6rem;cursor:pointer;" @click="calendarShow=!calendarShow">&#xe653;</span>
+                        </div>
+                        <section v-if="calendarShow" class="calendar-box popup">
+                           <div class="selec-data">
+                             <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
+                             <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
+                             <div class="confirm-btn btn" @click="getMyDate">确定</div>
+                             <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                           </div>
+                            <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
+                        </section>
                     </div>
                      <div class="tips">
                         <div>其他说明</div>
@@ -247,6 +262,7 @@
   import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
+  import calendar from './../publicTools/calendar/calendarCP'
   import myIntentForm from './myIntentForm.vue'
   /*import sureForm from './sureForm1.vue'*/
   import sureForm from './../airlineAffirm.vue'
@@ -275,7 +291,11 @@
              sureOderShow:false,
              schedulListShow:false,
              signing:true,
-             signText:"*您还未签约，签约后可查看详细列表"
+             signText:"*您还未签约，签约后可查看详细列表",
+             calendarShow:false,
+             calendarInitDay1:'',
+             calendarInitDay2:'',
+             myDate:''
          }
      },
      props:['demandId'],
@@ -321,8 +341,12 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                    //alert("取消需求成功!")
-                     this.$emit('closeIntent');
+                    this.$message({
+                        message: '取消需求成功!',
+                        type: 'success',
+                        duration:2000
+                    });
+                    this.$emit('closeIntent');
                   }
                 })
                 .catch((error) => {
@@ -348,7 +372,11 @@
                     })
                     .then((response) => {
                          if(response.data.opResult == "0"){
-                          //alert("撤销选定成功!")
+                          this.$message({
+                                message: '已撤销选定!',
+                                type: 'success',
+                                duration:2000
+                            });
                           this.getDetail();
                          }
                     })
@@ -384,6 +412,54 @@
           this.signing = false;
           this.signText = "*签约申请中，请耐心等候";
         },
+        changeDate:function(){
+
+        },
+         getMyDate: function(){//获取起始的日期
+            if(this.calendarInitDay1 && this.calendarInitDay2){
+                this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                this.calendarShow = false;
+            }
+            this.$ajax({
+                        url:"/demandUpdate",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: {
+                            periodValidity: this.myDate,
+                            id: this.detailData.id
+                        }
+                    }) .then((response) => {
+                        if(response.data.opResult === '0'){
+                            this.getDetail();
+                            this.$message({
+                                message: '修改有效期成功!',
+                                type: 'success',
+                                duration:2000
+                            });
+                        }else{
+
+                        }
+                    }) .catch((error) => {
+                        console.log(error);
+                    });
+        },
+        getDateRange:function(rd){
+            this.calendarInitDay1 = rd[0];
+            this.calendarInitDay2 = rd[1];
+        },
+        initDate: function() {
+              //初始化
+                let today = new Date(),
+                day = today.getDate(), //号数
+                mon = today.getMonth() + 1, //月份
+                year = today.getFullYear();//年份
+                if (mon < 10) mon = "0" + mon;
+                if (day < 10) day = "0" + day;
+                this.calendarInitDay1 = year+"."+mon+"."+day;
+
+        },
         getDetail:function(){
              this.$ajax({
                 method: 'post',
@@ -399,6 +475,12 @@
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                     this.planData = response.data.responseList;
+
+                     this.calendarShow = false;
+                     //this.calendarInitDay1 = this.detailData.periodValidity.split('-')[0];
+                     this.initDate();
+                     this.calendarInitDay2 = this.detailData.periodValidity.split('-')[1];
+
                     //判断状态
                     let progress = this.detailData.demandprogress;
                     if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
@@ -431,7 +513,7 @@
                       this.intentListShow = true;
                     }
                     //是否有选定
-                    if(this.planData !== {}){
+                    if(this.planData && this.planData !== {}){
                       let len = this.planData.length;
                       this.selected = false;
                       for(let i =0;i<len;i++){
@@ -458,7 +540,14 @@
       computed: {
             ...vx.mapGetters([
                 'role'
-            ])
+            ]),
+             initdateData: function(){
+                let data = {};
+                    data.start = this.calendarInitDay1;
+                    data.end = this.calendarInitDay2;
+                    data.isDis = false;
+                return data;
+              }
         },
       watch: {
         "demandId":function(){
@@ -481,12 +570,15 @@
                    this.signText = "*签约用户申请中，请耐心等候";
                 }
             }
+
+
      },
      components: {
             myIntentForm,
             signDialog,
             sureForm,
-            dataForm
+            dataForm,
+            calendar
         }
 }
 </script>
@@ -518,9 +610,12 @@
           height:100px;
         }
     }
-    header{
-        position:relative;
-        .top-til{
+    .top-til{
+          /* position:fixed;
+          z-index:10;
+          width:560px;
+          top:0;
+          right:0; */
           justify-content: space-between;
           display: flex;
           height:41px;
@@ -529,7 +624,11 @@
           color:rgba(96, 94, 124, 0.7);
           background-color:#fff;
           padding:0 15px 0 40px;
-          span{
+          box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
+          .t-name{
+
+          }
+          .iconfont{
             display:block;
             box-sizing:border-box;
             margin-top:9px;
@@ -543,6 +642,9 @@
             cursor:pointer;
           }
         }
+    header{
+        position:relative;
+        /* padding-top:40px; */
         .head-til{
           font-size:2rem;
           font-weight:bold;
@@ -848,4 +950,57 @@
               }
           }
     }
+</style>
+<style scoped>
+  .calendar-box{
+    width: 540px;
+    height:270px;
+    position: absolute;
+    top:20px;
+    left:-20px;
+    z-index: 10;
+    padding:20px 10px 10px 10px;
+    background-color: #FFF;
+  }
+  .calendar-box .selec-data{
+    height:30px;
+    font-size: 12px;
+    margin-bottom:20px;
+    position: relative;
+  }
+  .calendar-box .selec-data input{
+    height: 100%;
+    width: 75px;
+    font-size: 12px;
+    border:0;
+    outline: none;
+    border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+  }
+  .calendar-box .selec-data span{
+    display: inline-block;
+    width:30px;
+    text-align: center;
+  }
+  .selec-data .btn{
+    position:absolute;
+    top:0;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 100px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .selec-data .confirm-btn{
+    right:0;
+    width:60px;
+    color:#ffffff;
+    background-color:#3c78ff;
+  }
+  .selec-data .cancel-btn{
+    width:50px;
+    color:rgba(96,94,124,.6);
+    box-sizing: border-box;
+    border:1px solid rgba(96,94,124,.6);
+    right:64px;
+  }
 </style>

@@ -94,8 +94,9 @@
             </footer>
         </div>
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
-        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog" @payFail="payFail"></transDialog>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
+        <payFailDialog @cancel="cancelPayFail" v-if="payFailShow"></payFailDialog>
     </div>
 </template>
 
@@ -105,6 +106,7 @@
  import intentForm from './intentForm1.vue'
  import transDialog from './transDialog.vue'
  import paySuccess  from './paySuccess.vue'
+ import payFailDialog  from './payFailOfBalance.vue'
 
  export default {
      data(){
@@ -119,7 +121,8 @@
              intentFormShow:false,
              dialog:false,
              payDialog:false,
-             inventBtnShow:false
+             inventBtnShow:false,
+             payFailShow:false
          }
      },
      props:['needData'],
@@ -136,6 +139,14 @@
          sureDialog:function(){
             this.intentFormShow = false;
             this.payDialog = true;
+         },
+         payFail:function(){
+            this.intentFormShow = false;
+            this.dialog = false;
+            this.payFailShow = true;
+         },
+         cancelPayFail:function(){
+            this.payFailShow = false;
          },
          closePaySuccess:function(){
             this.payDialog = false;
@@ -232,7 +243,8 @@
       components: {
             intentForm,
             transDialog,
-            paySuccess
+            paySuccess,
+            payFailDialog
         }
 }
 </script>
@@ -271,6 +283,7 @@
           font-size:1.2rem;
           background-color:#fff;
           padding:0 15px 0 40px;
+          box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
           span{
             display:block;
             box-sizing:border-box;

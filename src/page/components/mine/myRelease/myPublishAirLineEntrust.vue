@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" @click.self="closeThisFn">
+    <div class="wrapper" @click.self="closeThisFn" v-cloak>
 
         <div class="ald-container">
             <div class="first item-container">
@@ -154,9 +154,9 @@
             <div class="seventh item-container">
                 <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
             </div>
-            <div class="eighth">
+            <div class="eighth" v-if="buttonShow">
                 <span class="line" style="position:absolute; top: 0px;"></span>
-                <div class="buttons" v-if="buttonShow">
+                <div class="buttons">
                     <button class="btn btn-w" @click="recallFn">撤回该委托</button>
                 </div>
             </div>
@@ -348,6 +348,9 @@
     }
 </script>
 <style lang="scss" scoped>
+    [v-cloak] {
+        display: none;
+    }
     /*多行省略号，兼容多个浏览器*/
     @mixin line-clamp($lines, $line-height: 20px) {
         text-overflow: ellipsis;
@@ -567,14 +570,15 @@
     }
     .fifth {
         margin-top: 20px;
-        height: 100px;
+        margin-bottom: 20px;
+        height: 120px;
         .left {
             flex-shrink: 0;
             width: 80px;
             line-height: 20px;
         }
         .right {
-            @include line-clamp(3);
+            @include line-clamp(6);
         }
     }
     .sixth {
@@ -604,12 +608,9 @@
     }
     .seventh {
         position: absolute;
-        bottom: 125px;
+        bottom: 100px;
     }
     .line {
-        /*position: absolute;
-        left: 20px;
-        bottom: 110px;*/
         margin: 0 auto;
         width: 560px;
         height: 2px;

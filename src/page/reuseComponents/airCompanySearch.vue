@@ -18,7 +18,7 @@
         watch:{
             searchText:function () {
                 this.build();
-                if(this.list.length == '1'){
+                /*if(this.list.length == '1'){
                     let code = this.list[0].code3,
                         name = this.list[0].name;
                     this.$store.dispatch('searchInfo', {
@@ -32,7 +32,7 @@
                       searchText:'',
                       selcType :'航司'
                     });
-                }
+                }*/
             }
         },
         methods:{

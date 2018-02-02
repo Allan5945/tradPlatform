@@ -897,7 +897,7 @@
                     this.warn3Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
+                }/*if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
                     if((this.pstState == 0 && this.sendData.pst != '')
                         || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
                         this.warn8Show = false;
@@ -916,7 +916,7 @@
                     }else {
                         this.warn9Show = false;
                     }
-                }
+                }*/
                 if(this.subsidyCode === '') {
                     this.warn12Show = true;
                     req.scrollTop = 550;
@@ -2054,7 +2054,7 @@
         width: 540px;
         height: 270px;
         padding: 20px 10px 10px 10px;
-        z-index: 1;
+        z-index: 10;
     }
 
     .calendar-box .selec-data {
