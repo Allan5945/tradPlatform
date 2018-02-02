@@ -8,7 +8,7 @@
             </div>
             <div class="content" v-if="dataShow" id="content">
                 <div class="detail">
-                    <div class="box">
+                    <div class="box" id="step1">
                         <div class="box-til"><span class="iconfont">&#xe627;</span>基本信息</div>
                         <ul class="box-item">
                             <li>
@@ -53,7 +53,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="box">
+                    <div class="box" id="step2">
                         <div class="box-til"><span class="iconfont">&#xe625;</span>地勤服务</div>
                         <ul class="box-item">
                             <li>
@@ -86,7 +86,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="box">
+                    <div class="box" id="step3">
                         <div class="box-til"><span class="iconfont">&#xe629;</span>消防救援</div>
                         <ul class="box-item">
                             <li>
@@ -107,7 +107,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="box">
+                    <div class="box" id="step4">
                         <div class="box-til"><span class="iconfont">&#xe657;</span>停机坪、滑行道及矫正位置数据</div>
                         <ul class="box-item">
                             <li>
@@ -132,7 +132,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="box">
+                    <div class="box" id="step5">
                         <div class="box-til"><span class="iconfont">&#xe626;</span>跑道特征</div>
                         <div class="table">
                             <ul class="t-head">
@@ -191,7 +191,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="box">
+                    <div class="box" id="step6">
                         <div class="box-til"><span class="iconfont">&#xe6ef;</span>进近灯光</div>
                         <div class="table">
                             <ul class="t-head">
@@ -218,7 +218,7 @@
                             </ul>
                         </div>
                     </div>
-                     <div class="box">
+                    <div class="box" id="step7">
                         <div class="box-til"><span class="iconfont">&#xe669;</span>飞行程序</div>
                         <ul class="box-item">
                             <li class="li-note">
@@ -270,8 +270,32 @@
             },
             getStep(i){
                 this.step = i;
+                let content = document.getElementById('content');
+                let step1 = document.getElementById('step1'),
+                    step2 = document.getElementById('step2'),
+                    step3 = document.getElementById('step3'),
+                    step4 = document.getElementById('step4'),
+                    step5 = document.getElementById('step5'),
+                    step6 = document.getElementById('step6'),
+                    step7 = document.getElementById('step7');
+                    if(i== '1'){
+                        content.scrollTop = 0;
+                    }else if(i== '2'){
+                        content.scrollTop = 360;
+                    }else if(i== '3'){
+                        content.scrollTop = 630;
+                    }else if(i== '4'){
+                        content.scrollTop = 850;
+                    }else if(i== '5'){
+                        content.scrollTop = 1100;
+                    }else if(i== '6'){
+                        content.scrollTop = 4130;
+                    }else if(i== '7'){
+                        content.scrollTop = 6000;
+                    }
+
             },
-            /* onScroll () {
+             onScroll () {
               let scrolled = document.documentElement.scrollTop || document.body.scrollTop
               // 手动获取到各个锚点的距离
               if (scrolled >= 1960) {
@@ -287,7 +311,7 @@
               } else {
                 this.steps.active = 0
               }
-            },*/
+            },
             getData(){
                 this.$ajax({
                 method: 'post',
