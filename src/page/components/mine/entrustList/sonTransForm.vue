@@ -325,7 +325,8 @@
         },
         computed:{
             ...vx.mapGetters([
-                'role'
+                'role',
+                'companyList'
             ]),
             num: function(){
                 return this.tip.length <= 200? this.tip.length: 200;
@@ -926,9 +927,12 @@
             if(this.role.role == 2){
                 this.btnShow = false;
             }
+
+            let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
-            this.airCompany = this.role.companyName;
+            this.airCompany = a.companyName;
+            this.airCompanyId = a.id;
         }
 
     }

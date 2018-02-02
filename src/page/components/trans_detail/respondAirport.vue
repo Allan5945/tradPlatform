@@ -159,7 +159,7 @@
                           <div>{{planData.loadfactorsexpect||'-'}}%</div>
                       </div>
                       <div>
-                          <div>补贴政策</div>
+                          <div>合作方式</div>
                           <div>{{planData.subsidypolicyStr||'-'}}</div>
                       </div>
                       <div>
@@ -174,7 +174,7 @@
                           <div>运力基地</div>
                           <div>{{planData.capacityBaseNm||'-'}}</div>
                       </div>
-                       <div class="note">
+                       <div class="note" style="height:40px;">
                           <div>是否调度</div>
                           <div v-if="planData.scheduling == '0' ">
                           <span v-for=" item in planData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
@@ -648,7 +648,7 @@
     .table-form{
       width:100%;
       box-sizing:border-box;
-      padding:60px 0 40px 40px;
+      padding:60px 0 90px 40px;
       flex-wrap: wrap;
       display: flex;
       >div{
@@ -761,7 +761,7 @@
 
         }
         .table-form{
-            padding:40px 0 0 40px;
+            padding:40px 0 60px 40px;
         }
     }
     .airplace{

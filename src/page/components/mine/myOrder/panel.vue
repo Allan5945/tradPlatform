@@ -5,6 +5,7 @@
                 <p class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
             </div>
             <div class="aplan-wrapper">
+                <div v-if="metaData && metaData.isWeituo" @click="contactTaimei" class="contact">联系客服 <span class="iconfont" style="font-size: 1.4rem;">&#xe720;</span> </div>
                 <listModule :ndetailData="metaData.data"
                             :type="typeList[detailData.demandType]"
                             v-if="metaData">
@@ -28,7 +29,7 @@
                                 <li>
                                     <div class="list">
                                         <span class="item-a">{{ item.releasetime }}</span>
-                                        <span class="item-b"><span>{{ item.title }}</span></span>
+                                        <span class="item-b"><lonSpan :txt="item.title"></lonSpan></span>
                                         <span class="item-c">{{ item.demandprogressStr }}</span>
                                         <template v-if="roleType=='2' && false">
                                             <span @click="" class="item-d">查看详情</span>
@@ -52,6 +53,7 @@
     import extendPanel from './extend.vue';
     import extendListModule from './iten-demand.vue';
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
     export default{
         data(){
@@ -68,7 +70,7 @@
                 typeList: ['航线需求','运力投放 '],
             }
         },
-        components: {listModule, extendListModule, extendPanel},
+        components: { listModule, extendListModule, extendPanel, lonSpan },
         props: ["detailData","roleType"],
         watch:{
             reason:{
@@ -129,6 +131,13 @@
                     that.detailData.demandstate = "审核未通过";
                     alert("faild:审核未通过");
                 });
+            },
+            contactTaimei: function () {    // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条id）)
+                let chatObj = {
+                    demandEmployeeId: 1,
+                    employeeId: this.metaData.data.employeeId,
+                };
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             closeReason: function () {//取消
                 this.reason.text = '';
@@ -409,14 +418,6 @@
                     .item-b{
                         overflow: hidden;
                         flex:1;
-                        span{
-                            white-space:nowrap;
-                            display: inline-block;
-                            transition: all 5s linear;
-                        }
-                        span:hover{
-                            transform: translateX(-300px);
-                        }
                     }
                     .item-c{
                         text-indent: 15px;
@@ -438,5 +439,19 @@
                 border-top: 1px solid #fff;
             }
         }
+    }
+    .contact{
+        position: absolute;
+        right: 15px;
+        top: 25px;
+        width: 100px;
+        height: 20px;
+        line-height: 20px;
+        color: #fff;
+        text-align: center;
+        background-color: #3c78ff;
+        border-radius: 100px;
+        cursor: pointer;
+        box-shadow: 1px 2px 18px rgba(60,120,255,.5);
     }
 </style>

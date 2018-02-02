@@ -32,42 +32,40 @@
                 <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
             <div class="t-optional">
-             <div class="form-box">
-                 <div class="t-title">出港时刻</div>
-                 <div class="radio-box">
-                     <div class="t-radio">
-                         <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
-                     </div>
-                     <div class="selected" v-if="this.getTime == 'true'">
-                         <div @click.stop="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
-                         <span>-</span>
-                         <div @click.stop="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
-                       <div class="time-table popup time-start" v-show="boxShow1">
-                           <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
-                       </div>
-                       <div class="time-table popup time-end" v-show="boxShow2">
-                           <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}</div>
-                       </div>
-                     </div>
-                     <div class="t-radio">
-                         <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
-                     </div>
-                 </div>
-             </div>
-              <!--  <div class="form-box">
-                  <div class="t-title">出港时刻</div>
-                  <div >
-                       <el-time-picker
-                           arrow-control
-                           v-model="value3"
-                           :picker-options="{
-                             selectableRange: '18:30:00 - 20:30:00'
-                           }"
-                           placeholder="任意时间点">
-                         </el-time-picker>
+            <div class="form-box">
+                <div class="t-title">出港时刻</div>
+                <div class="radio-box">
+                    <div class="t-radio">
+                        <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
+                    </div>
+                    <div class="selected" v-if="this.getTime == 'true'">
+                        <div @click.stop="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
+                        <span>-</span>
+                        <div @click.stop="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
+                      <div class="time-table popup time-start" v-show="boxShow1">
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
+                      </div>
+                      <div class="time-table popup time-end" v-show="boxShow2">
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}</div>
+                      </div>
+                    </div>
+                    <div class="t-radio">
+                        <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
+                    </div>
+                </div>
+            </div>
+            <!--  <div class="form-box">
+                <div class="t-title">出港时刻</div>
+                <div >
+                     <el-time-picker
+                         arrow-control
+                         v-model="timeStart"
+                         type="mini"
+                         placeholder="任意时间点">
+                       </el-time-picker>
 
-                  </div>
-              </div> -->
+                </div>
+            </div> -->
                 <div class="form-box">
                     <div class="t-title">是否有班期</div>
                     <div class="radio-box" @click="verifyFlight">
@@ -324,7 +322,8 @@
         },
         computed:{
             ...vx.mapGetters([
-                'role'
+                'role',
+                'companyList'
             ]),
             num: function(){
                 return this.tip.length <= 200? this.tip.length: 200;
@@ -995,9 +994,12 @@
             if(this.role.role == 2){
                 this.btnShow = false;
             }
+
+            let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
-            this.airCompany = this.role.companyName;
+            this.airCompany = a.companyName;
+            this.airCompanyId = a.id;
         }
 
     }

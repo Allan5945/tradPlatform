@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div class="nav-box popup" @click.stop="colsePublish">
+        <div class="nav-box popup" @click="colsePublish">
             <div class="font-bold-x nav1">
                 <router-link to="/index" class="a-click">首页</router-link>
             </div>
             <div class="font-bold-x nav1">
                 <router-link to="/index/opinion" class="a-click">新闻舆情</router-link>
             </div>
-            <div @click="userShow = !userShow;toolShow = false" class="user-center nav2">
+            <div @click.stop="userShow = !userShow;toolShow = false" class="user-center nav2">
                 <div class="nav-title">
                     <span class="icon-item">&#xe60f;</span>
                     <span class="font-bold-x">个人中心</span>
@@ -15,7 +15,7 @@
                 </div>
                 <userCenter v-if="userShow" v-on:showSet="showSetting"></userCenter>
             </div>
-            <div @click="toolShow = !toolShow;userShow=false" class="nav3">
+            <div @click.stop="toolShow = !toolShow;userShow=false" class="nav3">
                 <div class="nav-title">
                     <span class="icon-item">&#xe601;</span>
                     <span class="font-bold-x">工具 &nbsp;</span>

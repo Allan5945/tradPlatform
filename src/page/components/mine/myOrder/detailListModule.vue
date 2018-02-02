@@ -227,10 +227,7 @@
         width:100%;
         box-sizing:border-box;
         color:#605E7C;
-        overflow: hidden;
         background-color:#fff;
-        max-height: 90%;
-        overflow-y: auto;
         header{
             width:100%;
             background-color:rgba(216,216,216,.2);

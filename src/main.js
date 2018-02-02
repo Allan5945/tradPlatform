@@ -4,7 +4,7 @@ import axios from 'axios'
 import echarts from 'echarts'
 import {Radio,Pagination,Message,Checkbox,pagination,TimePicker} from 'element-ui'
 
-import {airMes,cityMes} from './static/js/airMes'
+import {airMes,cityMes,companyMes} from './static/js/airMes'
 import jsonp from './static/js/extension'
 import BmapExamples from './page/components/bmap/bmapExamples'
 
@@ -19,6 +19,7 @@ import './static/css/animate.min.css'
 Vue.prototype.$ajax = axios;        // 扩展axios 请求数据
 Vue.prototype.$airMes = airMes;   // 扩展机场转换方法
 Vue.prototype.$cityMes = cityMes;  // 扩展城市转换方法
+Vue.prototype.$companyMes = companyMes;  // 扩展航司转换方法
 Vue.prototype.$jsonp = jsonp;    // 扩展jsonp请求方法
 Vue.prototype.$bExample = new BmapExamples();    // 挂载
 Vue.prototype.$chatSocket = null;   // 扩展webscoket

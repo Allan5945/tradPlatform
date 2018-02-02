@@ -569,7 +569,7 @@
                 accept22Checked: true,
                 accept31Checked: false,
                 accept32Checked: true,
-               
+				
                 opt0: {     //拟开时间
                     start: '',
                     end: '',

@@ -299,11 +299,10 @@
                         </div>
                     </div>
                     <div class="third-d item" style="position: relative;">
-                        <div class="right item-child">
-                            <span>补贴政策</span>　
+                        <div class="right item-child" style="justify-content: flex-start;">
+                            <span style="margin-right: 10px; width: 72px;">合作方式</span>　
                             <div style="display: flex; flex-direction: column;">
                                 <div class="vertical-center" style="margin-bottom: 10px;">
-                                    <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyYes" :checked="subsidy1" @click="subsidyClick0"/><label for="alWsubsidyYes" class="input-label">有补贴</label>
                                     <div class="choose-border" style="align-items: center; width: 118px; height: 24px;" @click.stop="clickClose12Fn ">
                                         <span style="margin-left: 12px;">{{subsidyShow}}</span>
                                         <div class="triangle-big"
@@ -311,14 +310,6 @@
                                         <ul class="choose-type want-subsidy" v-show="subsidy">
                                             <li v-for="item in subsidyList" @click="subsidyListFn(item)">{{item}}</li>
                                         </ul>
-                                    </div>
-                                </div>
-                                <div style="display: flex">
-                                    <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyNo" :checked="subsidy2" @click="subsidyClick1"/><label for="alWsubsidyNo" class="input-label">无补贴</label>
-                                    </div>
-                                    <div class="vertical-center">
-                                        <input type="radio" class="magic-radio" name="subsidy" id="alWsubsidyTalk" :checked="subsidy3" @click="subsidyClick2"/><label for="alWsubsidyTalk" class="input-label">可面谈</label>
                                     </div>
                                 </div>
                             </div>
@@ -350,7 +341,7 @@
                                           style="top: 25px;left: -73px;"></airportS>
                             </div>
                         </div>
-                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择补贴类型</div>
+                        <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
                     </div>
                     <div class="third-e item">
                         <div class="right item-child">
@@ -451,7 +442,7 @@
                 endTime3: false,
                 schedule: false,
                 subsidy: false,
-                subsidyCode: 4,//补贴类型
+                subsidyCode: '',//补贴类型
                 airAreaSearchShow1: false,
                 airAreaSearchShow2: false,
                 airAreaSearchShow3: false,
@@ -549,7 +540,7 @@
                 timeList: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'],
                 spaceList: ['意向区域', '意向机场'],
                 scheduleList: ['待定', '满排', '半排'],
-                subsidyList: ['保底', '定补', '按人头','其他'],
+                subsidyList:['保底', '定补', '人头补','无补贴','其他'],
 //                sendData: {},
                 responseId: '',
                 airCompany: '',//运力归属
@@ -745,28 +736,6 @@
                     this.fourArea = '';
                 }
                 this.qyCode4 = this.acceptData.dpt;
-                /*// 补贴状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议5:无补贴
-                this.subsidyCode = this.acceptData.subsidypolicy;
-                if(this.acceptData.subsidypolicy === "0"
-                    || this.acceptData.subsidypolicy === "1"
-                    || this.acceptData.subsidypolicy === "2"
-                    || this.acceptData.subsidypolicy === "3") {
-//                    alWsubsidyYes.checked = true;
-                    this.subsidy1 = true;
-                    this.subsidy2 = false;
-                    this.subsidy3 = false;
-                    this.subsidypolicyFn(this.acceptData.subsidypolicy);
-                }else if(this.acceptData.subsidypolicy === "4") {
-//                    alWsubsidyTalk.checked = true;
-                    this.subsidy1 = false;
-                    this.subsidy2 = false;
-                    this.subsidy3 = true;
-                }else if(this.acceptData.subsidypolicy === "5") {
-//                    alWsubsidyNo.checked = true;
-                    this.subsidy1 = false;
-                    this.subsidy2 = true;
-                    this.subsidy3 = false;
-                }*/
             },
             // 将补贴类型从数字变成汉字
             subsidypolicyFn: function (index) {
@@ -846,6 +815,11 @@
                         this.warn9Show = false;
                     }
                 }*/
+                if(this.subsidyCode === '') {
+                    this.warn12Show = true;
+                    req.scrollTop = 550;
+                    return
+                }
                 if(this.subsidyCode === '') {
                     this.warn12Show = true;
                     req.scrollTop = 550;
@@ -1114,9 +1088,7 @@
                 this.closeTimeFrameFn();
             },
             clickClose12Fn: function () {
-                if(this.subsidy1 == true) {
-                    this.subsidy = !this.subsidy;
-                }
+                this.subsidy = !this.subsidy;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1411,12 +1383,23 @@
                 this.fifthArea = '';
 //                this.qyCode5 = data.id;
                 this.directionPublicCityShow = true;
-                if(this.directionPublicCity.length < 5) {
-                    this.directionPublicCity.push({
-                        name: data.name,
-                        id: data.id,
-                    });
+
+                let len = this.directionPublicCity.length,
+                    flag = true;
+                if( len < 5){
+                    for (let i = 0; i < len; i++) {
+                        if ( this.directionPublicCity[i].id === data.id) {
+                          flag = false;
+                        }
+                    }
+                    if(flag){
+                         this.directionPublicCity.push({
+                            name: data.name,
+                            id: data.id,
+                        });
+                    }
                 }
+
                 this.$nextTick(() => {
                     this.moreShowFn();
                 })
@@ -1561,6 +1544,8 @@
                     this.subsidyCode = 2;
                 }if(item == '其他'){
                     this.subsidyCode = 3;
+                }if(item == '无补贴'){
+                    this.subsidyCode = 5;
                 }
             },
             //点击定向发布
@@ -2341,7 +2326,7 @@
         }
         .third-d {
             padding: 17px 0 21px 0;
-            height: 62px;
+           /*  height: 62px; */
             .right {
                 align-items: flex-start;
                 .want-subsidy {

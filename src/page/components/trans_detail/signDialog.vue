@@ -14,16 +14,49 @@
     export default {
         data(){
             return{
-                refuseText:''
+
             }
         },
         methods: {
             sure(){
+                 this.$ajax({
+                method: 'post',
+                url: '/employeeSign',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
 
+                }
+                })
+                .then((response) => {
+                    if(response.data.opResult == '0'){
+                         this.$emit('signSuccess');
+                         this.$message({
+                                message: '申请成功!',
+                                type: 'success',
+                                duration:2000
+                            });
+                    }else{
+                         this.$message({
+                                message: '申请失败，请稍后再试!',
+                                type: 'warning',
+                                duration:2000
+                            });
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
             },
             cancel(){
                 this.$emit('cancel');
             }
+        },
+        mounted (){
+
+
         }
     }
 </script>

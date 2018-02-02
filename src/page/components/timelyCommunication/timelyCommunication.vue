@@ -69,11 +69,11 @@
                             <div>
                                 <div v-for="(key,i) in rightTableUp">
                                     <div>{{key.key}}</div>
-                                    <div>{{key.val}}</div>
+                                    <div :title="[key.val] | dft">{{[key.val] | dft}}</div>
                                 </div>
                                 <div v-for="(key,i) in rightTableDown">
                                     <div>{{key.key}}</div>
-                                    <div>{{key.val}}</div>
+                                    <div :title="[key.val] | dft">{{[key.val] | dft}}</div>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                              @mouseover="viewHsy(true,i)"
                              @mouseout="viewHsy(false,i)"
                              v-for="(key,i) in inData[setId].modifyRcord.list">
-                            <div>{{inData[setId].chatObjectList.name}}{{key.text}}</div>
+                            <div>{{key.date}}{{key.text}}</div>
                             <span v-if="(i == selectModifyHistory)">&#xe686;</span>
                         </div>
                     </div>

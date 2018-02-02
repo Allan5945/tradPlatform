@@ -35,14 +35,14 @@
         <div class="inf-associated">
             <div>关联航司</div>
             <div>
-                <span v-for="(val,key) in glhs" v-text="val.iata" style="margin-right: 10px;"></span>
+                <span v-for="(val,key) in glhs" v-text="val.iata" class="inf-hsItrm"></span>
             </div>
         </div>
         <div class="inf-news" :class="{'gdyq':yq.length != 0}">
             <div>滚动舆情</div>
             <transition name="slide-fade">
                 <div v-for="(val,key) in yq" class="gdyq-item" v-if="key == setgd">
-                    <a :href="val.articleUrl"  v-text="val.articleTitle"class="text-line"></a>
+                    <a :href="val.articleUrl"  v-text="val.articleTitle" class="text-line"></a>
                 </div>
             </transition>
         </div>
@@ -60,8 +60,6 @@
 
     import * as vx from 'vuex';
     import tabulationBoxTrigger from "./../../../public/js/tabulationBoxTrigger.js";
-    
-    
     export default {
         data(){
             return{
@@ -187,10 +185,24 @@
     .slide-fade-leave-active {
         transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
-    .slide-fade-enter, .slide-fade-leave-to
+    .slide-fade-enter
         /* .slide-fade-leave-active for below version 2.1.8 */ {
         transform: translateX(10px);
         opacity: 0;
+    }
+    .slide-fade-leave-to{
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+    .inf-hsItrm{
+        margin-right: 10px;
+        border: 1px solid #3c78ff;
+        display: inline-block;
+        border-radius:15px;
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        line-height: 30px;
     }
     .inf-box {
         width: 300px;
@@ -200,13 +212,14 @@
         left: 500px;
         display: none;
         overflow-y: auto;
+        overflow-x: hidden;
     }
     .gdyq{
-        height: 85px;
+        height: 45px;
         overflow: hidden;
     }
     .gdyq-item{
-        height: 65px;
+        height:25px;
         text-overflow: ellipsis;
     }
     .text-line{

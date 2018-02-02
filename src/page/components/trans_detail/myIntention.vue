@@ -183,7 +183,7 @@
                                     <div>{{val.loadfactorsexpect||'-'}}%</div>
                                 </div>
                                 <div>
-                                    <div>补贴政策</div>
+                                    <div>合作方式</div>
                                     <div>{{val.subsidypolicyStr||'-'}}</div>
                                 </div>
                                 <div>
@@ -198,7 +198,7 @@
                                     <div>运力基地</div>
                                     <div>{{val.capacityBaseNm||'-'}}</div>
                                 </div>
-                                <div class="tips">
+                                <div class="tips" style="height:40px;">
                                     <div>是否调度</div>
                                      <div v-if="val.scheduling == '0' ">
                                         <span v-for=" item in val.airportForSchedulines">{{item.airlnCd||'-'}}</span>
@@ -212,7 +212,7 @@
                             </div>
                             <div v-if="selectBtnShow" v-show="val.responseProgress !== '2'">
                                 <div class="btns" v-if="val.releaseselected == '0' ">
-                                    <div class="sel-btn" @click="toEdit(val)">已选定（点击此次可再次编辑）</div>
+                                    <div class="sel-btn" @click="toEdit(val)">已选定（点击此处可再次编辑）</div>
                                     <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
                                 </div>
                                 <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
@@ -228,9 +228,9 @@
             </div>
             </div>
             <footer v-show="footShow">
-                <div class="foot-tips" v-if="!isSign">*您还未签约，签约后可查看详细列表</div>
+                <div class="foot-tips" v-if="!isSign">{{signText}}</div>
                 <div class="btn">
-                    <div class="deal-btn" v-if="!isSign" @click="toDeal">申请签约</div>
+                    <div class="deal-btn" v-if="!isSign" @click="toDeal" v-show="signing">申请签约</div>
                     <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
                     <div class="col-btn" @click="closeNeed" v-else>结束需求</div>
                 </div>
@@ -239,7 +239,7 @@
         <!-- <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm> -->
         <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
         <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
-         <signDialog  v-show="dialogShow" @cancel="dialogShow = false"></signDialog>
+         <signDialog  v-show="dialogShow" @cancel="dialogShow = false" @signSuccess="signSuccess"></signDialog>
     </div>
 </template>
 
@@ -274,6 +274,8 @@
              selectBtnShow:true,
              sureOderShow:false,
              schedulListShow:false,
+             signing:true,
+             signText:"*您还未签约，签约后可查看详细列表"
          }
      },
      props:['demandId'],
@@ -377,25 +379,11 @@
          toPublish:function(){
             this.dataFormShow = true;
          },
-        /* turnPolicyCode:function(val){
-            switch (val) {
-                case "0":
-                    return "定补";
-                    break;
-                case "1":
-                    return "保底";
-                    break;
-                case "2":
-                    return "人头补";
-                    break;
-                case "3":
-                    return "待议";
-                    break;
-                case "4":
-                    return "无补贴";
-                    break;
-            }
-        },*/
+        signSuccess:function(){
+          this.dialogShow = false;
+          this.signing = false;
+          this.signText = "*签约申请中，请耐心等候";
+        },
         getDetail:function(){
              this.$ajax({
                 method: 'post',
@@ -452,12 +440,12 @@
                           }
                       }
                     }
-                    //判断是否签约用户
+                   /* //判断是否签约用户
                     if(this.role.role == "2"){
                         this.isSign = true;
                     }else{
                         this.isSign = response.data.isSign;
-                    }
+                    }*/
                 })
                 .catch((error) => {
                         console.log(error);
@@ -479,6 +467,20 @@
       },
       mounted() {
           this.getDetail();
+          //判断是否签约用户
+            if(this.role.role == "2"){
+                this.isSign = true;
+            }else{
+                if(this.role.whethersign == '0'){//是签约用户
+                   this.isSign = true;
+                }else if(this.role.whethersign == '1'){//不是签约用户
+                   this.isSign = false;
+                }else if(this.role.whethersign == '2'){
+                   this.isSign = false;
+                   this.signing = false;
+                   this.signText = "*签约用户申请中，请耐心等候";
+                }
+            }
      },
      components: {
             myIntentForm,
@@ -576,7 +578,7 @@
     .table-form{
       width:100%;
       box-sizing:border-box;
-      padding:60px 0 95px 40px;
+      padding:60px 0 90px 40px;
       flex-wrap: wrap;
       display: flex;
       >div{
@@ -626,6 +628,7 @@
         width:100%;
         >div:nth-of-type(2){
          width:440px;
+         word-wrap: break-word;
         }
     }
       .intent-airline{
@@ -724,9 +727,10 @@
             padding:40px 0 20px 20px;
             .tips{
                 width:100%;
-                height:60px;
+                height:100px;
                 >div:nth-of-type(2){
                     width:440px;
+                    word-wrap: break-word;
                 }
             }
         }

@@ -279,10 +279,7 @@
         width:100%;
         box-sizing:border-box;
         color:#605E7C;
-        overflow: hidden;
         background-color:#fff;
-        max-height: 90%;
-        overflow-y: auto;
         margin-top: 30px;
         header{
             width:100%;
