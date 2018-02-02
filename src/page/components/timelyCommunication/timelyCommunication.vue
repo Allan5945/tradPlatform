@@ -55,8 +55,8 @@
                                 <img src="./../../../static/img/test/145.png"/>
                             </div>
                             <div class="personal-panel-name">
-                                <div class=""><span>{{kfIng.iata}}</span></div>
-                                <p>{{inData.company}}</p>
+                                <!--<div class=""><span>{{kfIng.iata}}</span></div>-->
+                                <p>{{kfIng.company}}</p>
                                 <div class="">{{kfIng.department}}<span>{{kfIng.name}}</span></div>
                                 <div class="">{{kfIng.phone}}</div>
                             </div>

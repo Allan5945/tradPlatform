@@ -58,7 +58,7 @@
                         page:1
                     }
                 }).then((response) => {
-                    if (response.data.opResult != '1') {
+                    if (response.data.opResult == '0') {
                         this.$store.dispatch('hybridData', {v: response.data.list, t: 0}).then(() => {});
                     };
                 })

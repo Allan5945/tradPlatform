@@ -71,8 +71,10 @@
                                     page: this.demandList.hybridPage
                                 }
                             }).then((response) => {
-                                this.$store.dispatch('hybridData', {v: response.data.list.list, t: 2}).then(() => {
-                                });
+                                if (response.data.opResult == '0') {
+                                    this.$store.dispatch('hybridData', {v: response.data.list.list, t: 2}).then(() => {
+                                    });
+                                }
                             })
                                 .catch((error) => {
                                     console.log(error);
