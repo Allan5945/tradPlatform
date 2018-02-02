@@ -167,8 +167,9 @@
                          <div class="confirm-btn btn" @click="getMyDate">确定</div>
                          <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                        </div>
-                       <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1" :dis="false"></calendar>
-                       <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2" :dis="false"></calendar>
+                       <!-- <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1" :dis="false"></calendar>
+                       <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2" :dis="false"></calendar> -->
+                       <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
                      </div>
                    </div>
                     <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
@@ -217,7 +218,7 @@
     </div>
 </template>
 <script>
- import calendar from './publicTools/calendar/calendar'
+ import calendar from './publicTools/calendar/calendarCP'
  import * as vx from 'vuex'
  import airportS from '../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
@@ -327,7 +328,14 @@
             ]),
             num: function(){
                 return this.tip.length <= 200? this.tip.length: 200;
-            }
+            },
+            initdateData: function(){
+                let data = {};
+                    data.start = this.calendarInitDay1;
+                    data.end = this.calendarInitDay2;
+                    data.isDis = false;
+                return data;
+              }
         },
         watch:{
             'seat':function(val){
@@ -385,6 +393,11 @@
                     this.intendedDpt = this.searchText;
                     this.qyCode3 = this.qyCode;
                 }
+            },
+            'dispatch':function(val){
+                if(!val){
+                    this.isError9 = false;
+                }
             }
 
         },
@@ -403,12 +416,11 @@
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
-                   /* this.$refs.timeDate.style.width = "213px";
-                    this.$refs.timeForm.style.width = "579px";
-                     this.$refs.timeTitle.style.width = "60px";*/
-                }else{
-
                 }
+            },
+            getDateRange:function(rd){
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
             },
             openSearch: function(){
                 this.isSearch =true;
@@ -747,6 +759,12 @@
                     trans.scrollTop = 0;
                     return false;
                 }
+                if(this.dispatch){       //接受调度
+                    if(this.searchData.length == '0'){
+                        this.isError9 = true;
+                        return false;
+                    };
+                }
                 let demandData = {},
                     time = this.timeStart +','+ this.timeEnd;
                     demandData.demandtype = type;
@@ -978,6 +996,7 @@
 
                 this.calendarInitDay1 = year+"."+mon+"."+day;
                 this.calendarInitDay2 = year2+"."+mon2+"."+day2;
+
             },
             toAgentForm:function(){
                 this.isAgent = true;
@@ -999,6 +1018,7 @@
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
             this.airCompany = a.companyName;
+            this.airCompany1 = a.companyName;
             this.airCompanyId = a.id;
         }
 

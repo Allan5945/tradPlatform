@@ -213,9 +213,9 @@
     <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @close-this="closeReForm" :acceptData = "planData"></reIntentForm>
     <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
-    <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+    <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog" @payFail="payFail"></transDialog>
     <paySuccess v-show="payDialog" @cancel="closePaySuccess" ></paySuccess>
-
+    <payFailDialog @cancel="cancelPayFail" v-if="payFailShow"></payFailDialog>
     </div>
 </template>
 
@@ -229,6 +229,7 @@
  import intentForm from './intentForm.vue'
  import transDialog from './transDialog.vue'
  import paySuccess  from './paySuccess.vue'
+ import payFailDialog  from './payFailOfBalance.vue'
  import needDetail from './needDetail.vue'
 
  export default {
@@ -243,6 +244,7 @@
              intentFormShow:false,
              dialog:false,
              payDialog:false,
+             payFailShow:false,
              reFormShow:false,
              footShow:true,
              orderComplete:false,
@@ -265,7 +267,8 @@
             transDialog,
             paySuccess,
             reIntentForm,
-            needDetail
+            needDetail,
+            payFailDialog
         },
       watch:{
           'demandId':function(){
@@ -439,6 +442,14 @@
             this.reFormShow = false;
             this.payDialog = true;
          },
+          payFail:function(){
+            this.reFormShow = false;
+            this.dialog = false;
+            this.payFailShow = true;
+         },
+         cancelPayFail:function(){
+            this.payFailShow = false;
+         },
          closePaySuccess:function(){
             this.payDialog = false;
             this.$emit('responseClose');
@@ -601,6 +612,7 @@
           background-color:#fff;
           color:rgba(96, 94, 124, 0.7);
           padding:0 15px 0 40px;
+           box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
           span{
             display:block;
             box-sizing:border-box;

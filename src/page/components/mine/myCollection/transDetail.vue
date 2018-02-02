@@ -95,8 +95,9 @@
         </div>
         <myResponse v-if="myShow2" @responseClose="closeDetail" :resData="resData"></myResponse>
         <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
-        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+        <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog" @payFail="payFail"></transDialog>
         <paySuccess @cancel="closePaySuccess" v-show="payDialog"></paySuccess>
+        <payFailDialog @cancel="cancelPayFail" v-if="payFailShow"></payFailDialog>
     </div>
 </template>
 
@@ -106,6 +107,8 @@
  import intentForm from '$src/page/components/trans_detail/intentForm1.vue'
  import transDialog from '$src/page/components/trans_detail/transDialog.vue'
  import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue';
+ import payFailDialog  from '$src/page/components/trans_detail/payFailOfBalance.vue'
+
  import myResponse from './myResponse.vue'
 
  export default {
@@ -124,7 +127,8 @@
              intentFormShow:false,
              dialog:false,
              payDialog:false,
-             inventBtnShow:false
+             inventBtnShow:false,
+             payFailShow:false
          }
      },
      props:['needData'],
@@ -141,6 +145,14 @@
          sureDialog:function(){
             this.intentFormShow = false;
             this.payDialog = true;
+         },
+          payFail:function(){
+            this.intentFormShow = false;
+            this.dialog = false;
+            this.payFailShow = true;
+         },
+         cancelPayFail:function(){
+            this.payFailShow = false;
          },
         closePaySuccess:function(){
             this.payDialog = false;
@@ -258,7 +270,8 @@
             intentForm,
             transDialog,
             paySuccess,
-            myResponse
+            myResponse,
+            payFailDialog
         }
 }
 </script>
