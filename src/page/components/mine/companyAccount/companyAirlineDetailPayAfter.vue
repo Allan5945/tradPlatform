@@ -133,7 +133,10 @@
                                 <span v-else>-</span>
                             </div>
                             <div class="item-d" style="display: flex; position: relative;">{{periodValidity1 || '-'}}止
-                                <span class="icon-item" v-show="secondShow" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
+                                <span class="icon-item" v-if="secondShow &&
+                                    (myData.demandprogress == 0
+                                        || myData.demandprogress == 1
+                                        || myData.demandprogress == 2)" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
                                 <div v-if="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px;">
                                     <div class="selec-data">
                                         <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>

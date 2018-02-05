@@ -569,7 +569,7 @@
                 accept22Checked: true,
                 accept31Checked: false,
                 accept32Checked: true,
-               
+				
                 opt0: {     //拟开时间
                     start: '',
                     end: '',
@@ -622,6 +622,8 @@
             this.acceptDataFn();
         },
         methods: {
+            /*数组去重*/
+            
             /*是否接受临近机场*/
             dptAcceptnearairportFn0: function () {
                 this.dptAcceptnearairport = 0;
@@ -1563,15 +1565,22 @@
             },
             resData5: function (data) {
                 this.isSearch5 = false;
-//                this.fifthArea = data.name;
                 this.fifthArea = '';
-//                this.qyCode5 = data.id;
                 this.directionPublicCityShow = true;
                 if(this.directionPublicCity.length < 5) {
-                    this.directionPublicCity.push({
-                        name: data.name,
-                        id: data.id,
-                    });
+                    let len = this.directionPublicCity.length;
+                    let flag = true;
+                    for(let i = 0; i < len; i++) {
+                        if(this.directionPublicCity[i].id === data.id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        this.directionPublicCity.push({
+                            name: data.name,
+                            id: data.id,
+                        });
+                    }
                 }
                 this.$nextTick(() => {
                     this.moreShowFn();
@@ -2044,6 +2053,7 @@
         color: $icon-color;
         background: #F5F5F5;
         white-space: nowrap;
+        font-weight: bold;
     }
     .little-label-close {
         display: flex;
@@ -2446,7 +2456,7 @@
             }
         }
         .third-a {
-            padding: 27px 0;
+            padding: 27px 0 17px 0;
             height: 26px;
             line-height: 26px;
             .right {
@@ -2508,7 +2518,7 @@
             }
         }
         .third-f {
-            padding: 17px 0 21px 0;
+            padding: 17px 0 27px 0;
         }
     }
 

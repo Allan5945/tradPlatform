@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <transition name="slidey-fade">
+        <!--<transition name="slidey-fade">-->
             <div v-show="elect.set">
                 <div class="bg-color must">
                     <div class="right item-child">
@@ -447,12 +447,12 @@
                                 </div>
                             </span>
                             <input class="input-mes-a" type="text" v-model="fourthArea" @click.stop="airportFn4" >
-                            <airCompanySearch class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 25px;left: -8px;"></airCompanySearch>
+                            <airCompanySearch class="aisx" v-on:resData="resData4" :searchText="fourthArea" v-show="isSearch4" style="top: 26px;left: -8px;"></airCompanySearch>
                         </div>
                     </div>
                 </div>
             </div>
-        </transition>
+        <!--</transition>-->
         <div class="sixth" v-if="submitData2Click == false">
             <button class="btn-a btn-blue" @click="submitData2ClickFn" v-show="role.role != 2">委托代理</button>
             <button class="btn-b btn-blue" @click.stop="submitData">确认发布</button>
@@ -1388,10 +1388,19 @@
                 this.fourthArea = ''; // 讲定向发布输入框置空
                 this.directionPublicCityShow = true;
                 if(this.directionPublicCity.length < 5) {
-                    this.directionPublicCity.push({
-                        name: data.name,
-                        id: data.id,
-                    });
+                    let len = this.directionPublicCity.length;
+                    let flag = true;
+                    for(let i = 0; i < len; i++) {
+                        if(this.directionPublicCity[i].id === data.id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        this.directionPublicCity.push({
+                            name: data.name,
+                            id: data.id,
+                        });
+                    }
                 }
                 this.$nextTick(() => {
                     this.moreShowFn();
@@ -1880,6 +1889,7 @@
         color: $icon-color;
         background: #F5F5F5;
         white-space: nowrap;
+        font-weight: bold;
     }
     .little-label-close {
         display: flex;
@@ -2232,7 +2242,7 @@
             }
         }
         .third-a {
-            padding: 27px 0;
+            padding: 27px 0 17px 0;
             height: 26px;
             line-height: 26px;
             .right {
@@ -2264,7 +2274,7 @@
             padding: 17px 0;
         }
         .third-d {
-            padding: 17px 0 21px 0;
+            padding: 17px 0 27px 0;
             /*height: 62px;*/
             .right {
                 align-items: flex-start;
