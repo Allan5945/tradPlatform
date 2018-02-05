@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <transition name="slidey-fade">
+        <!--<transition name="slidey-fade">-->
             <div v-show="elect.set">
                 <div class="bg-color must">
                     <div class="right item-child">
@@ -416,7 +416,7 @@
                     </div>
                 </div>
             </div>
-        </transition>
+        <!--</transition>-->
         <div class="sixth">
             <button class="btn-b btn-blue" @click.stop="submitData2">确认发布</button>
             <button class="btn-c btn-cancel" @click="closeThis">取消</button>
@@ -1276,10 +1276,19 @@
                 this.fourthArea = ''; // 讲定向发布输入框置空
                 this.directionPublicCityShow = true;
                 if(this.directionPublicCity.length < 5) {
-                    this.directionPublicCity.push({
-                        name: data.name,
-                        id: data.id,
-                    });
+                    let len = this.directionPublicCity.length;
+                    let flag = true;
+                    for(let i = 0; i < len; i++) {
+                        if(this.directionPublicCity[i].id === data.id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        this.directionPublicCity.push({
+                            name: data.name,
+                            id: data.id,
+                        });
+                    }
                 }
                 this.$nextTick(() => {
                     this.moreShowFn();
@@ -1768,6 +1777,7 @@
         color: $icon-color;
         background: #F5F5F5;
         white-space: nowrap;
+        font-weight: bold;
     }
     .little-label-close {
         display: flex;
@@ -2120,7 +2130,7 @@
             }
         }
         .third-a {
-            padding: 27px 0;
+            padding: 27px 0 17px 0;
             height: 26px;
             line-height: 26px;
             .right {
@@ -2152,7 +2162,7 @@
             padding: 17px 0;
         }
         .third-d {
-            padding: 17px 0 21px 0;
+            padding: 17px 0 27px 0;
             /*height: 62px;*/
             .right {
                 align-items: flex-start;

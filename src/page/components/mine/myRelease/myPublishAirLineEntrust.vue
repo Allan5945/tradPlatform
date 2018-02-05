@@ -124,7 +124,18 @@
                             <span v-if="myData.loadfactorsexpect != null && myData.loadfactorsexpect != ''">{{myData.loadfactorsexpect}}%</span>
                             <span v-else>-</span>
                         </div>
-                        <div class="item-height">{{myData.periodValidity || '-'}}</div>
+                        <div class="item-height" style="display: flex; position: relative;">{{periodValidity}}止
+                            <span class="icon-item" v-if="myData.demandprogress == 7" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
+                            <div v-if="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px; line-height: normal;">
+                                <div class="selec-data">
+                                    <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
+                                    <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
+                                    <div class="confirm-btn btn" @click="getMyDate1">确定</div>
+                                    <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                                </div>
+                                <calendarCP :initOpt="opt" @changeRangeDate="getDateRange"></calendarCP>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,6 +180,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import airlineReqWrapper from '$src/page/components/airlineReqWrapper.vue'
+    import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
     export default {
         props: ['acceptData'],
         data() {
@@ -186,21 +198,86 @@
                 recallData: {},         //点击“撤回该托管”传的数据
                 id: '',                 // 点击列表获取这条需求id
                 passShow: false,        // 经停区域是否为空
+                calendarShow1: false,   // 日历是否显示
+                calendarInitDay3: '',
+                calendarInitDay4: '',
+                opt: {          //发布有效期
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
             }
+        },
+        watch: {
+            calendarInitDay3: function () {
+                this.setOptFn();
+            },
+            calendarInitDay4: function () {
+                this.setOptFn();
+            },
         },
         mounted() {
             this.id = this.acceptData.id;
             this.getData();
+            this.setOptFn();
         },
         computed: {
+            periodValidity: function () {
+                if(!this.myData.periodValidity) {
+                    return '-';
+                }else {
+                    return this.myData.periodValidity.split('-')[1];
+                }
+            },
             ...vx.mapGetters([
                 'role'
             ]),
         },
         components: {
             airlineReqWrapper,  // 委托航线需求
+            calendarCP,
         },
         methods: {
+            // 日历
+            setOptFn: function () {
+                this.opt.start = this.calendarInitDay3;
+                this.opt.end = this.calendarInitDay4;
+            },
+            editCalendarFn: function () {
+                this.calendarShow1 = !this.calendarShow1;
+            },
+            getDateRange: function (rd) {  // 发布有效期
+                this.calendarInitDay3 = rd[0];
+                this.calendarInitDay4 = rd[1];
+            },
+            getMyDate1: function () {//我发布的需求，修改有效期
+                if (this.calendarInitDay3 && this.calendarInitDay4) {
+                    this.periodValidity0 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
+                    this.calendarShow1 = false;
+                    let editDate = {};
+                    editDate.id = this.id;
+                    editDate.periodValidity = this.periodValidity0;
+                    this.$ajax({
+                        url:"/demandUpdate",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: editDate
+                    }) .then((response) => {
+                        if(response.data.opResult === '0'){
+                            this.open6(`有效期修改成功！`);
+                            this.getData();
+                        }else{
+                            this.open8(`错误代码：${response.data.opResult}`);
+                        }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                    }) .catch((error) => {
+                        console.log(error);
+                    });
+                } else {
+                }
+            },
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
@@ -228,6 +305,8 @@
                 }) .then((response) => {
                     if(response.data.opResult == 0) {
                         this.myData = response.data.data;
+                        this.calendarInitDay3 = this.myData.periodValidity.split('-')[0];
+                        this.calendarInitDay4 = this.myData.periodValidity.split('-')[1];
                         // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
                         // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
                         if(this.myData.demandstate == 2
@@ -349,8 +428,83 @@
 </script>
 <style lang="scss" scoped>
     [v-cloak] {
-        display: none;
+        display: none !important;
     }
+    /*日历样式*/
+    #search {
+        padding-top: 100px;
+    }
+
+    .left-side-box {
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+    .calendar-box {
+        position: absolute;
+        width: 540px;
+        height: 270px;
+        padding: 20px 10px 10px 10px;
+        z-index: 1;
+    }
+
+    .calendar-box .selec-data {
+        height: 30px;
+        font-size: 12px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .calendar-box .selec-data input {
+        height: 100%;
+        width: 75px;
+        font-size: 12px;
+        padding-left: 15px;
+        border: 0;
+        outline: none;
+        border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+    }
+
+    .calendar-box .selec-data span {
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+    }
+
+    .selec-data .btn {
+        position: absolute;
+        top: 0;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 100px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .selec-data .confirm-btn {
+        right: 0;
+        width: 60px;
+        color: #ffffff;
+        background-color: #3c78ff;
+    }
+
+    .selec-data .cancel-btn {
+        width: 50px;
+        color: rgba(96, 94, 124, .6);
+        box-sizing: border-box;
+        border: 1px solid rgba(96, 94, 124, .6);
+        right: 64px;
+    }
+
+    .popup {
+        border-radius: 4px;
+        opacity: 1;
+        background-color: white;
+        box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+    }
+
+    /*********/
     /*多行省略号，兼容多个浏览器*/
     @mixin line-clamp($lines, $line-height: 20px) {
         text-overflow: ellipsis;
