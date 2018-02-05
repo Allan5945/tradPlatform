@@ -352,24 +352,27 @@
                     this.formFinish =false;
                 }
             },*/
-            'intendedDpt':function(val){
+            'qyCode3':function(val){
                 if(val){
-                    if(val == this.intendedPst||val == this.intendedArrv){
+                    if(val == this.qyCode4||val == this.qyCode5){
                         this.intendedDpt = '';
+                        this.qyCode3 = '';
                     }
                 }
             },
-            'intendedPst':function(val){
+            'qyCode4':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.intendedArrv){
+                    if(val == this.qyCode3||val == this.qyCode5){
                         this.intendedPst = '';
+                        this.qyCode4 = '';
                     }
                 }
             },
-            'intendedArrv':function(val){
+            'qyCode5':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.intendedPst){
+                    if(val == this.qyCode3||val == this.qyCode4){
                         this.intendedArrv = '';
+                        this.qyCode5 = '';
                     }
                 }
             },
@@ -423,30 +426,40 @@
                         this.msg = this.acceptData.days;
                         this.isSel = true;
                     }
-                    if(this.acceptData.intendedAirlines){
+                     if(this.acceptData.intendedAirlines){
                         this.intendedDpt = this.acceptData.intendedAirlines[0].dptName;
+                        this.intendedDpt1 = this.intendedDpt;
                         this.qyCode3 = this.acceptData.intendedAirlines[0].dpt;
-                        this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
-                        this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
-                        this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
-                        this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
+                        if(this.acceptData.intendedAirlines[0].pst !== ''){
+                          this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
+                          this.intendedPst1 =  this.intendedPst;
+                          this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
+                        }
+                        if(this.acceptData.intendedAirlines[0].arrv !== ''){
+                          this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
+                          this.intendedArrv1 = this.intendedArrv;
+                          this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
+                        }
                     }
                     this.airplaneTyp = this.acceptData.aircrfttyp;
+                    this.airplaneTyp1 = this.airplaneTyp;
 
                     this.qyCode = this.acceptData.dpt;
                     if(this.qyCode){
                         this.searchText = this.acceptData.dptNm;
+                        this.searchText1 = this.searchText;
                     }
 
                     this.airCompanyId = this.acceptData.capacitycompany;
                     if( this.airCompanyId){
                         this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                        this.airCompany1 = this.airCompany;
                     }
 
                     this.seat = this.acceptData.seating;
                     this.hourcost = this.acceptData.hourscost;
 
-                    this.dispatch = this.acceptData.scheduling == '0'? true:false ;
+                    this.dispatch = this.acceptData.scheduling == '0'? true:false;
                     if(this.dispatch){
                         this.acceptData.airportForSchedulines.forEach((val) => {
                              this.searchData.push({
@@ -461,8 +474,8 @@
 
                     this.myDate = this.acceptData.periodValidity;
 
-                    this.post = this.acceptData.publicway;
-                     if(this.post == '3'){
+                    //this.post = this.acceptData.publicway;
+                    /* if(this.post == '3'){
                         this.acceptData.directions.forEach((val) => {
                              this.searchData1.push({
                                 name: val.airlnCdName,
@@ -470,7 +483,7 @@
                             });
                         });
                         this.directionPublicShow = true;
-                    }
+                    }*/
             },
              getNeed: function(i) {
                 this.msg = this.stateType[i];
@@ -1132,8 +1145,9 @@
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:20px 0;
+        padding:20px 0;
         position:relative;
+        border-top:1px solid rgba(151,151,151,.3);
         >div{
           height:40px;
           line-height:40px;

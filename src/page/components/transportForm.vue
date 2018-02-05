@@ -1086,7 +1086,7 @@
         justify-content: space-between;
         padding:0 20px;
         padding-bottom:20px;
-        border-bottom:1px solid rgba(151,151,151,.3);
+        //border-bottom:1px solid rgba(151,151,151,.3);
     }
     .form-box{
         width:240px;
@@ -1183,6 +1183,7 @@
         left:0;
         top:0;
         width:20px;
+        height:25px;
         text-align:center;
         border-right:1px solid rgba(151,151,151,.3);
     }
@@ -1202,8 +1203,9 @@
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:20px 0;
+        padding:20px 0;
         position:relative;
+        border-top: 1px solid rgba(151, 151, 151, 0.3);
         >div{
           height:40px;
           line-height:40px;

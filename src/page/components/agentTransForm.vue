@@ -831,6 +831,7 @@
         }
         .t-optional{
             margin-top:10px;
+            margin-bottom:50px;
         }
 
     }
@@ -855,7 +856,7 @@
         justify-content: space-between;
         padding:0 20px;
         padding-bottom:20px;
-        border-bottom:1px solid rgba(151,151,151,.3);
+        //border-bottom:1px solid rgba(151,151,151,.3);
     }
     .form-box{
         width:240px;
@@ -942,6 +943,7 @@
         height:26px;
         width:146px;
         margin-left:14px;
+        box-sizing:border-box;
         border:1px solid rgba(151,151,151,.3);
         border-radius:5px;
         padding:0 22px 0 44px;
@@ -952,6 +954,7 @@
         left:0;
         top:0;
         width:20px;
+        height:25px;
         text-align:center;
         border-right:1px solid rgba(151,151,151,.3);
     }
@@ -971,7 +974,8 @@
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:20px 0;
+        padding:20px 0;
+        border-top: 1px solid rgba(151, 151, 151, 0.3);
         >div{
           height:40px;
           line-height:40px;

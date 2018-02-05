@@ -1,4 +1,4 @@
-<template>
+nikai<template>
     <div class="wrapper">
         <div class="container" id="airlineAffirm" @click="closeAll">
             <div class="container-top">
@@ -237,7 +237,7 @@
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
  				<calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
-                                
+
                             </div>
                         </div>
                         <div class="left item-child">
@@ -569,13 +569,13 @@
                 accept22Checked: true,
                 accept31Checked: false,
                 accept32Checked: true,
-               
+
                 opt0: {     //拟开时间
                     start: '',
                     end: '',
                     isDis: false,
                 },
-                
+
             }
         },
         components: {
@@ -595,7 +595,7 @@
             calendarInitDay2: function () {
                 this.setOptFn0();
             },
-            
+
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
@@ -1978,7 +1978,7 @@
         color: $icon-color;
         background: white;
         cursor: pointer;
-        z-index: 10;
+        z-index: 9;
     }
     .dot {
         position: absolute;
@@ -2030,7 +2030,7 @@
         width: 540px;
         height: 270px;
         padding: 20px 10px 10px 10px;
-        z-index: 1;
+        z-index: 10;
     }
 
     .calendar-box .selec-data {
