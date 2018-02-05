@@ -336,25 +336,28 @@
                                 </ul>
                                 <div class="warn" v-show="warn4Show" style="position: absolute; top: 26px; left: 0;">*机型不能为空</div>
                             </div>
-                            <div class="left item-child">
+                            <div class="left item-child" style="position: relative;">
                                 <span class="margin-right">座位数</span>　
                                 <div class="choose-input" style="width: 180px;">
                                     <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" style="border: 0;"><span>人</span>
                                 </div>
+                                <div class="warn" v-show="warn13Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
                         </div>
                         <div class="third-c item">
-                            <div class="right item-child">
+                            <div class="right item-child" style="position: relative;">
                                 <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                                 <div class="choose-input">
                                     <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" style="border: 0;width: 136px;"><span>人</span>
                                 </div>
+                                <div class="warn" v-show="warn14Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
-                            <div class="left item-child">
+                            <div class="left item-child" style="position: relative;">
                                 <span>客座率期望</span>　
                                 <div class="choose-input">
                                     <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" style="border: 0;"><span>%</span>
                                 </div>
+                                <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
                         </div>
                         <div class="third-d item" style="position: relative;">
@@ -370,11 +373,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="left item-child">
+                            <div class="left item-child" style="position:relative;">
                                 <span class="margin-right">拦标价格</span>　
                                 <div class="choose-input">
                                     <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
                                 </div>
+                                <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
                             <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
                         </div>
@@ -487,6 +491,10 @@
                 warn8Show: false,  //始发地为区域，经停、到达必须有一个为意向机场
                 warn9Show: false,  // 始发地、经停地、到达地不能相同
                 warn12Show: false,  //补贴政策警告
+                warn13Show: false,  //座位数
+                warn14Show: false,  //均班客量期望
+                warn15Show: false,  //客座率期望
+                warn16Show: false,  //拦标价格
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -648,6 +656,57 @@
             calendarCP,
         },
         watch: {
+            seatingNum: function() {
+                let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
+                if(seatingNum == '') {
+                    this.warn13Show = false;
+                }else {
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(seatingNum)) { // 输入必须为数字的判断
+                        this.warn13Show = false;
+                    }else {
+                        this.warn13Show = true;
+                    }
+                }
+            },
+            avgguestExpect: function() {
+                let avgguestExpect = this.avgguestExpect.replace(/(^\s*)|(\s*$)/g,"");
+                if(avgguestExpect == '') {
+                    this.warn14Show = false;
+                }else{
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(avgguestExpect)) { // 输入必须为数字的判断
+                        this.warn14Show = false;
+                    }else {
+                        this.warn14Show = true;
+                        return
+                    }
+                }
+            },
+            loadfactorsExpect: function() {
+                let loadfactorsExpect = this.loadfactorsExpect.replace(/(^\s*)|(\s*$)/g,"");
+                if(loadfactorsExpect == '') {
+                    this.warn15Show = false;
+                }else {
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(loadfactorsExpect)) { // 输入必须为数字的判断
+                        this.warn15Show = false;
+                    }else {
+                        this.warn15Show = true;
+                        return
+                    }
+                }
+            },
+            blockbidPrice: function() {
+                let blockbidPrice = this.blockbidPrice.replace(/(^\s*)|(\s*$)/g,"");
+                if(blockbidPrice == '') {
+                    this.warn16Show = false;
+                }else {
+                    if (/^[0-9]+\.?[0-9]{0,9}$/.test(blockbidPrice)) { // 输入必须为数字的判断
+                        this.warn16Show = false;
+                    } else {
+                        this.warn16Show = true;
+                        return
+                    }
+                }
+            },
             typeChoose: function () {
                 this.warn4Show = false;
             },
@@ -901,18 +960,58 @@
                     req.scrollTop = 550;
                     return
                 }
-                // 输入必须为数字的判断
-                /*// seatingNum：座位数；avgguestExpect: 均班客量期望；loadfactorsExpect: 客座率期望；blockbidPrice: 拦标价格；
                 let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
-                if(seatingNum != '' && /^[0-9]+.?[0-9]*$/.test(seatingNum) == false) {
-                    this.open8('false');
-                    return
-                }*/
+                let avgguestExpect = this.avgguestExpect.replace(/(^\s*)|(\s*$)/g,"");
+                let loadfactorsExpect = this.loadfactorsExpect.replace(/(^\s*)|(\s*$)/g,"");
+                let blockbidPrice = this.blockbidPrice.replace(/(^\s*)|(\s*$)/g,"");
+                if(seatingNum == '' ) {
+                    this.warn13Show = false;
+                }else{
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(seatingNum)) { // 输入必须为数字的判断
+                        this.warn13Show = false;
+                    }else {
+                        this.warn13Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(avgguestExpect == '') {
+                    this.warn14Show = false;
+                }else{
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(avgguestExpect)) { // 输入必须为数字的判断
+                        this.warn14Show = false;
+                    }else {
+                        this.warn14Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(loadfactorsExpect == '') {
+                    this.warn15Show = false;
+                }else {
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(loadfactorsExpect)) { // 输入必须为数字的判断
+                        this.warn15Show = false;
+                    }else {
+                        this.warn15Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(blockbidPrice == '') {
+                    this.warn16Show = false;
+                }else {
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(blockbidPrice)) { // 输入必须为数字的判断
+                        this.warn16Show = false;
+                    }else {
+                        this.warn16Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
 
                 this.sendDataFn();
                 this.sendData.demandtype = '0';      //必填 需求种类共3种（0:航线需求、1:运力需求、2:航线托管需求）
 
-//                console.info(this.sendData);
                 this.$ajax({
                     url:"/demandAdd",
                     method: 'post',
@@ -958,6 +1057,54 @@
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
+                }
+                let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
+                let avgguestExpect = this.avgguestExpect.replace(/(^\s*)|(\s*$)/g,"");
+                let loadfactorsExpect = this.loadfactorsExpect.replace(/(^\s*)|(\s*$)/g,"");
+                let blockbidPrice = this.blockbidPrice.replace(/(^\s*)|(\s*$)/g,"");
+                if(seatingNum == '' ) {
+                    this.warn13Show = false;
+                }else{
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(seatingNum)) { // 输入必须为数字的判断
+                        this.warn13Show = false;
+                    }else {
+                        this.warn13Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(avgguestExpect == '') {
+                    this.warn14Show = false;
+                }else{
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(avgguestExpect)) { // 输入必须为数字的判断
+                        this.warn14Show = false;
+                    }else {
+                        this.warn14Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(loadfactorsExpect == '') {
+                    this.warn15Show = false;
+                }else {
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(loadfactorsExpect)) { // 输入必须为数字的判断
+                        this.warn15Show = false;
+                    }else {
+                        this.warn15Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(blockbidPrice == '') {
+                    this.warn16Show = false;
+                }else {
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(blockbidPrice)) { // 输入必须为数字的判断
+                        this.warn16Show = false;
+                    }else {
+                        this.warn16Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
                 }
                 this.sendDataFn();
                 this.sendData.demandtype = '3';      //必填 需求种类共5种（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
@@ -1055,6 +1202,10 @@
                 this.warn10Show = false;
                 this.warn11Show = false;
                 this.warn12Show = false;
+                this.warn13Show = false;
+                this.warn14Show = false;
+                this.warn15Show = false;
+                this.warn16Show = false;
                 this.replaceAreaBus();
             },
             clickClose1Fn: function () {
