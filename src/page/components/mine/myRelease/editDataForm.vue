@@ -328,7 +328,8 @@
         props: ['acceptData'],
         computed:{
             ...vx.mapGetters([
-                'role'
+                'role',
+                'companyList'
             ]),
             num: function(){
                 return this.tip.length <= 200? this.tip.length: 200;
@@ -412,10 +413,14 @@
                     if(this.acceptData.intendedAirlines){
                         this.intendedDpt = this.acceptData.intendedAirlines[0].dptName;
                         this.qyCode3 = this.acceptData.intendedAirlines[0].dpt;
-                        this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
-                        this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
-                        this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
-                        this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
+                        if(this.acceptData.intendedAirlines[0].pst !== ''){
+                          this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
+                          this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
+                        }
+                        if(this.acceptData.intendedAirlines[0].arrv !== ''){
+                          this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
+                          this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
+                        }
                     }
                     this.airplaneTyp = this.acceptData.aircrfttyp;
 
@@ -933,7 +938,7 @@
                 }
 
                 let demandData = {},
-                    time = this.timeStart +'-'+ this.timeEnd;
+                    time = this.timeStart +','+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
@@ -1063,9 +1068,12 @@
             if(this.role.role == 2){
                 this.btnShow = false;
             }
+
+            let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
-            this.airCompany = this.role.companyName;
+            this.airCompany = a.companyName;
+            this.airCompanyId = a.id;
         }
 
     }
