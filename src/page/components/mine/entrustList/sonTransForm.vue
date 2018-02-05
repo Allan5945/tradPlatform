@@ -169,8 +169,9 @@
                          <div class="confirm-btn btn" @click="getMyDate">确定</div>
                          <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                        </div>
-                       <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1" :dis="false"></calendar>
-                       <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2" :dis="false"></calendar>
+                      <!--  <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1" :dis="false"></calendar>
+                      <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2" :dis="false"></calendar> -->
+                      <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
                      </div>
                    </div>
                     <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
@@ -210,7 +211,7 @@
         </div>
         <div class="t-btn">
             <div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>
-            <div class="confirm-btn " @click="agentConfirm(4)" v-if="isAgent">确认发布</div>
+            <div class="confirm-btn "  v-if="isAgent">确认发布</div>
             <div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>
             <div class="cancel-btn " @click="cancel">取消</div>
             <p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>
@@ -219,7 +220,7 @@
     </div>
 </template>
 <script>
- import calendar from '$src/page/components/publicTools/calendar/calendar'
+ import calendar from '$src/page/components/publicTools/calendar/calendarCP'
  import * as vx from 'vuex'
  import airportS from './../../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from './../../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
@@ -330,7 +331,14 @@
             ]),
             num: function(){
                 return this.tip.length <= 200? this.tip.length: 200;
-            }
+            },
+             initdateData: function(){
+                let data = {};
+                    data.start = this.calendarInitDay1;
+                    data.end = this.calendarInitDay2;
+                    data.isDis = false;
+                return data;
+              }
         },
         mounted() {
             this.acceptDataFn();
@@ -390,6 +398,11 @@
                 if(!this.allFormShow){
                     this.intendedDpt = this.searchText;
                     this.qyCode3 = this.qyCode;
+                }
+            },
+             'dispatch':function(val){
+                if(!val){
+                    this.isError9 = false;
                 }
             }
 
@@ -479,6 +492,10 @@
                 }else{
 
                 }
+            },
+            getDateRange:function(rd){
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
             },
             openSearch: function(){
                 this.isSearch =true;

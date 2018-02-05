@@ -109,39 +109,12 @@
                     })
                 })
             },
-            postPass:function () {//审核通过
-                let that = this;
-                that.changeState(0).then((val)=>{
-                    that.detailData.demandstate = "审核通过";
-                    alert("success:审核通过");
-                },(err)=>{
-                    that.detailData.demandstate = "审核通过";
-                    alert("faild:审核通过");
-                });
-            },
-            //拒绝
-            postReason:function () {//提交
-                let that = this;
-                that.show.swrapper = false;
-                that.changeState(1,that.reason.text).then((val)=>{
-                    that.detailData.demandstate = "审核未通过";
-                    that.metaData.rek = that.reason.text;
-                    alert("success:审核未通过");
-                },(err)=>{
-                    that.detailData.demandstate = "审核未通过";
-                    alert("faild:审核未通过");
-                });
-            },
             contactTaimei: function () {    // 聊天功能(传：demandEmployeeId（需求用户id）,employeeId（用户id）,id（此条id）)
                 let chatObj = {
                     demandEmployeeId: 1,
                     employeeId: this.metaData.data.employeeId,
                 };
                 tabulationBoxTrigger.$emit('addChat',chatObj);
-            },
-            closeReason: function () {//取消
-                this.reason.text = '';
-                this.show.swrapper = false;
             },
             getScrollWidth: function () {
                 let noScroll, scroll, oDiv = document.createElement("DIV");

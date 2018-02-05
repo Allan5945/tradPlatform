@@ -101,12 +101,15 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                 }
 
                 if(this.qyCode !== ''){
-                     this.$emit('search',this.qyCode);
-                     this.$store.dispatch('searchInfo', {
+                    let data = {
                         qyCode : this.qyCode,
                         selcType :this.selcType,
                         searchText:this.airportText
-                    });
+                    };
+                     this.$emit('search',this.qyCode);
+                     this.$store.dispatch('searchInfo',data);
+                     this.$local.clear();
+                     this.$local.set(data);
                 }else{
                     this.$emit('search', this.searchInfo.qyCode);
                 }

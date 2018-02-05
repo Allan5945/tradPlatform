@@ -70,6 +70,11 @@
                                 type: 'success',
                                 duration:2000
                             });*/
+                        }else if(response.data.opResult == '4'){
+                             setTimeout(function(){
+                                that.iconShow = false;
+                                that.$emit('payFail');
+                            },1000);
                         }else{
                             setTimeout(function(){
                                 that.$emit('cancel');

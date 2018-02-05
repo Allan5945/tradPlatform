@@ -214,8 +214,9 @@
       </div>
     <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @close-this="closeReForm" :acceptData = "planData"></reIntentForm>
-    <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog"></transDialog>
+    <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog" @payFail="payFail"></transDialog>
     <paySuccess v-show="payDialog" @cancel="closePaySuccess" ></paySuccess>
+    <payFailDialog @cancel="cancelPayFail" v-if="payFailShow"></payFailDialog>
     </div>
 </template>
 
@@ -227,6 +228,8 @@
  import reIntentForm from '$src/page/components/trans_detail/reIntentForm.vue'
  import transDialog from '$src/page/components/trans_detail/transDialog.vue'
  import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue'
+ import payFailDialog  from '$src/page/components/trans_detail/payFailOfBalance.vue'
+
  export default {
      data(){
          return{
@@ -245,6 +248,7 @@
              chatShow:true,
              confirmShow:false,
              schedulListShow:false,
+             payFailShow:false,
              planData:{},
              detailData:{},
              intentionCount:0,
@@ -256,7 +260,8 @@
             sureForm,
             transDialog,
             paySuccess,
-            reIntentForm
+            reIntentForm,
+            payFailDialog
       },
      props:['resData'],
      methods:{
@@ -422,6 +427,14 @@
          sureDialog:function(){
             this.reFormShow = false;
             this.payDialog = true;
+         },
+          payFail:function(){
+            this.reFormShow = false;
+            this.dialog = false;
+            this.payFailShow = true;
+         },
+         cancelPayFail:function(){
+            this.payFailShow = false;
          },
          closePaySuccess:function(){
             this.payDialog = false;

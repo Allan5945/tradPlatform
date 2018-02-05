@@ -167,11 +167,14 @@ import myPic from '$src/static/img/airport1.png';
             },
             getInfo(){
                 if(this.qyCode !== ''){
-                     this.$store.dispatch('searchInfo', {
+                    let data = {
                         qyCode : this.qyCode,
                         selcType :this.selcType,
                         searchText:this.airportText
-                    });
+                    };
+                     this.$store.dispatch('searchInfo', data);
+                     this.$local.clear();
+                     this.$local.set(data);
                 }
                  if(this.selcType == '机场'){
                     this.$router.push({ path: '/index/information/airport'});

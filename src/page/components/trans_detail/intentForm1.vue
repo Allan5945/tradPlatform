@@ -3,7 +3,7 @@
         <div class="container" id="airlineWrite" @click="closeAll">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="close-icon iconfont" @click="closeThis">&#xe62c;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -25,7 +25,7 @@
             </div>
             <div class="choose">
                 <div class="items bg-color" style="position: relative; padding-bottom: 20px;">
-                    <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
+                    <!-- <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div> -->
                     <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地、经停地、到达地不能相同！</div>
                     <div class="first">
                         <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1"
@@ -342,6 +342,7 @@
                             </div>
                         </div>
                         <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
+                        <div class="warn" v-show="warn13Show" style="position: absolute; bottom: 0; right: 140px;">*请选择调度机场</div>
                     </div>
                     <div class="third-e item">
                         <div class="right item-child">
@@ -426,6 +427,7 @@
                 warn10Show: false,  //运力归属警告
                 warn11Show: false,  //运力基地警告
                 warn12Show: false,  //补贴政策警告
+                warn13Show: false,  //调度机场警告
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -585,7 +587,36 @@
         watch: {
             typeChoose: function () {
                 this.warn4Show = false;
-            }
+            },
+            schedulingShow:function(val){
+                if(!val){
+                     this.warn13Show = false;
+                }
+            },
+             'firArea':function(val){
+                if(val){
+                    if(val == this.secArea||val == this.thirdArea){
+                        this.firArea = '';
+                        this.sendData.dpt = '';
+                    }
+                }
+            },
+            'secArea':function(val){
+                if(val){
+                    if(val == this.intendedDpt||val == this.thirdArea){
+                        this.secArea = '';
+                        this.sendData.pst = '';
+                    }
+                }
+            },
+            'thirdArea':function(val){
+                if(val){
+                    if(val == this.firArea||val == this.secArea){
+                        this.thirdArea = '';
+                        this.sendData.arrv  = '';
+                    }
+                }
+            },
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
@@ -671,6 +702,9 @@
                 this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期望
                 if(this.acceptData.capacityCompany != null){
                     this.airCompany = this.acceptData.capacityCompany.airlnCd; // 运力归属
+                    this.airCompanyId = this.acceptData.capacitycompany;
+                }else{
+                    //this.airCompany ="***";
                 }
                 this.hourConst = this.acceptData.hourscost; // 小时成本
                 //this.remarkMsg = this.acceptData.remark; // 其他说明
@@ -688,20 +722,21 @@
                         this.startTime1Show = this.acceptData.dptTime.split('-')[0];
                         this.endTime1Show = this.acceptData.dptTime.split('-')[1];
                     }*/
-                }
-                // 判断经停类型（0：机场，1：区域）
-                if(this.acceptData.intendedAirlines) {
-                    this.space2ShowTitle = this.spaceList[1];
-                    this.space2Fn(this.spaceList[1]);
-                    this.secArea = this.acceptData.intendedAirlines[0].pstName;
-                    this.qyCode2 = this.acceptData.intendedAirlines[0].pst;
-                }
-                // 判断到达类型（0：机场，1：区域）
-                if(this.acceptData.intendedAirlines) {
-                    this.space3ShowTitle = this.spaceList[1];
-                    this.space3Fn(this.spaceList[1]);
-                    this.thirdArea = this.acceptData.intendedAirlines[0].arrvName;
-                    this.qyCode3 = this.acceptData.intendedAirlines[0].arrv;
+
+                    // 判断经停类型（0：机场，1：区域）
+                    if(this.acceptData.intendedAirlines[0].pst !== '') {
+                        this.space2ShowTitle = this.spaceList[1];
+                        this.space2Fn(this.spaceList[1]);
+                        this.secArea = this.acceptData.intendedAirlines[0].pstName;
+                        this.qyCode2 = this.acceptData.intendedAirlines[0].pst;
+                    }
+                    // 判断到达类型（0：机场，1：区域）
+                    if(this.acceptData.intendedAirlines[0].arrv !== '') {
+                        this.space3ShowTitle = this.spaceList[1];
+                        this.space3Fn(this.spaceList[1]);
+                        this.thirdArea = this.acceptData.intendedAirlines[0].arrvName;
+                        this.qyCode3 = this.acceptData.intendedAirlines[0].arrv;
+                    }
                 }
                 // 是否接收调度(0:接收,1:不接收)，这个表单没有
                 this.scheduling = this.acceptData.scheduling;
@@ -795,7 +830,7 @@
                     this.warn3Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
+                }/*if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
                     if((this.pstState == 0 && this.sendData.pst != '')
                         || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
                         this.warn8Show = false;
@@ -804,7 +839,8 @@
                         req.scrollTop = 0;
                         return
                     }
-                }/*if(this.sendData.pst != '' || this.sendData.arrv != '') { //始发、经停、到达不能相同
+                }*/
+               /* if(this.sendData.pst != '' && this.sendData.arrv != '') { //始发、经停、到达不能相同
                     if(this.sendData.dpt == this.sendData.pst
                         || this.sendData.dpt == this.sendData.arrv
                         || this.sendData.pst == this.sendData.arrv) {
@@ -847,7 +883,12 @@
                     req.scrollTop = 250;
                     return
                 }
-                //delete this.sendData.airportForSchedulines;
+                if(this.schedulingShow && this.directionPublicCity.length == 0){
+                    this.warn13Show = true;
+                     req.scrollTop = 250;
+                    return
+                }
+                delete this.sendData.airportForSchedulines;
                 /*if(this.acceptData.chongXinFaQi != '1') {   //chongXinFaQi = 0:不是重新发起，chongXinFaQi = 1：是重新发起
                     this.demandId = this.acceptData.id;
                     delete this.sendData.id;
@@ -1399,7 +1440,7 @@
                         });
                     }
                 }
-
+                this.warn13Show = false;
                 this.$nextTick(() => {
                     this.moreShowFn();
                 })
@@ -1547,6 +1588,7 @@
                 }if(item == '无补贴'){
                     this.subsidyCode = 5;
                 }
+                this.warn12Show = false;
             },
             //点击定向发布
             directionPublic: function () {
@@ -2034,7 +2076,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 16;
+        z-index:21;
     }
 
     .container {
@@ -2081,7 +2123,8 @@
             justify-content: center;
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            border:1px solid #ededed;
+            color:#3C78FF;
             border-radius: 100%;
             cursor: pointer;
         }
