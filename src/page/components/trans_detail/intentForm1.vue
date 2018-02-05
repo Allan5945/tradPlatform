@@ -236,12 +236,7 @@
                                     <div class="confirm-btn btn" @click="getMyDate1">确定</div>
                                     <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
                                 </div>
-                                <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
-                                <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2">
-                                    <!-- 可传入初始值 -->
-                                </calendar>
+                                <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
                             </div>
                         </div>
                         <div class="left item-child">
@@ -349,9 +344,9 @@
                             <span class="margin-right" style="white-space: nowrap">运力归属</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany"
-                                       @click.stop="clickClose15Fn" style="border: 0;width: 136px;">
-                                <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-show="isSearch6"
-                                          style="top: 25px; left: 0;"></airCompanySearch>
+                                       @click.stop="clickClose15Fn" style="border: 0;width: 136px;" readonly="readonly">
+                               <!--  <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-show="isSearch6"
+                                         style="top: 25px; left: 0;"></airCompanySearch> -->
                             </div>
                             <div class="warn" v-show="warn10Show" style="position: absolute;top: 26px; left: 0;">*运力归属不能为空</div>
                         </div>
@@ -359,9 +354,9 @@
                             <span>运力基地</span>　
                             <div class="choose-input" style="position: relative;">
                                 <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea"
-                                       @click.stop="clickClose16Fn" style="border: 0;">
-                                <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-show="isSearch4"
-                                          style="top:25px; left: -55px;"></airportS>
+                                       @click.stop="clickClose16Fn" style="border: 0;" readonly="readonly">
+                               <!--  <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-show="isSearch4"
+                                         style="top:25px; left: -55px;"></airportS> -->
                             </div>
                             <div class="warn" v-show="warn11Show" style="position: absolute;top: 26px; left: 0;">*运力基地不能为空</div>
                         </div>
@@ -408,7 +403,7 @@
     import airAreaSearch from '$src/page/components/airAreaSearch.vue'
     import airportS from '$src/page/reuseComponents/airportSearch1.vue'
     import airCompanySearch from '$src/page/reuseComponents/airCompanySearch.vue'
-    import calendar from '$src/page/components/calendar'
+    import calendar from '$src/page/components/publicTools/calendar/calendarCP.vue'
     import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
 
     export default {
@@ -617,25 +612,49 @@
                     }
                 }
             },
+            'qyCode1':function(val){
+                if(val){
+                    if(val == this.qyCode2||val == this.qyCode3){
+                        this.firArea = '';
+                        this.sendData.dpt = '';
+                        this.qyCode1 = '';
+                    }
+                }
+            },
+            'qyCode2':function(val){
+                if(val){
+                    if(val == this.qyCode1||val == this.qyCode3){
+                        this.secArea = '';
+                        this.sendData.pst = '';
+                        this.qyCode2 = '';
+                    }
+                }
+            },
+            'qyCode3':function(val){
+                if(val){
+                    if(val == this.qyCode1||val == this.qyCode2){
+                        this.thirdArea = '';
+                        this.sendData.arrv  = '';
+                        this.qyCode3 = '';
+                    }
+                }
+            },
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
-            /*sendData: function () {
-                let obj = {};
-                obj = JSON.parse(JSON.stringify(this.acceptData));
-                return obj;
-            },*/
+            initdateData: function(){
+                let data = {};
+                    data.start = this.calendarInitDay1;
+                    data.end = this.calendarInitDay2;
+                    data.isDis = false;
+                    //console.log(data)
+                return data;
+            },
             ...vx.mapGetters([
                 'role'
             ])
-           /* sailingtime: function () {
-                return this.calendarInitDay1 + ',' + this.calendarInitDay2;
-            },*/
-            /*periodValidity: function () {
-                return this.calendarInitDay3 + '-' + this.calendarInitDay4;
-            }*/
         },
         /*created() {
             this.sendData = this.acceptData;
@@ -646,7 +665,32 @@
             this.space3Fn();
             this.acceptDataFn();
         },
+         beforeMount:function () {
+             this.myDate2Fn();
+        },
         methods: {
+             /*双日历*/
+            getDateRange:function(rd){//拟开时间
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
+            },
+             // 设置发布有效期默认值
+            myDate2Fn: function () {
+                let today = new Date(),
+                    day = today.getDate(), //号数
+                    mon = today.getMonth() + 1, //月份
+                    year = today.getFullYear(), //年份
+                    date = today.setMonth(today.getMonth()+3), //三个月后的时间
+                    mon2 =  today.getMonth(date) + 1,
+                    year2 =  today.getFullYear(date),
+                    day2 =  today.getDate(date);
+                if (mon < 10) mon = "0" + mon;
+                if (mon2 < 10) mon2 = "0" + mon2;
+                if (day < 10) day = "0" + day;
+                if (day2 < 10) day2 = "0" + day2;
+                this.calendarInitDay1 =  year+"."+mon+"."+day;
+                this.calendarInitDay2 = year+"."+mon+"."+day;
+            },
             /*新增表单内容*/
             checkboxClickFn: function () {
                 this.elect.set = !this.elect.set;
@@ -699,13 +743,8 @@
                 this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
                /* this.seatingNum = this.acceptData.seating; // 座位数*/
                 this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
-                this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期望
-                if(this.acceptData.capacityCompany != null){
-                    this.airCompany = this.acceptData.capacityCompany.airlnCd; // 运力归属
-                    this.airCompanyId = this.acceptData.capacitycompany;
-                }else{
-                    //this.airCompany ="***";
-                }
+                this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期
+                this.airCompany ="***";// 运力归属
                 this.hourConst = this.acceptData.hourscost; // 小时成本
                 //this.remarkMsg = this.acceptData.remark; // 其他说明
                 // 判断始发类型（0：机场，1：区域）

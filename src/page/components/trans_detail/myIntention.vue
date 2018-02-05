@@ -79,7 +79,7 @@
                         <div>有效期</div>
                         <div v-if="detailData.periodValidity" style="display:flex;">
                         {{detailData.periodValidity.split('-')[1]||'-'}}止
-                        <span class="iconfont" style="font-size:1.6rem;cursor:pointer;" @click="calendarShow=!calendarShow">&#xe653;</span>
+                        <span class="iconfont" style="font-size:1.6rem;cursor:pointer;" @click="calendarShow=!calendarShow" v-if="changeValidityShow">&#xe653;</span>
                         </div>
                         <section v-if="calendarShow" class="calendar-box popup">
                            <div class="selec-data">
@@ -295,7 +295,8 @@
              calendarShow:false,
              calendarInitDay1:'',
              calendarInitDay2:'',
-             myDate:''
+             myDate:'',
+             changeValidityShow:true
          }
      },
      props:['demandId'],
@@ -477,8 +478,8 @@
                     this.planData = response.data.responseList;
 
                      this.calendarShow = false;
-                     //this.calendarInitDay1 = this.detailData.periodValidity.split('-')[0];
-                     this.initDate();
+                     this.calendarInitDay1 = this.detailData.periodValidity.split('-')[0];
+                     //this.initDate();
                      this.calendarInitDay2 = this.detailData.periodValidity.split('-')[1];
 
                     //判断状态
@@ -489,12 +490,14 @@
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = false;
+                      this.changeValidityShow = false;
                     }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
                       this.rePublish = false;
                       this.footShow  = false;
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = true;
+                      this.changeValidityShow = false;
                     }else if(progress == "2"){//2:订单确认
                       this.rePublish = false;
                       this.footShow  = true;
