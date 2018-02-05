@@ -90,6 +90,7 @@ import airportS1 from '../../reuseComponents/airportSearch1.vue'
 import cityS from '../../reuseComponents/citySearch.vue'
 import airCompanyS from '../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
 import * as vx from 'vuex'
+import In from '$src/public/js/tabulationBoxTrigger.js';
 import myPic from '$src/static/img/airport1.png';
     export default {
         data() {
@@ -134,6 +135,9 @@ import myPic from '$src/static/img/airport1.png';
                      this.searchTip = "请输入机场进行查询";
                 }
            }
+        },
+        created(){
+            In.$emit("closeDetailed");
         },
         methods: {
             getType(i){

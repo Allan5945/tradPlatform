@@ -4,8 +4,6 @@
         <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
         <!--运力详情-->
         <transIndex v-if="mes.demandType === 1" @closewindow="closewindow" :mes="mes"></transIndex>
-
-
         <!--航线委托详情-->
         <detailMyPublishAirLineEntrust v-if="mes.demandType === 3 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust>
         <!--运力委托详情-->
@@ -50,6 +48,9 @@
             let _this = this;
             In.$on('demandType',data=>{
                 _this.mes = data;
+            });
+            In.$on('closeDetailed',()=>{
+                _this.mes.demandType = "";
             });
         },
         computed: {

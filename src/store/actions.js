@@ -13,6 +13,9 @@ export default {
     monoData:({commit},vl)=>{
         commit(types.MONODATA,vl)
     },
+    setMonoNata:({commit},vl)=>{
+        commit(types.SETMONONATA,vl)
+    },
     hybridData:({commit},vl)=>{
         commit(types.HYBRIDDATA,vl)
     },

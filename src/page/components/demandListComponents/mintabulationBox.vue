@@ -80,7 +80,7 @@
                                     console.log(error);
                                 });
                         });
-                    } else if (!this.demandList.type && this.demandList.monoPage < this.demandList.monoPage.pageCount) { // 非混合数据
+                    } else if (!this.demandList.type && this.demandList.monoPage < this.demandList.monoData.pageCount) { // 非混合数据
                         this.$store.dispatch('monoData', {v: (this.demandList.monoPage + 1), t: 1}).then(() => {
                             this.$ajax({
                                 url:url,
@@ -90,11 +90,10 @@
                                 },
                                 params: {
                                     page: this.demandList.monoPage,
-                                    code:this.demandList.monoName.code
+                                    itia:this.demandList.monoName.code
                                 }
                             }).then((response) => {
-                                this.$store.dispatch('monoData', {v: response.data.list.list, t: 2}).then(() => {
-                                });
+                                this.$store.dispatch('monoData', {v: response.data.list.list, t: 2}).then(() => {});
                             })
                                 .catch((error) => {
                                     console.log(error);
