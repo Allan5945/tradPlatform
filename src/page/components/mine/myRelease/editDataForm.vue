@@ -475,7 +475,7 @@
 
                     /*this.myDate = this.acceptData.periodValidity;*/
 
-                    this.post = this.acceptData.publicway;
+//                    this.post = this.acceptData.publicway;
                      if(this.post == '3'){
                         this.acceptData.directions.forEach((val) => {
                              this.searchData1.push({
