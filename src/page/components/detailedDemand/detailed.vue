@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'detail-box':show}" @click.self="closewindow">
+    <div :class="{'detail-box':showMc}" @click.self="closewindow">
         <!-- 航线详情-->
         <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
         <!--运力详情-->
@@ -36,21 +36,21 @@
                         demandState:"",
                         demandType:""
                     },   //demand  , demandState 需求状态 ,demandType  需求类型
-                    show:false
+                    showMc:false
                 }
             },
         methods:{
             closewindow(){
                 this.mes.demandType = "";
-                this.show = false;
+                this.showMc = false;
                 In.hierarchy = false;
             }
         },
         mounted(){
             let _this = this;
-            In.$on('demandType',(data,show = true)=>{
+            In.$on('demandType',(data,show = false)=>{
                 _this.mes = data;
-                _this.show = show;
+                _this.showMc = eval(show);
             });
             In.$on('closeDetailed',()=>{
                 _this.mes.demandType = "";
