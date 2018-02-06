@@ -224,13 +224,15 @@
             open6(mes) {  // 成功弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'success'
+                    type: 'success',
+                    duration: 2000,
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'error'
+                    type: 'error',
+                    duration: 2000,
                 });
             },
             // ajax获取的数据，并渲染
@@ -312,7 +314,9 @@
             // 点击“联系客服”
             linkServiceClickFn: function () {
                 let chatObj = {};
-                chatObj.id = null;
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.id = this.myData.id;
+                chatObj.employeeId = 1;
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // 点击表单的“确认”后

@@ -759,13 +759,15 @@
             open6(mes) {  // 成功弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'success'
+                    type: 'success',
+                    duration: 2000,
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'error'
+                    type: 'error',
+                    duration: 2000,
                 });
             },
             // 数据初始化：获取当前登录机场信息
@@ -1051,6 +1053,10 @@
                 this.warn10Show = false;
                 this.warn11Show = false;
                 this.warn12Show = false;
+                this.warn13Show = false;
+                this.warn14Show = false;
+                this.warn15Show = false;
+                this.warn16Show = false;
                 this.replaceAreaBus();
             },
             clickClose1Fn: function () {
@@ -1339,6 +1345,7 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
+                this.firArea = data.name;
                 this.firAreaBus = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;

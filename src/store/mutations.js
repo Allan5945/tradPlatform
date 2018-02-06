@@ -15,18 +15,19 @@ const mutations = {
         state.cityList = vl.cityListData;
         state.companyList = vl.companyListData;
     },
+    [types.SETMONONATA](state,vl) {
+        state.demandList.type = false;
+        state.demandList.monoName = vl.n;
+        state.demandList.monoData = vl.t;
+
+    },
     [types.MONODATA](state,vl) {
-        if(state.demandList.type){
-            state.demandList.type = false;
-        }
         switch (vl.t){
             case 0:
-                state.demandList.monoData = vl.v;
-                state.demandList.monoName = vl.n;
+                state.demandList.monoData= vl.v;
                 break;
             case 1:
-                state.demandList.monoData = vl.v;
-                state.demandList.monoName = vl.n;
+                state.demandList.monoPage = vl.v;
                 break;
             case 2:
                 state.demandList.monoData.list = state.demandList.monoData.list.concat(vl.v);

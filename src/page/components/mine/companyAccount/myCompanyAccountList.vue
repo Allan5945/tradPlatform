@@ -94,6 +94,21 @@
             ]),
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'success',
+                    duration: 2000,
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'error',
+                    duration: 2000,
+                });
+            },
             // ajax获取数据
             getListData: function () {
                 this.$ajax({
@@ -110,7 +125,7 @@
                         this.myAccountData = response.data.account;
                         this.myCardData = response.data.card;
                     }else {
-                        alert('无法请求到数据')
+                        this.open8(`无法请求到数据!`);
                     }
                 }).catch((error) => {
                     console.log(error);

@@ -72,6 +72,21 @@
             this.acceptDataFn();
         },
         methods: {
+            // 改变alert弹出样式
+            open6(mes) {  // 成功弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'success',
+                    duration: 2000,
+                });
+            },
+            open8(mes) {  // 错误弹出的提示
+                this.$message({
+                    message: mes,
+                    type: 'error',
+                    duration: 2000,
+                });
+            },
             acceptDataFn: function () {
                 this.wetherJpg = this.acceptData.wetherJpg;    // 电子凭证图片
                 this.id = this.acceptData.id;
@@ -132,9 +147,9 @@
 //                    console.info('response:')
 //                    console.info(response);
                     if(response.data.opResult == 0) {
-                        alert(`申请电子凭证成功！${response.data.opResult}`);
+                        this.open6(`申请电子凭证成功！${response.data.opResult}`);
                     }else {
-                        alert(`申请电子凭证失败，错误代码： ${response.data.opResult}`);
+                        this.open8(`申请电子凭证失败，错误代码： ${response.data.opResult}`);
                     }
                 }).catch((error) => {
                     console.log(error);

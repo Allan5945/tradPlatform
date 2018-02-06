@@ -97,9 +97,9 @@
                             <div>是否调度</div>
                             <div>{{ ndetailData.schedulingStr || "-" }}</div>
                         </div>
-                        <div style="width: 100%;">
+                        <div style="width: 100%;height:auto;min-height: 40px;">
                             <div>其他说明</div>
-                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
+                            <div style="width: 80%;height:auto;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
                     <template v-if="false">
@@ -196,9 +196,9 @@
                             <div>有效期</div>
                             <div>{{ ndetailData.sailingtime? ndetailData.sailingtime.substr(-10)+" 止" :"-" }}</div>
                         </div>
-                        <div style="width: 100%;">
+                        <div style="width: 100%;height:auto;min-height: 40px;">
                             <div>其他说明</div>
-                            <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
+                            <div style="width: 80%;height:auto;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                         </div>
                     </div>
                     <template v-if="ndetailData.isWeituo">

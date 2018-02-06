@@ -269,28 +269,31 @@
                                 *机型不能为空
                             </div>
                         </div>
-                        <div class="left item-child">
+                        <div class="left item-child" style="position: relative;">
                             <span class="margin-right">座位数</span>　
                             <div class="choose-input" style="width: 180px;">
                                 <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum"
                                        style="border: 0;"><span>人</span>
                             </div>
+                            <div class="warn" v-show="warn13Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
                     </div>
                     <div class="third-c item">
-                        <div class="right item-child">
+                        <div class="right item-child" style="position: relative;">
                             <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect"
                                        style="border: 0;width: 136px;"><span>人</span>
                             </div>
+                            <div class="warn" v-show="warn14Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
-                        <div class="left item-child">
+                        <div class="left item-child" style="position: relative;">
                             <span>客座率期望</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
                                        style="border: 0;"><span>%</span>
                             </div>
+                            <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
                     </div>
                     <div class="third-d item" style="position: relative;">
@@ -361,12 +364,13 @@
                         </div>
                     </div>
                     <div class="third-f item">
-                        <div class="right item-child">
+                        <div class="right item-child" style="position: relative;">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
+                            <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
                     </div>
                 </div>
@@ -418,6 +422,10 @@
                 warn10Show: false,  //运力归属警告
                 warn11Show: false,  //运力基地警告
                 warn12Show: false,  //补贴政策警告
+                warn13Show: false,  //座位数
+                warn14Show: false,  //均班客量期望
+                warn15Show: false,  //客座率期望
+                warn16Show: false,  //小时成本
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -585,6 +593,57 @@
 	    calendarCP,
         },
         watch: {
+            seatingNum: function() {
+                if(this.seatingNum == '' || this.seatingNum == null) {
+                    this.warn13Show = false;
+                }else {
+                    let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(seatingNum) || seatingNum == '') { // 输入必须为数字的判断
+                        this.warn13Show = false;
+                    }else {
+                        this.warn13Show = true;
+                    }
+                }
+            },
+            avgguestExpect: function() {
+                if(this.avgguestExpect == '' || this.avgguestExpect == null) {
+                    this.warn14Show = false;
+                }else{
+                    let avgguestExpect = this.avgguestExpect.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(avgguestExpect) || avgguestExpect == '') { // 输入必须为数字的判断
+                        this.warn14Show = false;
+                    }else {
+                        this.warn14Show = true;
+                        return
+                    }
+                }
+            },
+            loadfactorsExpect: function() {
+                if(this.loadfactorsExpect == '' || this.loadfactorsExpect == null) {
+                    this.warn15Show = false;
+                }else {
+                    let loadfactorsExpect = this.loadfactorsExpect.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(loadfactorsExpect) || loadfactorsExpect == '') { // 输入必须为数字的判断
+                        this.warn15Show = false;
+                    }else {
+                        this.warn15Show = true;
+                        return
+                    }
+                }
+            },
+            hourConst: function() {
+                if(this.hourConst == '' || this.hourConst == null) {
+                    this.warn16Show = false;
+                }else {
+                    let hourConst = this.hourConst.replace(/(^\s*)|(\s*$)/g,"");
+                    if (/^[0-9]+\.?[0-9]{0,9}$/.test(hourConst) || hourConst == '') { // 输入必须为数字的判断
+                        this.warn16Show = false;
+                    } else {
+                        this.warn16Show = true;
+                        return
+                    }
+                }
+            },
             typeChoose: function () {
                 this.warn4Show = false;
             },
@@ -984,6 +1043,56 @@
                     req.scrollTop = 550;
                     return
                 }
+
+                /*数字验证*/
+                if(this.seatingNum == '' || this.seatingNum == null) {
+                    this.warn13Show = false;
+                }else{
+                    let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(seatingNum) || seatingNum == '') { // 输入必须为数字的判断
+                        this.warn13Show = false;
+                    }else {
+                        this.warn13Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(this.avgguestExpect == '' || this.avgguestExpect == null) {
+                    this.warn14Show = false;
+                }else{
+                    let avgguestExpect = this.avgguestExpect.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(avgguestExpect) || avgguestExpect == '') { // 输入必须为数字的判断
+                        this.warn14Show = false;
+                    }else {
+                        this.warn14Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(this.loadfactorsExpect == '' || this.loadfactorsExpect == null) {
+                    this.warn15Show = false;
+                }else {
+                    let loadfactorsExpect = this.loadfactorsExpect.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(loadfactorsExpect) || loadfactorsExpect == '') { // 输入必须为数字的判断
+                        this.warn15Show = false;
+                    }else {
+                        this.warn15Show = true;
+                        req.scrollTop = 300;
+                        return
+                    }
+                }
+                if(this.hourConst == '' || this.hourConst == null) {
+                    this.warn16Show = false;
+                }else {
+                    let hourConst = this.hourConst.replace(/(^\s*)|(\s*$)/g,"");
+                    if(/^[0-9]+\.?[0-9]{0,9}$/.test(hourConst) || hourConst == '') { // 输入必须为数字的判断
+                        this.warn16Show = false;
+                    }else {
+                        this.warn16Show = true;
+                        req.scrollTop = 500;
+                        return
+                    }
+                }
                 delete this.sendData.airportForSchedulines;
                 this.sendData.contact = this.user;  //必填 联系人
                 this.sendData.ihome = this.phoneNum;//必填 联系方式
@@ -1125,6 +1234,10 @@
                 this.warn10Show = false;
                 this.warn11Show = false;
                 this.warn12Show = false;
+                this.warn13Show = false;
+                this.warn14Show = false;
+                this.warn15Show = false;
+                this.warn16Show = false;
                 this.replaceAreaBus();
             },
             clickClose1Fn: function () {

@@ -175,7 +175,7 @@
                                 ar = response.data.list;
                             };
                         };
-                        this.$store.dispatch('monoData', {v: ar, t: 1,n:this.qyCode}).then(() => {
+                        this.$store.dispatch('setMonoNata', {n:this.qyCode,t:ar}).then(() => {
                         });
                     })
                         .catch((error) => {

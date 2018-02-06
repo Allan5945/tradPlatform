@@ -1057,6 +1057,34 @@
                     this.warn2Show = true;
                     req.scrollTop = 0;
                     return
+                }if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
+                    if((this.pstState == 0 && this.sendData.pst != '')
+                        || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
+                        this.warn8Show = false;
+                    }else{
+                        this.warn8Show = true;
+                        req.scrollTop = 0;
+                        return
+                    }
+                }if(this.sendData.pst != '' || this.sendData.arrv != '') { //始发、经停、到达不能相同
+                    if(this.sendData.dpt == this.sendData.pst
+                        || this.sendData.dpt == this.sendData.arrv
+                        || this.sendData.pst == this.sendData.arrv) {
+                        this.warn9Show = true;
+                        req.scrollTop = 0;
+                        return
+                    }else {
+                        this.warn9Show = false;
+                    }
+                }if(this.subsidyCode === '') {
+                    this.warn12Show = true;
+                    req.scrollTop = 550;
+                    return
+                }
+                if(this.myDate1 == '选择起止时间') { // 拟开时间
+                    this.warn6Show = true;
+                    req.scrollTop = 100;
+                    return
                 }
                 let seatingNum = this.seatingNum.replace(/(^\s*)|(\s*$)/g,"");
                 let avgguestExpect = this.avgguestExpect.replace(/(^\s*)|(\s*$)/g,"");
@@ -1494,6 +1522,7 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
+                this.firArea = data.name;
                 this.firAreaBus = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;
