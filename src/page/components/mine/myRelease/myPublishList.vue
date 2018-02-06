@@ -75,7 +75,8 @@
                     :total="totalCount">
             </el-pagination>
         </div>
-        <transition-group name="slidex-fade">
+        <detailed></detailed>
+        <!--<transition-group name="slidex-fade">
             <myPublish0 v-if="mes.demandType === '0'" :acceptData="mes" @close-this="closeAllShowFn" :key="2"></myPublish0>
             <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
                 <transIndex :mes="mes" @closewindow="closeAllShowFn"></transIndex>
@@ -83,7 +84,7 @@
             <myPublishTransportEntrust v-if="mes.demandType === '2'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
             <myPublishAirLineEntrust v-if="mes.demandType === '3'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
             <myPublishAirLineEntrust1 v-if="mes.demandType === '4'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
-        </transition-group>
+        </transition-group>-->
     </div>
 </template>
 <script>
@@ -95,6 +96,7 @@
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
     import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
     import transIndex from '$src/page/components/trans_detail/transIndex.vue'
+    import detailed from '$src/page/components/detailedDemand/detailed.vue'
 
     export default {
         data() {
@@ -388,9 +390,11 @@
                 this.listItemIndex = index; //变成active状态
                 this.mes.demand = item.id;
                 this.mes.demandState = item.demandstate;
-                this.mes.demandType = item.demandtype;
+                this.mes.demandType = Number(item.demandtype);
                 this.sendToMyPublishData = item;
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
+                tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
+                console.info(this.mes);
             },
             // 关闭所有弹出页面
             closeAllShowFn: function () {
@@ -407,6 +411,7 @@
             myPublishAirLineEntrust,
             myPublishAirLineEntrust1,
             transIndex,
+            detailed,
         }
     }
 </script>
