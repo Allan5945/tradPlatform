@@ -75,7 +75,6 @@
                     :total="totalCount">
             </el-pagination>
         </div>
-        <detailed></detailed>
         <!--<transition-group name="slidex-fade">
             <myPublish0 v-if="mes.demandType === '0'" :acceptData="mes" @close-this="closeAllShowFn" :key="2"></myPublish0>
             <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
@@ -96,7 +95,6 @@
     import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
     import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
     import transIndex from '$src/page/components/trans_detail/transIndex.vue'
-    import detailed from '$src/page/components/detailedDemand/detailed.vue'
 
     export default {
         data() {
@@ -161,6 +159,9 @@
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         watch: {
+            ref(){
+                if(!this.ref) this.refreshFn();
+            },
             'sendData.orderType': function () {
                 this.sendData.page = 1;
                 this.getListData();
@@ -181,6 +182,9 @@
             },
         },
         computed: {
+            ref(){
+                return tabulationBoxTrigger.hierarchy;
+            },
             ...vx.mapGetters([
                 'role'
             ]),
@@ -394,13 +398,12 @@
                 this.sendToMyPublishData = item;
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
                 tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
-                console.info(this.mes);
             },
             // 关闭所有弹出页面
             closeAllShowFn: function () {
                 this.mes.demandType = '-1';
                 this.listItemIndex = '';
-                tabulationBoxTrigger.hierarchy = false;
+//                tabulationBoxTrigger.hierarchy = false;
                 this.refreshFn();
             },
         },
@@ -411,7 +414,6 @@
             myPublishAirLineEntrust,
             myPublishAirLineEntrust1,
             transIndex,
-            detailed,
         }
     }
 </script>
