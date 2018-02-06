@@ -68,12 +68,13 @@
               </el-pagination>
             </div>
         </div>
-        <transition name="slidex-fade">
-            <agentDetail @close="closeAgentDetail" v-if="agentShow" :chatData="chatData"></agentDetail>
-        </transition>
-        <transition name="slidex-fade">
-            <deleDetail @close="closeDeleDetail" v-if="deleShow" :chatData="chatData"></deleDetail>
-        </transition>
+       <transition name="slidex-fade">
+           <agentDetail @close="closeAgentDetail" v-if="agentShow" :chatData="chatData"></agentDetail>
+       </transition>
+       <transition name="slidex-fade">
+           <deleDetail @close="closeDeleDetail" v-if="deleShow" :chatData="chatData"></deleDetail>
+       </transition>
+        <detailed></detailed>
     </div>
 </template>
 <script>
@@ -81,6 +82,8 @@
     import agentDetail from './operAgentDetail.vue';
     import deleDetail from './operDeleDetail.vue';
     import ln from './../../../../public/js/tabulationBoxTrigger';
+    import detailed from '$src/page/components/detailedDemand/detailed.vue';
+    import In from '$src/public/js/tabulationBoxTrigger.js';
 
     import * as vx from 'vuex';
     export default {
@@ -203,6 +206,14 @@
                 }else{//委托详情
                       this.deleShow = true;
                 }
+                /*let _this = this;
+                In.$emit('demandType',(data,show = true)=>{
+                    _this.mes = val;
+                    _this.show = show;
+                });
+                In.$emit('closeDetailed',()=>{
+                    _this.mes.demandType = "";
+                });*/
             },
             getDemand:function(val){
                if(val == 2){
@@ -303,7 +314,8 @@
         components: {
             stateList,
             agentDetail,
-            deleDetail
+            deleDetail,
+            detailed
         }
     }
 </script>
