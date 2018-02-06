@@ -66,13 +66,13 @@
                     :total="totalCount">
             </el-pagination>
         </div>
-        <transition-group name="slidex-fade">
+       <!-- <transition-group name="slidex-fade">
             <myPurpose v-if="myPurposeShow" :acceptData="mes" @close-this="closeThisFn" :key="5"></myPurpose>
-            <!--运力详情-->
+            &lt;!&ndash;运力详情&ndash;&gt;
             <div class="trans-wrapper" v-if="myPurpose1Show" @click.self="closeThisFn" :key="6">
                 <transIndex :mes="mes" @closewindow="closeThisFn"></transIndex>
             </div>
-        </transition-group>
+        </transition-group>-->
     </div>
 </template>
 <script>
@@ -126,6 +126,9 @@
             }
         },
         watch:{
+            ref(){
+                if(!this.ref) this.refreshFn();
+            },
             'sendData.orderType': function () {
                 this.sendData.page = 1;
                 this.getListData();
@@ -327,14 +330,16 @@
                 this.listItemIndex = index; //变成active状态
                 this.mes.demand = item.demandId;
                 this.mes.demandState = item.demandstate;
-                this.mes.demandType = item.demandtype;
-                if(item.demandtype == '0') {
+                this.mes.demandType = Number(item.demandtype);
+                tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
+                tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
+                /*if(item.demandtype == '0') {
                     this.myPurposeShow = true;
                     tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                 }else if(item.demandtype == '1') { //demand  , demandState 需求状态 ,demandType  需求类型
                     this.myPurpose1Show = true;
-                    tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
-                }
+
+                }*/
             },
             // 点击关闭详情
             closeThisFn: function () {
@@ -342,11 +347,14 @@
                 this.myPurposeShow = false;
                 this.myPurpose1Show = false;
                 this.myPurpose2Show = false;
-                tabulationBoxTrigger.hierarchy = false;
+//                tabulationBoxTrigger.hierarchy = false;
                 this.refreshFn();
             }
         },
         computed: {
+            ref(){
+                return tabulationBoxTrigger.hierarchy;
+            },
             ...vx.mapGetters([
                 'role'
             ]),
