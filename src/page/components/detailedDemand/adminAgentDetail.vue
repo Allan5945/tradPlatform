@@ -4,7 +4,7 @@
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <div class="head-til">{{detailData.title}}</div>
-                <div class="contact" @click="chat">联系用户</div>
+                <!-- <div class="contact" @click="chat">联系用户</div> -->
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm}}</div>
                     <div>创建于{{detailData.releasetime}}</div>

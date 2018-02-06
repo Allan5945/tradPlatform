@@ -5,7 +5,7 @@
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <!-- <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div> -->
                 <div class="head-til">{{detailData.title||'-'}}</div>
-                <div class="contact" @click="chat">联系用户</div>
+               <!--  <div class="contact" @click="chat">联系用户</div> -->
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
                     <div>创建于{{detailData.releasetime||'-'}}</div>
