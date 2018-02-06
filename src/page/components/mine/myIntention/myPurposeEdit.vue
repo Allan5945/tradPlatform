@@ -576,13 +576,13 @@
                 accept22Checked: true,
                 accept31Checked: false,
                 accept32Checked: true,
-               
+
                 opt0: {     //拟开时间
                     start: '',
                     end: '',
                     isDis: false,
                 },
-                
+
             }
         },
         components: {
@@ -2115,7 +2115,7 @@
         color: $icon-color;
         background: white;
         cursor: pointer;
-        z-index: 10;
+        z-index: 9;
     }
     .dot {
         position: absolute;
@@ -2167,7 +2167,7 @@
         width: 540px;
         height: 270px;
         padding: 20px 10px 10px 10px;
-        z-index: 1;
+        z-index: 10;
     }
 
     .calendar-box .selec-data {

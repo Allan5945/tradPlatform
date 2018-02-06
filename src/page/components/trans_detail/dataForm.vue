@@ -349,24 +349,27 @@
                     this.formFinish =false;
                 }
             },
-            'intendedDpt':function(val){
+            'qyCode3':function(val){
                 if(val){
-                    if(val == this.intendedPst||val == this.intendedArrv){
+                    if(val == this.qyCode4||val == this.qyCode5){
                         this.intendedDpt = '';
+                        this.qyCode3 = '';
                     }
                 }
             },
-            'intendedPst':function(val){
+            'qyCode4':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.intendedArrv){
+                    if(val == this.qyCode3||val == this.qyCode5){
                         this.intendedPst = '';
+                        this.qyCode4 = '';
                     }
                 }
             },
-            'intendedArrv':function(val){
+            'qyCode5':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.intendedPst){
+                    if(val == this.qyCode3||val == this.qyCode4){
                         this.intendedArrv = '';
+                        this.qyCode5 = '';
                     }
                 }
             },
@@ -449,7 +452,7 @@
                     }
 
                      this.airCompanyId = this.acceptData.capacitycompany;
-                    if( this.airCompanyId !== ''){
+                    if( this.airCompanyId){
                         this.airCompany = this.acceptData.capacityCompany.airlnCd;
                         this.airCompany1 = this.airCompany;
                     }
@@ -457,7 +460,7 @@
                     this.seat = this.acceptData.seating;
                     this.hourcost = this.acceptData.hourscost;
 
-                    this.dispatch = this.acceptData.scheduling == '0'? true:false ;
+                    this.dispatch = this.acceptData.scheduling == '0'? true:false;
                     if(this.dispatch){
                         this.acceptData.airportForSchedulines.forEach((val) => {
                              this.searchData.push({
@@ -468,9 +471,9 @@
                         this.dispatchAirportShow = true;
                     }
 
-                     this.tip = this.acceptData.remark;
+                    this.tip = this.acceptData.remark;
 
-                    this.myDate = this.acceptData.periodValidity;
+                    /*this.myDate = this.acceptData.periodValidity;*/
 
                     this.post = this.acceptData.publicway;
                      if(this.post == '3'){
@@ -1314,8 +1317,9 @@
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:20px 0;
+        padding:20px 0;
         position:relative;
+        border-top:1px solid rgba(151,151,151,.3);
         >div{
           height:40px;
           line-height:40px;

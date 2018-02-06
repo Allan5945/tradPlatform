@@ -80,7 +80,20 @@
                    </div>
                     <div>
                         <div>有效期</div>
-                        <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
+                        <div v-if="detailData.periodValidity" style="display:flex;">
+                            {{detailData.periodValidity.split('-')[1]||'-'}}止
+                            <span class="iconfont" style="font-size:1.6rem;cursor:pointer;" @click="calendarShow=!calendarShow" v-if="changeValidityShow">&#xe653;</span>
+                        </div>
+                        <section v-if="calendarShow" class="calendar-box popup">
+                           <div class="selec-data">
+                             <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
+                             <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
+                             <div class="confirm-btn btn" @click="getMyDate">确定</div>
+                             <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                           </div>
+                           <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
+                        </section>
+
                     </div>
                      <div class="tips">
                         <div>其他说明</div>
@@ -173,7 +186,19 @@
                                 </div>
                                 <div>
                                     <div>有效期</div>
-                                    <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
+                                    <div v-if="detailData.periodValidity" style="display:flex;">
+                                        {{detailData.periodValidity.split('-')[1]||'-'}}止
+                                        <span class="iconfont" style="font-size:1.6rem;cursor:pointer;" @click="calendarShow=!calendarShow" v-if="changeValidityShow">&#xe653;</span>
+                                    </div>
+                                    <section v-if="calendarShow" class="calendar-box popup" style="left:-300px;">
+                                       <div class="selec-data">
+                                         <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
+                                         <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
+                                         <div class="confirm-btn btn" @click="getMyDate">确定</div>
+                                         <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                                       </div>
+                                       <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
+                                    </section>
                                 </div>
                                 <div class="tips">
                                     <div>其他说明</div>
@@ -356,6 +381,7 @@
   import sureForm from './../../airlineAffirm.vue'
   import dataForm from './../../trans_detail/dataForm.vue'
   import airlinePay from '$src/page/components/trans_detail/dialog.vue'
+  import calendar from './../../publicTools/calendar/calendarCP'
  export default {
      data(){
          return{
@@ -378,7 +404,11 @@
              sureOderShow:false,
              schedulListShow:false,
              airlinePayShow:false,
-             isIntentionMoney:true
+             isIntentionMoney:true,
+             calendarShow:false,
+             calendarInitDay1:'',
+             calendarInitDay2:'',
+             changeValidityShow:true
          }
      },
      props:['sonId','title'],
@@ -491,6 +521,51 @@
          changeShowCodeP: function () {
             this.init();
         },
+        getMyDate: function(){//获取起始的日期
+            if(this.calendarInitDay1 && this.calendarInitDay2){
+                this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
+                this.calendarShow = false;
+            }
+            this.$ajax({
+                        url:"/demandUpdate",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: {
+                            periodValidity: this.myDate,
+                            id: this.detailData.id
+                        }
+                    }) .then((response) => {
+                        if(response.data.opResult === '0'){
+                            this.init();
+                            this.$message({
+                                message: '修改有效期成功!',
+                                type: 'success',
+                                duration:2000
+                            });
+                        }else{
+
+                        }
+                    }) .catch((error) => {
+                        console.log(error);
+                    });
+        },
+        getDateRange:function(rd){
+            this.calendarInitDay1 = rd[0];
+            this.calendarInitDay2 = rd[1];
+        },
+        initDate: function() {
+              //初始化
+                let today = new Date(),
+                day = today.getDate(), //号数
+                mon = today.getMonth() + 1, //月份
+                year = today.getFullYear();//年份
+                if (mon < 10) mon = "0" + mon;
+                if (day < 10) day = "0" + day;
+                this.calendarInitDay1 = year+"."+mon+"."+day;
+
+        },
         init:function(){
             this.$ajax({
                 method: 'post',
@@ -506,6 +581,11 @@
                     this.intentionCount = response.data.intentionCount;
                     this.detailData = response.data.data;
                     this.planData = response.data.responseList;
+
+                    this.calendarInitDay1 = this.detailData.periodValidity.split('-')[0];
+                    //this.initDate();
+                     this.calendarInitDay2 = this.detailData.periodValidity.split('-')[1];
+
                     if(this.detailData.demandtype == '0'){
                         this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
                     }
@@ -517,12 +597,14 @@
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = false;
+                      this.changeValidityShow = false;
                     }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
                       this.rePublish == false;
                       this.footShow  = false;
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = true;
+                      this.changeValidityShow = false;
                     }else if(progress == "2"){//2:订单确认
                       this.rePublish == false;
                       this.footShow  = true;
@@ -568,7 +650,14 @@
       computed: {
             ...vx.mapGetters([
                 'role'
-            ])
+            ]),
+            initdateData: function(){
+                let data = {};
+                    data.start = this.calendarInitDay1;
+                    data.end = this.calendarInitDay2;
+                    data.isDis = false;
+                return data;
+            }
         },
       watch: {
 
@@ -581,7 +670,8 @@
             myIntentForm,
             sureForm,
             dataForm,
-            airlinePay
+            airlinePay,
+            calendar
         }
 }
 </script>
@@ -976,6 +1066,59 @@
               }
           }
     }
+</style>
+<style scoped>
+  .calendar-box{
+    width: 540px;
+    height:270px;
+    position: absolute;
+    top:20px;
+    left:-20px;
+    z-index: 10;
+    padding:20px 10px 10px 10px;
+    background-color: #FFF;
+  }
+  .calendar-box .selec-data{
+    height:30px;
+    font-size: 12px;
+    margin-bottom:20px;
+    position: relative;
+  }
+  .calendar-box .selec-data input{
+    height: 100%;
+    width: 75px;
+    font-size: 12px;
+    border:0;
+    outline: none;
+    border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+  }
+  .calendar-box .selec-data span{
+    display: inline-block;
+    width:30px;
+    text-align: center;
+  }
+  .selec-data .btn{
+    position:absolute;
+    top:0;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 100px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .selec-data .confirm-btn{
+    right:0;
+    width:60px;
+    color:#ffffff;
+    background-color:#3c78ff;
+  }
+  .selec-data .cancel-btn{
+    width:50px;
+    color:rgba(96,94,124,.6);
+    box-sizing: border-box;
+    border:1px solid rgba(96,94,124,.6);
+    right:64px;
+  }
 </style>
 
 
