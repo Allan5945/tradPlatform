@@ -84,6 +84,7 @@
     import ln from './../../../../public/js/tabulationBoxTrigger';
     import detailed from '$src/page/components/detailedDemand/detailed.vue';
     import In from '$src/public/js/tabulationBoxTrigger.js';
+    import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
 
     import * as vx from 'vuex';
     export default {
@@ -206,14 +207,13 @@
                 }else{//委托详情
                       this.deleShow = true;
                 }
-                /*let _this = this;
-                In.$emit('demandType',(data,show = true)=>{
-                    _this.mes = val;
-                    _this.show = show;
-                });
-                In.$emit('closeDetailed',()=>{
-                    _this.mes.demandType = "";
-                });*/
+
+               /* let mes = {};
+                mes.demand = val.id;
+                mes.demandState = val.demandstate;
+                mes.demandType = Number(val.demandtype);
+                tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
+                tabulationBoxTrigger.$emit('demandType',...[mes,'true']);*/
             },
             getDemand:function(val){
                if(val == 2){

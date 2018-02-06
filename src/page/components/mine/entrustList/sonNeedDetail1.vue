@@ -14,7 +14,7 @@
                       </div>
                   </div>
                </div>
-             <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
+            <!--  <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div> -->
             </header>
             <div class="content">
                 <div class="table-form" v-if="transShow">
