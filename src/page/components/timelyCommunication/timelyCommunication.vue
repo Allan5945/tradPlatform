@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-function-input" v-show="inData[setId].demandProgress != '3' && inData[setId].demandProgress != '4'">
+                    <div class="chat-function-input" v-show="['1','2','7','8','9','10',''].includes(inData[setId].demandProgress)">
                         <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)"
                                   class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
@@ -546,7 +546,7 @@
 
     .personal-hy-btn {
         position: absolute;
-        top: 50%;
+        top: 257px;
         left: -25px;
         width: 50px !important;
         height: 50px !important;
@@ -576,6 +576,9 @@
     .personal-hy {
         left: 0;
         padding: 0 8px 0 20px;
+        overflow-x:hidden;
+        overflow-y:auto;
+        height: 560px;
     }
 
     .personal-c {
@@ -685,7 +688,7 @@
     .personal {
         position: relative;
         flex: 1;
-        overflow-x: hidden;
+        overflow: hidden;
         padding: 0 8px 0 20px;
         > div {
             width: 172px;
