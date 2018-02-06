@@ -41,10 +41,10 @@
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-if="AccountRechargeDetailShow" :acceptData="sendToAccountWithdrawDetail" @closeThis="closeAllFn" :key="2"></AccountRechargeDetail>
             <AccountWithdrawDetail v-if="AccountWithdrawDetailShow" :acceptData="sendToAccountWithdrawDetail" @closeThis="closeAllFn" :key="3"></AccountWithdrawDetail>
-            <companyAirlineDetailPayAfter v-if="companyAirlineDetailPayAfterShow" :acceptData="mes" @close-this="closeAllFn" :key="4"></companyAirlineDetailPayAfter>
+            <!--<companyAirlineDetailPayAfter v-if="companyAirlineDetailPayAfterShow" :acceptData="mes" @close-this="closeAllFn" :key="4"></companyAirlineDetailPayAfter>
             <div class="trans-wrapper" v-if="companyTransIndexShow" @click.self="closeAllFn" :key="5">
                 <transIndex :mes="mes" @closewindow="closeAllFn"></transIndex>
-            </div>
+            </div>-->
         </transition-group>
     </div>
 </template>
@@ -88,7 +88,15 @@
         mounted() {
 
         },
+        watch: {
+            ref(){
+                if(!this.ref) this.refreshFn();
+            },
+        },
         computed: {
+            ref(){
+                return tabulationBoxTrigger.hierarchy;
+            },
             ...vx.mapGetters([
                 'role'
             ]),
@@ -191,13 +199,15 @@
                 //0：航司、 1：机场、 2：太美
                 this.mes.demand = item.demandId;
                 this.mes.demandState = item.demandstate;
-                this.mes.demandType = item.demandType;
+                this.mes.demandType = Number(item.demandType);
                 tabulationBoxTrigger.hierarchy = true;
-                if(item.demandType == '0'){  //（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
+                console.info(this.mes)
+                tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
+                /*if(item.demandType == '0'){  //（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
                     this.companyAirlineDetailPayAfterShow = true;
                 }if(item.demandType == '1'){
                     this.companyTransIndexShow = true;
-                }
+                }*/
             },
             closeAllFn: function () {
                 this.AccountRechargeDetailShow = false;

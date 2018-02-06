@@ -48,7 +48,7 @@
         },
         mounted(){
             let _this = this;
-            In.$on('demandType',(data,show = true)=>{
+            In.$on('demandType',(data,show = false)=>{
                 _this.mes = data;
                 _this.showMc = eval(show);
             });
@@ -77,7 +77,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 16;
+        z-index: 20;
         width: 100%;
         height: 100%;
         background-color:rgba(0, 0, 0, .4) ;
