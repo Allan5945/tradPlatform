@@ -75,26 +75,12 @@
                     :total="totalCount">
             </el-pagination>
         </div>
-        <!--<transition-group name="slidex-fade">
-            <myPublish0 v-if="mes.demandType === '0'" :acceptData="mes" @close-this="closeAllShowFn" :key="2"></myPublish0>
-            <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
-                <transIndex :mes="mes" @closewindow="closeAllShowFn"></transIndex>
-            </div>
-            <myPublishTransportEntrust v-if="mes.demandType === '2'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="5"></myPublishTransportEntrust>
-            <myPublishAirLineEntrust v-if="mes.demandType === '3'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="6"></myPublishAirLineEntrust>
-            <myPublishAirLineEntrust1 v-if="mes.demandType === '4'" :acceptData="sendToMyPublishData" @close-this="closeAllShowFn" :key="7"></myPublishAirLineEntrust1>
-        </transition-group>-->
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
-    import myPublish0 from '$src/page/components/mine/companyAccount/companyAirlineDetailPayAfter.vue' // 航线需求详情
-    import myPublishTransportEntrust from './myPublishTransportEntrust.vue'
-    import myPublishAirLineEntrust from './myPublishAirLineEntrust.vue'
-    import myPublishAirLineEntrust1 from './myPublishAirLineEntrust1.vue'
-    import transIndex from '$src/page/components/trans_detail/transIndex.vue'
 
     export default {
         data() {
@@ -409,11 +395,6 @@
         },
         components: {
             stateList,
-            myPublish0,
-            myPublishTransportEntrust,
-            myPublishAirLineEntrust,
-            myPublishAirLineEntrust1,
-            transIndex,
         }
     }
 </script>

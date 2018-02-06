@@ -41,10 +41,6 @@
         <transition-group name="slidex-fade">
             <AccountRechargeDetail v-if="AccountRechargeDetailShow" :acceptData="sendToAccountWithdrawDetail" @closeThis="closeAllFn" :key="2"></AccountRechargeDetail>
             <AccountWithdrawDetail v-if="AccountWithdrawDetailShow" :acceptData="sendToAccountWithdrawDetail" @closeThis="closeAllFn" :key="3"></AccountWithdrawDetail>
-            <!--<companyAirlineDetailPayAfter v-if="companyAirlineDetailPayAfterShow" :acceptData="mes" @close-this="closeAllFn" :key="4"></companyAirlineDetailPayAfter>
-            <div class="trans-wrapper" v-if="companyTransIndexShow" @click.self="closeAllFn" :key="5">
-                <transIndex :mes="mes" @closewindow="closeAllFn"></transIndex>
-            </div>-->
         </transition-group>
     </div>
 </template>
@@ -55,7 +51,6 @@
     import myCompanyAccountWithdraw from './myCompanyAccountWithdraw.vue'
     import AccountRechargeDetail from './AccountRechargeDetail.vue'
     import AccountWithdrawDetail from './AccountWithdrawDetail.vue'
-    import companyAirlineDetailPayAfter from './companyAirlineDetailPayAfter.vue'
     import transIndex from '$src/page/components/trans_detail/transIndex.vue'
     export default {
         data() {
@@ -203,11 +198,6 @@
                 tabulationBoxTrigger.hierarchy = true;
                 console.info(this.mes)
                 tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
-                /*if(item.demandType == '0'){  //（0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托）
-                    this.companyAirlineDetailPayAfterShow = true;
-                }if(item.demandType == '1'){
-                    this.companyTransIndexShow = true;
-                }*/
             },
             closeAllFn: function () {
                 this.AccountRechargeDetailShow = false;
@@ -224,7 +214,6 @@
             myCompanyAccountWithdraw,
             AccountRechargeDetail,
             AccountWithdrawDetail,
-            companyAirlineDetailPayAfter,
             transIndex,
         }
     }

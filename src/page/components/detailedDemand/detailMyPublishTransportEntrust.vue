@@ -120,14 +120,12 @@
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'success'
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
                     type: 'error'
                 });
@@ -206,9 +204,7 @@
                 this.wrongTextShow = true;   //警告信息
             },
             closeThisFn: function () {
-//                this.$emit('close-this');
-                this.mes.demandType = -1;
-                this.$emit('update:foo',this.mes);
+                this.$emit('closewindow');
             },
             // 点击“联系客服”
             linkServiceClickFn: function () {
@@ -320,6 +316,7 @@
         height: 100%;
         min-height: 700px;
         font-size: 1.2rem;
+        color: #605e7c;
         background: white;
         z-index: 17;
     }
@@ -382,6 +379,7 @@
             display: flex;
             margin: 30px 0 15px 0;
             font-size: 20px;
+            font-weight: bold;
         }
         .bottom {
             margin-left: 3px;
@@ -413,14 +411,14 @@
     .add-item {
         display: flex;
         margin-top: 15px;
-        height: 80px;
+        height: 120px;
         .left {
             flex-shrink: 0;
             width: 80px;
             line-height: 20px;
         }
         .right {
-            @include line-clamp(3);
+            @include line-clamp(6);
         }
     }
     .fifth {
@@ -449,7 +447,7 @@
     }
     .seventh {
         position: absolute;
-        bottom: 125px;
+        bottom: 100px;
     }
     .line {
         /*position: absolute;
