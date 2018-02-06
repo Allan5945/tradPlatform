@@ -68,7 +68,7 @@
                     class="pagination"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
+                    :current-page="sendData.page"
                     :page-sizes="[100, 200, 300, 400]"
                     :page-size="numPrePage"
                     layout="prev, pager, next, jumper, total"
@@ -160,14 +160,17 @@
         },
         watch: {
             'sendData.orderType': function () {
+                this.sendData.page = 1;
                 this.getListData();
 //                this.judgeRole();
             },
             'sendData.demandType': function () {
+                this.sendData.page = 1;
                 this.getListData();
 //                this.judgeRole();
             },
             'sendData.demandprogress': function () {
+                this.sendData.page = 1;
                 this.getListData();
 //                this.judgeRole();
             },
