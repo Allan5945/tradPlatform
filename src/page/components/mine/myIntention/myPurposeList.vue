@@ -59,7 +59,7 @@
                     class="pagination"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
+                    :current-page="sendData.page"
                     :page-sizes="[100, 200, 300, 400]"
                     :page-size="numPrePage"
                     layout="prev, pager, next, jumper, total"
@@ -127,14 +127,17 @@
         },
         watch:{
             'sendData.orderType': function () {
+                this.sendData.page = 1;
                 this.getListData();
 //                console.info(0)
             },
             'sendData.demandType': function () {
+                this.sendData.page = 1;
                 this.getListData();
 //                console.info(1)
             },
             'sendData.responseProgress': function () {
+                this.sendData.page = 1;
                 this.getListData();
 //                console.info(2)
             },
@@ -161,13 +164,15 @@
             open6(mes) {  // 成功弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'success'
+                    type: 'success',
+                    duration: 2000,
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'error'
+                    type: 'error',
+                    duration: 2000,
                 });
             },
             /*************************/

@@ -173,8 +173,9 @@
                              <div class="confirm-btn btn" @click="getMyDate">确定</div>
                              <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
                            </div>
-                           <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1"></calendar>
-                           <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar>
+                          <!--  <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1"></calendar>
+                          <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar> -->
+                          <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
                          </div>
                        </div>
                         <div class="error" v-show="isError8" style="left:65px;top:55px;">*请选择发布有效期</div>
@@ -213,18 +214,18 @@
                 </div>
             </div>
             <div class="t-btn">
-                <div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>
-                <div class="confirm-btn " @click="agentConfirm(4)" v-if="isAgent">确认发布</div>
-                <div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>
+                <!--<div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>-->
+                <div class="confirm-btn " @click="agentConfirm(4)">确认发布</div>
+                <!--<div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>-->
                 <div class="cancel-btn " @click="cancel">取消</div>
-                <p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>
-                <span class= "triangle" v-show="agentTipsShow"></span>
+                <!--<p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>-->
+                <!--<span class= "triangle" v-show="agentTipsShow"></span>-->
             </div>
         </div>
     </div>
 </template>
 <script>
- import calendar from '$src/page/components/calendar'
+ import calendar from '$src/page/components/publicTools/calendar/calendarCP.vue'
  import * as vx from 'vuex'
  import airportS from '$src/page/reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from '$src/page/reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
@@ -333,7 +334,14 @@
             ]),
             num: function(){
                 return this.tip.length <= 200? this.tip.length: 200;
-            }
+            },
+            initdateData: function(){
+                let data = {};
+                    data.start = this.calendarInitDay1;
+                    data.end = this.calendarInitDay2;
+                    data.isDis = false;
+                return data;
+              }
         },
         watch:{
             'allFormShow':function(val){
@@ -341,24 +349,27 @@
                     this.formFinish =false;
                 }
             },
-            'intendedDpt':function(val){
+            'qyCode3':function(val){
                 if(val){
-                    if(val == this.intendedPst||val == this.intendedArrv){
+                    if(val == this.qyCode4||val == this.qyCode5){
                         this.intendedDpt = '';
+                        this.qyCode3 = '';
                     }
                 }
             },
-            'intendedPst':function(val){
+            'qyCode4':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.intendedArrv){
+                    if(val == this.qyCode3||val == this.qyCode5){
                         this.intendedPst = '';
+                        this.qyCode4 = '';
                     }
                 }
             },
-            'intendedArrv':function(val){
+            'qyCode5':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.intendedPst){
+                    if(val == this.qyCode3||val == this.qyCode4){
                         this.intendedArrv = '';
+                        this.qyCode5 = '';
                     }
                 }
             },
@@ -388,6 +399,11 @@
                     this.intendedDpt = this.searchText;
                     this.qyCode3 = this.qyCode;
                 }
+            },
+             'dispatch':function(val){
+                if(!val){
+                    this.isError9 = false;
+                }
             }
 
         },
@@ -412,32 +428,39 @@
                     }
                     if(this.acceptData.intendedAirlines){
                         this.intendedDpt = this.acceptData.intendedAirlines[0].dptName;
+                        this.intendedDpt1 = this.intendedDpt;
                         this.qyCode3 = this.acceptData.intendedAirlines[0].dpt;
                         if(this.acceptData.intendedAirlines[0].pst !== ''){
                           this.intendedPst = this.acceptData.intendedAirlines[0].pstName;
+                          this.intendedPst1 =  this.intendedPst;
                           this.qyCode4 = this.acceptData.intendedAirlines[0].pst;
                         }
                         if(this.acceptData.intendedAirlines[0].arrv !== ''){
                           this.intendedArrv = this.acceptData.intendedAirlines[0].arrvName;
+                          this.intendedArrv1 = this.intendedArrv;
                           this.qyCode5 = this.acceptData.intendedAirlines[0].arrv;
                         }
                     }
+
                     this.airplaneTyp = this.acceptData.aircrfttyp;
+                    this.airplaneTyp1 = this.airplaneTyp;
 
                     this.qyCode = this.acceptData.dpt;
                     if(this.qyCode){
                         this.searchText = this.acceptData.dptNm;
+                        this.searchText1 = this.searchText;
                     }
 
-                    this.airCompanyId = this.acceptData.capacitycompany;
+                     this.airCompanyId = this.acceptData.capacitycompany;
                     if( this.airCompanyId){
                         this.airCompany = this.acceptData.capacityCompany.airlnCd;
+                        this.airCompany1 = this.airCompany;
                     }
 
                     this.seat = this.acceptData.seating;
                     this.hourcost = this.acceptData.hourscost;
 
-                    this.dispatch = this.acceptData.scheduling == '0'? true:false ;
+                    this.dispatch = this.acceptData.scheduling == '0'? true:false;
                     if(this.dispatch){
                         this.acceptData.airportForSchedulines.forEach((val) => {
                              this.searchData.push({
@@ -448,9 +471,9 @@
                         this.dispatchAirportShow = true;
                     }
 
-                     this.tip = this.acceptData.remark;
+                    this.tip = this.acceptData.remark;
 
-                    this.myDate = this.acceptData.periodValidity;
+                    /*this.myDate = this.acceptData.periodValidity;*/
 
                     this.post = this.acceptData.publicway;
                      if(this.post == '3'){
@@ -477,12 +500,11 @@
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow = false;
-                   /* this.$refs.timeDate.style.width = "213px";
-                    this.$refs.timeForm.style.width = "579px";
-                     this.$refs.timeTitle.style.width = "60px";*/
-                }else{
-
                 }
+            },
+            getDateRange:function(rd){
+                this.calendarInitDay1 = rd[0];
+                this.calendarInitDay2 = rd[1];
             },
             openSearch: function(){
                 this.isSearch =true;
@@ -821,6 +843,12 @@
                     trans.scrollTop = 0;
                     return false;
                 }
+                if(this.dispatch){       //接受调度
+                    if(this.searchData.length == '0'){
+                        this.isError9 = true;
+                        return false;
+                    };
+                }
                 let demandData = {},
                     time = this.timeStart +','+ this.timeEnd;
                     demandData.demandtype = type;
@@ -1069,11 +1097,11 @@
                 this.btnShow = false;
             }
 
-            let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
+          /*  let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
             this.airCompany = a.companyName;
-            this.airCompanyId = a.id;
+            this.airCompanyId = a.id;*/
         }
 
     }
@@ -1289,8 +1317,9 @@
         flex-flow: row nowrap;
         justify-content: flex-end;
         align-items: center;
-        margin:20px 0;
+        padding:20px 0;
         position:relative;
+        border-top:1px solid rgba(151,151,151,.3);
         >div{
           height:40px;
           line-height:40px;

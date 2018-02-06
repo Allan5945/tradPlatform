@@ -203,7 +203,9 @@
             // 点击“联系客服”
             linkServiceClickFn: function () {
                 let chatObj = {};
-                chatObj.id = null;
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.id = this.myData.id;
+                chatObj.employeeId = 1;
                 tabulationBoxTrigger.$emit('addChat',chatObj);
             },
            /* //点击“重新发布”
