@@ -43,6 +43,7 @@
             closewindow(){
                 this.mes.demandType = "";
                 this.show = false;
+//                In.hierarchy = false;
             }
         },
         mounted(){

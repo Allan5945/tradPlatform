@@ -75,7 +75,7 @@
                     :total="totalCount">
             </el-pagination>
         </div>
-        <detailed v-show="false"></detailed>
+        <detailed></detailed>
         <!--<transition-group name="slidex-fade">
             <myPublish0 v-if="mes.demandType === '0'" :acceptData="mes" @close-this="closeAllShowFn" :key="2"></myPublish0>
             <div class="trans-wrapper" v-if="mes.demandType === '1'" @click.self="closeAllShowFn" :key="3">
@@ -390,10 +390,10 @@
                 this.listItemIndex = index; //变成active状态
                 this.mes.demand = item.id;
                 this.mes.demandState = item.demandstate;
-                this.mes.demandType = item.demandtype;
+                this.mes.demandType = Number(item.demandtype);
                 this.sendToMyPublishData = item;
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
-                tabulationBoxTrigger.$emit('demandType',[this.mes,'true']);
+                tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
                 console.info(this.mes);
             },
             // 关闭所有弹出页面
