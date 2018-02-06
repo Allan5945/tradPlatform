@@ -196,13 +196,15 @@
             open6(mes) {  // 成功弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'success'
+                    type: 'success',
+                    duration: 2000,
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
                     message: mes,
-                    type: 'error'
+                    type: 'error',
+                    duration: 2000,
                 });
             },
             /*************************/
