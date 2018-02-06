@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="{'detail-box':show}" @click.self="closewindow">
         <!-- 航线详情-->
         <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
         <!--运力详情-->
@@ -12,8 +12,8 @@
         <detailMyPublishTransportEntrust v-if="mes.demandType === 2 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishTransportEntrust>
         <!--太美委托详情-->
         <adminDeleDetail v-if="(mes.demandType === 3||mes.demandType === 4) && role.role == 2" @closewindow="closewindow" :mes="mes"></adminDeleDetail>
-          <!--太美运营托管详情 -->
-     <adminAgentDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminAgentDetail>
+        <!--太美运营托管详情 -->
+       <adminAgentDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminAgentDetail>
     </div>
 </template>
 <script>
@@ -36,18 +36,20 @@
                         demandState:"",
                         demandType:""
                     },   //demand  , demandState 需求状态 ,demandType  需求类型
+                    show:false
                 }
             },
         methods:{
             closewindow(){
                 this.mes.demandType = "";
+                this.show = false;
             }
-
         },
         mounted(){
             let _this = this;
-            In.$on('demandType',data=>{
+            In.$on('demandType',(data,show = true)=>{
                 _this.mes = data;
+                _this.show = show;
             });
             In.$on('closeDetailed',()=>{
                 _this.mes.demandType = "";
@@ -70,5 +72,13 @@
     }
 </script>
 <style scoped type="scss">
-
+    .detail-box{
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 16;
+        width: 100%;
+        height: 100%;
+        background-color:rgba(0, 0, 0, .4) ;
+    }
 </style>

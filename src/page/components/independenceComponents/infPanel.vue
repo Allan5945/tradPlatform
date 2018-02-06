@@ -42,7 +42,7 @@
             <div>滚动舆情</div>
             <transition name="slide-fade">
                 <div v-for="(val,key) in yq" class="gdyq-item" v-if="key == setgd">
-                    <a :href="val.articleUrl"  v-text="val.articleTitle" class="text-line"></a>
+                    <a :href="val.articleUrl" target="_blank"  v-text="val.articleTitle" class="text-line"></a>
                 </div>
             </transition>
         </div>
@@ -50,7 +50,7 @@
             <div>最新政策</div>
             <transition name="slide-fade">
                 <div v-for="(val,key) in zc" class="gdyq-item" v-if="key == setzc">
-                    <a href=""  v-text="val.rewardpolicytext"class="text-line"></a>
+                    <a href="" target="_blank" v-text="val.rewardpolicytext"class="text-line"></a>
                 </div>
             </transition>
         </div>
