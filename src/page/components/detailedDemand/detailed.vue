@@ -1,5 +1,5 @@
 <template>
-    <div class="detail-box"  v-show="show" @click.self="show = false">
+    <div :class="{'detail-box':show}" @click.self="closewindow">
         <!-- 航线详情-->
         <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
         <!--运力详情-->
@@ -42,12 +42,12 @@
         methods:{
             closewindow(){
                 this.mes.demandType = "";
+                this.show = false;
             }
-
         },
         mounted(){
             let _this = this;
-            In.$on('demandType',(data,show)=>{
+            In.$on('demandType',(data,show = true)=>{
                 _this.mes = data;
                 _this.show = show;
             });
@@ -76,10 +76,9 @@
         position: fixed;
         top: 0;
         left: 0;
-        background-color:rgba(0, 0, 0, .4) ;
         z-index: 16;
         width: 100%;
         height: 100%;
+        background-color:rgba(0, 0, 0, .4) ;
     }
-
 </style>
