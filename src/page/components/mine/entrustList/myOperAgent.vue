@@ -47,9 +47,9 @@
                           {{getProgress(val.demandProgress,val.demandType)}}
                         </div>
                         <div class="list-e item" @click="chat(val)">
-                           <!--  <span class="icon-item talk-icon">&#xe602;
-                               <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span>
-                           </span> -->
+                          <span class="icon-item talk-icon">&#xe602;
+                             <!--  <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span> -->
+                          </span>
                         </div>
                         <div class="list-f item color" @click="getDetail(val)">
                             查看详情<span class="icon-item">&#xe686;</span>

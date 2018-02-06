@@ -225,7 +225,6 @@
  import airportS from './../../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
  import airportS1 from './../../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
  import airCompanyS from './../../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
- import singleElection from '$src/page/components/demandListComponents/singleElection.vue'
 
     export default {
         data () {

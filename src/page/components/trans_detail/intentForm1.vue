@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="t-wrapper">
         <div class="container" id="airlineWrite" @click="closeAll">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
@@ -25,7 +25,7 @@
             </div>
             <div class="choose">
                 <div class="items bg-color" style="position: relative; padding-bottom: 20px;">
-                    <!-- <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div> -->
+                   <div class="warn" v-show="warn8Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地为意向区域时，经停地或到达地必须有一个为意向机场！</div>
                     <div class="warn" v-show="warn9Show" style="position: absolute; left: 20px; bottom: 7px;">*始发地、经停地、到达地不能相同！</div>
                     <div class="first">
                         <airAreaSearch class="airAreaSearch" v-show="airAreaSearchShow1"
@@ -273,7 +273,7 @@
                             <span class="margin-right">座位数</span>　
                             <div class="choose-input" style="width: 180px;">
                                 <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum"
-                                       style="border: 0;"><span>人</span>
+                                       style="border: 0;" maxlength="5"><span>人</span>
                             </div>
                         </div>
                     </div>
@@ -282,14 +282,14 @@
                             <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect"
-                                       style="border: 0;width: 136px;"><span>人</span>
+                                       style="border: 0;width: 136px;" maxlength="5"><span>人</span>
                             </div>
                         </div>
                         <div class="left item-child">
                             <span>客座率期望</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
-                                       style="border: 0;"><span>%</span>
+                                       style="border: 0;" maxlength="5"><span>%</span>
                             </div>
                         </div>
                     </div>
@@ -366,7 +366,7 @@
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
-                                       style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
+                                       style="border: 0;width: 136px;" maxlength="5"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                         </div>
                     </div>
@@ -588,7 +588,7 @@
                      this.warn13Show = false;
                 }
             },
-             'firArea':function(val){
+            /* 'firArea':function(val){
                 if(val){
                     if(val == this.secArea||val == this.thirdArea){
                         this.firArea = '';
@@ -598,7 +598,7 @@
             },
             'secArea':function(val){
                 if(val){
-                    if(val == this.intendedDpt||val == this.thirdArea){
+                    if(val == this.firArea||val == this.thirdArea){
                         this.secArea = '';
                         this.sendData.pst = '';
                     }
@@ -638,6 +638,18 @@
                         this.qyCode3 = '';
                     }
                 }
+            },*/
+            'seatingNum':function(){
+                 this.seatingNum =  this.seatingNum.replace(/[^0-9]/g,'');
+            },
+             'avgguestExpect':function(){
+                 this.avgguestExpect =  this.avgguestExpect.replace(/[^0-9]/g,'');
+            },
+             'loadfactorsExpect':function(){
+                 this.loadfactorsExpect =  this.loadfactorsExpect.replace(/[^0-9.]/g,'');
+            },
+             'hourConst':function(){
+                 this.hourConst =  this.hourConst.replace(/[^0-9.]/g,'');
             },
         },
         computed: {
@@ -742,8 +754,8 @@
                 this.scheduleShow = this.acceptData.days; // 拟开班期
                 this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
                /* this.seatingNum = this.acceptData.seating; // 座位数*/
-                this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
-                this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期
+                //this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
+                //this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期
                 this.airCompany ="***";// 运力归属
                 this.hourConst = this.acceptData.hourscost; // 小时成本
                 //this.remarkMsg = this.acceptData.remark; // 其他说明
@@ -855,7 +867,7 @@
             //发送数据
             submitData: function () {
                 let req = document.getElementById('airlineWrite'); //控制滚动条的位置
-                //this.sendStateMsgFn();
+                this.sendStateMsgFn();
                 //表单验证（部分）
                 if(this.user.replace(/(^\s*)|(\s*$)/g,"") == '') { // 联系人
                     this.warn1Show = true;
@@ -869,7 +881,8 @@
                     this.warn3Show = true;
                     req.scrollTop = 0;
                     return
-                }/*if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
+                }
+                if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
                     if((this.pstState == 0 && this.sendData.pst != '')
                         || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
                         this.warn8Show = false;
@@ -878,8 +891,8 @@
                         req.scrollTop = 0;
                         return
                     }
-                }*/
-               /* if(this.sendData.pst != '' && this.sendData.arrv != '') { //始发、经停、到达不能相同
+                }
+                if(this.sendData.pst != '' && this.sendData.arrv != '') { //始发、经停、到达不能相同
                     if(this.sendData.dpt == this.sendData.pst
                         || this.sendData.dpt == this.sendData.arrv
                         || this.sendData.pst == this.sendData.arrv) {
@@ -889,35 +902,33 @@
                     }else {
                         this.warn9Show = false;
                     }
-                }*/
-                if(this.subsidyCode === '') {
-                    this.warn12Show = true;
-                    req.scrollTop = 550;
-                    return
-                }
-                if(this.subsidyCode === '') {
-                    this.warn12Show = true;
-                    req.scrollTop = 550;
-                    return
                 }
                 if(this.myDate1 == '选择起止时间') { // 拟开时间
                     this.warn6Show = true;
-                    console.log(this.warn6Show)
                     req.scrollTop = 0;
                     return
-                }if(this.scheduleShow == '选择班期类型') { //班期
+                }
+                 if(this.subsidyCode === '') {
+                    this.warn12Show = true;
+                    req.scrollTop = 550;
+                    return
+                }
+                if(this.scheduleShow == '选择班期类型') { //班期
                     this.warn5Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.typeChoose == '') { // 机型
+                }
+                if(this.typeChoose == '') { // 机型
                     this.warn4Show = true;
                     req.scrollTop = 0;
                     return
-                }if(this.airCompany.replace(/(^\s*)|(\s*$)/g,"") == '') {
+                }
+                if(this.airCompany.replace(/(^\s*)|(\s*$)/g,"") == '') {
                     this.warn10Show = true;
                     req.scrollTop = 250;
                     return
-                }if(this.fourArea.replace(/(^\s*)|(\s*$)/g,"") == '') {
+                }
+                if(this.fourArea.replace(/(^\s*)|(\s*$)/g,"") == '') {
                     this.warn11Show = true;
                     req.scrollTop = 250;
                     return
@@ -1335,7 +1346,7 @@
             arrvTimeresourcesFn2: function () {
                 this.arrvTimeresources = 2;
                 this.arrvTime = '';
-        this.time31Checked = false;
+                this.time31Checked = false;
                 this.time32Checked = false;
                 this.time33Checked = true;
             },
@@ -1437,7 +1448,7 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
-//                this.firArea = data.name;
+                this.firArea = data.name;
                 this.firAreaBus = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;
@@ -2105,7 +2116,7 @@
     }
 
     /*********/
-    .wrapper {
+    .t-wrapper {
         position: fixed;
         top: 0;
         left: 0;

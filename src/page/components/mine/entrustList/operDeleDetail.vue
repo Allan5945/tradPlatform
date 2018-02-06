@@ -218,7 +218,7 @@
            </footer> -->
         </div>
         <operDeleForm v-if="formShow" @closeForm="closeForm" :acceptData="detailData"></operDeleForm>
-        <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
+        <sonNeedDetail :sonId = "sonId" :acceptData="detailData" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
@@ -439,6 +439,7 @@
         toBack(){
           this.myShow = true;
           this.sondetailShow = false;
+          this.init();
         },
         init(){
             this.$ajax({

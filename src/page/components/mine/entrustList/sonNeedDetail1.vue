@@ -9,12 +9,12 @@
                    <div class="progress">状态：<span>{{detailData.demandprogressStr||'-'}}</span></div>
                    <div class="link">关联需求：
                       <div class="back-link" @click="toBack">
-                        <span class="til">{{title}}</span>
+                        <span class="til">{{acceptData.title}}</span>
                         <span class="iconfont">&#xe679;</span>
                       </div>
                   </div>
                </div>
-              <!--  <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div> -->
+             <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
             </header>
             <div class="content">
                 <div class="table-form" v-if="transShow">
@@ -369,7 +369,7 @@
         </div>
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
-        <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
+        <reTransForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData" :fatherId="acceptData.id"></reTransForm>
         <airlinePay v-if="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP" :airlinePayId="detailData.id"></airlinePay>
     </div>
 </template>
@@ -379,7 +379,7 @@
   import * as vx from 'vuex'
   import myIntentForm from './../../trans_detail/myIntentForm.vue'
   import sureForm from './../../airlineAffirm.vue'
-  import dataForm from './../../trans_detail/dataForm.vue'
+  import reTransForm from './reTransForm.vue'
   import airlinePay from '$src/page/components/trans_detail/dialog.vue'
   import calendar from './../../publicTools/calendar/calendarCP'
  export default {
@@ -408,10 +408,11 @@
              calendarShow:false,
              calendarInitDay1:'',
              calendarInitDay2:'',
-             changeValidityShow:true
+             changeValidityShow:true,
+             rePublish:false
          }
      },
-     props:['sonId','title'],
+     props:['sonId','acceptData'],
      methods:{
          chat:function (v) {
               let chatData = {};
@@ -509,7 +510,9 @@
             this.dialogShow =true;
          },
          toPublish:function(){
-            this.dataFormShow = true;
+            if(this.detailData.demandtype == '1'){
+                this.dataFormShow = true;
+            }
          },
           airlinePayFn: function () {
             this.airlinePayShow = true;
@@ -669,7 +672,7 @@
      components: {
             myIntentForm,
             sureForm,
-            dataForm,
+            reTransForm,
             airlinePay,
             calendar
         }

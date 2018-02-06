@@ -279,7 +279,7 @@
                             <span class="margin-right">座位数</span>　
                             <div class="choose-input" style="width: 180px;">
                                 <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum"
-                                       style="border: 0;"><span>人</span>
+                                       style="border: 0;" maxlength="5"><span>人</span>
                             </div>
                         </div>
                     </div>
@@ -288,14 +288,14 @@
                             <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect"
-                                       style="border: 0;width: 136px;"><span>人</span>
+                                       style="border: 0;width: 136px;" maxlength="5"><span>人</span>
                             </div>
                         </div>
                         <div class="left item-child">
                             <span>客座率期望</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
-                                       style="border: 0;"><span>%</span>
+                                       style="border: 0;" maxlength="5"><span>%</span>
                             </div>
                         </div>
                     </div>
@@ -343,13 +343,14 @@
                             </div>
                         </div>
                          <div class="warn" v-show="warn12Show" style="position: absolute; bottom: 0; left: 0;">*请选择合作方式</div>
+                         <div class="warn" v-show="warn13Show" style="position: absolute; bottom: 0; right: 140px;">*请选择调度机场</div>
                     </div>
                     <div class="third-e item">
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">运力归属</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany"
-                                       @click.stop="clickClose15Fn" style="border: 0;width: 136px;">
+                                       @click.stop="clickClose15Fn" style="border: 0;width: 136px;" readonly="readonly">
                                 <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-show="isSearch6"
                                           style="top: 25px; left: 0;"></airCompanySearch>
                             </div>
@@ -359,7 +360,7 @@
                             <span>运力基地</span>　
                             <div class="choose-input" style="position: relative;">
                                 <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea"
-                                       @click.stop="clickClose16Fn" style="border: 0;">
+                                       @click.stop="clickClose16Fn" style="border: 0;" readonly="readonly">
                                 <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-show="isSearch4"
                                           style="top:25px; left: -55px;"></airportS>
                             </div>
@@ -371,7 +372,7 @@
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
-                                       style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
+                                       style="border: 0;width: 136px;" maxlength="5"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                         </div>
                     </div>
@@ -428,6 +429,7 @@
                 warn10Show: false,  //运力归属警告
                 warn11Show: false,  //运力基地警告
                 warn12Show: false,  //补贴政策警告
+                warn13Show:false,  //接受调度警告
 
                 secondShow: false, //显示总的（三个）“是否接受临近机场”
                 second1Show: false,//显示“是否接受临近机场”
@@ -600,6 +602,31 @@
             calendarInitDay2: function () {
                 this.setOptFn0();
             },
+             'seatingNum':function(val){
+                if(val){
+                 this.seatingNum =  this.seatingNum.replace(/[^0-9]/g,'');
+                }
+            },
+             'avgguestExpect':function(val){
+                if(val){
+                 this.avgguestExpect =  this.avgguestExpect.replace(/[^0-9]/g,'');
+                }
+            },
+             'loadfactorsExpect':function(val){
+                if(val){
+                 this.loadfactorsExpect =  this.loadfactorsExpect.replace(/[^0-9.]/g,'');
+                }
+            },
+             'hourConst':function(val){
+                if(val){
+                 this.hourConst =  this.hourConst.replace(/[^0-9.]/g,'');
+                }
+            },
+            schedulingShow:function(val){
+                if(!val){
+                     this.warn13Show = false;
+                }
+            }
         },
         computed: {
             num: function () { // 其他说明中已输入的字数
@@ -849,6 +876,8 @@
                     this.subsidyShow = '人头补';
                 }else if(index === '3') {
                     this.subsidyShow = '其他';
+                }else if(index === '5') {
+                    this.subsidyShow = '无补贴';
                 }
             },
             warn4Fn: function () {
@@ -897,7 +926,7 @@
                     this.warn3Show = true;
                     req.scrollTop = 0;
                     return
-                }/*if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
+                }if(this.dptState == 1) { //始发地类型（0：机场，1：区域）
                     if((this.pstState == 0 && this.sendData.pst != '')
                         || (this.arrvState == 0 && this.sendData.arrv != '')){ // 始发为区域时，经停或到达必须有一个为意向机场
                         this.warn8Show = false;
@@ -916,7 +945,7 @@
                     }else {
                         this.warn9Show = false;
                     }
-                }*/
+                }
                 if(this.subsidyCode === '') {
                     this.warn12Show = true;
                     req.scrollTop = 550;
@@ -941,6 +970,11 @@
                 }if(this.fourArea.replace(/(^\s*)|(\s*$)/g,"") == '') {
                     this.warn11Show = true;
                     req.scrollTop = 250;
+                    return
+                }
+                if(this.schedulingShow && this.directionPublicCity.length == 0){
+                    this.warn13Show = true;
+                     req.scrollTop = 250;
                     return
                 }
                 delete this.sendData.airportForSchedulines;
@@ -1446,7 +1480,7 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
-//                this.firArea = data.name;
+                this.firArea = data.name;
                 this.firAreaBus = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;
@@ -1489,6 +1523,7 @@
                     }
                 }
 
+                this.warn13Show = false;
                 this.$nextTick(() => {
                     this.moreShowFn();
                 })

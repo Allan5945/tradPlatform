@@ -215,7 +215,7 @@
             </div>
             <div class="t-btn">
                 <div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>
-                <div class="confirm-btn " @click="agentConfirm(4)" v-if="isAgent">确认发布</div>
+                <!-- <div class="confirm-btn " @click="agentConfirm(4)" v-if="isAgent">确认发布</div> -->
                 <div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>
                 <div class="cancel-btn " @click="cancel">取消</div>
                 <p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>
@@ -225,11 +225,11 @@
     </div>
 </template>
 <script>
- import calendar from './../publicTools/calendar/calendarCP'
+ import calendar from '$src/page/components/publicTools/calendar/calendarCP'
  import * as vx from 'vuex'
- import airportS from '../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
- import airportS1 from '../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
- import airCompanyS from '../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
+ import airportS from './../../../reuseComponents/airportSearch.vue'//可匹配机场和地区搜索
+ import airportS1 from './../../../reuseComponents/airportSearch1.vue'//仅可匹配机场搜索
+ import airCompanyS from './../../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
     export default {
         data () {
             return{
@@ -326,7 +326,7 @@
             airportS1,
             airCompanyS
         },
-        props: ['acceptData'],
+        props: ['acceptData','fatherId'],
         computed:{
             ...vx.mapGetters([
                 'role',
@@ -820,102 +820,6 @@
                     };
                 }
             },
-            agentConfirm:function(type){
-                 let trans = document.getElementById('transForm');
-                //必填信息验证
-                if(this.contact == ''){//联系人
-                     this.isError1 = true;
-                     trans.scrollTop = 0;
-                     return false;
-                }
-                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.phoneNum)) ){//联系方式
-                    this.isError2 = true;
-                    trans.scrollTop = 0;
-                    return false;
-                }
-                if(this.airplaneTyp == ''){//飞机类型
-                    this.isError5 = true;
-                    trans.scrollTop = 0;
-                    return false;
-                }
-                if(this.searchText == ''){//运力基地
-                    this.isError6 = true;
-                    trans.scrollTop = 0;
-                    return false;
-                }
-                if(this.intendedDpt == ''){//起始机场
-                    this.isError3 = true;
-                     trans.scrollTop = 0;
-                    return false;
-                }
-                if(this.dispatch){       //接受调度
-                    if(this.searchData.length == '0'){
-                        this.isError9 = true;
-                        return false;
-                    };
-                }
-                let demandData = {},
-                    time = this.timeStart +','+ this.timeEnd;
-                    demandData.demandtype = type;
-                    demandData.contact = this.contact;
-                    demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? time:'无';
-                    demandData.days   = this.getFlight =='true'? this.msg: '无';
-                    demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
-                    demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
-                    demandData.intendedArrv = this.intendedArrv == '' ? '': this.qyCode5;
-                    demandData.aircrfttyp = this.airplaneTyp;
-                    demandData.dpt = this.qyCode;
-                    demandData.dptState = this.dptState[0];
-                    demandData.capacitycompany = this.airCompanyId;
-                    demandData.seating = this.seat;
-                    demandData.hourscost = this.hourcost;
-                    demandData.remark = this.tip;
-                    demandData.periodValidity = this.myDate;
-
-                    //调度机场
-                    demandData.schedulingStr = this.dispatch == false? '不接受':'接受';
-                    demandData.scheduling = this.dispatch == false? '1':'0';
-                    if(this.searchData.length == '0'){
-                         this.schedulinePort = '';
-                    }else {
-                        let array= [];
-                        this.searchData.forEach((val) => {
-                            array.push(val.id);
-                        });
-                        this.schedulinePort = array.join(',');
-                    }
-                    if(this.dispatch){
-                        demandData.schedulinePort  = this.schedulinePort;
-                    }
-
-                    this.$ajax({
-                        url:"/demandAdd",
-                        method: 'post',
-                        headers: {
-                            'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        params: demandData
-                    }) .then((response) => {
-                        if(response.data.opResult == "0"){
-                           this.$emit("closeForm");
-                           this.$message({
-                                message: '发布成功!',
-                                type: 'success',
-                                duration:2000
-                            });
-                          }else{
-                            this.$message({
-                                message: '提交失败，请稍后再试!',
-                                type: 'warning',
-                                duration:2000
-                            });
-                         }
-                    }) .catch((error) => {
-                            console.log(error);
-                        });
-
-            },
             confirm:function(type){
                  let trans = document.getElementById('transForm');
                 //必填信息验证
@@ -972,6 +876,8 @@
 
                 let demandData = {},
                     time = this.timeStart +','+ this.timeEnd;
+
+                    demandData.demandId = this.fatherId;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
@@ -1020,7 +926,7 @@
                     }
 
                     this.$ajax({
-                        url:"/demandAdd",
+                        url:"/sonDemandAdd",
                         method: 'post',
                         headers: {
                             'Content-type': 'application/x-www-form-urlencoded'
