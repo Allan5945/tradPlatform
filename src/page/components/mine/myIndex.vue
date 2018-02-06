@@ -10,8 +10,8 @@
                     <div class="name" v-text="role.nickName"></div>
                     <div class="work-info">
                         <div class="position">{{role.companyName}}&nbsp;{{role.department}}</div>
-                        <div>成单量：<span>10</span></div>
-                        <div>成单率：<span>50%</span></div>
+                        <div>成单量：<span></span></div>
+                        <div>成单率：<span></span></div>
                     </div>
                 </div>
                 <div class="my-list">

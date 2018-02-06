@@ -1,6 +1,6 @@
 <template>
     <div class="tool popup">
-        <a :href="uuid" target="_blank"><span>&#xe671;</span>航路测算</a>
+        <a v-if="uuid && uuid.length>5" :href="uuid" target="_blank"><span>&#xe671;</span>航路测算</a>
         <router-link to="/index/information">
             <span>&#xe6fb;</span>信息查询
         </router-link>

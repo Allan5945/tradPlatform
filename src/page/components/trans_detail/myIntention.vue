@@ -343,7 +343,7 @@
                 .then((response) => {
                     if(response.data.opResult == "0"){
                     this.$message({
-                        message: '取消需求成功!',
+                        message: '结束需求成功!',
                         type: 'success',
                         duration:2000
                     });
@@ -412,9 +412,6 @@
           this.dialogShow = false;
           this.signing = false;
           this.signText = "*签约申请中，请耐心等候";
-        },
-        changeDate:function(){
-
         },
          getMyDate: function(){//获取起始的日期
             if(this.calendarInitDay1 && this.calendarInitDay2){

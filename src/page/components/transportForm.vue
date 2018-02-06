@@ -759,6 +759,11 @@
                     trans.scrollTop = 0;
                     return false;
                 }
+                if(this.intendedDpt == ''){//起始机场
+                    this.isError3 = true;
+                     trans.scrollTop = 0;
+                    return false;
+                }
                 if(this.dispatch){       //接受调度
                     if(this.searchData.length == '0'){
                         this.isError9 = true;

@@ -3,7 +3,8 @@
         <div class="detail-wrapper scroll" v-if="myShow">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div>
+                <!-- <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div> -->
+                <div class="head-til">{{detailData.title||'-'}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
@@ -218,7 +219,7 @@
            </footer> -->
         </div>
         <operDeleForm v-if="formShow" @closeForm="closeForm" :acceptData="detailData"></operDeleForm>
-        <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
+        <sonNeedDetail :sonId = "sonId" :acceptData="detailData" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
@@ -439,6 +440,7 @@
         toBack(){
           this.myShow = true;
           this.sondetailShow = false;
+          this.init();
         },
         init(){
             this.$ajax({

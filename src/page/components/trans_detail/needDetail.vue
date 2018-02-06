@@ -169,6 +169,11 @@
                 .then((response) => {
                   if(response.data.opResult == "0"){
                       this.isCollect = true;
+                      this.$message({
+                                message: '收藏成功!',
+                                type: 'success',
+                                duration:2000
+                            });
                   }
                 })
                 .catch((error) => {
@@ -190,6 +195,11 @@
                 .then((response) => {
                      if(response.data.opResult == "0"){
                       this.isCollect = false;
+                       this.$message({
+                                message: '取消收藏成功!',
+                                type: 'success',
+                                duration:2000
+                            });
                   }else{
                       this.$emit('closeDetail');
                       this.$message({

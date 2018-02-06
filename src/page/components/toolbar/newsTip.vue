@@ -93,6 +93,7 @@
         align-items: center;
         cursor: pointer;
         justify-content: center;
+        z-index: 99;
         &:hover{
             background-color: rgba(151, 151, 151, 0.5);
         }

@@ -315,7 +315,11 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    //alert("取消意向成功！")
+                     this.$message({
+                          message: '取消意向成功!',
+                          type: 'success',
+                          duration:2000
+                      });
                     this.$emit('responseClose');
                   }
                 })
@@ -344,7 +348,11 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    //alert("确认方案成功！")
+                     this.$message({
+                          message: '确认方案成功!',
+                          type: 'success',
+                          duration:2000
+                      });
                     this.$emit('responseClose');
                   }
                 })
@@ -370,7 +378,11 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    //alert("撤回方案成功！")
+                     this.$message({
+                          message: '撤回方案成功!',
+                          type: 'success',
+                          duration:2000
+                      });
                     this.$emit('responseClose');
                   }
                 })
@@ -392,7 +404,11 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == "0"){
-                    //alert("收藏成功！")
+                    this.$message({
+                          message: '收藏成功!',
+                          type: 'success',
+                          duration:2000
+                      });
                     this.isCollect = true;
                   }
                 })
@@ -415,6 +431,11 @@
                 .then((response) => {
                      if(response.data.opResult == "0"){
                       this.isCollect = false;
+                       this.$message({
+                          message: '取消收藏成功!',
+                          type: 'success',
+                          duration:2000
+                      });
                   }
                 })
                 .catch((error) => {
@@ -722,6 +743,7 @@
           width:100%;
           >div:nth-of-type(2){
               width:440px;
+              word-wrap: break-word;
           }
       }
     }
