@@ -1,5 +1,5 @@
 <template>
-    <div class="ald-container">
+    <div class="ald-container" v-cloak>
         <div class="first item-container">
             <span>{{myData.demandtypeStr}}详情</span>
             <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
@@ -55,7 +55,18 @@
                     <div class="item-height">{{myData.days || '-'}}</div>
                     <div class="item-height">{{myData.dptNm || '-'}}</div>
                     <div class="item-height">{{myData.seating || '-'}}</div>
-                    <div class="item-height">{{periodValidity}}止</div>
+                    <div class="item-height" style="display: flex; position: relative;">{{periodValidity}}止
+                        <span class="icon-item" v-if="myData.demandprogress == 7" @click="editCalendarFn" style="cursor:pointer;">&#xe653;</span>
+                        <div v-if="calendarShow1" class="calendar-box popup" style="top: 26px; left: -370px; line-height: normal;">
+                            <div class="selec-data">
+                                <input type="text" placeholder="开始时间" v-model="calendarInitDay3"><span>-</span>
+                                <input type="text" placeholder="结束时间" v-model="calendarInitDay4">
+                                <div class="confirm-btn btn" @click="getMyDate1">确定</div>
+                                <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                            </div>
+                            <calendarCP :initOpt="opt" @changeRangeDate="getDateRange"></calendarCP>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,9 +105,9 @@
         <div class="seventh item-container">
             <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
         </div>
-        <div class="eighth">
+        <div class="eighth" v-if="buttonShow">
             <span class="line" style="position:absolute; top: 0px;"></span>
-            <div class="buttons" v-if="buttonShow">
+            <div class="buttons">
                 <button class="btn btn-w" @click="recallFn">撤回该托管</button>
             </div>
         </div>
@@ -108,6 +119,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import editDataForm from '$src/page/components/mine/myRelease/editDataForm.vue'
+    import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
     export default {
         props: ['mes'],
         data() {
@@ -124,39 +136,102 @@
                 editAirlineDelegationShow: false,
                 recallData: {},         //点击“撤回该托管”传的数据
                 id: '',                 // 点击列表获取这条需求id
-                periodValidity: '',
+                calendarShow1: false,   // 日历是否显示
+                calendarInitDay3: '',
+                calendarInitDay4: '',
+                opt: {          //发布有效期
+                    start: '',
+                    end: '',
+                    isDis: false,
+                },
             }
         },
         watch: {
-            'mes.demand': function () {
+	    'mes.demand': function () {
                 this.mountedFn();
-            }
+            },
+            calendarInitDay3: function () {
+                this.setOptFn();
+            },
+            calendarInitDay4: function () {
+                this.setOptFn();
+            },
         },
         mounted() {
+            // 从myPublishList获取参数，并渲染到页面上
             this.mountedFn();
+            this.setOptFn();
         },
         computed: {
+            periodValidity: function () {
+                if(!this.myData.periodValidity) {
+                    return '-';
+                }else {
+                    return this.myData.periodValidity.split('-')[1];
+                }
+            },
             ...vx.mapGetters([
                 'role'
             ]),
         },
         components: {
             editDataForm, //委托运力投放
+            calendarCP,
         },
         methods: {
+            // 日历
+            setOptFn: function () {
+                this.opt.start = this.calendarInitDay3;
+                this.opt.end = this.calendarInitDay4;
+            },
+            editCalendarFn: function () {
+                this.calendarShow1 = !this.calendarShow1;
+            },
+            getDateRange: function (rd) {  // 发布有效期
+                this.calendarInitDay3 = rd[0];
+                this.calendarInitDay4 = rd[1];
+            },
+            getMyDate1: function () {//我发布的需求，修改有效期
+                if (this.calendarInitDay3 && this.calendarInitDay4) {
+                    this.periodValidity0 = this.calendarInitDay3 + "-" + this.calendarInitDay4;
+                    this.calendarShow1 = false;
+                    let editDate = {};
+                    editDate.id = this.id;
+                    editDate.periodValidity = this.periodValidity0;
+                    this.$ajax({
+                        url:"/demandUpdate",
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        },
+                        params: editDate
+                    }) .then((response) => {
+                        if(response.data.opResult === '0'){
+                            this.open6(`有效期修改成功！`);
+                            this.getData();
+                        }else{
+                            this.open8(`错误代码：${response.data.opResult}`);
+                        }
+//                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
+                    }) .catch((error) => {
+                        console.log(error);
+                    });
+                } else {
+                }
+            },
             // 改变alert弹出样式
             open6(mes) {  // 成功弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
-                    type: 'success'
+                    type: 'success',
+                    duration: 2000,
                 });
             },
             open8(mes) {  // 错误弹出的提示
                 this.$message({
-                    showClose: true,
                     message: mes,
-                    type: 'error'
+                    type: 'error',
+                    duration: 2000,
                 });
             },
             mountedFn: function () {
@@ -178,7 +253,8 @@
                 }) .then((response) => {
                     if(response.data.opResult == 0) {
                         this.myData = response.data.data;
-                        this.periodValidity = this.myData.periodValidity.split('-')[1];
+                        this.calendarInitDay3 = this.myData.periodValidity.split('-')[0];
+                        this.calendarInitDay4 = this.myData.periodValidity.split('-')[1];
                         // demandProgress:需求进度状态[0:需求发布、1:意向征集、2:订单确认、3:关闭（审核不通过、下架、过期）、4:订单完成、5:佣金支付、6:交易完成、7:待处理、8:已接受、9:处理中、10:已拒绝]
                         // demandState:需求状态(0:正常,1:完成,2:异常,3:删除,4:未处理,5:审核不通过,6,审核通过)
                         if(this.myData.demandstate == 2
@@ -237,9 +313,7 @@
                 this.wrongTextShow = true;   //警告信息
             },
             closeThisFn: function () {
-//                this.$emit('close-this');
-                this.mes.demandType = -1;
-                this.$emit('update:foo',this.mes);
+                this.$emit('closewindow');
             },
             // 点击“联系客服”
             linkServiceClickFn: function () {
@@ -294,6 +368,87 @@
     }
 </script>
 <style lang="scss" scoped>
+    [v-cloak] {
+        display: none !important;
+    }
+    /*日历样式*/
+    #search {
+        padding-top: 100px;
+    }
+
+    .left-side-box {
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+    .calendar-box {
+        position: absolute;
+        width: 540px;
+        height: 270px;
+        padding: 20px 10px 10px 10px;
+        z-index: 1;
+    }
+
+    .calendar-box .selec-data {
+        height: 30px;
+        font-size: 12px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .calendar-box .selec-data input {
+        height: 100%;
+        width: 75px;
+        font-size: 12px;
+        padding-left: 15px;
+        border: 0;
+        outline: none;
+        border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+    }
+
+    .calendar-box .selec-data span {
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+    }
+
+    .selec-data .btn {
+        position: absolute;
+        top: 0;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 100px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .selec-data .confirm-btn {
+        right: 0;
+        width: 60px;
+        color: #ffffff;
+        background-color: #3c78ff;
+    }
+
+    .selec-data .cancel-btn {
+        width: 50px;
+        color: rgba(96, 94, 124, .6);
+        box-sizing: border-box;
+        border: 1px solid rgba(96, 94, 124, .6);
+        right: 64px;
+    }
+
+    .popup {
+        border-radius: 4px;
+        opacity: 1;
+        background-color: white;
+        box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+    }
+
+    /*********/
+    .iconfont {
+        margin: 0 25px;
+    }
     /*多行省略号，兼容多个浏览器*/
     @mixin line-clamp($lines, $line-height: 20px) {
         text-overflow: ellipsis;
@@ -305,9 +460,6 @@
         max-height: $line-height * $lines;
     }
     /**************************/
-    .iconfont {
-        margin: 0 25px;
-    }
     /*虚线，弧线*/
     .border-dashed {
         width: 155px;
@@ -352,6 +504,7 @@
         min-height: 900px;
         /*min-height: 700px;*/
         font-size: 1.2rem;
+        color: #605e7c;
         background: white;
         overflow-y: scroll;
         z-index: 17;
@@ -423,6 +576,7 @@
             display: flex;
             margin: 30px 0 15px 0;
             font-size: 20px;
+            font-weight: bold;
         }
         .bottom {
             margin-left: 3px;
@@ -441,7 +595,7 @@
             }
             .item-b {
                 height: 25px;
-                font-size: 20px;
+                font-size: 18px;
             }
             .item-c {
                 margin-bottom: 23px;
@@ -505,14 +659,15 @@
     }
     .fifth {
         margin-top: 20px;
-        height: 100px;
+        margin-bottom: 20px;
+        height: 120px;
         .left {
             flex-shrink: 0;
             width: 80px;
             line-height: 20px;
         }
         .right {
-            @include line-clamp(3);
+            @include line-clamp(6);
         }
     }
     .sixth {
@@ -542,12 +697,9 @@
     }
     .seventh {
         position: absolute;
-        bottom: 125px;
+        bottom: 100px;
     }
     .line {
-        /*position: absolute;
-        left: 20px;
-        bottom: 110px;*/
         margin: 0 auto;
         width: 560px;
         height: 2px;
