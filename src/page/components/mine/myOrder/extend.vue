@@ -55,9 +55,9 @@
                 <div>有效期</div>
                 <div>{{extendData.hourscost?extendData.hourscost+" 止":"-"}}</div>
             </div>
-            <div style="width: 100%;">
+            <div style="width: 100%;height:auto;min-height: 40px;">
                 <div>其他说明</div>
-                <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{extendData.remark||"-"}}</div>
+                <div style="width: 80%;height:auto;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
             </div>
         </div>
         <template v-else>
@@ -140,9 +140,9 @@
                     <div>有效期</div>
                     <div>{{extendData.hourscost?extendData.hourscost+" 止":"-"}}</div>
                 </div>
-                <div style="width: 100%;">
+                <div style="width: 100%;height:auto;min-height: 40px;">
                     <div>其他说明</div>
-                    <div style="width: 80%;word-wrap: break-word;margin-left: -10px;">{{extendData.remark||"-"}}</div>
+                    <div style="width: 80%;height:auto;word-wrap: break-word;margin-left: -10px;">{{ndetailData.remark||"-"}}</div>
                 </div>
             </div>
 
