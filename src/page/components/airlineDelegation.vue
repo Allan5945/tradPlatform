@@ -1051,6 +1051,10 @@
                 this.warn10Show = false;
                 this.warn11Show = false;
                 this.warn12Show = false;
+                this.warn13Show = false;
+                this.warn14Show = false;
+                this.warn15Show = false;
+                this.warn16Show = false;
                 this.replaceAreaBus();
             },
             clickClose1Fn: function () {
@@ -1339,6 +1343,7 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
+                this.firArea = data.name;
                 this.firAreaBus = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;

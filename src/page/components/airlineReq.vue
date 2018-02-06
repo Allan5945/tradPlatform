@@ -1494,6 +1494,7 @@
             // 选中意向机场
             resData1: function (data) {
                 this.isSearch1 = false;
+                this.firArea = data.name;
                 this.firAreaBus = data.name;
                 this.qyCode1 = data.code;
                 this.warn3Show = false;
