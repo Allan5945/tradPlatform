@@ -247,6 +247,9 @@
                         iskf = false;
                     }
                     ;
+//                    let chatRcord = ln.chat.chatData[k].chatRcord.map((val)=>{
+//
+//                    });
                     b[ln.chat.chatData[k].chatFlag] = {
                         chatObjectList,
                         iskf,

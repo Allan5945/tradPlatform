@@ -48,8 +48,8 @@
                 loginTime:0,
                 showE:false,
                 mes:{
-                    p:"1",
-                    u:"jichang",
+                    p:"",
+                    u:"",
                     checked:false
                 },
                 lodings:false,   // true 正在加载，false  
