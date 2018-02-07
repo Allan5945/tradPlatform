@@ -5,7 +5,7 @@
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                 <!-- <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div> -->
                 <div class="head-til">{{detailData.title||'-'}}</div>
-                <div class="contact" @click="chat">联系用户</div>
+               <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
                     <div>创建于{{detailData.releasetime||'-'}}</div>
@@ -230,6 +230,7 @@
     import sonNeedDetail from './../mine/entrustList/sonNeedDetail1.vue'
     import ln from '$src/public/js/tabulationBoxTrigger.js'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
+    import * as vx from 'vuex'
 
  export default {
      data(){
@@ -263,13 +264,18 @@
              this.init();
           }
     },
+      computed: {
+         ...vx.mapGetters([
+                'role'
+            ])
+    },
      methods:{
         chat:function () {
-            /* let chatData = {};
+             let chatData = {};
               chatData.id = this.detailData.id;
-              chatData.employeeId = this.detailData.employeeId;
+              chatData.employeeId = this.role.id;
               chatData.demandEmployeeId = this.detailData.employeeId;
-              ln.$emit('addChat',chatData);*/
+              ln.$emit('addChat',chatData);
         },
         closeDetail(){
           this.$emit("closewindow");
@@ -300,7 +306,7 @@
                 })
                 .then((response) => {
                   if(response.data.opResult == '0'){
-                   this.orderShow = true;
+                   this.init();
                   }
                 })
                 .catch((error) => {
@@ -352,7 +358,7 @@
                 },
                   params: {
                     demandState:'1',
-                    demandId:this.mes.id,
+                    demandId:this.mes.demand,
                     demandType:this.mes.demandType,
                     rek:text
                   }
@@ -465,21 +471,33 @@
                           if(this.detailData.demandprogress == '0'||this.detailData.demandprogress == '1'||this.detailData.demandprogress == '2'||this.detailData.demandprogress == '4'||this.detailData.demandprogress == '5'){//子需求需求发布/意向征集/子订单确认/子订单完成/佣金支付
                               this.orderShow = true;
                               this.orderOver =true;
+                              this.isClose = true;
+                              this.sonListShow = true;
                           }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
                               this.orderShow = true;
                               this.isClose = false;
+                              this.sonListShow = true;
                           }else if(this.detailData.demandprogress == '9'){//处理中
                               this.orderShow = true;
+                              this.orderOver =true;
+                              this.isClose = true;
+                              this.sonListShow = true;
                           }else if(this.detailData.demandprogress == '3'){//已关闭
                               this.isClose = false;
                               this.sonListShow = false;
+                              this.orderShow = false;
                               //this.refuseText = this.detailData.rek;
                           }else if(this.detailData.demandprogress == '10'){//已拒绝
+                              this.isClose = true;
+                              this.orderShow = false;
                               this.tipShow = true;
                               this.sonListShow = false;
                               this.refuseText = this.detailData.rek;
                           }else if(this.detailData.demandprogress == '7'){//待处理
                                this.sonListShow = false;
+                               this.orderShow = false;
+                               this.isClose = true;
+                               this.tipShow = false;
                           }
 
                           //显示运力或者航司详情

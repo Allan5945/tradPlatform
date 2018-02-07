@@ -66,6 +66,7 @@
 import refuseDialog from './../mine/entrustList/refuseDialog.vue';
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import ln from '$src/public/js/tabulationBoxTrigger.js'
+import * as vx from 'vuex'
 
  export default {
      data(){
@@ -90,11 +91,11 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
         },
      methods:{
         chat:function () {
-           /* let chatData = {};
+            let chatData = {};
               chatData.id = this.detailData.id;
-              chatData.employeeId = this.detailData.employeeId;
               chatData.demandEmployeeId = this.detailData.employeeId;
-              ln.$emit('addChat',chatData);*/
+              chatData.employeeId = this.role.id;
+              ln.$emit('addChat',chatData);
             },
         closeDetail:function(){
           this.$emit("closewindow");
@@ -104,7 +105,7 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
           this.msg = "拒绝";
         },
         toTest:function(){
-            this.isTest =false;
+            //this.isTest =false;
             this.$ajax({
                 method: 'post',
                 url: '/demandUpdate',
@@ -232,22 +233,31 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
                     this.demandprogress =  this.detailData.demandprogress;
                       //状态处理
                       if(this.detailData.demandprogress == '9'){//测评中
-                          this.isTest = !this.isTest;
+                          this.isTest = false;
+                          this.isAccept =true;
+                          this.testingShow =true;
+                          this.canAgent = false;
                       }else if(this.detailData.demandprogress == '10'){//已拒绝
+                         this.isTest = true;
+                          this.isAccept =true;
+                          this.canAgent = false;
                           this.testingShow =false;
                           this.refuseText = this.detailData.rek;
                       }else if(this.detailData.demandprogress == '8'){//已接受
-                          this.isTest = !this.isTest;
                           this.isAccept =false;
                           this.canAgent = true;
                       }else if(this.detailData.demandprogress == '3'){//已关闭
-                          this.canAgent = true;
-                          this.cancSuccess =false;
+                          //this.canAgent = true;
+                          //this.cancSuccess =false;
                           this.isAccept =false;
-                          this.refuseText = this.detailData.rek;
+                          this.canAgent = false;
+                          //this.refuseText = this.detailData.rek;
+                      }else if(this.detailData.demandprogress == '7'){//待处理
+                          this.isTest = true;
+                          this.testingShow =true;
+                          this.isAccept = true;
+                          this.canAgent = false;
                       }
-                  }else{
-
                   }
                 })
                 .catch((error) => {
@@ -257,8 +267,10 @@ import ln from '$src/public/js/tabulationBoxTrigger.js'
         }
      },
      computed: {
-
-        },
+         ...vx.mapGetters([
+                'role'
+            ])
+    },
       mounted() {
           tabulationBoxTrigger.hierarchy = true;
           this.init();
