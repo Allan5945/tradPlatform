@@ -2208,7 +2208,7 @@ nikai<template>
         border-radius: 4px;
         opacity: 1;
         background-color: white;
-        box-shadow: 0 5px 11px rgba(85, 85, 85, .1);
+        box-shadow: 0 5px 11px rgba(85, 85, 85, .37);
     }
 
     /*********/

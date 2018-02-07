@@ -52,7 +52,10 @@
                 return nDays;
             },
             dateCompare: function(da,db) {  // 日期比较 小于等于为false
-                if(new Date(da).getTime() > new Date(db).getTime()){
+                da = da.replace(/\./g,'/');
+                db = db.replace(/\./g,'/');
+                db = (new Date(db)).getTime();
+                if((new Date(da)).getTime() > db){
                     return true
                 }
                 return false;
@@ -60,8 +63,10 @@
             getDatea: function(d){//开始日期
                 this.endOption.dis = d;
                 this.outDate.s = d;
-                if(this.dateCompare(d,this.outDate.e||this.endOption.day)){  //重置结束日期
-                    this.endOption.day = this.outDate.e = this.getDateByDate(d,1);
+                let ddd = (this.outDate.e!="" && this.outDate.e!=undefined) ? this.outDate.e :this.endOption.day;
+                if(this.dateCompare(d,ddd)){  //重置结束日期
+                    this.endOption.day =  this.getDateByDate(d,1);
+                    this.outDate.e = this.getDateByDate(d,1);
                 }
                 this.outPut();
             },

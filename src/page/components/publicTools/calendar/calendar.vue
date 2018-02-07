@@ -60,10 +60,11 @@
             initDay: function(v,ov){
                 if(this.lockDay){
                     this.pick(v.replace(/\./g,'/'));
+//                    this.checkDay = v.replace(/\./g,'/')
                 }
             },
             lockDay: function(v,ov){
-                this.pick(this.checkDay);
+                this.pick(this.checkDay,true);
             }
         },
         methods: {
@@ -162,18 +163,21 @@
             },
             dateCompare: function(da,db) {
                 db = db || this.today;
+                db = db.replace(/\./g,'/');
                 if(new Date(da).getTime() < new Date(db).getTime()){
                     return false
                 }
                 return true;
             },
-            pick: function(date) {
+            pick: function(date,flag) {
                 //选中日期并传出
                 let bor = this.lockDay;
                 if(bor){
                     bor = bor.replace(/\./g,'/');
                     if(!this.dateCompare(date,bor)){
-                        return false;
+                        if(!flag){
+                            return false;
+                        }
                     }
                 }
                 if(!this.dateCompare(date)){

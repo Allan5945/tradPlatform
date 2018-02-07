@@ -66,20 +66,12 @@
                     :total="totalCount">
             </el-pagination>
         </div>
-       <!-- <transition-group name="slidex-fade">
-            <myPurpose v-if="myPurposeShow" :acceptData="mes" @close-this="closeThisFn" :key="5"></myPurpose>
-            &lt;!&ndash;运力详情&ndash;&gt;
-            <div class="trans-wrapper" v-if="myPurpose1Show" @click.self="closeThisFn" :key="6">
-                <transIndex :mes="mes" @closewindow="closeThisFn"></transIndex>
-            </div>
-        </transition-group>-->
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
-    import myPurpose from '$src/page/components/mine/companyAccount/companyAirlineDetailPayAfter.vue'
     import transIndex from '$src/page/components/trans_detail/transIndex.vue'
 
     export default {
@@ -333,13 +325,6 @@
                 this.mes.demandType = Number(item.demandtype);
                 tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
                 tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
-                /*if(item.demandtype == '0') {
-                    this.myPurposeShow = true;
-                    tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
-                }else if(item.demandtype == '1') { //demand  , demandState 需求状态 ,demandType  需求类型
-                    this.myPurpose1Show = true;
-
-                }*/
             },
             // 点击关闭详情
             closeThisFn: function () {
@@ -361,7 +346,6 @@
         },
         components: {
             stateList,
-            myPurpose,
             transIndex,
         }
     }
