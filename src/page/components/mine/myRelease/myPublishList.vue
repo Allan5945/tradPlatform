@@ -201,7 +201,7 @@
             },
             /*************************/
             talkShowFn: function (item) {  // 列表中的交谈按钮是否显示
-                if(this.role.role === '1'){  //0：航司 1：机场 2：太美
+                if(this.role.role == '1'){  //0：航司 1：机场 2：太美
                     if(item.responseEmployees != null && item.responseEmployees.length != 0 && item.intentionMoneyState === '0'){
                         return true
                     }else {

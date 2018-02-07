@@ -351,7 +351,7 @@
             </div>
         </div>
         <div class="tenth item-container danger" v-if="myData.demandstate == 5 || myData.demandProgress == 10">
-            <span>拒绝原因：</span>
+            <span>原因：</span>
             <span>{{myData.rek}}</span>
         </div>
         <div class="third-show" v-if="thirdShow">
@@ -525,7 +525,7 @@
                         <div v-else>
                             <div class="item-fifth" v-if="item.releaseselected === '1' && item.responseProgress !== '2'">
                                 <div v-show="secondButtonShow && myData.demandprogress != 3" style="position: absolute; left: -130px; bottom: 50px;">
-                                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后即可选定该意向</span>
+                                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可选定该意向</span>
                                 </div>
                                 <button class="btn btn-disable" v-show="unPayMoneyShow">选定</button>
                                 <button class="btn btn-b" v-show="!btnDisableShow && !unPayMoneyShow" @click="airlineAffirmFn(item,index)">选定</button>
