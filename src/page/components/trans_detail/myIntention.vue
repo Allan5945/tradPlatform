@@ -253,7 +253,7 @@
         </div>
         <!-- <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm> -->
         <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
-        <dataForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
+        <dataForm v-if='dataFormShow' @closeForm="closeDataForm" :acceptData = "detailData"></dataForm>
          <signDialog  v-show="dialogShow" @cancel="dialogShow = false" @signSuccess="signSuccess"></signDialog>
     </div>
 </template>
@@ -264,8 +264,8 @@
   import * as vx from 'vuex'
   import calendar from './../publicTools/calendar/calendarCP'
   import myIntentForm from './myIntentForm.vue'
-  /*import sureForm from './sureForm1.vue'*/
-  import sureForm from './../airlineAffirm.vue'
+  import sureForm from './sureForm1.vue'
+  /*import sureForm from './../airlineAffirm.vue'*/
   import dataForm from './dataForm.vue'
   import  signDialog from './signDialog.vue'
  export default {

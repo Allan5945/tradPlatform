@@ -6,7 +6,6 @@
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
-    /*import companyAirlineDetailPayAfter from './../companyAccount/companyAirlineDetailPayAfter.vue'*/
     /*import transIndex from '$src/page/components/trans_detail/transIndex.vue'*/
     import companyAirlineDetailPayAfter from '../companyAccount/companyAirlineDetailPayAfter.vue'
     export default {

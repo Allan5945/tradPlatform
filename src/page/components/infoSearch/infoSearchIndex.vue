@@ -96,6 +96,7 @@ import myPic from '$src/static/img/airport1.png';
         data() {
             return {
                 airportText:'',
+                airportText1:'',
                 qyCode:'',
                 selcIndex:'0',
                 selcType:'城市',
@@ -142,6 +143,7 @@ import myPic from '$src/static/img/airport1.png';
         methods: {
             getType(i){
                 this.airportText = '';
+                this.airportText1 = '';
                 this.selcType = this.typeList[i];
                 this.selcIndex = i;
             },
@@ -151,15 +153,18 @@ import myPic from '$src/static/img/airport1.png';
                 that.airportShow =false;
                 that.airlineShow =false;
                 that.cityShow =false;
+                that.airportText = (that.airportText == ''||that.qyCode == ''? '':that.airportText1);
                 },200);
             },
             airportData(data){
                 this.airportText = data.name;
+                this.airportText1 = data.name;
                 this.qyCode = data.code;
                 this.airportShow = false;
             },
             cityData(data){
                 this.airportText = data.name;
+                this.airportText1 = data.name;
                 //this.qyCode = data.code;
                 this.qyCode = data.name;
                 this.cityShow = false;
@@ -170,7 +175,8 @@ import myPic from '$src/static/img/airport1.png';
                 this.airlineShow = true;
             },
             getInfo(){
-                if(this.qyCode !== ''){
+                this.airportText = (this.airportText == ''||this.qyCode == ''? '':this.airportText1);
+                if(this.qyCode !== ''&& this.airportText !== ''){
                     let data = {
                         qyCode : this.qyCode,
                         selcType :this.selcType,
@@ -179,15 +185,16 @@ import myPic from '$src/static/img/airport1.png';
                      this.$store.dispatch('searchInfo', data);
                      this.$local.clear();
                      this.$local.set(data);
-                }
-                 if(this.selcType == '机场'){
-                    this.$router.push({ path: '/index/information/airport'});
-                }else if(this.selcType == '航司'){
-                    this.$router.push({ path: '/index/information/airline'});
-                }else if(this.selcType == '时刻'){
-                    this.$router.push({ path: '/index/information/time'});
-                }else if(this.selcType == '城市'){
-                    this.$router.push({ path: '/index/information/city'});
+
+                     if(this.selcType == '机场'){
+                        this.$router.push({ path: '/index/information/airport'});
+                    }else if(this.selcType == '航司'){
+                        this.$router.push({ path: '/index/information/airline'});
+                    }else if(this.selcType == '时刻'){
+                        this.$router.push({ path: '/index/information/time'});
+                    }else if(this.selcType == '城市'){
+                        this.$router.push({ path: '/index/information/city'});
+                    }
                 }
                 this.airportText = '';
                 this.qyCode = '';
@@ -197,6 +204,7 @@ import myPic from '$src/static/img/airport1.png';
             },
             airCompanyData: function(data){
                 this.airportText = data.name;
+                this.airportText1 = data.name;
                 this.qyCode = data.code3;
                 this.airlineShow = false;
             }

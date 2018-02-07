@@ -14,7 +14,7 @@
                       </div>
                   </div>
                </div>
-           <!-- <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div> -->
+               <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
            </header>
             <div class="content">
                 <div class="table-form" v-if="transShow">
@@ -370,6 +370,7 @@
         <myIntentForm v-if="myFormShow" @closeMyForm="closeMyForm" :acceptData = "selectData" @surePlan="surePlan"></myIntentForm>
         <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "editData"></sureForm>
         <reTransForm v-if='dataFormShow'@closeForm="closeDataForm" :acceptData = "detailData" :fatherId="acceptData.id"></reTransForm>
+        <reAirlineForm v-if='dataFormShow1'@close-this="closeDataForm" :acceptData = "detailData" :fatherId="acceptData.id"></reAirlineForm>
         <airlinePay v-if="airlinePayShow" @cancel="closeAlPayFn" @sure="changeShowCodeP" :airlinePayId="detailData.id"></airlinePay>
     </div>
 </template>
@@ -380,6 +381,7 @@
   import myIntentForm from './../../trans_detail/myIntentForm.vue'
   import sureForm from './../../airlineAffirm.vue'
   import reTransForm from './reTransForm.vue'
+  import reAirlineForm from './reAirlineForm.vue'
   import airlinePay from '$src/page/components/trans_detail/dialog.vue'
   import calendar from './../../publicTools/calendar/calendarCP'
  export default {
@@ -390,6 +392,7 @@
              myFormShow:false,
              sureFormShow:false,
              dataFormShow:false,
+             dataFormShow1:false,
              selected:false,
              planComplete:false,
              detailData:{},
@@ -453,8 +456,12 @@
                 })
                 .then((response) => {
                     if(response.data.opResult == "0"){
-                    //alert("取消需求成功!")
-                     this.$emit('closeDetail');
+                    this.$message({
+                        message: '结束需求成功!',
+                        type: 'success',
+                        duration:2000
+                    });
+                    this.init();
                   }
                 })
                 .catch((error) => {
@@ -481,6 +488,11 @@
                     .then((response) => {
                          if(response.data.opResult == "0"){
                           //alert("撤销选定成功!")
+                          this.$message({
+                            message: '撤销选定成功!',
+                            type: 'success',
+                            duration:2000
+                          });
                           this.init();
                          }
                     })
@@ -504,6 +516,7 @@
          },
          closeDataForm:function(){
             this.dataFormShow = false;
+            this.dataFormShow1 = false;
          },
          toDeal:function(){
             this.dialogShow =true;
@@ -512,7 +525,7 @@
             if(this.detailData.demandtype == '1'){
                 this.dataFormShow = true;
             }else if(this.detailData.demandtype == '0'){
-
+                 this.dataFormShow1 = true;
             }
          },
           airlinePayFn: function () {
@@ -675,7 +688,8 @@
             sureForm,
             reTransForm,
             airlinePay,
-            calendar
+            calendar,
+            reAirlineForm
         }
 }
 </script>
@@ -731,6 +745,7 @@
           font-size:1.2rem;
           background-color:#fff;
           padding:0 15px 0 40px;
+          box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
           span{
             display:block;
             box-sizing:border-box;

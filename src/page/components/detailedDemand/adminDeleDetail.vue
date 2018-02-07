@@ -492,12 +492,14 @@
                           }else if(this.detailData.demandprogress == '10'){//已拒绝
                               this.isClose = true;
                               this.orderShow = false;
+                              this.orderOver =false;
                               this.tipShow = true;
                               this.sonListShow = false;
                               this.refuseText = this.detailData.rek;
                           }else if(this.detailData.demandprogress == '7'){//待处理
                                this.sonListShow = false;
                                this.orderShow = false;
+                               this.orderOver =false;
                                this.isClose = true;
                                this.tipShow = false;
                           }
@@ -594,6 +596,7 @@
           font-size:1.2rem;
           background-color:#fff;
           padding:0 15px 0 40px;
+          box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
           span{
             display:block;
             box-sizing:border-box;
