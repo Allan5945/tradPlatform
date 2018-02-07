@@ -25,6 +25,7 @@
         <div class="fourth item-container">
             <div class="items">
                 <div class="left item">
+                    <div class="font-gray">联系人</div>
                     <div class="font-gray">机型</div>
                     <div class="font-gray">运力归属</div>
                     <div class="font-gray">小时成本</div>
@@ -32,6 +33,7 @@
                     <div class="font-gray">出港时刻</div>
                 </div>
                 <div class="right item">
+                    <div class="item-height">{{myData.contact}}</div>
                     <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
                     <div class="item-height">
                         <span v-if="myData.capacityCompany">{{myData.capacityCompany.airlnCd}}</span>
@@ -46,12 +48,14 @@
             </div>
             <div class="items">
                 <div class="left item">
+                    <div class="font-gray">联系方式</div>
                     <div class="font-gray">班期</div>
                     <div class="font-gray">运力基地</div>
                     <div class="font-gray">座位布局</div>
                     <div class="font-gray">有效期</div>
                 </div>
                 <div class="right item">
+                    <div class="item-height">{{myData.iHome}}</div>
                     <div class="item-height">{{myData.days || '-'}}</div>
                     <div class="item-height">{{myData.dptNm || '-'}}</div>
                     <div class="item-height">{{myData.seating || '-'}}</div>
@@ -83,32 +87,52 @@
             <div class="left font-gray">其他说明</div>
             <div class="right">{{myData.remark}}</div>
         </div>
-        <div class="line"></div>
+        <!--<div class="line"></div>
         <div class="sixth item-container">
             <div class="items">
                 <div class="left item">
-                    <div class="font-gray">联系人</div>
+
                 </div>
                 <div class="right item">
-                    <div class="item-height">{{myData.contact}}</div>
+
                 </div>
             </div>
             <div class="items">
                 <div class="left item">
-                    <div class="font-gray">联系方式</div>
+
                 </div>
                 <div class="right item">
-                    <div class="item-height">{{myData.iHome}}</div>
+
                 </div>
             </div>
-        </div>
+        </div>-->
+        <template v-if="myData.subDemands != null && myData.subDemands != ''">
+            <header>
+                <div class="head-til">关联子需求</div>
+            </header>
+            <div class="table-form-extend">
+                <div class="table-header">
+                    <span class="item-a">发布时间</span><span class="item-b">标题</span><span class="item-c">需求状态</span>
+                </div>
+                <ul class="table-body">
+                    <li v-for="(item, eindex) in myData.subDemands">
+                        <div class="list">
+                            <span class="item-a">{{ item.releasetime }}</span>
+                            <span class="item-b"><lonSpan :txt="item.title"></lonSpan></span>
+                            <span class="item-c">{{ item.demandprogressStr }}</span>
+                            <span class="item-d"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </template>
         <div class="seventh item-container">
             <span class="danger" v-show="myData.rek != null">*原因：{{myData.rek}}</span>
         </div>
         <div class="eighth" v-if="buttonShow">
             <span class="line" style="position:absolute; top: 0px;"></span>
             <div class="buttons">
-                <button class="btn btn-w" @click="recallFn">撤回该托管</button>
+                <button class="btn btn-w" @click="recallFn">撤回该委托</button>
             </div>
         </div>
         <!--委托运力投放-->
@@ -120,6 +144,7 @@
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import editDataForm from '$src/page/components/mine/myRelease/editDataForm.vue'
     import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
     export default {
         props: ['mes'],
         data() {
@@ -177,6 +202,7 @@
         components: {
             editDataForm, //委托运力投放
             calendarCP,
+            lonSpan,
         },
         methods: {
             // 日历
@@ -260,13 +286,7 @@
                         if(this.myData.demandstate == 2
                             || this.myData.demandstate == 3
                             || this.myData.demandstate == 5
-                            || this.myData.demandprogress == 3
-                            || this.myData.demandprogress == 4
-                            || this.myData.demandprogress == 5
-                            || this.myData.demandprogress == 6
-                            || this.myData.demandprogress == 8
-                            || this.myData.demandprogress == 9
-                            || this.myData.demandprogress == 10){
+                            || this.myData.demandprogress != 7){
                             this.buttonShow = false;
                         }else {
                             this.buttonShow = true;
@@ -373,6 +393,78 @@
     [v-cloak] {
         display: none !important;
     }
+    /*2.07新增关联子需求*/
+    header{
+        box-sizing: border-box;
+        width:100%;
+        background-color:rgba(216,216,216,.2);
+        padding: 5px 40px 0 50px;
+        .head-til{
+            font-size:20px;
+            font-weight:bold;
+            height: 80px;
+            line-height: 80px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+    }
+    .table-form-extend{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin-bottom: 150px;
+        .table-header{
+            width: 520px;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 20px;
+            margin-left: 30px;
+            display: flex;
+            .item-a{
+                flex:1;
+            }
+            .item-b{
+                flex:1;
+            }
+            .item-c{
+                text-indent: 15px;
+                flex:2;
+            }
+        }
+        .table-body{
+            list-style: none;
+            padding: 0 30px;
+            li{
+                background-color: #eee;
+                margin: 5px 0;
+                .list{
+                    width: 520px;
+                    height: 60px;
+                    line-height: 60px;
+                    padding: 0 20px;
+                    display: flex;
+                    .item-a{
+                        flex:1;
+                    }
+                    .item-b{
+                        overflow: hidden;
+                        flex:1;
+                    }
+                    .item-c{
+                        text-indent: 15px;
+                        flex:1;
+                    }
+                    .item-d{
+                        flex:1;
+                        color: #3c78ff;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+    /*******************/
     /*日历样式*/
     #search {
         padding-top: 100px;
@@ -598,6 +690,7 @@
             .item-b {
                 height: 25px;
                 font-size: 18px;
+                font-weight: bold;
             }
             .item-c {
                 margin-bottom: 23px;
@@ -660,8 +753,8 @@
         }
     }
     .fifth {
-        margin-top: 20px;
-        margin-bottom: 20px;
+        /*margin-top: 20px;*/
+        /*margin-bottom: 20px;*/
         height: 120px;
         .left {
             flex-shrink: 0;
