@@ -26,23 +26,32 @@
         },
         methods:{
             pasChange(ok,pwd){
+                let that = this;
                 if(ok){
-                    this.$message({
+                    that.$message({
                         showClose: true,
-                        message: "修改密码成功！",
+                        message: "修改密码成功,请重新登录",
                         type: 'success',
                         duration: 1500
                     });
-                    this.ud.pwd = pwd;
+                    return setTimeout(()=>{
+                        that.$ajax.post('logout')
+                            .then((res)=>{
+                                if(res.data.opResult == 0){//修改成功后
+                                    that.$chatSocket.ws.close();
+                                }
+                            })
+                    },2000)
+                    that.ud.pwd = pwd;
                 }else{
-                    this.$message({
+                    that.$message({
                         showClose: true,
                         message: "修改失败，请稍后再试！",
                         type: 'error',
                         duration: 1500
                     });
                 }
-                setTimeout(this.closeThis,1500)
+                setTimeout(that.closeThis,1500)
             },
             closeThis(){
                 this.$emit('subchange',{
