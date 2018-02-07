@@ -79,13 +79,14 @@
                                     <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
                                     <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                     <div class="confirm-btn btn" @click="getMyDate1">确定</div>
-                                    <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                                    <div class="cancel-btn btn" @click="calendarShow1Fn">取消</div>
                                 </div>
                                 <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div v-show="nullShow" style="height: 300px;"></div>
             </div>
         </div>
         <!--<transition name="slidey-fade">-->
@@ -308,7 +309,7 @@
                                         <input type="text" placeholder="开始时间" readonly v-model="calendarInitDay1"><span>-</span>
                                         <input type="text" placeholder="结束时间" readonly v-model="calendarInitDay2">
                                         <div class="confirm-btn btn" @click="getMyDate1">确定</div>
-                                        <div class="cancel-btn btn" @click="calendarShow1=!calendarShow1">取消</div>
+                                        <div class="cancel-btn btn" @click="calendarShow1Fn">取消</div>
                                     </div>
                                     <calendarCP :initOpt="opt0" @changeRangeDate="getDateRange0"></calendarCP>
                                 </div>
@@ -605,6 +606,7 @@
                     isDis: false,
                 },
                 calendarInitDay: '',
+                nullShow: false,
             }
         },
         components: {
@@ -693,7 +695,6 @@
             this.setOptFn0();
         },
         computed: {
-
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
             },
@@ -702,6 +703,11 @@
             ])
         },
         methods: {
+            /*日历点击“取消”事件*/
+            calendarShow1Fn: function () {
+                this.calendarShow1 = false;
+                this.nullShow = false;
+            },
             /*是否接受临近机场*/
             dptAcceptnearairportFn0: function () {
                 this.dptAcceptnearairport = 0;
@@ -1057,6 +1063,7 @@
                 this.warn14Show = false;
                 this.warn15Show = false;
                 this.warn16Show = false;
+                this.nullShow = false;
                 this.replaceAreaBus();
             },
             clickClose1Fn: function () {
@@ -1064,6 +1071,7 @@
                 this.space2 = false;
                 this.space3 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
@@ -1074,6 +1082,7 @@
                 this.space1 = false;
                 this.space3 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
@@ -1084,6 +1093,7 @@
                 this.space1 = false;
                 this.space2 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.schedule = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
@@ -1145,6 +1155,7 @@
             },
             clickClose10Fn: function () {
                 this.calendarShow1 = !this.calendarShow1;
+                this.nullShow = !this.nullShow;
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1159,6 +1170,7 @@
                 this.space2 = false;
                 this.space3 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.subsidy = false;
                 this.calendarShow2 = false;
                 this.closeTimeFrameFn();
@@ -1169,6 +1181,7 @@
                 this.space2 = false;
                 this.space3 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.schedule = false;
                 this.calendarShow2 = false;
                 this.closeTimeFrameFn();
@@ -1179,6 +1192,7 @@
                 this.space2 = false;
                 this.space3 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.schedule = false;
                 this.subsidy = false;
                 this.closeTimeFrameFn();
@@ -1197,6 +1211,7 @@
                 this.space2 = false;
                 this.space3 = false;
                 this.calendarShow1 = false;
+                this.nullShow = false;
                 this.schedule = false;
                 this.subsidy = false;
             },
@@ -1507,6 +1522,7 @@
                 if(this.calendarInitDay1 && this.calendarInitDay2){
                     this.myDate1 = this.calendarInitDay1 + "-" + this.calendarInitDay2;
                     this.calendarShow1 = false;
+                    this.nullShow = false;
                     this.warn6Show = false;
                 }else{}
             },
@@ -2127,7 +2143,7 @@
     }
     .aisx {
         position: absolute;
-        top: 19px;
+        top: 20px;
         left: -3px;
         width: 260px;
         max-height: 210px;

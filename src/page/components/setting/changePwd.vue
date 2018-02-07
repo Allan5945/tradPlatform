@@ -24,7 +24,7 @@
                     <p class="wjmm"><span class="tips">{{ text.tipsText }}</span> <span v-show="active==0" @click="closeThis(true)">忘记密码？</span>&nbsp;</p>
                     <div class="step-btn">
                         <div class="btn btn-b" @click="next()">{{ text.btnText2 }}</div>
-                        <div class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
+                        <div v-show="active!=1" class="btn btn-w" @click="canelClick">{{ text.canelState?text.canel1:text.canel2 }}</div>
                     </div>
                     <p class="lxkf">客服热线：0000-0000000</p>
                 </footer>
@@ -370,7 +370,7 @@
         margin-top: 5px;
         color: white;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         >div{
             border-radius:25px;
             width: 135px;

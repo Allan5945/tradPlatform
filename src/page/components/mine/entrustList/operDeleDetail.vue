@@ -436,6 +436,7 @@
           this.sonId = val.id;
           this.myShow = false;
           this.sondetailShow = true;
+          console.log(this.detailData)
         },
         toBack(){
           this.myShow = true;

@@ -20,7 +20,7 @@
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
-                                <div>{{ndetailData.dptTime||"待协调"}}</div>
+                                <div>{{ndetailData.dptTimeresourcesStr||"-"}}</div>
                             </div>
                         </div>
                         <div style="padding-top:45px;"><span class="iconfont" style="font-size:35px;">&#xe672;</span></div>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
-                                <div>{{ndetailData.pstTime||"待协调"}}</div>
+                                <div>{{ndetailData.pstTimeresourcesStr||"-"}}</div>
                             </div>
                         </div>
                         <div style="padding-top:45px;"><span class="iconfont"  style="font-size:35px;">&#xe672;</span></div>
@@ -44,7 +44,7 @@
                             </div>
                             <div class="resouse">
                                 <div>出港资源</div>
-                                <div>{{ndetailData.arrvTime||"待协调"}}</div>
+                                <div>{{ndetailData.arrvTimeresourcesStr||"-"}}</div>
                             </div>
                         </div>
                     </div>
@@ -164,9 +164,16 @@
                             <div>小时成本</div>
                             <div>{{ndetailData.hourscost?ndetailData.hourscost+" 万元":"-"}}</div>
                         </div>
-                        <div>
+                        <div v-if="ndetailData.airportForSchedulines" style="position: relative">
                             <div>接受调度</div>
-                            <div>{{schedulingList[ndetailData.scheduling]||"不接受"}}</div>
+                            <div style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;" @mouseover="schedShow=true" @mouseout="schedShow=false">{{ schedList.join(" / ") }}</div>
+                            <div v-show="schedShow" class="extend-sched">
+                                {{schedList.join(" / ")}}
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div>接受调度</div>
+                            <div>{{ ndetailData.schedulingStr || "-"}}</div>
                         </div>
                         <div>
                             <div>有效期</div>
@@ -214,10 +221,307 @@
                         },
                     ],
                     active: -1
-                }
+                },
+                schedList:[],
+                schedShow:false
             }
         },
         props:["ndetailData","type"],
+        mounted:function () {
+            /*
+            this.ndetailData.airportForSchedulines = [
+                {
+                    "id":538,
+                    "airlnCd":"广州白云",
+                    "airlnCdName":"广州白云国际机场",
+                    "airlinElhName":"Guangzhoubaiyun",
+                    "airlinSpeSpl":"GZBY",
+                    "iata":"CAN",
+                    "icao":"ZGGG",
+                    "inter":"是",
+                    "airfieldlvl":"4F",
+                    "city":"广州",
+                    "province":"广东",
+                    "cityCoordinateJ":"113.1835",
+                    "cityCoordinateW":"23.2332",
+                    "coordinateupdatetime":null,
+                    "area":"中南管理局",
+                    "airState":"启用",
+                    "airpottype":"民用机场",
+                    "warzone":"南部战区",
+                    "airEle":"15.20",
+                    "airpotcls":"非高原",
+                    "coordinateairport":"是",
+                    "coordinatetimelist":null,
+                    "specialairport":"否",
+                    "specialairportwhy":null,
+                    "port":"是",
+                    "releasepunctuality":"",
+                    "firelvl":"",
+                    "lightingconditions":"简易进近灯光",
+                    "allowthetakeoffandlanding":"/",
+                    "modelcanhandle":"AIRBUSA320-214 SHARKLETS,AIRBUSA330-343E,AIRBUSA320-214,AIRBUSA330-323E,BOEING737-800 WINGLETS,BOEING767-300,BOEING777-300ER,AIRBUSA330-243E,AIRBUSA330-223E,AIRBUSA321-231,BOEING787-8,BOEING767-300ER,AIRBUSA320-232 SHARKLETS,AIRBUSA319-131,AIRBUSA320-271N (NEO),AIRBUSA321-232,AIRBUSA321-231 SHARKLETS,AIRBUSA320-232,AIRBUSA321-211 SHARKLETS,AIRBUSA319-112,EMBRAERE190 LR,AIRBUSA319-132,AIRBUSA319-115,BOEING737-800,73G,BOEING737-700 WINGLETS,JET,BOEING737-700,AIRBUSA321-213,738,AIRBUSA319-133,AIRBUSA321-211,AIRBUSA330-342,BOEING777-200,BOEING747-400,BOEING787-9,AIRBUSA380-841,AIRBUSA321-232 SHARKLETS,AIRBUSA330-203E,BOEING757-200,737,73E,LMO",
+                    "runwayarticlenumber":"3",
+                    "airportshuttlemetro":"有",
+                    "airportbus":"有",
+                    "distancefromdowntown":"28公里",
+                    "intheflight":"1143",
+                    "international":"0",
+                    "internationaltime":"2017-09-08",
+                    "domestic":"115",
+                    "intheport":null,
+                    "intheflighttime":"2017-09-14",
+                    "membershipgroup":"广东省机场管理集团",
+                    "planepositionnumber":"183",
+                    "departuretime":"2004-08-05",
+                    "operator":"否",
+                    "operatorinput":null,
+                    "isrewardpolicy":"否",
+                    "isrewardpolicytext":null,
+                    "passengerThroughputs":null,
+                    "goodsThroughputs":null,
+                    "takeOffAndLandingFlights":null,
+                    "years":null,
+                    "runwayList":null,
+                    "rewardPolicyList":null,
+                    "opinions":null,
+                    "compenys":null
+                },
+                {
+                    "id":539,
+                    "airlnCd":"成都双流",
+                    "airlnCdName":"成都双流国际机场",
+                    "airlinElhName":"Chengdushuangliu",
+                    "airlinSpeSpl":"CDSL",
+                    "iata":"CTU",
+                    "icao":"ZUUU",
+                    "inter":"是",
+                    "airfieldlvl":"4F",
+                    "city":"成都",
+                    "province":"四川",
+                    "cityCoordinateJ":"104.0030",
+                    "cityCoordinateW":"30.3612",
+                    "coordinateupdatetime":null,
+                    "area":"西南管理局",
+                    "airState":null,
+                    "airpottype":"民用机场",
+                    "warzone":"西部战区",
+                    "airEle":"512.40",
+                    "airpotcls":"非高原",
+                    "coordinateairport":"是",
+                    "coordinatetimelist":"48",
+                    "specialairport":"否",
+                    "specialairportwhy":null,
+                    "port":"是",
+                    "releasepunctuality":"",
+                    "firelvl":"",
+                    "lightingconditions":"简易进近灯光",
+                    "allowthetakeoffandlanding":"/",
+                    "modelcanhandle":"AIRBUSA320-214 SHARKLETS,AIRBUSA330-343E,BOEING737-800 WINGLETS,AIRBUSA321-231 SHARKLETS,AIRBUSA320-232,AIRBUSA321-211 SHARKLETS,BOEING767-300ER,AIRBUSA320-214,AIRBUSA330-243E,AIRBUSA321-231,AIRBUSA321-213,AIRBUSA319-115 SHARKLETS,AIRBUSA320-232 SHARKLETS,BOEING737-900,AIRBUSA321-232 SHARKLETS,AIRBUSA319-133,BOEING787-8,AIRBUSA330-323E,AIRBUSA319-115,BOMBARDIER (CANADAIR)CRJ900LR ENHANCED,BOEING737-800,JET,COMACARJ21 700,BOEING737-700 WINGLETS,737,AIRBUSA320-233,AIRBUSA330-342,B(MCDONNELL-DOUGLAS)MD-83,AIRBUSA319-112,AIRBUSA319-133 SHARKLETS,319,AIRBUSA319-132,AIRBUSA321-211,EMBRAERE190 LR,BOEING787-9,BOEING777-300ER,AIRBUSA330-302E,BOEING737-900ER WINGLETS,AIRBUSA321-232,BOEING757-200,BOEING777-200",
+                    "runwayarticlenumber":"2",
+                    "airportshuttlemetro":"有",
+                    "airportbus":"有",
+                    "distancefromdowntown":"16公里",
+                    "intheflight":"1005",
+                    "international":"0",
+                    "internationaltime":"2017-09-08",
+                    "domestic":"116",
+                    "intheport":null,
+                    "intheflighttime":"2017-09-14",
+                    "membershipgroup":"四川省机场集团",
+                    "planepositionnumber":"178",
+                    "departuretime":"1938-12-25",
+                    "operator":"否",
+                    "operatorinput":null,
+                    "isrewardpolicy":"否",
+                    "isrewardpolicytext":null,
+                    "passengerThroughputs":null,
+                    "goodsThroughputs":null,
+                    "takeOffAndLandingFlights":null,
+                    "years":null,
+                    "runwayList":null,
+                    "rewardPolicyList":null,
+                    "opinions":null,
+                    "compenys":null
+                },
+                {
+                    "id":540,
+                    "airlnCd":"南京禄口",
+                    "airlnCdName":"南京禄口国际机场",
+                    "airlinElhName":"Nanjinglukou",
+                    "airlinSpeSpl":"NJLK",
+                    "iata":"NKG",
+                    "icao":"ZSNJ",
+                    "inter":"是",
+                    "airfieldlvl":"4F",
+                    "city":"南京",
+                    "province":"江苏",
+                    "cityCoordinateJ":"118.51432",
+                    "cityCoordinateW":"31.44319",
+                    "coordinateupdatetime":null,
+                    "area":"华东管理局",
+                    "airState":null,
+                    "airpottype":"民用机场",
+                    "warzone":"东部战区",
+                    "airEle":"14.60",
+                    "airpotcls":"非高原",
+                    "coordinateairport":"是",
+                    "coordinatetimelist":"38",
+                    "specialairport":"否",
+                    "specialairportwhy":null,
+                    "port":"是",
+                    "releasepunctuality":"",
+                    "firelvl":"",
+                    "lightingconditions":"简易进近灯光",
+                    "allowthetakeoffandlanding":"/",
+                    "modelcanhandle":"AIRBUSA321-231,AIRBUSA320-232,BOEING737-800 WINGLETS,AIRBUSA330-243E,AIRBUSA321-211 SHARKLETS,AIRBUSA320-214,JET,AIRBUSA321-211,AIRBUSA320-232 SHARKLETS,EMBRAERE190 LR,BOEING737-800,AIRBUSA321-213,320,AIRBUSA320-214 SHARKLETS,BOEING737-700 WINGLETS,AIRBUSA319-132,AIRBUSA319-132 SHARKLETS,AIRBUSA321-231 SHARKLETS,AIRBUSA320-233,AIRBUSA319-112,AIRBUSA330-342,190,AIRBUSA319-115 SHARKLETS,AIRBUSA319-133,EMBRAERE195 LR,BOMBARDIER (CANADAIR)CRJ900LR ENHANCED,BOEING747-400,AIRBUSA320-216 SHARKLETS,738,AIRBUSA319-115",
+                    "runwayarticlenumber":"2",
+                    "airportshuttlemetro":"有",
+                    "airportbus":"有",
+                    "distancefromdowntown":"35.8公里",
+                    "intheflight":"559",
+                    "international":"0",
+                    "internationaltime":"2017-09-08",
+                    "domestic":"69",
+                    "intheport":null,
+                    "intheflighttime":"2017-09-14",
+                    "membershipgroup":"江苏省人民政府国有资产监督管理委员会",
+                    "planepositionnumber":"53",
+                    "departuretime":"1997-07-01",
+                    "operator":"否",
+                    "operatorinput":null,
+                    "isrewardpolicy":"否",
+                    "isrewardpolicytext":null,
+                    "passengerThroughputs":null,
+                    "goodsThroughputs":null,
+                    "takeOffAndLandingFlights":null,
+                    "years":null,
+                    "runwayList":null,
+                    "rewardPolicyList":null,
+                    "opinions":null,
+                    "compenys":null
+                },
+                {
+                    "id":541,
+                    "airlnCd":"武汉天河",
+                    "airlnCdName":"武汉天河国际机场",
+                    "airlinElhName":"Wuhantianhe",
+                    "airlinSpeSpl":"WHTH",
+                    "iata":"WUH",
+                    "icao":"ZHHH",
+                    "inter":"是",
+                    "airfieldlvl":"4F",
+                    "city":"武汉",
+                    "province":"湖北",
+                    "cityCoordinateJ":"114.3751",
+                    "cityCoordinateW":"30.4027",
+                    "coordinateupdatetime":null,
+                    "area":"中南管理局",
+                    "airState":null,
+                    "airpottype":"民用机场",
+                    "warzone":"中部战区",
+                    "airEle":"34.50",
+                    "airpotcls":"非高原",
+                    "coordinateairport":"是",
+                    "coordinatetimelist":"33",
+                    "specialairport":"否",
+                    "specialairportwhy":null,
+                    "port":"是",
+                    "releasepunctuality":"",
+                    "firelvl":"",
+                    "lightingconditions":"简易进近灯光",
+                    "allowthetakeoffandlanding":"/",
+                    "modelcanhandle":"BOEING737-800 WINGLETS,AIRBUSA320-214,BOEING737-800,AIRBUSA330-343E,AIRBUSA320-232,AIRBUSA320-214 SHARKLETS,738,AIRBUSA330-243E,AIRBUSA330-323E,BOEING777-300ER,AIRBUSA320-233,AIRBUSA321-213,EMBRAERE190 LR,BOEING737-700 WINGLETS,AIRBUSA321-211 SHARKLETS,AIRBUSA321-231 SHARKLETS,AIRBUSA319-133,AIRBUSA319-132,AIRBUSA321-231,AIRBUSA319-112,BOMBARDIER (CANADAIR)CRJ900LR ENHANCED,CAIC - CHINA AVIATION INDUSTRY CORPMA-60,JET,AIRBUSA319-115 SHARKLETS,BOEING737-700,320,AIRBUSA330-302E,73G,BOMBARDIER (CANADAIR)CRJ900LR",
+                    "runwayarticlenumber":"2",
+                    "airportshuttlemetro":"有",
+                    "airportbus":"有",
+                    "distancefromdowntown":"25公里",
+                    "intheflight":"441",
+                    "international":"0",
+                    "internationaltime":"2017-09-08",
+                    "domestic":"78",
+                    "intheport":null,
+                    "intheflighttime":"2017-09-14",
+                    "membershipgroup":"湖北机场集团有限公司",
+                    "planepositionnumber":"153",
+                    "departuretime":"1995-04-15",
+                    "operator":"否",
+                    "operatorinput":null,
+                    "isrewardpolicy":"否",
+                    "isrewardpolicytext":null,
+                    "passengerThroughputs":null,
+                    "goodsThroughputs":null,
+                    "takeOffAndLandingFlights":null,
+                    "years":null,
+                    "runwayList":null,
+                    "rewardPolicyList":null,
+                    "opinions":null,
+                    "compenys":null
+                },
+                {
+                    "id":543,
+                    "airlnCd":"重庆江北",
+                    "airlnCdName":"重庆江北国际机场",
+                    "airlinElhName":"Chongqingjiabei",
+                    "airlinSpeSpl":"CQJB",
+                    "iata":"CKG",
+                    "icao":"ZUCK",
+                    "inter":"是",
+                    "airfieldlvl":"4F",
+                    "city":"重庆",
+                    "province":"重庆",
+                    "cityCoordinateJ":"106.38294",
+                    "cityCoordinateW":"29.43084",
+                    "coordinateupdatetime":null,
+                    "area":"西南管理局",
+                    "airState":null,
+                    "airpottype":"民用机场",
+                    "warzone":"西部战区",
+                    "airEle":"415.60",
+                    "airpotcls":"非高原",
+                    "coordinateairport":"是",
+                    "coordinatetimelist":"45",
+                    "specialairport":"否",
+                    "specialairportwhy":"",
+                    "port":"是",
+                    "releasepunctuality":"",
+                    "firelvl":"",
+                    "lightingconditions":"简易进近灯光",
+                    "allowthetakeoffandlanding":"/",
+                    "modelcanhandle":"AIRBUSA320-214 SHARKLETS,AIRBUSA320-214,BOEING737-800 WINGLETS,BOEING767-300,AIRBUSA321-211 SHARKLETS,BOEING737-800,JET,AIRBUSA321-231 SHARKLETS,737,AIRBUSA320-232,BOEING737-700,AIRBUSA321-231,AIRBUSA330-243E,AIRBUSA320-233,BOEING737-900,AIRBUSA319-133,AIRBUSA320-232 SHARKLETS,AIRBUSA319-131,AIRBUSA319-133 SHARKLETS,BOEING737-700 WINGLETS,BOEING787-8,AIRBUSA320-271N (NEO),AIRBUSA330-323E,AIRBUSA319-115,AIRBUSA319-132 SHARKLETS,BOMBARDIER (CANADAIR)CRJ900LR,AIRBUSA319-115 SHARKLETS,BOMBARDIER (CANADAIR)CRJ900LR ENHANCED,738,320,EMBRAERE190 LR,AIRBUSA319-132,AIRBUSA330-343E,BOEING747-8I,BOEING787-9,319",
+                    "runwayarticlenumber":"3",
+                    "airportshuttlemetro":"有",
+                    "airportbus":"有",
+                    "distancefromdowntown":"19公里",
+                    "intheflight":"887",
+                    "international":"0",
+                    "internationaltime":"2017-09-08",
+                    "domestic":"122",
+                    "intheport":null,
+                    "intheflighttime":"2017-09-14",
+                    "membershipgroup":"重庆机场集团有限公司",
+                    "planepositionnumber":"209",
+                    "departuretime":"1990-01-22",
+                    "operator":"否",
+                    "operatorinput":null,
+                    "isrewardpolicy":"否",
+                    "isrewardpolicytext":"",
+                    "passengerThroughputs":null,
+                    "goodsThroughputs":null,
+                    "takeOffAndLandingFlights":null,
+                    "years":null,
+                    "runwayList":null,
+                    "rewardPolicyList":null,
+                    "opinions":null,
+                    "compenys":null
+                }
+            ]*/
+            if(this.ndetailData.airportForSchedulines && this.ndetailData.airportForSchedulines.length>0){
+                for(let item of this.ndetailData.airportForSchedulines){
+                    this.schedList.push(item.airlnCd);
+                }
+            }
+        }
     }
 </script>
 
@@ -366,5 +670,15 @@
                 }
             }
         }
+    }
+    .extend-sched{
+        position: absolute;
+        left:30px;
+        top:25px;
+        width:200px;
+        height:auto !important;
+        padding:10px;
+        border-radius: 4px ;
+        box-shadow:0 2px 11px rgba(96,94,124,.37);
     }
 </style>

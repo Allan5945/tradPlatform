@@ -67,9 +67,9 @@
             </div>
         </div>
         <div class="seventh item-container">
-            <span class="danger" v-show="myData.rek != null">*{{myData.rek}}</span>
+            <span class="danger" v-show="myData.rek != null">*原因：{{myData.rek}}</span>
         </div>
-        <span class="line" style="position:absolute; left: 20px; bottom: 100px;"></span>
+        <span class="line" v-if="buttonShow" style="position:absolute; left: 20px; bottom: 100px;"></span>
         <div class="eighth">
             <div class="buttons" v-if="buttonShow">
                 <button class="btn btn-w" @click="recallFn">撤回该托管</button>

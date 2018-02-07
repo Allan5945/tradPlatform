@@ -180,7 +180,7 @@
             </div>
             <div class="sub-need" v-show="orderShow">
                   <div class="need-til">关联的子需求</div>
-                  <div class="need-btn" @click="newNeed">新建子需求</div>
+                  <div class="need-btn" @click="newNeed" v-if="orderOver">新建子需求</div>
             </div>
              <div class="son-need-list" v-if="sonListShow">
                 <div class="intent-form">
@@ -219,7 +219,7 @@
            </footer> -->
         </div>
         <operDeleForm v-if="formShow" @closeForm="closeForm" :acceptData="detailData"></operDeleForm>
-        <sonNeedDetail :sonId = "sonId" :title="detailData.title" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
+        <sonNeedDetail :sonId = "sonId" :acceptData="detailData" v-if="sondetailShow" @closeDetail="closeDetail" @toBack="toBack"></sonNeedDetail>
         <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
@@ -476,6 +476,7 @@
                           }else if(this.detailData.demandprogress == '6' ){//订单完成,最终完成（已完成）
                               this.orderShow = true;
                               this.isClose = false;
+                              this.orderOver =false;
                               this.sonListShow = true;
                           }else if(this.detailData.demandprogress == '9'){//处理中
                               this.orderShow = true;
@@ -484,18 +485,21 @@
                               this.sonListShow = true;
                           }else if(this.detailData.demandprogress == '3'){//已关闭
                               this.isClose = false;
-                              this.sonListShow = false;
-                              this.orderShow = false;
+                              this.sonListShow = true;
+                              this.orderOver =false;
+                              this.orderShow = true;
                               //this.refuseText = this.detailData.rek;
                           }else if(this.detailData.demandprogress == '10'){//已拒绝
                               this.isClose = true;
                               this.orderShow = false;
+                              this.orderOver =false;
                               this.tipShow = true;
                               this.sonListShow = false;
                               this.refuseText = this.detailData.rek;
                           }else if(this.detailData.demandprogress == '7'){//待处理
                                this.sonListShow = false;
                                this.orderShow = false;
+                               this.orderOver =false;
                                this.isClose = true;
                                this.tipShow = false;
                           }
@@ -592,6 +596,7 @@
           font-size:1.2rem;
           background-color:#fff;
           padding:0 15px 0 40px;
+          box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
           span{
             display:block;
             box-sizing:border-box;

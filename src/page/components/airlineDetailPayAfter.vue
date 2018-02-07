@@ -351,7 +351,7 @@
             </div>
         </div>
         <div class="tenth item-container danger" v-if="myData.demandstate == 5 || myData.demandProgress == 10">
-            <span>拒绝原因：</span>
+            <span>原因：</span>
             <span>{{myData.rek}}</span>
         </div>
         <div class="third-show" v-if="thirdShow">
@@ -525,7 +525,7 @@
                         <div v-else>
                             <div class="item-fifth" v-if="item.releaseselected === '1' && item.responseProgress !== '2'">
                                 <div v-show="secondButtonShow && myData.demandprogress != 3" style="position: absolute; left: -130px; bottom: 50px;">
-                                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后即可选定该意向</span>
+                                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可选定该意向</span>
                                 </div>
                                 <button class="btn btn-disable" v-show="unPayMoneyShow">选定</button>
                                 <button class="btn btn-b" v-show="!btnDisableShow && !unPayMoneyShow" @click="airlineAffirmFn(item,index)">选定</button>
@@ -542,9 +542,9 @@
         <div class="first-button" v-if="firstButtonShow">
             <span style="width: 560px;height: 1px;background: black;"></span>
             <div class="buttons">
-                <button class="btn btn-b" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-b" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
+                <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
+                <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                <button class="btn btn-b" v-if="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-if="secondButtonShow">
@@ -577,7 +577,6 @@
         <div class="bottom" v-if="fifthButtonShow">
             <span style="width: 560px;height: 1px;background: #ccc;"></span>
             <div class="buttons">
-                <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
@@ -688,6 +687,7 @@
                 calendarInitDay4: '',
                 unPayMoneyShow: false,  // 未缴纳意向金时显示的无法点击的“选定”按钮
                 airlinePayId: '',
+                demand3BtnShow: true,
             }
         },
         watch: {
@@ -857,6 +857,8 @@
                             this.thirdShow = false;
                             this.secondButtonShow = false;
                             this.demandState5 = true;
+                        }else if(this.myData.demandprogress == 3 && this.isSelf == false) {
+                            this.demand3BtnShow = false;
                         }
                     }
                 })
