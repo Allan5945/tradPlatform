@@ -47,7 +47,7 @@
                 <div class="mes-body-i3">机型</div>
                 <div class="mes-body-i3">补助</div>
                 <div class="mes-body-i4">其他说明</div>
-                <div class="mes-body-i3">收藏</div>
+                <div class="mes-body-i3" v-show="demandType">收藏</div>
             </div>
             <tabulationBox class="mes-body-b scroll" v-on:renderDataLength="renderDataLength"
                            v-on:resetSingleSet="resetSingleSet" :singled="single"></tabulationBox>
@@ -267,7 +267,6 @@
                     this.bgqying = true;
                     this.bgqyed = false;
                     this.searchSet = true;
-
                     let url = '/getOthersDemandListIndex';
                     let page = this.demandList.hybridPage;
                     if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';

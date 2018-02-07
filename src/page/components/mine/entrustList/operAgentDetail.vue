@@ -95,7 +95,7 @@ import ln from './../../../../public/js/tabulationBoxTrigger';
           this.msg = "拒绝";
         },
         toTest:function(){
-            this.isTest =false;
+            //this.isTest =false;
             this.$ajax({
                 method: 'post',
                 url: '/demandUpdate',

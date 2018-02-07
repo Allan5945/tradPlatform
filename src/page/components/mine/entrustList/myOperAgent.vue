@@ -68,13 +68,13 @@
               </el-pagination>
             </div>
         </div>
-       <transition name="slidex-fade">
+       <!-- <transition name="slidex-fade">
            <agentDetail @close="closeAgentDetail" v-if="agentShow" :chatData="chatData"></agentDetail>
        </transition>
        <transition name="slidex-fade">
            <deleDetail @close="closeDeleDetail" v-if="deleShow" :chatData="chatData"></deleDetail>
-       </transition>
-        <detailed></detailed>
+       </transition> -->
+        <!-- <detailed></detailed> -->
     </div>
 </template>
 <script>
@@ -132,7 +132,10 @@
         computed: {
             ...vx.mapGetters([
                 'role'
-            ])
+            ]),
+             ref(){
+                return tabulationBoxTrigger.hierarchy;
+            }
         },
         watch:{
             'sentData.demandType':function(){
@@ -143,6 +146,11 @@
             },
              'sentData.releaseTime': function(){
                 this.getListData();
+            },
+             ref(){
+                if(!this.ref) {
+                    this.getListData();
+                }
             }
         },
         methods: {
@@ -200,20 +208,20 @@
 
             },
             getDetail:function(val){
-                val.employeeId = this.role.id;
+              /*  val.employeeId = this.role.id;
                  this.chatData = val;
                 if(val.demandType == '2'){//托管详情
                     this.agentShow = true;
                 }else{//委托详情
                       this.deleShow = true;
-                }
+                }*/
 
-               /* let mes = {};
+                let mes = {};
                 mes.demand = val.id;
                 mes.demandState = val.demandstate;
-                mes.demandType = Number(val.demandtype);
+                mes.demandType = Number(val.demandType);
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
-                tabulationBoxTrigger.$emit('demandType',...[mes,'true']);*/
+                tabulationBoxTrigger.$emit('demandType',...[mes,'true']);
             },
             getDemand:function(val){
                if(val == 2){

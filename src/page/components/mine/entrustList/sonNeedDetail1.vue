@@ -9,13 +9,13 @@
                    <div class="progress">状态：<span>{{detailData.demandprogressStr||'-'}}</span></div>
                    <div class="link">关联需求：
                       <div class="back-link" @click="toBack">
-                        <span class="til">{{acceptData.title}}</span>
+                        <span class="til">{{acceptData.title||'-'}}</span>
                         <span class="iconfont">&#xe679;</span>
                       </div>
                   </div>
                </div>
-            <!--  <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div> -->
-            </header>
+           <!-- <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div> -->
+           </header>
             <div class="content">
                 <div class="table-form" v-if="transShow">
                     <div>
@@ -409,7 +409,6 @@
              calendarInitDay1:'',
              calendarInitDay2:'',
              changeValidityShow:true,
-             rePublish:false
          }
      },
      props:['sonId','acceptData'],
@@ -512,6 +511,8 @@
          toPublish:function(){
             if(this.detailData.demandtype == '1'){
                 this.dataFormShow = true;
+            }else if(this.detailData.demandtype == '0'){
+
             }
          },
           airlinePayFn: function () {
@@ -595,27 +596,27 @@
                     //判断状态
                     let progress = this.detailData.demandprogress;
                      if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
-                      this.rePublish == true;
+                      this.rePublish = true;
                       this.footShow  = false;
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = false;
                       this.changeValidityShow = false;
                     }else if(progress == "4"||progress == "5"||progress == "6"){//4:订单完成、5:佣金支付、6:交易完成
-                      this.rePublish == false;
+                      this.rePublish = false;
                       this.footShow  = false;
                       this.selectBtnShow = false;
                       this.sureOderShow = false;
                       this.planComplete = true;
                       this.changeValidityShow = false;
                     }else if(progress == "2"){//2:订单确认
-                      this.rePublish == false;
+                      this.rePublish = false;
                       this.footShow  = true;
                       this.selectBtnShow = true;
                       this.sureOderShow = false;
                       this.planComplete = false;
                     }else{
-                        this.rePublish == false;
+                        this.rePublish = false;
                         this.footShow  = true;
                         this.selectBtnShow = true;
                         this.sureOderShow = false;

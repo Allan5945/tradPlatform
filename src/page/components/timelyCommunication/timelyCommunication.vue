@@ -553,6 +553,7 @@
         margin-top: -25px;
         border-radius: 50%;
         text-align: right;
+        z-index: 2;
         &:before {
             writing-mode: tb-rl;
             position: absolute;
