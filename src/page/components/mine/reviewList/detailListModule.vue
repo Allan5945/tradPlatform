@@ -165,9 +165,16 @@
                             <div>小时成本</div>
                             <div>{{ ndetailData.hourscost?ndetailData.hourscost+' 万元':"-"}}</div>
                         </div>
-                        <div>
+                        <div v-if="ndetailData.airportForSchedulines" style="position: relative">
                             <div>接受调度</div>
-                            <div>{{schedulingList[ndetailData.scheduling]||"不接受"}}</div>
+                            <div style="overflow: hidden;white-space: nowrap;text-overflow:ellipsis;" @mouseover="schedShow=true" @mouseout="schedShow=false">{{ schedList.join(" / ") }}</div>
+                            <div v-show="schedShow" class="extend-sched">
+                                {{schedList.join(" / ")}}
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div>接受调度</div>
+                            <div>{{ ndetailData.schedulingStr || "-"}}</div>
                         </div>
                         <div style="width: 100%;">
                             <div>有效期</div>
@@ -193,10 +200,17 @@
                     "0":"接受临近机场",
                     "1":"不接受临近机场"
                 },
+                schedList: [],
+                schedShow: false
             }
         },
         props:["ndetailData","type"],
         mounted: function () {
+            if(this.ndetailData.airportForSchedulines && this.ndetailData.airportForSchedulines.length>0){
+                for(let item of this.ndetailData.airportForSchedulines){
+                    this.schedList.push(item.airlnCd);
+                }
+            }
         }
     }
 </script>
@@ -333,5 +347,15 @@
                 width:80px;
             }
         }
+    }
+    .extend-sched{
+        position: absolute;
+        left:30px;
+        top:25px;
+        width:200px;
+        height:auto !important;
+        padding:10px;
+        border-radius: 4px ;
+        box-shadow:0 2px 11px rgba(96,94,124,.37);
     }
 </style>
