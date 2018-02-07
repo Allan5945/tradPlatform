@@ -548,12 +548,13 @@
             </div>
         </div>
         <div class="second-button" v-if="secondButtonShow">
+            <span style="width: 560px;height: 1px;background: #ccc;"></span>
             <div class="buttons">
                 <button class="btn btn-b" @click="airlinePayFn" v-show="demandState6">点击此处缴纳意向金</button>
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-            <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
+        <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
             <div v-if="receiveIntention.responseselected == '0'">
                 <div class="buttons">
                     <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
@@ -574,6 +575,7 @@
             </div>
         </div>
         <div class="bottom" v-if="fifthButtonShow">
+            <span style="width: 560px;height: 1px;background: #ccc;"></span>
             <div class="buttons">
                 <!--<button class="btn btn-b" @click="entrustFn(),closeThisFn()">委托代理</button>-->
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
@@ -1340,14 +1342,14 @@
         }
     }
 
-    .btn-b {
+    /*.btn-b {
         outline: none;
         border: 0;
     }
 
     .btn-w {
         outline: none;
-    }
+    }*/
 
     /*日历样式*/
     #search {
@@ -1506,6 +1508,10 @@
         .sec-top {
             margin: 30px 0 15px 0;
             height: 25px;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             font-size: 20px;
             font-weight: bold;
         }
@@ -1722,14 +1728,14 @@
                 margin-right: 14px;
                 width: 150px;
                 border-radius: 20px;
-                color: white;
+                /*color: white;
                 background: #3c78ff;
                 &:hover {
                     background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
-                }
+                }*/
             }
             .col-btn2 {
                 width: 150px;
@@ -1738,7 +1744,9 @@
     }
     .fifth {
         padding-top: 20px;
-        height: 120px;
+        /*height: 120px;*/
+        min-height: 80px;
+        max-height: 120px;
         .left {
             flex-shrink: 0;
             width: 80px;
@@ -1813,7 +1821,7 @@
                 height: 59px;
                 border-top-left-radius: 4px;
                 border-top-right-radius: 4px;
-                border-bottom: 1px solid $font-color;
+                border-bottom: 1px solid #E4E4E4;
                 .left {
                     margin-right: 40px;
                     width: 80px;
@@ -1929,14 +1937,14 @@
                 > .btn-b {
                     width: 250px;
                     border-radius: 20px;
-                    color: white;
+                    /*color: white;
                     background: #3c78ff;
                     &:hover {
                         background: rgba(60, 120, 255, 0.7);
                     }
                     &:active {
                         background: #336bea;
-                    }
+                    }*/
                 }
                 > .btn-disable {
                     width: 250px;
@@ -1997,15 +2005,15 @@
             > .btn-b {
                 margin-right: 14px;
                 width: 230px;
-                color: white;
+                /*color: white;*/
                 border-radius: 20px;
-                background: #3c78ff;
+                /*background: #3c78ff;
                 &:hover {
                     background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
-                }
+                }*/
             }
             > .btn-w {
                 width: 80px;
@@ -2019,7 +2027,9 @@
         right: 0;
         bottom: 0;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        /*justify-content: center;*/
+        align-items: center;
         width: 600px;
         height: 100px;
         background: white;
@@ -2032,15 +2042,15 @@
             > .btn-b {
                 margin-right: 14px;
                 width: 300px;
-                color: white;
+                /*color: white;*/
                 border-radius: 20px;
-                background: #3c78ff;
+               /* background: #3c78ff;
                 &:hover {
                     background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
-                }
+                }*/
             }
             > .btn-w {
                 width: 100px;
@@ -2054,7 +2064,9 @@
         right: 0;
         bottom: 0;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        /*justify-content: center;*/
         width: 600px;
         height: 100px;
         background: white;
@@ -2067,15 +2079,15 @@
             > .btn-b {
                 margin-right: 14px;
                 width: 200px;
-                color: white;
+                /*color: white;*/
                 border-radius: 20px;
-                background: #3c78ff;
+                /*background: #3c78ff;
                 &:hover {
                     background: rgba(60, 120, 255, 0.7);
                 }
                 &:active {
                     background: #336bea;
-                }
+                }*/
             }
             > .btn-w {
                 width: 100px;

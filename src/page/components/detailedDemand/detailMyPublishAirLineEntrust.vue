@@ -12,7 +12,7 @@
                 重新发布
             </div>
             <div class="top">
-                <span style="height: 25px;">{{myData.title}}</span>
+                <span style="max-width: 400px; height: 25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{myData.title}}</span>
             </div>
             <div class="bottom">
                 <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
