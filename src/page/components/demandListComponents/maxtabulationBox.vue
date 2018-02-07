@@ -21,7 +21,7 @@
             <div class="mes-body-i3">{{key.data.aircrfttyp}}</div>
             <div class="mes-body-i3">{{key.data.subsidypolicyStr}}</div>
             <div class="mes-body-i4">{{key.data.remark}}</div>
-            <div class="mes-body-i3 move-panel">
+            <div class="mes-body-i3 move-panel" v-show="demandType">
                 <div v-if="(key.data.collectType == 0)" @click.stop="alreadyPanel(key,true)" title="点击收藏">&#xe78c;</div>
                 <div v-if="(key.data.collectType != 0)" style="color:#fdbc22" @click.stop="alreadyPanel(key,false)" title="点击取消收藏">&#xe649;</div>
             </div>
