@@ -1,13 +1,13 @@
 <template>
     <div  class="wrapper" @click.self="closeDetail">
-            <companyAirlineDetailPayAfter v-if="mes.demandType == '0' " :acceptData="mes" @close-this="closeDetail" ></companyAirlineDetailPayAfter>
+            <companyAirlineDetailPayAfter v-if="mes.demandType == '0' " :mes="mes" @close-this="closeDetail" ></companyAirlineDetailPayAfter>
     </div>
 </template>
 <script>
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     /*import transIndex from '$src/page/components/trans_detail/transIndex.vue'*/
-    import companyAirlineDetailPayAfter from '../companyAccount/companyAirlineDetailPayAfter.vue'
+    import companyAirlineDetailPayAfter from './companyAirlineDetailPayAfter.vue'
     export default {
         data() {
             return {
@@ -23,6 +23,7 @@
             tabulationBoxTrigger.hierarchy = true;
             this.mes.demand = this.needData.id;
              this.mes.demandType = this.needData.demandType;
+             console.info(this.mes)
         },
         computed: {
             ...vx.mapGetters([
