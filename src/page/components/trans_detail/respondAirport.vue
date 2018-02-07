@@ -280,8 +280,8 @@
          toChat:function(){
             let chatData = {};
             chatData.id = this.detailData.id;
-            chatData.employeeId = this.detailData.employeeId;
-            chatData.demandEmployeeId = this.planData.employeeId;
+            chatData.demandEmployeeId = this.detailData.employeeId;
+            chatData.employeeId = this.planData.employeeId;
             ln.$emit('addChat',chatData);
          },
          closeDetail:function(){
