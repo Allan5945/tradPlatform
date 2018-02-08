@@ -2,7 +2,7 @@
     <div class="ald-container">
         <div class="first item-container">
             <span>{{myData.demandtypeStr}}详情</span>
-            <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
+            <span class="close-icon iconfont" @click="closeThisFn">&#xe62c</span>
         </div>
         <div class="second item-container">
             <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
@@ -334,13 +334,18 @@
         .close-icon {
             position: absolute;
             right: 12px;
-            display: flex;
+            /*display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center;*/
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            line-height: 22px;
+            text-align: center;
+            box-sizing:border-box;
+            color:#3C78FF;
+            border: 1px solid #ededed;
             border-radius: 100%;
+            cursor: pointer;
         }
     }
     .second {

@@ -97,6 +97,7 @@
                 type2: ['需求类型','运力投放','运力委托','航线需求','航线委托','运营托管'], // 2：太美登录
                 state: [],
                 state0: ['状态','需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成','待处理','已接受','处理中','已拒绝'],
+                state00: ['状态','需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','交易完成','待处理','已接受','处理中','已拒绝'],
                 state1: ['状态','需求发布','意向征集','订单确认','关闭(审核不通过、下架、过期)','订单完成','佣金支付','交易完成'],
                 state2: ['状态','待处理','测评中','已接受','已拒绝','已关闭'],      //运营托管
 //                state3: ['状态','待处理','处理中','需求发布','意向征集','订单确认','订单完成','已拒绝','已完成','已关闭'],  // 委托
@@ -141,7 +142,11 @@
         mounted() {
             this.judgeRole();
             this.getListData();
-            this.state = this.state0;
+            if(this.role.role == '0') {
+                this.state = this.state00;
+            }else {
+                this.state = this.state0;
+            }
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         watch: {
@@ -320,7 +325,11 @@
                 this.sendData.demandprogress = ''; // 状态类型
                 this.stateWriting = '状态';
                 if (item == '需求类型') {
-                    this.state = this.state0;
+                    if(this.role.role == '0') {
+                        this.state = this.state00;
+                    }else {
+                        this.state = this.state0;
+                    }
                     this.sendData.demandType = '';
                 }if(item == '航线需求') {
                     this.state = this.state1;

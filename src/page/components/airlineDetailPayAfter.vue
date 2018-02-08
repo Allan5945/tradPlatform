@@ -3,7 +3,7 @@
         <div class="first-show" v-show="firstShow">
             <div class="first item-container">
                 <span class="font-gray">需求详情</span>
-                <span class="close-icon" @click="closeThisFn">&times;</span>
+                <span class="close-icon iconfont" @click="closeThisFn">&#xe62c;</span>
             </div>
             <div class="second item-container">
                 <div class="sec-top">
@@ -1492,12 +1492,16 @@
             right: 12px;
             top: 50%;
             margin-top: -11px;
-            display: flex;
+            /*display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center;*/
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            line-height: 22px;
+            text-align: center;
+            box-sizing:border-box;
+            color:#3C78FF;
+            border: 1px solid #ededed;
             border-radius: 100%;
             cursor: pointer;
         }
