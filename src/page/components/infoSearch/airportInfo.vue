@@ -17,7 +17,8 @@
                             </li>
                             <li>
                                 <div>与城市的位置关系</div>
-                                <div>{{infoData.airportLocation.citylocation||'-'}}</div>
+                                <div @mouseover="overflowShow1 = true" @mouseout="overflowShow1 = false">{{infoData.airportLocation.citylocation||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow1' @mouseover="overflowShow1 = true" @mouseout="overflowShow1 = false">{{infoData.airportLocation.citylocation||'-'}}</div>
                             </li>
                             <li>
                                 <div>机场标高/基准温度</div>
@@ -41,7 +42,8 @@
                             </li>
                             <li>
                                 <div>机场性质/飞行区指标</div>
-                                <div>{{infoData.airportLocation.natureoftheairportorairfieldindicators||'-'}}</div>
+                                <div @mouseover="overflowShow2 = true" @mouseout="overflowShow2 = false">{{infoData.airportLocation.natureoftheairportorairfieldindicators||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow2' @mouseover="overflowShow2 = true" @mouseout="overflowShow2 = false">{{infoData.airportLocation.natureoftheairportorairfieldindicators||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>备注</div>
@@ -49,7 +51,7 @@
                             </li>
                             <li class="li-note">
                                 <div>机场管理部门、地址、电话、地址</div>
-                                <div>{{infoData.airportLocation.airpormanagementdepartmentinfo||'-'}}</div>
+                                <div style="height:40px;">{{infoData.airportLocation.airpormanagementdepartmentinfo||'-'}}</div>
                             </li>
                         </ul>
                     </div>
@@ -58,7 +60,8 @@
                         <ul class="box-item">
                             <li>
                                 <div>货物装卸设施</div>
-                                <div>{{infoData.groundServices.cargohandlingfacilities||'-'}}</div>
+                                <div @mouseover="overflowShow3 = true" @mouseout="overflowShow3 = false">{{infoData.groundServices.cargohandlingfacilities||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow3' @mouseover="overflowShow3 = true" @mouseout="overflowShow3 = false">{{infoData.groundServices.cargohandlingfacilities||'-'}}</div>
                             </li>
                             <li>
                                 <div>燃油、滑油牌号</div>
@@ -66,7 +69,8 @@
                             </li>
                             <li>
                                 <div>加油设施/能力</div>
-                                <div>{{infoData.groundServices.refuelingfacilitiesorability||'-'}}</div>
+                                <div @mouseover="overflowShow4 = true" @mouseout="overflowShow4 = false">{{infoData.groundServices.refuelingfacilitiesorability||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow4' @mouseover="overflowShow4 = true" @mouseout="overflowShow4 = false">{{infoData.groundServices.refuelingfacilitiesorability||'-'}}</div>
                             </li>
                             <li>
                                 <div>除冰设施</div>
@@ -95,7 +99,8 @@
                             </li>
                             <li>
                                 <div>搬移受损航空器的能力</div>
-                                <div>{{infoData.rescue.abilitytomovethedamagedaircraft||'-'}}</div>
+                                <div @mouseover="overflowShow5 = true" @mouseout="overflowShow5 = false">{{infoData.rescue.abilitytomovethedamagedaircraft||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow5' @mouseover="overflowShow5 = true" @mouseout="overflowShow5 = false">{{infoData.rescue.abilitytomovethedamagedaircraft||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>救援设备</div>
@@ -252,6 +257,11 @@
     export default {
         data() {
             return {
+                overflowShow1:false,
+                overflowShow2:false,
+                overflowShow3:false,
+                overflowShow4:false,
+                overflowShow5:false,
                 infoData:{},
                 dataShow:false,
                 step:'1'
@@ -448,21 +458,22 @@
                 display:flex;
                 height:40px;
                 line-height:40px;
+                position:relative;
                 >div:first-of-type{
                     width:230px;
                     color:rgba(96, 94, 124, 0.7);
                     padding-right:10px;
                     text-align:right;
                 }
-                >div:last-of-type{
+                >div:nth-of-type(2){
                     width:270px;
                     font-size:1.4rem;
                     padding-left:10px;
-                    overflow : hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
+                   overflow : hidden;
+                   text-overflow: ellipsis;
+                   display: -webkit-box;
+                   -webkit-line-clamp: 1;
+                   -webkit-box-orient: vertical;
                 }
             }
             .li-note{
@@ -530,5 +541,21 @@
         .active{
              border-bottom:2px solid #3c78ff;
         }
+    }
+    .list-wrapper {
+        position: absolute;
+        top: 30px;
+        left: 245px;
+        display: flex;
+        padding: 10px;
+        width: 260px;
+        height:100px;
+        line-height:30px !important;
+        background: white;
+        border-radius: 4px;
+        //box-shadow: 0 2px 11px rgba(96,94,124,0.37);
+        z-index: 3;
+        border:1px solid #E3E3E3;
+        font-size:1.4rem;
     }
 </style>

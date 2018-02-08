@@ -54,10 +54,10 @@
                     }
                 }else{
                     this.showErrInputPerform = true;
-                    let mes = this.staging;
-                    mes.steps = 1;
-                    this.$emit('resMes',mes);
                 }
+                let mes = this.staging;
+                mes.steps = 1;
+                this.$emit('resMes',mes);
             },
             entered(e) {   // 触发enter按键
                 if (e.keyCode == 13) this.$emit('entered', {type: 'entered'});

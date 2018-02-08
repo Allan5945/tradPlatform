@@ -16,6 +16,7 @@
                         </div>
                         <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
                         <airportS class="aisx" v-on:resData="resData" :searchText="searchText"
+                                  :hiy="true"
                                   v-show="isSearch"></airportS>
                     </div>
                 </div>

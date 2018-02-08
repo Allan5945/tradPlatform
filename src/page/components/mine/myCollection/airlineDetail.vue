@@ -1,6 +1,6 @@
 <template>
     <div  class="wrapper" @click.self="closeDetail">
-            <companyAirlineDetailPayAfter v-if="mes.demandType == '0' " :mes="mes" @close-this="closeDetail" ></companyAirlineDetailPayAfter>
+            <companyAirlineDetailPayAfter v-if="mes.demandType == '0' " :mes="mes" @closewindow="closeDetail" ></companyAirlineDetailPayAfter>
     </div>
 </template>
 <script>
@@ -23,7 +23,7 @@
             tabulationBoxTrigger.hierarchy = true;
             this.mes.demand = this.needData.id;
              this.mes.demandType = this.needData.demandType;
-             console.info(this.mes)
+             //console.info(this.mes)
         },
         computed: {
             ...vx.mapGetters([

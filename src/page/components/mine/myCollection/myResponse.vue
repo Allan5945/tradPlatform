@@ -611,7 +611,16 @@
                             this.orderComplete = false;
                         }
 
-
+              let demandProgress = this.detailData.demandprogress;
+              if(demandProgress =='3'){
+                  this.editShow = false;
+                  this.footShow = false;
+                  this.chatShow = false;
+                  this.withdraw = false;
+                  this.planState = " ";
+                  this.orderComplete = false;
+                  this.confirmShow = false;
+              }
 
          if(this.resData.isAlreadyCollect == true){
               this.isCollect = true;
@@ -661,6 +670,7 @@
           background-color:#fff;
           color:rgba(96, 94, 124, 0.7);
           padding:0 15px 0 40px;
+          box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
           span{
             display:block;
             box-sizing:border-box;

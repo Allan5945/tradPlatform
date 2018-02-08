@@ -1,7 +1,7 @@
 <template>
         <header>
             <div class="search-box">
-                <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog" maxlength="20">
+                <input type="text" v-model="airportText" @focus="searchAirport" @blur="closeDialog" maxlength="20" :placeholder="searchTip">
                 <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcType == '时刻'||selcType == '机场' "  v-show="airportSearch"></airportS1>
                 <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData"  v-else-if="selcType == '城市' " v-show="citySearch"></cityS>
                 <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData" v-else-if="selcType == '航司' " v-show="airlineSearch"></airCompanyS>
@@ -27,9 +27,11 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         data() {
             return {
                 airportText:'',
+                airportText1:'',
                 qyCode:'',
                 selcType:'时刻',
                 typeList:['城市','航司','机场','时刻'],
+                searchTip:'请输入机场进行查询',
                 searchData:{},
                 airportSearch:false,
                 citySearch:false,
@@ -45,16 +47,28 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         },
         watch:{
            'airportText':function(){
-            if(this.airportText){
-                this.searchActive = true;
-            }else{
-                this.searchActive = false;
-            }
+                if(this.airportText){
+                    this.searchActive = true;
+                }else{
+                    this.searchActive = false;
+                }
+           },
+            'selcType':function(val){
+                if(val == '城市'){
+                    this.searchTip = "请输入城市进行查询";
+                }else if(val == '航司'){
+                     this.searchTip = "请输入航司进行查询";
+                }else if(val == '机场'){
+                     this.searchTip = "请输入机场进行查询";
+                }else if(val == '时刻'){
+                     this.searchTip = "请输入机场进行查询";
+                }
            }
         },
         methods: {
             getType(i){
                 this.airportText = '';
+                this.airportText1 = '';
                 this.selcType = this.typeList[i];
                 this.showType = false;
             },
@@ -64,21 +78,25 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                 that.airportSearch =false;
                 that.citySearch = false;
                 that.airlineSearch = false;
+                that.airportText = (that.airportText == ''||that.qyCode == ''? '':that.airportText1);
                 },200);
             },
             airportData(data){
                 this.airportText = data.name;
+                this.airportText1 = data.name;
                 this.qyCode = data.code;
                 this.airportSearch = false;
             },
              cityData(data){
                 this.airportText = data.name;
+                this.airportText1 = data.name;
                 //this.qyCode = data.code;
                 this.qyCode = data.name;
                 this.citySearch = false;
             },
             airCompanyData(data){
                 this.airportText = data.name;
+                this.airportText1 = data.name;
                 this.qyCode = data.code3;
                 this.airlineSearch = false;
             },
@@ -88,6 +106,7 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
                 this.airlineSearch = true;
             },
             getInfo(){
+                this.airportText = (this.airportText == ''||this.qyCode == ''? '':this.airportText1);
                  if(this.selcType == '机场'){
                     this.$router.push({ path: '/index/information/airport'});
                 }else if(this.selcType == '航司'){
@@ -118,7 +137,7 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
         },
         mounted() {
             this.airportText = this.searchInfo.searchText;
-            this.closeDialog();
+            //this.closeDialog();
              this.qyCode = this.searchInfo.qyCode;
         },
         components:{

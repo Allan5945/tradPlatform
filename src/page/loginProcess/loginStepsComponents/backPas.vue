@@ -100,11 +100,16 @@
                 }
             },
             resCodeSycn(p){
+                let utl = "/validPhone",str = "phone";
+                if(this.collect.tel.includes("@")){
+                    utl = "validEmail";
+                    str = "email";
+                }
                 this.$ajax({
                     method: 'post',
-                    url: '/validPhone',
+                    url: utl,
                     params:{
-                        phone:this.collect.tel,
+                        [str]:this.collect.tel,
                         validType:1
                     },
                     headers: {
