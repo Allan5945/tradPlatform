@@ -1591,6 +1591,7 @@ nikai<template>
                 });
             },
             moreShowFn: function () { // 判断省略号是否显示
+//                console.info(this.$refs.littleLabelWrapper.offsetWidth);
                 if(this.$refs.littleLabelWrapper.offsetWidth >= 148) {
                     this.moreShow = true;
                 }else {

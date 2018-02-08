@@ -127,7 +127,7 @@
             </div>
         </template>
         <div class="seventh item-container">
-            <span class="danger" v-show="myData.rek != null">*原因：{{myData.rek}}</span>
+            <span class="danger" v-show="myData.rek != null && myData.rek != ''">*原因：{{myData.rek}}</span>
         </div>
         <div class="eighth" v-if="buttonShow">
             <span class="line" style="position:absolute; top: 0px;"></span>
@@ -458,7 +458,7 @@
                     .item-d{
                         flex:1;
                         color: #3c78ff;
-                        cursor: pointer;
+                        /*cursor: pointer;*/
                     }
                 }
             }

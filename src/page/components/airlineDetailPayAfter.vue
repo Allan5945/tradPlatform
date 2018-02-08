@@ -350,7 +350,7 @@
                 <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
             </div>
         </div>
-        <div class="tenth item-container danger" v-if="myData.demandstate == 5 || myData.demandProgress == 10">
+        <div class="tenth item-container danger" v-if="myData.rek != null && myData.rek != ''">
             <span>原因：</span>
             <span>{{myData.rek}}</span>
         </div>

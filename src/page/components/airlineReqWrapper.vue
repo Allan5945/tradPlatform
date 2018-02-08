@@ -745,6 +745,9 @@
             this.setOptFn();
             this.setOptFn0();
         },
+        updated() {
+            this.moreShowFn();
+        },
         computed: {
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;

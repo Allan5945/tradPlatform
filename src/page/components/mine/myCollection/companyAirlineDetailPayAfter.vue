@@ -542,9 +542,9 @@
         <div class="first-button" v-if="firstButtonShow">
             <span style="width: 560px;height: 1px;background: black;"></span>
             <div class="buttons">
-                <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-b" v-if="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 100px;">已收藏</button>
+                <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn" style="margin-right: 14px;"><span class="icon-item">&#xe609;</span>我有意向</button>
+                <button class="btn btn-w" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                <button class="btn btn-b" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 100px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-if="secondButtonShow">
@@ -589,7 +589,7 @@
                 <span style="width: 560px;height: 1px;background: #ccc;"></span>
                 <div class="buttons">
                     <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                 </div>
             </div>
         </div>
@@ -598,7 +598,7 @@
                 <span style="width: 560px;height: 1px;background: #ccc;"></span>
                 <div class="buttons">
                     <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                 </div>
             </div>
         </div>
@@ -2027,7 +2027,7 @@
             margin-top: 18px;
             height: 40px;
             > .btn-b {
-                margin-right: 14px;
+                /*margin-right: 14px;*/
                 width: 230px;
                 /*color: white;*/
                 border-radius: 20px;
@@ -2040,7 +2040,7 @@
                 }*/
             }
             > .btn-w {
-                width: 80px;
+                width: 100px;
                 border-radius: 20px;
             }
         }

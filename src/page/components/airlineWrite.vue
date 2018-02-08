@@ -592,7 +592,7 @@
             calendar,
             airCompanySearch,
             singleElection,
-	    calendarCP,
+	        calendarCP,
         },
         watch: {
             seatingNum: function() {
