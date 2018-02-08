@@ -58,7 +58,7 @@
                     <div class="news" id="news">
                         <div class="n-til">
                             <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                            <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.airlnCd}}">查看更多></router-link></div>
+                            <div><router-link :to="{name:'opinion',params:{key:infoData.airlnCd}}"><span class="more">查看更多></span></router-link></div>
                         </div>
                         <div class="news-box" v-for="item in newsData">
                             <div class="box-pic">
@@ -348,7 +348,7 @@
             border-bottom:1px solid #ccc;
             .i-num{
                 color:#3c78ff;
-                font-size:1.2rem;
+                font-size:1.4rem;
             }
         }
         .table-content-ul{
@@ -399,7 +399,7 @@
             }
             .more{
                 color:#3c78ff;
-                font-size:1.2rem;
+                font-size:1.4rem;
                 cursor:pointer;
             }
         }

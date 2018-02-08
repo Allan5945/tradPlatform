@@ -135,7 +135,7 @@
                     <div class="news" id="news">
                         <div class="n-til">
                             <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                            <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.cityname}}">查看更多></router-link></div>
+                            <div><router-link :to="{name:'opinion',params:{key:infoData.cityname}}"><span class="more">查看更多></span></router-link></div>
                         </div>
                         <div class="news-box" v-for="item in infoData.publicopinions">
                             <div class="box-pic">
@@ -742,7 +742,9 @@
                  display:flex;
             }
             .more{
-
+                cursor:pointer;
+                font-size:1.4rem;
+                color: #3c78ff;
             }
         }
     }

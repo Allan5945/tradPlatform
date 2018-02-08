@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height:100%;">
         <respondAirport v-if="respond"  @responseClose="closeDetail" :demandId="mes.demand"></respondAirport>
         <myIntention v-if="intentShow" @closeIntent="closeDetail" :demandId="mes.demand"></myintention>
         <transAdmin v-if="adminShow" @closeAdmin="closeDetail"   :demand="mes.demand"></transAdmin>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import echarts from 'echarts'
-import {Radio,Pagination,Message,Checkbox,pagination,TimePicker} from 'element-ui'
+import {Radio,Pagination,Message,Checkbox,pagination,TimePicker,TimeSelect} from 'element-ui'
 
 import {airMes,cityMes,companyMes} from './static/js/airMes'
 import {local} from './static/js/function'
@@ -32,6 +32,7 @@ Vue.use(Radio);
 Vue.use(Pagination);
 Vue.use(Checkbox);
 Vue.use(TimePicker);
+Vue.use(TimeSelect);
 
 //axios拦截器
 axios.interceptors.response.use(

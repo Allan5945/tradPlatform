@@ -13,11 +13,12 @@
                         <ul class="box-item">
                             <li>
                                 <div>机场基准点坐标及其在机场的位置</div>
-                                <div>{{infoData.airportLocation.airportcoordinatesorattheairport||'-'}}</div>
+                                <div @mouseover="overflowShow = true" @mouseout="overflowShow = false" class="over-flow">{{infoData.airportLocation.airportcoordinatesorattheairport||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow' @mouseover="overflowShow = true" @mouseout="overflowShow = false">{{infoData.airportLocation.airportcoordinatesorattheairport||'-'}}</div>
                             </li>
                             <li>
                                 <div>与城市的位置关系</div>
-                                <div @mouseover="overflowShow1 = true" @mouseout="overflowShow1 = false">{{infoData.airportLocation.citylocation||'-'}}</div>
+                                <div @mouseover="overflowShow1 = true" @mouseout="overflowShow1 = false" class="over-flow">{{infoData.airportLocation.citylocation||'-'}}</div>
                                 <div class="list-wrapper" v-show='overflowShow1' @mouseover="overflowShow1 = true" @mouseout="overflowShow1 = false">{{infoData.airportLocation.citylocation||'-'}}</div>
                             </li>
                             <li>
@@ -42,7 +43,7 @@
                             </li>
                             <li>
                                 <div>机场性质/飞行区指标</div>
-                                <div @mouseover="overflowShow2 = true" @mouseout="overflowShow2 = false">{{infoData.airportLocation.natureoftheairportorairfieldindicators||'-'}}</div>
+                                <div @mouseover="overflowShow2 = true" @mouseout="overflowShow2 = false" class="over-flow">{{infoData.airportLocation.natureoftheairportorairfieldindicators||'-'}}</div>
                                 <div class="list-wrapper" v-show='overflowShow2' @mouseover="overflowShow2 = true" @mouseout="overflowShow2 = false">{{infoData.airportLocation.natureoftheairportorairfieldindicators||'-'}}</div>
                             </li>
                             <li class="li-note">
@@ -51,7 +52,7 @@
                             </li>
                             <li class="li-note">
                                 <div>机场管理部门、地址、电话、地址</div>
-                                <div style="height:40px;">{{infoData.airportLocation.airpormanagementdepartmentinfo||'-'}}</div>
+                                <div class="over-oneline">{{infoData.airportLocation.airpormanagementdepartmentinfo||'-'}}</div>
                             </li>
                         </ul>
                     </div>
@@ -60,7 +61,7 @@
                         <ul class="box-item">
                             <li>
                                 <div>货物装卸设施</div>
-                                <div @mouseover="overflowShow3 = true" @mouseout="overflowShow3 = false">{{infoData.groundServices.cargohandlingfacilities||'-'}}</div>
+                                <div @mouseover="overflowShow3 = true" @mouseout="overflowShow3 = false" class="over-flow">{{infoData.groundServices.cargohandlingfacilities||'-'}}</div>
                                 <div class="list-wrapper" v-show='overflowShow3' @mouseover="overflowShow3 = true" @mouseout="overflowShow3 = false">{{infoData.groundServices.cargohandlingfacilities||'-'}}</div>
                             </li>
                             <li>
@@ -69,20 +70,23 @@
                             </li>
                             <li>
                                 <div>加油设施/能力</div>
-                                <div @mouseover="overflowShow4 = true" @mouseout="overflowShow4 = false">{{infoData.groundServices.refuelingfacilitiesorability||'-'}}</div>
+                                <div @mouseover="overflowShow4 = true" @mouseout="overflowShow4 = false" class="over-flow">{{infoData.groundServices.refuelingfacilitiesorability||'-'}}</div>
                                 <div class="list-wrapper" v-show='overflowShow4' @mouseover="overflowShow4 = true" @mouseout="overflowShow4 = false">{{infoData.groundServices.refuelingfacilitiesorability||'-'}}</div>
                             </li>
                             <li>
                                 <div>除冰设施</div>
-                                <div>{{infoData.groundServices.deicingfacilities||'-'}}</div>
+                                <div  @mouseover="overflowShow7 = true" @mouseout="overflowShow7 = false" class="over-flow">{{infoData.groundServices.deicingfacilities||'-'}}</div>
+                                 <div class="list-wrapper" v-show='overflowShow7' @mouseover="overflowShow7 = true" @mouseout="overflowShow7 = false">{{infoData.groundServices.deicingfacilities||'-'}}</div>
                             </li>
                             <li>
                                 <div>过站航空器机库</div>
-                                <div>{{infoData.groundServices.standingaircrafthangar||'-'}}</div>
+                                <div @mouseover="overflowShow6 = true" @mouseout="overflowShow6 = false" class="over-flow">{{infoData.groundServices.standingaircrafthangar||'-'}}</div>
+                                <div class="list-wrapper" v-show='overflowShow6' @mouseover="overflowShow6 = true" @mouseout="overflowShow6 = false" style="height:230px;">{{infoData.groundServices.standingaircrafthangar||'-'}}</div>
                             </li>
                             <li>
                                 <div>过站航空器维修设施</div>
-                                <div>{{infoData.groundServices.inaircraftmaintenancefacilities||'-'}}</div>
+                                <div @mouseover="overflowShow8 = true" @mouseout="overflowShow8 = false" class="over-flow">{{infoData.groundServices.inaircraftmaintenancefacilities||'-'}}</div>
+                                 <div class="list-wrapper" v-show='overflowShow8' @mouseover="overflowShow8 = true" @mouseout="overflowShow8 = false">{{infoData.groundServices.inaircraftmaintenancefacilities||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>备注</div>
@@ -99,12 +103,12 @@
                             </li>
                             <li>
                                 <div>搬移受损航空器的能力</div>
-                                <div @mouseover="overflowShow5 = true" @mouseout="overflowShow5 = false">{{infoData.rescue.abilitytomovethedamagedaircraft||'-'}}</div>
+                                <div @mouseover="overflowShow5 = true" @mouseout="overflowShow5 = false" class="over-flow">{{infoData.rescue.abilitytomovethedamagedaircraft||'-'}}</div>
                                 <div class="list-wrapper" v-show='overflowShow5' @mouseover="overflowShow5 = true" @mouseout="overflowShow5 = false">{{infoData.rescue.abilitytomovethedamagedaircraft||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>救援设备</div>
-                                <div>{{infoData.rescue.rescuefacilities||'-'}}</div>
+                                <div class="over-oneline">{{infoData.rescue.rescuefacilities||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>备注</div>
@@ -125,11 +129,11 @@
                             </li>
                             <li class="li-note">
                                 <div>停机坪道面和强度</div>
-                                <div>{{infoData.apronTaxiway.airfieldpavementandintensity||'-'}}</div>
+                                <div class="over-oneline">{{infoData.apronTaxiway.airfieldpavementandintensity||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>滑行道宽度、道面和强度</div>
-                                <div>{{infoData.apronTaxiway.taxiwaywidthpavementandstrength||'-'}}</div>
+                                <div class="over-oneline">{{infoData.apronTaxiway.taxiwaywidthpavementandstrength||'-'}}</div>
                             </li>
                             <li class="li-note">
                                 <div>备注</div>
@@ -145,6 +149,8 @@
                                 <li>真方位和磁方位</li>
                                 <li>跑道长宽(m)</li>
                                 <li>跑道强度(PCN) 跑道/停止面道面</li>
+                                <!-- <li>跑道入口坐标及高程异常(m/f)</li> -->
+                                <li>跑道入口坐标及大地水准面波幅(m/f)</li>
                                 <li>跑道入口标高和精密进近跑道接地带最高标高(m/f)</li>
                                 <li>跑道坡度</li>
                                 <li>停止道长宽(m)</li>
@@ -158,6 +164,7 @@
                                 <li>{{item.orientation||'-'}}</li>
                                 <li>{{item.trackwidth||'-'}}</li>
                                 <li>{{item.runwayintensity||'-'}}</li>
+                                <li>{{item.runwayentrance||'-'}}</li>
                                 <li>{{item.runwayelevation||'-'}}</li>
                                 <li>{{item.runwayslope||'-'}}</li>
                                 <li>{{item.runwaystoplongwidth||'-'}}</li>
@@ -170,11 +177,12 @@
                         <ul class="box-item">
                             <li class="li-note">
                                 <div>备注</div>
-                                <div>{{infoData.physical[0].rek||'-'}}</div>
+                                <div v-if='infoData.runwayRek'>{{infoData.runwayRek.physicalcharacteristicsofrunwayrek||'-'}}</div>
+                                <div v-else>-</div>
                             </li>
                             <li class="li-note">
                                 <div>跑道坡度</div>
-                                <div>{{infoData.physical[0].runwayslope||'-'}}</div>
+                                <div>{{''||'-'}}</div>
                             </li>
                         </ul>
                         <div class="table">
@@ -182,7 +190,7 @@
                                 <li>跑道编号</li>
                                 <li>可用起飞滑道距离(m)</li>
                                 <li>可用起飞距离(m)</li>
-                                <li>可用加速停止距离</li>
+                                <li>可用加速停止距离(m)</li>
                                 <li>可用着陆距离(m)</li>
                                 <li>备注</li>
                             </ul>
@@ -222,8 +230,15 @@
                                 <li>{{item.stoplamplength||'-'}}</li>
                             </ul>
                         </div>
+                         <ul class="box-item">
+                            <li class="li-note">
+                                <div>备注</div>
+                                <div v-if="infoData.intensityRek">{{infoData.intensityRek.lengthintensityrek||'-'}}</div>
+                                <div v-else>-</div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="box" id="step7">
+                    <div class="box" id="step7" style="margin-bottom:150px;">
                         <div class="box-til"><span class="iconfont">&#xe669;</span>飞行程序</div>
                         <ul class="box-item">
                             <li class="li-note">
@@ -257,11 +272,15 @@
     export default {
         data() {
             return {
+                overflowShow:false,
                 overflowShow1:false,
                 overflowShow2:false,
                 overflowShow3:false,
                 overflowShow4:false,
                 overflowShow5:false,
+                overflowShow6:false,
+                overflowShow7:false,
+                overflowShow8:false,
                 infoData:{},
                 dataShow:false,
                 step:'1'
@@ -272,7 +291,18 @@
 
         },
         watch:{
-
+            'infoData.runwayRek.physicalcharacteristicsofrunwayrek':function(val){
+                 if(val){
+                    var r = new RegExp('备注：', "ig");
+                    this.infoData.runwayRek.physicalcharacteristicsofrunwayrek = val.replace(r,'');
+                }
+            },
+            'infoData.intensityRek.lengthintensityrek':function(val){
+                if(val){
+                    var r = new RegExp('备注：', "ig");
+                    this.infoData.intensityRek.lengthintensityrek = val.replace(r,'');
+                }
+            }
         },
         methods: {
             close(){
@@ -464,20 +494,28 @@
                     color:rgba(96, 94, 124, 0.7);
                     padding-right:10px;
                     text-align:right;
+                     line-height:40px;
                 }
                 >div:nth-of-type(2){
                     width:270px;
                     font-size:1.4rem;
+                    line-height:37px;
                     padding-left:10px;
-                   overflow : hidden;
-                   text-overflow: ellipsis;
-                   display: -webkit-box;
-                   -webkit-line-clamp: 1;
-                   -webkit-box-orient: vertical;
+                    //font-weight:800;
+                }
+                .over-flow{
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                }
+                .over-oneline{
+
                 }
             }
             .li-note{
                 width:100%;
+                height:auto !important;
+                line-height:26px;
                  >div:last-of-type{
                     width:790px;
                 }
@@ -549,8 +587,8 @@
         display: flex;
         padding: 10px;
         width: 260px;
-        height:100px;
-        line-height:30px !important;
+        height:120px;
+        line-height:24px !important;
         background: white;
         border-radius: 4px;
         //box-shadow: 0 2px 11px rgba(96,94,124,0.37);

@@ -18,6 +18,11 @@
               <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
                <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
             </div>
+             <div class="form-box pad1 taken" v-if="role.role == '2'">
+                  <div class="t-title">运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
+                  <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
+                    <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
+              </div>
         </div>
         <div class="t-all" v-show="allFormShow">
             <div class="t-must">
@@ -54,16 +59,17 @@
                     </div>
                 </div>
             </div>
-            <!--  <div class="form-box">
+            <!-- <div >
                 <div class="t-title">出港时刻</div>
                 <div >
-                     <el-time-picker
-                         arrow-control
-                         v-model="timeStart"
-                         type="mini"
-                         placeholder="任意时间点">
-                       </el-time-picker>
-
+                   <el-time-picker
+                     is-range
+                     v-model="value4"
+                     range-separator="至"
+                     start-placeholder="开始时间"
+                     end-placeholder="结束时间"
+                     placeholder="选择时间范围">
+                   </el-time-picker>
                 </div>
             </div> -->
                 <div class="form-box">
@@ -312,7 +318,8 @@
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 directionalgoal:'',
-                schedulinePort:''
+                schedulinePort:'',
+                value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
             }
         },
         components:{
@@ -770,6 +777,7 @@
                         return false;
                     };
                 }
+
                 let demandData = {},
                     time = this.timeStart +','+ this.timeEnd;
                     demandData.demandtype = type;
@@ -865,7 +873,7 @@
                      trans.scrollTop = 0;
                     return false;
                 }
-                if(this.airCompany == ''){//运力归属
+                if(!this.airCompany){//运力归属
                     this.isError7 = true;
                     return false;
                 }
@@ -1018,13 +1026,16 @@
             if(this.role.role == 2){
                 this.btnShow = false;
             }
+            if(this.role.role == 0){
+               let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
+               this.airCompany = a.companyName;
+              this.airCompany1 = a.companyName;
+              this.airCompanyId = a.id;
+            }
 
-            let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
-            this.airCompany = a.companyName;
-            this.airCompany1 = a.companyName;
-            this.airCompanyId = a.id;
+
         }
 
     }

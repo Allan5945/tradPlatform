@@ -186,8 +186,10 @@
                 <div class="intent-form">
                     <div class="intent-head">
                         <div>发布时间
-                          <span class="iconfont icon-up active">&#xe605;</span>
-                          <span class="iconfont icon-down">&#xe605;</span>
+                          <span @click="orderSorted">
+                              <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
+                              <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                          </span>
                         </div>
                         <div>发布标题</div>
                         <div class="need-til">需求状态</div>
@@ -250,6 +252,7 @@
             myShow:true,
             wrapperShow:true,
             schedulListShow:false,
+            sorted:true,
             listSonDemands:[],
             msg:'',
             refuseText:'',
@@ -448,6 +451,31 @@
           this.myShow = true;
           this.sondetailShow = false;
           this.init();
+        },
+        orderSorted(){
+            this.sorted =!this.sorted;
+            let orderType = this.sorted? '0':'1';
+            this.$ajax({
+                method: 'post',
+                url: '/getCommissionedAndCustodyDemandDetails',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    id:this.mes.demand,
+                    orderType:orderType
+
+                  }
+                })
+                .then((response) => {
+                     if(response.data.opResult == '0'){
+                        this.listSonDemands = response.data.listSonDemands;
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
         },
         init(){
             this.$ajax({
@@ -822,10 +850,15 @@
                     position: absolute;
                     bottom: 33px;
                     transform: rotate(180deg);
+                    cursor:pointer;
                 }
                 .icon-down {
                     position: absolute;
                     top: 33px;
+                    cursor:pointer;
+                }
+                .active {
+                    color: #3c78ff;
                 }
                 .need-til{
                     margin-left:73px;

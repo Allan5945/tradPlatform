@@ -5,7 +5,7 @@
             <div class="content" v-if="showDetail">
                 <div class="banner">
                     <div class="airport-img"><img :src="img" alt=""></div>
-                    <div class="b-til">{{infoData.airlnCd || "-"}}机场</div>
+                    <div class="b-til">{{infoData.airlnCdName || "-"}}</div>
                     <div class="sidebar">
                         <div :class="{seleted:isInfo}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
                         <div :class="{seleted:!isInfo}" @click="getNews"><span class="iconfont" >&#xe624;</span>新闻舆情</div>
@@ -16,7 +16,7 @@
                     <div class="i-content">
                         <div class="info-box">
                             <ul>
-                                <li><div>机场名字</div><div>{{infoData.airlnCd || "-"}}</div></li>
+                                <li><div>机场名字</div><div>{{infoData.airlnCdName || "-"}}</div></li>
                                 <li><div>所在城市</div><div>{{infoData.city || "-"}}</div></li>
                                 <li><div>所属机场集团</div><div class="shipgroup">{{infoData.membershipgroup || "-"}}</div></li>
                                 <li><div>机场类型</div><div>{{infoData.airpottype || "-"}}</div></li>
@@ -43,7 +43,7 @@
                                 <li>
                                     <div>可起降机型</div>
                                     <div class="fl-type" @mouseover="flytypeShow = true" @mouseout="flytypeShow = false">{{infoData.modelcanhandle || "-"}}</div>
-                                    <div class="list-wrapper" v-show='flytypeShow' style="width:400px;height:300px;">{{infoData.modelcanhandle || "-"}}</div>
+                                    <div class="list-wrapper" v-show='flytypeShow' style="width:400px;height:300px;" @mouseover="flytypeShow = true" @mouseout="flytypeShow = false">{{infoData.modelcanhandle || "-"}}</div>
                                 </li>
                                 <li><div>放行准点率</div><div>{{infoData.releasepunctuality || "-"}}</div></li>
                                 <li><div>国内在飞航班数量</div><div>{{infoData.intheflight || "-"}}</div></li>
@@ -60,7 +60,7 @@
                                 <li><div>距离市区</div><div>{{infoData.distancefromdowntown || "-"}}</div></li>
                             </ul>
                         </div>
-                        <div class="airport-info" @click="airportInfo">机场情报></div>
+                        <div class="airport-info" @click="airportInfo"><a>机场情报></a></div>
                     </div>
                     <div class="i-echart">
                         <div v-if="infoData.passengerThroughputs">
@@ -116,7 +116,7 @@
                     <div class="news" id="news">
                         <div class="n-til">
                             <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
-                            <div class="more"><router-link :to="{name:'opinion',params:{key:infoData.airlnCd}}">查看更多></router-link></div>
+                            <div><router-link :to="{name:'opinion',params:{key:infoData.airlnCdName}}"><span class="more">查看更多></span></router-link></div>
                         </div>
                         <div class="news-box" v-for="item in infoData.opinions">
                             <div class="box-pic">
@@ -445,6 +445,17 @@
                 right:50px;
                 color:#3c78ff;
                 cursor:pointer;
+                font-size:1.4rem;
+            }
+             a{
+                text-decoration: underline;
+                color: #3c78ff;
+                &:hover {
+                    color: #51a2ff;
+                }
+                &:active {
+                    color: #3c78ff;
+                }
             }
         }
     }
@@ -623,6 +634,8 @@
             }
             .more{
                 cursor:pointer;
+                font-size:1.4rem;
+                color: #3c78ff;
             }
         }
     }

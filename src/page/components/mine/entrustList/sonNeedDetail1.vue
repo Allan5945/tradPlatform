@@ -206,7 +206,7 @@
                                 </div>
                         </div>
                 </div>
-            <div class="intent">
+            <div class="intent" v-if="intentShow">
                 <div class="intent-til">
                     <div>收到的意向</div>
                     <div>已有<span>{{this.intentionCount||'0' }}</span>位用户发起意向</div>
@@ -214,8 +214,10 @@
                 <div class="intent-form">
                     <div>
                         <div>收到时间
-                          <span class="iconfont icon-up active">&#xe605;</span>
-                          <span class="iconfont icon-down">&#xe605;</span>
+                          <span @click="orderSorted">
+                              <span class="iconfont icon-up" :class="{active:sorted}">&#xe605;</span>
+                              <span class="iconfont icon-down" :class="{active:!sorted}">&#xe605;</span>
+                          </span>
                         </div>
                         <div>意向方</div>
                     </div>
@@ -358,7 +360,7 @@
                 </div>
             </div>
             </div>
-
+            <div v-if="detailData.rek"  class="close-reason">审核未通过原因：{{detailData.rek}}</div>
             <footer v-show="footShow">
                 <div class="btn">
                     <div class="col-btn" style="margin-right:10px;" @click="airlinePayFn" v-if='!isIntentionMoney'>点击此处缴纳意向金</div>
@@ -388,6 +390,7 @@
      data(){
          return{
              showDetailIndex:'',
+             intentShow:true,
              intentListShow:false,
              myFormShow:false,
              sureFormShow:false,
@@ -412,6 +415,7 @@
              calendarInitDay1:'',
              calendarInitDay2:'',
              changeValidityShow:true,
+             sorted:true
          }
      },
      props:['sonId','acceptData'],
@@ -583,6 +587,31 @@
                 this.calendarInitDay1 = year+"."+mon+"."+day;
 
         },
+         orderSorted:function(){
+           this.sorted =!this.sorted;
+            let orderType = this.sorted? '0':'1';
+            this.$ajax({
+                method: 'post',
+                url: '/responseListOrder',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                  params: {
+                    demandId:this.detailData.id,
+                    orderType:orderType
+
+                  }
+                })
+                .then((response) => {
+                     if(response.data.opResult == '0'){
+                        this.planData = response.data.responseList;
+                    }
+                })
+                .catch((error) => {
+                        console.log(error);
+                    }
+                );
+        },
         init:function(){
             this.$ajax({
                 method: 'post',
@@ -639,6 +668,14 @@
                     if(this.planData){
                       this.intentListShow = true;
                     }
+
+                     //审核未通过
+                    if(this.detailData.demandStateStr =='审核不通过'){
+                        this.intentShow = false;
+                      }else{
+                        this.intentShow = true;
+                      }
+
                     //是否有选定
                     if(this.planData && this.planData !== []){
                       let len = this.planData.length;
@@ -1004,10 +1041,15 @@
                     position: absolute;
                     bottom: 33px;
                     transform: rotate(180deg);
+                    cursor:pointer;
                 }
                 .icon-down {
                     position: absolute;
                     top: 33px;
+                    cursor:pointer;
+                }
+                 .active {
+                    color: #3c78ff;
                 }
             }
             .intent-box{
@@ -1052,6 +1094,13 @@
             bottom:40px;
             left:20px;
           }
+
+    .close-reason{
+      margin:160px 40px 0 40px;
+      color:red;
+      width:500px;
+      word-wrap: break-word;
+    }
     footer{
         border-top: 1px solid #ccc;
         position:relative;
