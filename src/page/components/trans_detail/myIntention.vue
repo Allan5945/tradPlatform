@@ -625,7 +625,7 @@
         position:absolute;
         top:0;
         right:0;
-        z-index: 16;
+        z-index: 33;
         width:600px;
         box-sizing:border-box;
         height:100%;
