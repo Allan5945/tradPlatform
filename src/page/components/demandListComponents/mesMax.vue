@@ -596,8 +596,9 @@
         top: 25px;
         left: 0px;
         width: 260px;
-        /*max-height: 210px;*/
+        max-height: 210px;
         z-index: 1;
+        overflow-y: auto;
     }
 
     .aisx {

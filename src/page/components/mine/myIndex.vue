@@ -10,8 +10,8 @@
                     <div class="name" v-text="role.nickName"></div>
                     <div class="work-info">
                         <div class="position">{{role.companyName}}&nbsp;{{role.department}}</div>
-                        <div>成单量：<span></span></div>
-                        <div>成单率：<span></span></div>
+                        <!--<div>成单量：<span></span></div>-->
+                        <!--<div>成单率：<span></span></div>-->
                     </div>
                 </div>
                 <div class="my-list">
@@ -173,7 +173,7 @@ import * as vx from 'vuex'
         }
         .work-info {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             margin-bottom: 40px;
             height: 20px;
             line-height: 20px;

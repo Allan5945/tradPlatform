@@ -43,7 +43,7 @@
                 </div>
                 <div class="chat-detailed" @scroll="woListScroll($event)" v-else>
                     <div class="chat-detailed-item" v-for="(val,index) in chatIng.reverse()">
-                        <div class="chat-detailed-title"><span v-text="val.title"></span>{{val.date}}</div>
+                        <div class="chat-detailed-title" :class="{'information-x1':(val.state == '1')}"><span v-text="val.title"></span>{{val.date}}</div>
                         <div class="chat-detailed-text popup" v-text="val.text"></div>
                         <div class="chat-detailed-btn btn btn-b" @click="queryDemod(val)">查看详情</div>
                     </div>
@@ -86,8 +86,6 @@
                             修改记录({{inData[setId].modifyRcord.list.length}}条)
                         </div>
                         <div v-if="inData[setId].modifyRcord.list.length != 0" class="personal-hy-i"
-                             @mouseover="viewHsy(true,i)"
-                             @mouseout="viewHsy(false,i)"
                              v-for="(key,i) in inData[setId].modifyRcord.list">
                             <div>{{key.date}}{{key.text}}</div>
                             <span v-if="(i == selectModifyHistory)">&#xe686;</span>
@@ -247,9 +245,6 @@
                         iskf = false;
                     }
                     ;
-//                    let chatRcord = ln.chat.chatData[k].chatRcord.map((val)=>{
-//
-//                    });
                     b[ln.chat.chatData[k].chatFlag] = {
                         chatObjectList,
                         iskf,
@@ -302,6 +297,26 @@
                     demandType,
                     demand
                 };
+                if(val.state == '1'){
+                    this.$ajax({
+                        url:"/updateSystemState",
+                        method: "post",
+                        headers: {
+                            "Content-type": "application/x-www-form-urlencoded"
+                        },
+                        params: {
+                            id:val.id
+                        }
+                    }).then((res)=>{
+                        ln.chat.chatData['x-t-null'].chatRcord.list.forEach((value,ky)=>{
+                            if(value.id == val.id){
+                                ln.chat.chatData['x-t-null'].chatRcord.list[ky].state = "0";
+                                ln.chat.chatData['x-t-null'].noReadCount = ln.chat.chatData['x-t-null'].noReadCount -1;
+                                ln.chat.change = !ln.chat.change;
+                            }
+                        });
+                    });
+                }
                 ln.$emit('demandType',data);
             },
             initBox: function () {
@@ -473,11 +488,21 @@
     .chat-detailed-title {
         padding: 6px 0 6px 20px;
         color: rgba(96, 94, 124, 0.6);
+        position: relative;
         > span {
             font-weight: bold;
             margin-right: 40px;
             color: #605e7c;
         }
+    }
+    .information-x1:before {
+        content: "\E61E";
+        font-family: iconfont;
+        color: #ff656f;
+        position: absolute;
+        left: 4px;
+        top: 7px;
+        font-size: 12px;
     }
 
     .chat-detailed-btn {
