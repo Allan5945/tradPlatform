@@ -1,5 +1,8 @@
 <template>
-    <div class="inf-box popup user-select" id="inf-mes-box" @click.stop>
+    <div class="inf-box popup user-select" ref="timely-box" id="inf-mes-box" @click.stop
+         @mousedown="clearAndBindDrop(true,$event)"
+         @mouseup="clearAndBindDrop(false,$event)"
+    >
         <div class="inf-head">
             <span>{{basicMes.airName}}</span>
             <span>{{basicMes.airCode}}</span>
@@ -57,7 +60,6 @@
     </div>
 </template>
 <script>
-
     import * as vx from 'vuex';
     import tabulationBoxTrigger from "./../../../public/js/tabulationBoxTrigger.js";
     export default {
@@ -79,6 +81,19 @@
                 zc:[],
                 setzc:0,
                 setInzc:"",
+                dropData: {
+                    mouseCoordinate: {
+                        x: 0,
+                        y: 0
+                    },
+                    switch: false
+                },
+                timelyBox: "",
+                timelyBoxXY: {
+                    // 最后设置的聊天框位置
+                    x: 10,
+                    y: 10
+                },
             }
         },
         computed:{
@@ -119,7 +134,29 @@
                         this.setzc = 0;
                     }
                 },5000);
-            }
+            },
+            clearAndBindDrop: function (t, event) {
+                this.dropData.mouseCoordinate.x = event.screenX;
+                this.dropData.mouseCoordinate.y = event.screenY;
+
+                this.timelyBoxXY.x = this.timelyBox.offsetLeft;
+                this.timelyBoxXY.y = this.timelyBox.offsetTop;
+
+                // 绑定拖拽事件
+                if (t) {
+                    this.dropData.switch = true;
+                } else {
+                    this.dropData.switch = false;
+                    // this.timelyBoxXY.x =200;
+                    // this.timelyBoxXY.x = 0;
+
+                }
+                ;
+
+            },
+            initBox: function () {
+                this.timelyBox = this.$refs["timely-box"];
+            },
         },
         mounted:function(){
             let _this = this;
@@ -175,6 +212,13 @@
                 };
                 this.basicMes = obj;       
             });
+            document.addEventListener("mousemove", e => {
+                if (this.dropData.switch) {
+                    this.timelyBox.style.left = this.timelyBoxXY.x + (e.screenX - this.dropData.mouseCoordinate.x) + 'px';
+                    this.timelyBox.style.top = this.timelyBoxXY.y + (e.screenY - this.dropData.mouseCoordinate.y) + 'px';
+                }
+            });
+            this.initBox();
         }
     }
 </script>

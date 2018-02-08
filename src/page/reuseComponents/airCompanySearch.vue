@@ -117,17 +117,6 @@
                 this.list = ar;
             },
             reqD:function (key,index) {
-                let le = localStorage.getItem('hisyData');
-                let hisyData = (le == null ? '[]' : le);
-                hisyData = JSON.parse(hisyData);
-                let tx = true;
-                hisyData.forEach((v)=>{
-                    if(v.name == key.name){
-                        tx = false;
-                    }
-                });
-                if(tx)hisyData.push(key);
-                localStorage.setItem('hisyData',JSON.stringify(hisyData));
                 this.$emit('resData', key);
             }
         },
