@@ -81,7 +81,8 @@
                     showErrInput: false, // 是否显示框错误
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["联系人", "联系人"],
-                    validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展,
+                    cia:true             // 是否支持中文输入
                 },
                 data2: {
                     inputeType: "text", // 输入框的类型
@@ -91,6 +92,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["单位全称", "单位全称"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、邮箱
+                    cia:true             // 是否支持中文输入
                 },
                 data3: {
                     inputeType: "text", // 输入框的类型

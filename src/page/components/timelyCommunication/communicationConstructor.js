@@ -103,8 +103,7 @@ export default class ChatSocket {
                     ln.chat.chatData[chat.data.chatFlag].chatRcord = {
                         list: []
                     }
-                }
-                ;
+                };
                 ln.chat.chatData[chat.data.chatFlag].chatRcord.list.splice(0, 0, chat.data);
                 if (chat.data.chatFlag != ln.chat.setChat) {
                     ln.chat.chatData[chat.data.chatFlag].noReadCount = 1;

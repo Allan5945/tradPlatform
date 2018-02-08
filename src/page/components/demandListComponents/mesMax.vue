@@ -16,6 +16,7 @@
                         </div>
                         <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
                         <airportS class="aisx" v-on:resData="resData" :searchText="searchText"
+                                  :hiy="true"
                                   v-show="isSearch"></airportS>
                     </div>
                 </div>
@@ -595,8 +596,9 @@
         top: 25px;
         left: 0px;
         width: 260px;
-        /*max-height: 210px;*/
+        max-height: 210px;
         z-index: 1;
+        overflow-y: auto;
     }
 
     .aisx {

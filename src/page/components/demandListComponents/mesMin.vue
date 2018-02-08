@@ -16,7 +16,7 @@
                     <span v-if="bgqyed" class="search-ed btn-w" @click="removeSearchSet">&#xe62c;</span>
                 </div>
                 <hisy class="ais" v-on:reshsy="reshsy" v-on:clear="clear" v-if="openHisy"></hisy>
-                <airportS class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS>
+                <airportS class="aisx" v-on:resData="resData" :searchText="searchText" :hiy="true" v-show="isSearch"></airportS>
             </div>
         </div>
         <div class="tabulation" id="tabulation">
@@ -330,6 +330,7 @@
         width: 260px;
         max-height: 210px;
         z-index: 1;
+        overflow-y: auto;
     }
 
     .aisx {

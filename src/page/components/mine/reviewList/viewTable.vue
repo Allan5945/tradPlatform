@@ -146,6 +146,7 @@
                     this.sorted = !this.sorted;
                     let s = this.sorted ? '1' : '0';
                     this.getParams.orderType = s;
+                    this.getParams.page = 1;
                     this.getListData();
                 }
             },
@@ -156,6 +157,7 @@
                     this.delayChange();
                     let s = this.sorted;
                     this.getParams.demandType = k;
+                    this.getParams.page = 1;
                     this.getListData();
                 }
             },
@@ -166,6 +168,7 @@
                     this.delayChange();
                     let s = this.sorted;
                     this.getParams.demandState = k;
+                    this.getParams.page = 1;
                     this.getListData();
                 }
             },

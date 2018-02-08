@@ -3,7 +3,7 @@
         <div class="first-show" v-show="firstShow">
             <div class="first item-container">
                 <span class="font-gray">需求详情</span>
-                <span class="close-icon" @click="closeThisFn">&times;</span>
+                <span class="close-icon iconfont" @click="closeThisFn">&#xe62c;</span>
             </div>
             <div class="second item-container">
                 <div class="sec-top">
@@ -350,7 +350,7 @@
                 <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
             </div>
         </div>
-        <div class="tenth item-container danger" v-if="myData.demandstate == 5 || myData.demandProgress == 10">
+        <div class="tenth item-container danger" v-if="myData.rek != null && myData.rek != ''">
             <span>原因：</span>
             <span>{{myData.rek}}</span>
         </div>
@@ -542,9 +542,9 @@
         <div class="first-button" v-if="firstButtonShow">
             <span style="width: 560px;height: 1px;background: black;"></span>
             <div class="buttons">
-                <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-b" v-if="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
+                <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn" style="margin-right: 14px;"><span class="icon-item">&#xe609;</span>我有意向</button>
+                <button class="btn btn-w" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
+                <button class="btn btn-b" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 100px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-if="secondButtonShow">
@@ -554,23 +554,25 @@
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
-            <div v-if="receiveIntention.responseselected == '0'">
-                <div class="buttons">
-                    <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
+        <div class="myplan-buttons" v-if="myplanBtnShow">
+            <div v-if="receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
+                <div v-if="receiveIntention.responseselected == '0'">
+                    <div class="buttons">
+                        <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
+                    </div>
                 </div>
-            </div>
-            <div v-else>
-                <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
-                    <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
-                    <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
-                </div>
-                <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
-                        && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
-                    <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
-                    <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
-                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                <div v-else>
+                    <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
+                        <div class="btn btn-b" @click="queRenClickFn">确认方案</div>
+                        <div class="btn btn-w cancel-btn" @click="juJueFn" style="width: 150px;">拒绝并撤回</div>
+                    </div>
+                    <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
+                            && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
+                        <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
+                        <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
+                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1490,12 +1492,16 @@
             right: 12px;
             top: 50%;
             margin-top: -11px;
-            display: flex;
+            /*display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center;*/
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            line-height: 22px;
+            text-align: center;
+            box-sizing:border-box;
+            color:#3C78FF;
+            border: 1px solid #ededed;
             border-radius: 100%;
             cursor: pointer;
         }
@@ -1711,9 +1717,9 @@
             >div{
                 height:40px;
                 line-height:40px;
-                font-size:1.5rem;
-                color:#605E7C;
-                background-color:#fff;
+                /*font-size:1.5rem;*/
+                /*color:#605E7C;*/
+                /*background-color:#fff;*/
                 text-align:center;
                 border: 0;
                 border-radius:100px;
@@ -2005,7 +2011,7 @@
             margin-top: 18px;
             height: 40px;
             > .btn-b {
-                margin-right: 14px;
+                /*margin-right: 14px;*/
                 width: 230px;
                 /*color: white;*/
                 border-radius: 20px;
@@ -2018,7 +2024,7 @@
                 }*/
             }
             > .btn-w {
-                width: 80px;
+                width: 100px;
                 border-radius: 20px;
             }
         }

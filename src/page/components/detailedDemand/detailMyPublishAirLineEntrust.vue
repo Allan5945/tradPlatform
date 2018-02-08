@@ -2,13 +2,13 @@
     <div class="ald-container" v-cloak>
         <div class="first item-container">
             <span>{{myData.demandtypeStr}}详情</span>
-            <span class="close-icon" @click="closeThisFn" style="cursor: pointer;">&times;</span>
+            <span class="close-icon iconfont" @click="closeThisFn">&#xe62c</span>
         </div>
         <div class="second item-container">
-            <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
+            <div class="anew-publish btn-b" v-show="linkServiceShow" @click="linkServiceClickFn">
                 联系客服 <span class="icon-item">&#xe720;</span>
             </div>
-            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
+            <div class="anew-publish btn-b" v-show="anewPublishShow" @click="anewPublishClickFn2">
                 重新发布
             </div>
             <div class="top">
@@ -185,7 +185,7 @@
             </div>
         </template>
         <div class="seventh item-container">
-            <span class="danger" v-show="myData.rek != null">*原因：{{myData.rek}}</span>
+            <span class="danger" v-show="myData.rek != null && myData.rek != ''">*原因：{{myData.rek}}</span>
         </div>
         <div class="eighth" v-if="buttonShow">
             <span class="line" style="position:absolute; top: 0px;"></span>
@@ -522,7 +522,7 @@
                     .item-d{
                         flex:1;
                         color: #3c78ff;
-                        cursor: pointer;
+                        /*cursor: pointer;*/
                     }
                 }
             }
@@ -686,13 +686,18 @@
         .close-icon {
             position: absolute;
             right: 12px;
-            display: flex;
+           /* display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center;*/
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            line-height: 22px;
+            text-align: center;
+            box-sizing:border-box;
+            color:#3C78FF;
+            border: 1px solid #ededed;
             border-radius: 100%;
+            cursor: pointer;
         }
     }
     .second {
@@ -712,7 +717,7 @@
             height: 20px;
             color: white;
             border-radius: 20px;
-            background: #3C78FF;
+            /*background: #3C78FF;*/
             cursor: pointer;
         }
         .edit-publish {

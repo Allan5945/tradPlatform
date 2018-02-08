@@ -54,10 +54,10 @@
                     }
                 }else{
                     this.showErrInputPerform = true;
-                    let mes = this.staging;
-                    mes.steps = 1;
-                    this.$emit('resMes',mes);
                 }
+                let mes = this.staging;
+                mes.steps = 1;
+                this.$emit('resMes',mes);
             },
             entered(e) {   // 触发enter按键
                 if (e.keyCode == 13) this.$emit('entered', {type: 'entered'});
@@ -85,8 +85,9 @@
                     return;
                 };
                 this.arg.inputMes = this.arg.inputMes.replace(/ /g,'');
-                this.arg.inputMes = this.arg.inputMes.replace(/[\u4e00-\u9fa5]/g,'');
-
+                if(!this.arg.cia){
+                    this.arg.inputMes = this.arg.inputMes.replace(/[\u4e00-\u9fa5]/g,'');
+                }
                 let t = false, c = "",reg; //  t,表示验证是否通过，c 代表具体内容
                 switch (this.arg.validation) {
                     case 0:   // 账号

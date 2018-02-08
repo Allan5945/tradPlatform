@@ -3,7 +3,7 @@
         <div class="container" id="myPurposeEdit" @click="closeAll">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="close-icon iconfont" @click="closeThis">&#xe62c</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -2278,12 +2278,16 @@
             position: absolute;
             top: -2px;
             right: 0;
-            display: flex;
+            /*display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center;*/
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            line-height: 22px;
+            text-align: center;
+            box-sizing:border-box;
+            color:#3C78FF;
+            border: 1px solid #ededed;
             border-radius: 100%;
             cursor: pointer;
         }
