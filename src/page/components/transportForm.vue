@@ -59,19 +59,19 @@
                     </div>
                 </div>
             </div>
-          <!--  <div >
-              <div class="t-title">出港时刻</div>
-              <div >
-                 <el-time-picker
-                   is-range
-                   v-model="value4"
-                   range-separator="至"
-                   start-placeholder="开始时间"
-                   end-placeholder="结束时间"
-                   placeholder="选择时间范围">
-                 </el-time-picker>
-              </div>
-          </div> -->
+         <!--  <div >
+             <div class="t-title">出港时刻</div>
+             <div >
+                <el-time-picker
+                  is-range
+                  v-model="value4"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  placeholder="选择时间范围">
+                </el-time-picker>
+             </div>
+         </div> -->
                 <div class="form-box">
                     <div class="t-title">是否有班期</div>
                     <div class="radio-box" @click="verifyFlight">
