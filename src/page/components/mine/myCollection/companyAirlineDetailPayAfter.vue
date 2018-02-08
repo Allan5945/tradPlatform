@@ -544,7 +544,7 @@
             <div class="buttons">
                 <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn"><span class="icon-item">&#xe609;</span>我有意向</button>
                 <button class="btn btn-w" v-if="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-b" v-if="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 120px;">已收藏</button>
+                <button class="btn btn-b" v-if="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 100px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-if="secondButtonShow">
@@ -554,25 +554,27 @@
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div class="myplan-buttons" v-if="myplanBtnShow && receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
-            <div v-if="receiveIntention.responseselected == '0'">
-                <div class="buttons">
-                    <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
-                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+        <div class="myplan-buttons" v-if="myplanBtnShow">
+            <div v-if="receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
+                <div v-if="receiveIntention.responseselected == '0'">
+                    <div class="buttons">
+                        <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
+                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                    </div>
                 </div>
-            </div>
-            <div v-else>
-                <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
-                    <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
-                    <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
-                </div>
-                <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
-                        && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
-                    <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
-                    <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
-                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                <div v-else>
+                    <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
+                        <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
+                        <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
+                    </div>
+                    <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
+                            && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
+                        <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
+                        <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
+                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -582,13 +584,22 @@
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div class="bottom" v-show="!fifthButtonShow
-            && !(myplanBtnShow && receiveIntention.responseProgress != 4 && myData.demandprogress != 3)
-            && !secondButtonShow && !firstButtonShow">
-            <span style="width: 560px;height: 1px;background: #ccc;"></span>
-            <div class="buttons">
-                <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+        <div v-if="receiveIntention != null && receiveIntention != ''">
+            <div class="bottom" v-if="!fifthButtonShow && !secondButtonShow && !firstButtonShow">
+                <span style="width: 560px;height: 1px;background: #ccc;"></span>
+                <div class="buttons">
+                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <div class="bottom" v-if="!fifthButtonShow && !secondButtonShow && !firstButtonShow">
+                <span style="width: 560px;height: 1px;background: #ccc;"></span>
+                <div class="buttons">
+                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 120px;">已收藏</div>
+                </div>
             </div>
         </div>
         <!--航司点击“我有意向”显示 运力表单-->
