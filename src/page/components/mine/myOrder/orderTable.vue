@@ -240,7 +240,8 @@
             }else if(role == "1"){//机场
                 this.type["t3"] = '委托航线需求'
             }else if(role == "0"){//航司
-                this.type["t4"] = '委托运力需求'
+                this.type["t4"] = '委托运力需求';
+                delete this.progressState["6"]; //隐藏订单完成
                 delete this.progressState["7"]; //隐藏佣金支付
             }
             this.roleType = role;
