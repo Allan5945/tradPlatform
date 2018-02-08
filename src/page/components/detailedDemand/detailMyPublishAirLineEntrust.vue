@@ -5,10 +5,10 @@
             <span class="close-icon iconfont" @click="closeThisFn">&#xe62c</span>
         </div>
         <div class="second item-container">
-            <div class="anew-publish" v-show="linkServiceShow" @click="linkServiceClickFn">
+            <div class="anew-publish btn-b" v-show="linkServiceShow" @click="linkServiceClickFn">
                 联系客服 <span class="icon-item">&#xe720;</span>
             </div>
-            <div class="anew-publish" v-show="anewPublishShow" @click="anewPublishClickFn2">
+            <div class="anew-publish btn-b" v-show="anewPublishShow" @click="anewPublishClickFn2">
                 重新发布
             </div>
             <div class="top">
@@ -717,7 +717,7 @@
             height: 20px;
             color: white;
             border-radius: 20px;
-            background: #3C78FF;
+            /*background: #3C78FF;*/
             cursor: pointer;
         }
         .edit-publish {
