@@ -32,12 +32,12 @@
                                 <li>
                                     <div class="name">企业枚举</div>
                                     <div class="overflow-item text"  @mouseover="enterpriseShow = true" @mouseout="enterpriseShow = false">{{infoData.enterpriseenumeration || "-"}}</div>
-                                    <div class="list-wrapper" v-show='enterpriseShow'>{{infoData.enterpriseenumeration || "-"}}</div>
+                                    <div class="list-wrapper" v-show='enterpriseShow' @mouseover="enterpriseShow = true" @mouseout="enterpriseShow = false">{{infoData.enterpriseenumeration || "-"}}</div>
                                 </li>
                                 <li>
                                     <div class="name">高校枚举</div>
                                     <div class="overflow-item text" @mouseover="collegeShow = true" @mouseout="collegeShow = false">{{infoData.famousuniversitiesenumeration || "-"}}</div>
-                                    <div class="list-wrapper" v-show='collegeShow'>{{infoData.famousuniversitiesenumeration || "-"}}</div>
+                                    <div class="list-wrapper" v-show='collegeShow' @mouseover="collegeShow = true" @mouseout="collegeShow = false">{{infoData.famousuniversitiesenumeration || "-"}}</div>
                                 </li>
                                 <li>
                                     <div class="name">4A景点枚举</div>
@@ -47,7 +47,7 @@
                                 <li>
                                     <div class="name">5A景点枚举</div>
                                     <div class="overflow-item text"  @mouseover="site5aShow = true" @mouseout="site5aShow = false">{{infoData.sitesenumeration5a || "-"}}</div>
-                                    <div class="list-wrapper" v-show='site5aShow'>{{infoData.sitesenumeration5a || "-"}}</div>
+                                    <div class="list-wrapper" v-show='site5aShow' @mouseover="site5aShow = true" @mouseout="site5aShow = false">{{infoData.sitesenumeration5a || "-"}}</div>
                                 </li>
                             </ul>
                         </div>
@@ -166,8 +166,9 @@
 <script>
     import * as vx from 'vuex';
     import echarts from 'echarts';
-     import { Loading } from 'element-ui';
+    import { Loading } from 'element-ui';
     import myPic from '$src/static/img/Slice.png';
+    import myPic1 from '$src/static/img/infobg.png';
     import noimg from './../../../static/img/pubo/noimg.png';
     import searchHeader from './searchHeader.vue';
     export default {
@@ -195,7 +196,12 @@
                 'searchInfo'
             ]),
             img:function(){
-                return myPic;
+                 let i = Math.random();
+                if(Math.round(i) == '0'){
+                     return myPic;
+                 }else{
+                     return myPic1;
+                 }
             },
             noimg:function(){
                 return noimg;

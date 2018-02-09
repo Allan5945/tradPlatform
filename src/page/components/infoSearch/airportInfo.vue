@@ -499,7 +499,7 @@
                 >div:nth-of-type(2){
                     width:270px;
                     font-size:1.4rem;
-                    line-height:37px;
+                    line-height:40px;
                     padding-left:10px;
                     //font-weight:800;
                 }

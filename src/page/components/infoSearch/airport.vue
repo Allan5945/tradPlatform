@@ -150,6 +150,7 @@
     import echarts from 'echarts';
     import { Loading } from 'element-ui';
     import myPic from '$src/static/img/Slice.png';
+    import myPic1 from '$src/static/img/infobg.png';
     import noimg from './../../../static/img/pubo/noimg.png';
     import searchHeader from './searchHeader.vue'
     import airportInfo from './airportInfo.vue'
@@ -177,7 +178,12 @@
                 'searchInfo'
             ]),
             img:function(){
-                return myPic;
+                 let i = Math.random();
+                if(Math.round(i) == '0'){
+                     return myPic;
+                 }else{
+                     return myPic1;
+                 }
             },
              noimg:function(){
                 return noimg;

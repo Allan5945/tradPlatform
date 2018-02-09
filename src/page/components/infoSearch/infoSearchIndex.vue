@@ -217,6 +217,7 @@ import myPic from '$src/static/img/airport1.png';
                 this.qyCode = b.code;
                 this.selcType = "机场";
                 this.airportText = b.cityName;
+                 this.airportText1 = b.cityName;
                 this.getInfo();
             };
         },

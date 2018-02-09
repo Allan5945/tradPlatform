@@ -4,7 +4,7 @@
         <div class="wrapper" id="timeTable">
             <div class="content" v-if="showDetail">
                 <div class="banner">
-                    <div class="airport-img"><img :src="img2" alt=""></div>
+                    <div class="airport-img"><img :src="img" alt=""></div>
                     <div class="b-til">{{airportText}}</div>
                     <div class="sidebar">
                         <div :class="{seleted:isTime}" @click="getTimeTable"><span class="iconfont">&#xe621;</span>时刻表</div>
@@ -180,8 +180,8 @@
  import * as vx from 'vuex';
  import { Loading } from 'element-ui';
  import timeHeader from './timeHeader.vue'
- import myPic1 from '$src/static/img/Slice.png';
- import myPic2 from '$src/static/img/infobg.png';
+ import myPic from '$src/static/img/Slice.png';
+ import myPic1 from '$src/static/img/infobg.png';
     export default {
         data() {
             return {
@@ -221,11 +221,13 @@
                 }
                 return this.distrList;
             },
-             img1:function(){
-                return myPic1;
-            },
-             img2:function(){
-                return myPic2;
+             img:function(){
+                 let i = Math.random();
+                if(Math.round(i) == '0'){
+                     return myPic;
+                 }else{
+                     return myPic1;
+                 }
             }
         },
         methods: {
