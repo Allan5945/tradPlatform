@@ -58,17 +58,10 @@
                         <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
                     </div>
                 </div>
-<<<<<<< HEAD
             </div> -->
          <div class="form-box">
              <div class="t-title" style="width:55px;">出港时刻</div>
              <div  style="width:180px;">
-=======
-            </div>
-         <div >
-             <div class="t-title">出港时刻</div>
-             <div >
->>>>>>> 3f43f0a90ffca266e64ea36eeca29c0a5338ff0b
                 <el-time-picker
                   is-range
                   size="mini"
