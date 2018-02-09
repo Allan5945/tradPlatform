@@ -345,7 +345,7 @@
                             <div class="left item-child" style="position:relative;">
                                 <span class="margin-right">座位数</span>　
                                 <div class="choose-input" style="width: 180px;">
-                                    <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" style="border: 0;"><span>人</span>
+                                    <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" maxlength="5" style="border: 0;"><span>人</span>
                                 </div>
                                 <div class="warn" v-show="warn13Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
@@ -354,14 +354,14 @@
                             <div class="right item-child" style="position:relative;">
                                 <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                                 <div class="choose-input">
-                                    <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" style="border: 0;width: 136px;"><span>人</span>
+                                    <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" maxlength="5" style="border: 0;width: 136px;"><span>人</span>
                                 </div>
                                 <div class="warn" v-show="warn14Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
                             <div class="left item-child" style="position: relative;">
                                 <span>客座率期望</span>　
                                 <div class="choose-input">
-                                    <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" style="border: 0;"><span>%</span>
+                                    <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" maxlength="5" style="border: 0;"><span>%</span>
                                 </div>
                                 <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
@@ -382,7 +382,7 @@
                             <div class="left item-child" style="position:relative;">
                                 <span class="margin-right">拦标价格</span>　
                                 <div class="choose-input">
-                                    <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" style="border: 0;"><span>元</span>
+                                    <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" maxlength="15" style="border: 0;"><span>元</span>
                                 </div>
                                 <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
@@ -1066,6 +1066,19 @@
 //                console.info(4)
                 this.warn4Show = true;
             },
+            // 数组去重
+            uniqueFn: function (arr) {
+                let newArr = [],
+                    len = arr.length;
+                for(let i = 0; i < len; i++) {
+                    if(newArr.indexOf(arr[i]) != '-1') {
+                        continue
+                    }else {
+                        newArr.push(arr[i]);
+                    }
+                }
+                return newArr;
+            },
             // 传送的数据
             sendDataFn: function () {
                 this.sendData.contact = this.user;  //必填 联系人
@@ -1112,7 +1125,7 @@
                     this.directionPublicCity.forEach((val) => {
                         this.directionalgoalArry.push(val.id);
                     });
-                    this.directionalgoal = this.directionalgoalArry.join(',');
+                    this.directionalgoal = this.uniqueFn(this.directionalgoalArry).join(',');
                 }else {
                     this.directionalgoal = '';
                 }

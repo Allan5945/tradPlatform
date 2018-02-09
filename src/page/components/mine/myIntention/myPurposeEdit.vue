@@ -272,7 +272,7 @@
                         <div class="left item-child" style="position: relative;">
                             <span class="margin-right">座位数</span>　
                             <div class="choose-input" style="width: 180px;">
-                                <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum"
+                                <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" maxlength="5"
                                        style="border: 0;"><span>人</span>
                             </div>
                             <div class="warn" v-show="warn13Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -282,7 +282,7 @@
                         <div class="right item-child" style="position: relative;">
                             <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect"
+                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" maxlength="5"
                                        style="border: 0;width: 136px;"><span>人</span>
                             </div>
                             <div class="warn" v-show="warn14Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -290,7 +290,7 @@
                         <div class="left item-child" style="position: relative;">
                             <span>客座率期望</span>　
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
+                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" maxlength="5"
                                        style="border: 0;"><span>%</span>
                             </div>
                             <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -318,7 +318,7 @@
                                 <label for="alAacceptDispatch" class="input-label" style="white-space: nowrap;">接受调度</label>
                             </div>
                             <div class="choose-input" v-show="schedulingShow" style="position: relative;">
-                                <div class="little-label-wrapper"  v-show="directionPublicCityShow" ref="littleLabelWrapper" @click="labelWrapperClick">
+                                <div class="little-label-wrapper" v-show="directionPublicCityShow" ref="littleLabelWrapper" @click="labelWrapperClick">
                                     <span class="little-label" v-for="(item,index) in directionPublicCity">
                                         {{item.name}}
                                         <span class="little-label-close" @click.stop="littleLabelClose(index)">&#xe62c;</span>
@@ -367,7 +367,7 @@
                         <div class="right item-child" style="position: relative;">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
+                                <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst" maxlength="5"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                             <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -983,6 +983,19 @@
                     this.sendData.arrv = '';
                 }
             },
+            // 数组去重
+            uniqueFn: function (arr) {
+                let newArr = [],
+                    len = arr.length;
+                for(let i = 0; i < len; i++) {
+                    if(newArr.indexOf(arr[i]) != '-1') {
+                        continue
+                    }else {
+                        newArr.push(arr[i]);
+                    }
+                }
+                return newArr;
+            },
             //发送数据
             submitData: function () {
                 this.replaceAreaBus();
@@ -1130,10 +1143,12 @@
                     this.directionPublicCity.forEach((val) => {
                         this.qyCode5Arr.push(val.id);
                     });
-                    this.qyCode5 = this.qyCode5Arr.join(',');
+//                    this.qyCode5 = this.qyCode5Arr.join(',');
+                    this.qyCode5 = this.uniqueFn(this.qyCode5Arr).join(',');
                 }else {
                     this.qyCode5 = '';
                 }
+                console.info(this.qyCode5);
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
                 //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
