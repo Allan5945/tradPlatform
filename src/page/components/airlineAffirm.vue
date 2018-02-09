@@ -1,4 +1,4 @@
-nikai<template>
+<template>
     <div class="wrapper">
         <div class="container" id="airlineAffirm" @click="closeAll">
             <div class="container-top">
