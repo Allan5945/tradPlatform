@@ -12,7 +12,9 @@
                 重新发布
             </div>
             <div class="top">
-                <span style="height: 25px; max-width: 400px; height: 25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{myData.title}}</span>
+                <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                    <lonSpan :txt="myData.title"></lonSpan>
+                </span>
             </div>
             <div class="bottom">
                 <span class="font-gray" style="margin-right: 25px;">委托方　{{myData.cpyNm}}</span>
@@ -85,6 +87,7 @@
 <script>
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import editOperationForm from '$src/page/components/mine/myRelease/editOperationForm.vue'
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
     export default {
         props: ['mes'],
         data() {
@@ -114,7 +117,8 @@
         computed: {
         },
         components: {
-            editOperationForm
+            editOperationForm,
+            lonSpan,
         },
         methods: {
             // 改变alert弹出样式

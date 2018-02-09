@@ -1,4 +1,4 @@
-nikai<template>
+<template>
     <div class="wrapper">
         <div class="container" id="airlineAffirm" @click="closeAll">
             <div class="container-top">
@@ -273,7 +273,7 @@ nikai<template>
                         <div class="left item-child" style="position: relative;">
                             <span class="margin-right">座位数</span>　
                             <div class="choose-input" style="width: 180px;">
-                                <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum"
+                                <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum" maxlength="5"
                                        style="border: 0;"><span>人</span>
                             </div>
                             <div class="warn" v-show="warn13Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -283,7 +283,7 @@ nikai<template>
                         <div class="right item-child" style="position: relative;">
                             <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect"
+                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect" maxlength="5"
                                        style="border: 0;width: 136px;"><span>人</span>
                             </div>
                             <div class="warn" v-show="warn14Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -291,7 +291,7 @@ nikai<template>
                         <div class="left item-child" style="position: relative;">
                             <span>客座率期望</span>　
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
+                                <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect" maxlength="5"
                                        style="border: 0;"><span>%</span>
                             </div>
                             <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -368,7 +368,7 @@ nikai<template>
                         <div class="right item-child" style="position: relative;">
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
+                                <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst" maxlength="5"
                                        style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                             <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
@@ -981,6 +981,19 @@ nikai<template>
                     this.sendData.arrv = '';
                 }
             },
+            // 数组去重
+            uniqueFn: function (arr) {
+                let newArr = [],
+                    len = arr.length;
+                for(let i = 0; i < len; i++) {
+                    if(newArr.indexOf(arr[i]) != '-1') {
+                        continue
+                    }else {
+                        newArr.push(arr[i]);
+                    }
+                }
+                return newArr;
+            },
             //发送数据
             submitData: function () {
                 this.replaceAreaBus();
@@ -1127,7 +1140,7 @@ nikai<template>
                     this.directionPublicCity.forEach((val) => {
                         this.qyCode5Arr.push(val.id);
                     });
-                    this.qyCode5 = this.qyCode5Arr.join(',');
+                    this.qyCode5 = this.uniqueFn(this.qyCode5Arr).join(',');
                 }else {
                     this.qyCode5 = '';
                 }
@@ -1244,6 +1257,43 @@ nikai<template>
                 this.warn16Show = false;
                 this.replaceAreaBus();
             },
+            closeAll1: function () {
+                this.space1 = false;
+                this.space2 = false;
+                this.space3 = false;
+                this.startTime1 = false;
+                this.startTime2 = false;
+                this.startTime3 = false;
+                this.endTime1 = false;
+                this.endTime2 = false;
+                this.endTime3 = false;
+                this.airTypeShow = false; //拟飞机型下拉
+                this.airAreaSearchShow1 = false; // 区域搜索组件
+                this.airAreaSearchShow2 = false;
+                this.airAreaSearchShow3 = false;
+                this.isSearch1 = false;          // 机场搜索组件
+                this.isSearch2 = false;
+                this.isSearch3 = false;
+                this.isSearch4 = false;
+                this.isSearch5 = false;
+                this.isSearch6 = false;
+                this.directionPublicCityShow = true;  //定向发布小标签那一行
+                this.warn1Show = false;
+                this.warn3Show = false;
+                this.warn4Show = false;
+                this.warn5Show = false;
+                this.warn6Show = false;
+                this.warn7Show = false;
+                this.warn8Show = false;
+                this.warn9Show = false;
+                this.warn10Show = false;
+                this.warn11Show = false;
+                this.warn12Show = false;
+                this.warn13Show = false;
+                this.warn14Show = false;
+                this.warn15Show = false;
+                this.warn16Show = false;
+            },
             clickClose1Fn: function () {
                 this.space1 = !this.space1;
                 this.space2 = false;
@@ -1338,43 +1388,25 @@ nikai<template>
                 this.closeUnTimeFrameFn();
             },
             clickClose10Fn: function () {
+                this.closeAll1();
                 this.calendarShow1 = !this.calendarShow1;
-                this.space1 = false;
-                this.space2 = false;
-                this.space3 = false;
                 this.schedule = false;
                 this.subsidy = false;
-                this.airTypeShow = false;
-                this.isSearch5 = false;
-                this.isSearch6 = false;
-                this.isSearch4 = false;
-                this.closeTimeFrameFn();
+                this.calendarShow2 = false;
             },
             clickClose11Fn: function () {
+                this.closeAll1();
                 this.schedule = !this.schedule;
-                this.space1 = false;
-                this.space2 = false;
-                this.space3 = false;
                 this.calendarShow1 = false;
                 this.subsidy = false;
-                this.airTypeShow = false;
-                this.isSearch5 = false;
-                this.isSearch6 = false;
-                this.isSearch4 = false;
-                this.closeTimeFrameFn();
+                this.calendarShow2 = false;
             },
             clickClose12Fn: function () {
+                this.closeAll1();
                 this.subsidy = !this.subsidy;
-                this.space1 = false;
-                this.space2 = false;
-                this.space3 = false;
-                this.calendarShow1 = false;
                 this.schedule = false;
-                this.airTypeShow = false;
-                this.isSearch5 = false;
-                this.isSearch6 = false;
-                this.isSearch4 = false;
-                this.closeTimeFrameFn();
+                this.calendarShow1 = false;
+                this.calendarShow2 = false;
             },
             clickClose13Fn: function () {
                 this.airTypeShow = true;
@@ -2102,7 +2134,7 @@ nikai<template>
         color: $icon-color;
         background: white;
         cursor: pointer;
-        z-index: 9;
+        z-index: 10;
     }
     .dot {
         position: absolute;
