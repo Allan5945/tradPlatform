@@ -1244,6 +1244,43 @@ nikai<template>
                 this.warn16Show = false;
                 this.replaceAreaBus();
             },
+            closeAll1: function () {
+                this.space1 = false;
+                this.space2 = false;
+                this.space3 = false;
+                this.startTime1 = false;
+                this.startTime2 = false;
+                this.startTime3 = false;
+                this.endTime1 = false;
+                this.endTime2 = false;
+                this.endTime3 = false;
+                this.airTypeShow = false; //拟飞机型下拉
+                this.airAreaSearchShow1 = false; // 区域搜索组件
+                this.airAreaSearchShow2 = false;
+                this.airAreaSearchShow3 = false;
+                this.isSearch1 = false;          // 机场搜索组件
+                this.isSearch2 = false;
+                this.isSearch3 = false;
+                this.isSearch4 = false;
+                this.isSearch5 = false;
+                this.isSearch6 = false;
+                this.directionPublicCityShow = true;  //定向发布小标签那一行
+                this.warn1Show = false;
+                this.warn3Show = false;
+                this.warn4Show = false;
+                this.warn5Show = false;
+                this.warn6Show = false;
+                this.warn7Show = false;
+                this.warn8Show = false;
+                this.warn9Show = false;
+                this.warn10Show = false;
+                this.warn11Show = false;
+                this.warn12Show = false;
+                this.warn13Show = false;
+                this.warn14Show = false;
+                this.warn15Show = false;
+                this.warn16Show = false;
+            },
             clickClose1Fn: function () {
                 this.space1 = !this.space1;
                 this.space2 = false;
@@ -1338,43 +1375,25 @@ nikai<template>
                 this.closeUnTimeFrameFn();
             },
             clickClose10Fn: function () {
+                this.closeAll1();
                 this.calendarShow1 = !this.calendarShow1;
-                this.space1 = false;
-                this.space2 = false;
-                this.space3 = false;
                 this.schedule = false;
                 this.subsidy = false;
-                this.airTypeShow = false;
-                this.isSearch5 = false;
-                this.isSearch6 = false;
-                this.isSearch4 = false;
-                this.closeTimeFrameFn();
+                this.calendarShow2 = false;
             },
             clickClose11Fn: function () {
+                this.closeAll1();
                 this.schedule = !this.schedule;
-                this.space1 = false;
-                this.space2 = false;
-                this.space3 = false;
                 this.calendarShow1 = false;
                 this.subsidy = false;
-                this.airTypeShow = false;
-                this.isSearch5 = false;
-                this.isSearch6 = false;
-                this.isSearch4 = false;
-                this.closeTimeFrameFn();
+                this.calendarShow2 = false;
             },
             clickClose12Fn: function () {
+                this.closeAll1();
                 this.subsidy = !this.subsidy;
-                this.space1 = false;
-                this.space2 = false;
-                this.space3 = false;
-                this.calendarShow1 = false;
                 this.schedule = false;
-                this.airTypeShow = false;
-                this.isSearch5 = false;
-                this.isSearch6 = false;
-                this.isSearch4 = false;
-                this.closeTimeFrameFn();
+                this.calendarShow1 = false;
+                this.calendarShow2 = false;
             },
             clickClose13Fn: function () {
                 this.airTypeShow = true;
@@ -2102,7 +2121,7 @@ nikai<template>
         color: $icon-color;
         background: white;
         cursor: pointer;
-        z-index: 9;
+        z-index: 10;
     }
     .dot {
         position: absolute;
