@@ -274,7 +274,7 @@ nikai<template>
                             <span class="margin-right">座位数</span>　
                             <div class="choose-input" style="width: 180px;">
                                 <input class="input-mes" type="text" placeholder="填写举例：180" v-model="seatingNum"
-                                       style="border: 0;"><span>人</span>
+                                       style="border: 0;" maxlength="5"><span>人</span>
                             </div>
                             <div class="warn" v-show="warn13Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
@@ -284,7 +284,7 @@ nikai<template>
                             <span class="margin-right" style="white-space: nowrap">均班客量期望</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="avgguestExpect"
-                                       style="border: 0;width: 136px;"><span>人</span>
+                                       style="border: 0;width: 136px;" maxlength="5"><span>人</span>
                             </div>
                             <div class="warn" v-show="warn14Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
@@ -292,7 +292,7 @@ nikai<template>
                             <span>客座率期望</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
-                                       style="border: 0;"><span>%</span>
+                                       style="border: 0;" maxlength="2"><span>%</span>
                             </div>
                             <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
@@ -369,7 +369,7 @@ nikai<template>
                             <span class="margin-right" style="white-space: nowrap">小时成本</span>
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：10" v-model="hourConst"
-                                       style="border: 0;width: 136px;"><span style="white-space: nowrap">万元/小时</span>
+                                       style="border: 0;width: 136px;" maxlength="5"><span style="white-space: nowrap">万元/小时</span>
                             </div>
                             <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>
@@ -2222,7 +2222,7 @@ nikai<template>
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index: 17;
+        z-index: 34;
     }
 
     .container {

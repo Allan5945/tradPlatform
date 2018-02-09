@@ -184,7 +184,7 @@
         },
         mounted() {
             this.qyCode = this.searchInfo.qyCode;
-            this.getData()
+            //this.getData()
             if(this.qyCode == ''){
                 this.showDetail=false;
             }

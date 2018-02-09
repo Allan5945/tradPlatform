@@ -338,7 +338,7 @@
             if(this.qyCode == ''){
                 this.showDetail=false;
             }else{
-                this.getData();
+                //this.getData();
             };
 
         },

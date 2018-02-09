@@ -218,3 +218,19 @@ a{
   scrollbar-track-color: #666; /**//*立体滚动条背景颜色*/
   scrollbar-base-color: #f8f8f8; /**//*滚动条的基本颜色*/
 }
+
+/* TimePicker样式 */
+.el-time-spinner.has-seconds .el-time-spinner__wrapper{
+  width:23% !important;
+}
+
+.el-date-editor .el-range-input{
+        width:32% !important;
+    }
+.el-date-editor .el-range__close-icon{
+  width:20px;
+}
+.el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner{
+        width:190px !important;
+    }
+

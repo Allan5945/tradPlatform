@@ -2126,7 +2126,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, .4);
-        z-index:21;
+        z-index:34;
     }
 
     .container {
