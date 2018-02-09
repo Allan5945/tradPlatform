@@ -1,5 +1,5 @@
 <template>
-    <div style="height:100%;">
+    <div class="trans-wrapper"  @click.self="closeDetail">
         <respondAirport v-if="respond"  @responseClose="closeDetail" :demandId="mes.demand"></respondAirport>
         <myIntention v-if="intentShow" @closeIntent="closeDetail" :demandId="mes.demand"></myintention>
         <transAdmin v-if="adminShow" @closeAdmin="closeDetail"   :demand="mes.demand"></transAdmin>
@@ -91,4 +91,8 @@
 </script>
 
 <style lang="scss">
+    .trans-wrapper{
+        width:100%;
+        height:100%;
+    }
 </style>

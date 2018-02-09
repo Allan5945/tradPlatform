@@ -21,7 +21,7 @@
                                 <li>
                                     <div>基地分布</div>
                                     <div class="basedistribution"  @mouseover="basedistributionShow = true" @mouseout="basedistributionShow = false">{{infoData.basedistribution || "-"}}</div>
-                                    <div class="list-wrapper" v-show='basedistributionShow'>{{infoData.basedistribution || "-"}}</div>
+                                    <div class="list-wrapper" v-show='basedistributionShow' @mouseover="basedistributionShow = true" @mouseout="basedistributionShow = false">{{infoData.basedistribution || "-"}}</div>
                                 </li>
                                 <li><div>航空联盟</div><div>{{infoData.airlinealliance || "-"}}</div></li>
                             </ul>
@@ -92,6 +92,7 @@
     import { Loading } from 'element-ui';
     import noimg from './../../../static/img/pubo/noimg.png';
     import myPic from '$src/static/img/Slice.png';
+    import myPic1 from '$src/static/img/infobg.png';
     import searchHeader from './searchHeader.vue'
     export default {
         data() {
@@ -114,7 +115,13 @@
                 'searchInfo'
             ]),
             img:function(){
-                return myPic;
+                let i = Math.random();
+                if(Math.round(i) == '0'){
+                     return myPic;
+                 }else{
+                     return myPic1;
+                 }
+
             },
             noimg:function(){
                 return  noimg;
