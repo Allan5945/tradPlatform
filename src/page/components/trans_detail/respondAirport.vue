@@ -80,7 +80,7 @@
               <div class="myplan">
                   <div class="plan-til">
                       <div>我发出的方案<span>{{planState}}</span></div>
-                      <div style="cursor:pointer;" @click="getSureForm" v-if="editShow"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
+                      <div @click="getSureForm" v-if="editShow"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                   </div>
                   <div class="airline">
                       <div class="airplace">
@@ -769,6 +769,8 @@
           }
           >div:nth-of-type(2){
               width:70px;
+              box-sizing:border-box;
+              padding-left:13px;
               height:26px;
               line-height:26px;
               margin: 25px 30px 29px 0;
@@ -776,6 +778,8 @@
               text-align: center;
               border-radius:100px;
               background-color:#fff;
+              cursor:pointer;
+              display:flex;
           }
         }
         .airline{
