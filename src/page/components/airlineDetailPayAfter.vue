@@ -2,12 +2,14 @@
     <div class="ald-container" v-cloak>
         <div class="first-show" v-show="firstShow">
             <div class="first item-container">
-                <span class="font-gray">需求详情</span>
+                <span class="font-gray">{{myData.demandtypeStr}}详情</span>
                 <span class="close-icon iconfont" @click="closeThisFn">&#xe62c;</span>
             </div>
             <div class="second item-container">
                 <div class="sec-top">
-                    {{myData.title}}航线需求
+                    <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                        <lonSpan :txt="myTitle"></lonSpan>
+                    </span>
                 </div>
                 <div class="sec-bottom font-gray">
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
@@ -614,6 +616,7 @@
     import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
     import airlinePay from '$src/page/components/trans_detail/dialog.vue'
     import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
     export default {
         props:['mes'],
@@ -690,6 +693,7 @@
                 unPayMoneyShow: false,  // 未缴纳意向金时显示的无法点击的“选定”按钮
                 airlinePayId: '',
                 demand3BtnShow: true,
+                myTitle: '',
             }
         },
         watch: {
@@ -790,6 +794,7 @@
                     this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
                     this.userNum = response.data.intentionCount;
                     this.myData = response.data.data;
+                    this.myTitle = `${this.myData.title}航线需求`
                     this.releaseTime = this.myData.releasetime.split(" ")[0];
                     this.dptTime0 = this.myData.dptTime;
                     this.periodValidity1 = this.myData.periodValidity.split('-')[1];
@@ -1292,6 +1297,7 @@
             myPurposeEdit,
             airlineReqWrapper,
             calendarCP,
+            lonSpan,
         }
     }
 </script>
@@ -1514,12 +1520,10 @@
         height: 100px;
         background: rgba(216, 216, 216, .17);
         .sec-top {
+            display: flex;
             margin: 30px 0 15px 0;
             height: 25px;
             max-width: 400px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
             font-size: 20px;
             font-weight: bold;
         }
