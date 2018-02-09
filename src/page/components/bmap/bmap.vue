@@ -95,7 +95,7 @@
                     label:{
                         normal:{
                             formatter: [
-                                `{a|${mes.cityName}}`,
+                                `{a|${mes.allData.airlnCd}}`,
                                 `{b|需求量：}{b1|${v.num}}`,
                                 `{b|我的发布：}{b1|${v.myNum}}`,
                             ].join('\n'),
