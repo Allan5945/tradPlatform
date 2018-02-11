@@ -153,24 +153,6 @@
                     this.userData.code = '';
                     this.text.canelState = false;
                 }
-            },
-            'userData': {
-                deep: true,
-                handler:function (n,o) {
-                    return ;
-                    this.userData
-                    debugger
-                    if(o.code !== n.code && n.code.length == 4){
-                        return this.text.status = true;
-                    }
-                    if(o.phone !== n.phone && n.phone.length ==11){
-                        return this.text.status = true;
-                    }
-                    if(o.pwd !== n.pwd && n.pwd.length > 0){
-                        return this.text.status = true;
-                    }
-                    return this.text.status = false;
-                }
             }
         },
         methods:{
@@ -198,13 +180,14 @@
                 })
             },
             delayClose(){
-                setTimeout(this.closeThis,3000)
+                setTimeout(this.closeThis, 3000)
             },
-            openTips(txt){
+            openTips(txt, t){
+                t = t || 1000;
                 this.text.tipsText = txt;
                 setTimeout(()=>{
                     this.text.tipsText = '';
-                },1000)
+                },t)
             },
             test(val,type){  //格式校验
                 let flag = false;
@@ -245,7 +228,25 @@
                 }
             },
             validPass(){
-                this.validFlag = true;
+                let that = this, mail = this.userData.mail;
+                that.$ajax({
+                    method: 'GET',
+                    url: '/validEmail',
+                    params:{
+                        email: mail,
+                        validType: 0
+                    }
+                }).then((res)=>{
+                    if(res.data.opResult== '0'){
+                        that.validFlag = true;
+                    }else{
+                        that.validFlag = false;
+                        that.valiUseFlag = false;
+                        that.userData.mail = '';
+                        that.openTips("*该邮箱已经绑定，请切换",3000);
+                    }
+
+                })
             },
             calcTime(){
                 if(this.code.wait>0){
