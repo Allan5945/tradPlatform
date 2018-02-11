@@ -2,12 +2,14 @@
     <div class="ald-container" v-cloak>
         <div class="first-show" v-show="firstShow">
             <div class="first item-container">
-                <span class="font-gray">需求详情</span>
-                <span class="close-icon" @click="closeThisFn">&times;</span>
+                <span class="font-gray">{{myData.demandtypeStr}}详情</span>
+                <span class="close-icon iconfont" @click="closeThisFn">&#xe62c;</span>
             </div>
             <div class="second item-container">
                 <div class="sec-top">
-                    {{myData.title}}航线需求
+                    <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                        <lonSpan :txt="myTitle"></lonSpan>
+                    </span>
                 </div>
                 <div class="sec-bottom font-gray">
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
@@ -350,7 +352,7 @@
                 <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
             </div>
         </div>
-        <div class="tenth item-container danger" v-if="myData.demandstate == 5 || myData.demandProgress == 10">
+        <div class="tenth item-container danger" v-if="myData.rek != null && myData.rek != ''">
             <span>原因：</span>
             <span>{{myData.rek}}</span>
         </div>
@@ -554,9 +556,9 @@
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div class="myplan-buttons" v-if="myplanBtnShow">
-            <div v-if="receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
-                <div v-if="receiveIntention.responseselected == '0'">
+        <div class="myplan-buttons" v-if="myplanBtnShow"><!--this.isSelf == false && this.receiveIntention != null && this.receiveIntention != ''-->
+            <!--<div v-if="receiveIntention.responseProgress != 4 && myData.demandprogress != 3">-->
+                <div v-if="sixthButtonShow">
                     <div class="buttons">
                         <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
                         <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
@@ -564,19 +566,18 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
-                        <div class="btn btn-w btn-b" @click="queRenClickFn">确认方案</div>
-                        <div class="btn btn-w cancel-btn" @click="juJueFn">拒绝并撤回</div>
+                    <div class="buttons" v-if="seventhButtonShow">
+                        <div class="btn btn-b" @click="queRenClickFn">确认方案</div>
+                        <div class="btn btn-w cancel-btn" @click="juJueFn" style="width: 150px;">拒绝并撤回</div>
                     </div>
-                    <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
-                            && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
+                    <div class="buttons" v-if="eighthButtonShow">
                         <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
                         <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
                         <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
                         <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
         </div>
         <div class="bottom" v-if="fifthButtonShow">
             <span style="width: 560px;height: 1px;background: #ccc;"></span>
@@ -584,8 +585,9 @@
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div v-if="receiveIntention != null && receiveIntention != ''">
-            <div class="bottom" v-if="!fifthButtonShow && !secondButtonShow && !firstButtonShow">
+        <!--新增收藏按钮，在其他按钮不显示时才显示-->
+        <div v-if="isSelf == false && (receiveIntention != null && receiveIntention != '')">
+            <div class="bottom" v-if="!firstButtonShow && !secondButtonShow && !fifthButtonShow && !sixthButtonShow && !seventhButtonShow && !eighthButtonShow">
                 <span style="width: 560px;height: 1px;background: #ccc;"></span>
                 <div class="buttons">
                     <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
@@ -593,8 +595,8 @@
                 </div>
             </div>
         </div>
-        <div v-else>
-            <div class="bottom" v-if="!fifthButtonShow && !secondButtonShow && !firstButtonShow">
+        <div v-if="isSelf == false && (receiveIntention == null || receiveIntention == '')">
+            <div class="bottom" v-if="!firstButtonShow && !secondButtonShow && !fifthButtonShow && !sixthButtonShow && !seventhButtonShow && !eighthButtonShow">
                 <span style="width: 560px;height: 1px;background: #ccc;"></span>
                 <div class="buttons">
                     <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
@@ -634,6 +636,7 @@
     import paySuccess from '$src/page/components/trans_detail/paySuccess.vue'
     import airlinePay from '$src/page/components/trans_detail/dialog.vue'
     import calendarCP from '$src/page/components/publicTools/calendar/calendarCP.vue'
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
     export default {
         props:['mes'],
@@ -710,6 +713,11 @@
                 unPayMoneyShow: false,  // 未缴纳意向金时显示的无法点击的“选定”按钮
                 airlinePayId: '',
                 demand3BtnShow: true,
+		myTitle: '',
+                /*按钮是否显示*/
+                sixthButtonShow: false,
+                seventhButtonShow: false,
+                eighthButtonShow: false,
             }
         },
         watch: {
@@ -810,6 +818,7 @@
                         this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
                         this.userNum = response.data.intentionCount;
                         this.myData = response.data.data;
+			this.myTitle = `${this.myData.title}航线需求`
                         this.releaseTime = this.myData.releasetime.split(" ")[0];
                         this.dptTime0 = this.myData.dptTime;
                         this.periodValidity1 = this.myData.periodValidity.split('-')[1];
@@ -852,10 +861,10 @@
                                 }else{
                                     this.btnDisableShow = true;  // 不显示“选定”按钮
                                 }
-                            }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
+                            }if (this.isSelf == false && (this.receiveIntention == null || this.receiveIntention == '')) { //我发出的方案为空，即没有发出方案
                                 this.showCode = 0;
                                 this.show();
-                            }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
+                            }if (this.isSelf == false && this.receiveIntention != null && this.receiveIntention != '') { //我发出的方案不为空，为发出方案的内容
                                 this.showCode = 4;
                                 this.show();
                             }
@@ -1027,6 +1036,26 @@
                     this.firstShow = true;
                     this.myplanBtnShow = true;
                     this.myplanShow = true;
+                    if(this.receiveIntention.responseProgress != 4 && this.myData.demandprogress != 3) {
+                        if(this.receiveIntention.responseselected === '0') {
+                            this.sixthButtonShow = true;
+                        }else {
+                            this.sixthButtonShow = false;
+                            if(this.receiveIntention.releaseselected === '0'){
+                                this.seventhButtonShow = true;
+                                this.eighthButtonShow = false;
+                            }
+                            if(this.receiveIntention.releaseselected !== '0'
+                                && (this.myData.demandprogress === '0' || this.myData.demandprogress == '1' || this.myData.demandprogress == '2')){
+                                this.seventhButtonShow = false;
+                                this.eighthButtonShow = true;
+                            }
+                        }
+                    }else {
+                        this.sixthButtonShow = false;
+                        this.seventhButtonShow = false;
+                        this.eighthButtonShow = false;
+                    }
                 }if (this.showCode == 5) {     // 审核未通过展示的内容  “审核不通过”+“已拒绝”状态
                     this.demandState5 = true;
                     this.firstShow = true;
@@ -1312,6 +1341,7 @@
             myPurposeEdit,
             airlineReqWrapper,
             calendarCP,
+            lonSpan,
         }
     }
 </script>
@@ -1512,12 +1542,16 @@
             right: 12px;
             top: 50%;
             margin-top: -11px;
-            display: flex;
+            /*display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center;*/
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            line-height: 22px;
+            text-align: center;
+            box-sizing:border-box;
+            color:#3C78FF;
+            border: 1px solid #ededed;
             border-radius: 100%;
             cursor: pointer;
         }
@@ -1530,12 +1564,10 @@
         height: 100px;
         background: rgba(216, 216, 216, .17);
         .sec-top {
+            display: flex;
             margin: 30px 0 15px 0;
             height: 25px;
             max-width: 400px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
             font-size: 20px;
             font-weight: bold;
         }
@@ -1733,9 +1765,9 @@
             >div{
                 height:40px;
                 line-height:40px;
-                font-size:1.5rem;
-                color:#605E7C;
-                background-color:#fff;
+                /*font-size:1.5rem;*/
+                /*color:#605E7C;*/
+                /*background-color:#fff;*/
                 text-align:center;
                 border: 0;
                 border-radius:100px;

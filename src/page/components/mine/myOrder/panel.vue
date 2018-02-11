@@ -31,8 +31,8 @@
                                         <span class="item-a">{{ item.releasetime }}</span>
                                         <span class="item-b"><lonSpan :txt="item.title"></lonSpan></span>
                                         <span class="item-c">{{ item.demandprogressStr }}</span>
-                                        <template v-if="roleType=='2' && false">
-                                            <span @click="" class="item-d">查看详情</span>
+                                        <template v-if="false && roleType=='2'">
+                                            <span @click="openOtherDemand(item)" class="item-d">查看详情</span>
                                         </template>
                                         <template v-else>
                                             <span class="item-d"></span>
@@ -124,7 +124,13 @@
                 scroll = oDiv.clientWidth;
                 document.body.removeChild(oDiv);
                 return noScroll-scroll;
+            },
+            openOtherDemand: function (item) {
+                let id = this.id,
+                    type = this.demandstate,
+                    progress = demandprogress;
             }
+
         },
         created: function () {
             let fdom = document.querySelector('.my-center');

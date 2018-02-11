@@ -2148,7 +2148,7 @@
         width: 25px;
         height: 25px;
         color: $icon-color;
-        background: white;
+        background: #FBFBFB;
         cursor: pointer;
         z-index: 10;
     }

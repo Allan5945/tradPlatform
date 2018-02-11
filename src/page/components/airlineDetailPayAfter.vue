@@ -13,7 +13,7 @@
                 </div>
                 <div class="sec-bottom font-gray">
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
-                    <span style="margin-right: 30px;" v-show="userNumShow">已有{{userNum}}位用户发起意向</span>
+                    <span style="margin-right: 30px;" v-if="userNumShow">已有{{userNum}}位用户发起意向</span>
                     <span class="font-gray">状态:　
                         <span v-if="demandState5" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
@@ -556,27 +556,28 @@
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
-        <div class="myplan-buttons" v-if="myplanBtnShow">
-            <div v-if="receiveIntention.responseProgress != 4 && myData.demandprogress != 3">
-                <div v-if="receiveIntention.responseselected == '0'">
+        <div class="myplan-buttons" v-if="myplanBtnShow"><!--this.isSelf == false && this.receiveIntention != null && this.receiveIntention != ''-->
+            <!--<div v-if="receiveIntention.responseProgress != 4 && myData.demandprogress != 3">-->
+                <div v-if="sixthButtonShow">
                     <div class="buttons">
                         <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
+                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
                 <div v-else>
-                    <div class="buttons" v-if="receiveIntention.releaseselected === '0'">
+                    <div class="buttons" v-if="seventhButtonShow">
                         <div class="btn btn-b" @click="queRenClickFn">确认方案</div>
                         <div class="btn btn-w cancel-btn" @click="juJueFn" style="width: 150px;">拒绝并撤回</div>
                     </div>
-                    <div class="buttons" v-if="receiveIntention.releaseselected !== '0'
-                            && (myData.demandprogress === '0' || myData.demandprogress == '1' || myData.demandprogress == '2')">
+                    <div class="buttons" v-if="eighthButtonShow">
                         <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
                         <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
                         <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
                         <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
         </div>
         <div class="bottom" v-if="fifthButtonShow">
             <span style="width: 560px;height: 1px;background: #ccc;"></span>
@@ -693,7 +694,11 @@
                 unPayMoneyShow: false,  // 未缴纳意向金时显示的无法点击的“选定”按钮
                 airlinePayId: '',
                 demand3BtnShow: true,
-                myTitle: '',
+		myTitle: '',
+                /*按钮是否显示*/
+                sixthButtonShow: false,
+                seventhButtonShow: false,
+                eighthButtonShow: false,
             }
         },
         watch: {
@@ -812,7 +817,8 @@
                             this.show();
                             this.listData = response.data.responseList;   //获取意向列表
                             this.unPayMoneyShow = true;
-                        }if (this.isSelf == true && this.isIntentionMoney == true) {
+                        }
+                        if (this.isSelf == true && this.isIntentionMoney == true) {
 //                                console.info('payAfter:' + 3)
                             this.showCode = 3;
                             this.show();
@@ -837,10 +843,12 @@
                             }else{
                                 this.btnDisableShow = true;  // 不显示“选定”按钮
                             }
-                        }if (this.isSelf == false && this.receiveIntention == null) { //我发出的方案为空，即没有发出方案
+                        }
+                        if (this.isSelf == false && (this.receiveIntention == null || this.receiveIntention == '')) { //我发出的方案为空，即没有发出方案
                             this.showCode = 0;
                             this.show();
-                        }if (this.isSelf == false && this.receiveIntention != null) { //我发出的方案不为空，为发出方案的内容
+                        }
+                        if (this.isSelf == false && this.receiveIntention != null && this.receiveIntention != '') { //我发出的方案不为空，为发出方案的内容
                             this.showCode = 4;
                             this.show();
                         }
@@ -850,15 +858,6 @@
                         }else {
                             this.demandState6 = false;
                         }
-                        if(this.isSelf == true) {  //发布方联系人、联系方式是否显示
-                            this.contactMsgShow = true;
-                        }else {
-                            if(this.receiveIntention != null) {
-                                this.contactMsgShow = true;
-                            }else {
-                                this.contactMsgShow = false;
-                            }
-                        }
                         //  this.myData.demandprogress == 3  关闭（审核不通过、下架、过期）
                         if(this.myData.demandprogress == 3 && this.isSelf == true) {
                             this.thirdShow = false;
@@ -866,6 +865,15 @@
                             this.demandState5 = true;
                         }else if(this.myData.demandprogress == 3 && this.isSelf == false) {
                             this.demand3BtnShow = false;
+                        }
+                    }
+                    if(this.isSelf == true) {  //发布方联系人、联系方式是否显示
+                        this.contactMsgShow = true;
+                    }else {
+                        if(this.receiveIntention != null) {
+                            this.contactMsgShow = true;
+                        }else {
+                            this.contactMsgShow = false;
                         }
                     }
                 })
@@ -1012,7 +1020,28 @@
                     this.firstShow = true;
                     this.myplanBtnShow = true;
                     this.myplanShow = true;
-                }if (this.showCode == 5) {     // 审核未通过展示的内容  “审核不通过”+“已拒绝”状态
+                    if(this.receiveIntention.responseProgress != 4 && this.myData.demandprogress != 3) {
+                        if(this.receiveIntention.responseselected === '0') {
+                            this.sixthButtonShow = true;
+                        }else {
+                            this.sixthButtonShow = false;
+                            if(this.receiveIntention.releaseselected === '0'){
+                                this.seventhButtonShow = true;
+                                this.eighthButtonShow = false;
+                            }
+                            if(this.receiveIntention.releaseselected !== '0'
+                                && (this.myData.demandprogress === '0' || this.myData.demandprogress == '1' || this.myData.demandprogress == '2')){
+                                this.seventhButtonShow = false;
+                                this.eighthButtonShow = true;
+                            }
+                        }
+                    }else {
+                        this.sixthButtonShow = false;
+                        this.seventhButtonShow = false;
+                        this.eighthButtonShow = false;
+                    }
+                }
+                if (this.showCode == 5) {     // 审核未通过展示的内容  “审核不通过”+“已拒绝”状态
                     this.demandState5 = true;
                     this.firstShow = true;
                 }
