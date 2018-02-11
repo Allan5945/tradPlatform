@@ -186,7 +186,25 @@
                 }
             },
             validPass(){//滑动验证通过
-                this.validFlag = true;
+                let that = this, phone = this.userData.phone;
+                that.$ajax({
+                    method: 'GET',
+                    url: '/validPhone',
+                    params:{
+                        mobile: phone,
+                        validType: 0
+                    }
+                }).then((res)=>{
+                    if(res.data.opResult== '0'){
+                        that.validFlag = true;
+                    }else{
+                        that.validFlag = false;
+                        that.valiUseFlag = false;
+                        that.userData.phone = '';
+                        that.openTips("*该手机已经绑定，请切换",3000);
+                    }
+
+                })
             },
             closeThis(f){//关闭
                 this.$emit('subchange',{
@@ -197,11 +215,12 @@
             delayClose(){//延时关闭
                 setTimeout(this.closeThis,3000)
             },
-            openTips(txt){//错误提示
+            openTips(txt, t){//错误提示
+                t = t || 1000;
                 this.text.tipsText = txt;
                 setTimeout(()=>{
                     this.text.tipsText = '';
-                },1000)
+                }, t)
             },
             test(val,type){  //格式校验
                 let flag = false;
@@ -331,15 +350,6 @@
                         break;
                 }
                 return ;
-                const loading = Loading.service({
-                    lock: true,
-                    target: '.btn-b',
-                    text: 'Loading',
-                    spinner: 'el-icon-loading',
-                });
-                setTimeout(() => {
-                    loading.close();
-                }, 500);
             },
             canelClick(){//取消按钮
                 if(this.text.canelState){
