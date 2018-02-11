@@ -30,7 +30,7 @@
                 </div>
                 <div class="lists-containt" v-if="collectList">
                     <!--点击列表展示发布详情-->
-                    <div class="list items" :class="{'list-active':false}" v-for="val in collectList" >
+                    <div class="list items" :class="{'list-active':false}" v-for="val in collectList"  @click="openDetail(val)">
                         <div class="list-a item">
                             {{val.releaseTime}}
                         </div>
@@ -49,7 +49,7 @@
                         </span>
                         </div>
                         <div class="list-e item" v-else></div>
-                        <div class="list-f item color" @click="openDetail(val)">查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
                 </div>

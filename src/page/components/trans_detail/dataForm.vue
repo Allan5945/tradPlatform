@@ -59,17 +59,31 @@
                     </div>
                 </div> -->
                   <div class="form-box">
-                     <div class="t-title" style="width:55px;">出港时刻</div>
-                     <div  style="width:180px;">
+                     <div class="t-title">出港时刻</div>
+                     <div  style="width:200px;position:relative;">
+                       <!--  <el-time-picker
+                         is-range
+                         size="mini"
+                         value-format = "HH:mm:ss"
+                         v-model="dptTime"
+                         range-separator="至"
+                         start-placeholder="开始时间"
+                         end-placeholder="结束时间"
+                         placeholder="选择时间范围">
+                       </el-time-picker> -->
                         <el-time-picker
-                          is-range
+                          value-format = "HH:mm:ss"
                           size="mini"
-                          v-model="value4"
-                          range-separator="至"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          placeholder="选择时间范围">
+                          v-model="timeStart"
+                          placeholder="开始时间">
                         </el-time-picker>
+                        <el-time-picker
+                          value-format = "HH:mm:ss"
+                          size="mini"
+                          v-model="timeEnd"
+                          placeholder="结束时间">
+                        </el-time-picker>
+                         <span  style="position:absolute;left:85px;top:0;z-index:10;">-</span>
                      </div>
                  </div>
                     <div class="form-box">
@@ -282,8 +296,8 @@
                 seat:'',
                 hourcost:'',
                 post:'0',
-                timeStart:'00:00',
-                timeEnd:'00:00',
+                timeStart:'00:00:00',
+                timeEnd:'00:00:00',
                 timeStartIndex:0,
                 timeEndIndex:0,
                 tip: '',
@@ -318,7 +332,7 @@
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 directionalgoal:'',
                 schedulinePort:'',
-                value4: [new Date(2018, 9, 10, 0, 0), new Date(2018, 9, 10, 12, 0)]
+                dptTime: ['00:00:00','23:59:59']
             }
         },
         components:{
@@ -415,13 +429,10 @@
             acceptDataFn:function(){
                     this.contact = this.acceptData.contact;
                     this.phoneNum = this.acceptData.iHome;
-                    this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
-                    if(this.acceptData.dptTime !== '无'){
-                        this.timeStart = this.acceptData.dptTime.split(',')[0];
-                        this.timeEnd =this.acceptData.dptTime.split(',')[1];
-                        this.pickStart = true;
-                        this.pickEnd = true;
-                    }
+
+                    this.timeStart = this.acceptData.dptTime.split('-')[0];
+                    this.timeEnd = this.acceptData.dptTime.split('-')[1];
+
                     this.getFlight = this.acceptData.days  == '无'? 'false':'true';
                     if(this.acceptData.days  !== '无'){
                         this.msg = this.acceptData.days;
@@ -856,12 +867,12 @@
                     };
                 }
                 let demandData = {},
-                    time = this.timeStart +','+ this.timeEnd;
+                    time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
                     //demandData.dptTime = this.getTime == 'true'? time:'无';
-                    demandData.dptTime = this.getSelecTime(this.value4[0]) +','+ this.getSelecTime(this.value4[1]);
+                    demandData.dptTime = time;
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -973,11 +984,11 @@
                 }
 
                 let demandData = {},
-                    time = this.timeStart +','+ this.timeEnd;
+                    time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? time:'无';
+                    demandData.dptTime = time;
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -1069,15 +1080,6 @@
                 showContent = showContent.replace(n, "*");
               // 显示的内容
               this.tip = showContent;
-            },
-            getSelecTime:function(val){
-                let hours = val.getHours(),
-                    minutes = val.getMinutes(),
-                    seconds = val.getSeconds();
-                    if (hours < 10) hours = "0" + hours;
-                    if (minutes < 10) minutes = "0" + minutes;
-                    if (seconds < 10) seconds = "0" + seconds;
-                return  hours +':'+ minutes +':'+  seconds ;
             },
             initDate: function() {
               //初始化

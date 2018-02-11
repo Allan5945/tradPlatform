@@ -780,6 +780,7 @@
           width:100%;
           >div:nth-of-type(2){
               width:440px;
+              word-wrap: break-word;
           }
       }
     }

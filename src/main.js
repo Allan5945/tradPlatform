@@ -15,6 +15,7 @@ import store from './store/'
 import './public/css/all.scss'
 import './public/css/specification.scss'
 import './static/css/animate.min.css'
+import vueScrollwatch from "vue-scrollwatch"
 
 
 Vue.prototype.$ajax = axios;        // 扩展axios 请求数据
@@ -34,7 +35,7 @@ Vue.use(Checkbox);
 Vue.use(TimePicker);
 Vue.use(TimeSelect);
 Vue.use(DatePicker);
-
+Vue.use(vueScrollwatch);
 //axios拦截器
 axios.interceptors.response.use(
     data => {

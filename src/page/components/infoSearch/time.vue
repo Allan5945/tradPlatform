@@ -1,17 +1,17 @@
 <template>
-    <div>
+    <div >
         <timeHeader @search = "searchData"></timeHeader>
-        <div class="wrapper" id="timeTable">
+        <div class="wrapper scroll" id="timeTable">
             <div class="content" v-if="showDetail">
                 <div class="banner">
                     <div class="airport-img"><img :src="img" alt=""></div>
                     <div class="b-til">{{airportText}}</div>
                     <div class="sidebar">
-                        <div :class="{seleted:isTime}" @click="getTimeTable"><span class="iconfont">&#xe621;</span>时刻表</div>
-                         <div :class="{seleted:!isTime}" @click="getclockTable"><span class="iconfont">&#xe628;</span>时刻分布</div>
+                        <div :class="{seleted:step == '1'}" @click="scrollTo('1')"><span class="iconfont">&#xe621;</span>时刻表</div>
+                        <div :class="{seleted:step == '2'}"  @click="scrollTo('2')"><span class="iconfont">&#xe628;</span>时刻分布</div>
                     </div>
                 </div>
-                <div class="time-table">
+                <div class="time-table" v-scrollWatch="{name:'1',offset:250,callback:spyDomChange}">
                     <div class="table-til">
                         <div class="t-til"><span class="iconfont">&#xe621;</span>时刻表</div>
                         <div class="t-update" >
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="time-table" id="clockTable">
+                <div class="time-table" id="clockTable" v-scrollWatch="{name:'2',offset:0,callback:spyDomChange}">
                       <div class="table-til">
                           <div class="t-til"><span class="iconfont">&#xe628;</span>时刻分布</div>
                       </div>
@@ -182,6 +182,8 @@
  import timeHeader from './timeHeader.vue'
  import myPic from '$src/static/img/Slice.png';
  import myPic1 from '$src/static/img/infobg.png';
+ import scrollWatch from "vue-scrollwatch"
+
     export default {
         data() {
             return {
@@ -197,7 +199,7 @@
                 sorted2:false,
                 sorted3:false,
                 showDetail:true,
-                isTime:true
+                step:'1'
             }
         },
         watch: {
@@ -368,7 +370,7 @@
                  point.len = 34 * rate;
                 return point;
             },
-            getTimeTable(){
+           /* getTimeTable(){
                 let timeTable = document.getElementById('timeTable');
                 timeTable.scrollTop = 0;
                 this.isTime = true;
@@ -380,7 +382,16 @@
                 let clockTable = document.getElementById('clockTable');
                 timeTable.scrollTop = clockTable.offsetTop;
                 this.isTime = false;
-            }
+            }*/
+             spyDomChange(node) {
+                if (this.step !== node.name){
+                    this.step = node.name;
+                }
+             },
+            scrollTo(name) {
+                 //this.step = name;
+                scrollWatch.scrollTo(name);
+            },
         },
         mounted(){
             this.airportText = this.searchInfo.searchText;
@@ -390,6 +401,10 @@
             }
             /*this.getData();
             this.getClock(this.inputData,this.qyCode);*/
+
+        },
+        created(){
+            scrollWatch.setContainer("#timeTable");
 
         },
         components:{

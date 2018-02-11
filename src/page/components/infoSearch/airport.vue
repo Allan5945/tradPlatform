@@ -155,6 +155,7 @@
     import searchHeader from './searchHeader.vue'
     import airportInfo from './airportInfo.vue'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
+
     export default {
         data() {
             return {

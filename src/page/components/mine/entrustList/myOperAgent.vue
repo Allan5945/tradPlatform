@@ -30,7 +30,7 @@
                     <div class="list-f item"></div>
                 </div>
                 <div class="lists-containt" v-if="myList">
-                    <div class="list items" v-for="val in myList">
+                    <div class="list items" v-for="val in myList" @click="getDetail(val)">
                         <div class="list-a item">
                             {{val.releaseTime}}
                         </div>
@@ -51,7 +51,7 @@
                              <!--  <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span> -->
                           </span>
                         </div>
-                        <div class="list-f item color" @click="getDetail(val)">
+                        <div class="list-f item color">
                             查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>

@@ -36,7 +36,7 @@
                     <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
                 </div>
                 <div class="t-optional">
-                 <div class="form-box">
+                 <!-- <div class="form-box">
                      <div class="t-title">出港时刻</div>
                      <div class="radio-box">
                          <div class="t-radio">
@@ -57,21 +57,25 @@
                              <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
                          </div>
                      </div>
+                 </div> -->
+                 <div class="form-box">
+                     <div class="t-title">出港时刻</div>
+                     <div  style="width:200px;position:relative;">
+                         <el-time-picker
+                          value-format = "HH:mm:ss"
+                          size="mini"
+                          v-model="timeStart"
+                          placeholder="开始时间">
+                        </el-time-picker>
+                        <el-time-picker
+                          value-format = "HH:mm:ss"
+                          size="mini"
+                          v-model="timeEnd"
+                          placeholder="结束时间">
+                        </el-time-picker>
+                         <span  style="position:absolute;left:85px;top:0;z-index:10;">-</span>
+                     </div>
                  </div>
-                  <!--  <div class="form-box">
-                      <div class="t-title">出港时刻</div>
-                      <div >
-                           <el-time-picker
-                               arrow-control
-                               v-model="value3"
-                               :picker-options="{
-                                 selectableRange: '18:30:00 - 20:30:00'
-                               }"
-                               placeholder="任意时间点">
-                             </el-time-picker>
-
-                      </div>
-                  </div> -->
                     <div class="form-box">
                         <div class="t-title">是否有班期</div>
                         <div class="radio-box" @click="verifyFlight">
@@ -282,8 +286,8 @@
                 seat:'',
                 hourcost:'',
                 post:'0',
-                timeStart:'00:00',
-                timeEnd:'00:00',
+                timeStart:'00:00:00',
+                timeEnd:'00:00:00',
                 timeStartIndex:0,
                 timeEndIndex:0,
                 tip: '',
@@ -317,7 +321,8 @@
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 directionalgoal:'',
-                schedulinePort:''
+                schedulinePort:'',
+                dptTime: ['00:00:00','23:59:59']
             }
         },
         components:{
@@ -414,13 +419,16 @@
             acceptDataFn:function(){
                     this.contact = this.acceptData.contact;
                     this.phoneNum = this.acceptData.iHome;
-                    this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
+                    /*this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
                     if(this.acceptData.dptTime !== '无'){
                         this.timeStart = this.acceptData.dptTime.split(',')[0];
                         this.timeEnd =this.acceptData.dptTime.split(',')[1];
                         this.pickStart = true;
                         this.pickEnd = true;
-                    }
+                    }*/
+                    this.timeStart = this.acceptData.dptTime.split('-')[0];
+                    this.timeEnd = this.acceptData.dptTime.split('-')[1];
+
                     this.getFlight = this.acceptData.days  == '无'? 'false':'true';
                     if(this.acceptData.days  !== '无'){
                         this.msg = this.acceptData.days;
@@ -850,11 +858,12 @@
                     };
                 }
                 let demandData = {},
-                    time = this.timeStart +','+ this.timeEnd;
+                    time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? time:'无';
+                    //demandData.dptTime = this.getTime == 'true'? time:'无';
+                    demandData.dptTime = time;
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -966,11 +975,11 @@
                 }
 
                 let demandData = {},
-                    time = this.timeStart +','+ this.timeEnd;
+                    time = this.timeStart +'-'+ this.timeEnd;
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? time:'无';
+                    demandData.dptTime = time;
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;

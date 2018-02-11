@@ -220,17 +220,36 @@ a{
 }
 
 /* TimePicker样式 */
-.el-time-spinner.has-seconds .el-time-spinner__wrapper{
+/* .el-time-spinner.has-seconds .el-time-spinner__wrapper{
   width:23% !important;
-}
-
+} */
 .el-date-editor .el-range-input{
         width:32% !important;
     }
-.el-date-editor .el-range__close-icon{
+/* .el-date-editor .el-range__close-icon{
   width:20px;
-}
-.el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner{
+} */
+/* .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner{
         width:190px !important;
-    }
+    } */
+/* .el-date-editor .el-range__close-icon{
+  display: none !important;
+} */
 
+.el-date-editor.el-input, .el-date-editor.el-input__inner{
+  width: 90px;
+}
+.el-input__icon{
+  width:15px;
+}
+.el-input--prefix .el-input__inner{
+  padding-right: 10px !important;
+  padding-left: 21px !important;
+  width:90% !important;
+}
+.el-date-editor .el-icon-circle-close{
+  display: none !important;
+}
+.el-time-spinner.has-seconds .el-time-spinner__wrapper{
+   width:32% !important;
+}
