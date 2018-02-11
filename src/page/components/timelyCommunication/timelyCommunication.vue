@@ -6,8 +6,8 @@
             <div :class="{'timely-nav-checked':(setId == key.setId),'information':(key.noReadCount > 0)}"
                  v-for="(key,i) in inData"
                  @click="setChat(key)">
-                <p>{{key.title}}</p>
-                <span>{{key.chatObjectList.name}}</span>
+                <p class="max-length" :title="key.title">{{key.title}}</p>
+                <span class="max-length" :title="key.chatObjectList.name">{{key.chatObjectList.name}}</span>
             </div>
         </div>
         <div class="timely-content">
@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-function-input" v-show="['1','2','7','8','9','10',''].includes(inData[setId].demandProgress)">
+                    <div class="chat-function-input" v-show="inData[setId].isSendMessage == '1'">
                         <textarea name="a" @keydown="handling({t:true},$event)" @keyup="handling({t:false},$event)"
                                   class="scroll" ref="textarea" v-model="textData"></textarea>
                         <div class="btn btn-b user-select" id="req-bth" @click="sendData">发送</div>
@@ -56,9 +56,9 @@
                             </div>
                             <div class="personal-panel-name">
                                 <!--<div class=""><span>{{kfIng.iata}}</span></div>-->
-                                <p>{{kfIng.company}}</p>
-                                <div class="">{{kfIng.department}}<span>{{kfIng.name}}</span></div>
-                                <div class="">{{kfIng.phone}}</div>
+                                <p class="max-length" :title="kfIng.company">{{kfIng.company}}</p>
+                                <div class="max-length" :title="kfIng.department+kfIng.name">{{kfIng.department}}<span>{{kfIng.name}}</span></div>
+                                <div class="max-length" :title="kfIng.phone">{{kfIng.phone}}</div>
                             </div>
                         </div>
                         <div class="demand-history">
@@ -248,6 +248,7 @@
                     b[ln.chat.chatData[k].chatFlag] = {
                         chatObjectList,
                         iskf,
+                        isSendMessage:ln.chat.chatData[k].isSendMessage,
                         rightTableDown: ln.chat.chatData[k].rightTableDown,
                         rightTableUp: ln.chat.chatData[k].rightTableUp,
                         title: ln.chat.chatData[k].title,
@@ -762,6 +763,7 @@
     }
 
     .personal-panel-name {
+        width: 100px;
         padding: 0 0 0 15px;
         > p {
             padding: 0;
@@ -1047,5 +1049,10 @@
     .none-personal-hy {
         color: red;
         padding-top: 50px;
+    }
+    .max-length{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 </style>

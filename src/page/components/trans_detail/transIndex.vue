@@ -55,16 +55,10 @@
                      if(this.isSelf == true){
                         this.respond = false;
                          this.intentShow = true;
-                         /*this.$nextTick(() => {
-                             this.intentShow = true;
-                          });*/
 
                      }else{
                          this.respond = true;
                         this.intentShow = false;
-                     /*   this.$nextTick(() => {
-                             this.respond = true;
-                        });*/
                         }
                 })
                 .catch((error) => {

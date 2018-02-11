@@ -32,42 +32,42 @@
                 <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
             </div>
             <div class="t-optional">
-             <div class="form-box">
-                 <div class="t-title">出港时刻</div>
-                 <div class="radio-box">
-                     <div class="t-radio">
-                         <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
-                     </div>
-                     <div class="selected" v-if="this.getTime == 'true'">
-                         <div @click.stop="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
-                         <span>-</span>
-                         <div @click.stop="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
-                       <div class="time-table popup time-start" v-show="boxShow1">
-                           <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
-                       </div>
-                       <div class="time-table popup time-end" v-show="boxShow2">
-                           <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}</div>
-                       </div>
-                     </div>
-                     <div class="t-radio">
-                         <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
+            <!--  <div class="form-box">
+                <div class="t-title">出港时刻</div>
+                <div class="radio-box">
+                    <div class="t-radio">
+                        <input type="radio" class="magic-radio" id="timeYes" v-model="getTime" value="true" ><label for="timeYes">有&nbsp;</label>
+                    </div>
+                    <div class="selected" v-if="this.getTime == 'true'">
+                        <div @click.stop="boxShow1=!boxShow1" :class="{selec:pickStart}">{{timeStart}}</div>
+                        <span>-</span>
+                        <div @click.stop="boxShow2=!boxShow2" :class="{selec:pickEnd}">{{timeEnd}}</div>
+                      <div class="time-table popup time-start" v-show="boxShow1">
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime1(index)">{{num}}</div>
+                      </div>
+                      <div class="time-table popup time-end" v-show="boxShow2">
+                          <div class="time-item" v-for="(num,index) in timeData" @click="pickTime2(index)">{{num}}</div>
+                      </div>
+                    </div>
+                    <div class="t-radio">
+                        <input type="radio" class="magic-radio" id="timeNo" v-model="getTime" value="false"><label for="timeNo">无</label>
+                    </div>
+                </div>
+            </div> -->
+              <div class="form-box">
+                     <div class="t-title" style="width:55px;">出港时刻</div>
+                     <div  style="width:180px;">
+                        <el-time-picker
+                          is-range
+                          size="mini"
+                          v-model="value4"
+                          range-separator="至"
+                          start-placeholder="开始时间"
+                          end-placeholder="结束时间"
+                          placeholder="选择时间范围">
+                        </el-time-picker>
                      </div>
                  </div>
-             </div>
-              <!--  <div class="form-box">
-                  <div class="t-title">出港时刻</div>
-                  <div >
-                       <el-time-picker
-                           arrow-control
-                           v-model="value3"
-                           :picker-options="{
-                             selectableRange: '18:30:00 - 20:30:00'
-                           }"
-                           placeholder="任意时间点">
-                         </el-time-picker>
-
-                  </div>
-              </div> -->
                 <div class="form-box">
                     <div class="t-title">是否有班期</div>
                     <div class="radio-box" @click="verifyFlight">
@@ -313,7 +313,8 @@
                 qyCode5:'',
                 airTypData: ["A320","A330","B737NG","E190/195","CRJ900","MA60","B787","B777","B767","E145","B757","B747","ARJ21"],
                 directionalgoal:'',
-                schedulinePort:''
+                schedulinePort:'',
+                value4: [new Date(2018, 9, 10, 0, 0), new Date(2018, 9, 10, 12, 0)]
             }
         },
         props:["acceptData"],
@@ -830,7 +831,8 @@
                     demandData.demandtype = type;
                     demandData.contact = this.contact;
                     demandData.iHome = this.phoneNum;
-                    demandData.dptTime = this.getTime == 'true'? time:'无';
+                    //demandData.dptTime = this.getTime == 'true'? time:'无';
+                     demandData.dptTime = this.getSelecTime(this.value4[0]) +','+ this.getSelecTime(this.value4[1]);
                     demandData.days   = this.getFlight =='true'? this.msg: '无';
                     demandData.intendedDpt = this.intendedDpt == '' ? '': this.qyCode3;
                     demandData.intendedPst = this.intendedPst == '' ? '': this.qyCode4;
@@ -922,6 +924,15 @@
                 showContent = showContent.replace(n, "*");
               // 显示的内容
               this.tip = showContent;
+            },
+            getSelecTime:function(val){
+                let hours = val.getHours(),
+                    minutes = val.getMinutes(),
+                    seconds = val.getSeconds();
+                    if (hours < 10) hours = "0" + hours;
+                    if (minutes < 10) minutes = "0" + minutes;
+                    if (seconds < 10) seconds = "0" + seconds;
+                return  hours +':'+ minutes +':'+  seconds ;
             },
             initDate: function() {
               //初始化

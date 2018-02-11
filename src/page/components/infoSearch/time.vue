@@ -201,12 +201,14 @@
             }
         },
         watch: {
-            "inputData": function(){
+            "inputData": function(val){
+              if(val !==" "){
                 this.updateData();
+              }
             },
             'qyCode':function(){
                 this.getData();
-                this.getClock(this.inputData,this.qyCode);
+                //this.getClock(this.inputData,this.qyCode);
                 this.airportText = this.searchInfo.searchText;
             }
         },
@@ -386,8 +388,8 @@
              if(this.qyCode == ''){
                 this.showDetail=false;
             }
-            this.getData();
-            this.getClock(this.inputData,this.qyCode);
+            /*this.getData();
+            this.getClock(this.inputData,this.qyCode);*/
 
         },
         components:{

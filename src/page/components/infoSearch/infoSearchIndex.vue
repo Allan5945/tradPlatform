@@ -20,63 +20,63 @@
             <div class="airport">
                 <div class="a-til">热门机场</div>
                 <div class="a-content">
-                    <div class="a-box">
+                     <div class="a-box" @click="searchHot('PEK','北京首都国际机场','机场')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>北京首都国际机场</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('CTU','成都双流国际机场','机场')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>成都双流国际机场</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('CAN','广州白云国际机场','机场')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>广州白云国际机场</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('PVG','上海浦东国际机场','机场')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>上海浦东国际机场</span><span>327架客机</span></div>
                     </div>
                 </div>
             </div>
             <div class="airport">
                 <div class="a-til">热门航司</div>
                 <div class="a-content">
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('CCA','中国航空','航司')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>中国航空</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('CES','东方航空','航司')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>东方航空</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('CHH','海南航空','航司')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>海南航空</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('CSN','南方航空','航司')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>南方航空</span><span>327架客机</span></div>
                     </div>
                 </div>
             </div>
             <div class="airport">
                 <div class="a-til">热门城市</div>
                 <div class="a-content">
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('北京','北京','城市')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>北京</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('上海','上海','城市')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>上海</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('广州','广州','城市')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>广州</span><span>327架客机</span></div>
                     </div>
-                    <div class="a-box">
+                    <div class="a-box" @click="searchHot('成都','成都','城市')">
                         <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国国际航空</span><span>327架客机</span></div>
+                        <div class="tips"><span>成都</span><span>327架客机</span></div>
                     </div>
                 </div>
             </div>
@@ -207,6 +207,14 @@ import myPic from '$src/static/img/airport1.png';
                 this.airportText1 = data.name;
                 this.qyCode = data.code3;
                 this.airlineShow = false;
+            },
+            searchHot:function(code,name,type){
+                this.airportText = name;
+                this.airportText1 = name;
+                this.selcType = type;
+                this.qyCode = code;
+                this.getInfo();
+
             }
         },
         mounted() {
