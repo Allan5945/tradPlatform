@@ -3,14 +3,14 @@
         <div class="container" id="airlineWrite" @click="closeAll">
             <div class="container-top">
                 <span class="title">请填写完整方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="close-icon iconfont" @click="closeThis">&#xe62c;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
                     <div style="display: flex;">
                         <span>联系人<span class="warn"> *</span>　</span>
                         <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user"
-                               @keyup="warn1Show=false">
+                               @keyup="warn1Show=false" maxlength="10">
                     </div>
                     <div class="warn" v-show="warn1Show">*请填写联系人</div>
                 </div>
@@ -18,7 +18,7 @@
                     <div style="display: flex;">
                         <span>联系方式<span class="warn"> *</span>　</span>
                         <input class="input-mes" type="text" placeholder="请填写有效联系方式" @blur="verifyPhon"
-                               v-model="phoneNum">
+                               v-model="phoneNum" maxlength="11">
                     </div>
                     <div class="warn" v-show="warn2Show">*电话格式有误，请重新输入</div>
                 </div>
@@ -2201,11 +2201,12 @@
             top: -2px;
             right: 0;
             display: flex;
+            color:#3C78FF;
             align-items: center;
             justify-content: center;
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            border: 1px solid  #ededed;
             border-radius: 100%;
             cursor: pointer;
         }

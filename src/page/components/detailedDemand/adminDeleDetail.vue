@@ -78,11 +78,11 @@
                     </div>
                      <div>
                         <div>客量期望</div>
-                        <div>{{detailData.avgguestexpect||'-'}}人/均班</div>
+                        <div>{{detailData.avgguestexpect? detailData.avgguestexpect+'人/均班':'-'}}</div>
                     </div>
                     <div>
                         <div>客座率期望</div>
-                        <div>{{detailData.loadfactorsexpect||'-'}}%</div>
+                        <div>{{detailData.loadfactorsexpect? detailData.loadfactorsexpect+'%':'-'}}</div>
                     </div>
                     <div>
                         <div>合作方式</div>
@@ -91,6 +91,7 @@
                     <div>
                         <div>有效期</div>
                         <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
+                        <div v-else>-</div>
                     </div>
                     <div class="note">
                         <div>其他说明</div>
@@ -131,7 +132,7 @@
                 </div>
                 <div class="padding-item">
                     <div>小时成本</div>
-                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                    <div>{{detailData.hourscost? detailData.hourscost+'万/小时':'-'}}</div>
                 </div>
                  <div>
                     <div>运力基地</div>

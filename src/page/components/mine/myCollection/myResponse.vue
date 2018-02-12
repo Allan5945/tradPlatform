@@ -34,7 +34,7 @@
                   </div>
                   <div>
                       <div>小时成本</div>
-                      <div>{{detailData.hourscost||'-'}}万/小时</div>
+                      <div>{{detailData.hourscost? detailData.hourscost+'万/小时':'-'}}</div>
                   </div>
                    <div>
                       <div>运力基地</div>
@@ -148,15 +148,15 @@
                       </div>
                       <div>
                           <div>座位数</div>
-                          <div>{{planData.seating||'-'}}人</div>
+                          <div>{{planData.seating||'-'}}</div>
                       </div>
                       <div>
                           <div>客量预期</div>
-                          <div>{{planData.avgguestexpect||'-'}}人</div>
+                          <div>{{planData.avgguestexpect ? planData.avgguestexpect+'人/均班':'-'}}</div>
                       </div>
                       <div>
                           <div>客座率预期</div>
-                          <div>{{planData.loadfactorsexpect||'-'}}%</div>
+                          <div>{{planData.loadfactorsexpect? planData.loadfactorsexpect+'%':'-'}}</div>
                       </div>
                       <div>
                           <div>合作方式</div>
@@ -164,7 +164,7 @@
                       </div>
                       <div>
                           <div>小时成本</div>
-                          <div>{{planData.hourscost||'-'}}万元/小时</div>
+                          <div>{{planData.hourscost? planData.hourscost+'万元/小时':'-'}}</div>
                       </div>
                        <div>
                           <div>运力归属</div>

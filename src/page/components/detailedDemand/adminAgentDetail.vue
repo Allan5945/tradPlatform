@@ -3,11 +3,11 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title}}</div>
+                <div class="head-til">{{detailData.title||'-'}}</div>
                 <div class="contact" @click="chat">联系用户</div>
                 <div class="tips">
-                    <div>委托方&nbsp;{{CpyNm}}</div>
-                    <div>创建于{{detailData.releasetime}}</div>
+                    <div>委托方&nbsp;{{CpyNm||'-'}}</div>
+                    <div>创建于{{detailData.releasetime||'-'}}</div>
                     <div>状态:
                         <span v-if="testingShow" class="testing">
                         {{detailData.demandprogressStr=="处理中"? "测评中" : detailData.demandprogressStr}}</span>
@@ -19,25 +19,25 @@
                 <div class="content-box">
                     <div >
                         <div>航班号</div>
-                        <div>{{detailData.fltNbr}}</div>
+                        <div>{{detailData.fltNbr||'-'}}</div>
                     </div>
                     <div>
                         <div>小时成本</div>
-                        <div>{{detailData.hourscost}}万/小时</div>
+                        <div>{{detailData.hourscost? detailData.hourscost+'万/小时':'-'}}</div>
                     </div>
                     <div class="note">
                         <div>其他说明</div>
-                        <div class="note-text">{{detailData.remark}}</div>
+                        <div class="note-text">{{detailData.remark||'-'}}</div>
                     </div>
                 </div>
                 <div class="content-box border">
                     <div>
                         <div>联系人</div>
-                        <div>{{detailData.contact}}</div>
+                        <div>{{detailData.contact||'-'}}</div>
                     </div>
                     <div>
                         <div>联系方式</div>
-                        <div>{{detailData.iHome}}</div>
+                        <div>{{detailData.iHome||'-'}}</div>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@ nikai<template>
         <div class="container" id="airlineAffirm" @click="closeAll">
             <div class="container-top">
                 <span class="title">请确认以下方案</span>
-                <span class="close-icon" @click="closeThis">&times;</span>
+                <span class="close-icon iconfont" @click="closeThis">&#xe62c;</span>
             </div>
             <div class="bg-color must">
                 <div class="right item-child">
@@ -2265,11 +2265,12 @@ nikai<template>
             top: -2px;
             right: 0;
             display: flex;
+            color:#3C78FF;
             align-items: center;
             justify-content: center;
             width: 22px;
             height: 22px;
-            border: 1px solid gray;
+            border: 1px solid  #ededed;
             border-radius: 100%;
             cursor: pointer;
         }

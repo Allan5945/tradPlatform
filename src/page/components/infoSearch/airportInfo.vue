@@ -238,7 +238,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="box" id="step7" style="margin-bottom:150px;" v-scrollWatch="{name:'7',offset:450,callback:spyDomChange}">
+                    <div class="box" id="step7" style="margin-bottom:150px;" v-scrollWatch="{name:'7',offset:500,callback:spyDomChange}">
                         <div class="box-til"><span class="iconfont">&#xe669;</span>飞行程序</div>
                         <ul class="box-item">
                             <li class="li-note">
@@ -470,7 +470,6 @@ import scrollWatch from "vue-scrollwatch"
                     font-size:1.4rem;
                     line-height:40px;
                     padding-left:10px;
-                    //font-weight:800;
                 }
                 .over-flow{
                     overflow: hidden;

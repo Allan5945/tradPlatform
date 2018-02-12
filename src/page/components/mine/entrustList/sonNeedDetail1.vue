@@ -14,7 +14,7 @@
                       </div>
                   </div>
                </div>
-               <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
+               <div class="rep-btn" v-show="rePublish" @click="toPublish" v-if="this.acceptData.demandprogress !=='3'&&this.acceptData.demandprogress !=='6' ">重新发布</div>
            </header>
             <div class="content">
                 <div class="table-form" v-if="transShow">
@@ -40,7 +40,7 @@
                     </div>
                      <div>
                         <div>小时成本</div>
-                        <div>{{detailData.hourscost||'-'}}万/小时</div>
+                        <div>{{detailData.hourscost? detailData.hourscost + '万/小时':'-'}}</div>
                     </div>
                     <div>
                         <div>运力基地</div>
@@ -174,11 +174,11 @@
                                 </div>
                                 <div>
                                     <div>客量期望</div>
-                                    <div>{{detailData.avgguestexpect||'-'}}人/均班</div>
+                                    <div>{{detailData.avgguestexpect? detailData.avgguestexpect+'人/均班':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>客座率期望</div>
-                                    <div>{{detailData.loadfactorsexpect||'-'}}%</div>
+                                    <div>{{detailData.loadfactorsexpect ? detailData.loadfactorsexpect+'%':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>合作方式</div>
@@ -303,11 +303,11 @@
                                 </div>
                                 <div>
                                     <div>客量预期</div>
-                                    <div>{{val.avgguestexpect||'-'}}人</div>
+                                    <div>{{val.avgguestexpect? val.avgguestexpect+'人/均班':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>客座率预期</div>
-                                    <div>{{val.loadfactorsexpect||'-'}}%</div>
+                                    <div>{{val.loadfactorsexpect ? val.loadfactorsexpect+'%':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>合作方式</div>
@@ -315,7 +315,7 @@
                                 </div>
                                 <div>
                                     <div>小时成本</div>
-                                    <div>{{val.hourscost||'-'}}万元/小时</div>
+                                    <div>{{val.hourscost? val.hourscost + '万元/小时':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>运力归属</div>
@@ -363,7 +363,7 @@
             <div v-if="detailData.rek"  class="close-reason">审核未通过原因：{{detailData.rek}}</div>
             <footer v-show="footShow">
                 <div class="btn">
-                    <div class="col-btn" style="margin-right:10px;" @click="airlinePayFn" v-if='!isIntentionMoney'>点击此处缴纳意向金</div>
+                    <div class="col-btn" style="margin-right:10px;" @click="airlinePayFn" v-if='!isIntentionMoney' v-show="intentionMoneyBtnshow">点击此处缴纳意向金</div>
                     <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
                     <div class="col-btn" @click="closeNeed" v-else>结束需求</div>
                 </div>
@@ -381,7 +381,7 @@
   import ln from '$src/public/js/tabulationBoxTrigger'
   import * as vx from 'vuex'
   import myIntentForm from './../../trans_detail/myIntentForm.vue'
-  import sureForm from './../../airlineAffirm.vue'
+  import sureForm from './../../trans_detail/sureForm1.vue'
   import reTransForm from './reTransForm.vue'
   import reAirlineForm from './reAirlineForm.vue'
   import airlinePay from '$src/page/components/trans_detail/dialog.vue'
@@ -415,7 +415,8 @@
              calendarInitDay1:'',
              calendarInitDay2:'',
              changeValidityShow:true,
-             sorted:true
+             sorted:true,
+             intentionMoneyBtnshow:true
          }
      },
      props:['sonId','acceptData'],
@@ -669,6 +670,12 @@
                       this.intentListShow = true;
                     }
 
+                    if(progress == '0'){
+                        this.intentionMoneyBtnshow = false;
+                    }else{
+                        this.intentionMoneyBtnshow = true;
+                    }
+
                      //审核未通过
                     if(this.detailData.demandStateStr =='审核不通过'){
                         this.intentShow = false;
@@ -718,7 +725,6 @@
       },
       mounted() {
             this.init();
-
      },
      components: {
             myIntentForm,

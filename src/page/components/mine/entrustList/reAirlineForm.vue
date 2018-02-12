@@ -880,7 +880,10 @@
                 this.avgguestExpect = this.acceptData.avgguestexpect; // 均班客量期望
                 this.loadfactorsExpect = this.acceptData.loadfactorsexpect; // 客座率期望
                 this.remarkMsg = this.acceptData.remark; // 其他说明
-                this.blockbidPrice = this.acceptData.blockbidprice; // 拦标价格
+               /* if(this.acceptData.blockbidprice){
+                    console.log(this.acceptData.blockbidprice)
+                    this.blockbidPrice = this.acceptData.blockbidprice; // 拦标价格
+                }*/
                 // 判断始发类型（0：机场，1：区域）
                 // 机场传三字码，区域和省份传汉字
                 this.dptAcceptnearairport = this.acceptData.dptAcceptnearairport;

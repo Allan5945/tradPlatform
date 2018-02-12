@@ -412,7 +412,7 @@
 
                  //获取新闻定位点
                 let news = document.getElementById('news');
-                city.scrollTop = news.offsetTop;
+                city.scrollTop = news.offsetTop - 120;
                 this.isInfo = false;
             }
         },

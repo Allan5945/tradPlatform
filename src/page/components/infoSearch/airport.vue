@@ -63,20 +63,20 @@
                         <div class="airport-info" @click="airportInfo"><a>机场情报></a></div>
                     </div>
                     <div class="i-echart">
-                        <div v-if="infoData.passengerThroughputs">
+                        <div>
                             <h5>旅客吞吐量</h5>
                            <div id="myChart1"></div>
-                           <div class="no-data" v-if="infoData.passengerThroughputs.length == 0">暂无数据</div>
+                           <div class="no-data" v-if="infoData.passengerThroughputs" v-show="infoData.passengerThroughputs.length == 0">暂无数据</div>
                         </div>
-                        <div v-if="infoData.passengerThroughputs">
+                        <div>
                             <h5>货物吞吐量</h5>
                            <div id="myChart2"></div>
-                           <div class="no-data" v-if="infoData.goodsThroughputs.length == 0 ">暂无数据</div>
+                           <div class="no-data" v-if="infoData.passengerThroughputs" v-show="infoData.goodsThroughputs.length == 0 ">暂无数据</div>
                         </div>
-                        <div v-if="infoData.passengerThroughputs">
+                        <div>
                             <h5>起降架次</h5>
                            <div id="myChart3"></div>
-                           <div class="no-data" v-if="infoData.takeOffAndLandingFlights.length == 0">暂无数据</div>
+                           <div class="no-data" v-if="infoData.passengerThroughputs" v-show="infoData.takeOffAndLandingFlights.length == 0">暂无数据</div>
                         </div>
                     </div>
                     <div class="airport-track">

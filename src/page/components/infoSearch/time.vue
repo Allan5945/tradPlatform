@@ -402,6 +402,8 @@
             /*this.getData();
             this.getClock(this.inputData,this.qyCode);*/
 
+            scrollWatch.setContainer("#timeTable");
+
         },
         created(){
             scrollWatch.setContainer("#timeTable");
@@ -614,6 +616,7 @@
                 line-height:16px;
                 padding-top:15px;
                 box-sizing:border-box;
+                overflow:hidden;
             }
         }
 

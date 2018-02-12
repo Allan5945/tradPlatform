@@ -36,7 +36,7 @@
                 </div>
                 <div>
                     <div>小时成本</div>
-                    <div>{{detailData.hourscost||'-'}}万/小时</div>
+                    <div>{{detailData.hourscost? detailData.hourscost+'万/小时':'-'}}</div>
                 </div>
                  <div>
                     <div>运力基地</div>

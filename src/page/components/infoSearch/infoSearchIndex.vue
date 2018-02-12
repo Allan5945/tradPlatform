@@ -21,20 +21,20 @@
                 <div class="a-til">热门机场</div>
                 <div class="a-content">
                      <div class="a-box" @click="searchHot('PEK','北京首都国际机场','机场')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>北京首都国际机场</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="tips"><span>北京首都国际机场</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CTU','成都双流国际机场','机场')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>成都双流国际机场</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img2" alt=""></div>
+                        <div class="tips"><span>成都双流国际机场</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CAN','广州白云国际机场','机场')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>广州白云国际机场</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img3" alt=""></div>
+                        <div class="tips"><span>广州白云国际机场</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('PVG','上海浦东国际机场','机场')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>上海浦东国际机场</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img4" alt=""></div>
+                        <div class="tips"><span>上海浦东国际机场</span><span></span></div>
                     </div>
                 </div>
             </div>
@@ -42,20 +42,20 @@
                 <div class="a-til">热门航司</div>
                 <div class="a-content">
                     <div class="a-box" @click="searchHot('CCA','中国航空','航司')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>中国航空</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="tips"><span>中国航空</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CES','东方航空','航司')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>东方航空</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img2" alt=""></div>
+                        <div class="tips"><span>东方航空</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CHH','海南航空','航司')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>海南航空</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img3" alt=""></div>
+                        <div class="tips"><span>海南航空</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CSN','南方航空','航司')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>南方航空</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img4" alt=""></div>
+                        <div class="tips"><span>南方航空</span><span></span></div>
                     </div>
                 </div>
             </div>
@@ -63,20 +63,20 @@
                 <div class="a-til">热门城市</div>
                 <div class="a-content">
                     <div class="a-box" @click="searchHot('北京','北京','城市')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>北京</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="tips"><span>北京</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('上海','上海','城市')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>上海</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img2" alt=""></div>
+                        <div class="tips"><span>上海</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('广州','广州','城市')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>广州</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img3" alt=""></div>
+                        <div class="tips"><span>广州</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('成都','成都','城市')">
-                        <div class="img"><img :src="img" alt=""></div>
-                        <div class="tips"><span>成都</span><span>327架客机</span></div>
+                        <div class="img"><img :src="img4" alt=""></div>
+                        <div class="tips"><span>成都</span><span></span></div>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,10 @@ import cityS from '../../reuseComponents/citySearch.vue'
 import airCompanyS from '../../reuseComponents/airCompanySearch.vue'//可匹配航司搜索
 import * as vx from 'vuex'
 import In from '$src/public/js/tabulationBoxTrigger.js';
-import myPic from '$src/static/img/airport1.png';
+import myPic1 from '$src/static/img/airport1.png';
+import myPic2 from '$src/static/img/airport2.png';
+import myPic3 from '$src/static/img/airport3.png';
+import myPic4 from '$src/static/img/airport4.png';
     export default {
         data() {
             return {
@@ -110,8 +113,17 @@ import myPic from '$src/static/img/airport1.png';
             }
         },
          computed:{
-            img:function(){
-                return myPic;
+            img1:function(){
+                return myPic1;
+            },
+            img2:function(){
+                return myPic2;
+            },
+            img3:function(){
+                return myPic3;
+            },
+            img4:function(){
+                return myPic4;
             },
              ...vx.mapGetters([
                  'airList'

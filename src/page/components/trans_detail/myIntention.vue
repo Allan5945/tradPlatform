@@ -37,7 +37,7 @@
                     </div>
                     <div>
                         <div>小时成本</div>
-                        <div>{{detailData.hourscost||'-'}}万/小时</div>
+                        <div>{{detailData.hourscost? detailData.hourscost +'万/小时':'-'}}</div>
                     </div>
                     <div>
                         <div>运力基地</div>
@@ -193,11 +193,11 @@
                                 </div>
                                 <div>
                                     <div>客量预期</div>
-                                    <div>{{val.avgguestexpect||'-'}}人</div>
+                                    <div>{{val.avgguestexpect? val.avgguestexpect+'人/均班':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>客座率预期</div>
-                                    <div>{{val.loadfactorsexpect||'-'}}%</div>
+                                    <div>{{val.loadfactorsexpect ? val.loadfactorsexpect+'%':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>合作方式</div>
@@ -205,7 +205,7 @@
                                 </div>
                                 <div>
                                     <div>小时成本</div>
-                                    <div>{{val.hourscost||'-'}}万元/小时</div>
+                                    <div>{{val.hourscost? val.hourscost + '万元/小时':'-'}}</div>
                                 </div>
                                 <div>
                                     <div>运力归属</div>

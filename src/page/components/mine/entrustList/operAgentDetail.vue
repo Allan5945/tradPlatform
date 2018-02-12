@@ -23,7 +23,7 @@
                     </div>
                     <div>
                         <div>小时成本</div>
-                        <div>{{detailData.hourscost}}万/小时</div>
+                        <div>{{detailData.hourscost? detailData.hourscost+'万/小时':'-'}}</div>
                     </div>
                     <div class="note">
                         <div>其他说明</div>

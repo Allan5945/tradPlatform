@@ -26,11 +26,11 @@
             <div class="t-all" v-show="allFormShow">
                 <div class="t-must">
                     <div class="form-box">
-                        <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact">
+                        <div class="t-title">联系人</div><input type="text" placeholder="请填写有效联系人" v-model="contact" maxlength="20" v-on:keyup="verifyContact" @blur="verifyContact" >
                         <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
                     </div>
                     <div class="form-box">
-                        <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                        <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum" maxlength="11">
                         <div class="error" v-show="isError2" style="top:58px;right:36px;">*电话格式有误，请重新输入</div>
                     </div>
                     <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
@@ -124,7 +124,7 @@
                         <div class="error" v-show="isError5" style="left:58px;top:53px;">*请选择机型</div>
                     </div>
                     <div class="form-box">
-                        <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
+                        <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat" maxlength="10">
                     </div>
                     <div class="form-box pad1 taken">
                         <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">

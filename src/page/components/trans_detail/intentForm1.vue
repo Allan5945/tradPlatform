@@ -10,7 +10,7 @@
                     <div style="display: flex;">
                         <span>联系人<span class="warn"> *</span>　</span>
                         <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user"
-                               @keyup="warn1Show=false">
+                               @keyup="warn1Show=false" maxlength="10">
                     </div>
                     <div class="warn" v-show="warn1Show">*请填写联系人</div>
                 </div>
@@ -18,7 +18,7 @@
                     <div style="display: flex;">
                         <span>联系方式<span class="warn"> *</span>　</span>
                         <input class="input-mes" type="text" placeholder="请填写有效联系方式" @blur="verifyPhon"
-                               v-model="phoneNum">
+                               v-model="phoneNum" maxlength="11">
                     </div>
                     <div class="warn" v-show="warn2Show">*电话格式有误，请重新输入</div>
                 </div>
@@ -1045,7 +1045,7 @@
                 this.calendarShow1 = false;      //日历组件
                 this.calendarShow2 = false;
                 this.warn1Show = false;
-                this.warn2Show = false;
+                //this.warn2Show = false;
                 this.warn3Show = false;
                 this.warn4Show = false;
                 this.warn5Show = false;
