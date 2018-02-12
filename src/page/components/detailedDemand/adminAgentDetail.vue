@@ -295,6 +295,7 @@ import * as vx from 'vuex'
         z-index: 11;
     }
     .detail-wrapper{
+        box-shadow: 0px 0px 15px #888;
         position:absolute;
         top:0;
         right:0;
