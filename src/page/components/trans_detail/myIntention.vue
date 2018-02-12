@@ -633,6 +633,7 @@
         overflow-y:scroll;
         color:#605E7C;
         background-color:#fff;
+        box-shadow: 0px 0px 15px #888;
         header{
             width:100%;
             height:141px;

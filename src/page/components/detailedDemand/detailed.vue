@@ -1,19 +1,34 @@
 <template>
     <div :class="{'detail-box':showMc}" @click.self="closewindow">
         <!-- 航线详情-->
-        <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
+        <transition name="slidex-fade">
+            <airlineDetailPayAfter v-if="mes.demandType === 0 " @closewindow="closewindow" :mes="mes"></airlineDetailPayAfter>
+        </transition>
         <!--运力详情-->
-        <transIndex v-if="mes.demandType === 1" @closewindow="closewindow" :mes="mes"></transIndex>
+         <transition name="slidex-fade">
+             <transIndex v-if="mes.demandType === 1" @closewindow="closewindow" :mes="mes"></transIndex>
+         </transition>
         <!--航线委托详情-->
-        <detailMyPublishAirLineEntrust v-if="mes.demandType === 3 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust>
+         <transition name="slidex-fade">
+             <detailMyPublishAirLineEntrust v-if="mes.demandType === 3 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust>
+         </transition>
         <!--运力委托详情-->
-        <detailMyPublishAirLineEntrust1 v-if="mes.demandType === 4 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust1>
+         <transition name="slidex-fade">
+             <detailMyPublishAirLineEntrust1 v-if="mes.demandType === 4 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishAirLineEntrust1>
+         </transition>
         <!--运营托管详情-->
-        <detailMyPublishTransportEntrust v-if="mes.demandType === 2 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishTransportEntrust>
+         <transition name="slidex-fade">
+             <detailMyPublishTransportEntrust v-if="mes.demandType === 2 && role.role != 2" @closewindow="closewindow" :mes="mes"></detailMyPublishTransportEntrust>
+         </transition>
         <!--太美委托详情-->
-        <adminDeleDetail v-if="(mes.demandType === 3||mes.demandType === 4) && role.role == 2" @closewindow="closewindow" :mes="mes"></adminDeleDetail>
+         <transition name="slidex-fade">
+             <adminDeleDetail v-if="(mes.demandType === 3||mes.demandType === 4) && role.role == 2" @closewindow="closewindow" :mes="mes"></adminDeleDetail>
+         </transition>
         <!--太美运营托管详情 -->
-       <adminAgentDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminAgentDetail>
+         <transition name="slidex-fade">
+             <adminAgentDetail v-if="mes.demandType === 2 && role.role == 2" @closewindow="closewindow" :mes="mes"></adminAgentDetail>
+         </transition>
+
     </div>
 </template>
 <script>
@@ -48,9 +63,9 @@
         },
         mounted(){
             let _this = this;
-            In.$on('demandType',(data,show = false)=>{
+            In.$on('demandType',(data,show = true)=>{
                 _this.mes = data;
-                _this.showMc = eval(show);
+                _this.showMc = false;
             });
             In.$on('closeDetailed',()=>{
                 _this.mes.demandType = "";

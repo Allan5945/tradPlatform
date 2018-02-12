@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap" @click.self="closeDetail">
+    <div @click.self="closeDetail">
         <div class="box shadow">
             <div class="panel-header">
                 <p class="mgr-l">需求详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
@@ -22,7 +22,6 @@
                 </footer>
             </template>
         </div>
-
         <transition name="fade">
             <div class="swrapper flex-center" v-show="show.swrapper">
                 <div class="rsn-box shadow">
