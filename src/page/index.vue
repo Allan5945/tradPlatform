@@ -34,7 +34,6 @@
 
     import localCommunication from '$src/public/js/tabulationBoxTrigger.js'
     import ChatSocket from '$src/page/components/timelyCommunication/communicationConstructor.js';
-
     export default {
         data() {
             return {
@@ -102,7 +101,7 @@
         },
         mounted: function () {
             if(Vue.prototype.$chatSocket == null){
-                Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
+                Vue.prototype.$chatSocket = new ChatSocket('$scoketIp' + this.role.id);
             };
             this.$ajax({
                 method: 'post',
