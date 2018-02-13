@@ -571,11 +571,11 @@
      } */
     .wrapper{
         position: fixed;
-        width: 100%;
+        width:607px;
         height: 100%;
         top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.2);
+        right: 0;
+        /* background-color: rgba(0, 0, 0, 0.2); */
         z-index: 33;
     }
     .detail-wrapper{
