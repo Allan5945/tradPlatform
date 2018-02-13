@@ -21,6 +21,9 @@ module.exports = [
         },
         allChunks: true
     }),
+    new webpack.DefinePlugin({
+        $socketIp: JSON.stringify('ws://192.168.22.9/socket?name=')
+    }),
     new htmlWebpackPlugin(
         {
             template:"build.html",  // 指定的文件

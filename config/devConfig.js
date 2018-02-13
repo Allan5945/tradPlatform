@@ -53,6 +53,7 @@ module.exports = {
         noInfo: true,
         overlay: true,
         port: 8088,
+        // host: "192.168.10.183",
         open: true,
         // openPage:"index.html",  // 修改默认打开的页面  ** 会打开未打包的html ！！
         proxy: {   // 代理请求
@@ -77,4 +78,9 @@ module.exports = {
         hints: false
     },
     devtool: process.env.NODE_ENV == 'production' ? '#nosources-source-map' : '#eval-source-map',
+    plugins:[
+        new webpack.DefinePlugin({
+            $socketIp: JSON.stringify('ws://localhost:80/socket?name='),
+        })
+    ]
 };
