@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper"  v-show="wrapperShow">
             <div class="detail-wrapper scroll" v-if="myShow">
                 <header>
                     <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>

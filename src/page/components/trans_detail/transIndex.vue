@@ -2,20 +2,17 @@
     <div class="trans-wrapper"  @click.self="closeDetail">
         <respondAirport v-if="respond"  @responseClose="closeDetail" :demandId="mes.demand"></respondAirport>
         <myIntention v-if="intentShow" @closeIntent="closeDetail" :demandId="mes.demand"></myintention>
-        <transAdmin v-if="adminShow" @closeAdmin="closeDetail"   :demand="mes.demand"></transAdmin>
     </div>
 </template>
 
 <script>
     import myIntention from './myIntention.vue'//航司方
     import respondAirport from './respondAirport.vue'//机场方
-    import transAdmin  from './transAdmin.vue'//太美
-    import * as vx from 'vuex';
+    import * as vx from 'vuex'
 
     export default {
         data() {
             return {
-                adminShow:false,
                 respond:false,
                 intentShow:false,
                 isSelf:false
@@ -78,8 +75,7 @@
         },
         components: {
             myIntention,
-            respondAirport,
-            transAdmin
+            respondAirport
         }
     }
 </script>
