@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div>
             <div class="detail-wrapper scroll" v-if="myShow">
                 <header>
                     <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
@@ -180,7 +179,6 @@
                         <div class="note-text">{{detailData.remark||'-'}}</div>
                     </div>
                 </div>
-            </div>
                 <div class="sub-need" v-show="orderShow">
                     <div class="need-til">关联的子需求</div>
                     <div class="need-btn" @click="newNeed" v-if="orderOver">新建子需求</div>

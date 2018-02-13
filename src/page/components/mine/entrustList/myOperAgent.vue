@@ -68,19 +68,10 @@
               </el-pagination>
             </div>
         </div>
-       <!-- <transition name="slidex-fade">
-           <agentDetail @close="closeAgentDetail" v-if="agentShow" :chatData="chatData"></agentDetail>
-       </transition>
-       <transition name="slidex-fade">
-           <deleDetail @close="closeDeleDetail" v-if="deleShow" :chatData="chatData"></deleDetail>
-       </transition> -->
-        <!-- <detailed></detailed> -->
     </div>
 </template>
 <script>
     import stateList from './../stateList.vue'
-    import agentDetail from './operAgentDetail.vue';
-    import deleDetail from './operDeleDetail.vue';
     import ln from './../../../../public/js/tabulationBoxTrigger';
     import detailed from '$src/page/components/detailedDemand/detailed.vue';
     import In from '$src/public/js/tabulationBoxTrigger.js';
@@ -208,14 +199,6 @@
 
             },
             getDetail:function(val){
-              /*  val.employeeId = this.role.id;
-                 this.chatData = val;
-                if(val.demandType == '2'){//托管详情
-                    this.agentShow = true;
-                }else{//委托详情
-                      this.deleShow = true;
-                }*/
-
                 let mes = {};
                 mes.demand = val.id;
                 mes.demandState = val.demandstate;
@@ -320,10 +303,7 @@
             }
         },
         components: {
-            stateList,
-            agentDetail,
-            deleDetail,
-            detailed
+            stateList
         }
     }
 </script>
