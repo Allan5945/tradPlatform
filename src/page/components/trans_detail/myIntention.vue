@@ -86,7 +86,7 @@
                              <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
                              <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
                              <div class="confirm-btn btn" @click="getMyDate">确定</div>
-                             <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                             <div class="cancel-btn btn btn-w" @click="calendarShow=!calendarShow">取消</div>
                            </div>
                             <calendar v-on:changeRangeDate="getDateRange" :initOpt="initdateData"></calendar>
                         </section>
@@ -230,13 +230,13 @@
                             <div v-if="selectBtnShow" v-show="val.responseProgress !== '2'">
                                 <div class="btns" v-if="val.releaseselected == '0' ">
                                     <div class="sel-btn" @click="toEdit(val)">已选定（点击此处可再次编辑）</div>
-                                    <div class="cancel-btn" @click="cancelSel(val)">撤销选定</div>
+                                    <div class="cancel-btn btn-w" @click="cancelSel(val)">撤销选定</div>
                                 </div>
                                 <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
                                 <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
                             <div v-if="val.responseProgress !== '2'">
-                                <div class="sure-btn complete-btn" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
+                                <div class="sure-btn complete-btn btn-w" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
                                 <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
                             </div>
                         </div>
@@ -982,7 +982,7 @@
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
               }
                .col-btn{
                   width:250px;
