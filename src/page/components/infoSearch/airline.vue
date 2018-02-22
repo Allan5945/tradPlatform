@@ -7,11 +7,11 @@
                     <div class="airport-img"><img :src="img" alt=""></div>
                     <div class="b-til">{{infoData.airlnCd || "-"}}</div>
                     <div class="sidebar">
-                        <div :class="{seleted:isInfo}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
-                         <div :class="{seleted:!isInfo}" @click="getNews"><span class="iconfont" >&#xe624;</span>新闻舆情</div>
+                        <div :class="{seleted:step == '1'}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
+                         <div :class="{seleted:step == '2'}" @click="getNews"><span class="iconfont" >&#xe624;</span>新闻舆情</div>
                     </div>
                 </div>
-                <div class="info">
+                <div class="info" v-scrollWatch="{name:'1',offset:250,callback:spyDomChange}">
                     <div class="i-til"><span class="iconfont">&#xe603;</span>基本信息</div>
                     <div class="i-content">
                         <div class="info-box">
@@ -55,7 +55,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="news" id="news">
+                    <div class="news" id="news" v-scrollWatch="{name:'2',offset:200,callback:spyDomChange}">
                         <div class="n-til">
                             <div class="n-name"><span class="iconfont">&#xe624;</span>新闻舆情</div>
                             <div><router-link :to="{name:'opinion',params:{key:infoData.airlnCd}}"><span class="more">查看更多></span></router-link></div>
@@ -94,6 +94,8 @@
     import myPic from '$src/static/img/Slice.png';
     import myPic1 from '$src/static/img/infobg.png';
     import searchHeader from './searchHeader.vue'
+    import scrollWatch from "vue-scrollwatch"
+
     export default {
         data() {
             return {
@@ -102,7 +104,7 @@
                 newsData:[],
                 showDetail:true,
                 basedistributionShow:false,
-                isInfo:true,
+                step:'1',
             }
         },
         watch: {
@@ -171,7 +173,8 @@
             getBaseInfo(){
                 let airline = document.getElementById('airline');
                 airline.scrollTop = 0;
-                this.isInfo = true;
+                this.step = '1';
+                //this.scrollTo("1");
             },
             getNews(){
                 let airline = document.getElementById('airline');
@@ -179,7 +182,17 @@
                  //获取新闻定位点
                 let news = document.getElementById('news');
                 airline.scrollTop = news.offsetTop;
-                this.isInfo = false;
+                this.step = '2';
+                //this.scrollTo("2");
+            },
+              spyDomChange(node) {
+              //console.log(node.name)
+                if (this.step !== node.name){
+                    this.step = node.name;
+                }
+             },
+            scrollTo(name) {
+                scrollWatch.scrollTo(name);
             }
         },
         mounted() {
@@ -188,6 +201,10 @@
             if(this.qyCode == ''){
                 this.showDetail=false;
             }
+
+        },
+         created(){
+            scrollWatch.setContainer("#airline");
 
         },
         components:{

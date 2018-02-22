@@ -219,6 +219,13 @@ a{
   scrollbar-base-color: #f8f8f8; /**//*滚动条的基本颜色*/
 }
 
+
+//textarea输入中文和字母换行解决方法
+textarea{
+  word-wrap: break-word;
+  word-break:break-all;
+}
+
 /* TimePicker样式 */
 /* .el-time-spinner.has-seconds .el-time-spinner__wrapper{
   width:23% !important;
@@ -252,4 +259,7 @@ a{
 }
 .el-time-spinner.has-seconds .el-time-spinner__wrapper{
    width:32% !important;
+}
+.popper__arrow{
+  left:22% !important;
 }
