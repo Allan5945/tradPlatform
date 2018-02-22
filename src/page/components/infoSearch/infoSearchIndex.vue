@@ -25,15 +25,15 @@
                         <div class="tips"><span>北京首都国际机场</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CTU','成都双流国际机场','机场')">
-                        <div class="img"><img :src="img2" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>成都双流国际机场</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CAN','广州白云国际机场','机场')">
-                        <div class="img"><img :src="img3" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>广州白云国际机场</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('PVG','上海浦东国际机场','机场')">
-                        <div class="img"><img :src="img4" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>上海浦东国际机场</span><span></span></div>
                     </div>
                 </div>
@@ -46,15 +46,15 @@
                         <div class="tips"><span>中国航空</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CES','东方航空','航司')">
-                        <div class="img"><img :src="img2" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>东方航空</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CHH','海南航空','航司')">
-                        <div class="img"><img :src="img3" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>海南航空</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CSN','南方航空','航司')">
-                        <div class="img"><img :src="img4" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>南方航空</span><span></span></div>
                     </div>
                 </div>
@@ -67,15 +67,15 @@
                         <div class="tips"><span>北京</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('上海','上海','城市')">
-                        <div class="img"><img :src="img2" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>上海</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('广州','广州','城市')">
-                        <div class="img"><img :src="img3" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>广州</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('成都','成都','城市')">
-                        <div class="img"><img :src="img4" alt=""></div>
+                        <div class="img"><img :src="img1" alt=""></div>
                         <div class="tips"><span>成都</span><span></span></div>
                     </div>
                 </div>

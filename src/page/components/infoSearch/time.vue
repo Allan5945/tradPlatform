@@ -2,13 +2,13 @@
     <div >
         <timeHeader @search = "searchData"></timeHeader>
         <div class="wrapper scroll" id="timeTable">
-            <div class="content" v-if="showDetail">
+            <div class="content" v-show="showDetail">
                 <div class="banner">
                     <div class="airport-img"><img :src="img" alt=""></div>
                     <div class="b-til">{{airportText}}</div>
                     <div class="sidebar">
-                        <div :class="{seleted:step == '1'}" @click="scrollTo('1')"><span class="iconfont">&#xe621;</span>时刻表</div>
-                        <div :class="{seleted:step == '2'}"  @click="scrollTo('2')"><span class="iconfont">&#xe628;</span>时刻分布</div>
+                        <div :class="{seleted:step == '1'}" @click="getTimeTable"><span class="iconfont">&#xe621;</span>时刻表</div>
+                        <div :class="{seleted:step == '2'}"  @click="getclockTable"><span class="iconfont">&#xe628;</span>时刻分布</div>
                     </div>
                 </div>
                 <div class="time-table" v-scrollWatch="{name:'1',offset:250,callback:spyDomChange}">
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="time-table" id="clockTable" v-scrollWatch="{name:'2',offset:0,callback:spyDomChange}">
+                <div class="time-table" id="clockTable" v-scrollWatch="{name:'2',offset:360,callback:spyDomChange}">
                       <div class="table-til">
                           <div class="t-til"><span class="iconfont">&#xe628;</span>时刻分布</div>
                       </div>
@@ -171,7 +171,7 @@
                 </div>
 
             </div>
-            <div class="content" style="color:red;text-align:center;line-height:67px;" v-else>暂无内容,请重新搜索</div>
+            <div class="content" style="color:red;text-align:center;line-height:67px;" v-show="!showDetail">暂无内容,请重新搜索</div>
         </div>
     </div>
 </template>
@@ -364,16 +364,11 @@
                 let ordertype = this.sorted3? 0:1;
                 this.sortData('lclArrvTm',ordertype);
             },
-            showPoint(num){
-                let point = {};
-                 point.rate = num/100,
-                 point.len = 34 * rate;
-                return point;
-            },
-           /* getTimeTable(){
+            getTimeTable(){
                 let timeTable = document.getElementById('timeTable');
                 timeTable.scrollTop = 0;
-                this.isTime = true;
+                this.step = '1';
+                //this.scrollTo('1')
             },
             getclockTable(){
                 let timeTable = document.getElementById('timeTable');
@@ -381,17 +376,19 @@
                  //获取时刻分布
                 let clockTable = document.getElementById('clockTable');
                 timeTable.scrollTop = clockTable.offsetTop;
-                this.isTime = false;
-            }*/
+                this.step = '2';
+                //this.scrollTo('2')
+            },
              spyDomChange(node) {
+              //console.log(node.name)
                 if (this.step !== node.name){
                     this.step = node.name;
                 }
              },
             scrollTo(name) {
-                 //this.step = name;
+              console.log(name)
                 scrollWatch.scrollTo(name);
-            },
+            }
         },
         mounted(){
             this.airportText = this.searchInfo.searchText;
@@ -401,8 +398,6 @@
             }
             /*this.getData();
             this.getClock(this.inputData,this.qyCode);*/
-
-            scrollWatch.setContainer("#timeTable");
 
         },
         created(){
