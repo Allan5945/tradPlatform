@@ -188,6 +188,11 @@
                     return
                 }
                 tabulationBoxTrigger.hierarchy = true;
+                tabulationBoxTrigger.$emit('demandType', {
+                    demandState: '',
+                    demandType: '',
+                    demand: '',
+                });
             },
             // 点击展示（航线、运力）详情
             needDetailClickFn: function (item) {
