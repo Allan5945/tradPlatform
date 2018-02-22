@@ -150,7 +150,7 @@
                 })
             },
             delayClose(){
-                setTimeout(this.closeThis,3000)
+                setTimeout(this.closeThis,3000);
             },
             openTips(txt){
                 this.text.tipsText = txt;
@@ -219,12 +219,15 @@
                             that.active = 2;
                             that.result = true;
                             that.ud.pwd = pwd;
-                            that.$ajax.post('logout')
-                                .then((res)=>{
-                                    if(res.data.opResult == 0){//修改成功后
-                                        that.$chatSocket.ws.close();
-                                    }
-                            })
+                            that.delayClose();
+                            setTimeout(()=>{
+                                that.$ajax.post('logout')
+                                    .then((res)=>{
+                                        if(res.data.opResult == 0){//修改成功后
+                                            that.$chatSocket.ws.close();
+                                        }
+                                })
+                            },3000)
                         }else if( res.data.opResult === '2' ){
                             that.active = 2;
                             that.result = false;
