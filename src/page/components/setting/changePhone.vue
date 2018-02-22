@@ -191,7 +191,7 @@
                     method: 'GET',
                     url: '/validPhone',
                     params:{
-                        mobile: phone,
+                        phone,
                         validType: 0
                     }
                 }).then((res)=>{

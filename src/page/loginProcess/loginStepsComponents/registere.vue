@@ -230,7 +230,7 @@
                     url: '/validPhone',
                     params:{
                         phone:this.collect.tel,
-                        validType:1
+                        validType: 0
                     },
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
