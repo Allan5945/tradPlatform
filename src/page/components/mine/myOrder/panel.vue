@@ -134,12 +134,13 @@
 
         },
         created: function () {
+            /*
             let fdom = document.querySelector('.my-center');
             if(!(fdom.offsetHeight===fdom.scrollHeight===fdom.clientHeight)){
                 this.fatherScroll = false;
                 fdom.style.overflow = 'hidden';
                 fdom.style.right = this.getScrollWidth()+'px';
-            }
+            }*/
             //取出拒绝原因
             let that = this;
             let id = this.detailData.id,
