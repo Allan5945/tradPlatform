@@ -192,17 +192,13 @@
             test(val,type){  //格式校验
                 let flag = false;
                 if(val == ''){ // 空值 长度
-                    return flag;
+                    return false;
                 }
                 if(type === 0){ //密码校验
                     flag = true;
                 }else if(type === 1 ) { //邮箱校验
-                    let mailreg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
-                    if(!mailreg.test(val)){
-                        flag = false;
-                    }else{
-                        flag = true;
-                    }
+                    let mailreg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                    flag = mailreg.test(val);
                 }
                 return flag;
             },

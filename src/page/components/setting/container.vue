@@ -38,6 +38,8 @@
                         </li>
                         <li>
                             <div>姓名</div>
+                            <input type="text" class="text-line" :class="{'text-edit':control.edit}" :disabled="!control.edit" v-model="userData.name" maxlength="20">
+                            <!--
                             <div class="text-line"
                                  :contenteditable="control.edit"
                                  :class="{'text-edit':control.edit}"
@@ -45,6 +47,7 @@
                                  @blur="changeText($event,0)">
                                 {{ userData.name }}
                             </div>
+                            -->
                         </li>
                         <li>
                             <div>公司</div>
@@ -52,6 +55,8 @@
                         </li>
                         <li>
                             <div>部门</div>
+                            <input type="text" class="text-line" :class="{'text-edit':control.edit}" :disabled="!control.edit" v-model="userData.department" maxlength="20">
+                            <!--
                             <div class="text-line"
                                  :contenteditable="control.edit"
                                  :class="{'text-edit':control.edit}"
@@ -59,9 +64,12 @@
                                  @blur="changeText($event,1)">
                                 {{ userData.department }}
                             </div>
+                            -->
                         </li>
                         <li>
                             <div>职务</div>
+                            <input type="text" class="text-line" :class="{'text-edit':control.edit}" :disabled="!control.edit" v-model="userData.post" maxlength="20">
+                            <!--
                             <div class="text-line"
                                  :contenteditable="control.edit"
                                  :class="{'text-edit':control.edit}"
@@ -69,6 +77,7 @@
                                  @blur="changeText($event,2)">
                                 {{userData.post}}
                             </div>
+                            -->
                         </li>
                     </ul>
                 </div>
@@ -368,6 +377,11 @@
             border-radius: 4px;
             border: 1px solid #fff;
             outline:none;
+            flex: 3;
+            text-indent: 8px;
+            &:disabled{
+                background-color: rgba(0,0,0,0);
+            }
             &:focus{
                 border: 1px solid rgba(60,120,255,.6);
                 box-shadow: 0 0 8px rgba(60,120,255,.6);
