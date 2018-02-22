@@ -542,7 +542,7 @@
             </div>
         </div>
         <div class="first-button" v-if="firstButtonShow">
-            <span style="width: 560px;height: 1px;background: black;"></span>
+            <span style="width: 560px;height: 1px;background: #ccc;"></span>
             <div class="buttons">
                 <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn" style="margin-right: 14px;"><span class="icon-item">&#xe609;</span>我有意向</button>
                 <button class="btn btn-w" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
@@ -1746,8 +1746,8 @@
             display: flex;
             justify-content: center;
             height:40px;
-            margin-top:30px;
-            margin-bottom: 43px;
+            margin-top:18px;
+            margin-bottom: 41px;
             >div{
                 height:40px;
                 line-height:40px;

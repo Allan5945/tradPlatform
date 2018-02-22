@@ -10,7 +10,8 @@ export default new Vue({
                narrow:true,  // 缩小聊天框
                chatData:{},
                change:false
-           }
+           },
+           listItem: false, //个人中心，列表是否为选中状态
        }
     }
 });

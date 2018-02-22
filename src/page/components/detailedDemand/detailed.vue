@@ -59,13 +59,14 @@
                 this.mes.demandType = "";
                 this.showMc = false;
                 In.hierarchy = false;
+                In.listItem = false;
             }
         },
         mounted(){
             let _this = this;
-            In.$on('demandType',(data,show = true)=>{
+            In.$on('demandType',(data,show = false)=>{
                 _this.mes = data;
-                _this.showMc = false;
+                _this.showMc = show;
             });
             In.$on('closeDetailed',()=>{
                 _this.mes.demandType = "";

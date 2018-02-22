@@ -140,6 +140,11 @@
                 this.getListData();
 //                console.info(3)
             },
+            tlistItem: function() {
+                if(tabulationBoxTrigger.listItem == false) {
+                    this.listItemIndex = '';
+                }
+            }
         },
         mounted() {
             this.judgeRole();
@@ -324,6 +329,7 @@
                 this.mes.demandState = item.demandstate;
                 this.mes.demandType = Number(item.demandtype);
                 tabulationBoxTrigger.hierarchy = true;  //将nav栏层级下调，不显示
+                tabulationBoxTrigger.listItem = true;
                 tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
             },
             // 点击关闭详情
@@ -339,6 +345,9 @@
         computed: {
             ref(){
                 return tabulationBoxTrigger.hierarchy;
+            },
+            tlistItem: function() {
+                return tabulationBoxTrigger.listItem;
             },
             ...vx.mapGetters([
                 'role'

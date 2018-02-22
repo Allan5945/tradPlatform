@@ -171,10 +171,18 @@
             'sendData.page': function () {
                 this.getListData();
             },
+            tlistItem: function() {
+                if(tabulationBoxTrigger.listItem == false) {
+                    this.listItemIndex = '';
+                }
+            }
         },
         computed: {
             ref(){
                 return tabulationBoxTrigger.hierarchy;
+            },
+            tlistItem: function() {
+                return tabulationBoxTrigger.listItem;
             },
             ...vx.mapGetters([
                 'role'
@@ -392,14 +400,8 @@
                 this.mes.demandType = Number(item.demandtype);
                 this.sendToMyPublishData = item;
                 tabulationBoxTrigger.hierarchy = true; //将nav栏层级下调，不显示
+                tabulationBoxTrigger.listItem = true;
                 tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
-            },
-            // 关闭所有弹出页面
-            closeAllShowFn: function () {
-                this.mes.demandType = '-1';
-                this.listItemIndex = '';
-//                tabulationBoxTrigger.hierarchy = false;
-                this.refreshFn();
             },
         },
         components: {
