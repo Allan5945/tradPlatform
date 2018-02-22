@@ -603,6 +603,7 @@
         color: #605e7c;
         background: white;
         overflow-y: scroll;
+        box-shadow: 0px 0px 15px #888;
         z-index: 17;
     }
     .ald-container::-webkit-scrollbar {

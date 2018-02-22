@@ -1485,6 +1485,7 @@
         background: white;
         color: $font-color;
         font-size: 1.2rem;
+        box-shadow: 0px 0px 15px #888;
         /*transform:translate(0,0);*/
         z-index: 100;
     }
