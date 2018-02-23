@@ -43,13 +43,14 @@
                         <div class="list-d item">
                             {{progress(val.demandProgress)}}
                         </div>
-                        <div class="list-e item"  @click="chat(val)" v-if="val.wetherResponse">
-                        <span class="icon-item talk-icon">&#xe602;
-                           <!-- <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span> -->
-                        </span>
+                        <div class="list-e item" @click.stop="chat(val)" v-if="val.wetherResponse">
+                            <span class="icon-item talk-icon">&#xe602;
+                               <!-- <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span> -->
+                            </span>
                         </div>
                         <div class="list-e item" v-else></div>
-                        <div class="list-f item color">查看详情<span class="icon-item">&#xe686;</span>
+                        <div class="list-f item color">
+                            查看详情<span class="icon-item">&#xe686;</span>
                         </div>
                     </div>
                 </div>
