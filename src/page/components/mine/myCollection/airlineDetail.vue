@@ -50,7 +50,7 @@
         height: 100%;
         top: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.4);
         z-index: 11;
     }
 </style>

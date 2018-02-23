@@ -87,9 +87,10 @@
                 <div v-if="role.role == 2"></div>
                 <div v-else>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
-                    <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                    <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
-                    <div class="col-btn" :class="{active: !inventBtnShow}"  @click="collect" v-else>收藏</div>
+                    <div class="intent-btn btn-b" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                    <div class="col-btn btn-b" :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect"
+                         @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn btn-w" :class="{active: !inventBtnShow}"  @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
@@ -410,13 +411,13 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#fff;
-                  background-color:#3c78ff;
+                  /*color:#fff;*/
+                  /*background-color:#3c78ff;*/
                   text-align:center;
                   border-radius:100px;
                   margin-right:10px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   span{
                     font-size:1.8rem;
                     margin-right:15px;
@@ -427,22 +428,22 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#605E7C;
-                  background-color:#fff;
+                  /*color:#605E7C;*/
+                  /*background-color:#fff;*/
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   &:hover{
                       color:#fff;
                       background-color:#3c78ff;
                   }
               }
-              >.cancel{
+              /*>.cancel{
                   color:#fff;
                   background-color:#3c78ff;
 
-              }
+              }*/
               >.active{
                 width:180px;
               }

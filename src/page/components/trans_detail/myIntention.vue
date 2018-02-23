@@ -248,9 +248,9 @@
             <footer v-show="footShow">
                 <div class="foot-tips" v-if="!isSign">{{signText}}</div>
                 <div class="btn">
-                    <div class="deal-btn" v-if="!isSign" @click="toDeal" v-show="signing">申请签约</div>
-                    <div class="col-btn" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
-                    <div class="col-btn" @click="closeNeed" v-else>结束需求</div>
+                    <div class="deal-btn btn-b" v-if="!isSign" @click="toDeal" v-show="signing">申请签约</div>
+                    <div class="col-btn btn-w" style="color:#ccc;backgroundColor:#f5f5f5;" v-if="sureOderShow">结束需求</div>
+                    <div class="col-btn btn-w" @click="closeNeed" v-else>结束需求</div>
                 </div>
             </footer>
         </div>
@@ -977,24 +977,24 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#605E7C;
-                  background-color:#fff;
+                  /*color:#605E7C;*/
+                  /*background-color:#fff;*/
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
                   /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
               }
                .col-btn{
-                  width:250px;
-                  &:hover{
+                  width:100px;
+                  /*&:hover{
                     color:#fff;
                     background-color: #3C78FF;
-                  }
+                  }*/
                 }
               .deal-btn{
                   width:180px;
-                    color:#fff;
-                    background-color: #3C78FF;
+                    /*color:#fff;*/
+                    /*background-color: #3C78FF;*/
                     margin-right:10px;
               }
           }

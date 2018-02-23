@@ -197,10 +197,10 @@
               </div>
               <div class="btn" v-else>
                   <div class="intent-btn"  @click="toIntent" v-if="withdraw">重新发起意向</div>
-                  <div class="cancel-btn"  @click="cancelIntent" v-else>取消意向</div>
-                  <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
-                  @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
-                  <div class="col-btn" @click="collect" v-else>收藏</div>
+                  <div class="cancel-btn btn-w"  @click="cancelIntent" v-else>取消意向</div>
+                  <div class="col-btn cancel btn-b" @click="cancelCollect" v-if="isCollect"
+                       @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                  <div class="col-btn btn-w" @click="collect" v-else>收藏</div>
               </div>
           </footer>
            <footer  v-else>
@@ -868,12 +868,12 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#605E7C;
-                  background-color:#fff;
+                  /*color:#605E7C;*/
+                  /*background-color:#fff;*/
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   &:hover{
                     background-color:#3c78ff;
                     color:#fff;

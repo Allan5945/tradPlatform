@@ -1624,7 +1624,12 @@
             },
             moreShowFn: function () { // 判断省略号是否显示
 //                console.info(this.$refs.littleLabelWrapper.offsetWidth);
-                if(this.$refs.littleLabelWrapper.offsetWidth >= 148) {
+                /*if(this.$refs.littleLabelWrapper.offsetWidth >= 148) {
+                    this.moreShow = true;
+                }else {
+                    this.moreShow = false;
+                }*/
+                if(this.directionPublicCity.length > 0) {
                     this.moreShow = true;
                 }else {
                     this.moreShow = false;

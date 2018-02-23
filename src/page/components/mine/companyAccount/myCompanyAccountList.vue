@@ -201,7 +201,6 @@
                 this.mes.demandState = item.demandstate;
                 this.mes.demandType = Number(item.demandType);
                 tabulationBoxTrigger.hierarchy = true;
-                console.info(this.mes)
                 tabulationBoxTrigger.$emit('demandType',...[this.mes,'true']);
             },
             closeAllFn: function () {

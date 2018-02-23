@@ -377,7 +377,7 @@
                             <div class="left item-child" style="position:relative;">
                                 <span class="margin-right">拦标价格</span>　
                                 <div class="choose-input">
-                                    <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" maxlength="15" style="border: 0;"><span>元</span>
+                                    <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" maxlength="10" style="border: 0;"><span>元</span>
                                 </div>
                                 <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>

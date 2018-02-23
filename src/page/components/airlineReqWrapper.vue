@@ -382,7 +382,7 @@
                             <div class="left item-child" style="position:relative;">
                                 <span class="margin-right">拦标价格</span>　
                                 <div class="choose-input">
-                                    <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" maxlength="15" style="border: 0;"><span>元</span>
+                                    <input class="input-mes" type="text" placeholder="填写举例：100000" v-model="blockbidPrice" maxlength="10" style="border: 0;"><span>元</span>
                                 </div>
                                 <div class="warn" v-show="warn16Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                             </div>
@@ -680,7 +680,6 @@
                         this.warn14Show = false;
                     }else {
                         this.warn14Show = true;
-                        return
                     }
                 }
             },
@@ -693,7 +692,6 @@
                         this.warn15Show = false;
                     }else {
                         this.warn15Show = true;
-                        return
                     }
                 }
             },
@@ -701,12 +699,11 @@
                 if(this.blockbidPrice == '' || this.blockbidPrice == null) {
                     this.warn16Show = false;
                 }else {
-                    let blockbidPrice = this.blockbidPrice.replace(/(^\s*)|(\s*$)/g,"");
-                    if (/^[0-9]+\.?[0-9]{0,9}$/.test(blockbidPrice) || blockbidPrice == '') { // 输入必须为数字的判断
+//                    let blockbidPrice = this.blockbidPrice.replace(/(^\s*)|(\s*$)/g,"");
+                    if (/^[0-9]+\.?[0-9]{0,9}$/.test(this.blockbidPrice) || this.blockbidPrice == '') { // 输入必须为数字的判断
                         this.warn16Show = false;
                     } else {
                         this.warn16Show = true;
-                        return
                     }
                 }
             },
@@ -738,9 +735,9 @@
             this.setOptFn();
             this.setOptFn0();
         },
-        updated() {
+       /* updated() {
             this.moreShowFn();
-        },
+        },*/
         computed: {
             num: function () { // 其他说明中已输入的字数
                 return this.remarkMsg.length;
@@ -869,13 +866,6 @@
                 let alRWopenOnly = document.getElementById('alRWopenOnly');
                 this.user = this.acceptData.contact;  // 联系人
                 this.phoneNum = this.acceptData.iHome; // 联系方式
-//                this.myDate1 = this.acceptData.sailingtime; // 拟开时间
-//                this.calendarInitDay1 = this.acceptData.sailingtime.split('-')[0];
-//                this.calendarInitDay2 = this.acceptData.sailingtime.split('-')[1];
-
-//                this.myDate2 = this.acceptData.periodValidity; // 发布有效期
-//                this.calendarInitDay3 = this.acceptData.periodValidity.split('-')[0];
-//                this.calendarInitDay4 = this.acceptData.periodValidity.split('-')[1];
 
                 this.scheduleShow = this.acceptData.days; // 拟开班期
                 this.typeChoose = this.acceptData.aircrfttyp; // 拟开机型
@@ -1034,6 +1024,7 @@
                     alRWopenOnly.checked = true;
                     this.directionPublicShow = true;
                     this.directionalgoalChangeFn();
+                    this.moreShowFn();
                 }
             },
             // 将航司id转换成汉字
@@ -2029,8 +2020,12 @@
                 })
             },
             moreShowFn: function () { // 判断省略号是否显示
-//                console.info(this.$refs.littleLabelWrapper.offsetWidth);
-                if(this.$refs.littleLabelWrapper.offsetWidth >= 195) {
+                /*if(this.$refs.littleLabelWrapper.offsetWidth >= 195) {
+                    this.moreShow = true;
+                }else {
+                    this.moreShow = false;
+                }*/
+                if(this.directionPublicCity.length > 0) {
                     this.moreShow = true;
                 }else {
                     this.moreShow = false;

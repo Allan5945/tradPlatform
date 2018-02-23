@@ -5,7 +5,7 @@
                     <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                     <!-- <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div> -->
                     <div class="head-til">{{detailData.title||'-'}}</div>
-                    <div class="contact" @click="chat">联系用户</div>
+                    <div class="contact btn-b" @click="chat">联系用户</div>
                     <div class="tips">
                         <div>委托方&nbsp;{{CpyNm||'-'}}</div>
                         <div>创建于{{detailData.releasetime||'-'}}</div>
@@ -181,7 +181,7 @@
                 </div>
                 <div class="sub-need" v-show="orderShow">
                     <div class="need-til">关联的子需求</div>
-                    <div class="need-btn" @click="newNeed" v-if="orderOver">新建子需求</div>
+                    <div class="need-btn btn-b" @click="newNeed" v-if="orderOver">新建子需求</div>
                 </div>
                 <div class="son-need-list" v-if="sonListShow">
                     <div class="intent-form">
@@ -208,13 +208,13 @@
                 <footer v-if="isClose">
                     <div class="foot-tips" v-if="tipShow">*拒绝原因：{{refuseText}}</div>
                     <div class="btn" v-if="orderShow">
-                        <div class="test-btn" @click="order" v-if="orderOver">订单完成</div>
-                        <div class="can-btn canOper" @click="cancelDele" v-if="orderOver">取消委托</div>
+                        <div class="test-btn btn-b" @click="order" v-if="orderOver">订单完成</div>
+                        <div class="can-btn canOper btn-w" @click="cancelDele" v-if="orderOver">取消委托</div>
                         <!-- <div class="can-btn canOper" @click="cancelDele" style="width:160px;" v-else>取消委托</div> -->
                     </div>
                     <div class="btn" v-else>
-                        <div class="test-btn" @click="accept" v-if="!tipShow">接受委托</div>
-                        <div class="can-btn" @click="refuse" v-if="!tipShow">拒绝</div>
+                        <div class="test-btn btn-b" @click="accept" v-if="!tipShow">接受委托</div>
+                        <div class="can-btn btn-w" @click="refuse" v-if="!tipShow">拒绝</div>
                     </div>
                 </footer>
                 <!--  <footer v-else>
@@ -655,12 +655,12 @@
             width:100px;
             height:20px;
             line-height:20px;
-            color:#ffffff;
+            /*color:#ffffff;*/
             text-align:center;
-            background-color:#3c78ff;
+            /*background-color:#3c78ff;*/
             border-radius:100px;
             cursor:pointer;
-            box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+            /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
         }
         .tips{
           position:relative;
@@ -825,12 +825,12 @@
         width:100px;
          height:20px;
         line-height:20px;
-        color:#ffffff;
+        /*color:#ffffff;*/
         text-align:center;
-        background-color:#3c78ff;
+        /*background-color:#3c78ff;*/
         border-radius:100px;
         cursor:pointer;
-        box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+        /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
 
       }
     }
@@ -912,13 +912,13 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#fff;
-                  background-color:#3c78ff;
+                  /*color:#fff;*/
+                  /*background-color:#3c78ff;*/
                   text-align:center;
                   border-radius:100px;
                   margin-right:10px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   span{
                     font-size:1.8rem;
                     margin-right:15px;
@@ -929,17 +929,17 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:rgba(96,94,124,.6);
-                  background-color:#fff;
+                  /*color:rgba(96,94,124,.6);*/
+                  /*background-color:#fff;*/
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
                   box-sizing:border-box;
-                  border:1px solid rgba(96,94,124,.6);
-                   &:hover{
+                  /*border:1px solid rgba(96,94,124,.6);*/
+                   /*&:hover{
                     color:#fff;
                     background-color: #3C78FF;
-                  }
+                  }*/
               }
               .canOper{
                   width:100px;
