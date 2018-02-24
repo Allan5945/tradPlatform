@@ -783,7 +783,7 @@
                     trans.scrollTop = 0;
                     return false;
                 }
-                if(this.intendedDpt == ''){//起始机场
+                if(this.intendedDpt == '' || this.qyCode3 == ''){//起始机场
                     this.isError3 = true;
                      trans.scrollTop = 0;
                     return false;
@@ -886,7 +886,7 @@
                     trans.scrollTop = 0;
                     return false;
                 }
-                if(this.intendedDpt == ''){//起始机场
+                if(this.intendedDpt == '' || this.qyCode3 == ''){//起始机场
                     this.isError3 = true;
                      trans.scrollTop = 0;
                     return false;
