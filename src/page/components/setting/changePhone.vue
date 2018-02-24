@@ -315,7 +315,7 @@
                     method: 'GET',
                     url: '/switchPhone',
                     params:{
-                        mobile: np,
+                        phone: np,
                         validCode: code
                     }
                 }).then(res=>{
