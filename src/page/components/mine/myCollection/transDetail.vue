@@ -3,7 +3,11 @@
         <div class="detail-wrapper" v-if="myShow1">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+                <div class="head-til">
+                    <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                        <lonSpan :txt="myTitle"></lonSpan>
+                    </span>
+                </div>
                 <div class="tips">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
                     <span>已有{{intentionCount||'0'}}位用户发起意向</span>
@@ -87,9 +91,9 @@
                 <div v-if="role.role == 2"></div>
                 <div v-else>*隐藏信息在提交意向后可查看</div>
                 <div class="btn">
-                    <div class="intent-btn" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
-                     <div class="col-btn cancel " :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
-                    <div class="col-btn" :class="{active: !inventBtnShow}" @click="collect" v-else>收藏</div>
+                    <div class="intent-btn btn-b" @click="haveInvent" v-if="inventBtnShow"><span class="iconfont">&#xe62f;</span>我有意向</div>
+                     <div class="col-btn cancel btn-b" :class="{active: !inventBtnShow}" @click="cancelCollect" v-if="isCollect" @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
+                    <div class="col-btn btn-w" :class="{active: !inventBtnShow}" @click="collect" v-else>收藏</div>
                 </div>
             </footer>
         </div>
@@ -110,6 +114,7 @@
  import payFailDialog  from '$src/page/components/trans_detail/payFailOfBalance.vue'
 
  import myResponse from './myResponse.vue'
+ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
  export default {
      data(){
@@ -128,7 +133,8 @@
              dialog:false,
              payDialog:false,
              inventBtnShow:false,
-             payFailShow:false
+             payFailShow:false,
+             myTitle: '',
          }
      },
      props:['needData'],
@@ -223,6 +229,7 @@
                 }
                 })
                 .then((response) => {
+                    this.myTitle = `${response.data.data.title}运力投放`;
                     if(response.data.receiveIntention == null){
                         this.myShow1 = true;
                         this.intentionCount = response.data.intentionCount;
@@ -271,7 +278,8 @@
             transDialog,
             paySuccess,
             myResponse,
-            payFailDialog
+            payFailDialog,
+          lonSpan,
         }
 }
 </script>
@@ -298,7 +306,7 @@
         background-color:#fff;
         header{
             width:100%;
-            height:141px;
+            /*height:141px;*/
             background-color:rgba(216,216,216,.17);
         }
         footer{
@@ -310,7 +318,14 @@
         }
     }
     header{
+        padding-top: 41px;
         .top-til{
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 545px;
+            background: white;
+            z-index:2;
           justify-content: space-between;
           display: flex;
           height:41px;
@@ -335,12 +350,13 @@
           }
         }
         .head-til{
-          font-size:2rem;
-          font-weight:bold;
-          margin-top:30px;
-          padding-left:40px;
-          height:20px;
-          line-height:20px;
+            padding-left:40px;
+            display: flex;
+            margin: 30px 0 15px 0;
+            height: 25px;
+            max-width: 400px;
+            font-size: 20px;
+            font-weight: bold;
         }
         .tips{
           height:12px;
@@ -436,13 +452,13 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#fff;
-                  background-color:#3c78ff;
+                  /*color:#fff;*/
+                  /*background-color:#3c78ff;*/
                   text-align:center;
                   border-radius:100px;
                   margin-right:10px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   span{
                     font-size:1.8rem;
                     margin-right:15px;
@@ -453,12 +469,12 @@
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#605E7C;
-                  background-color:#fff;
+                  /*color:#605E7C;*/
+                  /*background-color:#fff;*/
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   &:hover{
                       color:#fff;
                       background-color:#3c78ff;

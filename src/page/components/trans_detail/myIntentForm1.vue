@@ -223,11 +223,11 @@
                                 <div class="resource-others">
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="13airCWait"
-                                               @click="arrvTimeresourcesFn1"><label for="airCWait" class="input-label">带协调</label>
+                                               @click="arrvTimeresourcesFn1"><label for="13airCWait" class="input-label">带协调</label>
                                     </div>
                                     <div class="vertical-center">
                                         <input type="radio" class="magic-radio" name="airport-c-res" id="13airCEnough"
-                                               @click="arrvTimeresourcesFn2"><label for="airCEnough">时刻充足</label>
+                                               @click="arrvTimeresourcesFn2"><label for="13airCEnough">时刻充足</label>
                                     </div>
                                 </div>
                             </div>
@@ -1203,6 +1203,7 @@
         color: $icon-color;
         background: #F5F5F5;
         white-space: nowrap;
+        font-weight: bold;
     }
 
     .little-label-close {

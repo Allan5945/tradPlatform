@@ -1,8 +1,8 @@
 <template>
     <div class="agent-form scroll popup">
         <div class="select-box">
-            <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
-            <div>展开填写完整需求订单</div>
+            <div class="check-box"><input type="checkbox" id="zhankai2" v-model="allFormShow"></div>
+            <label for="zhankai2">展开填写完整需求订单</label>
         </div>
         <div class="t-part" v-show="!allFormShow">
             <div class="form-box">
@@ -270,6 +270,7 @@
      .select-box{
         display:flex;
         justify-content: flex-end;
+         align-items: center;
         >div{
             height:26px;
             margin-right:5px;

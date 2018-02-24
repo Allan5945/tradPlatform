@@ -3,7 +3,11 @@
       <div class="plan-wrapper scroll" v-if="responseShow">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
-              <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+              <div class="head-til">
+                  <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                        <lonSpan :txt="myTitle"></lonSpan>
+                  </span>
+              </div>
               <div class="tips">
                   <span>创建于{{detailData.releasetime||'-'}}</span>
                   <span>已有{{intentionCount||'0'}}位用户发起意向</span>
@@ -14,7 +18,11 @@
               <div class="table-form">
                   <div>
                       <div>联系人</div>
-                      <div>{{detailData.contact||'-'}}</div>
+                      <div>
+                          <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="detailData.contact"></lonSpan>
+                          </span>
+                      </div>
                   </div>
                   <div>
                       <div>联系方式</div>
@@ -205,10 +213,10 @@
           </footer>
            <footer  v-else>
               <div class="btn">
-                  <div class="order" v-show="orderComplete" style="margin-right:10px;">已生成订单，无法更改</div>
-                  <div class="col-btn cancel " @click="cancelCollect" v-if="isCollect"
+                  <div class="order btn-w" v-show="orderComplete" style="margin-right:10px;">已生成订单，无法更改</div>
+                  <div class="col-btn cancel btn-b" @click="cancelCollect" v-if="isCollect"
                   @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
-                  <div class="col-btn" @click="collect" v-else>收藏</div>
+                  <div class="col-btn btn-w" @click="collect" v-else>收藏</div>
               </div>
           </footer>
       </div>
@@ -229,6 +237,7 @@
  import transDialog from '$src/page/components/trans_detail/transDialog.vue'
  import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue'
  import payFailDialog  from '$src/page/components/trans_detail/payFailOfBalance.vue'
+ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
  export default {
      data(){
@@ -253,7 +262,8 @@
              detailData:{},
              intentionCount:0,
              text:'已收藏',
-             planState:''
+             planState:'',
+             myTitle: '',
          }
      },
       components: {
@@ -261,7 +271,8 @@
             transDialog,
             paySuccess,
             reIntentForm,
-            payFailDialog
+            payFailDialog,
+          lonSpan
       },
      props:['resData'],
      methods:{
@@ -545,6 +556,7 @@
        mounted() {
           this.intentionCount = this.resData.intentionCount;
           this.detailData = this.resData.data;
+           this.myTitle = `${this.detailData.title}运力投放`;
           this.planData = this.resData.receiveIntention;
 
            //选定状态无法编辑
@@ -648,7 +660,7 @@
         background-color:#fff;
         header{
             width:100%;
-            height:141px;
+            /*height:141px;*/
             background-color:rgba(216,216,216,.2);
         }
         footer{
@@ -661,7 +673,14 @@
         }
     }
     header{
+        padding-top: 41px;
         .top-til{
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 545px;
+            background: white;
+            z-index:2;
           justify-content: space-between;
           display: flex;
           height:41px;
@@ -685,12 +704,13 @@
           }
         }
         .head-til{
-          font-size:20px;
-          font-weight:bold;
-          margin-top:30px;
-          padding-left:40px;
-          height:20px;
-          line-height:20px;
+            padding-left:40px;
+            display: flex;
+            margin: 30px 0 15px 0;
+            height: 25px;
+            max-width: 400px;
+            font-size: 20px;
+            font-weight: bold;
         }
         .tips{
           height:12px;

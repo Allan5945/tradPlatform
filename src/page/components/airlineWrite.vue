@@ -9,8 +9,7 @@
                 <div class="right item-child">
                     <div style="display: flex;">
                         <span>联系人<span class="warn"> *</span>　</span>
-                        <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user"
-                               @keyup="warn1Show=false">
+                        <input class="input-mes" type="text" placeholder="请填写有效联系人" v-model="user" maxlength="20" @keyup="warn1Show=false">
                     </div>
                     <div class="warn" v-show="warn1Show">*请填写联系人</div>
                 </div>

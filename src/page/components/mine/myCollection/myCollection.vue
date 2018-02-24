@@ -62,7 +62,7 @@
                    :page-size="numPrePage"
                    layout="prev, pager, next, jumper, total"
                    :total="totalCount">
-                        </el-pagination>
+            </el-pagination>
         </div>
         <transition name="slidex-fade">
             <transDetail v-if="transShow" @closeDetail="closeDetail" @showDetail="showTrans" :needData="needData"></transDetail>
@@ -93,7 +93,9 @@
                 stateWriting: '状态',
                 //不同需求类型展现的状态不同
                 type: ['需求类型','运力投放','航线需求'],
-                state: ['状态','需求审核','需求发布','意向征集','订单确认','订单完成','关闭'],
+                state: [],
+                state0: ['状态','需求发布','意向征集','订单确认','交易完成','关闭'],  // 航司登录
+                state1: ['状态','需求发布','意向征集','订单确认','订单完成','关闭'],
                 collectList:null,
                 needData:null,
                 numPrePage:1,
@@ -213,6 +215,9 @@
                         case "订单完成":
                             return "4";
                             break;
+                        case "交易完成":
+                            return "4";
+                            break;
                         case "需求审核":
                             return "9";
                             break;
@@ -269,6 +274,11 @@
                 this.type = ['运力投放'];
             }else if(this.role.role == 0){//航司
                 this.type = ['航线需求'];
+            }
+            if(this.role.role == 0) { // 航司
+                this.state = this.state0;
+            }else {
+                this.state = this.state1;
             }
          },
         components: {

@@ -22,19 +22,19 @@
                 <div class="a-content">
                      <div class="a-box" @click="searchHot('PEK','北京首都国际机场','机场')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>北京首都国际机场</span><span></span></div>
+                        <div class="tips"><span>北京首都国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CTU','成都双流国际机场','机场')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>成都双流国际机场</span><span></span></div>
+                        <div class="tips"><span>成都双流国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CAN','广州白云国际机场','机场')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>广州白云国际机场</span><span></span></div>
+                        <div class="tips"><span>广州白云国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('PVG','上海浦东国际机场','机场')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>上海浦东国际机场</span><span></span></div>
+                        <div class="tips"><span>上海浦东国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                 </div>
             </div>
@@ -42,20 +42,30 @@
                 <div class="a-til">热门航司</div>
                 <div class="a-content">
                     <div class="a-box" @click="searchHot('CCA','中国航空','航司')">
-                        <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>中国航空</span><span></span></div>
+                        <!--<div class="img"><img :src="img1" alt=""></div>-->
+                        <div class="img svg-wrapper">
+                            <div class="svg-container">
+                                <svg class="icon svg-logo" aria-hidden="true">
+                                    <use xlink:href="#icon-zhongguoguojihangkongneimengguyouxiangongsi-CA"></use>
+                                </svg>
+                                <svg class="icon svg-text" aria-hidden="true">
+                                    <use xlink:href="#icon-zhongguoguojihangkongneimengguyouxiangongsi-CA"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="tips"><span>中国航空</span><span>327架客机</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CES','东方航空','航司')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>东方航空</span><span></span></div>
+                        <div class="tips"><span>东方航空</span><span>327架客机</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CHH','海南航空','航司')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>海南航空</span><span></span></div>
+                        <div class="tips"><span>海南航空</span><span>327架客机</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CSN','南方航空','航司')">
                         <div class="img"><img :src="img1" alt=""></div>
-                        <div class="tips"><span>南方航空</span><span></span></div>
+                        <div class="tips"><span>南方航空</span><span>327架客机</span></div>
                     </div>
                 </div>
             </div>
@@ -259,6 +269,31 @@ import myPic4 from '$src/static/img/airport4.png';
         padding:0;
         margin:0;
     }
+    .icon {
+        /*width: 1em;*/
+        /*height: 1em;*/
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+    }
+    .svg-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .svg-container {
+        display: flex;
+        .svg-logo {
+            width: 5.5rem;
+            height: 6rem;
+        }
+        .svg-text {
+            width: 1em;
+            height: 1em;
+        }
+    }
+
+
     .wrapper{
         position: absolute;
         width: 100%;

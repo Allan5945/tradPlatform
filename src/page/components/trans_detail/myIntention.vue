@@ -6,18 +6,26 @@
                   <span class="t-name">{{detailData.demandtypeStr||'-'}}详情</span>
                   <span class="iconfont" @click="closeIntent">&#xe62c;</span>
                 </div>
-                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+                <div class="head-til">
+                    <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                        <lonSpan :txt="myTitle"></lonSpan>
+                    </span>
+                </div>
                 <div class="note">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
                     <span>状态：<span style="color:#3C78FF;">{{detailData.demandprogressStr||'-'}}</span></span>
                 </div>
-                <div class="rep-btn" v-show="rePublish" @click="toPublish">重新发布</div>
+                <div class="rep-btn btn-b" v-show="rePublish" @click="toPublish">重新发布</div>
             </header>
             <div class="content">
                 <div class="table-form">
                     <div>
                         <div>联系人</div>
-                        <div>{{detailData.contact||'-'}}</div>
+                        <div>
+                            <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="detailData.contact"></lonSpan>
+                            </span>
+                        </div>
                     </div>
                      <div>
                         <div>联系方式</div>
@@ -229,15 +237,15 @@
                             </div>
                             <div v-if="selectBtnShow" v-show="val.responseProgress !== '2'">
                                 <div class="btns" v-if="val.releaseselected == '0' ">
-                                    <div class="sel-btn" @click="toEdit(val)">已选定（点击此处可再次编辑）</div>
+                                    <div class="sel-btn btn-w" @click="toEdit(val)">已选定（点击此处可再次编辑）</div>
                                     <div class="cancel-btn btn-w" @click="cancelSel(val)">撤销选定</div>
                                 </div>
-                                <div class="sure-btn" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
+                                <div class="sure-btn btn-b" @click="toSelect(val)" v-show="!selected" v-else>选定</div>
                                 <div class="sure-btn" v-show="selected" style="backgroundColor:#ccc;color:#fff;" v-if="val.releaseselected !== '0' ">选定</div>
                             </div>
                             <div v-if="val.responseProgress !== '2'">
                                 <div class="sure-btn complete-btn btn-w" v-if="val.responseselected == '0' ">已生成订单，无法更改</div>
-                                <div class="sure-btn" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
+                                <div class="sure-btn btn-b" v-show="planComplete" style="backgroundColor:#ccc;color:#fff;" v-else>选定</div>
                             </div>
                         </div>
                     </div>
@@ -271,6 +279,7 @@
   /*import sureForm from './../airlineAffirm.vue'*/
   import dataForm from './dataForm.vue'
   import  signDialog from './signDialog.vue'
+  import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
  export default {
      data(){
          return{
@@ -301,7 +310,8 @@
              calendarInitDay2:'',
              myDate:'',
              changeValidityShow:true,
-             sorted:true
+             sorted:true,
+             myTitle: '',
          }
      },
      props:['demandId'],
@@ -508,7 +518,7 @@
                      this.calendarInitDay1 = this.detailData.periodValidity.split('-')[0];
                      //this.initDate();
                      this.calendarInitDay2 = this.detailData.periodValidity.split('-')[1];
-
+                    this.myTitle = `${response.data.data.title}运力投放`;
                     //判断状态
                     let progress = this.detailData.demandprogress;
                     if(progress == "3"||progress == "10"){//3.关闭（审核不通过、下架、过期）,10.已拒绝
@@ -615,7 +625,8 @@
             signDialog,
             sureForm,
             dataForm,
-            calendar
+            calendar,
+         lonSpan,
         }
 }
 </script>
@@ -636,7 +647,7 @@
         box-shadow: 0px 0px 15px #888;
         header{
             width:100%;
-            height:141px;
+            /*height:141px;*/
             background-color:rgba(216,216,216,.2);
         }
         footer{
@@ -663,9 +674,6 @@
           background-color:#fff;
           padding:0 15px 0 40px;
           box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
-          .t-name{
-
-          }
           .iconfont{
             display:block;
             box-sizing:border-box;
@@ -684,12 +692,13 @@
         position:relative;
         /* padding-top:40px; */
         .head-til{
-          font-size:2rem;
-          font-weight:bold;
-          margin-top:30px;
-          padding-left:40px;
-          height:20px;
-          line-height:20px;
+            padding-left:40px;
+            display: flex;
+            margin: 30px 0 15px 0;
+            height: 25px;
+            max-width: 400px;
+            font-size: 20px;
+            font-weight: bold;
         }
         .note{
           height:12px;
@@ -707,9 +716,9 @@
             width:100px;
             height:20px;
             line-height:20px;
-            color:#ffffff;
+            /*color:#ffffff;*/
             text-align:center;
-            background-color:#3c78ff;
+            /*background-color:#3c78ff;*/
             border-radius:100px;
             cursor:pointer;
         }
@@ -832,16 +841,16 @@
                 cursor:pointer;
                 .sel-btn{
                   width:250px;
-                  color:#fff;
-                  background-color:#3C78FF;
+                  /*color:#fff;*/
+                  /*background-color:#3C78FF;*/
                   margin-right:10px;
                   border-radius:100px;
                   text-align:center;
                 }
                 .cancel-btn{
                   width:100px;
-                  color:#fff;
-                  background-color:#3C78FF;
+                  /*color:#fff;*/
+                  /*background-color:#3C78FF;*/
                   border-radius:100px;
                   text-align:center;
                 }

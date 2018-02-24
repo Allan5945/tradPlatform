@@ -106,7 +106,11 @@
                         <div>合作方式</div>
                     </div>
                     <div class="right item">
-                        <div class="item-a" v-show="contactMsgShow">{{myData.contact}}</div>
+                        <div class="item-a" v-show="contactMsgShow">
+                            <span style="height: 15px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="myData.contact"></lonSpan>
+                            </span>
+                        </div>
                         <div class="item-a">{{myData.sailingtime || '-'}}</div>
                         <div class="item-b">{{myData.aircrfttyp || '-'}}</div>
                         <div class="item-c">
@@ -254,7 +258,11 @@
             <div class="table-form">
                 <div>
                     <div>联系人</div>
-                    <div>{{receiveIntention.contact || '-'}}</div>
+                    <div>
+                        <span style="display: block;height: 15px; max-width: 160px; overflow: hidden;">
+                            <lonSpan :txt="receiveIntention.contact"></lonSpan>
+                        </span>
+                    </div>
                     <!--<div>2017.11.11-2018.11.11</div>-->
                 </div>
                 <div>
@@ -464,7 +472,11 @@
                                     <div>接受调度</div>
                                 </div>
                                 <div class="right item">
-                                    <div class="item-a item-height">{{item.contact || '-'}}</div>
+                                    <div class="item-a item-height">
+                                        <span style="display: block;height: 40px; max-width: 160px; overflow: hidden;">
+                                            <lonSpan :txt="item.contact"></lonSpan>
+                                        </span>
+                                    </div>
                                     <div class="item-a item-height">{{item.sailingtime || '-'}}</div>
                                     <div class="item-b item-height">{{item.aircrfttyp || '-'}}</div>
                                     <div class="item-c item-height">

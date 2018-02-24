@@ -1,8 +1,8 @@
 <template>
     <div class="t-form scroll popup" id="transForm" @click="closeDialog">
         <div class="select-box" v-show="formFinish">
-            <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
-            <div>展开填写完整需求订单</div>
+            <div class="check-box"><input type="checkbox" id="zhankai1" v-model="allFormShow"></div>
+            <label for="zhankai1">展开填写完整需求订单</label>
         </div>
         <div class="t-part" v-show="!allFormShow">
             <div class="form-box">
@@ -122,7 +122,7 @@
                     <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat" maxlength="10">
                 </div>
                 <div class="form-box pad1 taken">
-                    <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
+                    <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost" maxlength="5">
                     <span>w/h</span>
                 </div>
                 <div class="form-box pad1 taken">
@@ -520,7 +520,7 @@
             },
             verifyHourcost:function(){
                 this.hourcost =  this.hourcost.replace(/[^0-9.]/g,'');
-                if(this.hourcost>100){
+                if(this.hourcost>100000){
                     this.hourcost = '';
                 }
             },
@@ -859,6 +859,7 @@
     .select-box{
         display:flex;
         justify-content: flex-end;
+        align-items: center;
         >div{
             height:26px;
             margin-right:5px;

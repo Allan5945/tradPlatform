@@ -292,7 +292,7 @@ nikai<template>
                             <span>客座率期望</span>　
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="填写举例：80" v-model="loadfactorsExpect"
-                                       style="border: 0;" maxlength="2"><span>%</span>
+                                       style="border: 0;" maxlength="3"><span>%</span>
                             </div>
                             <div class="warn" v-show="warn15Show" style="position: absolute; top: 26px; left: 0;">*请输入数字！</div>
                         </div>

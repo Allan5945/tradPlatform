@@ -35,7 +35,11 @@
                     <div class="font-gray">出港时刻</div>
                 </div>
                 <div class="right item">
-                    <div class="item-height">{{myData.contact}}</div>
+                    <div class="item-height">
+                        <span style="display: block; height: 40px; max-width: 160px; overflow: hidden;">
+                            <lonSpan :txt="myData.contact"></lonSpan>
+                        </span>
+                    </div>
                     <div class="item-height">{{myData.aircrfttyp || '-'}}</div>
                     <div class="item-height">
                         <span v-if="myData.capacityCompany">{{myData.capacityCompany.airlnCd}}</span>

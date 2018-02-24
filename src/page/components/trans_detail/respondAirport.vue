@@ -3,7 +3,11 @@
       <div class="plan-wrapper scroll" v-if="responseShow">
           <header>
               <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont close">&#xe62c;</span></div>
-              <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+              <div class="head-til">
+                  <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                      <lonSpan :txt="myTitle"></lonSpan>
+                  </span>
+              </div>
               <div class="tips">
                   <span>创建于{{detailData.releasetime||'-'}}</span>
                   <span>已有{{intentionCount||'0'}}位用户发起意向</span>
@@ -14,7 +18,11 @@
               <div class="table-form">
                     <div>
                         <div>联系人</div>
-                        <div>{{detailData.contact||'-'}}</div>
+                        <div>
+                            <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="detailData.contact"></lonSpan>
+                            </span>
+                        </div>
                     </div>
                     <div>
                         <div>联系方式</div>
@@ -195,7 +203,7 @@
                   <div class="order btn-w" >已生成订单，无法更改</div>
               </div>
           </footer>
-          <footer  v-if="footShow">
+          <footer v-if="footShow">
               <div class="btn" v-if="confirmShow">
                   <div class="cancel-btn btn-b" @click="confirm">确认方案</div>
                   <div class="refuse-btn btn-w" @click="refuse">拒绝并撤回</div>
@@ -231,6 +239,7 @@
  import paySuccess  from './paySuccess.vue'
  import payFailDialog  from './payFailOfBalance.vue'
  import needDetail from './needDetail.vue'
+ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
  export default {
      data(){
@@ -257,7 +266,8 @@
              intentionCount:0,
              text:'已收藏',
              planState:'',
-             needData:{}
+             needData:{},
+             myTitle: '',
          }
      },
      props:['demandId'],
@@ -268,8 +278,9 @@
             paySuccess,
             reIntentForm,
             needDetail,
-            payFailDialog
-        },
+            payFailDialog,
+            lonSpan,
+      },
       watch:{
           'demandId':function(){
              //console.log(this.demandId)
@@ -489,6 +500,7 @@
                 .then((response) => {
                   if(response.data.opResult == '0'){
                       this.needData = response.data;
+                      this.myTitle = `${response.data.data.title}运力投放`;
                       if(response.data.receiveIntention == null){
                             this.needShow = false;
                             this.responseShow = false;
@@ -612,7 +624,7 @@
         box-shadow: 0px 0px 15px #888;
         header{
             width:100%;
-            height:141px;
+            /*height:141px;*/
             background-color:rgba(216,216,216,.2);
         }
         footer{
@@ -625,13 +637,19 @@
         }
     }
     header{
+        padding-top: 41px;
         .top-til{
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 545px;
+            background: white;
+            z-index: 2;
           justify-content: space-between;
           display: flex;
           height:41px;
           line-height:41px;
           font-size:1.2rem;
-          background-color:#fff;
           color:rgba(96, 94, 124, 0.7);
           padding:0 15px 0 40px;
            box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
@@ -649,12 +667,13 @@
           }
         }
         .head-til{
-          font-size:20px;
-          font-weight:bold;
-          margin-top:30px;
-          padding-left:40px;
-          height:20px;
-          line-height:20px;
+            padding-left:40px;
+            display: flex;
+            margin: 30px 0 15px 0;
+            height: 25px;
+            max-width: 400px;
+            font-size: 20px;
+            font-weight: bold;
         }
         .tips{
           height:12px;

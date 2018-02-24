@@ -3,7 +3,11 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span @click="closeDetail" class="iconfont">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}运力投放</div>
+                <div class="head-til">
+                    <span style="height: 25px; max-width: 400px; overflow: hidden;">
+                      <lonSpan :txt="myTitle"></lonSpan>
+                  </span>
+                </div>
                 <div class="tips">
                     <span>创建于{{detailData.releasetime||'-'}}</span>
                     <span>已有{{intentionCount||'0'}}位用户发起意向</span>
@@ -12,7 +16,11 @@
             <div class="content">
                  <div v-if="role.role == 2">
                         <div>联系人</div>
-                        <div>{{detailData.contact||'-'}}</div>
+                        <div>
+                            <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="detailData.contact"></lonSpan>
+                            </span>
+                        </div>
                     </div>
                     <div v-if="role.role == 2">
                         <div>联系方式</div>
@@ -108,6 +116,7 @@
  import transDialog from './transDialog.vue'
  import paySuccess  from './paySuccess.vue'
  import payFailDialog  from './payFailOfBalance.vue'
+ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
  export default {
      data(){
@@ -123,7 +132,8 @@
              dialog:false,
              payDialog:false,
              inventBtnShow:false,
-             payFailShow:false
+             payFailShow:false,
+             myTitle: '',
          }
      },
      props:['needData'],
@@ -225,6 +235,7 @@
          init:function(){
               this.intentionCount = this.needData.intentionCount;
               this.detailData = this.needData.data;
+              this.myTitle = `${this.detailData.title}运力投放`;
               this.demandId = this.detailData.id;
               let progress = this.detailData.demandprogress;
               //需求发布、意向征集、订单确认
@@ -255,7 +266,8 @@
             intentForm,
             transDialog,
             paySuccess,
-            payFailDialog
+            payFailDialog,
+          lonSpan,
         }
 }
 </script>
@@ -273,7 +285,7 @@
         background-color:#fff;
         header{
             width:100%;
-            height:141px;
+            /*height:141px;*/
             background-color:rgba(216,216,216,.17);
         }
         footer{
@@ -310,12 +322,13 @@
           }
         }
         .head-til{
-          font-size:2rem;
-          font-weight:bold;
-          margin-top:30px;
-          padding-left:40px;
-          height:20px;
-          line-height:20px;
+            padding-left:40px;
+            display: flex;
+            margin: 30px 0 15px 0;
+            height: 25px;
+            max-width: 400px;
+            font-size: 20px;
+            font-weight: bold;
         }
         .tips{
           height:12px;

@@ -1982,6 +1982,7 @@
         color: $icon-color;
         background: #F5F5F5;
         white-space: nowrap;
+        font-weight: bold;
     }
     .little-label-close {
         display: flex;
