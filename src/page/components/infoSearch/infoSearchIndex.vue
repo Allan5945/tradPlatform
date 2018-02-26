@@ -46,25 +46,40 @@
                         <div class="img svg-wrapper">
                             <div class="svg-container">
                                 <svg class="icon svg-logo" aria-hidden="true">
-                                    <use xlink:href="#icon-zhongguoguojihangkongneimengguyouxiangongsi-CA"></use>
-                                </svg>
-                                <svg class="icon svg-text" aria-hidden="true">
-                                    <use xlink:href="#icon-zhongguoguojihangkongneimengguyouxiangongsi-CA"></use>
+                                    <use xlink:href="#icon-zhongguoguojihangkongneimengguyouxiangongsiwenzi-CA1"></use>
                                 </svg>
                             </div>
                         </div>
                         <div class="tips"><span>中国航空</span><span>327架客机</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CES','东方航空','航司')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img svg-wrapper">
+                            <div class="svg-container">
+                                <svg class="icon svg-logo" aria-hidden="true">
+                                    <use xlink:href="#icon-aokaihangkongwenzi_BK1"></use>
+                                </svg>
+                            </div>
+                        </div>
                         <div class="tips"><span>东方航空</span><span>327架客机</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CHH','海南航空','航司')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img svg-wrapper">
+                            <div class="svg-container">
+                                <svg class="icon svg-logo" aria-hidden="true">
+                                    <use xlink:href="#icon-aokaihangkongwenzi_BK1"></use>
+                                </svg>
+                            </div>
+                        </div>
                         <div class="tips"><span>海南航空</span><span>327架客机</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CSN','南方航空','航司')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img svg-wrapper">
+                            <div class="svg-container">
+                                <svg class="icon svg-logo" aria-hidden="true">
+                                    <use xlink:href="#icon-aokaihangkongwenzi_BK1"></use>
+                                </svg>
+                            </div>
+                        </div>
                         <div class="tips"><span>南方航空</span><span>327架客机</span></div>
                     </div>
                 </div>
@@ -208,7 +223,7 @@ import myPic4 from '$src/static/img/airport4.png';
                      this.$local.clear();
                      this.$local.set(data);
 
-                     if(this.selcType == '机场'){
+                    if(this.selcType == '机场'){
                         this.$router.push({ path: '/index/information/airport'});
                     }else if(this.selcType == '航司'){
                         this.$router.push({ path: '/index/information/airline'});
@@ -284,12 +299,8 @@ import myPic4 from '$src/static/img/airport4.png';
     .svg-container {
         display: flex;
         .svg-logo {
-            width: 5.5rem;
-            height: 6rem;
-        }
-        .svg-text {
-            width: 1em;
-            height: 1em;
+            width: 15.5rem;
+            height: 16rem;
         }
     }
 

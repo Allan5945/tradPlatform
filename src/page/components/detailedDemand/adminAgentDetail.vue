@@ -3,8 +3,12 @@
         <div class="detail-wrapper">
             <header>
                 <div class="top-til">运营托管详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
-                <div class="head-til">{{detailData.title||'-'}}</div>
-                <div class="contact" @click="chat">联系用户</div>
+                <div class="head-til">
+                    <span style="display: block; height: 25px; max-width: 400px; overflow: hidden;">
+                        <lonSpan :txt="detailData.title"></lonSpan>
+                    </span>
+                </div>
+                <div class="contact btn-b" @click="chat">联系用户</div>
                 <div class="tips">
                     <div>委托方&nbsp;{{CpyNm||'-'}}</div>
                     <div>创建于{{detailData.releasetime||'-'}}</div>
@@ -33,7 +37,11 @@
                 <div class="content-box border">
                     <div>
                         <div>联系人</div>
-                        <div>{{detailData.contact||'-'}}</div>
+                        <div>
+                            <span style="display: block; height: 40px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="detailData.contact"></lonSpan>
+                            </span>
+                        </div>
                     </div>
                     <div>
                         <div>联系方式</div>
@@ -46,15 +54,15 @@
                 <div class="foot-tips" v-if="testingShow"  v-show="!isTest">*需求测评中...</div>
                 <div class="foot-tips red" v-else>*拒绝原因：{{refuseText}}</div>
                 <div class="btn">
-                    <div class="test-btn" v-if="testingShow" @click="toTest" v-show="isTest">测评该需求</div>
-                    <div class="test-btn" v-if="testingShow" @click="accepted" v-show="!isTest">接受委托</div>
-                    <div class="can-btn" @click="cancel" v-if="testingShow">拒绝</div>
+                    <div class="test-btn btn-b" v-if="testingShow" @click="toTest" v-show="isTest">测评该需求</div>
+                    <div class="test-btn btn-b" v-if="testingShow" @click="accepted" v-show="!isTest">接受委托</div>
+                    <div class="can-btn btn-w" @click="cancel" v-if="testingShow">拒绝</div>
                 </div>
             </footer>
             <footer v-if="canAgent">
                 <!-- <div class="foot-tips red" v-if="!cancSuccess">*取消托管原因：{{refuseText}}</div> -->
                 <div class="btn">
-                    <div class="cancel-agent-btn can-btn" @click="cancelAgent" v-if="cancSuccess">取消托管</div>
+                    <div class="cancel-agent-btn can-btn btn-w" @click="cancelAgent" v-if="cancSuccess">取消托管</div>
                 </div>
             </footer>
         </div>
@@ -67,6 +75,7 @@ import refuseDialog from './../mine/entrustList/refuseDialog.vue';
 import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
 import ln from '$src/public/js/tabulationBoxTrigger.js'
 import * as vx from 'vuex'
+import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
  export default {
      data(){
@@ -279,7 +288,8 @@ import * as vx from 'vuex'
         tabulationBoxTrigger.hierarchy = false;
     },
      components: {
-          refuseDialog
+          refuseDialog,
+         lonSpan
      }
 }
 </script>
@@ -362,9 +372,9 @@ import * as vx from 'vuex'
             width:100px;
             height:20px;
             line-height:20px;
-            color:#ffffff;
+            /*color:#ffffff;*/
             text-align:center;
-            background-color:#3c78ff;
+            /*background-color:#3c78ff;*/
             border-radius:100px;
             cursor:pointer;
         }
@@ -441,13 +451,13 @@ import * as vx from 'vuex'
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#fff;
-                  background-color:#3c78ff;
+                  /*color:#fff;*/
+                  /*background-color:#3c78ff;*/
                   text-align:center;
                   border-radius:100px;
                   margin-right:10px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   span{
                     font-size:1.8rem;
                     margin-right:15px;
@@ -458,12 +468,12 @@ import * as vx from 'vuex'
                   height:40px;
                   line-height:40px;
                   font-size:1.5rem;
-                  color:#605E7C;
+                  /*color:#605E7C;*/
                   background-color:#fff;
                   text-align:center;
                   border-radius:100px;
                   cursor:pointer;
-                  box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                  /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                   &:hover{
                     color:#fff;
                     background-color: #3C78FF;

@@ -646,6 +646,7 @@
         background-color:#fff;
         box-shadow: 0px 0px 15px #888;
         header{
+            padding-top:40px;
             width:100%;
             /*height:141px;*/
             background-color:rgba(216,216,216,.2);
@@ -660,11 +661,11 @@
         }
     }
     .top-til{
-          /* position:fixed;
-          z-index:10;
-          width:560px;
+          position:fixed;
+          z-index:2;
+          width:545px;
           top:0;
-          right:0; */
+          right:0;
           justify-content: space-between;
           display: flex;
           height:41px;
@@ -690,7 +691,6 @@
         }
     header{
         position:relative;
-        /* padding-top:40px; */
         .head-til{
             padding-left:40px;
             display: flex;
