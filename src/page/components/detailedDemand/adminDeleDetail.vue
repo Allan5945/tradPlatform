@@ -4,7 +4,11 @@
                 <header>
                     <div class="top-til">{{detailData.demandtypeStr||'-'}}详情<span  class="iconfont" @click="closeDetail">&#xe62c;</span></div>
                     <!-- <div class="head-til">{{CpyNm+"的"+detailData.demandtypeStr||'-'}}</div> -->
-                    <div class="head-til">{{detailData.title||'-'}}</div>
+                    <div class="head-til">
+                        <span style="display: block; height: 25px; max-width: 400px; overflow: hidden;">
+                            <lonSpan :txt="detailData.title"></lonSpan>
+                        </span>
+                    </div>
                     <div class="contact btn-b" @click="chat">联系用户</div>
                     <div class="tips">
                         <div>委托方&nbsp;{{CpyNm||'-'}}</div>
@@ -100,7 +104,11 @@
                     <div class="content-box ">
                         <div>
                             <div>联系人</div>
-                            <div>{{detailData.contact||'-'}}</div>
+                            <div>
+                                <span style="display: block; height: 40px; max-width: 160px; overflow: hidden;">
+                                    <lonSpan :txt="detailData.contact"></lonSpan>
+                                </span>
+                            </div>
                         </div>
                         <div>
                             <div>联系方式</div>
@@ -111,7 +119,11 @@
                 <div class="trans-content" v-else>
                     <div>
                         <div>联系人</div>
-                        <div>{{detailData.contact||'-'}}</div>
+                        <div>
+                            <span style="display: block; height: 40px; max-width: 160px; overflow: hidden;">
+                                <lonSpan :txt="detailData.contact"></lonSpan>
+                            </span>
+                        </div>
                     </div>
                     <div class="padding-item">
                         <div>联系方式</div>
@@ -198,7 +210,9 @@
                         <div class="intent-box" v-for="(val,index) in listSonDemands">
                             <div class="intent-item">
                                 <div class="time">{{val.releasetime}}</div>
-                                <div class="title">{{val.title}}</div>
+                                <div class="title">
+                                    <lonSpan :txt="val.title"></lonSpan>
+                                </div>
                                 <div class="progress">{{val.demandprogressStr}}</div>
                                 <div class="detail" @click="getSonDetail(val)">查看详情</div>
                             </div>
@@ -234,6 +248,7 @@
     import ln from '$src/public/js/tabulationBoxTrigger.js'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
     import * as vx from 'vuex'
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
  export default {
      data(){
@@ -560,7 +575,8 @@
      components: {
         operDeleForm,
         sonNeedDetail,
-        refuseDialog
+        refuseDialog,
+         lonSpan,
      }
 }
 </script>
@@ -883,6 +899,7 @@
                 }
                 .title{
                      width:200px;
+                    overflow: hidden;
                 }
                 .progress{
                      width:160px;

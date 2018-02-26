@@ -127,7 +127,7 @@
                         <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat" maxlength="10">
                     </div>
                     <div class="form-box pad1 taken">
-                        <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
+                        <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost" maxlength="5">
                         <span>w/h</span>
                     </div>
                     <div class="form-box pad1 taken">
@@ -185,7 +185,7 @@
                              <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
                              <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
                              <div class="confirm-btn btn" @click="getMyDate">确定</div>
-                             <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                             <div class="cancel-btn btn btn-w" @click="calendarShow=!calendarShow">取消</div>
                            </div>
                           <!--  <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1"></calendar>
                           <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar> -->
@@ -228,10 +228,10 @@
                 </div>
             </div>
             <div class="t-btn">
-                <div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>
-                <div class="confirm-btn " @click="agentConfirm(4)" v-if="isAgent">确认发布</div>
-                <div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>
-                <div class="cancel-btn " @click="cancel">取消</div>
+                <div class="agent-btn btn-b" @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>
+                <div class="confirm-btn btn-b" @click="agentConfirm(4)" v-if="isAgent">确认发布</div>
+                <div class="confirm-btn btn-b" @click="confirm(1)" v-else>确认发布</div>
+                <div class="cancel-btn btn-w" @click="cancel">取消</div>
                 <p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>
                 <span class= "triangle" v-show="agentTipsShow"></span>
             </div>
@@ -1343,8 +1343,8 @@
           line-height:40px;
           border-radius:100px;
           text-align:center;
-          color:#ffffff;
-          background-color:#3c78ff;
+          /*color:#ffffff;*/
+          /*background-color:#3c78ff;*/
           cursor:pointer;
 
         }
@@ -1359,10 +1359,10 @@
         }
         .cancel-btn{
           width:80px;
-          color:rgba(96,94,124,.6);
+          /*color:rgba(96,94,124,.6);*/
           box-sizing:border-box;
-          opacity:40%;
-          background-color:#fff;
+          /*opacity:40%;*/
+          /*background-color:#fff;*/
           border: 1px solid rgba(96,94,124,.6);
         }
         .agent-tips{
