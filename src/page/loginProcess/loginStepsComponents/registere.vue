@@ -112,6 +112,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["部门", "部门"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    cia:true
                 },
                 data5: {
                     inputeType: "text", // 输入框的类型
@@ -121,6 +122,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["职位", "职位"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    cia:true
                 },
                 data6: {
                     inputeType: "text", // 输入框的类型
@@ -139,6 +141,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["地址", "地址"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    cia:true
                 },
                 data8: {
                     inputeType: "text", // 输入框的类型
@@ -148,6 +151,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["备注说明", "备注说明"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    cia:true
                 }
             }
         },
@@ -216,12 +220,12 @@
                     this.collect.tel = data.i;
                 } else {
                     this.collect.tel = "";
-                }
-                ;
+                    this.verCode = false;
+                };
                 this.validationTag = data.t;
-                if (data.steps == 1) {
+                if (data.steps == 1 && !data.t && data.c !== "") {
+                    this.tiperr = data.c;
                     this.showtip = true;
-//                    this.setTime = setTimeout(()=>{this.showtip = false;},1500);
                 }
             },
             resCodeSycn(p){
@@ -238,17 +242,18 @@
                 })
                     .then((response) => {
                         if(response.data.opResult  == '0'){
+//                            this.validationTag = true;
+//                            this.verCode = false;
+                        }else{
                             this.validationTag = false;
                             this.tiperr = '您的手机号码已经注册过！';
                             this.showtip = true;
-                        }else{
 //                                this.$message({
 //                                    showClose: true,
 //                                    message: "手机号不存在！",
 //                                    type: 'error'
 //                                });
-                            this.validationTag = true;
-                            this.verCode = false;
+
                         }
                     })
                     .catch((error) => {
@@ -263,13 +268,15 @@
                 this.collect.position = data.i;
             },
             resMes6(data) {
+                console.log(data)
                 if (data.t) {
                     this.collect.email = data.i;
                 } else {
                     this.collect.email = "";
                 }
                 ;
-                if (data.steps == 1) {
+                if (data.steps == 1 && !data.t) {
+                    this.tiperr = data.c;
                     this.showtip = true;
                 }
             },

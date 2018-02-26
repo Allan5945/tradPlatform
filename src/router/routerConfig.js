@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import state from '../store/'
+import In from './../public/js/tabulationBoxTrigger'
 
 // 登录页面
 const login = resolve => require(['./../page/login.vue'], resolve);
@@ -123,6 +124,9 @@ let token = false;
 router.beforeEach((to, from, next) => {
     token = token || (window.sessionStorage.getItem('isLogin') === 'ok');
     if (to.path.indexOf('/index') != -1) {//需要登录
+        if(to.path === "/index"){
+            In.$emit("refreshDemandList");
+        };
         if (token) return next();
         else {
             return next({
@@ -132,7 +136,8 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         return next();
-    }
-})
+    };
+});
+
 
 export default router

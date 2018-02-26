@@ -101,7 +101,8 @@
         },
         mounted: function () {
             if(Vue.prototype.$chatSocket == null){
-                Vue.prototype.$chatSocket = new ChatSocket($socketIp + this.role.id);
+//                Vue.prototype.$chatSocket = new ChatSocket($socketIp + this.role.id);
+                Vue.prototype.$chatSocket = new ChatSocket(socketIp + this.role.id);
             };
             this.$ajax({
                 method: 'post',

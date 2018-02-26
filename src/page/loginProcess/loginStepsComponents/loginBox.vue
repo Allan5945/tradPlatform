@@ -35,6 +35,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["请输入账号、手机号或者邮箱","账号"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    maxLenght:50
                 },
                 data3: {
                     inputeType: "password", // 输入框的类型
@@ -44,6 +45,7 @@
                     showSucInput: false, // 是否显示框正确
                     placeholderTip: ["请输入登录密码","密码"],
                     validation: 100,   // number,1、账号/邮箱，2、密码，3、..自己扩展
+                    maxLenght:15
                 },
                 loginTime:0,
                 showE:false,
