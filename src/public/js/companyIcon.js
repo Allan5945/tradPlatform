@@ -339,6 +339,126 @@ const companyIconData = [
         "py": "JXHK",
         "icon": "icon-jiangxihangkongwenzi_RY",
         "logo": "icon-jiangxihangkong_RY"
+    },{
+        "companyIata": "9C",
+        "companyIcao": "CQH",
+        "companyName": "春秋航空",
+        "id": 121,
+        "initial": "C",
+        "pinyin": "ChunQiuHangKong",
+        "py": "CQHK",
+        "icon": "icon-chunqiuhangkongwenzi_C",
+        "logo": "icon-chunqiuhangkong_C"
+    },{
+        "companyIata": "GY",
+        "companyIcao": "CGZ",
+        "companyName": "多彩贵州航空",
+        "id": 122,
+        "initial": "D",
+        "pinyin": "DuoCaiGuiZhouHangKong",
+        "py": "DCGZHK",
+        "icon": "icon-duocaiguizhouhangkongwenzi_GY",
+        "logo": "icon-duocaiguizhouhangkong_GY"
+    },{
+        "companyIata": "ZH",
+        "companyIcao": "CSZ",
+        "companyName": "深圳航空",
+        "id": 123,
+        "initial": "S",
+        "pinyin": "ShenChouHangKong",
+        "py": "SCHK",
+        "icon": "icon-shenzhenhangkongwenzi_ZH",
+        "logo": "icon-shenzhenhangkong_ZH"
+    },{
+        "companyIata": "SC",
+        "companyIcao": "CDG",
+        "companyName": "山东航空",
+        "id": 124,
+        "initial": "S",
+        "pinyin": "ShanDongHangKong",
+        "py": "SDHK",
+        "icon": "icon-shandonghangkongwenzi_SC",
+        "logo": "icon-shandonghangkong_SC"
+    },{
+        "companyIata": "FM",
+        "companyIcao": "CSH",
+        "companyName": "上海航空",
+        "id": 125,
+        "initial": "S",
+        "pinyin": "ShangHaiHangKong",
+        "py": "SHHK",
+        "icon": "icon-shanghaihangkongwenzi_FM",
+        "logo": "icon-shanghaihangkong_FM"
+    },{
+        "companyIata": "MF",
+        "companyIcao": "CXA",
+        "companyName": "厦门航空",
+        "id": 126,
+        "initial": "X",
+        "pinyin": "XiaMenHangKong",
+        "py": "XMHK",
+        "icon": "icon-shamenhangkongwenzi_MF",
+        "logo": "icon-shamenhangkong_MF"
+    },{
+        "companyIata": "MU",
+        "companyIcao": "CES",
+        "companyName": "东方航空",
+        "id": 127,
+        "initial": "D",
+        "pinyin": "DongFangHangKong",
+        "py": "DFHK",
+        "icon": "icon-dongfanghangkongwenzi_MU",
+        "logo": "icon-dongfanghangkong_MU"
+    },{
+        "companyIata": "HU",
+        "companyIcao": "CHH",
+        "companyName": "海南航空",
+        "id": 128,
+        "initial": "H",
+        "pinyin": "HaiNanHangKong",
+        "py": "HNHK",
+        "icon": "icon-hainanhangkongwenzi_HU",
+        "logo": "icon-hainanhangkong_HU"
+    },{
+        "companyIata": "CA",
+        "companyIcao": "CCA",
+        "companyName": "中国航空",
+        "id": 129,
+        "initial": "Z",
+        "pinyin": "ZhongGuoHangKong",
+        "py": "ZGHK",
+        "icon": "icon-zhongguohangkongwenzi_CA",
+        "logo": "icon-zhongguohangkong_CA"
+    },{
+        "companyIata": "3U",
+        "companyIcao": "CSC",
+        "companyName": "四川航空",
+        "id": 130,
+        "initial": "S",
+        "pinyin": "SiChuanHangKong",
+        "py": "SCHK",
+        "icon": "icon-sichuanhangkongwenzi_U",
+        "logo": "icon-sichuanhangkong_U"
+    },{
+        "companyIata": "CZ",
+        "companyIcao": "CSN",
+        "companyName": "南方航空",
+        "id": 131,
+        "initial": "N",
+        "pinyin": "NanFangHangKong",
+        "py": "NFHK",
+        "icon": "icon-nanfanghangkongwenzi_CZ",
+        "logo": "icon-nanfanghangkong_CZ"
+    },{
+        "companyIata": "NX",
+        "companyIcao": "AMU",
+        "companyName": "澳门航空",
+        "id": 132,
+        "initial": "A",
+        "pinyin": "AoMenHangKong",
+        "py": "AMHK",
+        "icon": "icon-aomenhangkongwenzi_NX",
+        "logo": "icon-aomenhangkong_NX"
     }
 ]
 export {
