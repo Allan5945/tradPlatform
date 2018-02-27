@@ -203,7 +203,7 @@
             },
             doEdit(){   //提交更改
                 let that = this,flag = that.control.edit,ud = that.userData;
-                if(flag && that.control.isChange){
+                if(flag){
                     this.$ajax({
                         method: 'POST',
                         url: '/updateEmployee',
@@ -227,7 +227,6 @@
                                 type: 'success',
                                 duration: 1500
                             });
-                            that.control.isChange = false;
                         }else{
                             that.$message({
                                 showClose: true,
