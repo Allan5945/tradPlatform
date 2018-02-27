@@ -196,11 +196,16 @@
                 'searchInfo'
             ]),
             img:function(){
-                 let i = Math.random();
+                 /*let i = Math.random();
                 if(Math.round(i) == '0'){
                      return myPic;
                  }else{
                      return myPic1;
+                 }*/
+                 if(this.infoData.navBackground == '' || this.infoData.navBackground == null){
+                     return myPic;
+                 }else {
+                     return this.infoData.navBackground;
                  }
             },
             noimg:function(){
@@ -468,7 +473,7 @@
     }
     .banner{
         width:100%;
-        height:100px;
+        height:250px;
         position:relative;
         .airport-img{
             width:100%;
@@ -482,8 +487,11 @@
             position:absolute;
             left:0;
             top:0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width:210px;
-            height:100px;
+            height:250px;
             color:#fff;
             text-align:center;
             line-height:100px;

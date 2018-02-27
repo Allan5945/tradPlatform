@@ -26,7 +26,7 @@
                     <div class="table-box">
                         <div class="box-head">
                             <div class="name">{{this.airportText}}班期时刻表</div>
-                            <div class="export" @click="exportData"><span class="iconfont">&#xe654;</span>&nbsp;导出</div>
+                            <div class="export btn-w" @click="exportData"><span class="iconfont" style="font-size: 14px;">&#xe654;</span>&nbsp;导出</div>
                         </div>
                         <div class="box-content">
                             <div class="table-header">
@@ -227,7 +227,7 @@
             },
              img:function(){
                  let i = Math.random();
-                if(Math.round(i) == '0'){
+                 if(Math.round(i) == '0'){
                      return myPic;
                  }else{
                      return myPic1;
@@ -440,7 +440,7 @@
     }
     .banner{
         width:100%;
-        height:100px;
+        height:250px;
         position:relative;
         .airport-img{
             width:100%;
@@ -454,8 +454,11 @@
             position:absolute;
             left:0;
             top:0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width:210px;
-            height:100px;
+            height:250px;
             color:#fff;
             text-align:center;
             line-height:100px;
@@ -546,9 +549,10 @@
                 line-height:26px;
                 margin:12px 10px 0 0;
                 border-radius:100px;
-                background-color:#ffffff;
+                color: #605E7C;
+                /*background-color:#ffffff;*/
                 text-align:center;
-                box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);
+                /*box-shadow: 1px 2px 18px rgba(60, 120, 255,0.5);*/
                 cursor:pointer;
             }
         }

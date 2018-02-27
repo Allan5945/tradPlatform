@@ -4,7 +4,9 @@
         <div class="wrapper scroll" id="airport">
             <div class="content" v-if="showDetail">
                 <div class="banner">
-                    <div class="airport-img"><img :src="img" alt=""></div>
+                    <div class="airport-img">
+                        <img :src="img" alt="">
+                    </div>
                     <div class="b-til">{{infoData.airlnCdName || "-"}}</div>
                     <div class="sidebar">
                         <div :class="{seleted:isInfo}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
@@ -179,12 +181,17 @@
                 'searchInfo'
             ]),
             img:function(){
-                 let i = Math.random();
+                /*let i = Math.random();
                 if(Math.round(i) == '0'){
                      return myPic;
-                 }else{
+                }else{
                      return myPic1;
-                 }
+                }*/
+                if(this.infoData.navBackground == '' || this.infoData.navBackground == null){
+                    return myPic;
+                }else {
+                    return this.infoData.navBackground
+                }
             },
              noimg:function(){
                 return noimg;
@@ -379,7 +386,7 @@
     }
     .banner{
         width:100%;
-        height:100px;
+        height:250px;
         position:relative;
         .airport-img{
             width:100%;
@@ -393,8 +400,11 @@
             position:absolute;
             left:0;
             top:0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width:210px;
-            height:100px;
+            height:250px;
             color:#fff;
             text-align:center;
             line-height:100px;

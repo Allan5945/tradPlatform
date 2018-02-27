@@ -46,7 +46,7 @@
                         <div class="img svg-wrapper">
                             <div class="svg-container">
                                 <svg class="icon svg-logo" aria-hidden="true">
-                                    <use xlink:href="#icon-zhongguoguojihangkongneimengguyouxiangongsiwenzi-CA1"></use>
+                                    <use xlink:href="#icon-zhongguohangkongwenzi_CA"></use>
                                 </svg>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                         <div class="img svg-wrapper">
                             <div class="svg-container">
                                 <svg class="icon svg-logo" aria-hidden="true">
-                                    <use xlink:href="#icon-aokaihangkongwenzi_BK1"></use>
+                                    <use xlink:href="#icon-dongfanghangkongwenzi_MU"></use>
                                 </svg>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div class="img svg-wrapper">
                             <div class="svg-container">
                                 <svg class="icon svg-logo" aria-hidden="true">
-                                    <use xlink:href="#icon-aokaihangkongwenzi_BK1"></use>
+                                    <use xlink:href="#icon-hainanhangkongwenzi_HU"></use>
                                 </svg>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                         <div class="img svg-wrapper">
                             <div class="svg-container">
                                 <svg class="icon svg-logo" aria-hidden="true">
-                                    <use xlink:href="#icon-aokaihangkongwenzi_BK1"></use>
+                                    <use :xlink:href="icon"></use>
                                 </svg>
                             </div>
                         </div>
@@ -120,6 +120,7 @@ import myPic1 from '$src/static/img/airport1.png';
 import myPic2 from '$src/static/img/airport2.png';
 import myPic3 from '$src/static/img/airport3.png';
 import myPic4 from '$src/static/img/airport4.png';
+import {companyIconData} from '$src/public/js/companyIcon.js'
     export default {
         data() {
             return {
@@ -134,7 +135,66 @@ import myPic4 from '$src/static/img/airport4.png';
                 airportShow:false,
                 cityShow:false,
                 showType:false,
-                search:false
+                search:false,
+                /*↓↓↓↓我加的代码↓↓↓↓*/
+                searchHotAirport: [   // 热门搜索-机场
+                    {
+                        code: 'PEK',
+                        name: '北京首都国际机场',
+                        type: '机场'
+                    },{
+                        code: 'CTU',
+                        name: '成都双流国际机场',
+                        type: '机场'
+                    },{
+                        code: 'CAN',
+                        name: '广州白云国际机场',
+                        type: '机场'
+                    },{
+                        code: 'PVG',
+                        name: '上海浦东国际机场',
+                        type: '机场'
+                    }
+                ],
+                searchHotCompany: [   // 热门搜索-航司
+                    {
+                        code: 'CCA',
+                        name: '中国航空',
+                        type: '航司'
+                    },{
+                        code: 'CES',
+                        name: '东方航空',
+                        type: '航司'
+                    },{
+                        code: 'CHH',
+                        name: '海南航空',
+                        type: '航司'
+                    },{
+                        code: 'CSN',
+                        name: '南方航空',
+                        type: '航司'
+                    }
+                ],
+                searchHotCity: [   // 热门搜索-城市
+                    {
+                        code: '北京',
+                        name: '北京',
+                        type: '城市'
+                    },{
+                        code: '上海',
+                        name: '上海',
+                        type: '城市'
+                    },{
+                        code: '广州',
+                        name: '广州',
+                        type: '城市'
+                    },{
+                        code: '成都',
+                        name: '成都',
+                        type: '城市'
+                    }
+                ],
+                companyIconData: companyIconData,  // 矢量图标
             }
         },
          computed:{
@@ -150,6 +210,9 @@ import myPic4 from '$src/static/img/airport4.png';
             img4:function(){
                 return myPic4;
             },
+             icon: function () {
+                return `#${this.companyIconData[0].icon}`
+             },
              ...vx.mapGetters([
                  'airList'
              ])
@@ -262,7 +325,7 @@ import myPic4 from '$src/static/img/airport4.png';
                 this.qyCode = b.code;
                 this.selcType = "机场";
                 this.airportText = b.cityName;
-                 this.airportText1 = b.cityName;
+                this.airportText1 = b.cityName;
                 this.getInfo();
             };
         },
@@ -440,9 +503,12 @@ import myPic4 from '$src/static/img/airport4.png';
                 }
             }
             .a-box{
-                margin-right:4px;
-                flex:1;
                 position:relative;
+                flex:1;
+                margin-right:4px;
+                border-radius: 8px;
+                background: white;
+                overflow: hidden;
                 cursor:pointer;
                 .img{
                     width:100%;
@@ -457,7 +523,7 @@ import myPic4 from '$src/static/img/airport4.png';
                     width:100%;
                     box-sizing:border-box;
                     height:37px;
-                    line-height:37px;
+                    line-height:41px;
                     padding:0 10px;
                     background-color:rgba(0,0,0,.7);
                     border-radius:8px;
