@@ -51,12 +51,21 @@
                     this.showErrInputPerform = false;
                     if(this.staging.i != "" && this.arg.syncPhone){
                         this.$emit('resCodeSycn',this.staging.i);
+                        return;
                     }
                 }else{
                     this.showErrInputPerform = true;
                 }
                 let mes = this.staging;
                 mes.steps = 1;
+                if(mes.i == ""){
+                    mes = {
+                        steps:1,
+                        i:"",
+                        t:false,
+                        c:""
+                    }
+                }
                 this.$emit('resMes',mes);
             },
             entered(e) {   // 触发enter按键
@@ -79,11 +88,11 @@
                 };
             },
             changeInputMes() {    // 输入框改变验证是否通过
-                if(this.arg.inputMes == ''){
-                    this.showErrInputPerform = false;
-                    this.judgePlaceholder = false;
-                    return;
-                };
+//                if(this.arg.inputMes == ''){
+//                    this.showErrInputPerform = false;
+//                    this.judgePlaceholder = false;
+//                    return;
+//                };
                 this.arg.inputMes = this.arg.inputMes.replace(/ /g,'');
                 if(!this.arg.cia){
                     this.arg.inputMes = this.arg.inputMes.replace(/[\u4e00-\u9fa5]/g,'');
@@ -138,7 +147,6 @@
                 this.control({t,c,i:this.arg.inputMes,steps:0});
             },
             control(data){
-//                if(!data.t){ this.errsd = true;}
                 this.staging = data;
                 if(data.t){
                     this.showErrInputPerform = false;

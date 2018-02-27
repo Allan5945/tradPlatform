@@ -10,7 +10,7 @@
         <div class="step-btn">
             <div v-if="!newPas" :class="{'btn-b':process ,'step-btn-dis':!process}" class="btn" @click="validCodefun">确认</div>
             <div v-if="newPas" :class="{'btn-b':reeq ,'step-btn-dis':!reeq}" class="btn" @click="updateEmployee">确认</div>
-            <div class="btn btn-w" @click="openReg">返回登录</div>
+            <div class="btn btn-w" @click="openReg">返回</div>
         </div>
         <div class="lxkf">联系客户：0000-0000000</div>
     </div>

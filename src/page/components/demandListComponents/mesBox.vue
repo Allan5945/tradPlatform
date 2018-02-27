@@ -28,6 +28,7 @@
     import mesMinComponent from './mesMin.vue'
     import conversions from '../../../public/js/conversions'
     import screen from './screen-hs.vue'
+    import In from '$src/public/js/tabulationBoxTrigger.js'
 
     export default {
         data() {
@@ -100,6 +101,12 @@
         },
         beforeMount: function () {
             this.serah();
+        },
+        mounted(){
+            In.$on("refreshDemandList",()=>{
+                console.log(this);
+                this.serah();
+            })
         },
         watch: {
             close: function () {
