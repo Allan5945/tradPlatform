@@ -104,9 +104,20 @@
         },
         mounted(){
             In.$on("refreshDemandList",()=>{
-                console.log(this);
                 this.serah();
-            })
+            });
+            In.$on("tagModel",(t)=>{
+                switch (t){
+                    case 0:
+                        this.$store.dispatch("demandType",true);
+                        this.demandSelected = true;
+                        break;
+                    case 1:
+                        this.$store.dispatch("demandType",false);
+                        this.demandSelected = false;
+                        break;
+                }
+            });
         },
         watch: {
             close: function () {

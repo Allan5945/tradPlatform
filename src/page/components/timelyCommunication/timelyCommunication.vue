@@ -152,7 +152,11 @@
             });
             this.initBox();
         },
-        watch: {},
+        watch: {
+            'dis.narrow'(){
+                this.ishs = true;
+            }
+        },
         filter:{
             orders(data){
                 return data;

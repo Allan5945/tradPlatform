@@ -12,6 +12,10 @@
                 <span :class="{'iskgCkecked':ched1}" class='turn-off'>&#xe61e;</span>
             </div>
         </div>
+        <section class="model-magic" :class="{'max-model-magic':max_model_magic}" @mouseenter="showModeIcon(true)" @mouseleave="showModeIcon(false)">
+            <div v-show="modelTag" @click="changeMode('modelTag')"><img src="./../../../static/img/model/modelTag.png" alt=""></div>
+            <div v-show="modelPao" @click="changeMode('modelPao')"><img src="./../../../static/img/model/modelPao.png" alt=""></div>
+        </section>
     </div>
 
 </template>
@@ -22,7 +26,11 @@
         data() {
             return {
                 ched: true,
-                ched1: true
+                ched1: true,
+                modelTag:false,
+                modelPao:true,
+                setIcon:'modelTag',
+                max_model_magic:false
             }
         },
         methods: {
@@ -35,6 +43,36 @@
                 this.ched1 = !this.ched1;
                 tabulationBoxTrigger.$emit('allPoint',this.ched1);
                 localStorage.setItem('ched1',this.ched1);
+            },
+            changeMode(t){
+                switch (t){
+                    case 'modelTag':
+                        this.setIcon = "modelTag";
+                        localStorage.setItem("paoOrTag",false);
+                        tabulationBoxTrigger.$emit('paoOrTag',false);
+                        break;
+                    case 'modelPao':
+                        this.setIcon = "modelPao";
+                        localStorage.setItem("paoOrTag",true);
+                        tabulationBoxTrigger.$emit('paoOrTag',true);
+                        break;
+                };
+            },
+            showModeIcon(t){
+                if(t){
+                    this.max_model_magic = true;
+                    this.modelTag = true;
+                    this.modelPao = true;
+                }else{
+                    this.max_model_magic = false;
+                    if(this.setIcon === "modelTag"){
+                        this.modelTag = true;
+                        this.modelPao = false;
+                    }else if(this.setIcon === "modelPao"){
+                        this.modelTag = false;
+                        this.modelPao = true;
+                    }
+                }
             }
         },
         computed:{
@@ -43,12 +81,24 @@
             ])
         },
         mounted:function () {
+            let paoOrTag = eval(localStorage.getItem("paoOrTag"));
+            if(Object.is(paoOrTag) == null){
+                paoOrTag = true;
+            };
+            if(paoOrTag){
+                this.modelTag = false;
+                this.modelPao = true;
+                this.setIcon = 'modelPao';
+            }else{
+                this.modelTag = true;
+                this.modelPao =false ;
+                this.setIcon = 'modelTag';
+            }
             let mes = localStorage.getItem('ched');
             if(mes != null){
                 this.ched = eval(mes);
                 tabulationBoxTrigger.$emit('routeNetwork',this.ched);
             };
-
             let mes1 = localStorage.getItem('ched1');
             if(mes1 != null){
                 this.ched1 = eval(mes1);
@@ -58,6 +108,51 @@
     }
 </script>
 <style scoped lang="scss">
+    .max-model-magic{
+        width: 189px !important;
+    }
+    .model-magic{
+        width: 105px;
+        height: 50px;
+        transform: translate(40px,40px);
+        background-color: white;
+        border-radius: 5px;
+        padding: 5px;
+        overflow: hidden;
+        /*&:hover{*/
+            /*width: 189px;*/
+        /*}*/
+        >div:nth-child(1):before{
+            content: '图标模式';
+            position: absolute;
+            top:30px;
+            left: 35px;
+        }
+        >div:nth-child(2){
+            margin-right: 0;
+            &:before{
+                content: '气泡模式';
+                position: absolute;
+                top:30px;
+                left: 35px;
+            }
+        }
+        >div{
+            /*pointer-events: none;*/
+            float: left;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 90px;
+            height:50px;
+            margin-right: 5px;
+            position: relative;
+            border: 1px solid transparent;
+            cursor: pointer;
+            &:hover{
+                border: 1px solid #71c8ff;
+            }
+        }
+    }
     .route-network {
         position: absolute;
         right: 40px;
