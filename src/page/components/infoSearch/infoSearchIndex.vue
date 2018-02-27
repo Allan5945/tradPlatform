@@ -295,6 +295,7 @@ import {companyIconData} from '$src/public/js/companyIcon.js'
                     }else if(this.selcType == '城市'){
                         this.$router.push({ path: '/index/information/city'});
                     }
+                    this.selcType = '城市';
                 }
                 this.airportText = '';
                 this.qyCode = '';
