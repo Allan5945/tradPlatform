@@ -93,6 +93,7 @@
                     symbol: 'circle',
                     symbolOffset: [0, 0],
                     mes,
+                    type:4,
                     label:{
                         normal:{
                             formatter: [
@@ -252,11 +253,8 @@
                 }
             });
             this.myChart = echarts.init(document.getElementById('map-warp'));
+            let paoOrTag = this.role.viewMode === 0 ? true : false;
 
-            let paoOrTag = eval(localStorage.getItem("paoOrTag"));
-            if(Object.is(paoOrTag) == null){
-                paoOrTag = true;
-            };
             let option = {
                 "bmap": {
                     "center": ["110.47", "32.40"], //
@@ -443,22 +441,24 @@
 //            this.$bExample.setallNum(a);
             this.$bExample.init();
             this.myChart.on('click', (a) => {
-                setTimeout(() => {  // 展开机场信息列表
-                    tabulationBoxTrigger.$emit('tipBox',a.data.mes.code);
-                    let infMesBox = document.getElementById('inf-mes-box');
-                    let caseBox = document.getElementById('case');
-                    infMesBox.style.left = `${a.event.offsetX + 30}px`;
-                    infMesBox.style.top = `${a.event.offsetY}px`;
-                    infMesBox.style.display = 'block';
-                    let lf = caseBox.clientWidth - infMesBox.clientWidth - 50;
-                    if(a.event.offsetX > lf){
-                        infMesBox.style.left = `${lf}px`;
-                    };
-                    let tp = caseBox.clientHeight - infMesBox.clientHeight - 100;
-                    if(a.event.offsetY > tp){
-                        infMesBox.style.top = `${tp}px`;
-                    };
-                }, 50);
+                if(a.data.type != 1){
+                    setTimeout(() => {  // 展开机场信息列表
+                        tabulationBoxTrigger.$emit('tipBox',a.data.mes.code);
+                        let infMesBox = document.getElementById('inf-mes-box');
+                        let caseBox = document.getElementById('case');
+                        infMesBox.style.left = `${a.event.offsetX + 30}px`;
+                        infMesBox.style.top = `${a.event.offsetY}px`;
+                        infMesBox.style.display = 'block';
+                        let lf = caseBox.clientWidth - infMesBox.clientWidth - 50;
+                        if(a.event.offsetX > lf){
+                            infMesBox.style.left = `${lf}px`;
+                        };
+                        let tp = caseBox.clientHeight - infMesBox.clientHeight - 100;
+                        if(a.event.offsetY > tp){
+                            infMesBox.style.top = `${tp}px`;
+                        };
+                    }, 50);
+                }
                 if(a.data.type == 3){  // 我发布的
                     tabulationBoxTrigger.$emit("tagModel",1)
                 }else if(a.data.type == 1){  // 市场需求

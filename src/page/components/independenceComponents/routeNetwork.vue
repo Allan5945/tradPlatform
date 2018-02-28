@@ -34,6 +34,31 @@
             }
         },
         methods: {
+            changeViewMode(t){
+                if(t != undefined){
+                    this.$ajax({
+                        method: 'post',
+                        url: '/changeViewMode',
+                        params: {
+                            viewMode: t,
+                        },
+                        headers: {
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then((response) => {
+                            if(response.data.opResult === 0){
+                                let role = JSON.parse(sessionStorage.getItem("role"));
+                                role.viewMode = t;
+                                sessionStorage.setItem("role",JSON.stringify(role));
+                            }
+                        })
+                        .catch((error) => {
+                                console.log(error);
+                            }
+                        );
+                }
+            },
             change(){
                 this.ched = !this.ched;
                 tabulationBoxTrigger.$emit('routeNetwork',this.ched);
@@ -48,13 +73,13 @@
                 switch (t){
                     case 'modelTag':
                         this.setIcon = "modelTag";
-                        localStorage.setItem("paoOrTag",false);
                         tabulationBoxTrigger.$emit('paoOrTag',false);
+                        this.changeViewMode(1);
                         break;
                     case 'modelPao':
                         this.setIcon = "modelPao";
-                        localStorage.setItem("paoOrTag",true);
                         tabulationBoxTrigger.$emit('paoOrTag',true);
+                        this.changeViewMode(0);
                         break;
                 };
             },
@@ -81,10 +106,8 @@
             ])
         },
         mounted:function () {
-            let paoOrTag = eval(localStorage.getItem("paoOrTag"));
-            if(Object.is(paoOrTag) == null){
-                paoOrTag = true;
-            };
+            let paoOrTag = this.role.viewMode === 0 ? true : false;
+
             if(paoOrTag){
                 this.modelTag = false;
                 this.modelPao = true;
