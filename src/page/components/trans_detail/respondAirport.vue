@@ -9,8 +9,11 @@
                   </span>
               </div>
               <div class="tips">
-                  <span>创建于{{detailData.releasetime||'-'}}</span>
+                  <span>创建于{{detailData.releasetime | split}}</span>
                   <span>已有{{intentionCount||'0'}}位用户发起意向</span>
+                  <span>状态:　
+                        <span style="color: #3F7AFF;font-weight: bold;">{{detailData.demandprogressStr}}</span>
+                    </span>
               </div>
               <div class="chatBox btn-b" v-if="chatShow" @click="toChat">发起对话</div>
           </header>
@@ -87,7 +90,9 @@
               </div>
               <div class="myplan">
                   <div class="plan-til">
-                      <div>我发出的方案<span>{{planState}}</span></div>
+                      <div>我发出的方案
+                          <span>({{planData.responseProgressStr}})</span>
+                      </div>
                       <div @click="getSureForm" v-if="editShow"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                   </div>
                   <div class="airline">
@@ -601,6 +606,12 @@
                 'role'
             ])
       },
+     filters: {
+         split: function (value) {
+             if(!value) return '-';
+             return value.split(' ')[0]
+         }
+     },
        mounted() {
           this.getNeedDetail();
      },

@@ -160,12 +160,13 @@
                 <div class="right">{{myData.remark}}</div>
             </div>
         </div>
-        <div class="myplan" v-if="myplanShow">
+        <div class="myplan" v-if="myplanShow"> <!--this.isSelf == false && this.receiveIntention != null && this.receiveIntention != ''-->
             <div class="plan-til">
                 <div>
                     我发出的方案
-                    <span v-show="receiveIntention.responseProgress == 2
-                        || receiveIntention.responseProgress == 4">({{receiveIntention.responseProgressStr}})</span>
+                    <!--<span v-show="receiveIntention.responseProgress == 2
+                        || receiveIntention.responseProgress == 4">({{receiveIntention.responseProgressStr}})</span>-->
+                    <span>({{receiveIntention.responseProgressStr}})</span>
                 </div>
                 <div @click="EditFn" v-show="receiveIntention.releaseselected == 1
                         && (receiveIntention.responseProgress == 0 || receiveIntention.responseProgress == 1)

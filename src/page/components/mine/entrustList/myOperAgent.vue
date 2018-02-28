@@ -46,7 +46,7 @@
                         <div class="list-d item">
                           {{getProgress(val.demandProgress,val.demandType)}}
                         </div>
-                        <div class="list-e item" @click="chat(val)">
+                        <div class="list-e item" @click.stop="chat(val)">
                           <span class="icon-item talk-icon">&#xe602;
                              <!--  <span v-show="val.unreadNum !== 0 ">{{val.unreadNum}}</span> -->
                           </span>

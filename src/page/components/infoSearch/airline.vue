@@ -4,8 +4,19 @@
         <div  class="wrapper scroll" id="airline">
             <div class="content" v-if="showDetail">
                 <div class="banner">
-                    <div class="airport-img"><img :src="img" alt=""></div>
-                    <div class="b-til">{{infoData.airlnCd || "-"}}</div>
+                    <div class="airport-img">
+                        <!--<img :src="img" alt="">-->
+                    </div>
+                    <div class="b-til svg-wrapper" style="margin-left: 20px;" v-if="iconShow">
+                        <div class="svg-container">
+                            <svg class="icon svg-logo" aria-hidden="true">
+                                <use :xlink:href="icon"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="b-til svg-wrapper" style="background: rgba(0, 0, 0, 0.3);" v-else>
+                        <span>{{infoData.airlnCd || "-"}}</span>
+                    </div>
                     <div class="sidebar">
                         <div :class="{seleted:step == '1'}" @click="getBaseInfo"><span class="iconfont">&#xe603;</span>基本信息</div>
                          <div :class="{seleted:step == '2'}" @click="getNews"><span class="iconfont" >&#xe624;</span>新闻舆情</div>
@@ -95,6 +106,7 @@
     import myPic1 from '$src/static/img/infobg.png';
     import searchHeader from './searchHeader.vue'
     import scrollWatch from "vue-scrollwatch"
+    import {companyIconData} from '$src/public/js/companyIcon.js'
 
     export default {
         data() {
@@ -105,6 +117,9 @@
                 showDetail:true,
                 basedistributionShow:false,
                 step:'1',
+                companyIconData,
+                icon: '',
+                iconShow: false,
             }
         },
         watch: {
@@ -154,6 +169,13 @@
                             this.showDetail = true;
                         }
                         this.infoData = response.data.obj;
+                        this.companyIconData.forEach((val) => {
+                            if(this.infoData.id == val.id){
+                                this.iconShow = true;
+                                this.icon = `#${val.icon}`
+                                console.info(this.icon)
+                            }
+                        })
                         this.newsData = response.data.obj.publicOpinions;
                         this.loading.close();
                     }else{
@@ -209,7 +231,7 @@
         },
         components:{
             searchHeader
-        }
+        },
     }
 </script>
 
@@ -223,6 +245,27 @@
         padding:0;
         margin:0;
     }
+    /*↓↓↓icon↓↓↓*/
+    .icon {
+        /*width: 1em;*/
+        /*height: 1em;*/
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+    }
+    .svg-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .svg-container {
+        display: flex;
+        .svg-logo {
+            width: 13.5rem;
+            height: 14rem;
+        }
+    }
+    /*↑↑↑icon↑↑↑*/
 
     .wrapper{
         position: absolute;
@@ -243,7 +286,7 @@
     }
     .banner{
         width:100%;
-        height:250px;
+        height:100px;
         position:relative;
          .airport-img{
             width:100%;
@@ -261,12 +304,12 @@
             align-items: center;
             justify-content: center;
             width:210px;
-            height:250px;
+            height:100px;
             color:#fff;
             text-align:center;
             line-height:100px;
             font-size:2.0rem;
-            background-color:rgba(0,0,0,.3);
+            /*background-color:rgba(0,0,0,.3);*/
         }
     }
     .sidebar{

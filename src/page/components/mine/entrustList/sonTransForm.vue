@@ -489,7 +489,7 @@
 
                      this.tip = this.acceptData.remark;
 
-                    this.myDate = this.acceptData.periodValidity;
+//                    this.myDate = this.acceptData.periodValidity;
 
                     //this.post = this.acceptData.publicway;
                     /* if(this.post == '3'){

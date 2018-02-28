@@ -9,8 +9,11 @@
                   </span>
                 </div>
                 <div class="tips">
-                    <span>创建于{{detailData.releasetime||'-'}}</span>
+                    <span>创建于{{detailData.releasetime | split}}</span>
                     <span>已有{{intentionCount||'0'}}位用户发起意向</span>
+                    <span>状态:　
+                        <span style="color: #3F7AFF;font-weight: bold;">{{detailData.demandprogressStr}}</span>
+                    </span>
                 </div>
             </header>
             <div class="content">
@@ -255,20 +258,26 @@
          }
      },
      computed: {
-            ...vx.mapGetters([
-                'role'
-            ])
-        },
-      mounted() {
+         ...vx.mapGetters([
+             'role'
+         ])
+     },
+     filters: {
+         split: function (value) {
+             if(!value) return '-';
+             return value.split(' ')[0]
+         }
+     },
+     mounted() {
         this.init();
      },
-      components: {
+     components: {
             intentForm,
             transDialog,
-            paySuccess,
-            payFailDialog,
+         paySuccess,
+          payFailDialog,
           lonSpan,
-        }
+     }
 }
 </script>
 

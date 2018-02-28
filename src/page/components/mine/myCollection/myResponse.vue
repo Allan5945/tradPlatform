@@ -9,8 +9,11 @@
                   </span>
               </div>
               <div class="tips">
-                  <span>创建于{{detailData.releasetime||'-'}}</span>
+                  <span>创建于{{detailData.releasetime | split}}</span>
                   <span>已有{{intentionCount||'0'}}位用户发起意向</span>
+                  <span>状态:　
+                        <span style="color: #3F7AFF;font-weight: bold;">{{detailData.demandprogressStr}}</span>
+                    </span>
               </div>
               <div class="chatBox" v-if="chatShow" @click="toChat">发起对话</div>
           </header>
@@ -87,7 +90,7 @@
               </div>
               <div class="myplan">
                   <div class="plan-til">
-                      <div>我发出的方案<span>{{planState}}</span></div>
+                      <div>我发出的方案<span>({{planData.responseProgressStr}})</span></div>
                       <div @click="getSureForm" v-if="editShow"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                   </div>
                   <div class="airline">
@@ -200,11 +203,11 @@
           </div>
           <footer  v-if="footShow">
               <div class="btn" v-if="confirmShow">
-                  <div class="cancel-btn"  @click="confirm">确认方案</div>
-                  <div class="refuse-btn" @click="refuse">拒绝并撤回</div>
+                  <div class="cancel-btn btn-b"  @click="confirm">确认方案</div>
+                  <div class="refuse-btn btn-w" @click="refuse">拒绝并撤回</div>
               </div>
               <div class="btn" v-else>
-                  <div class="intent-btn"  @click="toIntent" v-if="withdraw">重新发起意向</div>
+                  <div class="intent-btn btn-b"  @click="toIntent" v-if="withdraw">重新发起意向</div>
                   <div class="cancel-btn btn-w"  @click="cancelIntent" v-else>取消意向</div>
                   <div class="col-btn cancel btn-b" @click="cancelCollect" v-if="isCollect"
                        @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
@@ -553,6 +556,12 @@
                 'role'
             ])
       },
+     filters: {
+         split: function (value) {
+             if(!value) return '-';
+             return value.split(' ')[0]
+         }
+     },
        mounted() {
           this.intentionCount = this.resData.intentionCount;
           this.detailData = this.resData.data;
@@ -905,9 +914,9 @@
               }
                .intent-btn{
                   width:180px;
-                  color:#fff;
+                  /*color:#fff;*/
                   margin-right:10px;
-                  background-color:#3c78ff;
+                  /*background-color:#3c78ff;*/
               }
                .col-btn{
                   width:80px;

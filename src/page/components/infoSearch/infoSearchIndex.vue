@@ -76,7 +76,7 @@
                         <div class="img svg-wrapper">
                             <div class="svg-container">
                                 <svg class="icon svg-logo" aria-hidden="true">
-                                    <use :xlink:href="icon"></use>
+                                    <use xlink:href="#icon-nanfanghangkongwenzi_CZ"></use>
                                 </svg>
                             </div>
                         </div>
