@@ -87,7 +87,7 @@ export default class ChatSocket {
         this.ws.onmessage = (data) => {
             console.log(`收到信息`, data);
             let chat = JSON.parse(data.data);
-            console.log(ln.chat);
+            console.log(JSON.parse(data.data));
             switch (chat.type) {
                 case "message" || "remind":
                     break
@@ -104,6 +104,7 @@ export default class ChatSocket {
                         list: []
                     }
                 };
+                debugger
                 ln.chat.chatData[chat.data.chatFlag].chatRcord.list.splice(0, 0, chat.data);
                 if (chat.data.chatFlag != ln.chat.setChat) {
                     ln.chat.chatData[chat.data.chatFlag].noReadCount = 1;

@@ -295,7 +295,7 @@
                         type = null;
                     };
                     setTimeout(() => {
-                        tabulationBoxTrigger.$emit('tipBox',a.data.code);   
+                        tabulationBoxTrigger.$emit('tipBox',a.data.code);
                         let infMesBox = document.getElementById('inf-mes-box');
                         infMesBox.style.left = `${a.event.offsetX + 30}px`;
                         infMesBox.style.top = `${a.event.offsetY}px`;
