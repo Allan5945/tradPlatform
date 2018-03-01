@@ -91,7 +91,7 @@
                 type: [],
                 type1:['航线委托'],
                 type2:['运力委托'],
-                type3:['需求类型','航线委托','运力委托','托管'],
+                type3:['需求类型','航线委托','运力委托','运营托管'],
                 state: [],
                 state1: ['状态','待处理','测评中','已接受','已拒绝','已关闭'],
                 state2: ['状态','待处理','处理中','已拒绝','已完成','已关闭'],
@@ -173,7 +173,7 @@
                 }else if(item == '运力委托') {
                     this.state = this.state2;
                     this.sentData.demandType = "4";
-                }else if(item == '托管') {
+                }else if(item == '运营托管') {
                     this.state = this.state1;
                     this.sentData.demandType = "2";
                 }else if(item == '需求类型') {
