@@ -22,22 +22,20 @@
                 </footer>
             </template>
         </div>
-        <transition name="fade">
-            <div class="swrapper flex-center" v-show="show.swrapper">
-                <div class="rsn-box shadow">
-                    <h3>请填写不通过原因</h3>
-                    <div class="rsn-body">
-                        <span>原因:</span>
-                        <textarea class="txtarea" maxlength="100" v-model="reason.text" ></textarea>
-                        <i class="letter-counter">{{reason.textLength}}/100</i>
-                    </div>
-                    <footer class="footer-s flex-center">
-                        <span class="btn btn-prime" style="width: 150px;" @click="postReason">确认</span>
-                        <span class="btn btn-gray" @click="closeReason">取消</span>
-                    </footer>
+        <div class="swrapper flex-center" v-show="show.swrapper">
+            <div class="rsn-box shadow">
+                <h3>请填写不通过原因</h3>
+                <div class="rsn-body">
+                    <span>原因:</span>
+                    <textarea class="txtarea" maxlength="100" v-model="reason.text" ></textarea>
+                    <i class="letter-counter">{{reason.textLength}}/100</i>
                 </div>
+                <footer class="footer-s flex-center">
+                    <span class="btn btn-prime" style="width: 150px;" @click="postReason">确认</span>
+                    <span class="btn btn-gray" @click="closeReason">取消</span>
+                </footer>
             </div>
-        </transition>
+        </div>
     </div>
 </template>
 
