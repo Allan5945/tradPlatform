@@ -68,9 +68,9 @@
                 </el-pagination>
             </div>
         </div>
-        <transition name="slidex-fade">
+        <!--<transition name="slidex-fade">-->
             <panel v-if="detailsPanel.show" :detailData="detailsPanel.data" :roleType="roleType" v-on:closeAll="turnDetailPanel"></panel>
-        </transition>
+        <!--</transition>-->
     </div>
 </template>
 <script>
