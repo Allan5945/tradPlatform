@@ -38,7 +38,15 @@
         <div class="inf-associated">
             <div>关联航司</div>
             <div>
-                <span v-for="(val,key) in glhs" v-text="val.iata" class="inf-hsItrm"></span>
+                <div v-for="(val,key) in glhs"class="inf-hsItrmBox">
+                    <!--<span  v-text="val.iata" class="inf-hsItrm"></span>-->
+                    <span class="inf-hsItrm"></span>
+                    <span class="inf-hsItrmBg">
+                        <svg class="icon" aria-hidden="true">
+                            <use :xlink:href="(`#`+val.logo)"></use>
+                        </svg>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="inf-news" :class="{'gdyq':yq.length != 0}">
@@ -61,6 +69,7 @@
 </template>
 <script>
     import * as vx from 'vuex';
+    import {companyIconData} from "./../../../public/js/companyIcon"
     import tabulationBoxTrigger from "./../../../public/js/tabulationBoxTrigger.js";
     export default {
         data(){
@@ -94,6 +103,7 @@
                     x: 10,
                     y: 10
                 },
+                companyIconData:[]
             }
         },
         computed:{
@@ -159,6 +169,7 @@
             },
         },
         mounted:function(){
+            this.companyIconData = companyIconData;
             let _this = this;
             tabulationBoxTrigger.$on("tipBox",d => {
                 _this.yq = [];
@@ -193,7 +204,18 @@
                                 _this.glhs = response.data.obj.compenys;
                             }else{
                                 _this.glhs = []
-                            }
+                            };
+                            let newglhs = _this.glhs.map((value)=>{
+                                let oj = {};
+                                _this.companyIconData.forEach((vl)=>{
+                                    if(vl.companyIata === value.iata){
+                                        oj.logo = vl.logo;
+                                        oj.icon = vl.icon;
+                                    }
+                                });
+                                return Object.assign(oj,value)
+                            });
+                            _this.glhs = newglhs;
                         }
                     })
                     .catch((error) => {
@@ -238,15 +260,33 @@
         transform: translateX(-10px);
         opacity: 0;
     }
-    .inf-hsItrm{
-        margin-right: 10px;
-        border: 1px solid #3c78ff;
-        display: inline-block;
-        border-radius:15px;
+    .inf-hsItrmBox{
         height: 30px;
         width: 30px;
+        margin-right: 10px;
+        position: relative;
+        display: inline-block;
+    }
+    .inf-hsItrm{
+        display: inline-block;
         text-align: center;
         line-height: 30px;
+        height: 30px;
+        width: 30px;
+    }
+    .inf-hsItrmBg{
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        font-family: iconfont;
+        top: 0;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 11px rgba(85, 85, 85, 0.4);
+        >svg{
+            height: 30px;
+            width: 30px;
+        }
     }
     .inf-box {
         width: 300px;
