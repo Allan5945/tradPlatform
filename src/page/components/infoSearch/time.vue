@@ -113,7 +113,7 @@
                                                       'font-size': ((item.monCnt+1)/3.45 + 5 )+'px',
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.monCnt">&#xe630;</span>
+                                                  :title="item.monCnt">&#xe630;</span>
                                           </li>
                                           <li> <span
                                                   :style="{
@@ -121,7 +121,7 @@
                                                       'font-size': ((item.tuesCnt+1)/3.45 + 5 )+'px' ,
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.tuesCnt">&#xe630;</span>
+                                                  :title="item.tuesCnt">&#xe630;</span>
                                           </li>
                                           <li> <span
                                                   :style="{
@@ -129,7 +129,7 @@
                                                       'font-size': ((item.wedCnt+1)/3.45 + 5 )+'px' ,
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.wedCnt">&#xe630;</span>
+                                                  :title="item.wedCnt">&#xe630;</span>
                                           </li>
                                           <li> <span
                                                   :style="{
@@ -137,7 +137,7 @@
                                                       'font-size': ((item.thursCnt+1)/3.45 + 5 )+'px' ,
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.thursCnt">&#xe630;</span>
+                                                  :title="item.thursCnt">&#xe630;</span>
                                           </li>
                                           <li> <span
                                                   :style="{
@@ -145,7 +145,7 @@
                                                       'font-size': ((item.friCnt+1)/3.45 + 5 )+'px' ,
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.friCnt">&#xe630;</span>
+                                                  :title="item.friCnt">&#xe630;</span>
                                           </li>
                                           <li> <span
                                                   :style="{
@@ -153,7 +153,7 @@
                                                       'font-size': ((item.staCnt+1)/3.45 + 5 )+'px' ,
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.staCnt">&#xe630;</span>
+                                                  :title="item.staCnt">&#xe630;</span>
                                           </li>
                                           <li> <span
                                                   :style="{
@@ -161,7 +161,7 @@
                                                       'font-size': ((item.sunCnt+1)/3.45 + 5 )+'px' ,
                                                       'font-family':'iconfont'
                                                   }"
-                                                  :flag="item.sunCnt">&#xe630;</span>
+                                                  :title="item.sunCnt">&#xe630;</span>
                                           </li>
                                       </ul>
                                   </div>
