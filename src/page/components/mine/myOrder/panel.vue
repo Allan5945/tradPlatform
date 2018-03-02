@@ -1,51 +1,52 @@
 <template>
-    <!--<div class="wrap" @click.self="closeDetail">-->
-
-    <!--</div>-->
-    <div class="box shadow">
-        <div class="panel-header">
-            <p class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
-        </div>
-        <div class="aplan-wrapper">
-            <div v-if="metaData && metaData.isWeituo" @click="contactTaimei" class="contact">联系客服 <span class="iconfont" style="font-size: 1.4rem;">&#xe720;</span> </div>
-            <listModule :ndetailData="metaData.data"
-                        :type="typeList[detailData.demandType]"
-                        v-if="metaData">
-            </listModule>
-            <extendListModule
-                    :ndetailData="metaData.responseList[0]"
-                    :type="typeList[detailData.demandType==1?0:1]"
-                    :roleType="roleType"
-                    v-if="metaData && metaData.responseList && metaData.responseList.length>0">
-            </extendListModule>
-            <template v-if="metaData && metaData.isWeituo && metaData.listSonDemands">
-                <header>
-                    <div class="head-til">关联子需求</div>
-                </header>
-                <div class="table-form-extend">
-                    <div class="table-header">
-                        <span class="item-a">发布时间</span><span class="item-b">标题</span><span class="item-c">需求状态</span>
+    <div class="wrap" @click.self="closeDetail">
+        <transition name="slidex-fade">
+        <div class="box shadow" v-if="metaData">
+            <div class="panel-header">
+                <p class="mgr-l">订单详情<span  class="iconfont closer" @click="closeDetail">&#xe62c;</span></p>
+            </div>
+            <div class="aplan-wrapper">
+                <div v-if="metaData && metaData.isWeituo" @click="contactTaimei" class="contact">联系客服 <span class="iconfont" style="font-size: 1.4rem;">&#xe720;</span> </div>
+                <listModule :ndetailData="metaData.data"
+                            :type="typeList[detailData.demandType]"
+                            v-if="metaData">
+                </listModule>
+                <extendListModule
+                        :ndetailData="metaData.responseList[0]"
+                        :type="typeList[detailData.demandType==1?0:1]"
+                        :roleType="roleType"
+                        v-if="metaData && metaData.responseList && metaData.responseList.length>0">
+                </extendListModule>
+                <template v-if="metaData && metaData.isWeituo && metaData.listSonDemands">
+                    <header>
+                        <div class="head-til">关联子需求</div>
+                    </header>
+                    <div class="table-form-extend">
+                        <div class="table-header">
+                            <span class="item-a">发布时间</span><span class="item-b">标题</span><span class="item-c">需求状态</span>
+                        </div>
+                        <ul class="table-body">
+                            <template v-for="(item, eindex) in metaData.listSonDemands">
+                                <li>
+                                    <div class="list">
+                                        <span class="item-a">{{ item.releasetime }}</span>
+                                        <span class="item-b"><lonSpan :txt="item.title"></lonSpan></span>
+                                        <span class="item-c">{{ item.demandprogressStr }}</span>
+                                        <template v-if="false && roleType=='2'">
+                                            <span @click="openOtherDemand(item)" class="item-d">查看详情</span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="item-d"></span>
+                                        </template>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
                     </div>
-                    <ul class="table-body">
-                        <template v-for="(item, eindex) in metaData.listSonDemands">
-                            <li>
-                                <div class="list">
-                                    <span class="item-a">{{ item.releasetime }}</span>
-                                    <span class="item-b"><lonSpan :txt="item.title"></lonSpan></span>
-                                    <span class="item-c">{{ item.demandprogressStr }}</span>
-                                    <template v-if="false && roleType=='2'">
-                                        <span @click="openOtherDemand(item)" class="item-d">查看详情</span>
-                                    </template>
-                                    <template v-else>
-                                        <span class="item-d"></span>
-                                    </template>
-                                </div>
-                            </li>
-                        </template>
-                    </ul>
-                </div>
-            </template>
+                </template>
+            </div>
         </div>
+        </transition>
     </div>
 </template>
 
@@ -163,7 +164,8 @@
             tabulationBoxTrigger.hierarchy = true;
         },
         destroyed: function () {
-            tabulationBoxTrigger.hierarchy = false;
+            return tabulationBoxTrigger.hierarchy = false;
+
             if(this.fatherScroll){
                 let fdom = document.querySelector('.my-center');
                 fdom.style.overflow = 'auto';
@@ -246,13 +248,13 @@
         box-shadow: -5px 5px 15px rgba(216,216,216,.9) inset;
     }
     .wrap{
-        /*position: fixed;*/
-        /*width: 100%;*/
-        /*height: 100%;*/
-        /*top: 0;*/
-        /*left: 0;*/
-        /*!*background-color: rgba(0, 0, 0, 0.2);*!*/
-        /*z-index: 11;*/
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 11;
     }
     .shadow{
         box-shadow: 0px 0px 15px #888;
