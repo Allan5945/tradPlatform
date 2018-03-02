@@ -316,6 +316,7 @@
                         "coordinateSystem": "bmap",
                         "data": a,
                         "symbolSize": 50,
+                        "zlevel": 10,
                         "label": {
                             "normal": {
                                 "show": true,
@@ -441,6 +442,7 @@
 //            this.$bExample.setallNum(a);
             this.$bExample.init();
             this.myChart.on('click', (a) => {
+                if(a.seriesName === "allPoint" || a.seriesName === "routeNetwork")return;
                 if(a.data.type != 1){
                     setTimeout(() => {  // 展开机场信息列表
                         tabulationBoxTrigger.$emit('tipBox',a.data.mes.code);

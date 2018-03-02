@@ -87,35 +87,41 @@ export default class ChatSocket {
         this.ws.onmessage = (data) => {
             console.log(`收到信息`, data);
             let chat = JSON.parse(data.data);
-            console.log(JSON.parse(data.data));
             switch (chat.type) {
                 case "message" || "remind":
                     break
                 case "system":
             }
-            if (!ln.chat.chatData.hasOwnProperty(chat.data.chatFlag)) {
+            let chatFlag;
+            if(chat.type === "isChat"){
+                chatFlag = chat.chatFlag;
+            }else if(chat.type === "system"){
+                chatFlag = "x-t-null";
+            }else{
+                chatFlag = chat.data.chatFlag;
+            }
+            if (!ln.chat.chatData.hasOwnProperty(chatFlag)) {
                 ln.$emit("queryChat");
                 return false;
-            }
-
-            if (chat.type == "message" || chat.type == "remind") {
-                if (ln.chat.chatData[chat.data.chatFlag].chatRcord == null) {
-                    ln.chat.chatData[chat.data.chatFlag].chatRcord = {
+            };
+            if (chat.type === "message" || chat.type === "remind") {
+                if (ln.chat.chatData[chatFlag].chatRcord == null) {
+                    ln.chat.chatData[chatFlag].chatRcord = {
                         list: []
                     }
                 };
-                ln.chat.chatData[chat.data.chatFlag].chatRcord.list.splice(0, 0, chat.data);
+                ln.chat.chatData[chatFlag].chatRcord.list.splice(0, 0, chat.data);
                 if (chat.data.chatFlag != ln.chat.setChat) {
-                    ln.chat.chatData[chat.data.chatFlag].noReadCount = 1;
+                    ln.chat.chatData[chatFlag].noReadCount = 1;
                 }
-                ln.chat.chatData[chat.data.chatFlag].modifyRcord = chat.modifyList;
-                console.log( ln.chat.chatData[chat.data.chatFlag])
-
-            } else if (chat.type == "system") {
+                ln.chat.chatData[chatFlag].modifyRcord = chat.modifyList;
+            } else if (chat.type === "system") {
                 ln.chat.chatData["x-t-null"].chatRcord.list.splice(0, 0, chat.data);
                 if (ln.chat.setChat != "x-t-null") {
                     ln.chat.chatData["x-t-null"].noReadCount = 1;
                 }
+            }else if(chat.type === "isChat"){
+                ln.chat.chatData[chatFlag].isSendMessage =  chat.isSendMessage;
             }
             ln.chat.change = !ln.chat.change;
         };

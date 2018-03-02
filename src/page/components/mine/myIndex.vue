@@ -170,6 +170,7 @@ import * as vx from 'vuex'
             margin: 40px 0 20px 0;
             font-size: 2.6rem;
             text-align: center;
+            word-break: keep-all;
         }
         .work-info {
             display: flex;
