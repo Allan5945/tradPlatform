@@ -45,7 +45,7 @@
                             {{item.responseProgressStr}}
                         </div>
                         <div class="list-e item">
-                            <span class="icon-item talk-icon" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
+                            <span class="icon-item talk-icon" v-if="item.demandEmployeeId != null" @click.stop="chat(item)" style="cursor:pointer;">&#xe602;
                                 <!--<span v-show="talkNumShow">{{item.unreadNum}}</span>-->
                             </span>
                         </div>

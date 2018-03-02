@@ -372,9 +372,11 @@ import {companyIconData} from '$src/public/js/companyIcon.js'
     .wrapper{
         position: absolute;
         width: 100%;
+        height: 100%;
         top: 0;
         left: 0;
         background-color: #f5f5f5;
+        overflow: scroll;
         z-index: 11;
         color:#605e7c;
         header{

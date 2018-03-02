@@ -173,7 +173,7 @@
                             if(this.infoData.id == val.id){
                                 this.iconShow = true;
                                 this.icon = `#${val.icon}`
-                                console.info(this.icon)
+//                                console.info(this.icon)
                             }
                         })
                         this.newsData = response.data.obj.publicOpinions;

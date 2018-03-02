@@ -25,7 +25,8 @@
                          v-if="(myplanBtnShow && (receiveIntention.responseProgress != 2
                             && receiveIntention.responseProgress != 3
                             && receiveIntention.responseProgress != 4)
-                            && myData.demandprogress != 3)" @click="beginTalkClickFn">
+                            && myData.demandprogress != 3
+                            && myData.intentionMoneyState === '0')" @click="beginTalkClickFn">  <!--intentionMoneyState 0:已缴纳,1:未缴纳-->
                         发起对话
                     </div>
                 </div>
@@ -809,7 +810,7 @@
                     this.isSelf = response.data.isSelf;
                     this.isAlreadyCollect = response.data.isAlreadyCollect; // 是否收藏
                     this.receiveIntention = response.data.receiveIntention; // 获取我发布的数据(意向方数据)
-                    this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;
+                    this.isIntentionMoney = response.data.isIntentionMoneyForThisDemand;  // 发布方登录时，发布方是否缴纳
                     this.userNum = response.data.intentionCount;
                     this.myData = response.data.data;
                     this.myTitle = `${this.myData.title}航线需求`

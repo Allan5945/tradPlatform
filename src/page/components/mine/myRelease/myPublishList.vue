@@ -51,7 +51,10 @@
                                 <ul class="choose-type response-employees" v-if="responseEmployeesIndex === index">
                                     <li v-for="(vl,i) in item.responseEmployees" @click.stop="responseEmployeesClickFn(item,vl,i)">
                                         <div></div>
-                                        <div style="position: relative;">{{vl.nickName}}
+                                        <div style="position: relative;">
+                                            <span style="display: block; height: 100%; max-width: 113px; overflow: hidden;">
+                                                <lonSpan :txt="vl.nickName"></lonSpan>
+                                            </span>
                                             <!--<span class="talk-num" style="top: 0; left: auto; right: -10px;"
                                                   v-show="vl.chatNum != 0 && vl.chatNum != null && chatIndex.indexOf(i) == '-1'">{{vl.chatNum}}</span>-->
                                         </div>
@@ -81,6 +84,7 @@
     import * as vx from 'vuex'
     import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js';
     import stateList from '../stateList.vue'
+    import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
 
     export default {
         data() {
@@ -406,6 +410,7 @@
         },
         components: {
             stateList,
+            lonSpan,
         }
     }
 </script>
