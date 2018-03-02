@@ -8,7 +8,7 @@
         <detailed></detailed>
         <!--<transIndex v-show="detailShow" @closeAirline="closeAirline"></transIndex>-->
         <!--<airlineDetailPayAfter v-show="detailShow2" @transShow='closeTrans'  @closeThis="closeThis"></airlineDetailPayAfter>-->
-        <routeNetwork v-if="role.role != '2'"></routeNetwork>
+        <routeNetwork></routeNetwork>
         <timelyCommunication v-if="dis.shut" v-show="dis.narrow"></timelyCommunication>
         <router-view></router-view>
         <newsTip></newsTip>
