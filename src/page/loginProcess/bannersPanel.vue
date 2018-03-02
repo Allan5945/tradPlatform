@@ -2,8 +2,9 @@
     <div class="banner-panel" @mousewheel="wheel($event)" @DOMMouseScroll="wheel($event)" ref="bannerPanel">
         <!-- 板块1 -->
         <div class="banner-item banner-item-i1">
-            <p :style="{'top':box.height/2 - 92 +'px'}">设想飞过无数个地方<br>却从未彼此相遇</p>
-            <p :style="{'top':box.height/2 - 90 +'px'}">IMAGINE FLYING THROUFH COUNTLESS PLACES<br>BUT NEVER MET EACH OTHER</p>
+            <!--<p :style="{'top':box.height/2 - 92 +'px'}">通达更多航点，只为与您相遇。<br>却从未彼此相遇</p>-->
+            <p :style="{'top':box.height/2 - 92 +'px'}">通达更多航点，只为与您相遇。</p>
+            <p :style="{'top':box.height/2 - 90 +'px'}">Connect more points, <br>Just to meet you.</p>
         </div>
         <!-- 板块2 -->
         <div class="banner-item banner-item-i2">
@@ -323,7 +324,7 @@ import bannerBotton from './bannersPanelComponents/bannerButton.vue';
         >p:nth-child(2){
             position: absolute;
             left:1080px;
-            font-size: 1.2rem;
+            font-size: 2rem;
             font-weight: bold;
             letter-spacing: 2px;
             line-height: 25px;

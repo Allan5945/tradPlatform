@@ -463,7 +463,7 @@
                 }
                 if(a.data.type == 3){  // 我发布的
                     tabulationBoxTrigger.$emit("tagModel",1)
-                }else if(a.data.type == 1){  // 市场需求
+                }else if(a.data.type == 1 || a.data.type == 0){  // 市场需求
                     tabulationBoxTrigger.$emit("tagModel",0)
                 }
                 tabulationBoxTrigger.$emit('setCode',a.data.mes.code);

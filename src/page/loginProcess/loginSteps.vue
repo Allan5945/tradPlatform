@@ -60,7 +60,7 @@ export default {
                 'c_updated'
             ]),
             title(){
-                let t = "开启航线开通在线时代";
+                let t = "航线交易，可遇可求。";
                 switch(this.setpes){
                     case 1:
                     t = "找回密码"
