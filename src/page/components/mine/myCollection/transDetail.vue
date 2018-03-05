@@ -138,6 +138,8 @@
              inventBtnShow:false,
              payFailShow:false,
              myTitle: '',
+             receiveIntention: {},
+             loadingPayShow: true,
          }
      },
      props:['needData'],
@@ -233,6 +235,7 @@
                 })
                 .then((response) => {
                     this.myTitle = `${response.data.data.title}运力投放`;
+                    this.receiveIntention = response.data.receiveIntention;
                     if(response.data.receiveIntention == null){
                         this.myShow1 = true;
                         this.intentionCount = response.data.intentionCount;

@@ -343,9 +343,8 @@
         .close-icon {
             position: absolute;
             right: 12px;
-            /*display: flex;
-            align-items: center;
-            justify-content: center;*/
+            top: 50%;
+            margin-top: -11px;
             width: 22px;
             height: 22px;
             line-height: 22px;

@@ -19,7 +19,7 @@
           </header>
           <div class="content">
               <div class="table-form">
-                  <div>
+                  <div v-if="this.planData.responseProgress != '-1'">
                       <div>联系人</div>
                       <div>
                           <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
@@ -27,7 +27,7 @@
                           </span>
                       </div>
                   </div>
-                  <div>
+                  <div v-if="this.planData.responseProgress != '-1'">
                       <div>联系方式</div>
                       <div>{{detailData.iHome||'-'}}</div>
                   </div>
@@ -267,6 +267,7 @@
              text:'已收藏',
              planState:'',
              myTitle: '',
+             loadingPayShow: false,
          }
      },
       components: {
@@ -461,88 +462,83 @@
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
-                  params: {
+                 params: {
                     demandId: this.planData.demandId
-                }
+                 }
                 })
                 .then((response) => {
-                   this.intentionCount = this.response.data.intentionCount;
-          this.detailData = this.response.data.data;
-          this.planData = this.response.data.receiveIntention;
+                    this.intentionCount = this.response.data.intentionCount;
+                    this.detailData = this.response.data.data;
+                    this.planData = this.response.data.receiveIntention;
 
-           //选定状态无法编辑
-          if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
-              this.editShow = false;
-          }
-            //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
-                        let progress = this.planData.responseProgress;
-                        if(progress == '2'){
-                          this.editShow = false;
-                          this.chatShow = false;
-                          this.withdraw = true;
-                          this.planState = "（已撤回）";
-                          this.footShow = true;
-                          this.orderComplete = false;
-                          this.confirmShow = false;
-                        }else if(progress == '0'){
-                            this.editShow = true;
-                            this.chatShow = true;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.footShow = true;
-                            this.orderComplete = false;
-                            this.confirmShow = false;
-                        }else if(progress == '4'){
-                            this.editShow = false;
-                            this.chatShow = false;
-                            this.footShow = false;
-                            this.withdraw = false;
-                            this.planState = "（已落选）";
-                            this.orderComplete = false;
-                            this.confirmShow = false;
-                        }else if(progress == '6'){
-                            this.editShow = false;
-                            this.footShow = false;
-                            this.chatShow = true;
-                            this.planState = " ";
-                            this.withdraw = false;
-                            this.orderComplete = true;
-                            this.confirmShow = false;
-                        }else if(progress == '3'){
-                            this.editShow = false;
-                            this.footShow = false;
-                            this.chatShow = false;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.orderComplete = false;
-                             this.confirmShow = false;
-                        }else if(progress == '5'||progress == '7'){
-                            this.editShow = false;
-                            this.footShow = false;
-                            this.chatShow = true;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.orderComplete = false;
-                            this.confirmShow = false;
-                        }else if(progress == '1'){
-                            this.confirmShow = true;
-                            this.editShow = false;
-                            this.footShow = true;
-                            this.chatShow = true;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.orderComplete = false;
-                        }
-
-
-
-         if(this.response.data.isAlreadyCollect == true){
-              this.isCollect = true;
-         }else if(this.response.data.isAlreadyCollect == false){
-              this.isCollect = false;
-          }
-
-
+                    //选定状态无法编辑
+                    if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
+                    this.editShow = false;
+                    }
+                    //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
+                    let progress = this.planData.responseProgress;
+                    if(progress == '2'){
+                        this.editShow = false;
+                        this.chatShow = false;
+                        this.withdraw = true;
+                        this.planState = "（已撤回）";
+                        this.footShow = true;
+                        this.orderComplete = false;
+                        this.confirmShow = false;
+                    }else if(progress == '0'){
+                        this.editShow = true;
+                        this.chatShow = true;
+                        this.withdraw = false;
+                        this.planState = " ";
+                        this.footShow = true;
+                        this.orderComplete = false;
+                        this.confirmShow = false;
+                    }else if(progress == '4'){
+                        this.editShow = false;
+                        this.chatShow = false;
+                        this.footShow = false;
+                        this.withdraw = false;
+                        this.planState = "（已落选）";
+                        this.orderComplete = false;
+                        this.confirmShow = false;
+                    }else if(progress == '6'){
+                        this.editShow = false;
+                        this.footShow = false;
+                        this.chatShow = true;
+                        this.planState = " ";
+                        this.withdraw = false;
+                        this.orderComplete = true;
+                        this.confirmShow = false;
+                    }else if(progress == '3'){
+                        this.editShow = false;
+                        this.footShow = false;
+                        this.chatShow = false;
+                        this.withdraw = false;
+                        this.planState = " ";
+                        this.orderComplete = false;
+                         this.confirmShow = false;
+                    }else if(progress == '5'||progress == '7'){
+                        this.editShow = false;
+                        this.footShow = false;
+                        this.chatShow = true;
+                        this.withdraw = false;
+                        this.planState = " ";
+                        this.orderComplete = false;
+                        this.confirmShow = false;
+                    }else if(progress == '1'){
+                        this.confirmShow = true;
+                        this.editShow = false;
+                        this.footShow = true;
+                        this.chatShow = true;
+                        this.withdraw = false;
+                        this.planState = " ";
+                        this.orderComplete = false;
+                    }
+                    if(this.response.data.isAlreadyCollect == true){
+                        this.isCollect = true;
+                    }else if(this.response.data.isAlreadyCollect == false){
+                        this.isCollect = false;
+                    }
                 })
                 .catch((error) => {
                         console.log(error);

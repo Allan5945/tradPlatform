@@ -136,7 +136,7 @@
             <span class="danger" v-show="myData.rek != null && myData.rek != ''">*原因：{{myData.rek}}</span>
         </div>
         <div class="eighth" v-if="buttonShow">
-            <span class="line" style="position:absolute; top: 0px;"></span>
+            <span class="line" style="position:absolute; top: 0px; right: 13px;"></span>
             <div class="buttons">
                 <button class="btn btn-w" @click="recallFn">撤回该委托</button>
             </div>
@@ -631,11 +631,9 @@
         box-shadow: 0px 5px 15px rgba(216, 216, 216, 0.9);
         .close-icon {
             position: absolute;
-            right: 12px;
-           /* display: flex;
-            align-items: center;
-            justify-content: center;*/
-            margin: 0;
+            right: -10px;
+            top: 50%;
+            margin-top: -11px;
             width: 22px;
             height: 22px;
             line-height: 22px;
@@ -807,7 +805,7 @@
         bottom: 100px;
     }
     .line {
-        margin: 0 auto;
+        /*margin: 0 auto;*/
         width: 560px;
         height: 2px;
         background: #f3f3f3;
@@ -819,7 +817,7 @@
         display: flex;
         justify-content: center;
         /*align-items: center;*/
-        width: 600px;
+        width: 593px;
         height: 100px;
         background: white;
         .buttons {

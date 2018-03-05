@@ -375,6 +375,8 @@
                     if(val == this.intendedPst||val == this.intendedArrv){
                         this.intendedDpt = '';
                     }
+                }else {
+                    this.qyCode3 = '';
                 }
             },
             'intendedPst':function(val){
@@ -382,6 +384,8 @@
                     if(val == this.intendedDpt||val == this.intendedArrv){
                         this.intendedPst = '';
                     }
+                }else {
+                    this.qyCode4 = '';
                 }
             },
             'intendedArrv':function(val){
@@ -389,6 +393,8 @@
                     if(val == this.intendedDpt||val == this.intendedPst){
                         this.intendedArrv = '';
                     }
+                }else {
+                    this.qyCode5 = '';
                 }
             },
             'searchData1':function(val){
@@ -473,11 +479,11 @@
             },
              closeDialog1(){
                 let that =this;
-               setTimeout(function(){
-                that.dptSearch =false;
-                that.intendedDpt = (that.intendedDpt == ''||that.qyCode3 == ''? '':that.intendedDpt1);
+                setTimeout(function(){
+                    that.dptSearch =false;
+                    that.intendedDpt = (that.intendedDpt == ''||that.qyCode3 == ''? '':that.intendedDpt1);
                     if(that.qyCode3){
-                     that.isError3 = false;
+                        that.isError3 = false;
                     }
                 },200);
             },

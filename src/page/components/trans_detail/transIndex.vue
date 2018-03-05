@@ -65,7 +65,7 @@
             }
         },
         mounted: function () {
-            if( this.role.role == 1){
+            if( this.role.role == 1){  //0：航司，1：机场，2：太美
                 this.respond = true;
             }else if( this.role.role == 0 ){
                this.intentShow = true;

@@ -6,8 +6,8 @@
                 <span class="close-icon iconfont" @click="cancel" style="color:#3c78ff;">&#xe62c;</span>
             </div>
             <div class="select-box" v-show="formFinish">
-                <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
-                <div>展开填写完整需求订单</div>
+                <div class="check-box"><input type="checkbox" id="zhankai2" v-model="allFormShow"></div>
+                <label for="zhankai2">展开填写完整需求订单</label>
             </div>
             <div class="t-part" v-show="!allFormShow">
                 <div class="form-box">
@@ -21,6 +21,11 @@
                     <div class="t-title"><span style="color:red;padding-right:3px;">*</span>运力基地</div><input type="text" placeholder="输入选择机场" v-model="searchText" @focus="openSearch" @blur="closeDialog5">
                   <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
                    <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
+                </div>
+                <div class="form-box pad1 taken" v-if="role.role == '2'">
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
+                    <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
+                    <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
                 </div>
             </div>
             <div class="t-all" v-show="allFormShow">
@@ -247,8 +252,8 @@
     export default {
         data () {
             return{
-                formFinish:false,
-                allFormShow:true,
+                formFinish:true,
+                allFormShow:false,
                 showBox: false,
                 boxShow1: false,
                 boxShow2: false,
@@ -359,11 +364,11 @@
               }
         },
         watch:{
-            'allFormShow':function(val){
+            /*'allFormShow':function(val){
                 if(val){
                     this.formFinish =false;
                 }
-            },
+            },*/
             'qyCode3':function(val){
                 if(val){
                     if(val == this.qyCode4||val == this.qyCode5){
@@ -1201,6 +1206,7 @@
     .select-box{
         display:flex;
         justify-content: flex-end;
+        align-items: center;
         >div{
             height:26px;
             margin-right:5px;
@@ -1219,7 +1225,7 @@
         justify-content: space-between;
         padding:0 20px;
         padding-bottom:20px;
-        border-bottom:1px solid rgba(151,151,151,.3);
+        /*border-bottom:1px solid rgba(151,151,151,.3);*/
     }
     .form-box{
         width:240px;

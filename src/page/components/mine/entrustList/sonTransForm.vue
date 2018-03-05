@@ -975,12 +975,16 @@
             if(this.role.role == 2){
                 this.btnShow = false;
             }
-
-            let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
+            if(this.role.role == 0){
+                let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
+                this.airCompany = a.companyName;
+                this.airCompany1 = a.companyName;
+                this.airCompanyId = a.id;
+            }
             this.contact = this.role.username;
             this.phoneNum = this.role.phone;
-            this.airCompany = a.companyName;
-            this.airCompanyId = a.id;
+
+
         }
 
     }

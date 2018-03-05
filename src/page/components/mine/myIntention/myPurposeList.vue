@@ -88,7 +88,7 @@
                 type2: ['需求类型','运力投放','航线需求'],
                 state: [],
                 state1: ['状态','意向征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
-                state2: ['状态','意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力需求
+                state2: ['状态','待支付','意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力投放
                 myPurposeShow: false, // myPublish是否显示
                 myPurpose1Show: false,// myPurpose1是否显示
                 myPurpose2Show: false,
@@ -320,6 +320,8 @@
                     this.sendData.responseProgress = 6;
                 }if(item == '佣金支付') {
                     this.sendData.responseProgress = 7;
+                }if(item == '待支付') {
+                    this.sendData.responseProgress = '-1';
                 }
             },
             // 点击列表(list)，展示详情

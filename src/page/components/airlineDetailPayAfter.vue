@@ -158,7 +158,7 @@
             </div>
             <div class="fifth item-container">
                 <div class="left font-gray">其他说明</div>
-                <div class="right">{{myData.remark}}</div>
+                <div class="right" style="word-wrap: break-word;">{{myData.remark}}</div>
             </div>
         </div>
         <div class="myplan" v-if="myplanShow"> <!--this.isSelf == false && this.receiveIntention != null && this.receiveIntention != ''-->
@@ -348,8 +348,7 @@
                 </div>
                 <div class="tips">
                     <div>其他说明</div>
-                    <div>{{receiveIntention.remark}}</div>
-                    <!--<div>其他说明其他说明其他说明其他说明其他说明</div>-->
+                    <div style="word-wrap: break-word;">{{receiveIntention.remark}}</div>
                 </div>
             </div>
         </div>
@@ -529,7 +528,7 @@
                         </div>
                         <div class="item-fourth">
                             <div class="left font-gray">其他说明</div>
-                            <div class="right">
+                            <div class="right" style="word-wrap: break-word;">
                                 {{item.remark}}
                             </div>
                         </div>
@@ -1802,14 +1801,14 @@
         padding-top: 20px;
         /*height: 120px;*/
         min-height: 80px;
-        max-height: 120px;
+        /*max-height: 120px;*/
         .left {
             flex-shrink: 0;
             width: 80px;
             line-height: 20px;
         }
         .right {
-            @include line-clamp(6);
+            @include line-clamp(10);
         }
     }
 

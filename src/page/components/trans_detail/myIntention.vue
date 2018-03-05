@@ -278,7 +278,7 @@
   import sureForm from './sureForm1.vue'
   /*import sureForm from './../airlineAffirm.vue'*/
   import dataForm from './dataForm.vue'
-  import  signDialog from './signDialog.vue'
+  import signDialog from './signDialog.vue'
   import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
  export default {
      data(){
