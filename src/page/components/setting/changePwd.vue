@@ -218,13 +218,21 @@
                             that.ud.pwd = pwd;
                             that.delayClose();
                             setTimeout(()=>{
+                                /*
                                 that.$ajax.post('logout')
                                     .then((res)=>{
                                         if(res.data.opResult == 0){//修改成功后
-                                            that.$chatSocket.ws.close();
+                                            window.sessionStorage.setItem('needLogin','false');
+                                            that.$router.push("login");
+                                            //that.$chatSocket.ws.close();
                                         }
-                                })
+                                })*/
+
+                                window.sessionStorage.setItem('needLogin','false');
+                                that.$router.push("login");
+                                //that.$chatSocket.ws.close();
                             },3000)
+                            window.sessionStorage.setItem('needLogin','true');
                         }else if( res.data.opResult === '2' ){
                             that.active = 2;
                             that.result = false;
