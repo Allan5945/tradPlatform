@@ -279,9 +279,7 @@
                     }
                 },
                 "tooltip": {
-                    trigger: function () {
-                        return '';
-                    }
+                    formatter:'{b}'
                 },
                 "series": [
                     {

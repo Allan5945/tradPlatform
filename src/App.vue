@@ -34,6 +34,13 @@
                 'c_updated',
                 'airList'
             ])
+        },
+        created: function () {
+            let that = this;
+            if(window.sessionStorage.getItem('needLogin')==='true'){
+                window.sessionStorage.setItem('needLogin','false');
+                that.$router.push("login");
+            }
         }
     }
 </script>
