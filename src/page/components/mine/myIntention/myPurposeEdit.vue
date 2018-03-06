@@ -1190,7 +1190,6 @@
                 });
             },
             daizhifuAjaxFn: function () {
-                console.info(this.sendData)
                 //传输数据给付款页面
                 tabulationBoxTrigger.$emit('postResponseData', this.sendData);
                 this.$emit("sumitForm");

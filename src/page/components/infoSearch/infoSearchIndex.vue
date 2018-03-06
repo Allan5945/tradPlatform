@@ -4,13 +4,13 @@
         <div class="info-search">
             <div class="search-wrap">
                 <div class="search-type-text">
-                        <div  @click="getType(index)" v-for="(value,index) in typeList" :class="{active:selcIndex == index}">{{value}}</div>
+                    <div @click="getType(index)" v-for="(value,index) in typeList" :class="{active: selcIndex == index}">{{value}}</div>
                 </div>
                 <div class="search-box">
                     <input type="text" v-model="airportText" @focus="infoSearch" @blur="closeDialog" maxlength="20" :placeholder="searchTip">
-                   <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportShow"></airportS1>
-                   <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData" v-else-if="selcIndex == '0' " v-show="cityShow"></cityS>
-                    <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData"  v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
+                    <airportS1 class="aisx"  :searchText="airportText" v-on:resData="airportData" v-if="selcIndex == '2'||selcIndex == '3'"  v-show="airportShow"></airportS1>
+                    <cityS class="aisx"  :searchText="airportText" v-on:resData="cityData" v-else-if="selcIndex == '0'" v-show="cityShow"></cityS>
+                    <airCompanyS class="aisx"  :searchText="airportText" v-on:resData="airCompanyData" v-show="airlineShow" v-else-if="selcIndex == '1' "></airCompanyS>
                 </div>
                 <div class="search-btn" @click="getInfo" v-if="search"><span class="iconfont">&#xe62e;</span></div>
                 <div class="no-search-btn" v-else><span class="iconfont">&#xe62e;</span></div>
@@ -21,19 +21,19 @@
                 <div class="a-til">热门机场</div>
                 <div class="a-content">
                      <div class="a-box" @click="searchHot('PEK','北京首都国际机场','机场')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="beijingshoudu" alt=""></div>
                         <div class="tips"><span>北京首都国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CTU','成都双流国际机场','机场')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="chengdushuangliu" alt=""></div>
                         <div class="tips"><span>成都双流国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('CAN','广州白云国际机场','机场')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="guangzhoubaiyun" alt=""></div>
                         <div class="tips"><span>广州白云国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                     <div class="a-box" @click="searchHot('PVG','上海浦东国际机场','机场')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="shanghaipudong" alt=""></div>
                         <div class="tips"><span>上海浦东国际机场</span><span>10000万吞吐量</span></div>
                     </div>
                 </div>
@@ -88,15 +88,15 @@
                 <div class="a-til">热门城市</div>
                 <div class="a-content">
                     <div class="a-box" @click="searchHot('北京','北京','城市')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="beijing" alt=""></div>
                         <div class="tips"><span>北京</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('上海','上海','城市')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="shanghai" alt=""></div>
                         <div class="tips"><span>上海</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('广州','广州','城市')">
-                        <div class="img"><img :src="img1" alt=""></div>
+                        <div class="img"><img :src="guangzhou" alt=""></div>
                         <div class="tips"><span>广州</span><span></span></div>
                     </div>
                     <div class="a-box" @click="searchHot('成都','成都','城市')">
@@ -117,9 +117,15 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'//可匹配�
 import * as vx from 'vuex'
 import In from '$src/public/js/tabulationBoxTrigger.js';
 import myPic1 from '$src/static/img/airport1.png';
-import myPic2 from '$src/static/img/airport2.png';
-import myPic3 from '$src/static/img/airport3.png';
-import myPic4 from '$src/static/img/airport4.png';
+import beijingshoudu from '$src/static/img/jichang/beijingshoudu.jpg';
+import chengdushuangliu from '$src/static/img/jichang/chengdushuangliu.jpg';
+import guangzhoubaiyun from '$src/static/img/jichang/guangzhoubaiyun.jpg';
+import shanghaipudong from '$src/static/img/jichang/shanghaipudong.jpg';
+
+import beijing from '$src/static/img/chengshi/beijing.jpg';
+import guangzhou from '$src/static/img/chengshi/guangzhou.jpg';
+import shanghai from '$src/static/img/chengshi/shanghai.jpg';
+
 import {companyIconData} from '$src/public/js/companyIcon.js'
     export default {
         data() {
@@ -201,15 +207,29 @@ import {companyIconData} from '$src/public/js/companyIcon.js'
             img1:function(){
                 return myPic1;
             },
-            img2:function(){
-                return myPic2;
+
+            beijingshoudu: function() {
+                return beijingshoudu;
             },
-            img3:function(){
-                return myPic3;
+            chengdushuangliu: function() {
+                return chengdushuangliu;
             },
-            img4:function(){
-                return myPic4;
+            guangzhoubaiyun: function() {
+                return guangzhoubaiyun;
             },
+            shanghaipudong: function() {
+                return shanghaipudong;
+            },
+            beijing: function() {
+                return beijing;
+            },
+            guangzhou: function() {
+                return guangzhou;
+            },
+            shanghai: function() {
+                return shanghai;
+            },
+
              icon: function () {
                 return `#${this.companyIconData[0].icon}`
              },
@@ -296,6 +316,7 @@ import {companyIconData} from '$src/public/js/companyIcon.js'
                         this.$router.push({ path: '/index/information/city'});
                     }
                     this.selcType = '城市';
+                    this.selcIndex = 0;
                 }
                 this.airportText = '';
                 this.qyCode = '';

@@ -226,12 +226,7 @@
                 return this.distrList;
             },
              img:function(){
-                 let i = Math.random();
-                 if(Math.round(i) == '0'){
-                     return myPic;
-                 }else{
-                     return myPic1;
-                 }
+                 return myPic;
             }
         },
         methods: {
