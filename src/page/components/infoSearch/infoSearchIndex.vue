@@ -315,7 +315,6 @@ import {companyIconData} from '$src/public/js/companyIcon.js'
                 this.selcType = type;
                 this.qyCode = code;
                 this.getInfo();
-
             }
         },
         mounted() {
@@ -328,7 +327,7 @@ import {companyIconData} from '$src/public/js/companyIcon.js'
                 this.airportText = b.cityName;
                 this.airportText1 = b.cityName;
                 this.getInfo();
-            };
+            }
         },
         components:{
             airportS1,

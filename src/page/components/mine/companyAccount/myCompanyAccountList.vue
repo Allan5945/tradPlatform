@@ -11,7 +11,7 @@
                         </div>
                         <div class="buttons">
                             <button class="btn btn-w" style="margin-right: 10px;width: 96px;" @click="rechargeFn">充值</button>
-                            <button class="btn btn-w" style="width: 96px;" @click="WithdrawFn">申请提现</button>
+                            <button class="btn btn-b" style="width: 175px; border-radius: 20px;" @click="WithdrawFn">提现请点此联系客服<span class="iconfont">&#xe720;</span></button>
                         </div>
                     </div>
                     <div class="right">
@@ -162,9 +162,16 @@
                 this.myCompanyAccountRechargeShow = false;
             },
             // 点击“申请提现”
-            WithdrawFn: function () {
+            /*WithdrawFn: function () {
                 this.myCompanyAccountWithdrawShow = true;
                 tabulationBoxTrigger.hierarchy = true;
+            },*/
+            WithdrawFn: function () {
+                let chatObj = {};
+                chatObj.demandEmployeeId = this.myData.employeeId;
+                chatObj.id = this.myData.id;
+                chatObj.employeeId = 1;
+                tabulationBoxTrigger.$emit('addChat',chatObj);
             },
             // 关闭“申请提现”
             closeWithdrawFn: function () {

@@ -344,9 +344,9 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">运力归属</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany"
+                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany" :readonly="true"
                                        @click.stop="clickClose15Fn" style="border: 0;width: 136px;">
-                                <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-show="isSearch6"
+                                <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-if="isSearch6"
                                           style="top: 25px; left: 0;"></airCompanySearch>
                             </div>
                             <div class="warn" v-show="warn10Show" style="position: absolute;top: 26px; left: 0;">*运力归属不能为空</div>
@@ -354,9 +354,9 @@
                         <div class="left item-child">
                             <span>运力基地</span>　
                             <div class="choose-input" style="position: relative;">
-                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea"
+                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea" :readonly="true"
                                        @click.stop="clickClose16Fn" style="border: 0;">
-                                <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-show="isSearch4"
+                                <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-if="isSearch4"
                                           style="top:25px; left: -55px;"></airportS>
                             </div>
                             <div class="warn" v-show="warn11Show" style="position: absolute;top: 26px; left: 0;">*运力基地不能为空</div>
@@ -389,8 +389,12 @@
                     </div>
                 </div>
             </div>
-            <div class="sixth">
+            <div class="sixth" v-if="bianjiShow">
                 <button class="btn-b" @click.stop="submitData">确认修改该方案</button>
+                <button class="btn-w" @click="closeThis">取消</button>
+            </div>
+            <div class="sixth" style="justify-content: center;" v-else>
+                <button class="btn-b" @click.stop="submitData">支付意向金提交意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -581,7 +585,8 @@
                     end: '',
                     isDis: false,
                 },
-
+                daizhifuShow: false,
+                bianjiShow: true,
             }
         },
         components: {
@@ -682,6 +687,13 @@
             this.myDate2Fn();
             this.setOptFn0();
             this.acceptDataFn();
+            if(this.acceptData.daizhifu == true) {
+                this.daizhifuShow = this.acceptData.daizhifu;
+                this.airCompany = '***';
+            }
+            if(this.acceptData.bianji == false) {
+                this.bianjiShow = false;
+            }
         },
         methods: {
             /*是否接受临近机场*/
@@ -1147,9 +1159,15 @@
                 }else {
                     this.qyCode5 = '';
                 }
-                console.info(this.qyCode5);
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
+                if(this.acceptData.bianji) {
+                    this.bianjiAjaxFn();
+                }else {
+                    this.daizhifuAjaxFn();
+                }
+            },
+            bianjiAjaxFn: function () {
                 //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
                 this.$ajax({
                     url: "/updateResponseSelective", // 我有意向
@@ -1170,6 +1188,12 @@
                 }).catch((error) => {
                     console.log(error);
                 });
+            },
+            daizhifuAjaxFn: function () {
+                console.info(this.sendData)
+                //传输数据给付款页面
+                tabulationBoxTrigger.$emit('postResponseData', this.sendData);
+                this.$emit("sumitForm");
             },
             closeThis: function () {
                 this.$emit('close-this');
@@ -1432,7 +1456,11 @@
                 this.closeTimeFrameFn();
             },
             clickClose15Fn: function () {
-                this.isSearch6 = true;
+                if(this.acceptData.daizhifu == true) {
+                    this.isSearch6 = false;
+                }else{
+                    this.isSearch6 = true;
+                }
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1445,7 +1473,11 @@
                 this.closeTimeFrameFn();
             },
             clickClose16Fn: function () {
-                this.isSearch4 = true;
+                if(this.acceptData.daizhifu == true) {
+                    this.isSearch4 = false;
+                }else{
+                    this.isSearch4 = true;
+                }
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -2650,7 +2682,7 @@
             cursor: pointer;
         }
         .btn-b {
-            margin-left: 120px;
+            /*margin-left: 120px;*/
             margin-right: 20px;
             width: 200px;
             color: white;

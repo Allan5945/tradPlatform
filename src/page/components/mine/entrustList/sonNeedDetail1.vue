@@ -677,7 +677,7 @@
                     }
 
                      //审核未通过
-                    if(this.detailData.demandStateStr =='审核不通过'){
+                    if(this.detailData.demandstate =='5'){
                         this.intentShow = false;
                       }else{
                         this.intentShow = true;

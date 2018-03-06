@@ -161,6 +161,11 @@
          },
          cancelPayFail:function(){
             this.payFailShow = false;
+             let mes = {};
+             mes.demand = this.needData.data.id;
+             mes.demandState = this.needData.data.demandstate;
+             mes.demandType = Number(-1);
+             tabulationBoxTrigger.$emit('demandType',...[mes]);
          },
          closePaySuccess:function(){
             this.payDialog = false;

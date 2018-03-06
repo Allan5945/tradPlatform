@@ -224,7 +224,7 @@
           </footer>
       </div>
      <needDetail  v-if="needShow"  @closeDetail= "closeDetail" :needData="needData"></needDetail>
-    <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
+    <sureForm v-if="sureFormShow" @sumitForm="dialog = true" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @close-this="closeReForm" :acceptData = "planData"></reIntentForm>
     <intentForm v-if="intentFormShow" @sumitForm="dialog = true" @closeForm="closeForm" :acceptData="detailData"></intentForm>
     <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog" @payFail="payFail"></transDialog>
@@ -240,7 +240,7 @@
  /*import sureForm from './sureForm1.vue'*/
  import sureForm from './../mine/myIntention/myPurposeEdit.vue'
  import reIntentForm from './reIntentForm.vue'
- import intentForm from './intentForm.vue'
+ import intentForm from './intentForm1.vue'
  import transDialog from './transDialog.vue'
  import paySuccess  from './paySuccess.vue'
  import payFailDialog  from './payFailOfBalance.vue'
@@ -297,7 +297,13 @@
         },
      methods:{
          payMoneyFn: function () {  // 点击“支付意向金”按钮
-
+             this.sureFormShow = true;
+             this.planData.bianji = false;
+             if(this.planData.responseProgress == '-1') {
+                 this.planData.daizhifu = true;
+             }else {
+                 this.planData.daizhifu = false;
+             }
          },
          toChat:function(){
             let chatData = {};
@@ -310,7 +316,13 @@
           this.$emit('responseClose');
          },
          getSureForm:function(){
-          this.sureFormShow = true;
+             this.sureFormShow = true;
+             this.planData.bianji = true;
+             if(this.planData.responseProgress == '-1') {
+                 this.planData.daizhifu = true;
+             }else {
+                 this.planData.daizhifu = false;
+             }
          },
         closeSureForm(){
           this.sureFormShow = false;
@@ -491,7 +503,7 @@
             this.payFailShow = true;
          },
          cancelPayFail:function(){
-            this.payFailShow = false;
+             this.payFailShow = false;
          },
          closePaySuccess:function(){
             this.payDialog = false;
@@ -543,7 +555,7 @@
                 this.editShow = false;
             }
             //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
-            //0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付
+            // -1:待支付、0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付
             let progress = this.planData.responseProgress;
             this.editShow = false;  // “编辑”按钮
             this.chatShow = false;  // “发起对话”按钮

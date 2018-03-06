@@ -701,6 +701,7 @@
                 this.airplTypShow = false;
             },
             airCompanyData: function(data){
+                console.info(data)
                 this.airCompany = data.name;
                 this.airCompany1 = data.name;
                 this.airCompanyId = data.id;

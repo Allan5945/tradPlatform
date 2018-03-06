@@ -560,14 +560,14 @@
                 subsidy1: false,  // 补贴政策单选按钮
                 subsidy2: false,
                 subsidy3: true,
-                time11Checked: true,  // 出港资源单选按钮
-                time12Checked: false,
+                time11Checked: false,  // 出港资源单选按钮
+                time12Checked: true,
                 time13Checked: false,
-                time21Checked: true,
-                time22Checked: false,
+                time21Checked: false,
+                time22Checked: true,
                 time23Checked: false,
-                time31Checked: true,
-                time32Checked: false,
+                time31Checked: false,
+                time32Checked: true,
                 time33Checked: false,
                 sendData:{}
             }
