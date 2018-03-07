@@ -207,6 +207,7 @@
                   <div class="refuse-btn btn-w" @click="refuse">拒绝并撤回</div>
               </div>
               <div class="btn" v-else>
+                  <div class="btn-b" v-if="payMoneyShow" @click="payMoneyFn" style="width: 150px; margin-right: 10px;">支付意向金</div>
                   <div class="intent-btn btn-b"  @click="toIntent" v-if="withdraw">重新发起意向</div>
                   <div class="cancel-btn btn-w"  @click="cancelIntent" v-else>取消意向</div>
                   <div class="col-btn cancel btn-b" @click="cancelCollect" v-if="isCollect"
@@ -223,7 +224,7 @@
               </div>
           </footer>
       </div>
-    <sureForm v-if="sureFormShow" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
+    <sureForm v-if="sureFormShow" @sumitForm="dialog = true" @close-this="closeSureForm" :acceptData = "planData" @refresh = "refresh"></sureForm>
     <reIntentForm v-if="reFormShow" @sumitForm="dialog = true" @close-this="closeReForm" :acceptData = "planData"></reIntentForm>
     <transDialog v-show="dialog"  @cancel="closeDialog" @sure="sureDialog" @payFail="payFail"></transDialog>
     <paySuccess v-show="payDialog" @cancel="closePaySuccess" ></paySuccess>
@@ -268,6 +269,7 @@
              planState:'',
              myTitle: '',
              loadingPayShow: false,
+             payMoneyShow: false,
          }
      },
       components: {
@@ -280,6 +282,16 @@
       },
      props:['resData'],
      methods:{
+         payMoneyFn: function () {  // 点击“支付意向金”按钮
+             this.sureFormShow = true;
+             this.planData.bianji = false;
+             if(this.planData.responseProgress == '-1') {
+                 this.planData.daizhifu = true;
+             }else {
+                 this.planData.daizhifu = false;
+             }
+         },
+
         toChat:function(){
             let chatData = {};
             chatData.id = this.detailData.id;
@@ -291,7 +303,13 @@
           this.$emit('responseClose');
          },
          getSureForm:function(){
-          this.sureFormShow = true;
+             this.sureFormShow = true;
+             this.planData.bianji = true;
+             if(this.planData.responseProgress == '-1') {
+                 this.planData.daizhifu = true;
+             }else {
+                 this.planData.daizhifu = false;
+             }
          },
         closeSureForm(){
           this.sureFormShow = false;
@@ -477,62 +495,38 @@
                     }
                     //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
                     let progress = this.planData.responseProgress;
+                    this.editShow = false;
+                    this.chatShow = false;
+                    this.withdraw = false;
+                    this.footShow = false;
+                    this.orderComplete = false;
+                    this.confirmShow = false;
+                    this.payMoneyShow = false;
                     if(progress == '2'){
-                        this.editShow = false;
-                        this.chatShow = false;
                         this.withdraw = true;
-                        this.planState = "（已撤回）";
                         this.footShow = true;
-                        this.orderComplete = false;
-                        this.confirmShow = false;
                     }else if(progress == '0'){
                         this.editShow = true;
                         this.chatShow = true;
-                        this.withdraw = false;
-                        this.planState = " ";
                         this.footShow = true;
-                        this.orderComplete = false;
-                        this.confirmShow = false;
                     }else if(progress == '4'){
-                        this.editShow = false;
-                        this.chatShow = false;
-                        this.footShow = false;
-                        this.withdraw = false;
-                        this.planState = "（已落选）";
-                        this.orderComplete = false;
-                        this.confirmShow = false;
+
                     }else if(progress == '6'){
-                        this.editShow = false;
-                        this.footShow = false;
                         this.chatShow = true;
-                        this.planState = " ";
-                        this.withdraw = false;
                         this.orderComplete = true;
-                        this.confirmShow = false;
                     }else if(progress == '3'){
-                        this.editShow = false;
-                        this.footShow = false;
-                        this.chatShow = false;
-                        this.withdraw = false;
-                        this.planState = " ";
-                        this.orderComplete = false;
-                         this.confirmShow = false;
+
                     }else if(progress == '5'||progress == '7'){
-                        this.editShow = false;
-                        this.footShow = false;
                         this.chatShow = true;
-                        this.withdraw = false;
-                        this.planState = " ";
-                        this.orderComplete = false;
-                        this.confirmShow = false;
                     }else if(progress == '1'){
                         this.confirmShow = true;
-                        this.editShow = false;
                         this.footShow = true;
                         this.chatShow = true;
-                        this.withdraw = false;
-                        this.planState = " ";
-                        this.orderComplete = false;
+                    }else if (progress == '-1') {
+                        this.editShow = true;  // “编辑”按钮
+                        this.footShow = true;  //  底部按钮
+                        this.payMoneyShow = true;
+                        console.info(0)
                     }
                     if(this.response.data.isAlreadyCollect == true){
                         this.isCollect = true;
@@ -569,64 +563,39 @@
               this.editShow = false;
           }
             //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
-                        let progress = this.planData.responseProgress;
-                        if(progress == '2'){
-                          this.editShow = false;
-                          this.chatShow = false;
-                          this.withdraw = true;
-                          this.planState = "（已撤回）";
-                          this.footShow = true;
-                          this.orderComplete = false;
-                          this.confirmShow = false;
-                        }else if(progress == '0'){
-                            this.editShow = true;
-                            this.chatShow = true;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.footShow = true;
-                            this.orderComplete = false;
-                            this.confirmShow = false;
-                        }else if(progress == '4'){
-                            this.editShow = false;
-                            this.chatShow = false;
-                            this.footShow = false;
-                            this.withdraw = false;
-                            this.planState = "（已落选）";
-                            this.orderComplete = false;
-                            this.confirmShow = false;
-                        }else if(progress == '6'){
-                            this.editShow = false;
-                            this.footShow = false;
-                            this.chatShow = true;
-                            this.planState = " ";
-                            this.withdraw = false;
-                            this.orderComplete = true;
-                            this.confirmShow = false;
-                        }else if(progress == '3'){
-                            this.editShow = false;
-                            this.footShow = false;
-                            this.chatShow = false;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.orderComplete = false;
-                             this.confirmShow = false;
-                        }else if(progress == '5'||progress == '7'){
-                            this.editShow = false;
-                            this.footShow = false;
-                            this.chatShow = true;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.orderComplete = false;
-                            this.confirmShow = false;
-                        }else if(progress == '1'){
-                            this.confirmShow = true;
-                            this.editShow = false;
-                            this.footShow = true;
-                            this.chatShow = true;
-                            this.withdraw = false;
-                            this.planState = " ";
-                            this.orderComplete = false;
-                        }
+                let progress = this.planData.responseProgress;
+               this.editShow = false;
+               this.chatShow = false;
+               this.withdraw = false;
+               this.footShow = false;
+               this.orderComplete = false;
+               this.confirmShow = false;
+               this.payMoneyShow = false;
+                if(progress == '2'){
+                  this.withdraw = true;
+                  this.footShow = true;
+                }else if(progress == '0'){
+                    this.editShow = true;
+                    this.chatShow = true;
+                    this.footShow = true;
+                }else if(progress == '4'){
+
+                }else if(progress == '6'){
+                    this.chatShow = true;
+                    this.orderComplete = true;
+                }else if(progress == '3'){
+
+                }else if(progress == '5'||progress == '7'){
+                    this.chatShow = true;
+                }else if(progress == '1'){
+                    this.confirmShow = true;
+                    this.footShow = true;
+                    this.chatShow = true;
+                }else if (progress == '-1') {
+                    this.editShow = true;  // “编辑”按钮
+                    this.footShow = true;  //  底部按钮
+                    this.payMoneyShow = true;
+                }
 
               let demandProgress = this.detailData.demandprogress;
               if(demandProgress =='3'){

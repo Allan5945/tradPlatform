@@ -197,7 +197,7 @@
                 if(type === 0){ //密码校验
                     flag = true;
                 }else if(type === 1 ) { //邮箱校验
-                    let mailreg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                    let mailreg = /^[A-Za-z0-9-_~.|\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
                     flag = mailreg.test(val);
                 }
                 return flag;
