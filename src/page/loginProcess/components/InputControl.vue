@@ -1,17 +1,18 @@
 <template>
   <div class="user-input-box">
-    <input :type="inputeType" class="user-input"
-        :class="{'animated':showErrInput,'shake':showErrInput,'err-input':showErrInput || errs}"
-        @blur="focusTip(true)"
-        @focus="focusTip()"
-        @input="changeTip($event)"
-        @keyup="entered($event)"
-           v-model="inputMes"
-        :maxlength="maxlength">
-    <span @click="toview" class="user-toview" :class="{'show-color':showText}" v-html="showText ? '&#xe685;':'&#xe7d3;'" v-if="this.par.isPrompt">&#xe685;</span>
-    <span class="user-judge" v-if="userJudge || mandatoryJudge">&#xe61f;</span>
-    <span v-html="showTip ? par.tip[1] : par.tip[0]" class="user-tip" :class="{'user-tip-tran':showTip}"></span>
-  </div> 
+      <input
+              :type="inputeType" class="user-input"
+              :class="{'animated':showErrInput,'shake':showErrInput,'err-input':showErrInput || errs}"
+              @blur="focusTip(true)"
+              @focus="focusTip()"
+              @input="changeTip($event)"
+              @keyup="entered($event)"
+              v-model="inputMes"
+              :maxlength="maxlength">
+      <span @click="toview" class="user-toview" :class="{'show-color':showText}" v-html="showText ? '&#xe685;':'&#xe7d3;'" v-if="this.par.isPrompt">&#xe685;</span>
+      <span class="user-judge" v-if="userJudge || mandatoryJudge">&#xe61f;</span>
+      <span v-html="showTip ? par.tip[1] : par.tip[0]" class="user-tip" :class="{'user-tip-tran':showTip}"></span>
+  </div>
 </template>
 <<script>
 export default {
@@ -67,10 +68,15 @@ export default {
         },
         changeTip(e){
             e = e.srcElement || e.originalTarget;
-            let txt = e.value || e.innerText,rs="";
+            let txt = e.value || e.innerText, rs="";
             txt = txt.replace(/ /g,'');
             rs = txt.replace(/[^\x00-\xff]/g,'');
             this.inputMes = rs;
+            if(txt==''){
+                this.inputeType='text';
+            }else{
+                this.inputeType='password';
+            }
             this.$emit('reqMes',{n:rs, p:'',i:false});
 
             return false;
