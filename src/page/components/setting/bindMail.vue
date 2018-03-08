@@ -31,7 +31,7 @@
                 </div>
                 <div class="process-main" v-show="active==1">
                     <pwdInput v-if="active===1" :par="pasArg1" v-on:reqMes="pasReqMes1"></pwdInput>
-                    <validation style="width:245px;margin: 30px auto 0 auto" v-if="active==1 && valiUseFlag" v-on:validation="validPass"></validation>
+                    <validation style="width:245px;margin: 30px auto 0 auto" v-if="active==1 && valiUseFlag" v-on:validation="validMail"></validation>
                 </div>
                 <div class="process-main" v-show="active==2">
                     <p style="height:25px;color:#aaa;text-indent: 3px;">需要绑定的邮箱</p>
@@ -80,7 +80,7 @@
 </template>
 <script>
     import validation from '$src/page/loginProcess/components/validation.vue';
-    import {Steps,Step,Loading} from 'element-ui';
+    import {Steps,Step} from 'element-ui';
     import inputControl from '$src/page/loginProcess/components/inputControl.vue';
 
     export default {
@@ -202,7 +202,7 @@
                 }
                 return flag;
             },
-            checkPwd(){     //密码验证
+            checkPwd(){     //密码格式验证
                 let that= this, flag= false,ud= that.ud;
                 if(!that.test(that.userData.pwd,0))return that.openTips("*密码格式有误，请重新输入");
                 //后台验证
@@ -212,7 +212,7 @@
                     that.openTips("*密码错误，请重新输入")
                 }
             },
-            checkMail(){    //邮箱验证
+            checkMail(){    //邮箱格式验证
                 let that = this,flag = false
                 if(!that.test(that.userData.mail,1))return that.openTips("*邮箱格式有误，请重新输入");
                 //正则比较 + 后台验证
@@ -223,7 +223,7 @@
                     that.openTips("*请通过验证");
                 }
             },
-            validPass(){
+            validMail(){    //邮箱后台验证
                 let that = this, mail = this.userData.mail;
                 that.$ajax({
                     method: 'GET',
@@ -244,7 +244,7 @@
 
                 })
             },
-            calcTime(){
+            calcTime(){ //倒计时
                 if(this.code.wait>0){
                     this.code.wait--;
                     this.code.tipText =  this.code.wait + "' 重新发送";
@@ -278,7 +278,7 @@
                         }
                     }).then(res=>{
                         if(res.data.opResult != '0'){
-                            that.openTips('*网络错误，不知道4##还是5##');
+                            that.openTips('*网络错误');
                         }
                     }).catch(err=>{
                     })
@@ -286,7 +286,7 @@
                     return false
                 }
             },
-            checkCode(){    //验证码判断
+            checkCode(){    //验证码校验
                 let that = this,flag = false, code = that.userData.code, theMail = that.userData.mail;
                 if(code === '')return that.openTips("*验证码不能为空");
                 this.$ajax({
@@ -327,16 +327,7 @@
                         that.checkCode();
                         break;
                 }
-                return ;
-                const loading = Loading.service({
-                    lock: true,
-                    target: '.btn-b',
-                    text: 'Loading',
-                    spinner: 'el-icon-loading',
-                });
-                setTimeout(() => {
-                    loading.close();
-                }, 500);
+                return true;
             },
             canelClick(){
                 if(this.text.canelState){
