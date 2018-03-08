@@ -1,7 +1,16 @@
 <template>
   <div class="user-input-box">
-      <input
-              :type="inputeType" class="user-input"
+      <input v-if="inputeType=='text' || inputMes=='' " id="fakepwd"
+              type="text" class="user-input"
+              :class="{'animated':showErrInput,'shake':showErrInput,'err-input':showErrInput || errs}"
+              @blur="focusTip(true)"
+              @focus="focusTip()"
+              @input="changeTip($event)"
+              @keyup="entered($event)"
+              v-model="inputMes"
+              :maxlength="maxlength">
+      <input v-if="inputeType=='password' && inputMes!='' " id="truepwd"
+              type="password" class="user-input"
               :class="{'animated':showErrInput,'shake':showErrInput,'err-input':showErrInput || errs}"
               @blur="focusTip(true)"
               @focus="focusTip()"
@@ -71,12 +80,14 @@ export default {
             let txt = e.value || e.innerText, rs="";
             txt = txt.replace(/ /g,'');
             rs = txt.replace(/[^\x00-\xff]/g,'');
-            this.inputMes = rs;
-            if(txt==''){
-                this.inputeType='text';
-            }else{
-                this.inputeType='password';
+            if(rs.length>0 && this.inputeType=='password'){
+                setTimeout(()=>{
+                    document.querySelector('#truepwd').focus();
+                },0)
+            }else if(rs.length==0){
+                document.querySelector('#truepwd') && document.querySelector('#truepwd').blur();
             }
+            this.inputMes = rs;
             this.$emit('reqMes',{n:rs, p:'',i:false});
 
             return false;
