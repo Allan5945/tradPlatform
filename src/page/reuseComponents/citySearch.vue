@@ -14,7 +14,7 @@
                 list:[]
             }
         },
-        props:['searchText'],
+        props:['searchText',"setCity"],
         watch:{
             searchText:function () {
                 this.build();
@@ -103,8 +103,10 @@
             },
             reqD:function (key,index) {
                 this.$emit('resData', key);
-                this.$store.dispatch('setCity',{v:key.code,t:true}).then(() => {
-                });
+                if(this.setCity){
+                    this.$store.dispatch('setCity',{v:key.code,t:true}).then(() => {
+                    });
+                }
             }
         },
         mounted:function () {

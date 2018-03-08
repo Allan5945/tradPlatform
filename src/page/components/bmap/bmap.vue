@@ -84,7 +84,6 @@
                     "data": point
                 }
             ;
-
             this.allDot.forEach((v) => {
                 let mes = this.$airMes(this.airList, v.dpt);
                 y.push({
@@ -97,9 +96,9 @@
                     label:{
                         normal:{
                             formatter: [
+                                // `{b|需求量：}{b1|${v.num}}`,
+                                `{b|我的\n发布}{b1|${v.myNum}}`,
                                 `{a|${mes.allData.airlnCd}}`,
-                                `{b|需求量：}{b1|${v.num}}`,
-                                `{b|我的发布：}{b1|${v.myNum}}`,
                             ].join('\n'),
                             rich: {
                                 a: {
@@ -112,17 +111,20 @@
                                 b: {
                                     fontFamily: 'Microsoft YaHei',
                                     color: 'white',
-                                    align:"center",
+                                    align:"left",
                                     lineHeight: 25,
                                     fontSize:12,
+                                    position:'relative',
+                                    verticalAlign:'middle'
                                 },
                                  b1: {
-                                    fontFamily: 'Microsoft YaHei',
-                                    color: '#3c78ff',
-                                     align:"center",
+                                     fontFamily: 'Microsoft YaHei',
+                                     color: '#3c78ff',
                                      lineHeight: 25,
-                                    fontSize:12,
-                                     fontWeight:"bold"
+                                     fontSize:20,
+                                     fontWeight:"bold",
+                                     verticalAlign:'top',
+                                     padding:[0,0,-13,10]
                                 }
                             }
                         }

@@ -35,6 +35,9 @@
                 </router-link>
             </div>
         </div>
+        <div class="line-network">
+            航线网络&nbsp;&nbsp;<button>开</button><button>关</button>
+        </div>
         <div class="inf-associated">
             <div>关联航司</div>
             <div>
@@ -172,10 +175,10 @@
             this.companyIconData = companyIconData;
             let _this = this;
             tabulationBoxTrigger.$on("tipBox",d => {
+                console.log(this)
                 _this.yq = [];
                 _this.zc = [];
                 _this.glhs = [];
-
                 _this.$ajax({
                     method: 'post',
                     url: '/loadIndexAirportInfoByCode',
@@ -232,7 +235,8 @@
                     fxzdl:mes.releasePunctuality == undefined ? "-" : mes.releasePunctuality + "%",
                     xfdj:mes.firelvl == '' ? "-" : mes.firelvl
                 };
-                this.basicMes = obj;       
+                this.basicMes = obj;
+
             });
             document.addEventListener("mousemove", e => {
                 if (this.dropData.switch) {
@@ -356,7 +360,6 @@
         flex-flow: row wrap;
         justify-content: space-between;
         padding: 30px 20px 0 ;
-        border-bottom: 1px solid #f3f3f3;
         >div{
             width: 84px;
             padding-bottom: 20px;
@@ -377,11 +380,29 @@
     }
     .inf-associated{
         padding: 20px 0 0 20px;
-        >div:nth-child(1){
-
-        }
     }
     .inf-news{
         padding-left: 20px;
+    }
+    .line-network{
+        border-bottom: 1px solid #f3f3f3;
+        width: 290px;
+        padding-right: 10px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        line-height: 20px;
+        >button:nth-child(odd){
+            cursor: pointer;
+            color: white;
+            background-color:  #BDC8E0;
+            border: 1px solid #ffffff;
+        }
+        >button:nth-child(even){
+            cursor: pointer;
+            color: white;
+            background-color: #CCCCCC;
+            border: 1px solid #ffffff;
+        }
     }
 </style>

@@ -23,7 +23,7 @@ export default {
         }
     },
    mounted:function(){
-       console.log(this.ags)
+        sessionStorage.removeItem("isLogin");
         setInterval(()=>{
             this.time --;
             if(this.time == 0){

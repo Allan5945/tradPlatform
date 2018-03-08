@@ -11,7 +11,7 @@
             </div>
             <div class="sc-grade-i" @click.stop>
                 <input type="text" placeholder="输入城市名进行搜索" v-model="searchText" @focus="reqFocus">
-                <cityS class="aisx" v-on:resData="resData" :searchText="searchText" v-if="isSearch"></cityS>
+                <cityS :setCity="true" class="aisx" v-on:resData="resData" :searchText="searchText" v-if="isSearch"></cityS>
             </div>
         </div>
         <div class="sc-grade-x" v-if="cityCuped.length != 0">
