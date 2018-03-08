@@ -31,17 +31,18 @@
                 <div class="form-box">
                     <div class="t-title">航班号<span style="color:red;padding-left:3px;">*</span></div>
                     <input type="text" placeholder="请输入" v-model="flightNum" maxlength="10">
-                    <div class="error" v-show="isError3" style="left:60px;top:55px;">*请填写航班号</div>
+                    <div class="error" v-show="isError3" style="left:60px;top:55px;">*请填写正确航班号</div>
                     <!-- <div class="num-list popup scroll" v-show="flightListShow">
                         <div v-for="(item,index) in flightData" @click="getflight(index)">{{item}}</div>
                     </div> -->
                 </div>
                 <div class="form-box pad">
-                        <div class="t-title">小时成本</div>
-                        <div class="t-input">
-                            <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
-                            <span>万元</span>
+                    <div class="t-title">小时成本</div>
+                    <div class="t-input">
+                        <input type="text" placeholder="填写举例：3.5" v-model="hourcost">
+                        <span>万元</span>
                     </div>
+                    <div class="error" v-show="isError4" style="left:60px;top:55px;">*请填写数字</div>
                 </div>
                 <div class="form-box tips">
                     <div class="t-title">其他说明</div>
@@ -74,6 +75,7 @@
                 isError1: false,
                 isError2: false,
                 isError3:false,
+                isError4: false,
                 flightListShow:false,
                 contact:'',
                 hourcost:'',
@@ -118,16 +120,20 @@
                 demandData.fltNbr  = this.flightNum;
                 demandData.hourscost = this.hourcost;
                 demandData.remark = this.tip;
+                let re = new RegExp(/^[A-Za-z0-9]+$/);
+                let nu = new RegExp(/^[0-9]*$/);
                 //必填信息验证
                 if(!this.contact){
                     this.isError1 = true;
                 }else if(this.phoneNum == ''){
                     this.isError2 = true;
-                }else if(this.flightNum == ''){
+                }else if(this.flightNum == '' || !re.test(this.flightNum)){
                     this.isError3 = true;
+                }else if(!nu.test(this.hourcost)) {
+                    this.isError4 = true;
                 }else{
                     if(!this.isError1 && !this.isError2 && !this.isError3){
-                            this.$ajax({
+                        this.$ajax({
                         url:"/demandAdd",
                         method: 'post',
                         headers: {
