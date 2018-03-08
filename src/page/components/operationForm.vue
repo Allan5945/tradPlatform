@@ -125,42 +125,42 @@
                 //必填信息验证
                 if(!this.contact){
                     this.isError1 = true;
+                    return
                 }else if(this.phoneNum == ''){
                     this.isError2 = true;
+                    return
                 }else if(this.flightNum == '' || !re.test(this.flightNum)){
                     this.isError3 = true;
+                    return
                 }else if(!nu.test(this.hourcost)) {
                     this.isError4 = true;
-                }else{
-                    if(!this.isError1 && !this.isError2 && !this.isError3){
-                        this.$ajax({
-                        url:"/demandAdd",
-                        method: 'post',
-                        headers: {
-                            'Content-type': 'application/x-www-form-urlencoded'
-                        },
-                        params: demandData
-                        }) .then((response) => {
-                            if(response.data.opResult == "0"){
-                                this.$emit("closeForm");
-                                this.$message({
-                                  message: '发布成功!',
-                                  type: 'success',
-                                  duration:2000
-                                });
-                            }else{
-                                 this.$message({
-                                  message: '提交失败，请稍后再试!',
-                                  type: 'warning',
-                                  duration:2000
-                                });
-                            }
-                        }) .catch((error) => {
-                                console.log(error);
-                            });
-
-                    }
+                    return
                 }
+                this.$ajax({
+                url:"/demandAdd",
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: demandData
+                }) .then((response) => {
+                    if(response.data.opResult == "0"){
+                        this.$emit("closeForm");
+                        this.$message({
+                          message: '发布成功!',
+                          type: 'success',
+                          duration:2000
+                        });
+                    }else{
+                         this.$message({
+                          message: '提交失败，请稍后再试!',
+                          type: 'warning',
+                          duration:2000
+                        });
+                    }
+                }) .catch((error) => {
+                        console.log(error);
+                    });
             },
             cancel: function(){
                 this.$emit("closeForm");
