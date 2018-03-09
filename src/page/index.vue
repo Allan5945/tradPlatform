@@ -64,7 +64,8 @@
         methods: {
             ...vx.mapActions([
                 'close',
-                'initialize'
+                'initialize',
+                'role'
             ]),
             contactClient(){  // 联系客户
 
@@ -185,6 +186,9 @@
             this.$ajax({
                 method: 'post',
                 url: '/getAirportListByCode',
+                params:{
+                    icao:this.role.airlineretrievalcondition
+                },
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 }
@@ -201,7 +205,6 @@
                         console.log(error);
                     }
                 );
-//
         },
         computed: {
             ...vx.mapGetters([

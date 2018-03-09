@@ -88,6 +88,7 @@
                 };
             },
             changeInputMes() {    // 输入框改变验证是否通过
+                this.showPlaceholder = true;
 //                if(this.arg.inputMes == ''){
 //                    this.showErrInputPerform = false;
 //                    this.judgePlaceholder = false;
@@ -139,7 +140,8 @@
                         };
                         break;
                     case 100:   // 不验证
-                            t = true
+                        this.arg.inputMes = this.arg.inputMes.replace(/[^\w\d\.\@]/ig,'');
+                        t = true;
                         break;
                     default:
                         // 执行报错
