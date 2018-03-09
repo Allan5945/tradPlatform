@@ -44,7 +44,7 @@
                 return this.arg.maxLenght != undefined ? this.arg.maxLenght : 1000;
             }
         },
-        props: ['arg'],
+        props: ['arg','useNames'],
         methods: {
             blused(){
                 if(this.staging.t){
@@ -140,7 +140,7 @@
                         };
                         break;
                     case 100:   // 不验证
-                        this.arg.inputMes = this.arg.inputMes.replace(/[^\w\d\.\@]/ig,'');
+                        if(this.useNames){this.arg.inputMes = this.arg.inputMes.replace(/[^\w\d\.\@]/ig,'');}
                         t = true;
                         break;
                     default:
