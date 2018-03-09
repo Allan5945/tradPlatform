@@ -214,6 +214,7 @@
                   <div class="refuse-btn btn-w" @click="refuse">拒绝并撤回</div>
               </div>
               <div class="btn" v-else>
+                  <p v-if="payMoneyShow" style="position: absolute; bottom: 10px; left: 35px; color: red;">*若未及时支付意向金，当该条需求下架或完成会删除此条意向记录</p>
                   <div class="btn-b" v-if="payMoneyShow" @click="payMoneyFn" style="width: 150px; margin-right: 10px;">支付意向金</div>
                   <div class="intent-btn btn-b" @click="toIntent" v-if="withdraw">重新发起意向</div>
                   <div class="cancel-btn btn-w"  @click="cancelIntent" v-else>取消意向</div>

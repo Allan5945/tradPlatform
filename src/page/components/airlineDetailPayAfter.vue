@@ -574,8 +574,8 @@
                 <div v-if="sixthButtonShow">
                     <div class="buttons">
                         <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
-                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" key="shoucang1" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-else key="unshoucang1" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
                 <div v-else>
@@ -586,8 +586,8 @@
                     <div class="buttons" v-if="eighthButtonShow">
                         <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
                         <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
-                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" key="shoucang2" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-else key="unshoucang2" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
             <!--</div>-->
