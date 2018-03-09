@@ -389,12 +389,8 @@
                     </div>
                 </div>
             </div>
-            <div class="sixth" v-if="bianjiShow">
+            <div class="sixth">
                 <button class="btn-b" @click.stop="submitData">确认修改该方案</button>
-                <button class="btn-w" @click="closeThis">取消</button>
-            </div>
-            <div class="sixth" style="justify-content: center;" v-else>
-                <button class="btn-b" @click.stop="submitData">支付意向金提交意向</button>
                 <button class="btn-w" @click="closeThis">取消</button>
             </div>
         </div>
@@ -586,7 +582,6 @@
                     isDis: false,
                 },
                 daizhifuShow: false,
-                bianjiShow: true,
             }
         },
         components: {
@@ -687,13 +682,6 @@
             this.myDate2Fn();
             this.setOptFn0();
             this.acceptDataFn();
-            if(this.acceptData.daizhifu == true) {
-                this.daizhifuShow = this.acceptData.daizhifu;
-                this.airCompany = '***';
-            }
-            if(this.acceptData.bianji == false) {
-                this.bianjiShow = false;
-            }
         },
         methods: {
             /*是否接受临近机场*/
@@ -1161,11 +1149,7 @@
                 }
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                if(this.acceptData.bianji) {
-                    this.bianjiAjaxFn();
-                }else {
-                    this.daizhifuAjaxFn();
-                }
+                this.bianjiAjaxFn();
             },
             bianjiAjaxFn: function () {
                 //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
@@ -1188,11 +1172,6 @@
                 }).catch((error) => {
                     console.log(error);
                 });
-            },
-            daizhifuAjaxFn: function () {
-                //传输数据给付款页面
-                tabulationBoxTrigger.$emit('postResponseData', this.sendData);
-                this.$emit("sumitForm");
             },
             closeThis: function () {
                 this.$emit('close-this');
