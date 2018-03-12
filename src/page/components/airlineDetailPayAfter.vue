@@ -784,7 +784,8 @@
                     if(response.data.opResult == 0) {
                         this.listData = response.data.responseList;   //获取意向列表
                     }else {
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -993,7 +994,8 @@
                         this.open6(`成功结束该需求！`);
                         this.closeThisFn();
                     }else{
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                 }) .catch((error) => {
@@ -1082,7 +1084,8 @@
                             this.open6(`有效期修改成功！`);
                             this.refreshFn();
                         }else{
-                            this.open8(`错误代码：${response.data.opResult}`);
+//                            this.open8(`错误代码：${response.data.opResult}`);
+                            this.$processMessage(response.data.opResult);
                         }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                     }) .catch((error) => {
@@ -1172,7 +1175,8 @@
                         this.open6(`成功取消该意向！`);
                         this.closeThisFn();
                     }else{
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }).catch((error) => {
                     console.log(error);
@@ -1194,7 +1198,8 @@
                         this.open6(`收藏成功！`);
                         this.refreshFn();
                     }else{
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -1217,7 +1222,8 @@
                             this.open6(`取消收藏成功！`);
                             this.refreshFn();
                         }else{
-                            this.open8(`错误代码：${response.data.opResult}`);
+//                            this.open8(`错误代码：${response.data.opResult}`);
+                            this.$processMessage(response.data.opResult);
                         }
                     })
                     .catch((error) => {
@@ -1298,7 +1304,8 @@
 //                        this.btnDisableShow = false;
                         this.refreshFn();
                     }else{
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);

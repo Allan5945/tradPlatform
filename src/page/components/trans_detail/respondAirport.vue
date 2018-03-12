@@ -42,6 +42,7 @@
                   <div>
                       <div>运力归属</div>
                       <div v-if="detailData.capacityCompany">{{detailData.capacityCompany.airlnCd||'-'}}</div>
+                      <div v-else-if="!loadingPayShow">***</div>
                   </div>
                   <div>
                       <div>小时成本</div>
@@ -83,7 +84,7 @@
                       <div>有效期</div>
                       <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                   </div>
-                  <div class="note">
+                  <div class="note" v-if="loadingPayShow">
                       <div>其他说明</div>
                       <div>{{detailData.remark||'-'}}</div>
                   </div>
@@ -182,6 +183,7 @@
                        <div>
                           <div>运力归属</div>
                           <div v-if="planData.capacityCompany">{{planData.capacityCompany.airlnCd||'-'}}</div>
+                           <div v-else-if="!loadingPayShow">***</div>
                       </div>
                        <div>
                           <div>运力基地</div>
@@ -214,7 +216,7 @@
                   <div class="refuse-btn btn-w" @click="refuse">拒绝并撤回</div>
               </div>
               <div class="btn" v-else>
-                  <p v-if="payMoneyShow" style="position: absolute; bottom: 10px; left: 35px; color: red;">*若未及时支付意向金，当该条需求下架或完成会删除此条意向记录</p>
+                  <p v-if="payMoneyShow" style="position: absolute; bottom: 10px; left: 35px; color: red;">*若未及时支付保证金，当该条需求下架或完成时意向自动失效</p>
                   <div class="btn-b" v-if="payMoneyShow" @click="payMoneyFn" style="width: 150px; margin-right: 10px;">支付意向金</div>
                   <div class="intent-btn btn-b" @click="toIntent" v-if="withdraw">重新发起意向</div>
                   <div class="cancel-btn btn-w"  @click="cancelIntent" v-else>取消意向</div>
@@ -297,14 +299,22 @@
           }
         },
      methods:{
-         payMoneyFn: function () {  // 点击“支付意向金”按钮
-             this.sureFormShow = true;
-             this.planData.bianji = false;
+         addArgumentsFn: function () {
              if(this.planData.responseProgress == '-1') {
                  this.planData.daizhifu = true;
              }else {
                  this.planData.daizhifu = false;
              }
+             if(this.planData.responseProgress == '-2') {
+                 this.planData.yishixiao = true;
+             }else {
+                 this.planData.yishixiao = false;
+             }
+         },
+         payMoneyFn: function () {  // 点击“支付意向金”按钮
+             this.sureFormShow = true;
+             this.planData.bianji = false;
+             this.addArgumentsFn();
          },
          toChat:function(){
             let chatData = {};
@@ -316,14 +326,10 @@
          closeDetail:function(){
           this.$emit('responseClose');
          },
-         getSureForm:function(){
+         getSureForm:function(){   // 点击“编辑”按钮
              this.sureFormShow = true;
              this.planData.bianji = true;
-             if(this.planData.responseProgress == '-1') {
-                 this.planData.daizhifu = true;
-             }else {
-                 this.planData.daizhifu = false;
-             }
+             this.addArgumentsFn();
          },
         closeSureForm(){
           this.sureFormShow = false;
@@ -363,8 +369,9 @@
                     }
                 );
          },
-         toIntent:function(){
+         toIntent:function(){  // 点击“重新发起意向”按钮
              this.reFormShow = true;
+             this.addArgumentsFn();
          },
          confirm:function(){
           this.$ajax({
@@ -535,7 +542,7 @@
                           this.init();
                           this.responseShow = true;
                           this.needShow = false;
-                          if(this.planData.responseProgress == '-1') {
+                          if(this.planData.responseProgress == '-1' || this.planData.responseProgress == '-2') {
                               this.loadingPayShow = false;
                           }else {
                               this.loadingPayShow = true;
@@ -556,7 +563,7 @@
                 this.editShow = false;
             }
             //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
-            // -1:待支付、0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付
+            // -2:已失效、-1:待支付、0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付
             let progress = this.planData.responseProgress;
             this.editShow = false;  // “编辑”按钮
             this.chatShow = false;  // “发起对话”按钮
@@ -589,6 +596,11 @@
                 this.editShow = true;  // “编辑”按钮
                 this.footShow = true;  //  底部按钮
                 this.payMoneyShow = true;
+            }else if(progress == '-2') {
+                this.withdraw = true;  // 重新发起意向
+                if(this.detailData.demandprogress == 0 || this.detailData.demandprogress == 1 || this.detailData.demandprogress == 2) {
+                    this.footShow = true;
+                }
             }
             //是否收藏
             if(this.needData.isAlreadyCollect == true){

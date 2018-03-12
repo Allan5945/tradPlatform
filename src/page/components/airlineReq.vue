@@ -1040,8 +1040,8 @@
                         this.open6(`成功发布！`)
                         this.$emit("closeForm");
                     }else{
-//                        alert('错误代码：' + response.data.opResult)
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);
@@ -1164,8 +1164,8 @@
                         this.open6(`成功委托！`);
                         this.$emit("closeForm");
                     }else{
-//                        alert('错误代码：' + response.data.opResult)
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);

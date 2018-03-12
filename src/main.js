@@ -29,6 +29,14 @@ Vue.prototype.$echarts = echarts;
 Vue.prototype.$message = Message;
 Vue.prototype.$local = local;    // 信息查询信息缓存
 
+Vue.prototype.$processMessage = function (i) {
+    if(i == 1 || i == 2) {
+        this.open8(`网络繁忙，请稍候重试!`)
+    }else if(i == 3) {
+        this.open8(`提交失败，请刷新页面重试!`)
+    }
+};
+
 Vue.use(Radio);
 Vue.use(Pagination);
 Vue.use(Checkbox);

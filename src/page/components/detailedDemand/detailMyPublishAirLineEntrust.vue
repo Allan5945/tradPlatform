@@ -300,7 +300,8 @@
                             this.open6(`有效期修改成功！`);
                             this.getData();
                         }else{
-                            this.open8(`错误代码：${response.data.opResult}`);
+//                            this.open8(`错误代码：${response.data.opResult}`);
+                            this.$processMessage(response.data.opResult);
                         }
 //                    this.$store.dispatch('hybridData', response.data.list.list).then(() => {});
                     }) .catch((error) => {
@@ -377,8 +378,8 @@
                         }
                         this.releasetime = time2.join('.');
                     }else {
-//                        alert(`错误代码：${response.data.opResult}`)
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
 
                 }).catch((error) => {
@@ -449,8 +450,8 @@
                         this.$emit('refresh');
                         this.closeThisFn();
                     }else{
-//                        alert('错误代码：' + response.data.opResult)
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);

@@ -351,7 +351,7 @@
                             <div class="choose-input">
                                 <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany"
                                        @click.stop="clickClose15Fn" style="border: 0;width: 136px;" readonly="readonly">
-                                <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-show="isSearch6"
+                                <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-if="isSearch6"
                                           style="top: 25px; left: 0;"></airCompanySearch>
                             </div>
                             <div class="warn" v-show="warn10Show" style="position: absolute;top: 26px; left: 0;">*运力归属不能为空</div>
@@ -590,7 +590,7 @@
             calendar,
             airCompanySearch,
             singleElection,
-        calendarCP,
+            calendarCP,
         },
         watch: {
             typeChoose: function () {
@@ -708,6 +708,10 @@
                 let alWsubsidyTalk = document.getElementById('alWsubsidyTalk');
                 let alWacceptDispatch = document.getElementById('alWacceptDispatch');
 
+                // 已失效状态下，替换航司运力归属
+                if(this.acceptData.yishixiao) {
+                    this.airCompany = '***';
+                }
                 //chongXinFaQi = 0:不是重新发起，chongXinFaQi = 1：是重新发起
                 if(this.acceptData.chongXinFaQi != '1') {   //chongXinFaQi = 0:不是重新发起，chongXinFaQi = 1：是重新发起
                     this.user = this.role.username;  // 联系人
@@ -1026,7 +1030,7 @@
 
                   //传输数据给付款页面
                 tabulationBoxTrigger.$emit('postResponseData', this.sendData);
-                 this.$emit("sumitForm");
+                this.$emit("sumitForm");
 
             },
             closeThis: function () {
@@ -1250,7 +1254,11 @@
                 this.closeTimeFrameFn();
             },
             clickClose15Fn: function () {
-                this.isSearch6 = true;
+                if(this.acceptData.yishixiao) {
+                    this.isSearch6 = false;
+                }else {
+                    this.isSearch6 = true;
+                }
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1987,6 +1995,7 @@
         display: flex;
         max-width: 148px;
         overflow: hidden;
+        font-weight: bold;
         z-index: 3;
     }
     .little-list-wrapper {
@@ -2037,6 +2046,7 @@
         color: $icon-color;
         background: white;
         cursor: pointer;
+        font-weight: bold;
         z-index: 10;
     }
     .dot {

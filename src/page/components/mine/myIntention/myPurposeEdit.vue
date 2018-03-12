@@ -389,9 +389,13 @@
                     </div>
                 </div>
             </div>
-            <div class="sixth">
+            <div class="sixth" v-if="bianjiShow">
                 <button class="btn-b" @click.stop="submitData">确认修改该方案</button>
                 <button class="btn-w" @click="closeThis">取消</button>
+            </div>
+            <div class="sixth" v-else>
+                <button class="btn-b" @click.stop="submitData">支付意向金提交意向</button>
+                <button class="btn-w" @click.stop="closeThis">取消</button>
             </div>
         </div>
     </div>
@@ -582,6 +586,7 @@
                     isDis: false,
                 },
                 daizhifuShow: false,
+                bianjiShow: false,
             }
         },
         components: {
@@ -589,7 +594,7 @@
             airportS,
             calendar,
             airCompanySearch,
-	    calendarCP,
+	        calendarCP,
         },
         watch: {
             seatingNum: function() {
@@ -938,6 +943,14 @@
                 // 补贴状态：有补贴（0:定补、1:保底、2:人头补、3:其他）4:待议5:无补贴
                 this.subsidyCode = this.acceptData.subsidypolicy;
                 this.subsidypolicyFn(this.acceptData.subsidypolicy);
+                // 待支付，支付意向金
+                if(this.acceptData.daizhifu) {
+                    this.airCompany = '***';
+                }
+                // 编辑
+                if(this.acceptData.bianji) {
+                    this.bianjiShow = this.acceptData.bianji;
+                }
             },
             // 将补贴类型从数字变成汉字
             subsidypolicyFn: function (index) {
@@ -1149,7 +1162,13 @@
                 }
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                this.bianjiAjaxFn();
+                if(this.acceptData.bianji) {
+                    this.bianjiAjaxFn();
+                }else {
+                    //传输数据给付款页面
+                    tabulationBoxTrigger.$emit('postResponseData', this.sendData);
+                    this.$emit("sumitForm");
+                }
             },
             bianjiAjaxFn: function () {
                 //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
@@ -1167,7 +1186,8 @@
                         this.$emit('refresh');
                         this.closeThis();
                     }else{
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }).catch((error) => {
                     console.log(error);
