@@ -88,7 +88,7 @@
                 type2: ['需求类型','运力投放','航线需求'],
                 state: [],
                 state1: ['状态','意向征集','订单确认','交易完成','已撤回','需求关闭','落选'], // 航线需求
-                state2: ['状态','待支付','意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','需求关闭','落选'],//运力投放
+                state2: ['状态','待支付','意向征集','订单确认','订单完成','佣金支付','交易完成','已撤回','已失效','需求关闭','落选'],//运力投放
                 myPurposeShow: false, // myPublish是否显示
                 myPurpose1Show: false,// myPurpose1是否显示
                 myPurpose2Show: false,
@@ -147,8 +147,8 @@
             }
         },
         mounted() {
-            this.judgeRole();
             this.getListData();
+            this.judgeRole();
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         methods: {
@@ -185,19 +185,19 @@
             judgeRole: function () {
                 if(this.role.role == 0) {  // 航司
                     this.type = this.type1;
-                    this.myData = this.myData1;
+//                    this.myData = this.myData1;
                     this.typeWriting = '航线需求';
                     this.state = this.state1;
                     this.sendData.demandType = 0;
                 }if(this.role.role == 1) {  // 机场
                     this.type = this.type0;
-                    this.myData = this.myData0;
+//                    this.myData = this.myData0;
                     this.typeWriting = '运力投放';
                     this.state = this.state2;
                     this.sendData.demandType = 1;
                 }if(this.role.role == 2) {  // 太美
                     this.type = this.type2;
-                    this.myData = this.myData2;
+//                    this.myData = this.myData2;
                     this.state = this.state2;
                 }
             },
@@ -212,9 +212,10 @@
                     params: this.sendData
                 }) .then((response) => {
                     if(response.data.opResult === '0') {
-                        this.myData0 = [];
+                        /*this.myData0 = [];
                         this.myData1 = [];
-                        this.myData2 = [];
+                        this.myData2 = [];*/
+                        this.myData = [];
                         this.totalCount = response.data.list.totalCount;
                         this.pageCount = response.data.list.pageCount;
                         this.numPrePage = response.data.list.numPrePage;
@@ -223,7 +224,8 @@
                         }else {
                             this.talkNumShow = false;
                         }
-                        response.data.list.list.forEach((val) => {
+                        this.myData = response.data.list.list;
+                       /* response.data.list.list.forEach((val) => {
                             this.myData2.push(val);
                             if (val.demandtype == '1') {
                                 this.myData0.push(val);
@@ -231,17 +233,18 @@
                             if (val.demandtype == '0') {
                                 this.myData1.push(val);
                             }
-                        });
-                        this.judgeRole();
+                        });*/
+//                        this.judgeRole();
                     }else if(response.data.opResult === '1') {
-                        this.myData0 = [];
+                        /*this.myData0 = [];
                         this.myData1 = [];
-                        this.myData2 = [];
+                        this.myData2 = [];*/
+                        this.myData = [];
                         this.totalCount = 0;
-                        this.judgeRole();
+//                        this.judgeRole();
                     }else {
-//                        alert('无法请求到数据，错误代码：' + response.data.opResult)
-                        this.open8(`无法请求到数据,错误代码：${response.data.opResult}`);
+//                        this.open8(`无法请求到数据,错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }).catch((error) => {
                     console.log(error);
@@ -271,17 +274,19 @@
             },
             // 通过“发布时间”选择展示内容
             timeUpDownClick: function () {
-                this.myData0 = [];
+                /*this.myData0 = [];
                 this.myData1 = [];
-                this.myData2 = [];
+                this.myData2 = [];*/
+//                this.myData = [];
                 this.timeUpDown = !this.timeUpDown;
                 this.sendData.orderType = this.timeUpDown ? 0 : 1;
             },
             // 通过“需求类型”选择展示内容 0:航线需求、1:运力需求、2:运营托管、3:航线委托、4:运力委托
             typeClickFn: function (item) {
-                this.myData0 = [];
+                /*this.myData0 = [];
                 this.myData1 = [];
-                this.myData2 = [];
+                this.myData2 = [];*/
+//                this.myData = [];
                 this.typeWriting = item;
                 this.sendData.responseProgress = '';
                 this.stateWriting = '状态';
@@ -298,9 +303,10 @@
             },
             // 通过“状态”选择展示内容  [0:意向征集、1:订单确认、2:已撤回、3:需求关闭、4:落选状态 5:交易完成,6:订单完成,7:佣金支付]
             stateClickFn: function (item) {
-                this.myData0 = [];
+                /*this.myData0 = [];
                 this.myData1 = [];
-                this.myData2 = [];
+                this.myData2 = [];*/
+//                this.myData = [];
                 this.stateWriting = item;
                 if(item == '状态') {
                     this.sendData.responseProgress = '';
@@ -322,6 +328,8 @@
                     this.sendData.responseProgress = 7;
                 }if(item == '待支付') {
                     this.sendData.responseProgress = '-1';
+                }if(item == '已失效') {
+                    this.sendData.responseProgress = '-2';
                 }
             },
             // 点击列表(list)，展示详情

@@ -991,7 +991,8 @@
                         this.$emit("closeForm");
                     }else{
 //                        alert('错误代码：' + response.data.opResult)
-                        this.open8(`错误代码：${response.data.opResult}`);
+//                        this.open8(`错误代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }) .catch((error) => {
                     console.log(error);

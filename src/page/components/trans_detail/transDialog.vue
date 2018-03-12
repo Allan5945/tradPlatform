@@ -5,8 +5,10 @@
             <div class="dialog-tips">*您还未缴纳意向金，缴纳后可提交意向</div>
             <div class="dialog-content">是否确认缴纳意向金50000元</div>
             <div class="dialog-btns">
-                <div class=" btn sure-btn" v-if="iconShow"><span class="iconfont">&#xe620;</span></div>
-                <div class=" btn sure-btn" @click.once="sureEvent" v-else>确认缴纳</div>
+                <div class="btn sure-btn" v-if="iconShow">
+                    <span class="iconfont">&#xe620;</span>
+                </div>
+                <div class="btn sure-btn" v-else @click.once="sureEvent">确认缴纳</div>
                 <div class="btn cancel-btn" @click="cancelEvent">取消</div>
             </div>
             <div class="note">

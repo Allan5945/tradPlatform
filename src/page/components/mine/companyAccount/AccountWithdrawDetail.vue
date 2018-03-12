@@ -147,9 +147,10 @@
 //                    console.info('response:')
 //                    console.info(response);
                     if(response.data.opResult == 0) {
-                        this.open6(`申请电子凭证成功！${response.data.opResult}`);
+                        this.open6(`申请电子凭证成功！`);
                     }else {
-                        this.open8(`申请电子凭证失败，错误代码： ${response.data.opResult}`);
+//                        this.open8(`申请电子凭证失败，错误代码： ${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }).catch((error) => {
                     console.log(error);

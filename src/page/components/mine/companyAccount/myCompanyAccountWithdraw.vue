@@ -127,8 +127,8 @@
                         this.$emit('refresh');
                         this.closeThisFn();
                     }else {
-//                        alert('无法请求到数据')
-                        this.open8(`无法请求到数据,代码：${response.data.opResult}`);
+//                        this.open8(`无法请求到数据,代码：${response.data.opResult}`);
+                        this.$processMessage(response.data.opResult);
                     }
                 }).catch((error) => {
                     console.log(error);

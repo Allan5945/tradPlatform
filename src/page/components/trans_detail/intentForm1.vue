@@ -1013,7 +1013,7 @@
                 this.sendData.hourscost = this.hourConst;   //小时成本
                 //传输数据给付款页面
                 tabulationBoxTrigger.$emit('postResponseData', this.sendData);
-                 this.$emit("sumitForm");
+                this.$emit("sumitForm");
             },
             closeThis: function () {
                 this.$emit('closeForm');
