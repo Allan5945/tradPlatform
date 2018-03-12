@@ -34,7 +34,8 @@
                         type: 'success',
                         duration: 1500
                     });
-                    return setTimeout(()=>{
+                    window.sessionStorage.setItem('needLogin','true');
+                     setTimeout(()=>{
                         that.$ajax.post('logout')
                             .then((res)=>{
                                 if(res.data.opResult == 0){//修改成功后

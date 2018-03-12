@@ -175,7 +175,6 @@
             this.companyIconData = companyIconData;
             let _this = this;
             tabulationBoxTrigger.$on("tipBox",d => {
-                console.log(this)
                 _this.yq = [];
                 _this.zc = [];
                 _this.glhs = [];
