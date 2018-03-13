@@ -6,8 +6,8 @@
                 <span class="close-icon iconfont" @click="cancel" style="color:#3c78ff;">&#xe62c;</span>
             </div>
             <div class="select-box" v-show="formFinish">
-                <div class="check-box"><input type="checkbox" v-model="allFormShow"></div>
-                <div>展开填写完整需求订单</div>
+                <div class="check-box"><input type="checkbox" id="zhankai2" v-model="allFormShow"></div>
+                <label for="zhankai2">展开填写完整需求订单</label>
             </div>
             <div class="t-part" v-show="!allFormShow">
                 <div class="form-box">
@@ -22,6 +22,11 @@
                   <airportS1 class="aisx" v-on:resData="resData" :searchText="searchText" v-show="isSearch"></airportS1>
                    <div class="error" v-show="isError6" style="left:58px;top:53px;">*请选择运力基地</div>
                 </div>
+                <div class="form-box pad1 taken" v-if="role.role == '2'">
+                    <div class="t-title"><span style="color:red;padding-right:3px;">*</span>运力归属</div><input type="text" placeholder="输入选择航司" v-model="airCompany" @focus="getAirCompany"  @blur="closeDialog6">
+                    <airCompanyS class="aisx"  :searchText="airCompany" v-on:resData="airCompanyData" v-show="airCompanyShow" style="top:45px;left:47px;width:223px;"></airCompanyS>
+                    <div class="error" v-show="isError7" style="left:58px;top:53px;">*请选择运力归属</div>
+                </div>
             </div>
             <div class="t-all" v-show="allFormShow">
                 <div class="t-must">
@@ -30,7 +35,7 @@
                         <div class="error" v-show="isError1" style="left:58px;top:58px;">*请填写联系人</div>
                     </div>
                     <div class="form-box">
-                        <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum">
+                        <div class="t-title">联系方式</div><input type="text" placeholder="请填写有效联系方式" @blur="verifyPhon" v-model="phoneNum" maxlength="11">
                         <div class="error" v-show="isError2" style="top:58px;right:36px;">*电话格式有误，请重新输入</div>
                     </div>
                     <div style="height:20px;width:100%;" v-if="isError1||isError2"></div>
@@ -114,10 +119,10 @@
                         <div class="error" v-show="isError5" style="left:58px;top:53px;">*请选择机型</div>
                     </div>
                     <div class="form-box">
-                        <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat">
+                        <div class="t-title">座位布局</div><input type="text" placeholder="填写举例：F8Y160" v-model="seat" maxlength="10">
                     </div>
                     <div class="form-box pad1 taken">
-                        <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost">
+                        <div class="t-title">小时成本</div><input type="text" placeholder="请填写小时成本" v-model="hourcost" v-on:keyup="verifyHourcost" maxlength="5">
                         <span>w/h</span>
                     </div>
                     <div class="form-box pad1 taken">
@@ -175,7 +180,7 @@
                              <input type="text" placeholder="开始时间" v-model="calendarInitDay1" readonly="readonly"><span>-</span>
                              <input type="text" placeholder="结束时间" v-model="calendarInitDay2" readonly="readonly">
                              <div class="confirm-btn btn" @click="getMyDate">确定</div>
-                             <div class="cancel-btn btn" @click="calendarShow=!calendarShow">取消</div>
+                             <div class="cancel-btn btn btn-w" @click="calendarShow=!calendarShow">取消</div>
                            </div>
                           <!--  <calendar v-on:changeDate="getDate1" :initDay="calendarInitDay1"></calendar>
                           <calendar v-on:changeDate="getDate2" :initDay="calendarInitDay2"></calendar> -->
@@ -219,9 +224,9 @@
             </div>
             <div class="t-btn">
                 <!--<div class="agent-btn " @click="toAgentForm" v-if="btnShow" @mouseover="agentTipsShow = true" @mouseout="agentTipsShow = false">委托代理</div>-->
-                <div class="confirm-btn " @click="agentConfirm(4)">确认发布</div>
+                <div class="confirm-btn btn-b" @click="agentConfirm(4)">确认发布</div>
                 <!--<div class="confirm-btn " @click="confirm(1)" v-else>确认发布</div>-->
-                <div class="cancel-btn " @click="cancel">取消</div>
+                <div class="cancel-btn" @click="cancel">取消</div>
                 <!--<p class="agent-tips" v-show="agentTipsShow">一键委托，开航无忧</p>-->
                 <!--<span class= "triangle" v-show="agentTipsShow"></span>-->
             </div>
@@ -237,8 +242,8 @@
     export default {
         data () {
             return{
-                formFinish:false,
-                allFormShow:true,
+                formFinish:true,
+                allFormShow:false,
                 showBox: false,
                 boxShow1: false,
                 boxShow2: false,
@@ -349,11 +354,11 @@
               }
         },
         watch:{
-            'allFormShow':function(val){
+            /*'allFormShow':function(val){
                 if(val){
                     this.formFinish =false;
                 }
-            },
+            },*/
             'qyCode3':function(val){
                 if(val){
                     if(val == this.qyCode4||val == this.qyCode5){
@@ -419,13 +424,7 @@
             acceptDataFn:function(){
                     this.contact = this.acceptData.contact;
                     this.phoneNum = this.acceptData.iHome;
-                    /*this.getTime = this.acceptData.dptTime == '无'? 'false':'true';
-                    if(this.acceptData.dptTime !== '无'){
-                        this.timeStart = this.acceptData.dptTime.split(',')[0];
-                        this.timeEnd =this.acceptData.dptTime.split(',')[1];
-                        this.pickStart = true;
-                        this.pickEnd = true;
-                    }*/
+
                     this.timeStart = this.acceptData.dptTime.split('-')[0];
                     this.timeEnd = this.acceptData.dptTime.split('-')[1];
 
@@ -483,7 +482,7 @@
 
                     /*this.myDate = this.acceptData.periodValidity;*/
 
-//                    this.post = this.acceptData.publicway;
+                    this.post = this.acceptData.publicway;
                      if(this.post == '3'){
                         this.acceptData.directions.forEach((val) => {
                              this.searchData1.push({
@@ -792,7 +791,7 @@
                     trans.scrollTop = 0;
                     return false;
                 }
-                if(this.intendedDpt == ''){//起始机场
+                if(this.intendedDpt == '' || this.qyCode3 == ''){//起始机场
                     this.isError3 = true;
                      trans.scrollTop = 0;
                     return false;
@@ -849,6 +848,11 @@
                 if(this.searchText == ''){//运力基地
                     this.isError6 = true;
                     trans.scrollTop = 0;
+                    return false;
+                }
+                if(this.intendedDpt == '' || this.qyCode3 == ''){//起始机场
+                    this.isError3 = true;
+                     trans.scrollTop = 0;
                     return false;
                 }
                 if(this.dispatch){       //接受调度
@@ -948,7 +952,7 @@
                     trans.scrollTop = 0;
                     return false;
                 }
-                if(this.intendedDpt == ''){//起始机场
+                if(this.intendedDpt == '' || this.qyCode3 == ''){//起始机场
                     this.isError3 = true;
                      trans.scrollTop = 0;
                     return false;
@@ -1192,6 +1196,7 @@
     .select-box{
         display:flex;
         justify-content: flex-end;
+        align-items: center;
         >div{
             height:26px;
             margin-right:5px;
@@ -1210,7 +1215,7 @@
         justify-content: space-between;
         padding:0 20px;
         padding-bottom:20px;
-        border-bottom:1px solid rgba(151,151,151,.3);
+        /*border-bottom:1px solid rgba(151,151,151,.3);*/
     }
     .form-box{
         width:240px;
@@ -1334,8 +1339,8 @@
           line-height:40px;
           border-radius:100px;
           text-align:center;
-          color:#ffffff;
-          background-color:#3c78ff;
+          /*color:#ffffff;*/
+          /*background-color:#3c78ff;*/
           cursor:pointer;
 
         }
@@ -1346,14 +1351,14 @@
         .confirm-btn{
           width:190px;
           margin:0 10px 0 30px;
-          box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);
+          /*box-shadow: 1px 1px 6px rgba(60, 120, 255, .6);*/
         }
         .cancel-btn{
           width:80px;
-          color:rgba(96,94,124,.6);
+          /*color:rgba(96,94,124,.6);*/
           box-sizing:border-box;
-          opacity:40%;
-          background-color:#fff;
+          /*opacity:40%;*/
+          /*background-color:#fff;*/
           border: 1px solid rgba(96,94,124,.6);
         }
         .agent-tips{

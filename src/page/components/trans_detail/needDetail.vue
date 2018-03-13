@@ -85,7 +85,7 @@
                    <div>意向航线</div>
                    <div class="i-line">-</div>
                </div>
-                <div>
+                <div v-if="role.role == 2">
                     <div>有效期</div>
                     <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                 </div>
@@ -356,7 +356,7 @@
         }
     }
     .content{
-      height:260px;
+      /*height:260px;*/
       padding:60px 40px 0 40px;
       flex-wrap: wrap;
       display: flex;
