@@ -15,21 +15,21 @@
                         <span style="color: #3F7AFF;font-weight: bold;">{{detailData.demandprogressStr}}</span>
                     </span>
               </div>
-              <div class="chatBox" v-if="chatShow" @click="toChat">发起对话</div>
+              <div class="chatBox btn-b" v-if="chatShow" @click="toChat">发起对话</div>
           </header>
           <div class="content">
               <div class="table-form">
-                  <div v-if="this.planData.responseProgress != '-1'">
-                      <div>联系人</div>
-                      <div>
-                          <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
+                    <div v-if="loadingPayShow">
+                        <div>联系人</div>
+                        <div>
+                            <span style="display: block; height: 20px; max-width: 160px; overflow: hidden;">
                                 <lonSpan :txt="detailData.contact"></lonSpan>
-                          </span>
-                      </div>
-                  </div>
-                  <div v-if="this.planData.responseProgress != '-1'">
-                      <div>联系方式</div>
-                      <div>{{detailData.iHome||'-'}}</div>
+                            </span>
+                        </div>
+                    </div>
+                    <div v-if="loadingPayShow">
+                        <div>联系方式</div>
+                        <div>{{detailData.iHome||'-'}}</div>
                   </div>
                   <div>
                       <div>机型</div>
@@ -91,7 +91,9 @@
               </div>
               <div class="myplan">
                   <div class="plan-til">
-                      <div>我发出的方案<span>({{planData.responseProgressStr}})</span></div>
+                      <div>我发出的方案
+                          <span>({{planData.responseProgressStr}})</span>
+                      </div>
                       <div @click="getSureForm" v-if="editShow"><span class="iconfont" style="font-size:1.6rem;">&#xe653;</span>编辑</div>
                   </div>
                   <div class="airline">
@@ -187,7 +189,7 @@
                           <div>运力基地</div>
                           <div>{{planData.capacityBaseNm||'-'}}</div>
                       </div>
-                       <div  class="note">
+                       <div class="note" style="height:40px;">
                           <div>是否调度</div>
                           <div v-if="planData.scheduling == '0' ">
                           <span v-for=" item in planData.airportForSchedulines">{{item.airlnCd||'-'}}</span>
@@ -211,8 +213,8 @@
               <div class="btn" v-else>
                   <p v-if="payMoneyShow" style="position: absolute; bottom: 10px; left: 35px; color: red;">*若未及时支付保证金，当该条需求下架或完成时意向自动失效</p>
                   <div class="btn-b" v-if="payMoneyShow" @click="payMoneyFn" style="width: 150px; margin-right: 10px;">支付意向金</div>
-                  <div class="intent-btn btn-b"  @click="toIntent" v-if="withdraw">重新发起意向</div>
-                  <div class="cancel-btn btn-w"  @click="cancelIntent" v-else>取消意向</div>
+                  <div class="intent-btn btn-b" @click="toIntent" v-if="withdraw">重新发起意向</div>
+                  <div class="cancel-btn btn-w" @click="cancelIntent" v-else>取消意向</div>
                   <div class="col-btn cancel btn-b" @click="cancelCollect" v-if="isCollect"
                        @mouseover="changeText(1)" @mouseout="changeText(2)">{{text}}</div>
                   <div class="col-btn btn-w" @click="collect" v-else>收藏</div>
@@ -285,14 +287,22 @@
       },
      props:['resData'],
      methods:{
-         payMoneyFn: function () {  // 点击“支付意向金”按钮
-             this.sureFormShow = true;
-             this.planData.bianji = false;
+         addArgumentsFn: function () {
              if(this.planData.responseProgress == '-1') {
                  this.planData.daizhifu = true;
              }else {
                  this.planData.daizhifu = false;
              }
+             if(this.planData.responseProgress == '-2') {
+                 this.planData.yishixiao = true;
+             }else {
+                 this.planData.yishixiao = false;
+             }
+         },
+         payMoneyFn: function () {  // 点击“支付意向金”按钮
+             this.sureFormShow = true;
+             this.planData.bianji = false;
+             this.addArgumentsFn();
          },
 
         toChat:function(){
@@ -308,11 +318,7 @@
          getSureForm:function(){
              this.sureFormShow = true;
              this.planData.bianji = true;
-             if(this.planData.responseProgress == '-1') {
-                 this.planData.daizhifu = true;
-             }else {
-                 this.planData.daizhifu = false;
-             }
+             this.addArgumentsFn();
          },
         closeSureForm(){
           this.sureFormShow = false;
@@ -349,7 +355,8 @@
                 );
          },
           toIntent:function(){
-             this.reFormShow = true;
+              this.reFormShow = true;
+              this.addArgumentsFn();
          },
          confirm:function(){
           this.$ajax({
@@ -488,73 +495,75 @@
              return value.split(' ')[0]
          }
      },
-       mounted() {
-          this.intentionCount = this.resData.intentionCount;
-          this.detailData = this.resData.data;
-           this.myTitle = `${this.detailData.title}运力投放`;
-          this.planData = this.resData.receiveIntention;
+     mounted() {
+        this.intentionCount = this.resData.intentionCount;
+        this.detailData = this.resData.data;
+        this.myTitle = `${this.detailData.title}运力投放`;
+        this.planData = this.resData.receiveIntention;
 
-           //选定状态无法编辑
-          if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
-              this.editShow = false;
-          }
-            //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
-                let progress = this.planData.responseProgress;
-               this.editShow = false;
-               this.chatShow = false;
-               this.withdraw = false;
-               this.footShow = false;
-               this.orderComplete = false;
-               this.confirmShow = false;
-               this.payMoneyShow = false;
-                if(progress == '2'){
-                  this.withdraw = true;
-                  this.footShow = true;
-                }else if(progress == '0'){
-                    this.editShow = true;
-                    this.chatShow = true;
-                    this.footShow = true;
-                }else if(progress == '4'){
+        //选定状态无法编辑
+        if(this.planData.responseselected == '0'||this.planData.releaseselected == '0'){
+            this.editShow = false;
+        }
+        //已撤回,意向征集，已落选,订单完成,需求关闭,交易完成/佣金支付，订单确认
+        let progress = this.planData.responseProgress;
+        this.editShow = false;
+        this.chatShow = false;
+        this.withdraw = false;
+        this.footShow = false;
+        this.orderComplete = false;
+        this.confirmShow = false;
+        this.payMoneyShow = false;
+        if(progress == '2'){
+            this.withdraw = true;
+            this.footShow = true;
+        }else if(progress == '0'){
+            this.editShow = true;
+            this.chatShow = true;
+            this.footShow = true;
+        }else if(progress == '4'){
 
-                }else if(progress == '6'){
-                    this.chatShow = true;
-                    this.orderComplete = true;
-                }else if(progress == '3'){
+        }else if(progress == '6'){
+            this.chatShow = true;
+            this.orderComplete = true;
+        }else if(progress == '3'){
 
-                }else if(progress == '5'||progress == '7'){
-                    this.chatShow = true;
-                }else if(progress == '1'){
-                    this.confirmShow = true;
-                    this.footShow = true;
-                    this.chatShow = true;
-                }else if (progress == '-1') {
-                    this.editShow = true;  // “编辑”按钮
-                    this.footShow = true;  //  底部按钮
-                    this.payMoneyShow = true;
-                }else if(progress == '-2') {
-                    this.withdraw = true;  // 重新发起意向
-                    if(this.detailData.demandprogress == 0 || this.detailData.demandprogress == 1 || this.detailData.demandprogress == 2) {
-                        this.footShow = true;
-                    }
-                }
-
-              let demandProgress = this.detailData.demandprogress;
-              if(demandProgress =='3'){
-                  this.editShow = false;
-                  this.footShow = false;
-                  this.chatShow = false;
-                  this.withdraw = false;
-                  this.planState = " ";
-                  this.orderComplete = false;
-                  this.confirmShow = false;
-              }
-
-         if(this.resData.isAlreadyCollect == true){
-              this.isCollect = true;
-         }else if(this.resData.isAlreadyCollect == false){
-              this.isCollect = false;
-          }
-
+        }else if(progress == '5'||progress == '7'){
+            this.chatShow = true;
+        }else if(progress == '1'){
+            this.confirmShow = true;
+            this.footShow = true;
+            this.chatShow = true;
+        }else if (progress == '-1') {
+            this.editShow = true;  // “编辑”按钮
+            this.footShow = true;  //  底部按钮
+            this.payMoneyShow = true;
+        }else if(progress == '-2') {
+            this.withdraw = true;  // 重新发起意向
+            if(this.detailData.demandprogress == 0 || this.detailData.demandprogress == 1 || this.detailData.demandprogress == 2) {
+                this.footShow = true;
+            }
+        }
+        if(progress == '-1' || progress == '-2') {
+            this.loadingPayShow = false;
+        }else {
+            this.loadingPayShow = true;
+        }
+        let demandProgress = this.detailData.demandprogress;
+        if(demandProgress =='3'){
+            this.editShow = false;
+            this.footShow = false;
+            this.chatShow = false;
+            this.withdraw = false;
+            this.planState = " ";
+            this.orderComplete = false;
+            this.confirmShow = false;
+        }
+        if(this.resData.isAlreadyCollect == true){
+            this.isCollect = true;
+        }else if(this.resData.isAlreadyCollect == false){
+            this.isCollect = false;
+        }
      },
 
 }

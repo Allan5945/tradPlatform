@@ -1,6 +1,6 @@
 <template>
     <div class="ald-container" v-cloak>
-        <div class="first-show" v-show="firstShow">
+        <div class="first-show" v-if="firstShow">
             <div class="first item-container">
                 <span class="font-gray">{{myData.demandtypeStr}}详情</span>
                 <span class="close-icon iconfont" @click="closeThisFn">&#xe62c;</span>
@@ -13,12 +13,12 @@
                 </div>
                 <div class="sec-bottom font-gray">
                     <span style="margin-right: 40px;">创建于{{releaseTime}}</span>
-                    <span style="margin-right: 30px;" v-show="userNumShow">已有{{userNum}}位用户发起意向</span>
+                    <span style="margin-right: 30px;" v-if="userNumShow">已有{{userNum}}位用户发起意向</span>
                     <span class="font-gray">状态:　
                         <span v-if="demandState5" style="color: red; font-weight: bold;">{{myData.demandprogressStr}}</span>
                         <span v-else><span style="color: #3F7AFF;font-weight: bold;">{{myData.demandprogressStr}}</span></span>
                     </span>
-                    <div class="anew-publish btn-b" v-show="demandState5 && isSelf == true" @click="anewPublishClickFn">
+                    <div class="anew-publish btn-b" v-if="demandState5 && isSelf == true" @click="anewPublishClickFn">
                         重新发布
                     </div>
                     <div class="anew-publish btn-b"
@@ -32,81 +32,81 @@
             </div>
             <div class="third item-container">
                 <div class="start item">
-                    <div class="item-a font-gray">始发<span v-show="myData.dptState == 0">机场</span><span v-show="myData.dptState == 1">区域</span></div>
+                    <div class="item-a font-gray">始发<span v-if="myData.dptState == 0">机场</span><span v-if="myData.dptState == 1">区域</span></div>
                     <div class="item-b">
                         <h2>
-                            <span v-show="myData.dptState == 0">{{myData.dptNm}}</span>
-                            <span v-show="myData.dptState == 1">{{myData.dpt}}</span>
+                            <span v-if="myData.dptState == 0">{{myData.dptNm}}</span>
+                            <span v-if="myData.dptState == 1">{{myData.dpt}}</span>
                         </h2>
                     </div>
-                    <div class="item-c font-gray" v-show="myData.dptState == 0 && myData.dptNm != null && myData.dptNm != ''">
+                    <div class="item-c font-gray" v-if="myData.dptState == 0 && myData.dptNm != null && myData.dptNm != ''">
                         <span v-if="myData.dptAcceptnearairport === '0'">接受</span>
                         <span v-else>不接受</span>临近机场
                     </div>
-                    <div class="item-d font-gray" v-show="myData.dptState == 0 && myData.dptNm != null && myData.dptNm != ''">出港资源</div>
-                    <div class="item-e" v-show="myData.dptState == 0 && myData.dptNm != null && myData.dptNm != ''">
-                        <span v-show="myData.dptTimeresources == 0">{{myData.dptTime}}</span>
-                        <span v-show="myData.dptTimeresources == 1">待协调</span>
-                        <span v-show="myData.dptTimeresources == 2">时刻充足</span>
+                    <div class="item-d font-gray" v-if="myData.dptState == 0 && myData.dptNm != null && myData.dptNm != ''">出港资源</div>
+                    <div class="item-e" v-if="myData.dptState == 0 && myData.dptNm != null && myData.dptNm != ''">
+                        <span v-if="myData.dptTimeresources == 0">{{myData.dptTime}}</span>
+                        <span v-if="myData.dptTimeresources == 1">待协调</span>
+                        <span v-if="myData.dptTimeresources == 2">时刻充足</span>
                     </div>
                 </div>
                 <div class="item-icon">
                     <span class="icon-item">&#xe672;</span>
                 </div>
                 <div class="pass item">
-                    <div class="item-a font-gray">经停<span v-show="myData.pstState == 0">机场</span><span v-show="myData.pstState == 1">区域</span></div>
+                    <div class="item-a font-gray">经停<span v-if="myData.pstState == 0">机场</span><span v-if="myData.pstState == 1">区域</span></div>
                     <div class="item-b">
                         <h2>
-                            <span v-show="myData.pstState == 0">{{myData.pstNm}}</span>
-                            <span v-show="myData.pstState == 1">{{myData.pst}}</span>
+                            <span v-if="myData.pstState == 0">{{myData.pstNm}}</span>
+                            <span v-if="myData.pstState == 1">{{myData.pst}}</span>
                         </h2>
                     </div>
-                    <div class="item-c font-gray" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
+                    <div class="item-c font-gray" v-if="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
                         <span v-if="myData.pstAcceptnearairport === '0'">接受</span>
                         <span v-else>不接受</span>临近机场
                     </div>
-                    <div class="item-d font-gray" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">出港资源</div>
-                    <div class="item-e" v-show="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
-                        <span v-show="myData.pstTimeresources == 0">{{myData.pstTime}}</span>
-                        <span v-show="myData.pstTimeresources == 1">待协调</span>
-                        <span v-show="myData.pstTimeresources == 2">时刻充足</span>
+                    <div class="item-d font-gray" v-if="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">出港资源</div>
+                    <div class="item-e" v-if="myData.pstState == 0 && myData.pstNm != null && myData.pstNm != ''">
+                        <span v-if="myData.pstTimeresources == 0">{{myData.pstTime}}</span>
+                        <span v-if="myData.pstTimeresources == 1">待协调</span>
+                        <span v-if="myData.pstTimeresources == 2">时刻充足</span>
                     </div>
                 </div>
                 <div class="item-icon">
                     <span class="icon-item">&#xe672;</span>
                 </div>
                 <div class="arrive item">
-                    <div class="item-a font-gray">到达<span v-show="myData.arrvState == 0">机场</span><span v-show="myData.arrvState == 1">区域</span></div>
+                    <div class="item-a font-gray">到达<span v-if="myData.arrvState == 0">机场</span><span v-if="myData.arrvState == 1">区域</span></div>
                     <div class="item-b">
                         <h2>
-                            <span v-show="myData.arrvState == 0">{{myData.arrvNm}}</span>
-                            <span v-show="myData.arrvState == 1">{{myData.arrv}}</span>
+                            <span v-if="myData.arrvState == 0">{{myData.arrvNm}}</span>
+                            <span v-if="myData.arrvState == 1">{{myData.arrv}}</span>
                         </h2>
                     </div>
                     <!--下方有空格-->
-                    <div class="item-c font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null && myData.arrvNm != ''">
+                    <div class="item-c font-gray" v-if="myData.arrvState == 0 && myData.arrvNm != null && myData.arrvNm != ''">
                         <span v-if="myData.arrvAcceptnearairport === '0'">接受</span>
                         <span v-else>不接受</span>临近机场
                     </div>
-                    <div class="item-d font-gray" v-show="myData.arrvState == 0 && myData.arrvNm != null && myData.arrvNm != ''">出港资源</div>
-                    <div class="item-e" v-show="myData.arrvState == 0 && myData.arrvNm != null && myData.arrvNm != ''">
-                        <span v-show="myData.arrvTimeresources == 0">{{myData.arrvTime}}</span>
-                        <span v-show="myData.arrvTimeresources == 1">待协调</span>
-                        <span v-show="myData.arrvTimeresources == 2">时刻充足</span>
+                    <div class="item-d font-gray" v-if="myData.arrvState == 0 && myData.arrvNm != null && myData.arrvNm != ''">出港资源</div>
+                    <div class="item-e" v-if="myData.arrvState == 0 && myData.arrvNm != null && myData.arrvNm != ''">
+                        <span v-if="myData.arrvTimeresources == 0">{{myData.arrvTime}}</span>
+                        <span v-if="myData.arrvTimeresources == 1">待协调</span>
+                        <span v-if="myData.arrvTimeresources == 2">时刻充足</span>
                     </div>
                 </div>
             </div>
             <div class="fourth item-container">
                 <div class="items">
                     <div class="left item font-gray">
-                        <div v-show="contactMsgShow">联系人</div>
+                        <div v-if="contactMsgShow">联系人</div>
                         <div>拟开时间</div>
                         <div>拟飞机型</div>
                         <div>客量期望</div>
                         <div>合作方式</div>
                     </div>
                     <div class="right item">
-                        <div class="item-a" v-show="contactMsgShow">
+                        <div class="item-a" v-if="contactMsgShow">
                             <span style="height: 15px; max-width: 160px; overflow: hidden;">
                                 <lonSpan :txt="myData.contact"></lonSpan>
                             </span>
@@ -123,14 +123,14 @@
                 </div>
                 <div class="items">
                     <div class="left item font-gray">
-                        <div v-show="contactMsgShow">联系方式</div>
+                        <div v-if="contactMsgShow">联系方式</div>
                         <div>拟开班期</div>
                         <div>座位数</div>
                         <div>客座率期望</div>
                         <div>有效期</div>
                     </div>
                     <div class="right item">
-                        <div class="item-a" v-show="contactMsgShow">{{myData.iHome}}</div>
+                        <div class="item-a" v-if="contactMsgShow">{{myData.iHome}}</div>
                         <div class="item-a">{{myData.days || '-'}}</div>
                         <div class="item-b">{{myData.seating || '-'}}</div>
                         <div class="item-c">
@@ -164,10 +164,10 @@
             <div class="plan-til">
                 <div>
                     我发出的方案
-                    <span v-show="receiveIntention.responseProgress == 2
+                    <span v-if="receiveIntention.responseProgress == 2
                         || receiveIntention.responseProgress == 4">({{receiveIntention.responseProgressStr}})</span>
                 </div>
-                <div @click="EditFn" v-show="receiveIntention.releaseselected == 1
+                <div @click="EditFn" v-if="receiveIntention.releaseselected == 1
                         && (receiveIntention.responseProgress == 0 || receiveIntention.responseProgress == 1)
                         && (myData.demandprogress != 3 && myData.demandprogress != 4 && myData.demandprogress != 5
                             && myData.demandprogress != 6)" style="cursor:pointer;">
@@ -177,25 +177,25 @@
             <div class="airline">
                 <div class="airplace">
                     <div>始发
-                        <span v-show="receiveIntention.dptState == 0">机场</span>
-                        <span v-show="receiveIntention.dptState == 1">区域</span>
+                        <span v-if="receiveIntention.dptState == 0">机场</span>
+                        <span v-if="receiveIntention.dptState == 1">区域</span>
                     </div>
                     <div>
                         <div v-if="receiveIntention.dptState == 0">{{receiveIntention.dptNm}}</div>
                         <div v-else-if="receiveIntention.dptState == 1">{{receiveIntention.dpt}}</div>
                         <!--<div>成都双流</div>-->
-                        <div v-show="receiveIntention.dptState == 0 && receiveIntention.dptNm != null && receiveIntention.dptNm != ''">
+                        <div v-if="receiveIntention.dptState == 0 && receiveIntention.dptNm != null && receiveIntention.dptNm != ''">
                             <span v-if="receiveIntention.dptAcceptnearairport === '0'">接受</span>
                             <span v-else>不接受</span>临近机场
                         </div>
                     </div>
-                    <div class="resouse" v-show="receiveIntention.dptState == 0 && receiveIntention.dptNm != null && receiveIntention.dptNm != ''">
+                    <div class="resouse" v-if="receiveIntention.dptState == 0 && receiveIntention.dptNm != null && receiveIntention.dptNm != ''">
                         <div>出港资源</div>
                         <!--<div>{{receiveIntention.dptTime}}</div>-->
                         <div>
-                            <span v-show="receiveIntention.dptTimeresources == 0">{{receiveIntention.dptTime}}</span>
-                            <span v-show="receiveIntention.dptTimeresources == 1">待协调</span>
-                            <span v-show="receiveIntention.dptTimeresources == 2">时刻充足</span>
+                            <span v-if="receiveIntention.dptTimeresources == 0">{{receiveIntention.dptTime}}</span>
+                            <span v-if="receiveIntention.dptTimeresources == 1">待协调</span>
+                            <span v-if="receiveIntention.dptTimeresources == 2">时刻充足</span>
                         </div>
                         <!--<div>08:00-12:00</div>-->
                     </div>
@@ -203,27 +203,27 @@
                 <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                 <div class="airplace">
                     <div>经停
-                        <span v-show="receiveIntention.pstState == 0">机场</span>
-                        <span v-show="receiveIntention.pstState == 1">区域</span>
+                        <span v-if="receiveIntention.pstState == 0">机场</span>
+                        <span v-if="receiveIntention.pstState == 1">区域</span>
                     </div>
                     <div>
                         <div v-if="receiveIntention.pstState == 0">{{receiveIntention.pstNm}}</div>
                         <div v-else-if="receiveIntention.pstState == 1">{{receiveIntention.pst}}</div>
                         <!--<div>北京南苑</div>-->
-                        <div v-show="receiveIntention.pstState == 0 && receiveIntention.pstNm != null && receiveIntention.pstNm != ''">
+                        <div v-if="receiveIntention.pstState == 0 && receiveIntention.pstNm != null && receiveIntention.pstNm != ''">
                             <span v-if="receiveIntention.pstAcceptnearairport === '0'">接受</span>
                             <span v-else>不接受</span>临近机场
                         </div>
                     </div>
-                    <div class="resouse" v-show="receiveIntention.pstState == 0
+                    <div class="resouse" v-if="receiveIntention.pstState == 0
                         && receiveIntention.pstNm != null
                         && receiveIntention.pstNm != ''">
                         <div>出港资源</div>
                         <!--<div>{{receiveIntention.pstTime}}</div>-->
                         <div>
-                            <span v-show="receiveIntention.pstTimeresources == 0">{{receiveIntention.pstTime}}</span>
-                            <span v-show="receiveIntention.pstTimeresources == 1">待协调</span>
-                            <span v-show="receiveIntention.pstTimeresources == 2">时刻充足</span>
+                            <span v-if="receiveIntention.pstTimeresources == 0">{{receiveIntention.pstTime}}</span>
+                            <span v-if="receiveIntention.pstTimeresources == 1">待协调</span>
+                            <span v-if="receiveIntention.pstTimeresources == 2">时刻充足</span>
                         </div>
                         <!--<div>待协调</div>-->
                     </div>
@@ -231,25 +231,25 @@
                 <div style="padding-top:60px;"><span class="iconfont">&#xe672;</span></div>
                 <div class="airplace">
                     <div>到达
-                        <span v-show="receiveIntention.arrvState == 0">机场</span>
-                        <span v-show="receiveIntention.arrvState == 1">区域</span>
+                        <span v-if="receiveIntention.arrvState == 0">机场</span>
+                        <span v-if="receiveIntention.arrvState == 1">区域</span>
                     </div>
                     <div>
                         <div v-if="receiveIntention.arrvState == 0">{{receiveIntention.arrvNm}}</div>
                         <div v-else-if="receiveIntention.arrvState == 1">{{receiveIntention.arrv}}</div>
                         <!--<div>华北地区</div>-->
-                        <div v-show="receiveIntention.arrvState == 0 && receiveIntention.arrvNm != null && receiveIntention.arrvNm != ''">
+                        <div v-if="receiveIntention.arrvState == 0 && receiveIntention.arrvNm != null && receiveIntention.arrvNm != ''">
                             <span v-if="receiveIntention.arrvAcceptnearairport === '0'">接受</span>
                             <span v-else>不接受</span>临近机场
                         </div>
                     </div>
-                    <div class="resouse" v-show="receiveIntention.arrvState == 0 && receiveIntention.arrvNm != null && receiveIntention.arrvNm != ''">
+                    <div class="resouse" v-if="receiveIntention.arrvState == 0 && receiveIntention.arrvNm != null && receiveIntention.arrvNm != ''">
                         <div>出港资源</div>
                         <!--<div>{{receiveIntention.arrvTime}}</div>-->
                         <div>
-                            <span v-show="receiveIntention.arrvTimeresources == 0">{{receiveIntention.arrvTime}}</span>
-                            <span v-show="receiveIntention.arrvTimeresources == 1">待协调</span>
-                            <span v-show="receiveIntention.arrvTimeresources == 2">时刻充足</span>
+                            <span v-if="receiveIntention.arrvTimeresources == 0">{{receiveIntention.arrvTime}}</span>
+                            <span v-if="receiveIntention.arrvTimeresources == 1">待协调</span>
+                            <span v-if="receiveIntention.arrvTimeresources == 2">时刻充足</span>
                         </div>
                         <!--<div></div>-->
                     </div>
@@ -356,8 +356,8 @@
                 <h2>收到的意向</h2>
                 <span class="font-gray">已有<span style="font-weight: bold;color: #3c78ff;">{{userNum}}</span>位用户发起意向</span>
             </div>
-            <div class="seventh item-container" v-show="isSelf && myData.demandprogress == 3">
-                <span class="danger" v-show="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
+            <div class="seventh item-container" v-if="isSelf && myData.demandprogress == 3">
+                <span class="danger" v-if="myData.demandprogress == 3">*需求已下架，无法查看详细列表</span>
             </div>
         </div>
         <div class="tenth item-container danger" v-if="myData.rek != null && myData.rek != ''">
@@ -383,7 +383,7 @@
                         <div class="left">{{item.responsedate}}</div>
                         <div class="center-left">{{item.intentionCompanyName}}</div>
                         <div class="center-right" @click="chat(item)">
-                            <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-show="item.unreadNum != 0 && item.unreadNum != null"></span></span>
+                            <span class="icon-item" style="cursor:pointer;">&#xe602; <span class="reminder" v-if="item.unreadNum != 0 && item.unreadNum != null"></span></span>
                         </div>
                         <div style="width: 60px;margin-right: 80px;">{{responseProgressFn(item.responseProgress)}}</div>
                         <div v-if="checkDetailIndex !== index" class="right" style="color: #3c78ff; cursor: pointer;" @click="checkDetail(item,index)">查看详情</div>
@@ -392,23 +392,23 @@
                     <div v-show="checkDetailIndex === index">
                         <div class="item-second">
                             <div class="start item">
-                                <div class="item-a font-gray">始发<span v-show="item.dptState == 0">机场</span>
-                                    <span v-show="item.dptState == 1">区域</span></div>
+                                <div class="item-a font-gray">始发<span v-if="item.dptState == 0">机场</span>
+                                    <span v-if="item.dptState == 1">区域</span></div>
                                 <div class="item-b">
                                     <h2>
-                                        <span v-show="item.dptState == 0">{{item.dptNm}}</span>
-                                        <span v-show="item.dptState == 1">{{item.dpt}}</span>
+                                        <span v-if="item.dptState == 0">{{item.dptNm}}</span>
+                                        <span v-if="item.dptState == 1">{{item.dpt}}</span>
                                     </h2>
                                 </div>
-                                <div class="item-c font-gray" v-show="item.dptState === '0' && item.dptNm != null && item.dptNm != ''">
+                                <div class="item-c font-gray" v-if="item.dptState === '0' && item.dptNm != null && item.dptNm != ''">
                                     <span v-if="item.dptAcceptnearairport === '0'">接受</span>
                                     <span v-else>不接受</span>临近机场
                                 </div>
-                                <div class="item-d font-gray" v-show="item.dptState === '0' && item.dptNm != null && item.dptNm != ''">出港资源</div>
-                                <div class="item-e" v-show="item.dptState === '0' && item.dptNm != null && item.dptNm != ''">
-                                    <span v-show="item.dptTimeresources == 0">{{item.dptTime}}</span>
-                                    <span v-show="item.dptTimeresources == 1">待协调</span>
-                                    <span v-show="item.dptTimeresources == 2">时刻充足</span>
+                                <div class="item-d font-gray" v-if="item.dptState === '0' && item.dptNm != null && item.dptNm != ''">出港资源</div>
+                                <div class="item-e" v-if="item.dptState === '0' && item.dptNm != null && item.dptNm != ''">
+                                    <span v-if="item.dptTimeresources == 0">{{item.dptTime}}</span>
+                                    <span v-if="item.dptTimeresources == 1">待协调</span>
+                                    <span v-if="item.dptTimeresources == 2">时刻充足</span>
                                 </div>
                             </div>
                             <div class="item-icon">
@@ -416,23 +416,23 @@
                             </div>
                             <div class="pass item">
                                 <div class="item-a font-gray">经停
-                                    <span v-show="item.pstState == 0">机场</span>
-                                    <span v-show="item.pstState == 1">区域</span></div>
+                                    <span v-if="item.pstState == 0">机场</span>
+                                    <span v-if="item.pstState == 1">区域</span></div>
                                 <div class="item-b">
                                     <h2>
-                                        <span v-show="item.pstState == 0">{{item.pstNm}}</span>
-                                        <span v-show="item.pstState == 1">{{item.pst}}</span>
+                                        <span v-if="item.pstState == 0">{{item.pstNm}}</span>
+                                        <span v-if="item.pstState == 1">{{item.pst}}</span>
                                     </h2>
                                 </div>
-                                <div class="item-c font-gray" v-show="item.pstState === '0' && item.pstNm != null && item.pstNm != ''">
+                                <div class="item-c font-gray" v-if="item.pstState === '0' && item.pstNm != null && item.pstNm != ''">
                                     <span v-if="item.pstAcceptnearairport === '0'">接受</span>
                                     <span v-else>不接受</span>临近机场
                                 </div>
-                                <div class="item-d font-gray" v-show="item.pstState === '0' && item.pstNm != null && item.pstNm != ''">出港资源</div>
-                                <div class="item-e" v-show="item.pstState === '0' && item.pstNm != null && item.pstNm != ''">
-                                    <span v-show="item.pstTimeresources == 0">{{item.pstTime}}</span>
-                                    <span v-show="item.pstTimeresources == 1">待协调</span>
-                                    <span v-show="item.pstTimeresources == 2">时刻充足</span>
+                                <div class="item-d font-gray" v-if="item.pstState === '0' && item.pstNm != null && item.pstNm != ''">出港资源</div>
+                                <div class="item-e" v-if="item.pstState === '0' && item.pstNm != null && item.pstNm != ''">
+                                    <span v-if="item.pstTimeresources == 0">{{item.pstTime}}</span>
+                                    <span v-if="item.pstTimeresources == 1">待协调</span>
+                                    <span v-if="item.pstTimeresources == 2">时刻充足</span>
                                 </div>
                             </div>
                             <div class="item-icon">
@@ -440,23 +440,23 @@
                             </div>
                             <div class="arrive item">
                                 <div class="item-a font-gray">到达
-                                    <span v-show="item.arrvState == 0">机场</span>
-                                    <span v-show="item.arrvState == 1">区域</span></div>
+                                    <span v-if="item.arrvState == 0">机场</span>
+                                    <span v-if="item.arrvState == 1">区域</span></div>
                                 <div class="item-b">
                                     <h2>
-                                        <span v-show="item.arrvState == 0">{{item.arrvNm}}</span>
-                                        <span v-show="item.arrvState == 1">{{item.arrv}}</span>
+                                        <span v-if="item.arrvState == 0">{{item.arrvNm}}</span>
+                                        <span v-if="item.arrvState == 1">{{item.arrv}}</span>
                                     </h2>
                                 </div>
-                                <div class="item-c font-gray" v-show="item.arrvState === '0' && item.arrvNm != null && item.arrvNm != ''">
+                                <div class="item-c font-gray" v-if="item.arrvState === '0' && item.arrvNm != null && item.arrvNm != ''">
                                     <span v-if="item.arrvAcceptnearairport === '0'">接受</span>
                                     <span v-else>不接受</span>临近机场
                                 </div>
-                                <div class="item-d font-gray" v-show="item.arrvState === '0' && item.arrvNm != null && item.arrvNm != ''">出港资源</div>
-                                <div class="item-e" v-show="item.arrvState === '0' && item.arrvNm != null && item.arrvNm != ''">
-                                    <span v-show="item.arrvTimeresources == 0">{{item.arrvTime}}</span>
-                                    <span v-show="item.arrvTimeresources == 1">待协调</span>
-                                    <span v-show="item.arrvTimeresources == 2">时刻充足</span>
+                                <div class="item-d font-gray" v-if="item.arrvState === '0' && item.arrvNm != null && item.arrvNm != ''">出港资源</div>
+                                <div class="item-e" v-if="item.arrvState === '0' && item.arrvNm != null && item.arrvNm != ''">
+                                    <span v-if="item.arrvTimeresources == 0">{{item.arrvTime}}</span>
+                                    <span v-if="item.arrvTimeresources == 1">待协调</span>
+                                    <span v-if="item.arrvTimeresources == 2">时刻充足</span>
                                 </div>
                             </div>
                         </div>
@@ -538,11 +538,11 @@
                         </div>
                         <div v-else>
                             <div class="item-fifth" v-if="item.releaseselected === '1' && item.responseProgress !== '2'">
-                                <div v-show="secondButtonShow && myData.demandprogress != 3" style="position: absolute; left: -130px; bottom: 50px;">
-                                    <span class="danger" v-show="demandState6">*您还未缴纳意向金，缴纳后可选定该意向</span>
+                                <div v-if="secondButtonShow && myData.demandprogress != 3" style="position: absolute; left: -130px; bottom: 50px;">
+                                    <span class="danger" v-if="demandState6">*您还未缴纳意向金，缴纳后可选定该意向</span>
                                 </div>
-                                <button class="btn btn-disable" v-show="unPayMoneyShow">选定</button>
-                                <button class="btn btn-b" v-show="!btnDisableShow && !unPayMoneyShow" @click="airlineAffirmFn(item,index)">选定</button>
+                                <button class="btn btn-disable" v-if="unPayMoneyShow">选定</button>
+                                <button class="btn btn-b" v-if="!btnDisableShow && !unPayMoneyShow" @click="airlineAffirmFn(item,index)">选定</button>
                             </div>
                             <div class="item-sixth" v-if="item.releaseselected === '0'">
                                 <button class="btn btn-w btn-change" @click="airlineAffirmFn2(item,index)">已选定（点击此处可再次编辑）</button>
@@ -557,14 +557,14 @@
             <span style="width: 560px;height: 1px;background: black;"></span>
             <div class="buttons">
                 <button class="btn btn-b" v-if="demand3BtnShow" @click="airlineWriteFn" style="margin-right: 14px;"><span class="icon-item">&#xe609;</span>我有意向</button>
-                <button class="btn btn-w" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</button>
-                <button class="btn btn-b" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 100px;">已收藏</button>
+                <button class="btn btn-w" v-if="isAlreadyCollect == false" key="collshoucang3" @click="addCollectFn">收藏</button>
+                <button class="btn btn-b" v-if="isAlreadyCollect == true" key="collyishoucang3" @click="cancelCollectFn" @mouseover="cancelCollectOver1Fn" @mouseout="cancelCollectOut1Fn" ref="cancelCollect1" style="width: 100px;">已收藏</button>
             </div>
         </div>
         <div class="second-button" v-if="secondButtonShow">
             <span style="width: 560px;height: 1px;background: #ccc;"></span>
             <div class="buttons">
-                <button class="btn btn-b" @click="airlinePayFn" v-show="demandState6">点击此处缴纳意向金</button>
+                <button class="btn btn-b" @click="airlinePayFn" v-if="demandState6">点击此处缴纳意向金</button>
                 <button class="btn btn-w" @click="endNeed">结束需求</button>
             </div>
         </div>
@@ -573,8 +573,8 @@
                 <div v-if="sixthButtonShow">
                     <div class="buttons">
                         <div class="btn btn-w cancel-btn" style="width: 220px;">已生成订单，无法更改</div>
-                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" key="collshoucang2" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-if="isAlreadyCollect == true" key="collyishoucang2" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
                 <div v-else>
@@ -585,8 +585,8 @@
                     <div class="buttons" v-if="eighthButtonShow">
                         <button class="btn btn-b" v-if="receiveIntention.responseProgress == 2" @click="airlineWriteFn2">重新发起意向</button>
                         <div class="btn btn-w cancel-btn" v-else @click="deleteClickFn">取消意向</div>
-                        <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                        <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                        <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" key="collshoucang0" @click="addCollectFn">收藏</div>
+                        <div class="btn btn-b cancel-btn" v-if="isAlreadyCollect == true" key="collyishoucang0" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                     </div>
                 </div>
             <!--</div>-->
@@ -602,8 +602,8 @@
             <div class="bottom" v-if="!firstButtonShow && !secondButtonShow && !fifthButtonShow && !sixthButtonShow && !seventhButtonShow && !eighthButtonShow">
                 <span style="width: 560px;height: 1px;background: #ccc;"></span>
                 <div class="buttons">
-                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                    <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" key="collshoucang1" @click="addCollectFn">收藏</div>
+                    <div class="btn btn-b cancel-btn" v-if="isAlreadyCollect == true" key="collyishoucang1" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                 </div>
             </div>
         </div>
@@ -611,8 +611,8 @@
             <div class="bottom" v-if="!firstButtonShow && !secondButtonShow && !fifthButtonShow && !sixthButtonShow && !seventhButtonShow && !eighthButtonShow">
                 <span style="width: 560px;height: 1px;background: #ccc;"></span>
                 <div class="buttons">
-                    <div class="btn btn-w cancel-btn" v-show="isAlreadyCollect == false" @click="addCollectFn">收藏</div>
-                    <div class="btn btn-b cancel-btn" v-show="isAlreadyCollect == true" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
+                    <div class="btn btn-w cancel-btn" v-if="isAlreadyCollect == false" key="collshoucang" @click="addCollectFn">收藏</div>
+                    <div class="btn btn-b cancel-btn" v-if="isAlreadyCollect == true" key="collyishoucang" @click="cancelCollectFn" @mouseover="cancelCollectOver2Fn" @mouseout="cancelCollectOut2Fn" ref="cancelCollect2" style="width: 100px;">已收藏</div>
                 </div>
             </div>
         </div>
@@ -631,7 +631,7 @@
         <!--机场点击“重新发布”显示 航线表单-->
         <airlineReqWrapper v-if="airlineReqWrapperShow" :acceptData="myData" @refresh="refreshFn" @close-this="closeAirlineReqWrapper"></airlineReqWrapper>
 
-        <!--<paySuccess v-show="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>-->
+        <!--<paySuccess v-if="paySuccessShow" @cancel="closePaySucssFn"></paySuccess>-->
         <airlinePay v-if="airlinePayShow" :airlinePayId="airlinePayId" @cancel="closeAlPayFn" @sure="changeShowCodeP"></airlinePay>
     </div>
 </template>
