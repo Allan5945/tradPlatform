@@ -174,6 +174,7 @@
             },
             resetSingleSet: function () {
                 this.single.set = false;
+
             },
             lose: function () {
                 setTimeout(() => {
@@ -194,7 +195,9 @@
                 this.bgqyed = false;
                 this.searchText = '';
                 this.qyCode = "";
-                this.$emit('serah');
+                this.$store.dispatch('removeSearchSet').then(() => {
+                    this.$emit('serah');
+                });
 //                this.$store.dispatch('hybridData', {v: '', t: 1}).then(() => {
 //                });
             },

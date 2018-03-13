@@ -60,6 +60,9 @@ export default {
     },
     changeRole:({commit},t)=>{
         commit(types.CHANGEROLE,t)
+    },
+    removeSearchSet:({commit})=>{
+        commit(types.REMOVESEARCHSET)
     }
     // setaircode:({commit},val)=>{
     //     commit(types.SETAIRCODE,val)
