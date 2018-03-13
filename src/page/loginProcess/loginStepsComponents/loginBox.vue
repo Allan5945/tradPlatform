@@ -1,6 +1,6 @@
 <template>
     <div class="login-box">
-        <userObj :arg="data2" v-on:resMes="resMes2"></userObj>
+        <userObj :arg="data2" :useNames="true" v-on:resMes="resMes2"></userObj>
         <userObj :arg="data3" v-on:resMes="resMes3" style="margin-top: 30px" @entered="entered"></userObj>
         <div class="operation">
             <el-checkbox v-model="mes.checked">记住密码</el-checkbox>

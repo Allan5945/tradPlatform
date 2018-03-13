@@ -49,15 +49,17 @@
                 let page = this.demandList.hybridPage;
                 if(!this.demandType)url = '/getDemandsByCurrentCheckedAirportForEmployee';
                 if(!this.demandType)page = this.demandList.monoPage;
+                let params = {
+                    page:1,
+                    itia:Object.is(this.demandList.monoName,"") ? "" : this.demandList.monoName.code
+                }
                 this.$ajax({
                     url,
                     method: 'post',
                     headers: {
                         'Content-type': 'application/x-www-form-urlencoded'
                     },
-                    params: {
-                        page:1
-                    }
+                    params
                 }).then((response) => {
                     if (response.data.opResult == '0') {
                         this.$store.dispatch('hybridData', {v: response.data.list, t: 0}).then(() => {});
@@ -131,7 +133,7 @@
             ...vx.mapGetters([
                 'demandList',
                 'close',
-                'demandType'
+                'demandType',
             ])
         }
 
