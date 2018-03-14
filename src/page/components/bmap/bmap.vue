@@ -29,7 +29,8 @@
                 'close',
                 'routeNetwork',
                 'role',
-                'demandList'
+                'demandList',
+                'demandType'
             ]),
         },
         mounted: function () {
@@ -56,7 +57,8 @@
             let a = [], // 航线需求列表
                 d = [], // 我发出的需求 -无
                 b = [], // 我的需求 -有
-                y = [], // 全部圆形
+                y = [], // 我的发布
+                e = [], // 市场需求
                 code, // 三字码
                 type, // 需求类型 0 = 航线需求，1 = 运力需求，2 = 航线需求和运力需求，3 = 我的需求
                 network = {
@@ -112,7 +114,7 @@
                                     fontFamily: 'Microsoft YaHei',
                                     color: 'white',
                                     align:"left",
-                                    lineHeight: 25,
+                                    lineHeight: 15,
                                     fontSize:12,
                                     position:'relative',
                                     verticalAlign:'middle'
@@ -120,7 +122,7 @@
                                  b1: {
                                      fontFamily: 'Microsoft YaHei',
                                      color: '#3c78ff',
-                                     lineHeight: 25,
+                                     lineHeight: 15,
                                      fontSize:20,
                                      fontWeight:"bold",
                                      verticalAlign:'top',
@@ -130,7 +132,49 @@
                         }
                     }
                 });
-
+                e.push({
+                    name: v.cityName,
+                    value: [v.cityCoordinateJ, v.cityCoordinateW],
+                    symbol: 'circle',
+                    symbolOffset: [0, 0],
+                    mes,
+                    type:4,
+                    label:{
+                        normal:{
+                            formatter: [
+                                `{b|市场\n需求}{b1|${v.num}}`,
+                                `{a|${mes.allData.airlnCd}}`,
+                            ].join('\n'),
+                            rich: {
+                                a: {
+                                    fontFamily: 'Microsoft YaHei',
+                                    color: 'white',
+                                    fontSize:14,
+                                    lineHeight: 40,
+                                    align:"center"
+                                },
+                                b: {
+                                    fontFamily: 'Microsoft YaHei',
+                                    color: 'white',
+                                    align:"left",
+                                    lineHeight: 15,
+                                    fontSize:12,
+                                    position:'relative',
+                                    verticalAlign:'middle'
+                                },
+                                b1: {
+                                    fontFamily: 'Microsoft YaHei',
+                                    color: '#3c78ff',
+                                    lineHeight: 15,
+                                    fontSize:20,
+                                    fontWeight:"bold",
+                                    verticalAlign:'top',
+                                    padding:[0,0,-13,10]
+                                }
+                            }
+                        }
+                    }
+                });
 
                 let obj = v.obj.split(',');
                 let demandType = v.demandType == null ? [] : v.demandType.split(',');  // 需求类型数组
@@ -276,8 +320,9 @@
                     selected:{
                         'routeNetwork':false,
                         'allPoint':false,
-                        'pao':paoOrTag,
-                        'tags':!paoOrTag
+                        'pao':paoOrTag && this.demandType,
+                        'tags':!paoOrTag,
+                        'paomyself':paoOrTag && !this.demandType
                     }
                 },
                 "tooltip": {
@@ -285,10 +330,36 @@
                 },
                 "series": [
                     {
-                        'name': 'pao',
+                        'name': 'paomyself',
                         "type": "scatter",
                         "coordinateSystem": "bmap",
                         "data": y,
+                        "zlevel": 10,
+                        "symbolSize": 120,
+                        "label": {
+                            "normal": {
+                                "show": true,
+                                color: 'white',
+                                "formatter": function (v) {
+                                    return '';
+                                },
+                                offset: [0, -2]
+
+                            },
+                            "emphasis": {"show": false},
+                        },
+                        "itemStyle": {
+                            normal:{
+                                "color":"#fdbc22"
+                            }
+
+                        }
+                    },
+                    {
+                        'name': 'pao',
+                        "type": "scatter",
+                        "coordinateSystem": "bmap",
+                        "data": e,
                         "zlevel": 10,
                         "symbolSize": 120,
                         "label": {
@@ -418,11 +489,23 @@
                 }
             });
             tabulationBoxTrigger.$on('paoOrTag',function (v) {
+                _this.myChart.dispatchAction({
+                    type: 'legendUnSelect',
+                    name:"paomyself"
+                });
+                _this.myChart.dispatchAction({
+                    type: 'legendUnSelect',
+                    name:"pao"
+                });
+                let name = 'pao';
+                if(!_this.demandType){
+                    name = "paomyself";
+                }
                 if(v){  // 触发图标模式或者气泡模式
                     _this.myChart.dispatchAction({
                         type: 'legendSelect',
-                        name:"pao"
-                    })
+                        name
+                    });
                     _this.myChart.dispatchAction({
                         type: 'legendUnSelect',
                         name:"tags"
@@ -431,10 +514,6 @@
                     _this.myChart.dispatchAction({
                         type: 'legendSelect',
                         name:"tags"
-                    })
-                    _this.myChart.dispatchAction({
-                        type: 'legendUnSelect',
-                        name:"pao"
                     })
                 }
             });

@@ -85,10 +85,9 @@
                 this.bgqyed = false;
                 this.searchText = '';
                 this.qyCode = "";
-                this.$emit('serah');
-//                this.$store.dispatch('hybridData', {v: ''}).then(() => {
-//
-//                });
+               this.$store.dispatch('removeSearchSet').then(() => {
+                   this.$emit('serah');
+               });
             },
             openMax: function () {
                 this.$emit('openMax', 'max');

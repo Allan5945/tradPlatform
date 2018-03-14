@@ -222,7 +222,10 @@ const mutations = {
         for(let item in t){
             state.role[item] = t[item];
         }
-    }
+    },
+    [types.REMOVESEARCHSET](state){
+        state.demandList.monoName = '';
+    },
     // [types.SETAIRCODE](state,val) {
     //     state.setaircode = val;
     // },

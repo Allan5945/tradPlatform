@@ -40,9 +40,12 @@
         },
         methods: {
             changedemandSelected(t){
-                this.$store.dispatch("demandType",t);
-                this.demandSelected = t;
-                if(this.demandList.type)this.serah();
+                this.$store.dispatch("demandType",t).then(() => {
+                    this.demandSelected = t;
+                    In.$emit("paoOrTag",true);
+                    if(this.demandList.type)this.serah();
+                });
+
             },
             serah(){
                 let url = '/getOthersDemandListIndex';

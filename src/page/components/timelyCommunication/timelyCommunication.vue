@@ -92,6 +92,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="personal-x" v-else-if="role.role === '2' && setId != 'x-t-null'">
+                    <div class="personal-x-kf">
+                        <!--<img src="./../../../static/img/tmhk.png" alt="">-->
+                    </div>
+                    <div class="personal-x-title">
+                        <span>公司</span>
+                        <h4>{{inData[setId].rightTableUp[0].val}}</h4>
+                    </div>
+                    <div class="personal-x-item">
+                        <span>部门</span>
+                        <p>{{inData[setId].rightTableUp[1].val}}</p>
+                    </div>
+                    <div class="personal-x-item">
+                        <span>机场</span>
+                        <h6>{{inData[setId].rightTableUp[2].val}}</h6>
+                    </div>
+                    <div class="personal-x-item">
+                        <span>电话</span>
+                        <h6>{{inData[setId].rightTableUp[3].val}}</h6>
+                    </div>
+                    <img src="./../../../static/img/blbj.png" alt="">
+                </div>
                 <div class="personal-x" v-else>
                     <div class="personal-x-kf">
                         <img src="./../../../static/img/tmhk.png" alt="">
