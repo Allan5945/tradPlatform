@@ -30,20 +30,33 @@
                 <div>{{basicMes.xfdj}}</div>
             </div>
             <div>
-                <router-link class="btn-w more" :to="{ path: '/index/information',query: { code: basicMes.airCode }}">
-                    更多详情
-                </router-link>
+                <div class="user-select">
+                    航线网络图
+                    <div id='turnLine' @click="change" :class="{'iskg0':!ched,'iskg1':ched}" class='iskg'>
+                        <span :class="{'iskgCkecked':ched}" class='turn-off'>&#xe61e;</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="line-network">
-            航线网络&nbsp;&nbsp;<button>开</button><button>关</button>
+            <router-link class="more" :to="{ path: '/index/information',query: { code: basicMes.airCode }}">
+                更多详情
+            </router-link>
         </div>
         <div class="inf-associated">
-            <div>关联航司</div>
+            <div class="inf-title">富余运力</div>
+            <!--<div class="redundant">-->
+                <!--<span>B7373-500</span>-->
+                <!--<span>2架</span>-->
+            <!--</div>-->
+        </div>
+        <div class="inf-associated">
+            <div class="inf-title">关联航司</div>
             <div>
                 <div v-for="(val,key) in glhs"class="inf-hsItrmBox">
-                    <!--<span  v-text="val.iata" class="inf-hsItrm"></span>-->
-                    <span class="inf-hsItrm"></span>
+                    <span class="inf-hsItrm">
+                        <img class="isglhs" v-if="val.transactionCapacityCount > 0" src="./../../../static/img/mapImag/i4.png" alt="">
+                    </span>
                     <span class="inf-hsItrmBg">
                         <svg class="icon" aria-hidden="true">
                             <use :xlink:href="(`#`+val.logo)"></use>
@@ -52,16 +65,16 @@
                 </div>
             </div>
         </div>
-        <div class="inf-news" :class="{'gdyq':yq.length != 0}">
-            <div>滚动舆情</div>
+        <div class="inf-associated" :class="{'gdyq':yq.length != 0}">
+            <div class="inf-title">滚动舆情</div>
             <transition name="slide-fade">
                 <div v-for="(val,key) in yq" class="gdyq-item" v-if="key == setgd">
                     <a :href="val.articleUrl" target="_blank"  v-text="val.articleTitle" class="text-line"></a>
                 </div>
             </transition>
         </div>
-        <div class="inf-news" :class="{'gdyq':zc.length != 0}">
-            <div>最新政策</div>
+        <div class="inf-associated" :class="{'gdyq':zc.length != 0}">
+            <div class="inf-title">最新政策</div>
             <transition name="slide-fade">
                 <div v-for="(val,key) in zc" class="gdyq-item" v-if="key == setzc">
                     <a href="" target="_blank" v-text="val.rewardpolicytext"class="text-line"></a>
@@ -74,9 +87,12 @@
     import * as vx from 'vuex';
     import {companyIconData} from "./../../../public/js/companyIcon"
     import tabulationBoxTrigger from "./../../../public/js/tabulationBoxTrigger.js";
+
     export default {
         data(){
             return{
+                code:"",
+                ched:true,
                 basicMes:{
                     airName:"",
                     airCode:"",
@@ -111,10 +127,15 @@
         },
         computed:{
             ...vx.mapGetters([
-                'airList'
+                'airList',
+                'role'
             ])
         },
         methods:{
+            change(){
+                this.ched = !this.ched;
+                tabulationBoxTrigger.$emit('routeNetwork',[this.ched,this.code]);
+            },
             clek:function(){
                 document.getElementById("inf-mes-box").style.display = "none";
             },
@@ -169,12 +190,18 @@
             },
             initBox: function () {
                 this.timelyBox = this.$refs["timely-box"];
-            },
+            }
         },
         mounted:function(){
             this.companyIconData = companyIconData;
             let _this = this;
-            tabulationBoxTrigger.$on("tipBox",d => {
+            tabulationBoxTrigger.$on("tipBox",([d,type] = [...data]) => {
+                if(type){
+                    _this.ched = false
+                }else{
+                    _this.ched = true
+                };
+                _this.code = d;
                 _this.yq = [];
                 _this.zc = [];
                 _this.glhs = [];
@@ -248,6 +275,49 @@
     }
 </script>
 <style lang="scss" scoped>
+    .iskg {
+        display: inline-block;
+        width: 35px;
+        height: 16px;
+        border-radius: 8px 8px 8px 8px;
+        margin-right: 10px;
+        cursor: pointer;
+        position: relative;
+        background-color: #605E7C;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    .iskg0 {
+        background-color:#57b57a;
+    }
+    .iskg0:before {
+        content: 'ON';
+        position: absolute;
+        right: -1px;
+        font-size: 12px;
+        bottom: 1px;
+        color: white;
+        transform: scale(.7);
+    }
+
+    .iskg1:before {
+        content: 'OFF';
+        position: absolute;
+        left: -2px;
+        font-size: 12px;
+        bottom: 1px;
+        color: white;
+        transform: scale(.7);
+    }
+    .turn-off {
+        font-family: iconfont;
+        font-size: 12px;
+        color: white;
+        position: relative;
+        left: 3px;
+        top: 1px;
+        transition: left .15s linear;
+    }
     .slide-fade-enter-active {
         transition: all .3s ease;
     }
@@ -276,6 +346,8 @@
         line-height: 30px;
         height: 30px;
         width: 30px;
+        position: relative;
+        z-index: 5;
     }
     .inf-hsItrmBg{
         position: absolute;
@@ -350,9 +422,9 @@
         }
     }
     .more{
-        border-radius: 15px;
-        display: inline-block;
-        padding: 5px 10px;
+        text-decoration:underline;
+        color: #3c78ff;
+        margin-right: 40px;
     }
     .inf-mes{
         display: flex;
@@ -387,6 +459,7 @@
         border-bottom: 1px solid #f3f3f3;
         width: 290px;
         padding-right: 10px;
+        padding-bottom: 10px;
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-end;
@@ -403,5 +476,25 @@
             background-color: #CCCCCC;
             border: 1px solid #ffffff;
         }
+    }
+    .iskgCkecked {
+        left: 20px;
+    }
+    .isglhs{
+        height: 30px;
+        width: 30px;
+        transform: translate(-5px, -13px);
+        position: absolute;
+    }
+    .inf-title{
+        color: rgba(96, 94, 124, 0.8);
+    }
+    .redundant{
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 50px 8px 0;
+        font-size: 12px;
+        color: #605e7c;
+        font-weight: bold;
     }
 </style>

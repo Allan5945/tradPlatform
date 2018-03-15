@@ -42,7 +42,10 @@
             changedemandSelected(t){
                 this.$store.dispatch("demandType",t).then(() => {
                     this.demandSelected = t;
-                    In.$emit("paoOrTag",true);
+                    let role = JSON.parse(sessionStorage.getItem("role"));
+                    if(role.viewMode == 0){
+                        In.$emit("paoOrTag",true);
+                    }
                     if(this.demandList.type)this.serah();
                 });
 

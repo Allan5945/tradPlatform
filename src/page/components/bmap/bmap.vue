@@ -12,7 +12,9 @@
 
     export default {
         data() {
-            return {}
+            return {
+                code:""
+            }
         },
         props: ['allDot','mapCode'],
         watch: {
@@ -34,17 +36,33 @@
             ]),
         },
         mounted: function () {
+            let point= [],ar = [],enmap = {},enmapName = [];
+            for(let key in this.routeNetwork){
+                let er = [];
+                this.routeNetwork[key].forEach((v)=>{
+                    let selAir = this.$airMes(this.airList,v.dptIata);
+                    let ourAir = this.$airMes(this.airList,v.arrvIata);
+                    er.push({
+                        fromName:selAir.cityName,
+                        toName:ourAir.cityName,
+                        coords:[[selAir.cityCoordinateJ,selAir.cityCoordinateW],[ourAir.cityCoordinateJ,ourAir.cityCoordinateW]]
+                    })
+                });
 
-            let ar = [],point= [];
-            this.routeNetwork.forEach((v)=>{
-                let selAir = this.$airMes(this.airList,v.dptIata);
-                let ourAir = this.$airMes(this.airList,v.arrvIata);
-                ar.push({
-                    fromName:selAir.cityName,
-                    toName:ourAir.cityName,
-                    coords:[[selAir.cityCoordinateJ,selAir.cityCoordinateW],[ourAir.cityCoordinateJ,ourAir.cityCoordinateW]]
-                })
-            });
+                network = {
+                    "name": `${key}lines`,
+                    "type": `lines`,
+                    "coordinateSystem": "bmap",
+                    "zlevel": 8,
+                    "lineStyle": {
+                        "normal": {"color": "#336BEA", "width": 1, "opacity": 0.4, "curveness": 0.2}
+                    },
+                    "data": er
+                };
+                enmap[key + 'lines'] = false;
+                enmapName.push(`${key}lines`);
+                ar.push(network);
+            }
             this.airList.forEach(data =>{
                 point.push( {
                     name: data.cityName,
@@ -312,17 +330,18 @@
                 },
                 legend: {
                     show:false,
-                    data: ['routeNetwork','allPoint','pao','tags'],
+                    data: ['allPoint','pao','tags',...enmapName],
                     textStyle: {
                         color: '#fff'
                     },
                     selectedMode: 'multiple',
                     selected:{
-                        'routeNetwork':false,
+                        // 'routeNetwork':false,
                         'allPoint':false,
                         'pao':paoOrTag && this.demandType,
                         'tags':!paoOrTag,
-                        'paomyself':paoOrTag && !this.demandType
+                        'paomyself':paoOrTag && !this.demandType,
+                        ...enmap
                     }
                 },
                 "tooltip": {
@@ -456,24 +475,37 @@
                             }
                         }
                     },
-                    network,
-                    allPoint
+                    allPoint,
+                    ...ar
                 ]
             };
             this.myChart.setOption(option);
             let _this = this;
-            tabulationBoxTrigger.$on('routeNetwork',function (v) {
+            tabulationBoxTrigger.$on('routeNetwork',function ([v,code] = [...data]) {
+                if(!v){
+                    _this.code = code;
+                    for (let key in enmap){
+                        _this.myChart.dispatchAction({
+                            type: 'legendUnSelect',
+                            name:key
+                        })
+                    };
+                }else{
+                    _this.code = "";
+                }
+
                 if(!v){  // 打开航线网络图
                     _this.myChart.dispatchAction({
                         type: 'legendSelect',
-                        name:"routeNetwork"
+                        name:`${code}lines`
                     })
                 }else{
                     _this.myChart.dispatchAction({
                         type: 'legendUnSelect',
-                        name:"routeNetwork"
+                        name:`${code}lines`
                     })
                 }
+
             });
             tabulationBoxTrigger.$on('allPoint',function (v) {
                 if(!v){  // 打开航线网络图
@@ -521,10 +553,10 @@
 //            this.$bExample.setallNum(a);
             this.$bExample.init();
             this.myChart.on('click', (a) => {
-                if(a.seriesName === "allPoint" || a.seriesName === "routeNetwork")return;
+                if(a.seriesName === "allPoint" || a.seriesName.includes("lines"))return;
                 if(a.data.type != 1){
                     setTimeout(() => {  // 展开机场信息列表
-                        tabulationBoxTrigger.$emit('tipBox',a.data.mes.code);
+                        tabulationBoxTrigger.$emit('tipBox',[a.data.mes.code,a.data.mes.code === this.code]);
                         let infMesBox = document.getElementById('inf-mes-box');
                         let caseBox = document.getElementById('case');
                         infMesBox.style.left = `${a.event.offsetX + 30}px`;

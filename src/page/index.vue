@@ -185,17 +185,14 @@
                 );
             this.$ajax({
                 method: 'post',
-                url: '/getAirportListByCode',
-                params:{
-                    icao:this.role.airlineretrievalcondition
-                },
+                url: '/getAirportListByCodes',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 }
             })
                 .then((response) => {
-                    if(response.data.list != null){
-                        this.$store.dispatch('routeNetwork', response.data.list).then(() => {
+                    if(response.data.opResult == '0'){
+                        this.$store.dispatch('routeNetwork', response.data.dtaList).then(() => {
                         });
                     }
                     this.loadingData.routeNetwork = true;
