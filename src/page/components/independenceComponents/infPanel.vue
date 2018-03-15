@@ -45,10 +45,10 @@
         </div>
         <div class="inf-associated">
             <div class="inf-title">富余运力</div>
-            <!--<div class="redundant">-->
-                <!--<span>B7373-500</span>-->
-                <!--<span>2架</span>-->
-            <!--</div>-->
+            <div class="redundant" v-for="key in allData.spareCapacitys">
+                <span v-text="key.airCrftTyp"></span>
+                <span v-text="`${key.capacity}架`"></span>
+            </div>
         </div>
         <div class="inf-associated">
             <div class="inf-title">关联航司</div>
@@ -103,6 +103,7 @@
                     xfdj:''
                 },
                 glhs:[],
+                allData:"",
                 yq:[],
                 setgd:0,
                 setIn:"",
@@ -230,6 +231,7 @@
                                 _this.zc = []
                             }
                             if(response.data.obj.compenys != null){
+                                _this.allData = response.data.obj;
                                 _this.glhs = response.data.obj.compenys;
                             }else{
                                 _this.glhs = []
