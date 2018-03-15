@@ -344,7 +344,7 @@
                         <div class="right item-child">
                             <span class="margin-right" style="white-space: nowrap">运力归属</span>
                             <div class="choose-input">
-                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany"
+                                <input class="input-mes" type="text" placeholder="输入选择航司" v-model="airCompany" :readonly="true"
                                        @click.stop="clickClose15Fn" style="border: 0;width: 136px;">
                                 <airCompanySearch class="aisx" v-on:resData="resData6" :searchText="airCompany" v-if="isSearch6"
                                           style="top: 25px; left: 0;"></airCompanySearch>
@@ -354,7 +354,7 @@
                         <div class="left item-child">
                             <span>运力基地</span>　
                             <div class="choose-input" style="position: relative;">
-                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea"
+                                <input class="input-mes" type="text" placeholder="输入选择机场" v-model="fourArea" :readonly="true"
                                        @click.stop="clickClose16Fn" style="border: 0;">
                                 <airportS class="aisx" v-on:resData="resData4" :searchText="fourArea" v-if="isSearch4"
                                           style="top:25px; left: -55px;"></airportS>
@@ -389,9 +389,13 @@
                     </div>
                 </div>
             </div>
-            <div class="sixth">
+            <div class="sixth" v-if="bianjiShow">
                 <button class="btn-b" @click.stop="submitData">确认修改该方案</button>
                 <button class="btn-w" @click="closeThis">取消</button>
+            </div>
+            <div class="sixth" v-else>
+                <button class="btn-b" @click.stop="submitData">支付意向金提交意向</button>
+                <button class="btn-w" @click.stop="closeThis">取消</button>
             </div>
         </div>
     </div>
@@ -582,6 +586,7 @@
                     isDis: false,
                 },
                 daizhifuShow: false,
+                bianjiShow: false,
             }
         },
         components: {
@@ -942,6 +947,10 @@
                 if(this.acceptData.daizhifu) {
                     this.airCompany = '***';
                 }
+                // 编辑
+                if(this.acceptData.bianji) {
+                    this.bianjiShow = this.acceptData.bianji;
+                }
             },
             // 将补贴类型从数字变成汉字
             subsidypolicyFn: function (index) {
@@ -1153,7 +1162,13 @@
                 }
                 this.sendData.schedulineport = this.qyCode5;   //接受调度三字码
                 this.sendData.hourscost = this.hourConst;   //小时成本
-                this.bianjiAjaxFn();
+                if(this.acceptData.bianji) {
+                    this.bianjiAjaxFn();
+                }else {
+                    //传输数据给付款页面
+                    tabulationBoxTrigger.$emit('postResponseData', this.sendData);
+                    this.$emit("sumitForm");
+                }
             },
             bianjiAjaxFn: function () {
                 //stateNum: 1:selectedResponse(选定)，2:updateResponseSelective(已选定-编辑)
@@ -1439,7 +1454,11 @@
                 this.closeTimeFrameFn();
             },
             clickClose15Fn: function () {
-                this.isSearch6 = true;
+                if(this.acceptData.daizhifu == true) {
+                    this.isSearch6 = false;
+                }else{
+                    this.isSearch6 = true;
+                }
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;
@@ -1452,7 +1471,11 @@
                 this.closeTimeFrameFn();
             },
             clickClose16Fn: function () {
-                this.isSearch4 = true;
+                if(this.acceptData.daizhifu == true) {
+                    this.isSearch4 = false;
+                }else{
+                    this.isSearch4 = true;
+                }
                 this.space1 = false;
                 this.space2 = false;
                 this.space3 = false;

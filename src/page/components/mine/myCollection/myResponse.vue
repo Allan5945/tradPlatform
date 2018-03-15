@@ -241,7 +241,7 @@
  import * as vx from 'vuex';
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
  import ln from '$src/public/js/tabulationBoxTrigger'
- import sureForm from './../myIntention/myPurposeEdit.vue'
+ import sureForm from './../myIntention/myPurposeEditjichang.vue'
  import reIntentForm from '$src/page/components/trans_detail/reIntentForm.vue'
  import transDialog from '$src/page/components/trans_detail/transDialog.vue'
  import paySuccess  from '$src/page/components/trans_detail/paySuccess.vue'

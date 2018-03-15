@@ -241,7 +241,7 @@
  import tabulationBoxTrigger from '$src/public/js/tabulationBoxTrigger.js'
  import ln from '$src/public/js/tabulationBoxTrigger'
  /*import sureForm from './sureForm1.vue'*/
- import sureForm from './../mine/myIntention/myPurposeEdit.vue'
+ import sureForm from './../mine/myIntention/myPurposeEditjichang.vue'
  import reIntentForm from './reIntentForm.vue'
  import intentForm from './intentForm1.vue'
  import transDialog from './transDialog.vue'
