@@ -1,12 +1,6 @@
 <template>
     <div class="route-network">
         <div class="user-select" v-if="role.role!='2'">
-            航线网络图
-            <div id='turnLine' @click="change" :class="{'iskg0':!ched,'iskg1':ched}" class='iskg'>
-                <span :class="{'iskgCkecked':ched}" class='turn-off'>&#xe61e;</span>
-            </div>
-        </div>
-        <div class="user-select" v-if="role.role!='2'">
             航点
             <div id='turnLine1' @click="changePoint" :class="{'iskg0':!ched1,'iskg1':ched1}" class='iskg'>
                 <span :class="{'iskgCkecked':ched1}" class='turn-off'>&#xe61e;</span>
@@ -25,7 +19,6 @@
     export default {
         data() {
             return {
-                ched: true,
                 ched1: true,
                 modelTag:false,
                 modelPao:true,
@@ -58,11 +51,6 @@
                             }
                         );
                 }
-            },
-            change(){
-                this.ched = !this.ched;
-                tabulationBoxTrigger.$emit('routeNetwork',this.ched);
-                localStorage.setItem('ched',this.ched);
             },
             changePoint(){
                 this.ched1 = !this.ched1;
@@ -117,11 +105,6 @@
                 this.modelPao =false ;
                 this.setIcon = 'modelTag';
             }
-            let mes = localStorage.getItem('ched');
-            if(mes != null){
-                this.ched = eval(mes);
-                tabulationBoxTrigger.$emit('routeNetwork',this.ched);
-            };
             let mes1 = localStorage.getItem('ched1');
             if(mes1 != null){
                 this.ched1 = eval(mes1);
