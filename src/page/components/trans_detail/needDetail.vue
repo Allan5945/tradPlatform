@@ -85,7 +85,7 @@
                    <div>意向航线</div>
                    <div class="i-line">-</div>
                </div>
-                <div v-if="role.role == 2">
+                <div>
                     <div>有效期</div>
                     <div v-if="detailData.periodValidity">{{detailData.periodValidity.split('-')[1]||'-'}}止</div>
                 </div>

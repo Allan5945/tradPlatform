@@ -9,7 +9,7 @@
               @keyup="entered($event)"
               v-model="inputMes"
               :maxlength="maxlength">
-      <input v-if="inputeType=='password' && inputMes!='' " id="truepwd"
+      <input v-if="inputeType=='password' && inputMes!='' " ref="truepwd"
               type="password" class="user-input"
               :class="{'animated':showErrInput,'shake':showErrInput,'err-input':showErrInput || errs}"
               @blur="focusTip(true)"
@@ -82,10 +82,12 @@ export default {
             rs = txt.replace(/[^\x00-\xff]/g,'');
             if(rs.length>0 && this.inputeType=='password'){
                 setTimeout(()=>{
-                    document.querySelector('#truepwd').focus();
+//                    document.querySelector('#truepwd').focus();
+                    this.$refs.truepwd.focus();
                 },0)
             }else if(rs.length==0){
-                document.querySelector('#truepwd') && document.querySelector('#truepwd').blur();
+//                document.querySelector('#truepwd') && document.querySelector('#truepwd').blur();
+                this.$refs.truepwd.blur();
             }
             this.inputMes = rs;
             this.$emit('reqMes',{n:rs, p:'',i:false});

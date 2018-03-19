@@ -46,8 +46,8 @@ import airCompanyS from '../../reuseComponents/airCompanySearch.vue'
             ])
         },
         watch:{
-           'airportText':function(){
-                if(this.airportText){
+           'airportText1':function(){
+                if(this.airportText1){
                     this.searchActive = true;
                 }else{
                     this.searchActive = false;

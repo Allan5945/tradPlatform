@@ -108,7 +108,7 @@
                     </div>
                     <div class="right item">
                         <div class="item-a" v-if="contactMsgShow">
-                            <span style="height: 15px; max-width: 160px; overflow: hidden;">
+                            <span style="height: 20px; max-width: 160px; overflow: hidden;">
                                 <lonSpan :txt="myData.contact"></lonSpan>
                             </span>
                         </div>
@@ -261,7 +261,7 @@
                 <div>
                     <div>联系人</div>
                     <div>
-                        <span style="display: block;height: 15px; max-width: 160px; overflow: hidden;">
+                        <span style="display: block;height: 20px; max-width: 160px; overflow: hidden;">
                             <lonSpan :txt="receiveIntention.contact"></lonSpan>
                         </span>
                     </div>
