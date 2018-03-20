@@ -37,7 +37,6 @@ const mutations = {
     [types.HYBRIDDATA](state,vl) {
         if(!state.demandList.type){
             state.demandList.type = true;
-            state.demandList.monoName = '';
         }
         if(vl != ''){
             switch (vl.t){
