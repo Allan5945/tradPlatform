@@ -147,8 +147,8 @@
             }
         },
         mounted() {
-            this.getListData();
             this.judgeRole();
+            this.getListData();
             tabulationBoxTrigger.hierarchy = false; // navigation层级，true：不显示，false：显示
         },
         methods: {
@@ -188,13 +188,13 @@
 //                    this.myData = this.myData1;
                     this.typeWriting = '航线需求';
                     this.state = this.state1;
-                    this.sendData.demandType = 0;
+//                    this.sendData.demandType = 0;
                 }if(this.role.role == 1) {  // 机场
                     this.type = this.type0;
 //                    this.myData = this.myData0;
                     this.typeWriting = '运力投放';
                     this.state = this.state2;
-                    this.sendData.demandType = 1;
+//                    this.sendData.demandType = 1;
                 }if(this.role.role == 2) {  // 太美
                     this.type = this.type2;
 //                    this.myData = this.myData2;

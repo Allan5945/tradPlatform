@@ -173,8 +173,10 @@
                     flag = true;
                     if(val!==val.replace(/ /g,'')){ //空格判断
                         flag = false;
+                        console.info('1' + flag)
                     }else if(val.length<6 || val.length>16){ //长度判断
                         flag = false;
+                        console.info(flag)
                     }
                 }else if(type === 1 ) { //手机校验
                     flag = true;

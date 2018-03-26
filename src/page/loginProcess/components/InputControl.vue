@@ -87,7 +87,7 @@ export default {
                 },0)
             }else if(rs.length==0){
 //                document.querySelector('#truepwd') && document.querySelector('#truepwd').blur();
-                this.$refs.truepwd.blur();
+//                this.$refs.truepwd.blur();
             }
             this.inputMes = rs;
             this.$emit('reqMes',{n:rs, p:'',i:false});
