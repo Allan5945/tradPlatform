@@ -5,7 +5,7 @@
             <div class="content">
                 <div class="reson">{{msg}}原因</div>
                 <div class="r-input">
-                    <textarea class="txtarea" v-model="refuseText" maxlength="100" placeholder="必填"></textarea>
+                    <textarea class="txtarea" v-model="refuseText" maxlength="100" placeholder="必填" @keydown.enter.prevent></textarea>
                     <div class="tips-border"></div>
                     <div class="tips-border" style="top:22px;"></div>
                     <div class="tips-border" style="top:44px;"></div>
@@ -32,6 +32,7 @@
         },
         watch:{
             "refuseText" :function(){
+                this.refuseText = this.refuseText.replace(/^\s*/g,"");
                 if(this.refuseText.length !== 0){
                     this.isSend =true;
                 }else{
