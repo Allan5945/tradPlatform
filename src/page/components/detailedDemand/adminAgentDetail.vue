@@ -66,7 +66,7 @@
                 </div>
             </footer>
         </div>
-        <refuseDialog @sure="sureDialog" v-show="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
+        <refuseDialog @sure="sureDialog" v-if="dialogShow" @cancel="cancelDialog" :msg='msg'></refuseDialog>
     </div>
 </template>
 
@@ -117,7 +117,7 @@ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
             //this.isTest =false;
             this.$ajax({
                 method: 'post',
-                url: '/demandUpdate',
+                url: '/cepingTuoguan',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
@@ -139,25 +139,20 @@ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
         },
         sureDialog(text){
           this.dialogShow = false;
-          this.refuseText = text;
-          if(this.msg == "拒绝"){
-              this.testingShow =false;
-              this.refuseAgent(text);
-          }else if(this.msg == "取消"){
-              this.cancelAgent(text);
-          }
+          this.refuseAgent(text);
         },
         refuseAgent(text){
             this.$ajax({
                 method: 'post',
-                url: '/demandUpdate',
+                url: '/checkCommissionedAndCustody',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.mes.demand,
-                    demandprogress:'10',
-                    rek: text
+                      demandState:'1',
+                      demandId:this.mes.demand,
+                      demandType:this.mes.demandType,
+                      rek:text
                   }
                 })
                 .then((response) => {
@@ -173,13 +168,14 @@ import lonSpan from '$src/page/components/publicTools/scrollTxt.vue';
         accepted(){
               this.$ajax({
                 method: 'post',
-                url: '/demandUpdate',
+                url: '/checkCommissionedAndCustody',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded'
                 },
                   params: {
-                    id:this.mes.demand,
-                    demandprogress:'8',
+                      demandState:'0',
+                      demandId:this.mes.demand,
+                      demandType:this.mes.demandType,
                   }
                 })
                 .then((response) => {
