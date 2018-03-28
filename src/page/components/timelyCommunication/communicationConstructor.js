@@ -85,7 +85,7 @@ export default class ChatSocket {
             console.log('打开连接');
         };
         this.ws.onmessage = (data) => {
-            console.log(`收到信息`, data);
+            // console.log(`收到信息`, data);
             let chat = JSON.parse(data.data);
             switch (chat.type) {
                 case "message" || "remind":
