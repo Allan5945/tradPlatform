@@ -1059,7 +1059,7 @@
               this.airCompanyId = a.id;
             }
 
-            this.contact = this.role.username;
+            this.contact = this.role.nickName;
             this.phoneNum = this.role.phone;
 
         }

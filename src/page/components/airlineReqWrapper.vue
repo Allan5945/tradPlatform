@@ -828,8 +828,8 @@
                 });
             },
             // 数据初始化：获取当前登录机场信息
-            getEnterMsgFn: function () {
-                this.user = this.role.username;  // 联系人
+            /*getEnterMsgFn: function () {
+                this.user = this.role.nickName;  // 联系人
                 this.phoneNum = this.role.phone; // 联系方式
                 this.airList.forEach((val) => {
                     if(val.code == this.role.airlineretrievalcondition) {
@@ -839,7 +839,7 @@
                 this.firArea = this.getEnterMsg.airlnCdName;
                 this.firAreaBus = this.getEnterMsg.airlnCdName;
                 this.qyCode1 = this.getEnterMsg.iata;
-            },
+            },*/
             // 从父组件接受数据,并绑定到表单上
             acceptDataFn: function () {
                 /*单选按钮是否选定*/

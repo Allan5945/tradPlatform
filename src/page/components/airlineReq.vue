@@ -812,7 +812,7 @@
             },
             // 数据初始化：获取当前登录机场信息
             getEnterMsgFn: function () {
-                this.user = this.role.username;  // 联系人
+                this.user = this.role.nickName;  // 联系人
                 this.phoneNum = this.role.phone; // 联系方式
                 this.airList.forEach((val) => {
                     if(val.code == this.role.airlineretrievalcondition) {

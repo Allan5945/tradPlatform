@@ -805,7 +805,7 @@
             }
 
             let a = this.$companyMes(this.companyList,this.role.airlineretrievalcondition);
-            this.contact = this.role.username;
+            this.contact = this.role.nickName;
             this.phoneNum = this.role.phone;
             this.airCompany = a.companyName;
             this.airCompany1 = a.companyName;
